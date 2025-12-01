@@ -1,215 +1,333 @@
-# Tailwind CSS Migration Plan for Pieces Theme
+# Pieces Theme - Complete Tailwind Migration Plan
 
 ## Overview
 
-The Pieces theme currently loads **66 CSS files** (~383KB total) inherited from Dawn. This plan outlines how to systematically replace these with Tailwind utility classes, reducing complexity and file size.
+Migrate the Pieces Shopify theme from **54 scattered CSS files (576KB)** + **82 SVG icons (336KB)** to a unified Tailwind CSS bundle with Phosphor Icons. Target: **74% file size reduction** with modern, minimal SPA-like styling.
+
+### Current State
+- CSS Files (assets/): 54 files, 576KB
+- CSS Files (frontend/): 31 files, 172KB
+- SVG Icons: 82 files, 336KB (45 unused)
+- Total: ~900KB
+
+### Target State
+- CSS Bundle: 1 file, ~150KB
+- Phosphor Fonts: ~150KB
+- SVG Icons: 0 (using Phosphor)
+- Total: ~300KB (67% reduction)
 
 ---
 
-## Phase 1: CSS Audit Results
+## Phase 1: Cleanup & Foundation
 
-### Files Always Loaded (Critical Path)
-These are loaded on every page via `theme.liquid`:
+### 1.1 Delete Unused SVG Icons (45 files, ~170KB)
 
-| File | Size | Priority | Notes |
-|------|------|----------|-------|
-| `base.css` | 80.4 KB | HIGH | Core styles, typography, utilities - **migrate first** |
-| `pieces-app.css` | 10.8 KB | KEEP | Your Tailwind output - this stays |
-| `component-cart-items.css` | 6.1 KB | MEDIUM | Lazy-loaded, cart functionality |
-| `component-cart-drawer.css` | 7.6 KB | MEDIUM | Conditional (drawer cart only) |
-| `component-cart.css` | 3.3 KB | MEDIUM | Conditional |
-| `component-totals.css` | 2.1 KB | LOW | Small, cart-specific |
-| `component-price.css` | 3.8 KB | HIGH | Used everywhere |
-| `component-discounts.css` | 1.2 KB | LOW | Small |
+These product-attribute icons are not referenced anywhere:
 
-### High-Impact Component Files
-These are loaded frequently across multiple sections:
+```bash
+cd /Users/evan/Sites/Shopify/themes/pieces/assets
 
-| File | Size | Used By | Priority |
-|------|------|---------|----------|
-| `component-card.css` | 14.1 KB | Product cards, collections, search | **HIGH** |
-| `component-slider.css` | 9.4 KB | Featured collection, slideshow, multicolumn | MEDIUM |
-| `component-facets.css` | 25.7 KB | Collection, search filtering | MEDIUM |
-| `section-image-banner.css` | 10.2 KB | Homepage banners, slideshow | MEDIUM |
-
-### Section-Specific Files (Lower Priority)
-These are only loaded on specific pages:
-
-| File | Size | Page |
-|------|------|------|
-| `section-main-product.css` | 32.3 KB | Product pages |
-| `customer.css` | 13.2 KB | Account pages |
-| `template-collection.css` | 4.8 KB | Collection pages |
-| `section-footer.css` | 9.5 KB | All pages (but isolated) |
-
-### Potentially Removable Files
-These may not be used or can be easily replaced:
-
-| File | Size | Reason |
-|------|------|--------|
-| `mask-blobs.css` | 12.1 KB | Decorative only, optional feature |
-| `quick-order-list.css` | 12.1 KB | B2B feature, may not be used |
-| `quantity-popover.css` | 3.4 KB | Niche feature |
-| `collapsible-content.css` | 2.8 KB | Single section |
-
----
-
-## Phase 2: Migration Strategy
-
-### Step 1: Extend Tailwind Config
-Add Dawn's CSS variables to Tailwind so they're available as utilities:
-
-```js
-// tailwind.config.js additions
-theme: {
-  extend: {
-    spacing: {
-      'section-mobile': 'var(--spacing-sections-mobile)',
-      'section-desktop': 'var(--spacing-sections-desktop)',
-      'page-width': 'var(--page-width)',
-    },
-    borderRadius: {
-      'card': 'var(--border-radius)',
-      'button': 'var(--buttons-radius)',
-      'input': 'var(--inputs-radius)',
-    },
-    boxShadow: {
-      'card': 'var(--shadow-horizontal-offset) var(--shadow-vertical-offset) var(--shadow-blur-radius) rgba(var(--color-shadow), var(--shadow-opacity))',
-    },
-  },
-}
+rm -f icon-apple.svg icon-banana.svg icon-bottle.svg icon-box.svg \
+  icon-carrot.svg icon-chat-bubble.svg icon-check-mark.svg \
+  icon-clipboard.svg icon-dairy-free.svg icon-dairy.svg \
+  icon-dryer.svg icon-eye.svg icon-fire.svg icon-gluten-free.svg \
+  icon-hamburger.svg icon-heart.svg icon-iron.svg icon-leaf.svg \
+  icon-leather.svg icon-lightning-bolt.svg icon-lipstick.svg \
+  icon-lock.svg icon-map-pin.svg icon-nut-free.svg icon-pants.svg \
+  icon-paw-print.svg icon-pepper.svg icon-perfume.svg icon-plane.svg \
+  icon-plant.svg icon-price-tag.svg icon-question-mark.svg \
+  icon-recycle.svg icon-return.svg icon-ruler.svg icon-serving-dish.svg \
+  icon-shirt.svg icon-shoe.svg icon-silhouette.svg icon-snowflake.svg \
+  icon-star.svg icon-stopwatch.svg icon-truck.svg icon-washing.svg
 ```
 
-### Step 2: Create Base Layer Styles
-Replace `base.css` critical styles in `frontend/css/app.css`:
+### 1.2 Migrate Remaining SVG Icons to Phosphor (37 icons)
 
-```css
-@layer base {
-  /* Typography */
-  h1, h2, h3, h4, h5, h6 { @apply font-heading; }
+Files that need `inline_asset_content` replaced with `{% render 'icon' %}`:
 
-  /* Links */
-  a { @apply text-foreground/85 transition-colors; }
+| SVG File | Phosphor Name | Usage Location |
+|----------|---------------|----------------|
+| icon-3d-model.svg | cube | product-media.liquid |
+| icon-account.svg | user | header, account pages |
+| icon-arrow.svg | arrow-right | navigation, buttons |
+| icon-caret.svg | caret-down | dropdowns, accordions |
+| icon-cart.svg | shopping-bag | header |
+| icon-cart-empty.svg | shopping-bag | header |
+| icon-checkmark.svg | check | forms, success |
+| icon-close.svg | x | modals, drawers |
+| icon-close-small.svg | x | small close buttons |
+| icon-copy.svg | copy | share buttons |
+| icon-discount.svg | tag | cart discounts |
+| icon-error.svg | x-circle | form errors |
+| icon-facebook.svg | facebook-logo | social |
+| icon-filter.svg | funnel | collection filters |
+| icon-info.svg | info | tooltips |
+| icon-instagram.svg | instagram-logo | social |
+| icon-inventory-status.svg | package | stock status |
+| icon-minus.svg | minus | quantity inputs |
+| icon-padlock.svg | lock-simple | checkout |
+| icon-pause.svg | pause | video controls |
+| icon-pinterest.svg | pinterest-logo | social |
+| icon-play.svg | play | video controls |
+| icon-plus.svg | plus | quantity inputs |
+| icon-remove.svg | trash | cart remove |
+| icon-reset.svg | x | search reset |
+| icon-search.svg | magnifying-glass | search |
+| icon-share.svg | share-network | share buttons |
+| icon-shopify.svg | storefront | footer |
+| icon-snapchat.svg | snapchat-logo | social |
+| icon-success.svg | check-circle | success states |
+| icon-tick.svg | check | checkboxes |
+| icon-tiktok.svg | tiktok-logo | social |
+| icon-tumblr.svg | tumblr-logo | social |
+| icon-twitter.svg | x-logo | social |
+| icon-unavailable.svg | x-circle | stock status |
+| icon-vimeo.svg | vimeo-logo | social |
+| icon-youtube.svg | youtube-logo | social |
+| icon-zoom.svg | magnifying-glass-plus | image zoom |
 
-  /* Focus states */
-  :focus-visible {
-    @apply outline-2 outline-foreground/50 outline-offset-1;
-  }
-}
+---
+
+## Phase 2: Snippets Migration
+
+### Already Migrated
+- [x] icon.liquid (Phosphor mapper)
+- [x] header-drawer.liquid
+- [x] header-search.liquid
+- [x] card-product.liquid (partial)
+- [x] cart-drawer.liquid
+
+### Priority 1 - Core Commerce Snippets
+
+| Snippet | Icons to Replace | CSS Dependencies |
+|---------|------------------|------------------|
+| price.liquid | - | component-price.css |
+| buy-buttons.liquid | plus, minus | - |
+| quantity-input.liquid | plus, minus | quantity-popover.css |
+| product-variant-picker.liquid | - | component-product-variant-picker.css |
+| product-media-gallery.liquid | zoom, play, 3d-model | - |
+| product-media.liquid | play, pause | component-deferred-media.css |
+
+### Priority 2 - Navigation & UI Snippets
+
+| Snippet | Icons to Replace | CSS Dependencies |
+|---------|------------------|------------------|
+| facets.liquid | filter, close, caret | component-facets.css |
+| pagination.liquid | arrow-left, arrow-right | component-pagination.css |
+| loading-spinner.liquid | - | - |
+| share-button.liquid | share, copy | - |
+
+### Priority 3 - Display Snippets
+
+| Snippet | Icons to Replace | CSS Dependencies |
+|---------|------------------|------------------|
+| social-icons.liquid | ALL social icons | component-list-social.css |
+| article-card.liquid | - | component-article-card.css |
+| card-collection.liquid | - | - |
+| swatch.liquid | - | component-swatch.css |
+| swatch-input.liquid | - | component-swatch-input.css |
+
+---
+
+## Phase 3: Sections Migration
+
+### Priority 1 - Core Pages (High Traffic)
+
+| Section | Size Impact | Key Changes |
+|---------|-------------|-------------|
+| main-product.liquid | 32KB CSS | Product gallery, variant picker, buy buttons |
+| main-collection-product-grid.liquid | 25KB CSS | Product grid, facets/filters |
+| featured-collection.liquid | 9KB CSS | Product cards, slider |
+| footer.liquid | 9KB CSS | Links, social, newsletter |
+
+### Priority 2 - Cart Flow
+
+| Section | Size Impact | Key Changes |
+|---------|-------------|-------------|
+| main-cart-items.liquid | 6KB CSS | Cart table, quantity inputs |
+| main-cart-footer.liquid | 2KB CSS | Totals, checkout button |
+| cart-notification-product.liquid | 3KB CSS | Add to cart notification |
+
+### Priority 3 - Marketing Sections
+
+| Section | Size Impact | Key Changes |
+|---------|-------------|-------------|
+| image-banner.liquid | 10KB CSS | Hero layout, content positioning |
+| image-with-text.liquid | 11KB CSS | Two-column layouts |
+| slideshow.liquid | 9KB CSS | Carousel controls |
+| video.liquid | 2KB CSS | Video player styling |
+| multicolumn.liquid | 2KB CSS | Column layouts |
+| rich-text.liquid | 2KB CSS | Typography |
+| collage.liquid | 5KB CSS | Grid layouts |
+
+### Priority 4 - Blog
+
+| Section | Size Impact | Key Changes |
+|---------|-------------|-------------|
+| main-blog.liquid | 2KB CSS | Article grid |
+| main-article.liquid | 2KB CSS | Article layout |
+| featured-blog.liquid | 2KB CSS | Blog cards |
+
+### Priority 5 - Account Pages
+
+| Section | Size Impact | Key Changes |
+|---------|-------------|-------------|
+| main-account.liquid | 13KB CSS | Account dashboard |
+| main-addresses.liquid | - | Address forms |
+| main-order.liquid | - | Order details |
+| main-login.liquid | - | Login form |
+| main-register.liquid | - | Registration form |
+
+---
+
+## Phase 4: CSS File Consolidation
+
+### Files to Migrate to Tailwind
+
+**High Priority (>5KB each):**
+```
+section-main-product.css        32KB
+component-facets.css            25KB
+customer.css                    13KB
+quick-order-list.css            12KB
+mask-blobs.css                  12KB
+component-image-with-text.css   11KB
+component-localization-form.css 10KB
+component-slider.css             9KB
+quick-add.css                    9KB
+component-cart-drawer.css        7KB
+template-giftcard.css            7KB
+component-cart-items.css         6KB
+component-predictive-search.css  6KB
+collage.css                      5KB
+component-product-variant-picker.css 5KB
 ```
 
-### Step 3: Create Component Classes
-For reusable patterns, use `@apply` in component layer:
-
-```css
-@layer components {
-  .btn {
-    @apply inline-flex items-center justify-center px-6 py-3
-           rounded-[var(--buttons-radius)] font-medium
-           transition-all duration-200;
-  }
-
-  .btn-primary {
-    @apply btn bg-button text-button-text;
-  }
-
-  .card {
-    @apply relative rounded-card border border-foreground/10
-           overflow-hidden;
-  }
-}
+**Medium Priority (2-5KB each):**
+```
+component-slideshow.css          4KB
+component-complementary-products.css 4KB
+component-pickup-availability.css 4KB
+component-cart.css               3KB
+quantity-popover.css             3KB
+component-swatch-input.css       3KB
+collapsible-content.css          3KB
+template-collection.css          3KB
+section-featured-product.css     3KB
+component-deferred-media.css     3KB
 ```
 
-### Step 4: Migrate Templates Incrementally
-For each Liquid file, replace Dawn classes with Tailwind:
+**Low Priority (<2KB each):**
+All remaining component and section CSS files.
 
-**Before (Dawn):**
-```liquid
-<div class="card-wrapper product-card-wrapper underline-links-hover">
-  <div class="card card--standard card--media">
-    <div class="card__inner ratio">
+### CSS to DELETE After Migration
+
+After each section is migrated, remove:
+1. The CSS file from `/assets/`
+2. The `stylesheet_tag` reference from the liquid file
+
+---
+
+## Phase 5: Modern SPA Styling Guidelines
+
+### Design Principles
+
+1. **Generous Whitespace** - `space-y-8`, `py-16`, `gap-6`
+2. **Subtle Animations** - Fade reveals, smooth 300ms transitions
+3. **Minimal Borders** - Shadows over borders, `border-foreground/10`
+4. **Clean Typography** - Clear hierarchy, muted secondary text
+5. **Micro-interactions** - Hover states, focus rings
+
+### Tailwind Class Patterns
+
+**Product Card:**
+```html
+<div class="group relative">
+  <div class="aspect-square overflow-hidden rounded-lg bg-foreground/5">
+    <img class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105">
+  </div>
+  <div class="mt-4 space-y-1">
+    <h3 class="text-sm font-medium truncate">{{ product.title }}</h3>
+    <p class="text-sm text-foreground/60">{{ product.price | money }}</p>
+  </div>
+</div>
 ```
 
-**After (Tailwind):**
-```liquid
-<div class="group relative h-full">
-  <div class="relative overflow-hidden rounded-card border border-foreground/10">
-    <div class="aspect-[var(--ratio-percent)]">
+**Primary Button:**
+```html
+<button class="w-full py-3 bg-foreground text-background rounded-full text-sm font-medium
+               transition-opacity hover:opacity-80 focus-visible:ring-2 focus-visible:ring-offset-2">
+  Add to Cart
+</button>
+```
+
+**Input Field:**
+```html
+<input class="w-full px-4 py-3 border border-foreground/20 rounded-lg bg-transparent
+              placeholder:text-foreground/40 focus:border-foreground focus:outline-none
+              transition-colors">
+```
+
+**Section Container:**
+```html
+<section class="py-12 md:py-20">
+  <div class="page-width">
+    <h2 class="text-2xl md:text-3xl font-medium mb-8">{{ section.settings.heading }}</h2>
+    <!-- Content -->
+  </div>
+</section>
 ```
 
 ---
 
-## Phase 3: Implementation Order
+## Implementation Checklist
 
-### Week 1: Foundation
-1. [ ] Extend `tailwind.config.js` with Dawn variables
-2. [ ] Add base layer styles to `app.css`
-3. [ ] Create component classes for buttons, badges, forms
-4. [ ] Remove `base.css` dependency from `theme.liquid`
+### Phase 1: Cleanup
+- [ ] Delete 45 unused SVG icons
+- [ ] Run build and verify no errors
+- [ ] Test site functionality
 
-### Week 2: High-Impact Components
-1. [ ] Migrate `card-product.liquid` snippet
-2. [ ] Migrate `price.liquid` snippet
-3. [ ] Remove `component-card.css` and `component-price.css`
-4. [ ] Test on collection and product pages
+### Phase 2: Icon Migration
+- [ ] Update social-icons.liquid to use Phosphor
+- [ ] Update facets.liquid icons
+- [ ] Update product page icons (zoom, play, 3d)
+- [ ] Update remaining icon references
+- [ ] Delete migrated SVG icons
+- [ ] Run build and test
 
-### Week 3: Sections
-1. [ ] Migrate `header.liquid` section
-2. [ ] Migrate `footer.liquid` section
-3. [ ] Migrate `image-banner.liquid` section
-4. [ ] Remove corresponding section CSS files
+### Phase 3: Snippet Migration
+- [ ] Migrate price.liquid
+- [ ] Migrate buy-buttons.liquid
+- [ ] Migrate quantity-input.liquid
+- [ ] Migrate product-variant-picker.liquid
+- [ ] Migrate facets.liquid
+- [ ] Migrate pagination.liquid
+- [ ] Remove corresponding CSS files
 
-### Week 4: Remaining Components
-1. [ ] Cart components (drawer, items, totals)
-2. [ ] Search and facets
-3. [ ] Product page components
-4. [ ] Customer account pages
+### Phase 4: Section Migration
+- [ ] Migrate main-product.liquid
+- [ ] Migrate main-collection-product-grid.liquid
+- [ ] Migrate footer.liquid
+- [ ] Migrate image-banner.liquid
+- [ ] Migrate cart sections
+- [ ] Migrate marketing sections
+- [ ] Migrate account sections
 
----
-
-## Phase 4: File Removal Checklist
-
-After migrating each component, remove its CSS file from:
-1. The `assets/` folder
-2. Any `{{ 'file.css' | asset_url | stylesheet_tag }}` references in Liquid
-
-### Files to Remove (in order):
-
-**Round 1 - After base migration:**
-- [ ] `base.css` (80.4 KB) - Replace with Tailwind base
-
-**Round 2 - After card migration:**
-- [ ] `component-card.css` (14.1 KB)
-- [ ] `component-price.css` (3.8 KB)
-- [ ] `component-rating.css`
-- [ ] `component-volume-pricing.css`
-
-**Round 3 - After section migration:**
-- [ ] `section-image-banner.css` (10.2 KB)
-- [ ] `section-footer.css` (9.5 KB)
-- [ ] `component-slider.css` (9.4 KB)
-
-**Round 4 - Final cleanup:**
-- [ ] All remaining `component-*.css` files
-- [ ] All remaining `section-*.css` files
-- [ ] Template-specific CSS files
+### Phase 5: Final Cleanup
+- [ ] Delete all migrated CSS files from assets/
+- [ ] Remove all `stylesheet_tag` references
+- [ ] Final build and full regression test
+- [ ] Performance audit (Lighthouse)
 
 ---
 
-## Expected Results
+## Success Metrics
 
-| Metric | Before | After |
-|--------|--------|-------|
-| CSS Files | 66 | ~5-10 |
-| Total CSS Size | ~383 KB | ~50-80 KB |
-| HTTP Requests | Many conditional | 1-2 main bundles |
-| Maintainability | Low (scattered) | High (centralized) |
-
----
-
-## Notes
-
-- Keep `pieces-app.css` as the main output bundle
-- Preserve CSS custom properties from `theme.liquid` (they power theme customization)
-- Test thoroughly after each phase - use Shopify's theme preview
-- Consider using Tailwind's `@apply` sparingly for complex, repeated patterns
+| Metric | Before | After | Improvement |
+|--------|--------|-------|-------------|
+| CSS Files | 54 | 1 | 98% fewer files |
+| CSS Size | 576KB | ~150KB | 74% smaller |
+| SVG Icons | 82 | 0 | 100% removed |
+| HTTP Requests | ~55+ | ~3 | 95% fewer |
+| Total Assets | ~900KB | ~300KB | 67% smaller |
+| Lighthouse CSS | Poor | Good | Major improvement |
