@@ -1,4 +1,14 @@
-{%- if icon != 'none' -%}
-  {%- assign file = icon | replace: '_', '-' | prepend: 'icon-' | append: '.svg' -%}
-  <span class="svg-wrapper">{{ file | inline_asset_content }}</span>
+{%- comment -%}
+  Renders an icon for accordion items using Phosphor icons.
+
+  Accepts:
+  - icon: {String} Icon name (e.g., 'box', 'truck', 'return')
+
+  Usage:
+  {% render 'icon-accordion', icon: 'box' %}
+{%- endcomment -%}
+
+{%- if icon != 'none' and icon != blank -%}
+  {%- assign icon_name = icon | replace: '_', '-' -%}
+  {%- render 'icon', name: icon_name, size: '20' -%}
 {%- endif -%}

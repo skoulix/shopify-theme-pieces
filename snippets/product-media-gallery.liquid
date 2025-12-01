@@ -133,7 +133,7 @@
         aria-label="{{ 'general.slider.previous_slide' | t }}"
       >
         <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          {%- render 'icon', name: 'caret-down', size: '16' -%}
         </span>
       </button>
       <div class="slider-counter caption">
@@ -149,7 +149,7 @@
         aria-label="{{ 'general.slider.next_slide' | t }}"
       >
         <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          {%- render 'icon', name: 'caret-down', size: '16' -%}
         </span>
       </button>
     </div>
@@ -165,7 +165,7 @@
       data-shopify-xr-hidden
     >
       <span class="svg-wrapper">
-        {{- 'icon-3d-model.svg' | inline_asset_content -}}
+        {%- render 'icon', name: 'cube', size: '20' -%}
       </span>
       {{ 'products.product.xr_button' | t }}
     </button>
@@ -194,7 +194,7 @@
         data-step="3"
       >
         <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          {%- render 'icon', name: 'caret-down', size: '16' -%}
         </span>
       </button>
       <ul
@@ -274,13 +274,13 @@
               {%- if media.media_type == 'model' -%}
                 <span class="thumbnail__badge" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-3d-model.svg' | inline_asset_content -}}
+                    {%- render 'icon', name: 'cube', size: '20' -%}
                   </span>
                 </span>
               {%- elsif media.media_type == 'video' or media.media_type == 'external_video' -%}
                 <span class="thumbnail__badge" aria-hidden="true">
                   <span class="svg-wrapper">
-                    {{- 'icon-play.svg' | inline_asset_content -}}
+                    {%- render 'icon', name: 'play', size: '20' -%}
                   </span>
                 </span>
               {%- endif -%}
@@ -324,7 +324,7 @@
         data-step="3"
       >
         <span class="svg-wrapper">
-          {{- 'icon-caret.svg' | inline_asset_content -}}
+          {%- render 'icon', name: 'caret-down', size: '16' -%}
         </span>
       </button>
     </slider-component>
