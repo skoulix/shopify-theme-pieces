@@ -1,6 +1,6 @@
 {%- comment -%}
   Product Section - Minimal Skeleton + Tailwind UI Design
-  With intro animations matching creative-collection-2 preview transitions
+  With intro animations and split text reveal
 {%- endcomment -%}
 
 {% assign current_variant = product.selected_or_first_available_variant %}
@@ -12,9 +12,6 @@
     transform: scale(1.1);
   }
 
-  .product-intro .product-intro__title,
-  .product-intro .product-intro__price,
-  .product-intro .product-intro__description,
   .product-intro .product-intro__form {
     opacity: 0;
     transform: translateY(30px);
@@ -26,9 +23,6 @@
     transform: scale(1);
   }
 
-  .product-intro--animated .product-intro__title,
-  .product-intro--animated .product-intro__price,
-  .product-intro--animated .product-intro__description,
   .product-intro--animated .product-intro__form {
     opacity: 1;
     transform: translateY(0);
@@ -59,20 +53,32 @@
 
       {%- comment -%} Product Info {%- endcomment -%}
       <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:sticky lg:top-24 lg:mt-0">
-        <h1 class="text-3xl font-bold tracking-tight text-gray-900 product-intro__title">{{ product.title }}</h1>
+        <h1 class="product-intro__title text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
+          {%- assign title_words = product.title | split: ' ' -%}
+          {%- for word in title_words -%}
+            <div class="overflow-hidden"><span class="inline-block">{{ word }}</span></div>
+          {%- endfor -%}
+        </h1>
 
         {%- comment -%} Price {%- endcomment -%}
         <div class="mt-3 product-intro__price" id="product-price">
-          <p class="text-3xl tracking-tight text-gray-900" data-product-price>{{ current_variant.price | money }}</p>
+          <p class="text-3xl tracking-tight text-gray-900 overflow-hidden" data-product-price>
+            <span class="inline-block">{{ current_variant.price | money }}</span>
+          </p>
           {% if current_variant.compare_at_price > current_variant.price %}
-            <p class="mt-1 text-sm text-gray-500 line-through" data-compare-price>{{ current_variant.compare_at_price | money }}</p>
+            <p class="mt-1 text-sm text-gray-500 line-through overflow-hidden" data-compare-price>
+              <span class="inline-block">{{ current_variant.compare_at_price | money }}</span>
+            </p>
           {% endif %}
         </div>
 
         {%- comment -%} Description {%- endcomment -%}
         <div class="mt-6 product-intro__description">
           <div class="prose prose-sm text-gray-600">
-            {{ product.description }}
+            {%- assign desc_words = product.description | strip_html | split: ' ' -%}
+            {%- for word in desc_words -%}
+              <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+            {%- endfor -%}
           </div>
         </div>
 
@@ -196,20 +202,12 @@
 <script>
   /**
    * Product Intro Animation
-   * Matches the creative-collection-2 preview transitions for consistency
-   * Only runs on direct page load (not when loaded via Sections API in cc2 preview)
+   * Split text reveal effect with GSAP
    */
   (function() {
     const section = document.querySelector('[data-product-intro]');
     if (!section) return;
     if (section.dataset.introInitialized) return;
-
-    // Skip animation if we're inside the cc2-preview container
-    // (cc2 handles its own animations for fetched content)
-    if (section.closest('.cc2-preview')) {
-      section.classList.add('product-intro--animated');
-      return;
-    }
 
     section.dataset.introInitialized = 'true';
 
@@ -227,12 +225,12 @@
       }
 
       const images = section.querySelectorAll('.product-intro__image');
-      const title = section.querySelector('.product-intro__title');
-      const price = section.querySelector('.product-intro__price');
-      const description = section.querySelector('.product-intro__description');
+      const titleSpans = section.querySelectorAll('.product-intro__title .overflow-hidden span');
+      const priceSpans = section.querySelectorAll('.product-intro__price .overflow-hidden span');
+      const descSpans = section.querySelectorAll('.product-intro__description .overflow-hidden span');
       const form = section.querySelector('.product-intro__form');
 
-      // Create timeline matching creative-collection-2 preview animations
+      // Create timeline
       const tl = gsap.timeline({
         onComplete: () => section.classList.add('product-intro--animated')
       });
@@ -240,7 +238,7 @@
       // Small delay to ensure page is ready
       tl.addLabel('start', 0.1);
 
-      // Animate images with clip-path reveal (same as preview)
+      // Animate images with clip-path reveal
       if (images.length) {
         tl.to(images, {
           clipPath: 'inset(0 0% 0 0)',
@@ -251,34 +249,37 @@
         }, 'start');
       }
 
-      // Animate title
-      if (title) {
-        tl.to(title, {
-          y: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'expo.out'
+      // Split text reveal for title - using yPercent
+      if (titleSpans.length) {
+        gsap.set(titleSpans, { yPercent: 100 });
+        tl.to(titleSpans, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.1
         }, 'start+=0.2');
       }
 
-      // Animate price
-      if (price) {
-        tl.to(price, {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, 'start+=0.3');
+      // Split text reveal for price
+      if (priceSpans.length) {
+        gsap.set(priceSpans, { yPercent: 100 });
+        tl.to(priceSpans, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.05
+        }, 'start+=0.4');
       }
 
-      // Animate description
-      if (description) {
-        tl.to(description, {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, 'start+=0.4');
+      // Split text reveal for description
+      if (descSpans.length) {
+        gsap.set(descSpans, { yPercent: 100 });
+        tl.to(descSpans, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.01
+        }, 'start+=0.5');
       }
 
       // Animate form
@@ -287,8 +288,8 @@
           y: 0,
           opacity: 1,
           duration: 0.6,
-          ease: 'power2.out'
-        }, 'start+=0.5');
+          ease: 'power3.out'
+        }, 'start+=0.7');
       }
     }
 
@@ -303,7 +304,7 @@
     window.addEventListener('swup:contentReplaced', () => {
       // Reset and re-run animation for new content
       const newSection = document.querySelector('[data-product-intro]');
-      if (newSection && !newSection.dataset.introInitialized && !newSection.closest('.cc2-preview')) {
+      if (newSection && !newSection.dataset.introInitialized) {
         newSection.dataset.introInitialized = 'true';
         runIntroAnimation();
       }

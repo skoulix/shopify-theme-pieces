@@ -9,132 +9,28 @@
     --collection-color-bg: #fff;
   }
 
-  /* Overflow hidden utility */
-  .collection-oh {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .collection-oh__inner {
-    display: inline-block;
-    will-change: transform;
-  }
-
-  /* Main wrapper */
-  .collection-wrapper {
-    position: relative;
-    min-height: 100vh;
-    background: var(--collection-color-bg);
-  }
-
-  /* Header */
-  .collection-header {
-    padding: 4rem 2rem 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
-  }
-
-  .collection-header__title {
-    font-size: clamp(2rem, 4vw, 3rem);
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  .collection-header__description {
-    margin-top: 1rem;
-    font-size: 1rem;
-    color: #666;
-    max-width: 600px;
-  }
-
-  /* Content Grid */
+  /* Content Grid - CSS Grid with custom properties */
   .collection-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
     gap: 2rem;
-    padding: 2rem;
-    max-width: 1400px;
-    margin: 0 auto;
+  }
+
+  @media (min-width: 768px) {
+    .collection-grid {
+      grid-template-columns: repeat(var(--columns-tablet, 2), 1fr);
+    }
   }
 
   @media (min-width: 1024px) {
     .collection-grid {
-      grid-template-columns: repeat(3, 1fr);
+      grid-template-columns: repeat(var(--columns-desktop, 3), 1fr);
     }
-  }
-
-  @media (max-width: 768px) {
-    .collection-grid {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-      padding: 1rem;
-    }
-
-    .collection-header {
-      padding: 2rem 1rem 1rem;
-    }
-  }
-
-  /* Content Item */
-  .collection-item {
-    cursor: pointer;
-    position: relative;
-  }
-
-  .collection-item__imgwrap {
-    position: relative;
-    overflow: hidden;
-    aspect-ratio: 3/4;
-    will-change: transform;
-    background: #f0f0f0;
-  }
-
-  .collection-item__img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    will-change: transform;
-  }
-
-  .collection-item__title {
-    margin-top: 1rem;
-    font-size: clamp(1rem, 1.5vw, 1.25rem);
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.02em;
-  }
-
-  .collection-item__title .collection-oh__inner {
-    will-change: transform, opacity;
-    display: inline-block;
-  }
-
-  .collection-item__meta {
-    margin-top: 0.5rem;
-    font-size: 0.875rem;
-    color: #666;
   }
 
   /* Loading state - initial hidden state for reveal */
   .collection-wrapper.is-loading .collection-item__imgwrap {
     clip-path: inset(0 100% 0 0);
-  }
-
-  .collection-wrapper.is-loading .collection-item__title .collection-oh__inner {
-    transform: translateY(100%);
-    opacity: 0;
-  }
-
-  .collection-wrapper.is-loading .collection-item__meta {
-    transform: translateY(20px);
-    opacity: 0;
-  }
-
-  .collection-wrapper.is-loading .collection-header__title,
-  .collection-wrapper.is-loading .collection-header__description {
-    opacity: 0;
-    transform: translateY(20px);
   }
 
   /* Transitioning state - prevent interactions and lock scroll */
@@ -151,109 +47,85 @@
     overflow: hidden !important;
     padding-right: var(--scrollbar-width, 0px);
   }
-
-  /* Pagination */
-  .collection-pagination {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    padding: 2rem;
-  }
-
-  .collection-pagination a,
-  .collection-pagination span {
-    padding: 0.5rem 1rem;
-    font-size: 0.875rem;
-    border-radius: 0.25rem;
-  }
-
-  .collection-pagination a {
-    background: #fff;
-    border: 1px solid #e5e5e5;
-    color: #000;
-    text-decoration: none;
-    transition: background 0.2s;
-  }
-
-  .collection-pagination a:hover {
-    background: #f5f5f5;
-  }
-
-  .collection-pagination__current {
-    background: #000;
-    color: #fff;
-  }
 </style>
 
-<div class="collection-wrapper is-loading" data-collection-wrapper>
+<div class="collection-wrapper is-loading min-h-screen bg-white" data-collection-wrapper style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};">
   {%- comment -%} Header {%- endcomment -%}
-  <header class="collection-header">
-    <h1 class="collection-header__title">{{ collection.title }}</h1>
+  <header class="collection-header max-w-7xl mx-auto pt-16 pb-8 px-4 md:px-8">
+    <h1 class="collection-header__title text-4xl md:text-5xl lg:text-6xl font-bold uppercase tracking-tight">
+      {%- assign title_words = collection.title | split: ' ' -%}
+      {%- for word in title_words -%}
+        <div class="overflow-hidden"><span class="inline-block">{{ word }}</span></div>
+      {%- endfor -%}
+    </h1>
     {% if collection.description != blank %}
-      <p class="collection-header__description">{{ collection.description }}</p>
+      <div class="collection-header__description mt-4 text-base text-gray-600 max-w-xl">
+        {%- assign desc_words = collection.description | strip_html | split: ' ' -%}
+        {%- for word in desc_words -%}
+          <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+        {%- endfor -%}
+      </div>
     {% endif %}
   </header>
 
   {%- comment -%} Product Grid {%- endcomment -%}
-  <div class="collection-grid" data-collection-grid>
+  <div class="collection-grid max-w-7xl mx-auto px-4 md:px-8 pb-16" data-collection-grid>
     {% paginate collection.products by section.settings.products_per_page %}
       {% for product in collection.products %}
         <article
-          class="collection-item"
+          class="collection-item cursor-pointer"
           data-collection-item="{{ forloop.index0 }}"
           data-product-url="{{ product.url }}"
-          style="--item-index: {{ forloop.index0 }}"
         >
-          <div class="collection-item__imgwrap">
+          <div class="collection-item__imgwrap relative overflow-hidden aspect-[3/4] bg-gray-100">
             {% if product.featured_image %}
               {{ product.featured_image | image_url: width: 1200 | image_tag:
-                class: 'collection-item__img',
+                class: 'w-full h-full object-cover',
                 loading: 'lazy',
                 sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
                 widths: '400, 600, 800, 1200',
                 alt: product.title
               }}
             {% else %}
-              <div class="collection-item__img" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
-                <i class="ph ph-image" style="font-size: 3rem; color: #ccc;"></i>
+              <div class="w-full h-full flex items-center justify-center bg-gray-100">
+                <i class="ph ph-image text-5xl text-gray-300"></i>
               </div>
             {% endif %}
           </div>
-          <h3 class="collection-item__title">
-            {% assign title_words = product.title | split: ' ' %}
-            {% for word in title_words %}
-              <span class="collection-oh"><span class="collection-oh__inner">{{ word }}{% unless forloop.last %}&nbsp;{% endunless %}</span></span>
-            {% endfor %}
+          <h3 class="collection-item__title mt-3 text-xs md:text-sm font-semibold uppercase tracking-wide">
+            {%- assign title_words = product.title | split: ' ' -%}
+            {%- for word in title_words -%}
+              <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+            {%- endfor -%}
           </h3>
-          <div class="collection-item__meta">
-            {{ product.price | money }}
+          <div class="collection-item__meta mt-2 text-sm text-gray-600 overflow-hidden">
+            <span class="inline-block">{{ product.price | money }}</span>
           </div>
         </article>
       {% endfor %}
 
       {% if paginate.pages > 1 %}
-        <nav class="collection-pagination" style="grid-column: 1 / -1;">
+        <nav class="flex items-center justify-center gap-2 py-8" style="grid-column: 1 / -1;">
           {% if paginate.previous %}
-            <a href="{{ paginate.previous.url }}" data-no-swup>
+            <a href="{{ paginate.previous.url }}" data-no-swup class="px-4 py-2 text-sm border border-gray-200 rounded hover:bg-gray-50 transition-colors">
               <i class="ph ph-arrow-left"></i>
             </a>
           {% endif %}
 
           {% for part in paginate.parts %}
             {% if part.is_link %}
-              <a href="{{ part.url }}" data-no-swup>{{ part.title }}</a>
+              <a href="{{ part.url }}" data-no-swup class="px-4 py-2 text-sm border border-gray-200 rounded hover:bg-gray-50 transition-colors">{{ part.title }}</a>
             {% else %}
               {% if part.title == paginate.current_page %}
-                <span class="collection-pagination__current">{{ part.title }}</span>
+                <span class="px-4 py-2 text-sm bg-black text-white rounded">{{ part.title }}</span>
               {% else %}
-                <span>{{ part.title }}</span>
+                <span class="px-4 py-2 text-sm">{{ part.title }}</span>
               {% endif %}
             {% endif %}
           {% endfor %}
 
           {% if paginate.next %}
-            <a href="{{ paginate.next.url }}" data-no-swup>
+            <a href="{{ paginate.next.url }}" data-no-swup class="px-4 py-2 text-sm border border-gray-200 rounded hover:bg-gray-50 transition-colors">
               <i class="ph ph-arrow-right"></i>
             </a>
           {% endif %}
@@ -280,9 +152,6 @@
       }
     }
 
-    const header = wrapper.querySelector('.collection-header');
-    const headerTitle = wrapper.querySelector('.collection-header__title');
-    const headerDesc = wrapper.querySelector('.collection-header__description');
     const contentItems = wrapper.querySelectorAll('[data-collection-item]');
     let isAnimating = false;
 
@@ -294,32 +163,37 @@
         }
       });
 
-      // Animate header first
-      if (headerTitle) {
-        tl.to(headerTitle, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power2.out'
+      // Split text reveal for header title
+      const headerTitleSpans = wrapper.querySelectorAll('.collection-header__title .overflow-hidden span');
+      if (headerTitleSpans.length) {
+        gsap.set(headerTitleSpans, { yPercent: 100 });
+        tl.to(headerTitleSpans, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.1
         }, 0);
       }
 
-      if (headerDesc) {
-        tl.to(headerDesc, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, 0.1);
+      // Split text reveal for header description
+      const headerDescSpans = wrapper.querySelectorAll('.collection-header__description .overflow-hidden span');
+      if (headerDescSpans.length) {
+        gsap.set(headerDescSpans, { yPercent: 100 });
+        tl.to(headerDescSpans, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.01
+        }, 0.2);
       }
 
       // Animate each item with stagger
       contentItems.forEach((item, index) => {
         const imgWrap = item.querySelector('.collection-item__imgwrap');
-        const titleInners = item.querySelectorAll('.collection-item__title .collection-oh__inner');
-        const meta = item.querySelector('.collection-item__meta');
+        const titleSpans = item.querySelectorAll('.collection-item__title .overflow-hidden span');
+        const priceSpan = item.querySelector('.collection-item__meta span');
 
-        const delay = 0.2 + index * 0.1;
+        const delay = 0.3 + index * 0.08;
 
         // Horizontal reveal - clip from left to right
         tl.to(imgWrap, {
@@ -328,22 +202,26 @@
           ease: 'power3.out'
         }, delay);
 
-        // Slide up and fade in title words
-        tl.to(titleInners, {
-          y: 0,
-          opacity: 1,
-          stagger: 0.04,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, delay + 0.3);
+        // Split text reveal for title words
+        if (titleSpans.length) {
+          gsap.set(titleSpans, { yPercent: 100 });
+          tl.to(titleSpans, {
+            yPercent: 0,
+            duration: 0.8,
+            ease: 'power4.out',
+            stagger: 0.05
+          }, delay + 0.2);
+        }
 
-        // Slide up and fade in meta
-        tl.to(meta, {
-          y: 0,
-          opacity: 1,
-          duration: 0.5,
-          ease: 'power2.out'
-        }, delay + 0.4);
+        // Split text reveal for price
+        if (priceSpan) {
+          gsap.set(priceSpan, { yPercent: 100 });
+          tl.to(priceSpan, {
+            yPercent: 0,
+            duration: 0.6,
+            ease: 'power4.out'
+          }, delay + 0.3);
+        }
       });
     }
 
@@ -362,7 +240,7 @@
     // Hover effects - simple and subtle
     contentItems.forEach((item) => {
       const imgWrap = item.querySelector('.collection-item__imgwrap');
-      const img = item.querySelector('.collection-item__img');
+      const img = item.querySelector('.collection-item__imgwrap img');
 
       item.addEventListener('mouseenter', () => {
         if (isAnimating) return;
@@ -373,11 +251,13 @@
           ease: 'power2.out'
         });
 
-        gsap.to(img, {
-          scale: 1.08,
-          duration: 0.5,
-          ease: 'power2.out'
-        });
+        if (img) {
+          gsap.to(img, {
+            scale: 1.08,
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+        }
       });
 
       item.addEventListener('mouseleave', () => {
@@ -389,11 +269,13 @@
           ease: 'power2.out'
         });
 
-        gsap.to(img, {
-          scale: 1,
-          duration: 0.5,
-          ease: 'power2.out'
-        });
+        if (img) {
+          gsap.to(img, {
+            scale: 1,
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+        }
       });
     });
 
@@ -422,48 +304,60 @@
         }
       });
 
+      // Animate out header title with split text
+      const headerTitleSpans = wrapper.querySelectorAll('.collection-header__title .overflow-hidden span');
+      tl.to(headerTitleSpans, {
+        yPercent: -100,
+        duration: 0.5,
+        ease: 'power4.in',
+        stagger: 0.02
+      }, 0);
+
+      // Animate out header description with split text
+      const headerDescSpans = wrapper.querySelectorAll('.collection-header__description .overflow-hidden span');
+      if (headerDescSpans.length) {
+        tl.to(headerDescSpans, {
+          yPercent: -100,
+          duration: 0.4,
+          ease: 'power4.in',
+          stagger: 0.005
+        }, 0);
+      }
+
       // Animate all items out
       contentItems.forEach((item, index) => {
         const imgWrap = item.querySelector('.collection-item__imgwrap');
-        const titleInners = item.querySelectorAll('.collection-item__title .collection-oh__inner');
-        const meta = item.querySelector('.collection-item__meta');
+        const titleSpans = item.querySelectorAll('.collection-item__title .overflow-hidden span');
+        const priceSpan = item.querySelector('.collection-item__meta span');
 
         // Stagger based on distance from clicked item
         const distance = Math.abs(index - clickedIndex);
-        const delay = distance * 0.06;
+        const delay = distance * 0.04;
 
-        // Slide up and fade out title words
-        tl.to(titleInners, {
-          y: -30,
-          opacity: 0,
+        // Split text reveal out for title words
+        tl.to(titleSpans, {
+          yPercent: -100,
           stagger: 0.02,
           duration: 0.4,
-          ease: 'power2.in'
+          ease: 'power4.in'
         }, delay);
 
-        // Slide up and fade out meta
-        tl.to(meta, {
-          y: -20,
-          opacity: 0,
-          duration: 0.3,
-          ease: 'power2.in'
-        }, delay);
+        // Split text reveal out for price
+        if (priceSpan) {
+          tl.to(priceSpan, {
+            yPercent: -100,
+            duration: 0.3,
+            ease: 'power4.in'
+          }, delay);
+        }
 
         // Horizontal swipe - clip from right to left
         tl.to(imgWrap, {
           clipPath: 'inset(0 0 0 100%)',
-          duration: 0.7,
+          duration: 0.6,
           ease: 'power3.inOut'
-        }, delay + 0.1);
+        }, delay + 0.05);
       });
-
-      // Fade out header
-      tl.to([headerTitle, headerDesc], {
-        opacity: 0,
-        y: -20,
-        duration: 0.4,
-        ease: 'power2.in'
-      }, 0);
     }
 
     // Attach click handlers
@@ -509,20 +403,27 @@
       "label": "Columns on tablet"
     },
     {
-      "type": "range",
+      "type": "select",
       "id": "columns_mobile",
-      "min": 1,
-      "max": 2,
-      "step": 1,
-      "default": 1,
-      "label": "Columns on mobile"
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
     },
     {
       "type": "range",
       "id": "products_per_page",
-      "min": 6,
+      "min": 4,
       "max": 24,
-      "step": 3,
+      "step": 1,
       "default": 12,
       "label": "Products per page"
     }
