@@ -19,12 +19,6 @@
 -%}
 
 <style>
-  .cc1-gallery_image:nth-child(odd) {
-    transform: translateY(30%);
-  }
-  .cc1-gallery_image:nth-child(even) {
-    transform: translateY(-30%);
-  }
   .cc1-line, .cc1-word, .cc1-line-wrap, .cc1-char-wrap {
     overflow: hidden;
   }
@@ -125,32 +119,27 @@
     box-sizing: border-box;
   }
   .cc1-gallery {
-    gap: 7.5vw;
-    flex-flow: row;
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    display: flex;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
   }
   .cc1-gallery_image {
     aspect-ratio: 1;
     cursor: pointer;
-    height: 45vh;
+    overflow: hidden;
   }
   .cc1-section-wrapper {
     position: relative;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
+    min-height: 100vh;
   }
   .cc1-scroll-wrapper {
-    position: absolute;
+    position: relative;
     z-index: 1;
     width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    overflow: hidden;
   }
   .cc1-content_text-right {
     gap: 0.5rem;
@@ -207,14 +196,8 @@
     text-transform: uppercase;
   }
   .cc1-scroll-content {
-    flex-flow: row;
-    justify-content: flex-start;
-    align-items: center;
-    width: fit-content;
-    height: 100%;
-    padding-left: 35vw;
-    padding-right: 35vw;
-    display: flex;
+    width: 100%;
+    padding: 4rem 0;
   }
   .cc1-image_container {
     width: 100%;
@@ -267,13 +250,14 @@
     }
   }
   @media screen and (max-width: 767px) {
-    .cc1-content_wrapper {
-      width: 75vw;
-      max-height: 65vh;
+    .cc1-gallery {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem;
     }
-    .cc1-gallery_image {
-      width: 50vw;
-      height: auto;
+    .cc1-content_wrapper {
+      width: 85vw;
+      max-height: 65vh;
     }
     .cc1-content_text-right,
     .cc1-content_text-left {
@@ -299,7 +283,11 @@
   <section class="cc1-scroll-content" data-cc1-scroll="content">
     <div class="cc1-gallery">
       {% for product in collection.products limit: section.settings.products_to_show %}
-        <div class="cc1-gallery_image" data-cc1-gallery="image-wrapper" data-product-url="{{ product.url }}">
+        <div
+          class="cc1-gallery_image"
+          data-cc1-gallery="image-wrapper"
+          data-product-url="{{ product.url }}"
+        >
           <div class="cc1-image_container" data-cc1-gallery="image">
             {% if product.featured_image %}
               {{ product.featured_image | image_url: width: 1200 | image_tag:
@@ -392,28 +380,6 @@
       gsap.registerPlugin(Flip);
     }
 
-    // Initialize horizontal Lenis for this section
-    let horizontalLenis = null;
-
-    if (typeof Lenis !== 'undefined') {
-      horizontalLenis = new Lenis({
-        wrapper: scrollWrapper,
-        content: document.querySelector('[data-cc1-scroll="content"]'),
-        orientation: 'horizontal',
-        lerp: 0.05,
-        wheelMultiplier: 0.85,
-        smoothWheel: true,
-        smoothTouch: true,
-        touchMultiplier: 2,
-      });
-
-      function raf(time) {
-        horizontalLenis.raf(time);
-        requestAnimationFrame(raf);
-      }
-      requestAnimationFrame(raf);
-    }
-
     const galleryImagesWrapper = document.querySelectorAll('[data-cc1-gallery="image-wrapper"]');
     const galleryImages = document.querySelectorAll('[data-cc1-gallery="image"]');
     const sectionContent = document.querySelector('[data-cc1-content="section"]');
@@ -435,6 +401,50 @@
     scrollWrapper.classList.remove('cc1-is-hidden');
     contents.forEach(content => content.classList.add('cc1-is-hidden'));
     contentWrapperImages.forEach(image => image.remove());
+
+    // Scroll-triggered reveal animations for gallery items
+    function initScrollAnimations() {
+      galleryImagesWrapper.forEach((wrapper, index) => {
+        // Set initial state
+        gsap.set(wrapper, { opacity: 0, y: 60 });
+
+        // Create scroll trigger for each item
+        gsap.to(wrapper, {
+          opacity: 1,
+          y: 0,
+          duration: 0.8,
+          ease: 'power2.out',
+          scrollTrigger: {
+            trigger: wrapper,
+            start: 'top 85%',
+            toggleActions: 'play none none none'
+          }
+        });
+
+        // Subtle parallax on images
+        const img = wrapper.querySelector('img');
+        if (img) {
+          gsap.to(img, {
+            yPercent: -10,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: wrapper,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: 0.5
+            }
+          });
+        }
+      });
+    }
+
+    // Wait for ScrollTrigger
+    if (typeof ScrollTrigger !== 'undefined') {
+      initScrollAnimations();
+    } else if (window.pieces && window.pieces.ScrollTrigger) {
+      gsap.registerPlugin(window.pieces.ScrollTrigger);
+      initScrollAnimations();
+    }
 
     // Cursor movement
     function updateCursor() {
@@ -462,6 +472,13 @@
       // Get product URL for this item
       const productUrl = contents[index].getAttribute('data-product-url');
 
+      // Set initial clipPath state for other images
+      const otherImages = Array.from(galleryImagesWrapper).filter((_, i) => i !== index);
+      gsap.set(otherImages, { clipPath: 'inset(0% 0 0 0)' });
+
+      // Start with transparent background so clip effect on gallery is visible
+      gsap.set(sectionContent, { backgroundColor: 'transparent' });
+
       const tl = gsap.timeline({
         duration: 1.25,
         ease: 'power4.inOut',
@@ -471,9 +488,10 @@
         onComplete: () => {
           isAnimating = false;
           currentOpenIndex = index;
-          if (horizontalLenis) horizontalLenis.stop();
           scrollWrapper.classList.add('cc1-is-hidden');
           cursor.classList.add('is-open');
+          // Set background to white after transition
+          gsap.set(sectionContent, { backgroundColor: '#fff' });
 
           // Delay URL update to happen after transition settles
           setTimeout(() => {
@@ -495,13 +513,23 @@
         });
       }, 0)
       .to(
-        Array.from(galleryImagesWrapper).filter((_, i) => i !== index),
+        otherImages,
         {
           clipPath: 'inset(100% 0 0 0)',
           duration: 0.75,
           ease: 'power3.inOut',
         },
         0
+      )
+      // Fade in white background after clip effect completes
+      .to(
+        sectionContent,
+        {
+          backgroundColor: '#fff',
+          duration: 0.3,
+          ease: 'power2.out',
+        },
+        0.6
       )
       .fromTo(
         contents[index].querySelectorAll('.cc1-title-big'),
@@ -523,7 +551,6 @@
       isAnimating = true;
 
       const currentWrapper = contentWrappers[index];
-      if (horizontalLenis) horizontalLenis.start();
       scrollWrapper.classList.remove('cc1-is-hidden');
 
       const tl = gsap.timeline({
@@ -640,9 +667,6 @@
 
     // Cleanup on Swup navigation
     window.addEventListener('swup:contentReplaced', () => {
-      if (horizontalLenis) {
-        horizontalLenis.destroy();
-      }
       if (rafId) cancelAnimationFrame(rafId);
       window.removeEventListener('popstate', handlePopState);
     });
