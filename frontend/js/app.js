@@ -9,6 +9,8 @@
 
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { Flip } from 'gsap/Flip';
+import Lenis from 'lenis';
 
 // Import styles
 import '../css/app.css';
@@ -19,7 +21,12 @@ import { swupManager } from './managers/SwupManager.js';
 import { animationManager } from './managers/AnimationManager.js';
 
 // Register GSAP plugins
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, Flip);
+
+// Expose globally for section scripts
+window.gsap = gsap;
+window.Flip = Flip;
+window.Lenis = Lenis;
 
 /**
  * Initialize all reveal animations
@@ -107,6 +114,8 @@ function init() {
     animation: animationManager,
     gsap,
     ScrollTrigger,
+    Flip,
+    Lenis,
   };
 
   console.log('Pieces theme initialized');

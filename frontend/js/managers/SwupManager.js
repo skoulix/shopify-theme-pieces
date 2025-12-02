@@ -3,6 +3,7 @@ import SwupJsPlugin from '@swup/js-plugin';
 import SwupHeadPlugin from '@swup/head-plugin';
 import SwupPreloadPlugin from '@swup/preload-plugin';
 import SwupBodyClassPlugin from '@swup/body-class-plugin';
+import SwupScriptsPlugin from '@swup/scripts-plugin';
 import { gsap } from 'gsap';
 import { lenisManager } from './LenisManager.js';
 
@@ -52,6 +53,10 @@ class SwupManager {
           preloadVisibleLinks: true,
         }),
         new SwupBodyClassPlugin(),
+        new SwupScriptsPlugin({
+          head: false,
+          body: true,
+        }),
       ],
     });
 
@@ -226,6 +231,27 @@ class SwupManager {
     } else {
       window.location.href = url;
     }
+  }
+
+  /**
+   * Update URL without triggering page navigation
+   * Useful for modal/overlay states that should be shareable
+   * @param {string} url - URL to show in address bar
+   * @param {boolean} replace - If true, replaces current history entry instead of pushing
+   */
+  updateUrl(url, replace = false) {
+    if (replace) {
+      window.history.replaceState({ swupPreview: true }, '', url);
+    } else {
+      window.history.pushState({ swupPreview: true }, '', url);
+    }
+  }
+
+  /**
+   * Go back in history (restore previous URL)
+   */
+  goBack() {
+    window.history.back();
   }
 
   /**
