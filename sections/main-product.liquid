@@ -1,11 +1,11 @@
 {%- comment -%}
-  Main Product Section - Tailwind Version
-  Modern, minimal product page design
+  Main Product Section - Tailwind UI Design
+  Modern product page with tab-based gallery and accordion details
 {%- endcomment -%}
 
 <product-info
   id="MainProduct-{{ section.id }}"
-  class="py-8 lg:py-12"
+  class="bg-white"
   data-section="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-update-url="true"
@@ -38,8 +38,8 @@
 
   {% assign variant_images = product.images | where: 'attached_to_variant?', true | map: 'src' %}
 
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-1 {% if product.media.size > 0 %}lg:grid-cols-2{% endif %} gap-8 lg:gap-12 {% if section.settings.media_position == 'right' %}lg:flex-row-reverse{% endif %}">
+  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:max-w-7xl lg:px-8">
+    <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-8">
 
       {%- comment -%} Product Media Gallery {%- endcomment -%}
       {%- if product.media.size > 0 -%}
@@ -49,10 +49,10 @@
       {%- endif -%}
 
       {%- comment -%} Product Info {%- endcomment -%}
-      <div class="{% if section.settings.media_position == 'right' %}lg:order-1{% endif %}">
+      <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:mt-0 {% if section.settings.media_position == 'right' %}lg:order-1{% endif %}">
         <section
           id="ProductInfo-{{ section.id }}"
-          class="{% if section.settings.enable_sticky_info %}lg:sticky lg:top-24{% endif %} space-y-6"
+          class="{% if section.settings.enable_sticky_info %}lg:sticky lg:top-24{% endif %}"
         >
           {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
@@ -66,7 +66,7 @@
 
               {%- when 'text' -%}
                 <p
-                  class="{% if block.settings.text_style == 'uppercase' %}text-xs uppercase tracking-wider text-neutral-500{% elsif block.settings.text_style == 'subtitle' %}text-lg text-neutral-600{% else %}text-base text-neutral-700{% endif %}"
+                  class="{% if block.settings.text_style == 'uppercase' %}text-xs uppercase tracking-wider text-gray-500{% elsif block.settings.text_style == 'subtitle' %}text-lg text-gray-600{% else %}text-base text-gray-700{% endif %}"
                   {{ block.shopify_attributes }}
                 >
                   {{- block.settings.text -}}
@@ -75,12 +75,12 @@
               {%- when 'title' -%}
                 <div {{ block.shopify_attributes }}>
                   {%- if request.page_type == 'product' -%}
-                    <h1 class="text-2xl lg:text-3xl font-semibold text-neutral-900 leading-tight">
+                    <h1 class="text-3xl font-bold tracking-tight text-gray-900">
                       {{ product.title | escape }}
                     </h1>
                   {%- else -%}
                     <a href="{{ product.url }}" class="block">
-                      <h2 class="text-2xl lg:text-3xl font-semibold text-neutral-900 leading-tight hover:text-neutral-600 transition-colors">
+                      <h2 class="text-3xl font-bold tracking-tight text-gray-900 hover:text-gray-600 transition-colors">
                         {{ product.title | escape }}
                       </h2>
                     </a>
@@ -88,21 +88,22 @@
                 </div>
 
               {%- when 'price' -%}
-                <div id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                <div class="mt-3" id="price-{{ section.id }}" role="status" {{ block.shopify_attributes }}>
+                  <h2 class="sr-only">{{ 'products.product.price.regular_price' | t }}</h2>
                   {%- render 'price',
                     product: product,
                     use_variant: true,
                     show_badges: true,
-                    price_class: 'text-xl font-semibold'
+                    price_class: 'text-3xl tracking-tight text-gray-900'
                   -%}
                 </div>
                 {%- if product.quantity_price_breaks_configured? -%}
-                  <p class="text-sm text-neutral-500" id="Volume-Note-{{ section.id }}">
+                  <p class="mt-1 text-sm text-gray-500" id="Volume-Note-{{ section.id }}">
                     {{ 'products.product.volume_pricing.note' | t }}
                   </p>
                 {%- endif -%}
                 {%- if cart.taxes_included or cart.duties_included or shop.shipping_policy.body != blank -%}
-                  <p class="text-xs text-neutral-500">
+                  <p class="mt-1 text-xs text-gray-500">
                     {%- if cart.duties_included and cart.taxes_included -%}
                       {{ 'products.product.duties_and_taxes_included' | t }}
                     {%- elsif cart.taxes_included -%}
@@ -173,8 +174,11 @@
 
               {%- when 'description' -%}
                 {%- if product.description != blank -%}
-                  <div class="prose prose-neutral prose-sm max-w-none quick-add-hidden" {{ block.shopify_attributes }}>
-                    {{ product.description }}
+                  <div class="mt-6 quick-add-hidden" {{ block.shopify_attributes }}>
+                    <h3 class="sr-only">{{ 'products.product.description' | t }}</h3>
+                    <div class="space-y-6 text-base text-gray-700">
+                      {{ product.description }}
+                    </div>
                   </div>
                 {%- endif -%}
 
@@ -195,25 +199,31 @@
                 </div>
 
               {%- when 'collapsible_tab' -%}
-                <details class="group border-t border-neutral-200 pt-4 quick-add-hidden" {{ block.shopify_attributes }}>
-                  <summary class="flex items-center justify-between cursor-pointer list-none">
-                    <div class="flex items-center gap-3">
-                      {%- if block.settings.icon != 'none' -%}
-                        {% render 'icon-accordion', icon: block.settings.icon %}
-                      {%- endif -%}
-                      <h3 class="text-sm font-medium text-neutral-900">
+                <div class="border-t border-gray-200 quick-add-hidden" {{ block.shopify_attributes }}>
+                  <details class="group" id="detail-{{ block.id }}">
+                    <summary class="group relative flex w-full items-center justify-between py-6 text-left cursor-pointer list-none">
+                      <span class="text-sm font-medium text-gray-900 group-open:text-indigo-600">
                         {{ block.settings.heading | default: block.settings.page.title | escape }}
-                      </h3>
+                      </span>
+                      <span class="ml-6 flex items-center">
+                        {%- comment -%} Plus icon (shown when closed) {%- endcomment -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 text-gray-400 group-hover:text-gray-500 group-open:hidden">
+                          <path d="M12 4.5v15m7.5-7.5h-15" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                        {%- comment -%} Minus icon (shown when open) {%- endcomment -%}
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 text-indigo-400 group-hover:text-indigo-500 hidden group-open:block">
+                          <path d="M5 12h14" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </span>
+                    </summary>
+                    <div class="pb-6">
+                      <div class="text-sm/6 text-gray-700">
+                        {{ block.settings.content }}
+                        {{ block.settings.page.content }}
+                      </div>
                     </div>
-                    <span class="transform transition-transform group-open:rotate-180">
-                      {%- render 'icon', name: 'caret-down', size: '16' -%}
-                    </span>
-                  </summary>
-                  <div class="pt-4 pb-2 prose prose-neutral prose-sm max-w-none">
-                    {{ block.settings.content }}
-                    {{ block.settings.page.content }}
-                  </div>
-                </details>
+                  </details>
+                </div>
 
               {%- when 'quantity_selector' -%}
                 <div
@@ -287,21 +297,19 @@
 
               {%- when 'rating' -%}
                 {%- if product.metafields.reviews.rating.value != blank -%}
-                  <div class="flex items-center gap-2" {{ block.shopify_attributes }}>
-                    <div class="flex text-amber-400">
-                      {%- assign rating = product.metafields.reviews.rating.value.rating | floor -%}
-                      {%- for i in (1..5) -%}
-                        {%- if i <= rating -%}
-                          {%- render 'icon', name: 'star-fill', size: '16' -%}
-                        {%- else -%}
-                          {%- render 'icon', name: 'star', size: '16' -%}
-                        {%- endif -%}
-                      {%- endfor -%}
+                  <div class="mt-3" {{ block.shopify_attributes }}>
+                    <h3 class="sr-only">{{ 'products.product.reviews' | t }}</h3>
+                    <div class="flex items-center">
+                      <div class="flex items-center">
+                        {%- assign rating = product.metafields.reviews.rating.value.rating | floor -%}
+                        {%- for i in (1..5) -%}
+                          <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="size-5 shrink-0 {% if i <= rating %}text-indigo-500{% else %}text-gray-300{% endif %}">
+                            <path d="M10.868 2.884c-.321-.772-1.415-.772-1.736 0l-1.83 4.401-4.753.381c-.833.067-1.171 1.107-.536 1.651l3.62 3.102-1.106 4.637c-.194.813.691 1.456 1.405 1.02L10 15.591l4.069 2.485c.713.436 1.598-.207 1.404-1.02l-1.106-4.637 3.62-3.102c.635-.544.297-1.584-.536-1.65l-4.752-.382-1.831-4.401Z" clip-rule="evenodd" fill-rule="evenodd" />
+                          </svg>
+                        {%- endfor -%}
+                      </div>
+                      <p class="sr-only">{{ product.metafields.reviews.rating.value }} {{ 'products.product.out_of' | t }} {{ product.metafields.reviews.rating.value.scale_max }} {{ 'products.product.stars' | t }}</p>
                     </div>
-                    <span class="text-sm text-neutral-600">
-                      {{ product.metafields.reviews.rating.value }} / {{ product.metafields.reviews.rating.value.scale_max }}
-                    </span>
-                    <span class="text-sm text-neutral-400">({{ product.metafields.reviews.rating_count }})</span>
                   </div>
                 {%- endif -%}
 

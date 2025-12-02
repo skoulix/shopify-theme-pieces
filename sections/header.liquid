@@ -1,6 +1,6 @@
 {%- comment -%}
-  Header Section - Modern Tailwind Version
-  Minimal, clean design with sticky behavior
+  Header Section - Tailwind UI Store Navigation
+  Modern navigation with announcement bar, mega menus, and slide-out mobile menu
 {%- endcomment -%}
 
 <script src="{{ 'cart-notification.js' | asset_url }}" defer="defer"></script>
@@ -12,213 +12,410 @@
   endif
 -%}
 
-<{{ header_tag }}
-  {% if header_tag == 'sticky-header' %}data-sticky-type="{{ section.settings.sticky_header_type }}"{% endif %}
-  class="section-header bg-white {% if section.settings.show_line_separator %}border-b border-neutral-200{% endif %}"
->
-  <header class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="flex items-center justify-between h-16 md:h-20">
+<div class="bg-white">
+  {%- comment -%} Mobile Menu Dialog {%- endcomment -%}
+  <div id="mobile-menu-overlay" class="fixed inset-0 z-50 hidden lg:hidden">
+    {%- comment -%} Backdrop {%- endcomment -%}
+    <div
+      class="fixed inset-0 bg-black/25 transition-opacity duration-300"
+      onclick="closeMobileMenu()"
+    ></div>
 
-      {%- comment -%} Mobile Menu Button {%- endcomment -%}
-      {%- if section.settings.menu != blank -%}
-        <button
-          type="button"
-          class="lg:hidden p-2 -ml-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-          onclick="document.getElementById('mobile-menu').classList.toggle('hidden')"
-          aria-label="{{ 'sections.header.menu' | t }}"
-        >
-          {%- render 'icon', name: 'menu', size: '24' -%}
-        </button>
-      {%- endif -%}
+    {%- comment -%} Slide-out Panel {%- endcomment -%}
+    <div class="fixed inset-0 flex">
+      <div
+        id="mobile-menu-panel"
+        class="relative flex w-full max-w-xs transform flex-col overflow-y-auto bg-white pb-12 shadow-xl transition duration-300 -translate-x-full"
+      >
+        {%- comment -%} Close Button {%- endcomment -%}
+        <div class="flex px-4 pb-2 pt-5">
+          <button
+            type="button"
+            class="relative -m-2 inline-flex items-center justify-center rounded-md p-2 text-gray-400"
+            onclick="closeMobileMenu()"
+          >
+            <span class="sr-only">{{ 'accessibility.close' | t }}</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
+              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </div>
 
-      {%- comment -%} Logo {%- endcomment -%}
-      <div class="flex-shrink-0 {% if section.settings.mobile_logo_position == 'center' %}absolute left-1/2 transform -translate-x-1/2 lg:static lg:transform-none{% endif %}">
-        {%- if request.page_type == 'index' -%}
-          <h1 class="m-0">
+        {%- comment -%} Mobile Navigation Links {%- endcomment -%}
+        {%- if section.settings.menu != blank -%}
+          <div class="mt-2 space-y-6 px-4 py-6">
+            {%- for link in section.settings.menu.links -%}
+              {%- if link.links != blank -%}
+                <details class="group">
+                  <summary class="flex items-center justify-between cursor-pointer list-none">
+                    <span class="font-medium text-gray-900">{{ link.title | escape }}</span>
+                    <svg viewBox="0 0 20 20" fill="currentColor" class="size-5 text-gray-400 transition-transform group-open:rotate-180">
+                      <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                  </summary>
+                  <ul role="list" class="mt-6 space-y-6 pl-2">
+                    {%- for childlink in link.links -%}
+                      <li class="flex">
+                        <a href="{{ childlink.url }}" class="text-gray-500 hover:text-gray-900">
+                          {{ childlink.title | escape }}
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </details>
+              {%- else -%}
+                <div class="flow-root">
+                  <a href="{{ link.url }}" class="-m-2 block p-2 font-medium text-gray-900">
+                    {{ link.title | escape }}
+                  </a>
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
         {%- endif -%}
-        <a href="{{ routes.root_url }}" class="flex items-center">
-          {%- if settings.logo != blank -%}
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
-            <img
-              src="{{ settings.logo | image_url: width: 300 }}"
-              alt="{{ logo_alt }}"
-              class="h-8 md:h-10 w-auto"
-              width="{{ settings.logo_width }}"
-              height="{{ logo_height }}"
-              loading="eager"
-            >
-          {%- else -%}
-            <span class="text-xl font-semibold text-neutral-900">{{ shop.name }}</span>
-          {%- endif -%}
-        </a>
-        {%- if request.page_type == 'index' -%}
-          </h1>
+
+        {%- comment -%} Account Links {%- endcomment -%}
+        {%- if shop.customer_accounts_enabled -%}
+          <div class="space-y-6 border-t border-gray-200 px-4 py-6">
+            {%- if customer -%}
+              <div class="flow-root">
+                <a href="{{ routes.account_url }}" class="-m-2 block p-2 font-medium text-gray-900">
+                  {{ 'customer.account_fallback' | t }}
+                </a>
+              </div>
+              <div class="flow-root">
+                <a href="{{ routes.account_logout_url }}" class="-m-2 block p-2 font-medium text-gray-900">
+                  {{ 'customer.log_out' | t }}
+                </a>
+              </div>
+            {%- else -%}
+              <div class="flow-root">
+                <a href="{{ routes.account_register_url }}" class="-m-2 block p-2 font-medium text-gray-900">
+                  {{ 'customer.register.title' | t }}
+                </a>
+              </div>
+              <div class="flow-root">
+                <a href="{{ routes.account_login_url }}" class="-m-2 block p-2 font-medium text-gray-900">
+                  {{ 'customer.log_in' | t }}
+                </a>
+              </div>
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Currency/Language Selector {%- endcomment -%}
+        {%- if localization.available_countries.size > 1 or localization.available_languages.size > 1 -%}
+          <div class="space-y-6 border-t border-gray-200 px-4 py-6">
+            {%- form 'localization', id: 'mobile-localization-form', class: 'space-y-4' -%}
+              {%- if localization.available_countries.size > 1 -%}
+                <div class="-ml-2 inline-grid grid-cols-1">
+                  <select
+                    name="country_code"
+                    aria-label="{{ 'localization.country_label' | t }}"
+                    class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-white py-2 pl-3 pr-8 text-base font-medium text-gray-700 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                    onchange="this.form.submit()"
+                  >
+                    {%- for country in localization.available_countries -%}
+                      <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                        {{ country.name }} ({{ country.currency.iso_code }} {{ country.currency.symbol }})
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                  <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-2 size-5 self-center justify-self-end fill-gray-500">
+                    <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                  </svg>
+                </div>
+              {%- endif -%}
+            {%- endform -%}
+          </div>
         {%- endif -%}
       </div>
+    </div>
+  </div>
 
-      {%- comment -%} Desktop Navigation {%- endcomment -%}
-      {%- if section.settings.menu != blank -%}
-        <nav class="hidden lg:flex items-center gap-8 ml-10">
-          {%- for link in section.settings.menu.links -%}
-            {%- if link.links != blank -%}
-              <div class="relative group">
-                <a
-                  href="{{ link.url }}"
-                  class="flex items-center gap-1 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-colors py-2"
-                >
-                  {{ link.title | escape }}
-                  {%- render 'icon', name: 'caret-down', size: '12' -%}
+  <{{ header_tag }}
+    {% if header_tag == 'sticky-header' %}data-sticky-type="{{ section.settings.sticky_header_type }}"{% endif %}
+    class="section-header relative"
+  >
+    <header>
+      <nav aria-label="{{ 'sections.header.navigation' | t }}">
+        {%- comment -%} Announcement Bar {%- endcomment -%}
+        {%- if section.settings.show_announcement -%}
+          <div class="bg-gray-900">
+            <div class="mx-auto flex h-10 max-w-7xl items-center justify-between px-4 sm:px-6 lg:px-8">
+              {%- comment -%} Currency selector (desktop) {%- endcomment -%}
+              {%- if localization.available_countries.size > 1 -%}
+                {%- form 'localization', id: 'desktop-localization-form', class: 'hidden lg:block lg:flex-1' -%}
+                  <div class="-ml-2 inline-grid grid-cols-1">
+                    <select
+                      name="country_code"
+                      aria-label="{{ 'localization.country_label' | t }}"
+                      class="col-start-1 row-start-1 w-full appearance-none rounded-md bg-gray-900 py-0.5 pl-2 pr-7 text-left text-sm font-medium text-white focus:outline focus:outline-2 focus:-outline-offset-1 focus:outline-white"
+                      onchange="this.form.submit()"
+                    >
+                      {%- for country in localization.available_countries -%}
+                        <option value="{{ country.iso_code }}" {% if country.iso_code == localization.country.iso_code %}selected{% endif %}>
+                          {{ country.currency.iso_code }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                    <svg viewBox="0 0 20 20" fill="currentColor" aria-hidden="true" class="pointer-events-none col-start-1 row-start-1 mr-1 size-5 self-center justify-self-end fill-gray-300">
+                      <path fill-rule="evenodd" d="M5.22 8.22a.75.75 0 0 1 1.06 0L10 11.94l3.72-3.72a.75.75 0 1 1 1.06 1.06l-4.25 4.25a.75.75 0 0 1-1.06 0L5.22 9.28a.75.75 0 0 1 0-1.06Z" clip-rule="evenodd" />
+                    </svg>
+                  </div>
+                {%- endform -%}
+              {%- else -%}
+                <div class="hidden lg:block lg:flex-1"></div>
+              {%- endif -%}
+
+              {%- comment -%} Announcement Text {%- endcomment -%}
+              <p class="flex-1 text-center text-sm font-medium text-white lg:flex-none">
+                {{ section.settings.announcement_text }}
+              </p>
+
+              {%- comment -%} Account Links (desktop) {%- endcomment -%}
+              {%- if shop.customer_accounts_enabled -%}
+                <div class="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6">
+                  {%- if customer -%}
+                    <a href="{{ routes.account_url }}" class="text-sm font-medium text-white hover:text-gray-100">
+                      {{ 'customer.account_fallback' | t }}
+                    </a>
+                    <span aria-hidden="true" class="h-6 w-px bg-gray-600"></span>
+                    <a href="{{ routes.account_logout_url }}" class="text-sm font-medium text-white hover:text-gray-100">
+                      {{ 'customer.log_out' | t }}
+                    </a>
+                  {%- else -%}
+                    <a href="{{ routes.account_register_url }}" class="text-sm font-medium text-white hover:text-gray-100">
+                      {{ 'customer.register.title' | t }}
+                    </a>
+                    <span aria-hidden="true" class="h-6 w-px bg-gray-600"></span>
+                    <a href="{{ routes.account_login_url }}" class="text-sm font-medium text-white hover:text-gray-100">
+                      {{ 'customer.log_in' | t }}
+                    </a>
+                  {%- endif -%}
+                </div>
+              {%- else -%}
+                <div class="hidden lg:block lg:flex-1"></div>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- comment -%} Main Navigation {%- endcomment -%}
+        <div class="bg-white {% if section.settings.show_line_separator %}border-b border-gray-200{% endif %}">
+          <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+            <div class="flex h-16 items-center justify-between">
+              {%- comment -%} Logo (desktop) {%- endcomment -%}
+              <div class="hidden lg:flex lg:items-center">
+                {%- if request.page_type == 'index' -%}<h1 class="m-0">{%- endif -%}
+                <a href="{{ routes.root_url }}">
+                  <span class="sr-only">{{ shop.name }}</span>
+                  {%- if settings.logo != blank -%}
+                    {%- assign logo_height = settings.logo_width | divided_by: settings.logo.aspect_ratio -%}
+                    <img
+                      src="{{ settings.logo | image_url: width: 300 }}"
+                      alt="{{ settings.logo.alt | default: shop.name | escape }}"
+                      class="h-8 w-auto"
+                      width="{{ settings.logo_width }}"
+                      height="{{ logo_height }}"
+                      loading="eager"
+                    >
+                  {%- else -%}
+                    <span class="text-xl font-bold text-gray-900">{{ shop.name }}</span>
+                  {%- endif -%}
                 </a>
-                <div class="absolute left-0 top-full pt-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
-                  <div class="bg-white rounded-lg shadow-lg border border-neutral-200 py-2 min-w-[200px]">
-                    {%- for childlink in link.links -%}
-                      <a
-                        href="{{ childlink.url }}"
-                        class="block px-4 py-2 text-sm text-neutral-700 hover:bg-neutral-100 hover:text-neutral-900 transition-colors"
-                      >
-                        {{ childlink.title | escape }}
-                      </a>
+                {%- if request.page_type == 'index' -%}</h1>{%- endif -%}
+              </div>
+
+              {%- comment -%} Desktop Mega Menu Navigation {%- endcomment -%}
+              {%- if section.settings.menu != blank -%}
+                <div class="hidden h-full lg:flex">
+                  <div class="flex h-full justify-center space-x-8 ml-10">
+                    {%- for link in section.settings.menu.links -%}
+                      {%- if link.links != blank -%}
+                        {%- comment -%} Mega Menu Dropdown {%- endcomment -%}
+                        <div class="group/menu flex">
+                          <div class="relative flex">
+                            <button
+                              type="button"
+                              class="relative flex items-center justify-center text-sm font-medium text-gray-700 transition-colors duration-200 ease-out hover:text-gray-800 group-hover/menu:text-indigo-600"
+                              aria-expanded="false"
+                            >
+                              {{ link.title | escape }}
+                              <span aria-hidden="true" class="absolute inset-x-0 -bottom-px z-30 h-0.5 bg-transparent transition-colors duration-200 group-hover/menu:bg-indigo-600"></span>
+                            </button>
+                          </div>
+
+                          {%- comment -%} Dropdown Panel {%- endcomment -%}
+                          <div class="absolute left-0 right-0 top-full z-50 hidden group-hover/menu:block">
+                            <div class="bg-white shadow-lg border-t border-gray-200">
+                              <div class="mx-auto max-w-7xl px-8">
+                                <div class="grid grid-cols-4 gap-x-8 gap-y-10 py-10">
+                                  {%- for childlink in link.links -%}
+                                    <div>
+                                      <p class="font-medium text-gray-900">
+                                        <a href="{{ childlink.url }}" class="hover:text-indigo-600">
+                                          {{ childlink.title | escape }}
+                                        </a>
+                                      </p>
+                                      {%- if childlink.links != blank -%}
+                                        <ul role="list" class="mt-4 space-y-4">
+                                          {%- for grandchildlink in childlink.links -%}
+                                            <li class="flex">
+                                              <a href="{{ grandchildlink.url }}" class="text-sm text-gray-500 hover:text-gray-800">
+                                                {{ grandchildlink.title | escape }}
+                                              </a>
+                                            </li>
+                                          {%- endfor -%}
+                                        </ul>
+                                      {%- endif -%}
+                                    </div>
+                                  {%- endfor -%}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {%- else -%}
+                        {%- comment -%} Simple Link {%- endcomment -%}
+                        <a
+                          href="{{ link.url }}"
+                          class="flex items-center text-sm font-medium text-gray-700 hover:text-gray-800"
+                          {% if link.current %}aria-current="page"{% endif %}
+                        >
+                          {{ link.title | escape }}
+                        </a>
+                      {%- endif -%}
                     {%- endfor -%}
                   </div>
                 </div>
-              </div>
-            {%- else -%}
-              <a
-                href="{{ link.url }}"
-                class="text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-colors"
-                {% if link.current %}aria-current="page"{% endif %}
-              >
-                {{ link.title | escape }}
-              </a>
-            {%- endif -%}
-          {%- endfor -%}
-        </nav>
-      {%- endif -%}
-
-      {%- comment -%} Right Side Icons {%- endcomment -%}
-      <div class="flex items-center gap-2 md:gap-4">
-        {%- comment -%} Search {%- endcomment -%}
-        <button
-          type="button"
-          class="p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-          onclick="document.getElementById('search-modal').classList.remove('hidden')"
-          aria-label="{{ 'general.search.search' | t }}"
-        >
-          {%- render 'icon', name: 'search', size: '22' -%}
-        </button>
-
-        {%- comment -%} Account {%- endcomment -%}
-        {%- if shop.customer_accounts_enabled -%}
-          <a
-            href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-            class="hidden sm:flex p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-            aria-label="{%- if customer -%}{{ 'customer.account_fallback' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}"
-          >
-            {%- render 'icon', name: 'user', size: '22' -%}
-          </a>
-        {%- endif -%}
-
-        {%- comment -%} Cart {%- endcomment -%}
-        <a
-          href="{{ routes.cart_url }}"
-          class="relative p-2 text-neutral-700 hover:text-neutral-900 hover:bg-neutral-100 rounded-lg transition-colors"
-          id="cart-icon-bubble"
-          aria-label="{{ 'templates.cart.cart' | t }}"
-        >
-          {%- render 'icon', name: 'shopping-bag', size: '22' -%}
-          {%- if cart != empty -%}
-            <span class="absolute -top-0.5 -right-0.5 flex items-center justify-center w-5 h-5 text-[10px] font-medium text-white bg-neutral-900 rounded-full">
-              {{ cart.item_count }}
-            </span>
-          {%- endif -%}
-        </a>
-      </div>
-
-    </div>
-  </header>
-
-  {%- comment -%} Mobile Menu {%- endcomment -%}
-  {%- if section.settings.menu != blank -%}
-    <div id="mobile-menu" class="hidden lg:hidden border-t border-neutral-200">
-      <nav class="px-4 py-4 space-y-2">
-        {%- for link in section.settings.menu.links -%}
-          {%- if link.links != blank -%}
-            <details class="group">
-              <summary class="flex items-center justify-between py-2 text-base font-medium text-neutral-900 cursor-pointer list-none">
-                {{ link.title | escape }}
-                <span class="transform transition-transform group-open:rotate-180">
-                  {%- render 'icon', name: 'caret-down', size: '16' -%}
-                </span>
-              </summary>
-              <div class="pl-4 mt-2 space-y-2">
-                {%- for childlink in link.links -%}
-                  <a
-                    href="{{ childlink.url }}"
-                    class="block py-1.5 text-sm text-neutral-600 hover:text-neutral-900 transition-colors"
-                  >
-                    {{ childlink.title | escape }}
-                  </a>
-                {%- endfor -%}
-              </div>
-            </details>
-          {%- else -%}
-            <a
-              href="{{ link.url }}"
-              class="block py-2 text-base font-medium text-neutral-900 hover:text-neutral-600 transition-colors"
-            >
-              {{ link.title | escape }}
-            </a>
-          {%- endif -%}
-        {%- endfor -%}
-
-        {%- if shop.customer_accounts_enabled -%}
-          <div class="pt-4 mt-4 border-t border-neutral-200">
-            <a
-              href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
-              class="flex items-center gap-2 py-2 text-base font-medium text-neutral-900"
-            >
-              {%- render 'icon', name: 'user', size: '20' -%}
-              {%- if customer -%}
-                {{ 'customer.account_fallback' | t }}
-              {%- else -%}
-                {{ 'customer.log_in' | t }}
               {%- endif -%}
-            </a>
-          </div>
-        {%- endif -%}
-      </nav>
-    </div>
-  {%- endif -%}
-</{{ header_tag }}>
 
-{%- comment -%} Search Modal {%- endcomment -%}
-<div id="search-modal" class="hidden fixed inset-0 z-50">
-  <div class="absolute inset-0 bg-black/50" onclick="this.parentElement.classList.add('hidden')"></div>
-  <div class="absolute top-0 left-0 right-0 bg-white shadow-lg">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
-      <form action="{{ routes.search_url }}" method="get" class="relative">
-        <input type="hidden" name="type" value="product">
-        <input
-          type="search"
-          name="q"
-          class="w-full pl-12 pr-4 py-3 text-base border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
-          placeholder="{{ 'general.search.placeholder' | t }}"
-          autocomplete="off"
-          autofocus
-        >
-        <div class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
-          {%- render 'icon', name: 'search', size: '20' -%}
+              {%- comment -%} Mobile Menu + Search (mobile) {%- endcomment -%}
+              <div class="flex flex-1 items-center lg:hidden">
+                <button
+                  type="button"
+                  class="-ml-2 rounded-md bg-white p-2 text-gray-400"
+                  onclick="openMobileMenu()"
+                  aria-label="{{ 'sections.header.menu' | t }}"
+                >
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
+                    <path d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </button>
+
+                <a href="{{ routes.search_url }}" class="ml-2 p-2 text-gray-400 hover:text-gray-500">
+                  <span class="sr-only">{{ 'general.search.search' | t }}</span>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
+                    <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                </a>
+              </div>
+
+              {%- comment -%} Logo (mobile) {%- endcomment -%}
+              <a href="{{ routes.root_url }}" class="lg:hidden">
+                <span class="sr-only">{{ shop.name }}</span>
+                {%- if settings.logo != blank -%}
+                  <img
+                    src="{{ settings.logo | image_url: width: 200 }}"
+                    alt="{{ settings.logo.alt | default: shop.name | escape }}"
+                    class="h-8 w-auto"
+                    loading="eager"
+                  >
+                {%- else -%}
+                  <span class="text-lg font-bold text-gray-900">{{ shop.name }}</span>
+                {%- endif -%}
+              </a>
+
+              {%- comment -%} Right Side Icons {%- endcomment -%}
+              <div class="flex flex-1 items-center justify-end">
+                <div class="flex items-center lg:ml-8">
+                  <div class="flex space-x-8">
+                    {%- comment -%} Search (desktop) {%- endcomment -%}
+                    <div class="hidden lg:flex">
+                      <button
+                        type="button"
+                        class="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                        onclick="document.getElementById('search-modal').classList.remove('hidden')"
+                        aria-label="{{ 'general.search.search' | t }}"
+                      >
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
+                          <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round" />
+                        </svg>
+                      </button>
+                    </div>
+
+                    {%- comment -%} Account (desktop) {%- endcomment -%}
+                    {%- if shop.customer_accounts_enabled -%}
+                      <div class="flex">
+                        <a
+                          href="{%- if customer -%}{{ routes.account_url }}{%- else -%}{{ routes.account_login_url }}{%- endif -%}"
+                          class="-m-2 p-2 text-gray-400 hover:text-gray-500"
+                          aria-label="{%- if customer -%}{{ 'customer.account_fallback' | t }}{%- else -%}{{ 'customer.log_in' | t }}{%- endif -%}"
+                        >
+                          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6">
+                            <path d="M15.75 6a3.75 3.75 0 1 1-7.5 0 3.75 3.75 0 0 1 7.5 0ZM4.501 20.118a7.5 7.5 0 0 1 14.998 0A17.933 17.933 0 0 1 12 21.75c-2.676 0-5.216-.584-7.499-1.632Z" stroke-linecap="round" stroke-linejoin="round" />
+                          </svg>
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  </div>
+
+                  <span aria-hidden="true" class="mx-4 h-6 w-px bg-gray-200 lg:mx-6"></span>
+
+                  {%- comment -%} Cart {%- endcomment -%}
+                  <div class="flow-root">
+                    <a href="{{ routes.cart_url }}" class="group -m-2 flex items-center p-2" id="cart-icon-bubble">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 shrink-0 text-gray-400 group-hover:text-gray-500">
+                        <path d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span class="ml-2 text-sm font-medium text-gray-700 group-hover:text-gray-800">
+                        {{ cart.item_count }}
+                      </span>
+                      <span class="sr-only">{{ 'templates.cart.cart' | t }}</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
         </div>
-        <button
-          type="button"
-          class="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-neutral-400 hover:text-neutral-900 transition-colors"
-          onclick="document.getElementById('search-modal').classList.add('hidden')"
-          aria-label="{{ 'accessibility.close' | t }}"
-        >
-          {%- render 'icon', name: 'close', size: '20' -%}
-        </button>
-      </form>
+      </nav>
+    </header>
+  </{{ header_tag }}>
+
+  {%- comment -%} Search Modal {%- endcomment -%}
+  <div id="search-modal" class="hidden fixed inset-0 z-50">
+    <div class="absolute inset-0 bg-black/50" onclick="this.parentElement.classList.add('hidden')"></div>
+    <div class="absolute top-0 left-0 right-0 bg-white shadow-lg">
+      <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-4">
+        <form action="{{ routes.search_url }}" method="get" class="relative">
+          <input type="hidden" name="type" value="product">
+          <input
+            type="search"
+            name="q"
+            class="w-full pl-12 pr-12 py-3 text-base border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+            placeholder="{{ 'general.search.placeholder' | t }}"
+            autocomplete="off"
+            autofocus
+          >
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5">
+              <path d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </div>
+          <button
+            type="button"
+            class="absolute right-4 top-1/2 -translate-y-1/2 p-1 text-gray-400 hover:text-gray-900 transition-colors"
+            onclick="document.getElementById('search-modal').classList.add('hidden')"
+            aria-label="{{ 'accessibility.close' | t }}"
+          >
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" class="size-5">
+              <path d="M6 18 18 6M6 6l12 12" stroke-linecap="round" stroke-linejoin="round" />
+            </svg>
+          </button>
+        </form>
+      </div>
     </div>
   </div>
 </div>
@@ -226,6 +423,29 @@
 {%- if settings.cart_type == "notification" -%}
   {%- render 'cart-notification', color_scheme: section.settings.color_scheme -%}
 {%- endif -%}
+
+<script>
+  function openMobileMenu() {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const panel = document.getElementById('mobile-menu-panel');
+    overlay.classList.remove('hidden');
+    // Trigger reflow then animate
+    requestAnimationFrame(() => {
+      panel.classList.remove('-translate-x-full');
+      panel.classList.add('translate-x-0');
+    });
+  }
+
+  function closeMobileMenu() {
+    const overlay = document.getElementById('mobile-menu-overlay');
+    const panel = document.getElementById('mobile-menu-panel');
+    panel.classList.remove('translate-x-0');
+    panel.classList.add('-translate-x-full');
+    setTimeout(() => {
+      overlay.classList.add('hidden');
+    }, 300);
+  }
+</script>
 
 {% javascript %}
   class StickyHeader extends HTMLElement {
@@ -318,6 +538,26 @@
   "class": "section-header",
   "settings": [
     {
+      "type": "header",
+      "content": "Announcement Bar"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_announcement",
+      "default": true,
+      "label": "Show announcement bar"
+    },
+    {
+      "type": "text",
+      "id": "announcement_text",
+      "default": "Get free delivery on orders over $100",
+      "label": "Announcement text"
+    },
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
       "type": "select",
       "id": "mobile_logo_position",
       "options": [
@@ -334,6 +574,10 @@
       "label": "t:sections.header.settings.mobile_logo_position.label"
     },
     {
+      "type": "header",
+      "content": "Navigation"
+    },
+    {
       "type": "link_list",
       "id": "menu",
       "default": "main-menu",
@@ -348,11 +592,15 @@
           "label": "t:sections.header.settings.menu_type_desktop.options__1.label"
         },
         {
+          "value": "mega",
+          "label": "Mega menu"
+        },
+        {
           "value": "drawer",
           "label": "t:sections.header.settings.menu_type_desktop.options__3.label"
         }
       ],
-      "default": "dropdown",
+      "default": "mega",
       "label": "t:sections.header.settings.menu_type_desktop.label"
     },
     {

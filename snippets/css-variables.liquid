@@ -1,0 +1,28 @@
+{%- comment -%}
+  CSS Variables - Minimal settings for Tailwind-based theme
+  Only includes variables that can't be handled by Tailwind config
+{%- endcomment -%}
+
+{%- comment -%} Font Loading {%- endcomment -%}
+{% style %}
+  {{ settings.type_body_font | font_face: font_display: 'swap' }}
+  {{ settings.type_body_font | font_modify: 'weight', 'bold' | font_face: font_display: 'swap' }}
+  {{ settings.type_header_font | font_face: font_display: 'swap' }}
+{% endstyle %}
+
+{%- comment -%} Preload primary font {%- endcomment -%}
+{%- unless settings.type_body_font.system? -%}
+  <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
+{%- endunless -%}
+
+<style>
+  :root {
+    /* Typography */
+    --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    --font-heading: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
+
+    /* Layout */
+    --page-max-width: {{ settings.page_width }}px;
+    --page-padding: {{ settings.page_padding }}px;
+  }
+</style>

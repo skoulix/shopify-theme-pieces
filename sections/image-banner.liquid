@@ -1,121 +1,88 @@
 {%- comment -%}
-  Image Banner Section - Tailwind Version
-  Hero banner with image background and overlaid content
+  Image Banner / Hero Section - Tailwind UI Design
+  Modern hero with gradient blur effects, centered content, and announcement pill
 {%- endcomment -%}
 
 {%- liquid
-  assign content_position = section.settings.desktop_content_position
-  assign content_alignment = section.settings.desktop_content_alignment
-  assign mobile_alignment = section.settings.mobile_content_alignment
   assign overlay_opacity = section.settings.image_overlay_opacity | divided_by: 100.0
 -%}
 
-<section class="relative w-full overflow-hidden
-  {% case section.settings.image_height %}
-    {% when 'small' %}min-h-[300px] lg:min-h-[400px]
-    {% when 'medium' %}min-h-[400px] lg:min-h-[600px]
-    {% when 'large' %}min-h-[500px] lg:min-h-[80vh]
-    {% when 'adapt' %}{% if section.settings.image != blank %}{% else %}min-h-[400px] lg:min-h-[600px]{% endif %}
-  {% endcase %}
-">
+<section class="relative isolate overflow-hidden bg-white">
   {%- comment -%} Background Image {%- endcomment -%}
-  <div class="absolute inset-0">
-    {%- if section.settings.image != blank -%}
-      {{
-        section.settings.image
-        | image_url: width: 1920
-        | image_tag:
-          class: 'w-full h-full object-cover',
-          loading: 'eager',
-          fetchpriority: 'high',
-          widths: '400, 800, 1200, 1600, 1920'
-      }}
-    {%- elsif section.settings.image_2 != blank -%}
-      {{
-        section.settings.image_2
-        | image_url: width: 1920
-        | image_tag:
-          class: 'w-full h-full object-cover',
-          loading: 'eager',
-          fetchpriority: 'high',
-          widths: '400, 800, 1200, 1600, 1920'
-      }}
-    {%- else -%}
-      <div class="w-full h-full bg-neutral-200 flex items-center justify-center">
-        {%- render 'icon', name: 'image', size: '64' -%}
-      </div>
-    {%- endif -%}
-
-    {%- comment -%} Overlay {%- endcomment -%}
-    {%- if overlay_opacity > 0 -%}
-      <div class="absolute inset-0 bg-black" style="opacity: {{ overlay_opacity }};"></div>
-    {%- endif -%}
-  </div>
-
-  {%- comment -%} Adapt height to image {%- endcomment -%}
-  {%- if section.settings.image_height == 'adapt' and section.settings.image != blank -%}
-    <div class="w-full" style="padding-bottom: {{ 1 | divided_by: section.settings.image.aspect_ratio | times: 100 }}%;"></div>
+  {%- if section.settings.image != blank -%}
+    {{
+      section.settings.image
+      | image_url: width: 2830
+      | image_tag:
+        class: 'absolute inset-0 -z-10 size-full object-cover',
+        loading: 'eager',
+        fetchpriority: 'high',
+        widths: '800, 1200, 1600, 2000, 2830',
+        style: 'opacity: 0.1;'
+    }}
+  {%- elsif section.settings.image_2 != blank -%}
+    {{
+      section.settings.image_2
+      | image_url: width: 2830
+      | image_tag:
+        class: 'absolute inset-0 -z-10 size-full object-cover',
+        loading: 'eager',
+        fetchpriority: 'high',
+        widths: '800, 1200, 1600, 2000, 2830',
+        style: 'opacity: 0.1;'
+    }}
   {%- endif -%}
 
-  {%- comment -%} Content Overlay {%- endcomment -%}
-  <div class="{% if section.settings.image_height != 'adapt' %}absolute inset-0{% endif %} flex p-6 lg:p-12
-    {% case content_position %}
-      {% when 'top-left' %}items-start justify-start
-      {% when 'top-center' %}items-start justify-center
-      {% when 'top-right' %}items-start justify-end
-      {% when 'middle-left' %}items-center justify-start
-      {% when 'middle-center' %}items-center justify-center
-      {% when 'middle-right' %}items-center justify-end
-      {% when 'bottom-left' %}items-end justify-start
-      {% when 'bottom-center' %}items-end justify-center
-      {% when 'bottom-right' %}items-end justify-end
-    {% endcase %}
-  ">
-    <div class="max-w-2xl
-      {% if section.settings.show_text_box %}bg-white/95 backdrop-blur-sm p-6 lg:p-10 rounded-xl shadow-lg{% endif %}
-      {% case content_alignment %}
-        {% when 'left' %}text-left
-        {% when 'center' %}text-center
-        {% when 'right' %}text-right
-      {% endcase %}
-      {% case mobile_alignment %}
-        {% when 'left' %}max-lg:text-left
-        {% when 'center' %}max-lg:text-center
-        {% when 'right' %}max-lg:text-right
-      {% endcase %}
-    ">
+  {%- comment -%} Optional overlay for darker images {%- endcomment -%}
+  {%- if overlay_opacity > 0 -%}
+    <div class="absolute inset-0 -z-10 bg-black" style="opacity: {{ overlay_opacity }};"></div>
+  {%- endif -%}
+
+  {%- comment -%} Top Gradient Blur Effect {%- endcomment -%}
+  <div aria-hidden="true" class="absolute inset-x-0 -top-40 -z-10 transform-gpu overflow-hidden blur-3xl sm:-top-80">
+    <div
+      style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+      class="relative left-[calc(50%-11rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 rotate-[30deg] bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%-30rem)] sm:w-[72.1875rem]"
+    ></div>
+  </div>
+
+  {%- comment -%} Main Content {%- endcomment -%}
+  <div class="mx-auto max-w-7xl px-6 lg:px-8">
+    <div class="mx-auto max-w-2xl py-32 sm:py-48 lg:py-56">
       {%- for block in section.blocks -%}
         {%- case block.type -%}
+
+          {%- when 'announcement' -%}
+            {%- if block.settings.text != blank -%}
+              <div class="hidden sm:mb-8 sm:flex sm:justify-center" {{ block.shopify_attributes }}>
+                <div class="relative rounded-full px-3 py-1 text-sm/6 text-gray-600 ring-1 ring-gray-900/10 hover:ring-gray-900/20">
+                  {{ block.settings.text }}
+                  {%- if block.settings.link != blank and block.settings.link_text != blank -%}
+                    <a href="{{ block.settings.link }}" class="font-semibold text-indigo-600">
+                      <span aria-hidden="true" class="absolute inset-0"></span>
+                      {{ block.settings.link_text }} <span aria-hidden="true">&rarr;</span>
+                    </a>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+
           {%- when 'heading' -%}
-            <h2
-              class="text-3xl lg:text-5xl font-semibold {% if section.settings.show_text_box %}text-neutral-900{% else %}text-white{% endif %} mb-4"
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.heading }}
-            </h2>
+            <div class="text-center" {{ block.shopify_attributes }}>
+              <h1 class="text-balance text-5xl font-semibold tracking-tight text-gray-900 sm:text-7xl">
+                {{ block.settings.heading }}
+              </h1>
+            </div>
 
           {%- when 'text' -%}
-            <p
-              class="text-base lg:text-lg {% if section.settings.show_text_box %}text-neutral-600{% else %}text-white/90{% endif %} mb-6"
-              {{ block.shopify_attributes }}
-            >
-              {{ block.settings.text }}
-            </p>
+            <div class="text-center" {{ block.shopify_attributes }}>
+              <p class="mt-8 text-pretty text-lg font-medium text-gray-600 sm:text-xl/8">
+                {{ block.settings.text }}
+              </p>
+            </div>
 
           {%- when 'buttons' -%}
-            <div
-              class="flex flex-wrap gap-3
-                {% case content_alignment %}
-                  {% when 'center' %}justify-center
-                  {% when 'right' %}justify-end
-                {% endcase %}
-                {% case mobile_alignment %}
-                  {% when 'center' %}max-lg:justify-center
-                  {% when 'right' %}max-lg:justify-end
-                {% endcase %}
-              "
-              {{ block.shopify_attributes }}
-            >
+            <div class="mt-10 flex items-center justify-center gap-x-6" {{ block.shopify_attributes }}>
               {%- if block.settings.button_label_1 != blank -%}
                 <a
                   {% if block.settings.button_link_1 == blank %}
@@ -123,13 +90,7 @@
                   {% else %}
                     href="{{ block.settings.button_link_1 }}"
                   {% endif %}
-                  class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-lg transition-colors
-                    {% if block.settings.button_style_secondary_1 %}
-                      {% if section.settings.show_text_box %}bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50{% else %}bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30{% endif %}
-                    {% else %}
-                      bg-neutral-900 text-white hover:bg-neutral-800
-                    {% endif %}
-                  "
+                  class="rounded-md bg-indigo-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                 >
                   {{ block.settings.button_label_1 | escape }}
                 </a>
@@ -142,21 +103,24 @@
                   {% else %}
                     href="{{ block.settings.button_link_2 }}"
                   {% endif %}
-                  class="inline-flex items-center gap-2 px-6 py-3 text-sm font-medium rounded-lg transition-colors
-                    {% if block.settings.button_style_secondary_2 %}
-                      {% if section.settings.show_text_box %}bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50{% else %}bg-white/20 backdrop-blur-sm text-white border border-white/30 hover:bg-white/30{% endif %}
-                    {% else %}
-                      bg-neutral-900 text-white hover:bg-neutral-800
-                    {% endif %}
-                  "
+                  class="text-sm/6 font-semibold text-gray-900"
                 >
-                  {{ block.settings.button_label_2 | escape }}
+                  {{ block.settings.button_label_2 | escape }} <span aria-hidden="true">→</span>
                 </a>
               {%- endif -%}
             </div>
+
         {%- endcase -%}
       {%- endfor -%}
     </div>
+  </div>
+
+  {%- comment -%} Bottom Gradient Blur Effect {%- endcomment -%}
+  <div aria-hidden="true" class="absolute inset-x-0 top-[calc(100%-13rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-30rem)]">
+    <div
+      style="clip-path: polygon(74.1% 44.1%, 100% 61.6%, 97.5% 26.9%, 85.5% 0.1%, 80.7% 2%, 72.5% 32.5%, 60.2% 62.4%, 52.4% 68.1%, 47.5% 58.3%, 45.2% 34.5%, 27.5% 76.7%, 0.1% 64.9%, 17.9% 100%, 27.6% 76.8%, 76.1% 97.7%, 74.1% 44.1%)"
+      class="relative left-[calc(50%+3rem)] aspect-[1155/678] w-[36.125rem] -translate-x-1/2 bg-gradient-to-tr from-[#ff80b5] to-[#9089fc] opacity-30 sm:left-[calc(50%+36rem)] sm:w-[72.1875rem]"
+    ></div>
   </div>
 </section>
 
@@ -172,12 +136,14 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "t:sections.image-banner.settings.image.label"
+      "label": "t:sections.image-banner.settings.image.label",
+      "info": "Optional background image (displayed with low opacity)"
     },
     {
       "type": "image_picker",
       "id": "image_2",
-      "label": "t:sections.image-banner.settings.image_2.label"
+      "label": "t:sections.image-banner.settings.image_2.label",
+      "info": "Fallback image if primary is not set"
     },
     {
       "type": "range",
@@ -188,131 +154,33 @@
       "unit": "%",
       "label": "t:sections.image-banner.settings.image_overlay_opacity.label",
       "default": 0
-    },
-    {
-      "type": "select",
-      "id": "image_height",
-      "options": [
-        {
-          "value": "adapt",
-          "label": "t:sections.image-banner.settings.image_height.options__1.label"
-        },
-        {
-          "value": "small",
-          "label": "t:sections.image-banner.settings.image_height.options__2.label"
-        },
-        {
-          "value": "medium",
-          "label": "t:sections.image-banner.settings.image_height.options__3.label"
-        },
-        {
-          "value": "large",
-          "label": "t:sections.image-banner.settings.image_height.options__4.label"
-        }
-      ],
-      "default": "medium",
-      "label": "t:sections.image-banner.settings.image_height.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.image-banner.settings.content.content"
-    },
-    {
-      "type": "select",
-      "id": "desktop_content_position",
-      "options": [
-        {
-          "value": "top-left",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__1.label"
-        },
-        {
-          "value": "top-center",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__2.label"
-        },
-        {
-          "value": "top-right",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__3.label"
-        },
-        {
-          "value": "middle-left",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__4.label"
-        },
-        {
-          "value": "middle-center",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__5.label"
-        },
-        {
-          "value": "middle-right",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__6.label"
-        },
-        {
-          "value": "bottom-left",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__7.label"
-        },
-        {
-          "value": "bottom-center",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__8.label"
-        },
-        {
-          "value": "bottom-right",
-          "label": "t:sections.image-banner.settings.desktop_content_position.options__9.label"
-        }
-      ],
-      "default": "middle-center",
-      "label": "t:sections.image-banner.settings.desktop_content_position.label"
-    },
-    {
-      "type": "select",
-      "id": "desktop_content_alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.image-banner.settings.desktop_content_alignment.options__3.label"
-        }
-      ],
-      "default": "center",
-      "label": "t:sections.image-banner.settings.desktop_content_alignment.label"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_text_box",
-      "default": true,
-      "label": "t:sections.image-banner.settings.show_text_box.label"
-    },
-    {
-      "type": "header",
-      "content": "t:sections.image-banner.settings.mobile.content"
-    },
-    {
-      "type": "select",
-      "id": "mobile_content_alignment",
-      "options": [
-        {
-          "value": "left",
-          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__1.label"
-        },
-        {
-          "value": "center",
-          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__2.label"
-        },
-        {
-          "value": "right",
-          "label": "t:sections.image-banner.settings.mobile_content_alignment.options__3.label"
-        }
-      ],
-      "default": "center",
-      "label": "t:sections.image-banner.settings.mobile_content_alignment.label"
     }
   ],
   "blocks": [
+    {
+      "type": "announcement",
+      "name": "Announcement pill",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Announcing our next round of funding.",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "default": "Read more",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    },
     {
       "type": "heading",
       "name": "t:sections.image-banner.blocks.heading.name",
@@ -321,7 +189,7 @@
         {
           "type": "inline_richtext",
           "id": "heading",
-          "default": "t:sections.image-banner.blocks.heading.settings.heading.default",
+          "default": "Data to enrich your online business",
           "label": "t:sections.image-banner.blocks.heading.settings.heading.label"
         }
       ]
@@ -334,7 +202,7 @@
         {
           "type": "inline_richtext",
           "id": "text",
-          "default": "t:sections.image-banner.blocks.text.settings.text.default",
+          "default": "Anim aute id magna aliqua ad ad non deserunt sunt. Qui irure qui lorem cupidatat commodo.",
           "label": "t:sections.image-banner.blocks.text.settings.text.label"
         }
       ]
@@ -346,12 +214,12 @@
       "settings": [
         {
           "type": "header",
-          "content": "t:sections.image-banner.blocks.buttons.settings.header_1.content"
+          "content": "Primary button"
         },
         {
           "type": "text",
           "id": "button_label_1",
-          "default": "t:sections.image-banner.blocks.buttons.settings.button_label_1.default",
+          "default": "Get started",
           "label": "t:sections.image-banner.blocks.buttons.settings.button_label_1.label",
           "info": "t:sections.image-banner.blocks.buttons.settings.button_label_1.info"
         },
@@ -361,19 +229,13 @@
           "label": "t:sections.image-banner.blocks.buttons.settings.button_link_1.label"
         },
         {
-          "type": "checkbox",
-          "id": "button_style_secondary_1",
-          "default": false,
-          "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_1.label"
-        },
-        {
           "type": "header",
-          "content": "t:sections.image-banner.blocks.buttons.settings.header_2.content"
+          "content": "Secondary button"
         },
         {
           "type": "text",
           "id": "button_label_2",
-          "default": "t:sections.image-banner.blocks.buttons.settings.button_label_2.default",
+          "default": "Learn more",
           "label": "t:sections.image-banner.blocks.buttons.settings.button_label_2.label",
           "info": "t:sections.image-banner.blocks.buttons.settings.button_label_2.info"
         },
@@ -381,12 +243,6 @@
           "type": "url",
           "id": "button_link_2",
           "label": "t:sections.image-banner.blocks.buttons.settings.button_link_2.label"
-        },
-        {
-          "type": "checkbox",
-          "id": "button_style_secondary_2",
-          "default": false,
-          "label": "t:sections.image-banner.blocks.buttons.settings.button_style_secondary_2.label"
         }
       ]
     }
@@ -395,6 +251,9 @@
     {
       "name": "t:sections.image-banner.presets.name",
       "blocks": [
+        {
+          "type": "announcement"
+        },
         {
           "type": "heading"
         },

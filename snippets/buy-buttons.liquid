@@ -1,6 +1,6 @@
 {% comment %}
-  Renders product buy-buttons - Tailwind version
-  Modern, minimal design
+  Renders product buy-buttons - Tailwind UI Design
+  Modern design with Add to Bag and Wishlist
 
   Accepts:
   - product: {Object} product object.
@@ -13,7 +13,7 @@
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
 
-<div {{ block.shopify_attributes }}>
+<div class="mt-10" {{ block.shopify_attributes }}>
   {%- if product != blank -%}
     {%- liquid
       assign gift_card_recipient_feature_active = false
@@ -34,7 +34,9 @@
     >
       {%- comment -%} Error Message {%- endcomment -%}
       <div class="hidden items-center gap-2 p-3 mb-4 bg-red-50 text-red-700 text-sm rounded-lg product-form__error-message-wrapper" role="alert">
-        {%- render 'icon', name: 'warning-circle', size: '16' -%}
+        <svg class="size-5 shrink-0" viewBox="0 0 20 20" fill="currentColor">
+          <path fill-rule="evenodd" d="M18 10a8 8 0 1 1-16 0 8 8 0 0 1 16 0Zm-8-5a.75.75 0 0 1 .75.75v4.5a.75.75 0 0 1-1.5 0v-4.5A.75.75 0 0 1 10 5Zm0 10a1 1 0 1 0 0-2 1 1 0 0 0 0 2Z" clip-rule="evenodd" />
+        </svg>
         <span class="product-form__error-message"></span>
       </div>
 
@@ -61,7 +63,7 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
-        <div class="flex flex-col gap-3">
+        <div class="flex flex-col gap-4">
           {%- liquid
             assign check_against_inventory = true
             if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
@@ -72,36 +74,50 @@
             endif
           -%}
 
-          {%- comment -%} Add to Cart Button {%- endcomment -%}
-          <button
-            id="ProductSubmitButton-{{ section_id }}"
-            type="submit"
-            name="add"
-            class="relative w-full py-4 px-6 text-base font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed {% if show_dynamic_checkout %}bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50{% else %}bg-neutral-900 text-white hover:bg-neutral-800{% endif %}"
-            {% if product.selected_or_first_available_variant.available == false
-              or quantity_rule_soldout
-              or product.selected_or_first_available_variant == null
-            %}
-              disabled
-            {% endif %}
-          >
-            <span class="button-text">
-              {%- if product.selected_or_first_available_variant == null -%}
-                {{ 'products.product.unavailable' | t }}
-              {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
-                {{ 'products.product.sold_out' | t }}
-              {%- else -%}
-                {{ 'products.product.add_to_cart' | t }}
-              {%- endif -%}
-            </span>
-            <span class="loading-spinner absolute inset-0 items-center justify-center hidden">
-              {%- render 'loading-spinner' -%}
-            </span>
-          </button>
+          {%- comment -%} Add to Cart + Wishlist Row {%- endcomment -%}
+          <div class="flex">
+            <button
+              id="ProductSubmitButton-{{ section_id }}"
+              type="submit"
+              name="add"
+              class="flex max-w-xs flex-1 items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50 disabled:bg-gray-300 disabled:cursor-not-allowed sm:w-full"
+              {% if product.selected_or_first_available_variant.available == false
+                or quantity_rule_soldout
+                or product.selected_or_first_available_variant == null
+              %}
+                disabled
+              {% endif %}
+            >
+              <span class="button-text">
+                {%- if product.selected_or_first_available_variant == null -%}
+                  {{ 'products.product.unavailable' | t }}
+                {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
+                  {{ 'products.product.sold_out' | t }}
+                {%- else -%}
+                  {{ 'products.product.add_to_cart' | t }}
+                {%- endif -%}
+              </span>
+              <span class="loading-spinner absolute inset-0 items-center justify-center hidden">
+                {%- render 'loading-spinner' -%}
+              </span>
+            </button>
+
+            {%- comment -%} Wishlist/Favorites Button {%- endcomment -%}
+            <button
+              type="button"
+              class="ml-4 flex items-center justify-center rounded-md px-3 py-3 text-gray-400 hover:bg-gray-100 hover:text-gray-500"
+              aria-label="{{ 'products.product.add_to_favorites' | t }}"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" class="size-6 shrink-0">
+                <path d="M21 8.25c0-2.485-2.099-4.5-4.688-4.5-1.935 0-3.597 1.126-4.312 2.733-.715-1.607-2.377-2.733-4.313-2.733C5.1 3.75 3 5.765 3 8.25c0 7.22 9 12 9 12s9-4.78 9-12Z" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="sr-only">{{ 'products.product.add_to_favorites' | t }}</span>
+            </button>
+          </div>
 
           {%- comment -%} Dynamic Checkout (Shop Pay, etc) {%- endcomment -%}
           {%- if show_dynamic_checkout -%}
-            <div class="shopify-payment-button [&_.shopify-payment-button__button]:!rounded-lg [&_.shopify-payment-button__button]:!py-4 [&_.shopify-payment-button__button--unbranded]:!bg-neutral-900 [&_.shopify-payment-button__button--unbranded]:!text-white">
+            <div class="shopify-payment-button [&_.shopify-payment-button__button]:!rounded-md [&_.shopify-payment-button__button]:!py-3 [&_.shopify-payment-button__button--unbranded]:!bg-gray-900 [&_.shopify-payment-button__button--unbranded]:!text-white">
               {{ form | payment_button }}
             </div>
           {%- endif -%}

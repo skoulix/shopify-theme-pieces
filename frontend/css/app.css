@@ -1,49 +1,94 @@
 /* ==========================================================================
-   Pieces Theme - Main CSS Entry Point
+   Pieces Theme - Tailwind CSS
+   A minimal Shopify theme using Tailwind UI patterns
    ========================================================================== */
 
-/* All imports must come first */
-@import '@phosphor-icons/web/regular/style.css';
-@import '@phosphor-icons/web/bold/style.css';
-@import './base/reset.css';
-@import './base/variables.css';
-@import './base/transitions.css';
-@import './base/animations.css';
-@import './base/focus.css';
-@import './base/typography.css';
-
-/* Component imports */
-@import './components/layout.css';
-@import './components/buttons.css';
-@import './components/forms.css';
-@import './components/cards.css';
-@import './components/badges.css';
-@import './components/price.css';
-@import './components/media.css';
-@import './components/grid.css';
-@import './components/links.css';
-@import './components/titles.css';
-@import './components/typography.css';
-@import './components/icons.css';
-@import './components/disclosure.css';
-@import './components/modal.css';
-/* lightbox.css imported separately in app.js after photoswipe.css */
-@import './components/loading.css';
-@import './components/cart.css';
-@import './components/shopify.css';
-
-/* Section-specific components */
-@import './components/header.css';
-@import './components/footer.css';
-@import './components/slider.css';
-@import './components/banner.css';
-@import './components/menu-drawer.css';
-
-/* Utilities */
-@import './utilities/visibility.css';
-@import './utilities/helpers.css';
-
-/* Tailwind directives */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+/* ==========================================================================
+   Base Layer - Minimal resets and defaults
+   ========================================================================== */
+
+@layer base {
+  /* Use theme fonts */
+  body {
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Smooth scrolling - disabled when Lenis is active */
+  html:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+
+  /* Lenis smooth scroll overrides */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  /* Remove default summary marker */
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-indigo-600;
+  }
+}
+
+/* ==========================================================================
+   Components Layer - Reusable UI components
+   ========================================================================== */
+
+@layer components {
+  /* Page container */
+  .page-width {
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
+    max-width: var(--page-max-width, 1280px);
+  }
+
+  /* Section spacing */
+  .section {
+    @apply py-16 sm:py-24;
+  }
+
+  /* Visually hidden (for screen readers) */
+  .visually-hidden {
+    @apply sr-only;
+  }
+}
+
+/* ==========================================================================
+   Utilities Layer - Custom utilities
+   ========================================================================== */
+
+@layer utilities {
+  /* Text balance for headings */
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  /* Text pretty for paragraphs */
+  .text-pretty {
+    text-wrap: pretty;
+  }
+}
