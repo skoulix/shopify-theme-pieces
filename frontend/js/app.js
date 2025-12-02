@@ -46,6 +46,13 @@ function loadComponents() {
   loadDynamically('c-scroll-reveal', () => import('./components/ScrollReveal.js'));
   loadDynamically('c-image-reveal', () => import('./components/ImageReveal.js'));
   loadDynamically('c-magnetic', () => import('./components/Magnetic.js'));
+
+  // Utility components (migrated from assets)
+  loadDynamically('c-show-more', () => import('./components/ShowMore.js'));
+  loadDynamically('c-share-button', () => import('./components/ShareButton.js'));
+  loadDynamically('c-pickup-availability', () => import('./components/PickupAvailability.js'));
+  loadDynamically('c-pickup-drawer', () => import('./components/PickupAvailability.js'));
+  loadDynamically('c-localization-form', () => import('./components/LocalizationForm.js'));
 }
 
 /**
