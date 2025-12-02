@@ -1,79 +1,531 @@
 {%- comment -%}
-  Collection Section - Skeleton + Tailwind
+  Collection Section - Grid with Modern Transitions
+  Features intro/outro animations and smooth page transitions
 {%- endcomment -%}
 
-<section class="bg-white">
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ collection.title }}</h1>
+<style>
+  :root {
+    --collection-color-text: #000;
+    --collection-color-bg: #fff;
+  }
 
+  /* Overflow hidden utility */
+  .collection-oh {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .collection-oh__inner {
+    display: inline-block;
+    will-change: transform;
+  }
+
+  /* Main wrapper */
+  .collection-wrapper {
+    position: relative;
+    min-height: 100vh;
+    background: var(--collection-color-bg);
+  }
+
+  /* Header */
+  .collection-header {
+    padding: 4rem 2rem 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  .collection-header__title {
+    font-size: clamp(2rem, 4vw, 3rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .collection-header__description {
+    margin-top: 1rem;
+    font-size: 1rem;
+    color: #666;
+    max-width: 600px;
+  }
+
+  /* Content Grid */
+  .collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2rem;
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+  }
+
+  @media (min-width: 1024px) {
+    .collection-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .collection-grid {
+      grid-template-columns: 1fr;
+      gap: 1.5rem;
+      padding: 1rem;
+    }
+
+    .collection-header {
+      padding: 2rem 1rem 1rem;
+    }
+  }
+
+  /* Content Item */
+  .collection-item {
+    cursor: pointer;
+    position: relative;
+  }
+
+  .collection-item__imgwrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    will-change: transform;
+    background: #f0f0f0;
+  }
+
+  .collection-item__img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    will-change: transform;
+  }
+
+  .collection-item__title {
+    margin-top: 1rem;
+    font-size: clamp(1rem, 1.5vw, 1.25rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.02em;
+  }
+
+  .collection-item__title .collection-oh__inner {
+    will-change: transform, opacity;
+    display: inline-block;
+  }
+
+  .collection-item__meta {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: #666;
+  }
+
+  /* Loading state - initial hidden state for reveal */
+  .collection-wrapper.is-loading .collection-item__imgwrap {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .collection-wrapper.is-loading .collection-item__title .collection-oh__inner {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+
+  .collection-wrapper.is-loading .collection-item__meta {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+
+  .collection-wrapper.is-loading .collection-header__title,
+  .collection-wrapper.is-loading .collection-header__description {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+
+  /* Transitioning state - prevent interactions and lock scroll */
+  .collection-wrapper.is-transitioning {
+    pointer-events: none;
+  }
+
+  /* Prevent layout shift when scrollbar hides during transition */
+  html.collection-scroll-locked {
+    overflow: hidden !important;
+  }
+
+  html.collection-scroll-locked body {
+    overflow: hidden !important;
+    padding-right: var(--scrollbar-width, 0px);
+  }
+
+  /* Pagination */
+  .collection-pagination {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 2rem;
+  }
+
+  .collection-pagination a,
+  .collection-pagination span {
+    padding: 0.5rem 1rem;
+    font-size: 0.875rem;
+    border-radius: 0.25rem;
+  }
+
+  .collection-pagination a {
+    background: #fff;
+    border: 1px solid #e5e5e5;
+    color: #000;
+    text-decoration: none;
+    transition: background 0.2s;
+  }
+
+  .collection-pagination a:hover {
+    background: #f5f5f5;
+  }
+
+  .collection-pagination__current {
+    background: #000;
+    color: #fff;
+  }
+</style>
+
+<div class="collection-wrapper is-loading" data-collection-wrapper>
+  {%- comment -%} Header {%- endcomment -%}
+  <header class="collection-header">
+    <h1 class="collection-header__title">{{ collection.title }}</h1>
     {% if collection.description != blank %}
-      <p class="mt-4 max-w-xl text-base text-gray-500">{{ collection.description }}</p>
+      <p class="collection-header__description">{{ collection.description }}</p>
     {% endif %}
+  </header>
 
-    <div class="mt-10 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
-      {% paginate collection.products by 20 %}
-        {% for product in collection.products %}
-          <div class="group relative">
-            <a href="{{ product.url }}" class="block">
-              <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
-                {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 600 | image_tag:
-                    class: 'h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity',
-                    loading: 'lazy'
-                  }}
-                {% else %}
-                  <div class="flex h-full items-center justify-center">
-                    <i class="ph ph-image text-4xl text-gray-300"></i>
-                  </div>
-                {% endif %}
-              </div>
-              <div class="mt-4">
-                <h3 class="text-sm font-medium text-gray-900">{{ product.title }}</h3>
-                <p class="mt-1 text-sm text-gray-500">{{ product.price | money }}</p>
-              </div>
-            </a>
-          </div>
-        {% endfor %}
-      {% endpaginate %}
-    </div>
-
-    {% if paginate.pages > 1 %}
-      <nav class="mt-10 flex items-center justify-center gap-2">
-        {% if paginate.previous %}
-          <a href="{{ paginate.previous.url }}" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-            <i class="ph ph-arrow-left"></i>
-          </a>
-        {% endif %}
-
-        {% for part in paginate.parts %}
-          {% if part.is_link %}
-            <a href="{{ part.url }}" class="rounded-md bg-white px-4 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-              {{ part.title }}
-            </a>
-          {% else %}
-            {% if part.title == paginate.current_page %}
-              <span class="rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white">
-                {{ part.title }}
-              </span>
+  {%- comment -%} Product Grid {%- endcomment -%}
+  <div class="collection-grid" data-collection-grid>
+    {% paginate collection.products by section.settings.products_per_page %}
+      {% for product in collection.products %}
+        <article
+          class="collection-item"
+          data-collection-item="{{ forloop.index0 }}"
+          data-product-url="{{ product.url }}"
+          style="--item-index: {{ forloop.index0 }}"
+        >
+          <div class="collection-item__imgwrap">
+            {% if product.featured_image %}
+              {{ product.featured_image | image_url: width: 1200 | image_tag:
+                class: 'collection-item__img',
+                loading: 'lazy',
+                sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
+                widths: '400, 600, 800, 1200',
+                alt: product.title
+              }}
             {% else %}
-              <span class="px-4 py-2 text-sm text-gray-500">{{ part.title }}</span>
+              <div class="collection-item__img" style="background: #f0f0f0; display: flex; align-items: center; justify-content: center;">
+                <i class="ph ph-image" style="font-size: 3rem; color: #ccc;"></i>
+              </div>
             {% endif %}
-          {% endif %}
-        {% endfor %}
+          </div>
+          <h3 class="collection-item__title">
+            {% assign title_words = product.title | split: ' ' %}
+            {% for word in title_words %}
+              <span class="collection-oh"><span class="collection-oh__inner">{{ word }}{% unless forloop.last %}&nbsp;{% endunless %}</span></span>
+            {% endfor %}
+          </h3>
+          <div class="collection-item__meta">
+            {{ product.price | money }}
+          </div>
+        </article>
+      {% endfor %}
 
-        {% if paginate.next %}
-          <a href="{{ paginate.next.url }}" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
-            <i class="ph ph-arrow-right"></i>
-          </a>
-        {% endif %}
-      </nav>
-    {% endif %}
+      {% if paginate.pages > 1 %}
+        <nav class="collection-pagination" style="grid-column: 1 / -1;">
+          {% if paginate.previous %}
+            <a href="{{ paginate.previous.url }}" data-no-swup>
+              <i class="ph ph-arrow-left"></i>
+            </a>
+          {% endif %}
+
+          {% for part in paginate.parts %}
+            {% if part.is_link %}
+              <a href="{{ part.url }}" data-no-swup>{{ part.title }}</a>
+            {% else %}
+              {% if part.title == paginate.current_page %}
+                <span class="collection-pagination__current">{{ part.title }}</span>
+              {% else %}
+                <span>{{ part.title }}</span>
+              {% endif %}
+            {% endif %}
+          {% endfor %}
+
+          {% if paginate.next %}
+            <a href="{{ paginate.next.url }}" data-no-swup>
+              <i class="ph ph-arrow-right"></i>
+            </a>
+          {% endif %}
+        </nav>
+      {% endif %}
+    {% endpaginate %}
   </div>
-</section>
+</div>
+
+<script>
+(function() {
+  const wrapper = document.querySelector('[data-collection-wrapper]');
+  if (!wrapper) return;
+  if (wrapper.dataset.collectionInitialized) return;
+  wrapper.dataset.collectionInitialized = 'true';
+
+  function initCollection() {
+    if (typeof gsap === 'undefined') {
+      if (window.pieces && window.pieces.gsap) {
+        window.gsap = window.pieces.gsap;
+      } else {
+        setTimeout(initCollection, 100);
+        return;
+      }
+    }
+
+    const header = wrapper.querySelector('.collection-header');
+    const headerTitle = wrapper.querySelector('.collection-header__title');
+    const headerDesc = wrapper.querySelector('.collection-header__description');
+    const contentItems = wrapper.querySelectorAll('[data-collection-item]');
+    let isAnimating = false;
+
+    // Intro reveal animation
+    function runIntroAnimation() {
+      const tl = gsap.timeline({
+        onComplete: () => {
+          wrapper.classList.remove('is-loading');
+        }
+      });
+
+      // Animate header first
+      if (headerTitle) {
+        tl.to(headerTitle, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, 0);
+      }
+
+      if (headerDesc) {
+        tl.to(headerDesc, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, 0.1);
+      }
+
+      // Animate each item with stagger
+      contentItems.forEach((item, index) => {
+        const imgWrap = item.querySelector('.collection-item__imgwrap');
+        const titleInners = item.querySelectorAll('.collection-item__title .collection-oh__inner');
+        const meta = item.querySelector('.collection-item__meta');
+
+        const delay = 0.2 + index * 0.1;
+
+        // Horizontal reveal - clip from left to right
+        tl.to(imgWrap, {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 0.8,
+          ease: 'power3.out'
+        }, delay);
+
+        // Slide up and fade in title words
+        tl.to(titleInners, {
+          y: 0,
+          opacity: 1,
+          stagger: 0.04,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, delay + 0.3);
+
+        // Slide up and fade in meta
+        tl.to(meta, {
+          y: 0,
+          opacity: 1,
+          duration: 0.5,
+          ease: 'power2.out'
+        }, delay + 0.4);
+      });
+    }
+
+    // Run intro animation
+    runIntroAnimation();
+
+    // Navigate to product page with Swup
+    function navigateToProduct(url) {
+      if (window.pieces && window.pieces.swup && window.pieces.swup.swup) {
+        window.pieces.swup.navigateTo(url);
+      } else {
+        window.location.href = url;
+      }
+    }
+
+    // Hover effects - simple and subtle
+    contentItems.forEach((item) => {
+      const imgWrap = item.querySelector('.collection-item__imgwrap');
+      const img = item.querySelector('.collection-item__img');
+
+      item.addEventListener('mouseenter', () => {
+        if (isAnimating) return;
+
+        gsap.to(imgWrap, {
+          scale: 0.98,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+
+        gsap.to(img, {
+          scale: 1.08,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+      });
+
+      item.addEventListener('mouseleave', () => {
+        if (isAnimating) return;
+
+        gsap.to(imgWrap, {
+          scale: 1,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+
+        gsap.to(img, {
+          scale: 1,
+          duration: 0.5,
+          ease: 'power2.out'
+        });
+      });
+    });
+
+    // Click handler - animate out then navigate
+    function handleItemClick(clickedIndex) {
+      if (isAnimating) return;
+      isAnimating = true;
+
+      const clickedItem = contentItems[clickedIndex];
+      const productUrl = clickedItem.dataset.productUrl;
+
+      wrapper.classList.add('is-transitioning');
+
+      // Lock scroll to prevent scrollbar jump during transition
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+
+      if (window.pieces && window.pieces.lenis) {
+        window.pieces.lenis.stop();
+      }
+      document.documentElement.classList.add('collection-scroll-locked');
+
+      const tl = gsap.timeline({
+        onComplete: () => {
+          navigateToProduct(productUrl);
+        }
+      });
+
+      // Animate all items out
+      contentItems.forEach((item, index) => {
+        const imgWrap = item.querySelector('.collection-item__imgwrap');
+        const titleInners = item.querySelectorAll('.collection-item__title .collection-oh__inner');
+        const meta = item.querySelector('.collection-item__meta');
+
+        // Stagger based on distance from clicked item
+        const distance = Math.abs(index - clickedIndex);
+        const delay = distance * 0.06;
+
+        // Slide up and fade out title words
+        tl.to(titleInners, {
+          y: -30,
+          opacity: 0,
+          stagger: 0.02,
+          duration: 0.4,
+          ease: 'power2.in'
+        }, delay);
+
+        // Slide up and fade out meta
+        tl.to(meta, {
+          y: -20,
+          opacity: 0,
+          duration: 0.3,
+          ease: 'power2.in'
+        }, delay);
+
+        // Horizontal swipe - clip from right to left
+        tl.to(imgWrap, {
+          clipPath: 'inset(0 0 0 100%)',
+          duration: 0.7,
+          ease: 'power3.inOut'
+        }, delay + 0.1);
+      });
+
+      // Fade out header
+      tl.to([headerTitle, headerDesc], {
+        opacity: 0,
+        y: -20,
+        duration: 0.4,
+        ease: 'power2.in'
+      }, 0);
+    }
+
+    // Attach click handlers
+    contentItems.forEach((item, index) => {
+      item.addEventListener('click', () => handleItemClick(index));
+    });
+
+    // Cleanup on Swup navigation
+    window.addEventListener('swup:contentReplaced', () => {
+      isAnimating = false;
+    });
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initCollection);
+  } else {
+    initCollection();
+  }
+})();
+</script>
 
 {% schema %}
 {
   "name": "Collection",
-  "settings": []
+  "settings": [
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop"
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Columns on tablet"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "label": "Columns on mobile"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "min": 6,
+      "max": 24,
+      "step": 3,
+      "default": 12,
+      "label": "Products per page"
+    }
+  ]
 }
 {% endschema %}
