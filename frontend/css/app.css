@@ -92,3 +92,47 @@
     text-wrap: pretty;
   }
 }
+
+/* ==========================================================================
+   Animation Styles - Centralized reveal animations
+   ========================================================================== */
+
+/* Scroll locking for page transitions */
+html.scroll-locked {
+  overflow: hidden !important;
+}
+
+html.scroll-locked body {
+  overflow: hidden !important;
+  padding-right: var(--scrollbar-width, 0px);
+}
+
+/* Image reveal animation states */
+.reveal-image {
+  clip-path: inset(0 100% 0 0);
+}
+
+.reveal-image--animated {
+  clip-path: inset(0 0% 0 0);
+}
+
+/* Content fade-up animation states */
+.reveal-content {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.reveal-content--animated {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Transitioning state - prevents interactions during animation */
+.is-transitioning {
+  pointer-events: none;
+}
+
+/* Loading state - used for initial hidden state */
+.is-loading .reveal-image {
+  clip-path: inset(0 100% 0 0);
+}

@@ -1,27 +1,58 @@
 {%- comment -%}
-  Article Section - Skeleton + Tailwind
+  Article Section - Split Text Reveal Animations
 {%- endcomment -%}
 
-<article class="bg-white">
+<style>
+  /* Article intro animation initial states */
+  .article-intro .article-intro__image {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .article-intro .article-intro__content {
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  /* Animated states */
+  .article-intro--animated .article-intro__image {
+    clip-path: inset(0 0% 0 0);
+  }
+
+  .article-intro--animated .article-intro__content {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<article class="bg-white article-intro" data-article-intro>
   <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
     {% if article.image %}
-      <div class="mb-8 overflow-hidden rounded-lg">
+      <div class="mb-8 overflow-hidden rounded-lg article-intro__image">
         {{ article.image | image_url: width: 1200 | image_tag:
           class: 'w-full object-cover'
         }}
       </div>
     {% endif %}
 
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ article.title }}</h1>
+    <h1 class="article-intro__title text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+      {%- assign title_words = article.title | split: ' ' -%}
+      {%- for word in title_words -%}
+        <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+      {%- endfor -%}
+    </h1>
 
-    <div class="mt-4 flex items-center gap-x-4 text-sm text-gray-500">
-      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-        {{ article.published_at | date: '%B %d, %Y' }}
-      </time>
-      <span>by {{ article.author }}</span>
+    <div class="article-intro__meta mt-4 flex items-center gap-x-4 text-sm text-gray-500">
+      <span class="overflow-hidden">
+        <time class="inline-block" datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+          {{ article.published_at | date: '%B %d, %Y' }}
+        </time>
+      </span>
+      <span class="overflow-hidden">
+        <span class="inline-block">by {{ article.author }}</span>
+      </span>
     </div>
 
-    <div class="mt-8 prose prose-indigo max-w-none">
+    <div class="mt-8 prose prose-indigo max-w-none article-intro__content">
       {{ article.content }}
     </div>
 
@@ -97,6 +128,104 @@
     {% endif %}
   </div>
 </article>
+
+<script>
+  /**
+   * Article Intro Animation
+   * Split text reveal effect with GSAP
+   */
+  (function() {
+    const section = document.querySelector('[data-article-intro]');
+    if (!section) return;
+    if (section.dataset.introInitialized) return;
+
+    section.dataset.introInitialized = 'true';
+
+    function runIntroAnimation() {
+      // Check for GSAP
+      let gsap = window.gsap;
+      if (!gsap && window.pieces && window.pieces.gsap) {
+        gsap = window.pieces.gsap;
+      }
+
+      if (!gsap) {
+        // Fallback: just add animated class immediately
+        section.classList.add('article-intro--animated');
+        return;
+      }
+
+      const image = section.querySelector('.article-intro__image');
+      const titleSpans = section.querySelectorAll('.article-intro__title .overflow-hidden span');
+      const metaSpans = section.querySelectorAll('.article-intro__meta .overflow-hidden span, .article-intro__meta .overflow-hidden time');
+      const content = section.querySelector('.article-intro__content');
+
+      // Create timeline
+      const tl = gsap.timeline({
+        onComplete: () => section.classList.add('article-intro--animated')
+      });
+
+      // Small delay to ensure page is ready
+      tl.addLabel('start', 0.1);
+
+      // Animate image with clip-path reveal
+      if (image) {
+        tl.to(image, {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1,
+          ease: 'expo.out'
+        }, 'start');
+      }
+
+      // Split text reveal for title - using yPercent
+      if (titleSpans.length) {
+        gsap.set(titleSpans, { yPercent: 100 });
+        tl.to(titleSpans, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.1
+        }, 'start+=0.2');
+      }
+
+      // Split text reveal for meta (date and author)
+      if (metaSpans.length) {
+        gsap.set(metaSpans, { yPercent: 100 });
+        tl.to(metaSpans, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.1
+        }, 'start+=0.5');
+      }
+
+      // Animate content
+      if (content) {
+        tl.to(content, {
+          y: 0,
+          opacity: 1,
+          duration: 0.8,
+          ease: 'power3.out'
+        }, 'start+=0.7');
+      }
+    }
+
+    // Run animation after page load
+    if (document.readyState === 'complete') {
+      runIntroAnimation();
+    } else {
+      window.addEventListener('load', runIntroAnimation);
+    }
+
+    // Also run on Swup content replace (for SPA navigation)
+    window.addEventListener('swup:contentReplaced', () => {
+      const newSection = document.querySelector('[data-article-intro]');
+      if (newSection && !newSection.dataset.introInitialized) {
+        newSection.dataset.introInitialized = 'true';
+        runIntroAnimation();
+      }
+    });
+  })();
+</script>
 
 {% schema %}
 {
