@@ -1,23 +1,72 @@
-<style type="text/css">
-  .template-404 .title + * {
-    margin-top: 1rem;
-  }
+{%- comment -%}
+  404 Error Page - Tailwind Version
+  Modern, minimal design with helpful navigation
+{%- endcomment -%}
 
-  @media screen and (min-width: 750px) {
-    .template-404 .title + * {
-      margin-top: 2rem;
-    }
-  }
-</style>
+<section class="min-h-[60vh] flex items-center justify-center px-4 py-16">
+  <div class="text-center max-w-lg">
+    {%- comment -%} Large 404 Display {%- endcomment -%}
+    <p class="text-9xl font-bold text-neutral-200">404</p>
 
-<div class="template-404 page-width page-margin center">
-  <p>
-    {{ 'templates.404.subtext' | t }}
-  </p>
-  <h1 class="title">
-    {{ 'templates.404.title' | t }}
-  </h1>
-  <a href="{{ routes.all_products_collection_url }}" class="button">
-    {{ 'general.continue_shopping' | t }}
-  </a>
-</div>
+    {%- comment -%} Error Message {%- endcomment -%}
+    <h1 class="mt-4 text-2xl lg:text-3xl font-semibold text-neutral-900">
+      {{ 'templates.404.title' | t }}
+    </h1>
+
+    <p class="mt-4 text-base text-neutral-600">
+      {{ 'templates.404.subtext' | t }}
+    </p>
+
+    {%- comment -%} Actions {%- endcomment -%}
+    <div class="mt-8 flex flex-col sm:flex-row items-center justify-center gap-4">
+      <a
+        href="{{ routes.root_url }}"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-neutral-900 text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors"
+      >
+        {%- render 'icon', name: 'house', size: '18' -%}
+        {{ 'general.404.go_home' | t | default: 'Go to homepage' }}
+      </a>
+
+      <a
+        href="{{ routes.all_products_collection_url }}"
+        class="inline-flex items-center gap-2 px-6 py-3 bg-white text-neutral-900 text-sm font-medium rounded-lg border border-neutral-300 hover:bg-neutral-50 transition-colors"
+      >
+        {{ 'general.continue_shopping' | t }}
+        {%- render 'icon', name: 'arrow-right', size: '16' -%}
+      </a>
+    </div>
+
+    {%- comment -%} Search Suggestion {%- endcomment -%}
+    <div class="mt-12 pt-8 border-t border-neutral-200">
+      <p class="text-sm text-neutral-500 mb-4">{{ 'general.404.try_search' | t | default: 'Try searching for what you need' }}</p>
+      <form action="{{ routes.search_url }}" method="get" class="max-w-md mx-auto">
+        <div class="relative">
+          <input type="hidden" name="type" value="product">
+          <input
+            type="search"
+            name="q"
+            class="w-full pl-12 pr-4 py-3 text-base border border-neutral-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:border-transparent"
+            placeholder="{{ 'general.search.placeholder' | t }}"
+            autocomplete="off"
+          >
+          <div class="absolute left-4 top-1/2 -translate-y-1/2 text-neutral-400">
+            {%- render 'icon', name: 'magnifying-glass', size: '20' -%}
+          </div>
+          <button
+            type="submit"
+            class="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 bg-neutral-900 text-white text-sm font-medium rounded-md hover:bg-neutral-800 transition-colors"
+          >
+            {{ 'general.search.search' | t }}
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "404 page",
+  "settings": []
+}
+{% endschema %}

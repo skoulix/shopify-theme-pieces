@@ -1,15 +1,18 @@
 {% comment %}
-  Renders product buy-buttons.
+  Renders product buy-buttons - Tailwind version
+  Modern, minimal design
+
   Accepts:
   - product: {Object} product object.
   - block: {Object} passing the block information.
   - product_form_id: {String} product form id.
   - section_id: {String} id of section to which this snippet belongs.
-  - show_pickup_availability: {Boolean} for the pickup availability. If true the pickup availability is rendered, false - not rendered (optional).
+  - show_pickup_availability: {Boolean} for the pickup availability.
 
   Usage:
   {% render 'buy-buttons', block: block, product: product, product_form_id: product_form_id, section_id: section.id, show_pickup_availability: true %}
 {% endcomment %}
+
 <div {{ block.shopify_attributes }}>
   {%- if product != blank -%}
     {%- liquid
@@ -25,21 +28,19 @@
     -%}
 
     <product-form
-      class="product-form"
+      class="block"
       data-hide-errors="{{ gift_card_recipient_feature_active }}"
       data-section-id="{{ section.id }}"
     >
-      <div class="product-form__error-message-wrapper" role="alert" hidden>
-        <span class="svg-wrapper">
-          {%- render 'icon', name: 'error', size: '16' -%}
-        </span>
+      {%- comment -%} Error Message {%- endcomment -%}
+      <div class="hidden items-center gap-2 p-3 mb-4 bg-red-50 text-red-700 text-sm rounded-lg product-form__error-message-wrapper" role="alert">
+        {%- render 'icon', name: 'warning-circle', size: '16' -%}
         <span class="product-form__error-message"></span>
       </div>
 
       {%- form 'product',
         product,
         id: product_form_id,
-        class: 'form',
         novalidate: 'novalidate',
         data-type: 'add-to-cart-form'
       -%}
@@ -60,7 +61,7 @@
           {%- render 'gift-card-recipient-form', product: product, form: form, section: section -%}
         {%- endif -%}
 
-        <div class="product-form__buttons">
+        <div class="flex flex-col gap-3">
           {%- liquid
             assign check_against_inventory = true
             if product.selected_or_first_available_variant.inventory_management != 'shopify' or product.selected_or_first_available_variant.inventory_policy == 'continue'
@@ -70,11 +71,13 @@
               assign quantity_rule_soldout = true
             endif
           -%}
+
+          {%- comment -%} Add to Cart Button {%- endcomment -%}
           <button
             id="ProductSubmitButton-{{ section_id }}"
             type="submit"
             name="add"
-            class="product-form__submit button button--full-width {% if show_dynamic_checkout %}button--secondary{% else %}button--primary{% endif %}"
+            class="relative w-full py-4 px-6 text-base font-medium rounded-lg transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed {% if show_dynamic_checkout %}bg-white text-neutral-900 border border-neutral-300 hover:bg-neutral-50{% else %}bg-neutral-900 text-white hover:bg-neutral-800{% endif %}"
             {% if product.selected_or_first_available_variant.available == false
               or quantity_rule_soldout
               or product.selected_or_first_available_variant == null
@@ -82,7 +85,7 @@
               disabled
             {% endif %}
           >
-            <span>
+            <span class="button-text">
               {%- if product.selected_or_first_available_variant == null -%}
                 {{ 'products.product.unavailable' | t }}
               {%- elsif product.selected_or_first_available_variant.available == false or quantity_rule_soldout -%}
@@ -91,54 +94,58 @@
                 {{ 'products.product.add_to_cart' | t }}
               {%- endif -%}
             </span>
-            {%- render 'loading-spinner' -%}
+            <span class="loading-spinner absolute inset-0 items-center justify-center hidden">
+              {%- render 'loading-spinner' -%}
+            </span>
           </button>
+
+          {%- comment -%} Dynamic Checkout (Shop Pay, etc) {%- endcomment -%}
           {%- if show_dynamic_checkout -%}
-            {{ form | payment_button }}
+            <div class="shopify-payment-button [&_.shopify-payment-button__button]:!rounded-lg [&_.shopify-payment-button__button]:!py-4 [&_.shopify-payment-button__button--unbranded]:!bg-neutral-900 [&_.shopify-payment-button__button--unbranded]:!text-white">
+              {{ form | payment_button }}
+            </div>
           {%- endif -%}
         </div>
       {%- endform -%}
     </product-form>
+
   {%- else -%}
-    <div class="product-form">
-      <div class="product-form__buttons form">
-        <button
-          type="submit"
-          name="add"
-          class="product-form__submit button button--full-width button--primary"
-          disabled
-        >
-          {{ 'products.product.sold_out' | t }}
-        </button>
-      </div>
+    {%- comment -%} Placeholder State {%- endcomment -%}
+    <div>
+      <button
+        type="submit"
+        name="add"
+        class="w-full py-4 px-6 bg-neutral-200 text-neutral-400 text-base font-medium rounded-lg cursor-not-allowed"
+        disabled
+      >
+        {{ 'products.product.sold_out' | t }}
+      </button>
     </div>
   {%- endif -%}
 
+  {%- comment -%} Pickup Availability {%- endcomment -%}
   {%- if show_pickup_availability -%}
-    {{ 'component-pickup-availability.css' | asset_url | stylesheet_tag }}
-
     {%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities
       | where: 'pick_up_enabled', true
     -%}
 
     <pickup-availability
-      class="product__pickup-availabilities quick-add-hidden"
+      class="block mt-4"
       {% if product.selected_or_first_available_variant.available and pick_up_availabilities.size > 0 %}
         available
       {% endif %}
       data-root-url="{{ routes.root_url }}"
       data-variant-id="{{ product.selected_or_first_available_variant.id }}"
       data-has-only-default-variant="{{ product.has_only_default_variant }}"
-      data-product-page-color-scheme="gradient color-{{ section.settings.color_scheme }}"
     >
       <template>
-        <pickup-availability-preview class="pickup-availability-preview">
-          <span class="svg-wrapper">
-            {%- render 'icon', name: 'unavailable', size: '16' -%}
+        <pickup-availability-preview class="flex items-start gap-3 p-4 bg-neutral-50 rounded-lg">
+          <span class="text-neutral-400">
+            {%- render 'icon', name: 'map-pin', size: '20' -%}
           </span>
-          <div class="pickup-availability-info">
-            <p class="caption-large">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
-            <button class="pickup-availability-button link link--text underlined-link">
+          <div class="flex-1">
+            <p class="text-sm font-medium text-neutral-900">{{ 'products.product.pickup_availability.unavailable' | t }}</p>
+            <button class="text-sm text-neutral-600 underline hover:text-neutral-900 transition-colors pickup-availability-button">
               {{ 'products.product.pickup_availability.refresh' | t }}
             </button>
           </div>
