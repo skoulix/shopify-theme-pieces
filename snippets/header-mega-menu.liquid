@@ -6,19 +6,19 @@
 {% endcomment %}
 
 <nav class="header__inline-menu">
-  <ul class="list-menu list-menu--inline" role="list">
+  <ul class="flex items-center gap-8 list-none" role="list">
     {%- for link in section.settings.menu.links -%}
       <li>
         {%- if link.links != blank -%}
           <header-menu>
-            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu">
+            <details id="Details-HeaderMenu-{{ forloop.index }}" class="mega-menu relative group">
               <summary
                 id="HeaderMenu-{{ link.handle }}"
-                class="header__menu-item list-menu__item link focus-inset"
+                class="flex items-center gap-1 text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-colors cursor-pointer list-none py-2 focus:outline-none focus:ring-2 focus:ring-neutral-900 rounded"
               >
                 <span
                   {%- if link.child_active %}
-                    class="header__active-menu-item"
+                    class="text-neutral-900 font-semibold"
                   {% endif %}
                 >
                   {{- link.title | escape -}}
@@ -27,11 +27,11 @@
               </summary>
               <div
                 id="MegaMenu-Content-{{ forloop.index }}"
-                class="mega-menu__content color-{{ section.settings.menu_color_scheme }} gradient motion-reduce global-settings-popup"
+                class="mega-menu__content absolute left-0 top-full pt-2 opacity-0 invisible group-open:opacity-100 group-open:visible transition-all duration-200 z-50 color-{{ section.settings.menu_color_scheme }}"
                 tabindex="-1"
               >
                 <ul
-                  class="mega-menu__list page-width{% if link.levels == 1 %} mega-menu__list--condensed{% endif %}"
+                  class="mega-menu__list bg-white rounded-lg shadow-lg border border-neutral-200 py-2 min-w-[200px]{% if link.levels == 1 %} grid grid-cols-2 gap-x-8{% endif %}"
                   role="list"
                 >
                   {%- for childlink in link.links -%}
@@ -39,7 +39,7 @@
                       <a
                         id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}"
                         href="{{ childlink.url }}"
-                        class="mega-menu__link mega-menu__link--level-2 link{% if childlink.current %} mega-menu__link--active{% endif %}"
+                        class="block px-4 py-2 text-sm font-medium text-neutral-900 hover:bg-neutral-100 transition-colors{% if childlink.current %} bg-neutral-100{% endif %}"
                         {% if childlink.current %}
                           aria-current="page"
                         {% endif %}
@@ -47,13 +47,13 @@
                         {{ childlink.title | escape }}
                       </a>
                       {%- if childlink.links != blank -%}
-                        <ul class="list-unstyled" role="list">
+                        <ul class="list-none space-y-1 px-4 py-2" role="list">
                           {%- for grandchildlink in childlink.links -%}
                             <li>
                               <a
                                 id="HeaderMenu-{{ link.handle }}-{{ childlink.handle }}-{{ grandchildlink.handle }}"
                                 href="{{ grandchildlink.url }}"
-                                class="mega-menu__link link{% if grandchildlink.current %} mega-menu__link--active{% endif %}"
+                                class="block px-2 py-1.5 text-sm text-neutral-600 hover:text-neutral-900 hover:bg-neutral-50 rounded transition-colors{% if grandchildlink.current %} text-neutral-900 bg-neutral-50{% endif %}"
                                 {% if grandchildlink.current %}
                                   aria-current="page"
                                 {% endif %}
@@ -74,14 +74,14 @@
           <a
             id="HeaderMenu-{{ link.handle }}"
             href="{{ link.url }}"
-            class="header__menu-item list-menu__item link link--text focus-inset"
+            class="text-sm font-medium text-neutral-700 hover:text-neutral-900 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-900 rounded"
             {% if link.current %}
               aria-current="page"
             {% endif %}
           >
             <span
               {%- if link.current %}
-                class="header__active-menu-item"
+                class="text-neutral-900 font-semibold"
               {% endif %}
             >
               {{- link.title | escape -}}

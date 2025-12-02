@@ -1,8 +1,8 @@
-<span class="field-currency">{{ cart.currency.symbol }}</span>
+<span class="text-sm font-medium text-neutral-900">{{ cart.currency.symbol }}</span>
 
-<div class="field">
+<div class="relative">
   <input
-    class="field__input"
+    class="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 bg-white text-neutral-900"
     name="{{ filter.min_value.param_name }}"
     id="{{ id_prefix }}{{ filter.label | escape }}-GTE"
     {%- if filter.min_value.value -%}
@@ -15,18 +15,18 @@
     data-min="0"
     data-max="{{ filter.range_max | money_without_currency }}"
   >
-  <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-GTE">
+  <label class="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-neutral-500 pointer-events-none transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs" for="{{ id_prefix }}{{ filter.label | escape }}-GTE">
     {{- 'products.facets.from' | t -}}
   </label>
 </div>
 
 {%- if filter_type != 'vertical' -%}
-  <span class="field-currency">{{ cart.currency.symbol }}</span>
+  <span class="text-sm font-medium text-neutral-900">{{ cart.currency.symbol }}</span>
 {%- endif -%}
 
-<div class="field">
+<div class="relative">
   <input
-    class="field__input"
+    class="w-full px-3 py-2 border border-neutral-300 rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-neutral-900 bg-white text-neutral-900"
     name="{{ filter.max_value.param_name }}"
     id="{{ id_prefix }}{{ filter.label | escape }}-LTE"
     {%- if filter.max_value.value -%}
@@ -39,7 +39,7 @@
     data-min="0"
     data-max="{{ filter.range_max | money_without_currency }}"
   >
-  <label class="field__label" for="{{ id_prefix }}{{ filter.label | escape }}-LTE">
+  <label class="absolute left-3 top-1/2 -translate-y-1/2 text-xs text-neutral-500 pointer-events-none transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-2 peer-focus:text-xs" for="{{ id_prefix }}{{ filter.label | escape }}-LTE">
     {{- 'products.facets.to' | t -}}
   </label>
 </div>

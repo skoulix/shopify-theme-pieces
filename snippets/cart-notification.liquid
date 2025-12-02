@@ -1,5 +1,5 @@
 {% comment %}
-  Renders cart notification
+  Renders cart notification - Tailwind version
 
   Accepts:
   - color_scheme: {String} sets the color scheme of the notification (optional)
@@ -10,45 +10,45 @@
 {% endcomment %}
 
 <cart-notification>
-  <div class="cart-notification-wrapper{% if desktop_menu_type != 'drawer' %} page-width{% endif %}">
+  <div class="{% if desktop_menu_type != 'drawer' %}max-w-7xl mx-auto px-4 sm:px-6 lg:px-8{% endif %}">
     <div
       id="cart-notification"
-      class="cart-notification focus-inset{% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
+      class="bg-white rounded-lg shadow-xl border border-neutral-200 focus:outline-none focus:ring-2 focus:ring-neutral-900{% if color_scheme %} color-{{ color_scheme }} gradient{% endif %}"
       aria-modal="true"
       aria-label="{{ 'general.cart.item_added' | t }}"
       role="dialog"
       tabindex="-1"
     >
-      <div class="cart-notification__header">
-        <h2 class="cart-notification__heading caption-large text-body">
+      <div class="flex items-center justify-between px-6 py-4 border-b border-neutral-200">
+        <h2 class="flex items-center gap-2 text-sm font-medium text-neutral-900">
           {%- render 'icon', name: 'check', size: '16' -%}
           {{ 'general.cart.item_added' | t }}
         </h2>
         <button
           type="button"
-          class="cart-notification__close modal__close-button link link--text focus-inset"
+          class="p-2 -mr-2 text-neutral-400 hover:text-neutral-900 hover:bg-neutral-100 rounded-full transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-900"
           aria-label="{{ 'accessibility.close' | t }}"
         >
-          <span class="svg-wrapper">
+          <span class="flex items-center justify-center">
             {%- render 'icon', name: 'close', size: '20' -%}
           </span>
         </button>
       </div>
-      <div id="cart-notification-product" class="cart-notification-product"></div>
-      <div class="cart-notification__links">
+      <div id="cart-notification-product" class="px-6 py-4"></div>
+      <div class="px-6 py-4 space-y-3 bg-neutral-50 rounded-b-lg">
         <a
           href="{{ routes.cart_url }}"
           id="cart-notification-button"
-          class="button button--secondary button--full-width"
+          class="block w-full px-4 py-3 text-center text-sm font-medium text-neutral-900 bg-white border border-neutral-300 rounded-lg hover:bg-neutral-50 transition-colors"
         >
           {{- 'general.cart.view_empty_cart' | t -}}
         </a>
         <form action="{{ routes.cart_url }}" method="post" id="cart-notification-form">
-          <button class="button button--primary button--full-width" name="checkout">
+          <button class="block w-full px-4 py-3 text-center text-sm font-medium text-white bg-neutral-900 rounded-lg hover:bg-neutral-800 transition-colors" name="checkout">
             {{ 'sections.cart.checkout' | t }}
           </button>
         </form>
-        <button type="button" class="link button-label">{{ 'general.continue_shopping' | t }}</button>
+        <button type="button" class="block w-full text-sm text-neutral-600 hover:text-neutral-900 underline transition-colors">{{ 'general.continue_shopping' | t }}</button>
       </div>
     </div>
   </div>
