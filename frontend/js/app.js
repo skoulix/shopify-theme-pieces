@@ -40,6 +40,7 @@ function loadComponents() {
   loadDynamically('c-quantity-input', () => import('./components/QuantityInput.js'));
   loadDynamically('c-modal', () => import('./components/Modal.js'));
   loadDynamically('c-slider', () => import('./components/Slider.js'));
+  loadDynamically('c-slideshow', () => import('./components/Slideshow.js'));
 
   // Animation components
   loadDynamically('c-scroll-reveal', () => import('./components/ScrollReveal.js'));

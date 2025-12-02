@@ -30,14 +30,20 @@
 
     <script src="{{ 'constants.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'pubsub.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'global.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
-    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'shopify-compat.js' | asset_url }}" defer="defer"></script>
 
     {%- comment -%} Pieces theme bundle - SPA layer with Swup, Lenis, GSAP, piecesjs {%- endcomment -%}
     <script src="{{ 'pieces-app.js' | asset_url }}" type="module"></script>
     {{ 'pieces-app.css' | asset_url | stylesheet_tag }}
+
+    {%- comment -%} Modular Shopify components (loaded on-demand) {%- endcomment -%}
+    <script src="{{ 'details-disclosure.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'details-modal.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'search-form.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'modal-opener.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'deferred-media.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'variant-selects.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'product-recommendations.js' | asset_url }}" defer="defer"></script>
 
     {{ content_for_header }}
 
