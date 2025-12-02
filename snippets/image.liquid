@@ -1,0 +1,40 @@
+{%- comment -%}
+  Image Snippet - Skeleton + Tailwind
+
+  @param {image} image - The image to render
+  @param {string} [url] - Optional link URL
+  @param {string} [class] - Additional CSS classes
+  @param {number} [width] - Max width for srcset
+  @param {number} [height] - Max height (for aspect ratio)
+  @param {string} [crop] - Crop position
+  @param {string} [loading] - Loading strategy (lazy/eager)
+  @param {string} [alt] - Alt text override
+
+  @example
+  {% render 'image', image: product.featured_image %}
+  {% render 'image', image: product.featured_image, url: product.url, class: 'rounded-lg' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign width = width | default: image.width | default: 800
+  assign loading = loading | default: 'lazy'
+  assign alt = alt | default: image.alt | default: ''
+-%}
+
+{%- if url -%}
+  <a href="{{ url }}" class="block {{ class }}">
+    {{ image | image_url: width: width, height: height, crop: crop | image_tag:
+      class: 'w-full h-auto object-cover',
+      loading: loading,
+      alt: alt
+    }}
+  </a>
+{%- else -%}
+  <div class="{{ class }}">
+    {{ image | image_url: width: width, height: height, crop: crop | image_tag:
+      class: 'w-full h-auto object-cover',
+      loading: loading,
+      alt: alt
+    }}
+  </div>
+{%- endif -%}

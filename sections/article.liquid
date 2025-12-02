@@ -1,0 +1,106 @@
+{%- comment -%}
+  Article Section - Skeleton + Tailwind
+{%- endcomment -%}
+
+<article class="bg-white">
+  <div class="mx-auto max-w-3xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
+    {% if article.image %}
+      <div class="mb-8 overflow-hidden rounded-lg">
+        {{ article.image | image_url: width: 1200 | image_tag:
+          class: 'w-full object-cover'
+        }}
+      </div>
+    {% endif %}
+
+    <h1 class="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">{{ article.title }}</h1>
+
+    <div class="mt-4 flex items-center gap-x-4 text-sm text-gray-500">
+      <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+        {{ article.published_at | date: '%B %d, %Y' }}
+      </time>
+      <span>by {{ article.author }}</span>
+    </div>
+
+    <div class="mt-8 prose prose-indigo max-w-none">
+      {{ article.content }}
+    </div>
+
+    {% if blog.comments_enabled? %}
+      <div class="mt-16 border-t border-gray-200 pt-16">
+        <h2 class="text-2xl font-bold text-gray-900">{{ 'blog.article_comments' | t }}</h2>
+
+        {% if article.comments_count > 0 %}
+          <div class="mt-8 space-y-8">
+            {% paginate article.comments by 10 %}
+              {% for comment in article.comments %}
+                <div class="border-l-2 border-gray-200 pl-4">
+                  <p class="font-medium text-gray-900">{{ comment.author }}</p>
+                  <p class="text-sm text-gray-500">{{ comment.created_at | date: '%B %d, %Y' }}</p>
+                  <div class="mt-2 text-gray-600">{{ comment.content }}</div>
+                </div>
+              {% endfor %}
+            {% endpaginate %}
+          </div>
+        {% endif %}
+
+        {% form 'new_comment', article %}
+          <div class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-900">{{ 'blog.comment_form_title' | t }}</h3>
+
+            {{ form.errors | default_errors }}
+
+            <div class="mt-6 grid gap-6 sm:grid-cols-2">
+              <div>
+                <label for="author" class="block text-sm font-medium text-gray-700">{{ 'blog.comment_form_name' | t }}</label>
+                <input
+                  type="text"
+                  name="comment[author]"
+                  id="author"
+                  value="{{ form.author }}"
+                  required
+                  class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                >
+              </div>
+
+              <div>
+                <label for="email" class="block text-sm font-medium text-gray-700">{{ 'blog.comment_form_email' | t }}</label>
+                <input
+                  type="email"
+                  name="comment[email]"
+                  id="email"
+                  value="{{ form.email }}"
+                  required
+                  class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                >
+              </div>
+
+              <div class="sm:col-span-2">
+                <label for="body" class="block text-sm font-medium text-gray-700">{{ 'blog.comment_form_body' | t }}</label>
+                <textarea
+                  name="comment[body]"
+                  id="body"
+                  rows="4"
+                  required
+                  class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                >{{ form.body }}</textarea>
+              </div>
+            </div>
+
+            <div class="mt-6">
+              <button type="submit" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+                {{ 'blog.comment_form_submit' | t }}
+              </button>
+            </div>
+          </div>
+        {% endform %}
+      </div>
+    {% endif %}
+  </div>
+</article>
+
+{% schema %}
+{
+  "name": "Article",
+  "settings": []
+}
+{% endschema %}
