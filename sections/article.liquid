@@ -135,24 +135,24 @@
    * Split text reveal effect with GSAP
    */
   (function() {
-    const section = document.querySelector('[data-article-intro]');
-    if (!section) return;
-    if (section.dataset.introInitialized) return;
+    function initArticleIntro() {
+      const section = document.querySelector('[data-article-intro]');
+      if (!section) return;
+      if (section.dataset.introInitialized) return;
 
-    section.dataset.introInitialized = 'true';
-
-    function runIntroAnimation() {
-      // Check for GSAP
+      // Check for GSAP - wait if not loaded yet
       let gsap = window.gsap;
       if (!gsap && window.pieces && window.pieces.gsap) {
         gsap = window.pieces.gsap;
       }
 
       if (!gsap) {
-        // Fallback: just add animated class immediately
-        section.classList.add('article-intro--animated');
+        // GSAP not loaded yet, retry shortly
+        setTimeout(initArticleIntro, 50);
         return;
       }
+
+      section.dataset.introInitialized = 'true';
 
       const image = section.querySelector('.article-intro__image');
       const titleSpans = section.querySelectorAll('.article-intro__title .overflow-hidden span');
@@ -209,21 +209,12 @@
       }
     }
 
-    // Run animation after page load
-    if (document.readyState === 'complete') {
-      runIntroAnimation();
+    // Run when DOM is ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initArticleIntro);
     } else {
-      window.addEventListener('load', runIntroAnimation);
+      initArticleIntro();
     }
-
-    // Also run on Swup content replace (for SPA navigation)
-    window.addEventListener('swup:contentReplaced', () => {
-      const newSection = document.querySelector('[data-article-intro]');
-      if (newSection && !newSection.dataset.introInitialized) {
-        newSection.dataset.introInitialized = 'true';
-        runIntroAnimation();
-      }
-    });
   })();
 </script>
 

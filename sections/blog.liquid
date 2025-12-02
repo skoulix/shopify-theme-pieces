@@ -296,6 +296,15 @@
 
       wrapper.classList.add('is-transitioning');
 
+      // Lock scroll to prevent scrollbar jump during transition
+      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+      document.body.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
+
+      if (window.pieces && window.pieces.lenis) {
+        window.pieces.lenis.stop();
+      }
+      document.documentElement.classList.add('scroll-locked');
+
       const tl = gsap.timeline({
         onComplete: () => {
           navigateToArticle(articleUrl);
