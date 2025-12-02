@@ -3,212 +3,90 @@
 <!doctype html>
 <html lang="{{ request.locale.iso_code }}">
   <head>
-    <script src="{{ 'vendor/qrcode.js' | shopify_asset_url }}" defer></script>
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="theme-color" content="{{ settings.color_background }}">
-    <link rel="canonical" href="{{ canonical_url }}">
 
     {%- if settings.favicon != blank -%}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
     {%- endif -%}
 
-    {%- unless settings.type_header_font.system? -%}
-      <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    {%- endunless -%}
+    <title>{{ gift_card.balance | money }} - {{ shop.name }}</title>
 
-    {%- assign formatted_balance = gift_card.balance | money_without_trailing_zeros | strip_html -%}
-
-    <title>{{ 'gift_cards.issued.title' | t: value: formatted_balance, shop: shop.name }}</title>
-
-    <meta name="description" content="{{ 'gift_cards.issued.subtext' | t }}">
+    {% render 'css-variables' %}
+    {% render 'meta-tags' %}
 
     {{ content_for_header }}
 
-    {%- liquid
-      assign body_font_bold = settings.type_body_font | font_modify: 'weight', 'bold'
-      assign body_font_italic = settings.type_body_font | font_modify: 'style', 'italic'
-      assign body_font_bold_italic = body_font_bold | font_modify: 'style', 'italic'
-    %}
+    {%- comment -%} Phosphor Icons {%- endcomment -%}
+    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
 
-    {% style %}
-      {{ settings.type_body_font | font_face: font_display: 'swap' }}
-      {{ body_font_bold | font_face: font_display: 'swap' }}
-      {{ body_font_italic | font_face: font_display: 'swap' }}
-      {{ body_font_bold_italic | font_face: font_display: 'swap' }}
-      {{ settings.type_header_font | font_face: font_display: 'swap' }}
-
-      :root {
-        --font-body-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-        --font-body-style: {{ settings.type_body_font.style }};
-        --font-body-weight: {{ settings.type_body_font.weight }};
-
-        --font-heading-family: {{ settings.type_header_font.family }}, {{ settings.type_header_font.fallback_families }};
-        --font-heading-style: {{ settings.type_header_font.style }};
-        --font-heading-weight: {{ settings.type_header_font.weight }};
-
-        --font-body-scale: {{ settings.body_scale | divided_by: 100.0 }};
-        --font-heading-scale: {{ settings.heading_scale | times: 1.0 | divided_by: settings.body_scale }};
-
-        {% assign scheme = settings.color_schemes | first %}
-        --color-background: {{ scheme.settings.background.red }},{{ scheme.settings.background.green }},{{ scheme.settings.background.blue }};
-        {% if scheme.settings.background_gradient != empty -%}
-          --gradient-background: {{ scheme.settings.background_gradient }};
-        {%- else -%}
-          --gradient-background: {{ scheme.settings.background }};
-        {%- endif %}
-        --color-foreground: {{ scheme.settings.text.red }},{{ scheme.settings.text.green }},{{ scheme.settings.text.blue }};
-        --color-button: {{ scheme.settings.button.red }},{{ scheme.settings.button.green }},{{ scheme.settings.button.blue }};
-        --color-button-label: {{ scheme.settings.button_label.red }},{{ scheme.settings.button_label.green }},{{ scheme.settings.button_label.blue }};
-        --color-secondary-button-label: {{ scheme.settings.secondary_button_label.red }},{{ scheme.settings.secondary_button_label.green }},{{ scheme.settings.secondary_button_label.blue }};
-      }
-    {% endstyle %}
-
-    {%- unless settings.type_body_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_body_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-    {%- unless settings.type_header_font.system? -%}
-      {% comment %}theme-check-disable AssetPreload{% endcomment %}
-      <link rel="preload" as="font" href="{{ settings.type_header_font | font_url }}" type="font/woff2" crossorigin>
-      {% comment %}theme-check-enable AssetPreload{% endcomment %}
-    {%- endunless -%}
-
-    {{ 'pieces-app.css' | asset_url | stylesheet_tag }}
+    {%- comment -%} Tailwind CSS {%- endcomment -%}
+    {{ 'pieces-app.css' | asset_url | stylesheet_tag: preload: true }}
   </head>
 
-  <body class="min-h-screen bg-[rgb(var(--color-background))] text-[rgb(var(--color-foreground))] font-[family-name:var(--font-body-family)]" style="background: var(--gradient-background); background-attachment: fixed;">
-    <div class="max-w-2xl mx-auto px-6 py-12 lg:py-16">
-      {%- comment -%} Header with price and status {%- endcomment -%}
-      <header class="text-center">
-        <div class="flex flex-wrap items-center justify-center gap-3">
-          <h1 class="text-4xl lg:text-5xl font-[family-name:var(--font-heading-family)] font-[var(--font-heading-weight)]">
-            {% if settings.currency_code_enabled %}
-              {{ gift_card.balance | money_with_currency }}
-            {% else %}
-              {{ gift_card.balance | money }}
-            {% endif %}
-          </h1>
-          {%- if gift_card.enabled == false or gift_card.expired -%}
-            <span class="inline-block px-3 py-1 text-xs font-medium bg-red-100 text-red-800 rounded-full">
-              {{ 'gift_cards.issued.expired' | t }}
-            </span>
-          {%- endif -%}
-        </div>
-        {% if gift_card.expires_on %}
-          {%- assign gift_card_expiration_date = gift_card.expires_on | date: '%B %e, %Y' -%}
-          <p class="mt-3 text-sm text-neutral-500">
-            {{ 'gift_cards.issued.expiration_date' | t: expires_on: gift_card_expiration_date }}
+  <body class="bg-gray-50 text-gray-900 antialiased">
+    <main class="flex min-h-screen items-center justify-center px-4 py-12">
+      <div class="w-full max-w-md text-center">
+        <h1 class="text-4xl font-bold tracking-tight text-gray-900">{{ gift_card.balance | money }}</h1>
+
+        {% if gift_card.enabled == false or gift_card.expired %}
+          <p class="mt-2 inline-flex items-center rounded-full bg-red-100 px-3 py-1 text-sm font-medium text-red-800">
+            <i class="ph ph-warning mr-1"></i>
+            {{ 'gift_card.expired' | t }}
           </p>
         {% endif %}
-      </header>
 
-      {%- comment -%} Gift Card Image {%- endcomment -%}
-      <main>
-        <div class="flex justify-center items-center my-10 max-w-md mx-auto">
-          {%- if settings.logo != blank -%}
-            {%- assign logo_alt = settings.logo.alt | default: shop.name | escape -%}
-            {{ settings.logo | image_url: width: 570 | image_tag: class: 'max-w-full h-auto max-h-64 object-scale-down', alt: logo_alt }}
-          {%- else %}
-            <img
-              class="max-w-full h-auto max-h-64 object-scale-down"
-              src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
-              alt=""
-              height="{{ 570 | divided_by: 1.5 }}"
-              width="570"
-              loading="eager"
-            >
-          {%- endif %}
-        </div>
-
-        {%- comment -%} Shop Name {%- endcomment -%}
-        <h2 class="text-2xl lg:text-3xl font-[family-name:var(--font-heading-family)] font-[var(--font-heading-weight)] text-center">
-          {{ shop.name }}
-        </h2>
-
-        {%- comment -%} Instructions {%- endcomment -%}
-        <div class="max-w-xs mx-auto mt-4">
-          <p class="text-center text-sm text-neutral-500">
-            {{ 'gift_cards.issued.how_to_use_gift_card' | t }}
+        {% if gift_card.expires_on %}
+          {% assign expires_on = gift_card.expires_on | date: '%B %e, %Y' %}
+          <p class="mt-4 text-sm text-gray-500">
+            {{ 'gift_card.expires_on' | t: expires_on: expires_on }}
           </p>
+        {% endif %}
+
+        <div class="mt-8">
+          {% if settings.logo %}
+            {{ settings.logo | image_url: width: 300 | image_tag: class: 'mx-auto h-auto max-h-32', alt: shop.name }}
+          {% else %}
+            <img
+              src="{{ 'gift-card/card.svg' | shopify_asset_url }}"
+              alt="{{ 'gift_card.card' | t }}"
+              width="300"
+              height="200"
+              class="mx-auto"
+            >
+          {% endif %}
         </div>
 
-        {%- comment -%} Gift Card Code {%- endcomment -%}
-        <p id="gift-card-code" class="text-center text-lg tracking-[0.25em] text-neutral-700 my-8">
+        <h2 class="mt-8 text-2xl font-semibold text-gray-900">{{ shop.name }}</h2>
+
+        <p class="mt-4 text-sm text-gray-600">{{ 'gift_card.use_at_checkout' | t }}</p>
+
+        <p class="mt-6 rounded-lg bg-white px-6 py-4 font-mono text-lg tracking-widest text-gray-900 ring-1 ring-inset ring-gray-200">
           {{ gift_card.code | format_code }}
         </p>
 
-        {%- comment -%} QR Code {%- endcomment -%}
-        <div class="gift-card__qr-code flex justify-center my-8" data-identifier="{{ gift_card.qr_identifier }}"></div>
-
-        {%- comment -%} Apple Wallet {%- endcomment -%}
-        {%- if gift_card.pass_url -%}
-          <a href="{{ gift_card.pass_url }}" class="block text-center mb-8 print:hidden">
+        {% if gift_card.pass_url %}
+          <a href="{{ gift_card.pass_url }}" class="mt-6 inline-block">
             <img
               src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}"
-              width="120"
-              height="40"
-              alt="{{ 'gift_cards.issued.add_to_apple_wallet' | t }}"
-              loading="lazy"
-              class="inline-block"
+              alt="{{ 'gift_card.add_to_apple_wallet' | t }}"
+              width="140"
+              height="44"
             >
           </a>
-        {%- endif -%}
+        {% endif %}
 
-        {%- comment -%} Buttons {%- endcomment -%}
-        <div class="flex flex-col items-center gap-3 max-w-xs mx-auto print:hidden">
-          <span class="gift-card__copy-success flex items-center gap-2 text-sm text-green-600" role="status"></span>
-          <template>
-            <svg class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            {{ 'gift_cards.issued.copy_code_success' | t }}
-          </template>
-          <button class="gift-card__copy-button w-full px-6 py-3 bg-neutral-900 text-white text-sm font-medium rounded-lg hover:bg-neutral-800 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2">
-            {{ 'gift_cards.issued.copy_code' | t }}
-          </button>
+        <div class="mt-8">
           <a
             href="{{ shop.url }}"
-            class="w-full px-6 py-3 border border-neutral-300 text-neutral-900 text-sm font-medium rounded-lg text-center hover:bg-neutral-50 transition-colors focus:outline-none focus:ring-2 focus:ring-neutral-900 focus:ring-offset-2"
-            target="_blank"
-            rel="noopener"
-            aria-describedby="a11y-new-window-message"
+            class="inline-flex items-center justify-center rounded-md bg-indigo-600 px-6 py-3 text-sm font-semibold text-white hover:bg-indigo-500"
           >
-            {{ 'gift_cards.issued.shop_link' | t }}
+            <i class="ph ph-storefront mr-2"></i>
+            Continue Shopping
           </a>
         </div>
-      </main>
-
-      <div hidden>
-        <span id="a11y-new-window-message">{{ 'accessibility.link_messages.new_window' | t }}</span>
       </div>
-    </div>
+    </main>
   </body>
 </html>
-
-<script>
-  var string = { qrImageAlt: {{ 'gift_cards.issued.qr_image_alt' | t | json }} };
-  document.addEventListener('DOMContentLoaded', function() {
-   new QRCode( document.querySelector('.gift-card__qr-code'), {
-    text: document.querySelector('.gift-card__qr-code').dataset.identifier,
-    width: 72,
-    height: 72,
-    imageAltText: string.qrImageAlt
-    });
-  });
-  var template = document.getElementsByTagName("template")[0];
-  var clonedTemplate = template.content.cloneNode(true);
-  var isMessageDisplayed = false
-  document
-  .querySelector('.gift-card__copy-button')
-  .addEventListener('click', () => {
-    navigator.clipboard.writeText(document.getElementById('gift-card-code').innerText).then(function () {
-      if (!isMessageDisplayed) {
-        document.querySelector('.gift-card__copy-success').appendChild(clonedTemplate);
-        isMessageDisplayed = true
-      }
-    });
-  });
-</script>

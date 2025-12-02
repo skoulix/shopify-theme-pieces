@@ -1,0 +1,85 @@
+{%- comment -%}
+  Group Block - Skeleton + Tailwind
+  Renders a group of blocks with configurable layout direction, gap and alignment.
+{%- endcomment -%}
+
+{%- liquid
+  assign direction_class = 'flex-col items-start'
+  if block.settings.layout_direction == 'horizontal'
+    assign direction_class = 'flex-row items-center justify-between'
+  endif
+
+  assign align_class = 'items-start'
+  if block.settings.alignment == 'center'
+    assign align_class = 'items-center'
+  elsif block.settings.alignment == 'end'
+    assign align_class = 'items-end'
+  endif
+-%}
+
+<div
+  class="flex w-full flex-wrap-0 overflow-hidden {{ direction_class }} {% if block.settings.layout_direction == 'vertical' %}{{ align_class }}{% endif %}"
+  style="padding: {% if block.settings.layout_direction == 'horizontal' %}0 {{ block.settings.padding }}px{% else %}{{ block.settings.padding }}px 0{% endif %};"
+  {{ block.shopify_attributes }}
+>
+  {% content_for 'blocks' %}
+</div>
+
+{% schema %}
+{
+  "name": "Group",
+  "blocks": [{ "type": "@theme" }],
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_direction",
+      "label": "Layout Direction",
+      "default": "vertical",
+      "options": [
+        { "value": "horizontal", "label": "Horizontal" },
+        { "value": "vertical", "label": "Vertical" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "start",
+      "options": [
+        { "value": "start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "end", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding",
+      "label": "Padding",
+      "default": 0,
+      "min": 0,
+      "max": 200,
+      "step": 4,
+      "unit": "px"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Column",
+      "category": "Layout",
+      "settings": {
+        "layout_direction": "vertical",
+        "alignment": "start",
+        "padding": 0
+      }
+    },
+    {
+      "name": "Row",
+      "category": "Layout",
+      "settings": {
+        "layout_direction": "horizontal",
+        "padding": 0
+      }
+    }
+  ]
+}
+{% endschema %}

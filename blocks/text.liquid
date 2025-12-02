@@ -1,0 +1,59 @@
+{%- comment -%}
+  Text Block - Skeleton + Tailwind
+  Renders a text block with configurable style and alignment.
+{%- endcomment -%}
+
+{%- liquid
+  assign style_class = 'text-base'
+  if block.settings.text_style == 'title'
+    assign style_class = 'text-3xl font-bold tracking-tight text-gray-900'
+  elsif block.settings.text_style == 'subtitle'
+    assign style_class = 'text-xl font-medium text-gray-700'
+  endif
+
+  assign align_class = 'text-left'
+  if block.settings.alignment == 'center'
+    assign align_class = 'text-center'
+  elsif block.settings.alignment == 'right'
+    assign align_class = 'text-right'
+  endif
+-%}
+
+<div
+  class="{{ style_class }} {{ align_class }}"
+  {{ block.shopify_attributes }}
+>
+  {{ block.settings.text }}
+</div>
+
+{% schema %}
+{
+  "name": "Text",
+  "settings": [
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Text"
+    },
+    {
+      "type": "select",
+      "id": "text_style",
+      "label": "Text Style",
+      "options": [
+        { "value": "title", "label": "Title" },
+        { "value": "subtitle", "label": "Subtitle" },
+        { "value": "normal", "label": "Normal" }
+      ],
+      "default": "title"
+    },
+    {
+      "type": "text_alignment",
+      "id": "alignment",
+      "label": "Alignment",
+      "default": "left"
+    }
+  ],
+  "presets": [{ "name": "Text" }]
+}
+{% endschema %}
