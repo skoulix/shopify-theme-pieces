@@ -1,0 +1,220 @@
+{%- comment -%}
+  Marquee Section - Infinite scrolling text ticker
+  Common on modern Awwwards-style sites
+{%- endcomment -%}
+
+<style>
+  /* ==========================================================================
+     Marquee Section
+     ========================================================================== */
+  .marquee-section {
+    padding: clamp(1.5rem, 3vh, 3rem) 0;
+    background-color: {{ section.settings.background_color }};
+    overflow: hidden;
+  }
+
+  .marquee-wrapper {
+    display: flex;
+    width: max-content;
+  }
+
+  .marquee-content {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+    animation: marquee {{ section.settings.speed }}s linear infinite;
+    padding-right: clamp(2rem, 5vw, 5rem);
+  }
+
+  .marquee-section[data-direction="right"] .marquee-content {
+    animation-direction: reverse;
+  }
+
+  .marquee-section[data-pause-on-hover="true"]:hover .marquee-content {
+    animation-play-state: paused;
+  }
+
+  @keyframes marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-100%);
+    }
+  }
+
+  .marquee-item {
+    display: flex;
+    align-items: center;
+    gap: clamp(2rem, 5vw, 5rem);
+    white-space: nowrap;
+  }
+
+  .marquee-text {
+    font-size: clamp(2rem, 8vw, 6rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    color: {{ section.settings.text_color }};
+    line-height: 1;
+  }
+
+  .marquee-text.outline {
+    color: transparent;
+    -webkit-text-stroke: 1px {{ section.settings.text_color }};
+  }
+
+  .marquee-separator {
+    width: clamp(8px, 1.5vw, 16px);
+    height: clamp(8px, 1.5vw, 16px);
+    border-radius: 50%;
+    background-color: {{ section.settings.text_color }};
+    opacity: 0.4;
+    flex-shrink: 0;
+  }
+
+  .marquee-icon {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    color: {{ section.settings.text_color }};
+    opacity: 0.6;
+  }
+</style>
+
+<section
+  class="marquee-section"
+  data-marquee-section="{{ section.id }}"
+  data-direction="{{ section.settings.direction }}"
+  data-pause-on-hover="{{ section.settings.pause_on_hover }}"
+>
+  <div class="marquee-wrapper">
+    {%- comment -%} Duplicate content for seamless loop {%- endcomment -%}
+    {% for i in (1..4) %}
+      <div class="marquee-content">
+        {% for block in section.blocks %}
+          <div class="marquee-item" {{ block.shopify_attributes }}>
+            {% case block.type %}
+              {% when 'text' %}
+                <span class="marquee-text {% if block.settings.outline %}outline{% endif %}">
+                  {{ block.settings.text }}
+                </span>
+              {% when 'separator' %}
+                {% if block.settings.style == 'dot' %}
+                  <span class="marquee-separator"></span>
+                {% elsif block.settings.style == 'icon' %}
+                  <i class="marquee-icon ph ph-{{ block.settings.icon }}"></i>
+                {% endif %}
+            {% endcase %}
+          </div>
+        {% endfor %}
+      </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Marquee",
+  "tag": "section",
+  "class": "marquee-section-wrapper",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "default": 30,
+      "unit": "s",
+      "label": "Animation speed"
+    },
+    {
+      "type": "select",
+      "id": "direction",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left",
+      "label": "Direction"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "default": true,
+      "label": "Pause on hover"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#000000",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "default": "Free Shipping",
+          "label": "Text"
+        },
+        {
+          "type": "checkbox",
+          "id": "outline",
+          "default": false,
+          "label": "Outline style"
+        }
+      ]
+    },
+    {
+      "type": "separator",
+      "name": "Separator",
+      "settings": [
+        {
+          "type": "select",
+          "id": "style",
+          "options": [
+            { "value": "dot", "label": "Dot" },
+            { "value": "icon", "label": "Icon" }
+          ],
+          "default": "dot",
+          "label": "Style"
+        },
+        {
+          "type": "text",
+          "id": "icon",
+          "default": "star-four",
+          "label": "Icon name",
+          "info": "Phosphor icon name (e.g., star-four, asterisk, diamond)"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Marquee",
+      "blocks": [
+        { "type": "text", "settings": { "text": "Free Shipping" } },
+        { "type": "separator", "settings": { "style": "dot" } },
+        { "type": "text", "settings": { "text": "New Arrivals", "outline": true } },
+        { "type": "separator", "settings": { "style": "icon", "icon": "star-four" } },
+        { "type": "text", "settings": { "text": "Limited Edition" } },
+        { "type": "separator", "settings": { "style": "dot" } }
+      ]
+    }
+  ]
+}
+{% endschema %}

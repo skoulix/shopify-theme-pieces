@@ -1,11 +1,165 @@
 {
   "sections": {
-    "main": {
-      "type": "hello-world",
-      "settings": {}
+    "hero": {
+      "type": "hero",
+      "settings": {
+        "title": "Elevate Your Style",
+        "words_per_line": 2,
+        "subtitle": "Discover our curated collection of premium products designed for the modern lifestyle.",
+        "button_text": "Shop Now",
+        "button_link": "shopify://collections/all",
+        "text_color": "#ffffff",
+        "button_background": "#ffffff",
+        "button_text_color": "#000000",
+        "overlay_opacity": 40,
+        "full_width": true,
+        "show_scroll_indicator": true
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "settings": {
+        "speed": 30,
+        "direction": "left",
+        "pause_on_hover": true,
+        "background_color": "#000000",
+        "text_color": "#ffffff"
+      },
+      "blocks": {
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping",
+            "outline": false
+          }
+        },
+        "sep_1": {
+          "type": "separator",
+          "settings": {
+            "style": "dot"
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrivals",
+            "outline": true
+          }
+        },
+        "sep_2": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        },
+        "text_3": {
+          "type": "text",
+          "settings": {
+            "text": "Limited Edition",
+            "outline": false
+          }
+        },
+        "sep_3": {
+          "type": "separator",
+          "settings": {
+            "style": "dot"
+          }
+        }
+      },
+      "block_order": ["text_1", "sep_1", "text_2", "sep_2", "text_3", "sep_3"]
+    },
+    "featured_collection": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "New Arrivals",
+        "products_to_show": 4,
+        "columns": 4,
+        "show_view_all": true,
+        "full_width": false
+      }
+    },
+    "image_with_text": {
+      "type": "image-with-text",
+      "settings": {
+        "label": "Our Story",
+        "title": "Crafted With Purpose",
+        "text": "<p>We believe in creating products that stand the test of time. Each piece is thoughtfully designed and meticulously crafted using the finest materials and traditional techniques.</p>",
+        "button_text": "Learn More",
+        "button_link": "shopify://pages/about",
+        "layout": "image_left",
+        "image_ratio": "4/5",
+        "full_width": false,
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      },
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "10+",
+            "label": "Years"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "50K",
+            "label": "Customers"
+          }
+        }
+      },
+      "block_order": ["stat_1", "stat_2"]
+    },
+    "featured_collection_2": {
+      "type": "featured-collection",
+      "settings": {
+        "title": "Best Sellers",
+        "products_to_show": 4,
+        "columns": 4,
+        "show_view_all": true,
+        "full_width": false
+      }
+    },
+    "image_with_text_2": {
+      "type": "image-with-text",
+      "settings": {
+        "label": "Quality",
+        "title": "Made To Last",
+        "text": "<p>Every product we create is built to last. We source only the finest materials and work with skilled artisans who share our commitment to excellence.</p>",
+        "button_text": "Our Process",
+        "button_link": "shopify://pages/about",
+        "layout": "image_right",
+        "image_ratio": "4/5",
+        "full_width": false,
+        "background_color": "#f5f5f5",
+        "text_color": "#000000"
+      },
+      "blocks": {
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "100%",
+            "label": "Sustainable"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "5yr",
+            "label": "Warranty"
+          }
+        }
+      },
+      "block_order": ["stat_3", "stat_4"]
     }
   },
   "order": [
-    "main"
+    "hero",
+    "marquee",
+    "featured_collection",
+    "image_with_text",
+    "featured_collection_2",
+    "image_with_text_2"
   ]
 }

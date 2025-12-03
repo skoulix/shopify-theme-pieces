@@ -1,0 +1,464 @@
+{%- comment -%}
+  Hero Section - Modern Awwwards-style full-screen hero
+  Features: Full-screen video/image, large typography, GSAP animations
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'px-4 md:px-8'
+  else
+    assign container_class = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+  endif
+-%}
+
+<style>
+  /* ==========================================================================
+     Hero Section Styles
+     ========================================================================== */
+  .hero-section {
+    position: relative;
+    min-height: 100vh;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
+    background-color: var(--color-background);
+  }
+
+  .hero-section.is-loading .hero-content {
+    opacity: 0;
+  }
+
+  /* Background Media */
+  .hero-media {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-media::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 100.0 }}) 0%,
+      rgba(0, 0, 0, {{ section.settings.overlay_opacity | divided_by: 200.0 }}) 50%,
+      transparent 100%
+    );
+    z-index: 1;
+  }
+
+  .hero-media img,
+  .hero-media video,
+  .hero-media svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .hero-media video {
+    position: absolute;
+    inset: 0;
+  }
+
+  /* Content */
+  .hero-content {
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding-bottom: clamp(3rem, 10vh, 8rem);
+    padding-top: 8rem;
+  }
+
+  /* Title Styling */
+  .hero-title {
+    font-size: clamp(3rem, 15vw, 12rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: {{ section.settings.text_color }};
+  }
+
+  .hero-title-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .hero-title-line:nth-child(2) {
+    margin-left: clamp(1rem, 10vw, 8rem);
+  }
+
+  .hero-title-line:nth-child(3) {
+    margin-left: clamp(2rem, 20vw, 16rem);
+  }
+
+  /* Subtitle */
+  .hero-subtitle {
+    margin-top: 2rem;
+    max-width: 480px;
+    font-size: clamp(0.75rem, 1.5vw, 1rem);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    line-height: 1.6;
+    color: {{ section.settings.text_color }};
+    opacity: 0.8;
+  }
+
+  /* CTA Button */
+  .hero-cta {
+    margin-top: 3rem;
+    display: inline-flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: {{ section.settings.button_text_color }};
+    background-color: {{ section.settings.button_background }};
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .hero-cta:hover {
+    transform: translateY(-2px);
+    opacity: 0.9;
+  }
+
+  .hero-cta i {
+    font-size: 1.25em;
+    transition: transform 0.3s ease;
+  }
+
+  .hero-cta:hover i {
+    transform: translateX(4px);
+  }
+
+  /* Scroll Indicator */
+  .hero-scroll-indicator {
+    position: absolute;
+    bottom: 2rem;
+    right: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    color: {{ section.settings.text_color }};
+    opacity: 0.6;
+    z-index: 10;
+  }
+
+  .hero-scroll-indicator span {
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
+  }
+
+  .hero-scroll-line {
+    width: 1px;
+    height: 60px;
+    background: currentColor;
+    transform-origin: top;
+  }
+
+  /* Initial animation states - only when JS is ready */
+  .hero-section[data-hero-anim-ready] .hero-media {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  .hero-section.is-ready .hero-media {
+    clip-path: none;
+  }
+</style>
+
+<section
+  class="hero-section is-loading"
+  data-hero-section="{{ section.id }}"
+>
+  {%- comment -%} Background Media {%- endcomment -%}
+  <div class="hero-media" data-hero-media>
+    {% if section.settings.video != blank %}
+      {{ section.settings.video | video_tag:
+        autoplay: true,
+        loop: true,
+        muted: true,
+        playsinline: true,
+        poster: section.settings.image
+      }}
+    {% elsif section.settings.image != blank %}
+      {{ section.settings.image | image_url: width: 2400 | image_tag:
+        class: 'hero-image',
+        loading: 'eager',
+        fetchpriority: 'high',
+        sizes: '100vw',
+        widths: '800, 1200, 1600, 2000, 2400'
+      }}
+    {% else %}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+    {% endif %}
+  </div>
+
+  {%- comment -%} Content {%- endcomment -%}
+  <div class="hero-content {{ container_class }}">
+    {%- comment -%} Title {%- endcomment -%}
+    {% if section.settings.title != blank %}
+      <h1 class="hero-title" data-hero-title>
+        {%- assign title_words = section.settings.title | split: ' ' -%}
+        {%- assign words_per_line = section.settings.words_per_line | default: 2 -%}
+        {%- for word in title_words -%}
+          {%- assign word_index = forloop.index0 | modulo: words_per_line -%}
+          {%- if word_index == 0 -%}
+            <span class="hero-title-line overflow-hidden">
+          {%- endif -%}
+          <span class="inline-block">{{ word }}</span>{% unless forloop.last %} {% endunless %}
+          {%- assign next_index = forloop.index | modulo: words_per_line -%}
+          {%- if next_index == 0 or forloop.last -%}
+            </span>
+          {%- endif -%}
+        {%- endfor -%}
+      </h1>
+    {% endif %}
+
+    {%- comment -%} Subtitle {%- endcomment -%}
+    {% if section.settings.subtitle != blank %}
+      <p class="hero-subtitle" data-hero-subtitle>
+        {{ section.settings.subtitle }}
+      </p>
+    {% endif %}
+
+    {%- comment -%} CTA Button {%- endcomment -%}
+    {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+      <a href="{{ section.settings.button_link }}" class="hero-cta" data-hero-cta>
+        <span>{{ section.settings.button_text }}</span>
+        <i class="ph ph-arrow-right"></i>
+      </a>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Scroll Indicator {%- endcomment -%}
+  {% if section.settings.show_scroll_indicator %}
+    <div class="hero-scroll-indicator" data-hero-scroll>
+      <span>Scroll</span>
+      <div class="hero-scroll-line"></div>
+    </div>
+  {% endif %}
+</section>
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-hero-section="{{ section.id }}"]');
+    if (!section || section.dataset.heroAnimInitialized) return;
+    section.dataset.heroAnimInitialized = 'true';
+
+    // Wait for GSAP
+    function initAnimation() {
+      if (typeof gsap === 'undefined') {
+        requestAnimationFrame(initAnimation);
+        return;
+      }
+
+      // Mark section as ready for animations
+      section.dataset.heroAnimReady = 'true';
+
+      const media = section.querySelector('[data-hero-media]');
+      const title = section.querySelector('[data-hero-title]');
+      const titleSpans = title ? title.querySelectorAll('.hero-title-line .inline-block') : [];
+      const subtitle = section.querySelector('[data-hero-subtitle]');
+      const cta = section.querySelector('[data-hero-cta]');
+      const scroll = section.querySelector('[data-hero-scroll]');
+
+      // Set initial states
+      if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100 });
+      if (subtitle) gsap.set(subtitle, { opacity: 0, y: 30 });
+      if (cta) gsap.set(cta, { opacity: 0, y: 20 });
+      if (scroll) gsap.set(scroll, { opacity: 0 });
+
+      // Create timeline
+      const tl = gsap.timeline({
+        onComplete: () => section.classList.add('is-ready')
+      });
+
+      // Media reveal - dramatic vertical clip
+      if (media) {
+        tl.to(media, {
+          clipPath: 'inset(0 0 0% 0)',
+          duration: 1.6,
+          ease: 'expo.inOut'
+        }, 0);
+      }
+
+      // Title reveal
+      if (titleSpans.length) {
+        tl.to(titleSpans, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.05
+        }, 0.6);
+      }
+
+      // Subtitle
+      if (subtitle) {
+        tl.to(subtitle, {
+          opacity: 0.8,
+          y: 0,
+          duration: 0.8,
+          ease: 'power3.out'
+        }, 1);
+      }
+
+      // CTA
+      if (cta) {
+        tl.to(cta, {
+          opacity: 1,
+          y: 0,
+          duration: 0.6,
+          ease: 'power3.out'
+        }, 1.1);
+      }
+
+      // Scroll indicator
+      if (scroll) {
+        tl.to(scroll, {
+          opacity: 0.6,
+          duration: 0.8,
+          ease: 'power2.out'
+        }, 1.3);
+
+        // Animate scroll line
+        const scrollLine = scroll.querySelector('.hero-scroll-line');
+        if (scrollLine) {
+          tl.fromTo(scrollLine,
+            { scaleY: 0 },
+            { scaleY: 1, duration: 0.8, ease: 'power2.out' },
+            1.4
+          );
+        }
+      }
+
+      // Remove loading class
+      section.classList.remove('is-loading');
+    }
+
+    // Start animation after a short delay to ensure DOM is ready
+    requestAnimationFrame(initAnimation);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Hero",
+  "tag": "section",
+  "class": "hero-section-wrapper",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media"
+    },
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background image"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Background video",
+      "info": "Video will autoplay, muted, and loop. Falls back to image if not provided."
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Overlay opacity"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "default": "Elevate Your Style",
+      "label": "Title"
+    },
+    {
+      "type": "range",
+      "id": "words_per_line",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 2,
+      "label": "Words per line"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "default": "Discover our curated collection of premium products designed for the modern lifestyle.",
+      "label": "Subtitle"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "default": "Shop Now",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text color"
+    },
+    {
+      "type": "color",
+      "id": "button_background",
+      "default": "#ffffff",
+      "label": "Button background"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "default": "#000000",
+      "label": "Button text color"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "Full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_scroll_indicator",
+      "default": true,
+      "label": "Show scroll indicator"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,436 @@
+{%- comment -%}
+  Featured Collection Section - Modern grid with GSAP scroll animations
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'px-4 md:px-8'
+  else
+    assign container_class = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+  endif
+
+  assign collection = section.settings.collection
+  assign products_to_show = section.settings.products_to_show
+-%}
+
+<style>
+  /* ==========================================================================
+     Featured Collection Section
+     ========================================================================== */
+  .featured-collection {
+    padding: clamp(4rem, 10vh, 8rem) 0;
+    background-color: var(--color-background);
+  }
+
+  /* Header */
+  .featured-collection-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: clamp(2rem, 5vh, 4rem);
+  }
+
+  @media (min-width: 768px) {
+    .featured-collection-header {
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: flex-end;
+    }
+  }
+
+  .featured-collection-title {
+    font-size: clamp(2rem, 8vw, 5rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.03em;
+    line-height: 0.9;
+    color: var(--color-text);
+  }
+
+  .featured-collection-title-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .featured-collection-title-line:nth-child(2) {
+    margin-left: clamp(1rem, 8vw, 5rem);
+  }
+
+  .featured-collection-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+  }
+
+  .featured-collection-link:hover {
+    opacity: 1;
+  }
+
+  .featured-collection-link i {
+    transition: transform 0.3s ease;
+  }
+
+  .featured-collection-link:hover i {
+    transform: translateX(4px);
+  }
+
+  /* Product Grid */
+  .featured-collection-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: clamp(1rem, 3vw, 2rem);
+  }
+
+  @media (min-width: 768px) {
+    .featured-collection-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .featured-collection-grid {
+      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    }
+  }
+
+  /* Product Card */
+  .featured-product-card {
+    cursor: pointer;
+  }
+
+  .featured-product-card-image {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+    background-color: var(--color-background-secondary, #f5f5f5);
+  }
+
+  /* Initial animation state - only when JS is ready */
+  .featured-collection[data-fc-anim-ready] .featured-product-card-image {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  .featured-product-card-image img,
+  .featured-product-card-image svg {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.6s ease;
+  }
+
+  .featured-product-card:hover .featured-product-card-image img,
+  .featured-product-card:hover .featured-product-card-image svg {
+    transform: scale(1.05);
+  }
+
+  .featured-product-card-title {
+    margin-top: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--color-text);
+  }
+
+  .featured-product-card-title span {
+    display: inline-block;
+  }
+
+  .featured-product-card-price {
+    margin-top: 0.5rem;
+    font-size: 0.875rem;
+    color: var(--color-text-secondary);
+  }
+
+  .featured-product-card-price span {
+    display: inline-block;
+  }
+
+  .featured-product-card-price .compare-price {
+    text-decoration: line-through;
+    opacity: 0.5;
+    margin-right: 0.5rem;
+  }
+
+  .featured-product-card-price .sale-price {
+    color: var(--color-error, #dc2626);
+  }
+</style>
+
+<section
+  class="featured-collection"
+  data-featured-collection="{{ section.id }}"
+>
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="featured-collection-header">
+      <h2 class="featured-collection-title" data-fc-title>
+        {% if section.settings.title != blank %}
+          {%- assign title_words = section.settings.title | split: ' ' -%}
+          {%- for word in title_words -%}
+            {%- assign line_break = forloop.index | modulo: 2 -%}
+            {%- if forloop.index == 1 or line_break == 1 -%}
+              <span class="featured-collection-title-line overflow-hidden">
+            {%- endif -%}
+            <span class="inline-block">{{ word }}</span>{% unless forloop.last %} {% endunless %}
+            {%- if line_break == 0 or forloop.last -%}
+              </span>
+            {%- endif -%}
+          {%- endfor -%}
+        {% else %}
+          <span class="featured-collection-title-line overflow-hidden">
+            <span class="inline-block">{{ collection.title | default: 'Featured' }}</span>
+          </span>
+        {% endif %}
+      </h2>
+
+      {% if section.settings.show_view_all and collection %}
+        <a href="{{ collection.url }}" class="featured-collection-link" data-fc-link>
+          <span>View All</span>
+          <i class="ph ph-arrow-right"></i>
+        </a>
+      {% endif %}
+    </header>
+
+    {%- comment -%} Product Grid {%- endcomment -%}
+    <div class="featured-collection-grid" data-fc-grid>
+      {% if collection != blank %}
+        {% for product in collection.products limit: products_to_show %}
+          <article
+            class="featured-product-card"
+            data-fc-card="{{ forloop.index0 }}"
+            data-product-url="{{ product.url | within: collection }}"
+          >
+            <div class="featured-product-card-image">
+              {% if product.featured_image %}
+                {{ product.featured_image | image_url: width: 800 | image_tag:
+                  class: 'w-full h-full object-cover',
+                  loading: 'lazy',
+                  sizes: '(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw',
+                  widths: '300, 400, 600, 800'
+                }}
+              {% else %}
+                {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+              {% endif %}
+            </div>
+
+            <h3 class="featured-product-card-title overflow-hidden">
+              {%- assign title_words = product.title | split: ' ' -%}
+              {%- for word in title_words -%}
+                <span>{{ word }}</span>{% unless forloop.last %} {% endunless %}
+              {%- endfor -%}
+            </h3>
+
+            <div class="featured-product-card-price overflow-hidden">
+              {% if product.compare_at_price > product.price %}
+                <span class="compare-price">{{ product.compare_at_price | money }}</span>
+                <span class="sale-price">{{ product.price | money }}</span>
+              {% else %}
+                <span>{{ product.price | money }}</span>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {%- comment -%} Placeholder cards {%- endcomment -%}
+        {% for i in (1..products_to_show) %}
+          {%- assign placeholder_index = forloop.index | modulo: 6 | plus: 1 -%}
+          <article class="featured-product-card" data-fc-card="{{ forloop.index0 }}">
+            <div class="featured-product-card-image">
+              {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full object-cover' }}
+            </div>
+            <h3 class="featured-product-card-title overflow-hidden">
+              <span>Product</span> <span>{{ forloop.index }}</span>
+            </h3>
+            <div class="featured-product-card-price overflow-hidden">
+              <span>$99.00</span>
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+  (function() {
+    const section = document.querySelector('[data-featured-collection="{{ section.id }}"]');
+    if (!section || section.dataset.fcAnimInitialized) return;
+    section.dataset.fcAnimInitialized = 'true';
+
+    function initAnimation() {
+      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+        requestAnimationFrame(initAnimation);
+        return;
+      }
+
+      // Mark section as ready for animations
+      section.dataset.fcAnimReady = 'true';
+
+      const title = section.querySelector('[data-fc-title]');
+      const titleSpans = title ? title.querySelectorAll('.inline-block') : [];
+      const link = section.querySelector('[data-fc-link]');
+      const cards = section.querySelectorAll('[data-fc-card]');
+
+      // Set initial states
+      if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100 });
+      if (link) gsap.set(link, { opacity: 0, x: -20 });
+
+      cards.forEach(card => {
+        const image = card.querySelector('.featured-product-card-image');
+        const titleWords = card.querySelectorAll('.featured-product-card-title span');
+        const price = card.querySelectorAll('.featured-product-card-price span');
+
+        if (image) gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
+        if (titleWords.length) gsap.set(titleWords, { yPercent: 100 });
+        if (price.length) gsap.set(price, { yPercent: 100 });
+      });
+
+      // Header animation with ScrollTrigger
+      const headerTl = gsap.timeline({
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 80%',
+          once: true
+        }
+      });
+
+      if (titleSpans.length) {
+        headerTl.to(titleSpans, {
+          yPercent: 0,
+          duration: 1,
+          ease: 'power4.out',
+          stagger: 0.05
+        }, 0);
+      }
+
+      if (link) {
+        headerTl.to(link, {
+          opacity: 0.7,
+          x: 0,
+          duration: 0.6,
+          ease: 'power3.out'
+        }, 0.3);
+      }
+
+      // Card animations with individual ScrollTriggers
+      cards.forEach((card, index) => {
+        const image = card.querySelector('.featured-product-card-image');
+        const titleWords = card.querySelectorAll('.featured-product-card-title span');
+        const price = card.querySelectorAll('.featured-product-card-price span');
+
+        const cardTl = gsap.timeline({
+          scrollTrigger: {
+            trigger: card,
+            start: 'top 85%',
+            once: true
+          }
+        });
+
+        // Stagger based on position
+        const delay = (index % {{ section.settings.columns }}) * 0.1;
+
+        if (image) {
+          cardTl.to(image, {
+            clipPath: 'inset(0 0% 0 0)',
+            duration: 1.6,
+            ease: 'expo.inOut'
+          }, delay);
+        }
+
+        if (titleWords.length) {
+          cardTl.to(titleWords, {
+            yPercent: 0,
+            duration: 0.8,
+            ease: 'power4.out',
+            stagger: 0.03
+          }, delay + 0.4);
+        }
+
+        if (price.length) {
+          cardTl.to(price, {
+            yPercent: 0,
+            duration: 0.6,
+            ease: 'power4.out',
+            stagger: 0.02
+          }, delay + 0.5);
+        }
+
+        // Click to navigate
+        card.addEventListener('click', () => {
+          const url = card.dataset.productUrl;
+          if (url && window.swupManager) {
+            window.swupManager.navigateTo(url);
+          } else if (url) {
+            window.location.href = url;
+          }
+        });
+      });
+    }
+
+    requestAnimationFrame(initAnimation);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Featured Collection",
+  "tag": "section",
+  "class": "featured-collection-wrapper",
+  "settings": [
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave blank to use collection title"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4,
+      "label": "Products to show"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 4,
+      "label": "Columns (desktop)"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View All' link"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Collection"
+    }
+  ]
+}
+{% endschema %}
