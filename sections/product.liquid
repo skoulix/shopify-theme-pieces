@@ -1,6 +1,6 @@
 {%- comment -%}
-  Product Section - Minimal Skeleton + Tailwind UI Design
-  With intro animations and split text reveal
+  Product Section - Creative Awwwards-style Design
+  Large typography, asymmetric layout, smooth animations
 {%- endcomment -%}
 
 {% assign current_variant = product.selected_or_first_available_variant %}
@@ -14,161 +14,683 @@
 -%}
 
 <style>
-  /* Product intro animation initial states */
-  .product-intro .product-intro-image {
-    clip-path: inset(0 100% 0 0);
-    transform: scale(1.1);
+  /* ==========================================================================
+     Product Hero - Asymmetric Creative Layout
+     ========================================================================== */
+  .product-hero {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 0;
+    position: relative;
+    overflow: hidden;
   }
 
-  .product-intro .product-intro-form {
+  @media (min-width: 1024px) {
+    .product-hero {
+      grid-template-columns: 1.2fr 1fr;
+      min-height: calc(100vh - 80px);
+    }
+  }
+
+  /* Giant product title - staggered lines */
+  .product-title {
+    font-size: clamp(2.5rem, 10vw, 8rem);
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: -0.04em;
+    line-height: 0.85;
+    color: var(--color-text);
+  }
+
+  .product-title-line {
+    display: block;
+    overflow: hidden;
+  }
+
+  .product-title-line:nth-child(2) {
+    margin-left: clamp(1rem, 8vw, 6rem);
+  }
+
+  .product-title-line:nth-child(3) {
+    margin-left: clamp(2rem, 12vw, 10rem);
+  }
+
+  /* Price with artistic treatment */
+  .product-price-display {
+    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-weight: 300;
+    letter-spacing: 0.1em;
+    color: var(--color-text);
+    opacity: 0.6;
+  }
+
+  .product-price-display .compare-price {
+    font-size: 0.5em;
+    text-decoration: line-through;
+    opacity: 0.5;
+    margin-right: 0.5em;
+  }
+
+  /* Image gallery - dramatic reveal */
+  .product-gallery {
+    position: relative;
+    height: 100%;
+    min-height: 50vh;
+  }
+
+  @media (min-width: 1024px) {
+    .product-gallery {
+      min-height: calc(100vh - 80px);
+    }
+  }
+
+  .product-gallery-main {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  .product-gallery-image {
+    position: absolute;
+    inset: 0;
     opacity: 0;
-    transform: translateY(30px);
+    transition: opacity 0.6s ease;
   }
 
-  /* Animated states */
-  .product-intro--animated .product-intro-image {
-    clip-path: inset(0 0% 0 0);
-    transform: scale(1);
-  }
-
-  .product-intro--animated .product-intro-form {
+  .product-gallery-image.is-active {
     opacity: 1;
-    transform: translateY(0);
   }
+
+  .product-gallery-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Image counter */
+  .product-image-counter {
+    position: absolute;
+    bottom: 2rem;
+    left: 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text);
+    mix-blend-mode: difference;
+    z-index: 10;
+  }
+
+  .product-image-counter-current {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+  }
+
+  /* Thumbnails - vertical strip */
+  .product-thumbnails {
+    position: absolute;
+    right: 1.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    z-index: 10;
+  }
+
+  .product-thumbnail {
+    width: 50px;
+    height: 65px;
+    overflow: hidden;
+    cursor: pointer;
+    opacity: 0.4;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    border: 2px solid transparent;
+  }
+
+  .product-thumbnail:hover,
+  .product-thumbnail.is-active {
+    opacity: 1;
+  }
+
+  .product-thumbnail.is-active {
+    border-color: var(--color-text);
+  }
+
+  .product-thumbnail img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  /* Info panel - editorial style */
+  .product-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 2rem;
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .product-info {
+      padding: 4rem;
+      padding-right: 6rem;
+    }
+  }
+
+  /* Description with shuffle effect */
+  .product-description {
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    line-height: 1.8;
+    color: var(--color-text-secondary);
+    max-width: 320px;
+    margin-top: 2rem;
+  }
+
+
+  /* Form styling - minimal */
+  .product-form {
+    margin-top: 3rem;
+  }
+
+  .product-form-group {
+    margin-bottom: 1.5rem;
+  }
+
+  .product-form-label {
+    display: block;
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    color: var(--color-text-secondary);
+    margin-bottom: 0.75rem;
+  }
+
+  .product-form-select {
+    width: 100%;
+    padding: 1rem 0;
+    font-size: 0.875rem;
+    background: transparent;
+    border: none;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    cursor: pointer;
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0 center;
+    background-size: 1.25rem;
+  }
+
+  .product-form-select:focus {
+    outline: none;
+    border-color: var(--color-text);
+  }
+
+  /* Quantity - creative pill design */
+  .product-quantity {
+    display: inline-flex;
+    align-items: center;
+    background: var(--color-background-secondary, #f5f5f5);
+    border-radius: 50px;
+    padding: 0.25rem;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .product-quantity::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50px;
+    border: 1px solid var(--color-border);
+    pointer-events: none;
+  }
+
+  .product-quantity-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    border-radius: 50%;
+    position: relative;
+    z-index: 1;
+  }
+
+  .product-quantity-btn:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+    transform: scale(1.05);
+  }
+
+  .product-quantity-btn:active {
+    transform: scale(0.95);
+  }
+
+  .product-quantity-btn i {
+    font-size: 0.875rem;
+    font-weight: 700;
+  }
+
+  .product-quantity-value {
+    position: relative;
+    width: 3.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  .product-quantity-input {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background: transparent;
+    border: none;
+    color: var(--color-text);
+    -moz-appearance: textfield;
+  }
+
+  .product-quantity-input::-webkit-outer-spin-button,
+  .product-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  .product-quantity-input:focus {
+    outline: none;
+  }
+
+  /* Animated number change */
+  .product-quantity.is-changing .product-quantity-input {
+    animation: quantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  @keyframes quantityPop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.2); }
+    100% { transform: scale(1); }
+  }
+
+  /* Add to cart button - uses global .btn classes, just add margin */
+  .product-add-btn {
+    margin-top: 2rem;
+  }
+
+  .product-add-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .product-add-btn:disabled:hover::before {
+    transform: scaleX(0);
+  }
+
+  .product-add-btn-text {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+  }
+
+  /* Shopify dynamic checkout button - secondary style with fill animation */
+  .shopify-payment-button {
+    margin-top: 0.75rem !important;
+  }
+
+  .shopify-payment-button__button,
+  .shopify-payment-button__button--unbranded {
+    position: relative !important;
+    width: 100% !important;
+    height: auto !important;
+    min-height: unset !important;
+    max-height: unset !important;
+    padding: 1.25rem 2rem !important;
+    font-size: 0.75rem !important;
+    font-weight: 600 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 0.2em !important;
+    line-height: 1 !important;
+    color: var(--color-primary) !important;
+    background: var(--color-primary-contrast) !important;
+    border: 1px solid var(--color-primary) !important;
+    border-radius: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    transition: color 0.4s ease !important;
+  }
+
+  .shopify-payment-button__button::before,
+  .shopify-payment-button__button--unbranded::before {
+    content: '' !important;
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    background: var(--color-primary) !important;
+    transform: scaleX(0) !important;
+    transform-origin: right !important;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    z-index: 0 !important;
+    pointer-events: none !important;
+  }
+
+  .shopify-payment-button__button:hover::before,
+  .shopify-payment-button__button--unbranded:hover::before {
+    transform: scaleX(1) !important;
+    transform-origin: left !important;
+  }
+
+  .shopify-payment-button__button:hover,
+  .shopify-payment-button__button--unbranded:hover,
+  .shopify-payment-button__button:hover span,
+  .shopify-payment-button__button--unbranded:hover span,
+  .shopify-payment-button__button:hover div,
+  .shopify-payment-button__button--unbranded:hover div,
+  .shopify-payment-button__button:hover p,
+  .shopify-payment-button__button--unbranded:hover p,
+  .shopify-payment-button__button:hover *,
+  .shopify-payment-button__button--unbranded:hover *,
+  .shopify-payment-button__button:hover *::before,
+  .shopify-payment-button__button--unbranded:hover *::before,
+  .shopify-payment-button__button:hover *::after,
+  .shopify-payment-button__button--unbranded:hover *::after {
+    color: var(--color-primary-contrast) !important;
+    fill: var(--color-primary-contrast) !important;
+    -webkit-text-fill-color: var(--color-primary-contrast) !important;
+  }
+
+  .shopify-payment-button__button:active,
+  .shopify-payment-button__button--unbranded:active {
+    transform: scale(0.98) !important;
+  }
+
+  .shopify-payment-button__button span,
+  .shopify-payment-button__button--unbranded span,
+  .shopify-payment-button__button div,
+  .shopify-payment-button__button--unbranded div,
+  .shopify-payment-button__button *,
+  .shopify-payment-button__button--unbranded * {
+    position: relative !important;
+    z-index: 1 !important;
+    transition: color 0.4s ease, fill 0.4s ease, -webkit-text-fill-color 0.4s ease !important;
+  }
+
+  /* Vendor tag */
+  .product-vendor {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text-secondary);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .product-vendor::before {
+    content: '';
+    width: 2rem;
+    height: 1px;
+    background: var(--color-text-secondary);
+  }
+
+  /* Scroll indicator - relative position as last item in info panel */
+  .product-scroll-hint {
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    color: var(--color-text-secondary);
+    margin-top: auto;
+    padding-top: 3rem;
+  }
+
+  .product-scroll-hint-line {
+    width: 1px;
+    height: 40px;
+    background: linear-gradient(to bottom, var(--color-text-secondary), transparent);
+  }
+
+  /* Only show on desktop */
+  @media (min-width: 1024px) {
+    .product-scroll-hint {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .product-scroll-hint {
+      display: none;
+    }
+
+    .product-thumbnails {
+      position: relative;
+      right: auto;
+      top: auto;
+      transform: none;
+      flex-direction: row;
+      justify-content: center;
+      padding: 1rem;
+      gap: 0.5rem;
+    }
+
+    .product-thumbnail {
+      width: 40px;
+      height: 52px;
+    }
+
+    .product-image-counter {
+      bottom: auto;
+      top: 1rem;
+      left: 1rem;
+    }
+  }
+
 </style>
 
-<section class="bg-white product-intro" data-product-intro>
-  <div class="{{ container_class }} py-16 sm:py-24">
-    <div class="lg:grid lg:grid-cols-2 lg:items-start lg:gap-x-12">
+<section class="product-hero" data-product-section>
+  {%- comment -%} Image Gallery {%- endcomment -%}
+  <div class="product-gallery">
+    <div class="product-gallery-main" data-gallery-main>
+      {% for image in product.images %}
+        <div class="product-gallery-image{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}">
+          {{ image | image_url: width: 1800 | image_tag:
+            class: '',
+            loading: forloop.first | default: 'lazy',
+            sizes: '(max-width: 1024px) 100vw, 55vw',
+            widths: '600, 900, 1200, 1800'
+          }}
+        </div>
+      {% else %}
+        <div class="product-gallery-image is-active">
+          <div class="w-full h-full flex items-center justify-center bg-gray-100">
+            <i class="ph ph-image text-8xl text-gray-300"></i>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
 
-      {%- comment -%} Product Images {%- endcomment -%}
-      <div class="space-y-4">
-        {% for image in product.images %}
-          <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 product-intro-image">
-            {{ image | image_url: width: 1200 | image_tag:
-              class: 'h-full w-full object-cover object-center',
-              loading: forloop.first | default: 'lazy'
-            }}
-          </div>
-        {% else %}
-          <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100 product-intro-image">
-            <div class="flex h-full items-center justify-center">
-              <i class="ph ph-image text-6xl text-gray-300"></i>
-            </div>
-          </div>
-        {% endfor %}
+    {%- comment -%} Image Counter {%- endcomment -%}
+    {% if product.images.size > 1 %}
+      <div class="product-image-counter" data-image-counter>
+        <span class="product-image-counter-current" data-counter-current>01</span>
+        <span>/</span>
+        <span>{{ product.images.size | prepend: '00' | slice: -2, 2 }}</span>
       </div>
 
-      {%- comment -%} Product Info {%- endcomment -%}
-      <div class="mt-10 px-4 sm:mt-16 sm:px-0 lg:sticky lg:top-24 lg:mt-0">
-        <h1 class="product-intro-title text-3xl md:text-4xl lg:text-5xl font-bold tracking-tight text-gray-900">
-          {%- assign title_words = product.title | split: ' ' -%}
-          {%- for word in title_words -%}
-            <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
-          {%- endfor -%}
-        </h1>
+      {%- comment -%} Thumbnails {%- endcomment -%}
+      <div class="product-thumbnails" data-thumbnails>
+        {% for image in product.images %}
+          <button class="product-thumbnail{% if forloop.first %} is-active{% endif %}" data-thumbnail="{{ forloop.index0 }}">
+            {{ image | image_url: width: 150 | image_tag }}
+          </button>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
 
-        {%- comment -%} Price {%- endcomment -%}
-        <div class="mt-3 product-intro-price" id="product-price">
-          <p class="text-3xl tracking-tight text-gray-900 overflow-hidden" data-product-price>
-            <span class="inline-block">{{ current_variant.price | money }}</span>
-          </p>
-          {% if current_variant.compare_at_price > current_variant.price %}
-            <p class="mt-1 text-sm text-gray-500 line-through overflow-hidden" data-compare-price>
-              <span class="inline-block">{{ current_variant.compare_at_price | money }}</span>
-            </p>
-          {% endif %}
-        </div>
+  {%- comment -%} Product Info {%- endcomment -%}
+  <div class="product-info {{ container_class }}">
+    {%- comment -%} Vendor {%- endcomment -%}
+    {% if product.vendor != blank %}
+      <div class="product-vendor overflow-hidden">
+        <span class="inline-block">{{ product.vendor }}</span>
+      </div>
+    {% endif %}
 
-        {%- comment -%} Description {%- endcomment -%}
-        <div class="mt-6 product-intro-description">
-          <div class="prose prose-sm text-gray-600">
-            {%- assign desc_words = product.description | strip_html | split: ' ' -%}
-            {%- for word in desc_words -%}
-              <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
-            {%- endfor -%}
+    {%- comment -%} Title - Giant Staggered Typography {%- endcomment -%}
+    <h1 class="product-title">
+      {%- assign title_words = product.title | split: ' ' -%}
+      {%- for word in title_words -%}
+        <span class="product-title-line">
+          <span class="inline-block">{{ word }}</span>
+        </span>
+      {%- endfor -%}
+    </h1>
+
+    {%- comment -%} Price {%- endcomment -%}
+    <div class="product-price-display mt-6 overflow-hidden" data-price-display>
+      <span class="inline-block">
+        {% if current_variant.compare_at_price > current_variant.price %}
+          <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+        {% endif %}
+        <span data-product-price>{{ current_variant.price | money }}</span>
+      </span>
+    </div>
+
+    {%- comment -%} Description - Shuffle Text Effect {%- endcomment -%}
+    {% if product.description != blank %}
+      <div class="product-description" data-shuffle-text>
+        {{ product.description | strip_html | truncate: 200 }}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Product Form {%- endcomment -%}
+    <div class="product-form" data-product-form>
+      {% form 'product', product %}
+        {%- comment -%} Variant Selector {%- endcomment -%}
+        {% if product.variants.size > 1 %}
+          <div class="product-form-group">
+            <label for="variant-select" class="product-form-label">Select Option</label>
+            <select id="variant-select" name="id" class="product-form-select">
+              {% for variant in product.variants %}
+                <option
+                  value="{{ variant.id }}"
+                  {% if variant == current_variant %}selected{% endif %}
+                  {% unless variant.available %}disabled{% endunless %}
+                >
+                  {{ variant.title }}{% unless variant.available %} — Sold Out{% endunless %}
+                </option>
+              {% endfor %}
+            </select>
           </div>
-        </div>
+        {% else %}
+          <input type="hidden" name="id" value="{{ current_variant.id }}">
+        {% endif %}
 
-        {%- comment -%} Product Form {%- endcomment -%}
-        <div class="mt-8 product-intro-form">
-          {% form 'product', product %}
-            {%- comment -%} Variant Selector {%- endcomment -%}
-            <div class="mb-6">
-              <label for="variant-select" class="block text-sm font-medium text-gray-700">Options</label>
-              <select
-                id="variant-select"
-                name="id"
-                class="mt-2 block w-full rounded-md border-0 py-3 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
-              >
-                {% for variant in product.variants %}
-                  <option
-                    value="{{ variant.id }}"
-                    {% if variant == current_variant %}selected{% endif %}
-                  >
-                    {{ variant.title }} - {{ variant.price | money }}
-                  </option>
-                {% endfor %}
-              </select>
-            </div>
-
-            {%- comment -%} Quantity {%- endcomment -%}
-            <div class="mb-6">
-              <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+        {%- comment -%} Quantity {%- endcomment -%}
+        <div class="product-form-group">
+          <label class="product-form-label">Quantity</label>
+          <div class="product-quantity" data-quantity-wrapper>
+            <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
+              <i class="ph ph-minus"></i>
+            </button>
+            <div class="product-quantity-value">
               <input
                 type="number"
                 id="quantity"
                 name="quantity"
                 value="1"
                 min="1"
-                class="mt-2 block w-20 rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                class="product-quantity-input"
+                data-quantity-input
+                aria-label="Quantity"
               >
             </div>
-
-            {%- comment -%} Add to Cart Button {%- endcomment -%}
-            <button
-              type="submit"
-              data-add-to-cart
-              class="flex w-full items-center justify-center rounded-md border border-transparent bg-indigo-600 px-8 py-3 text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 disabled:bg-gray-300 disabled:cursor-not-allowed"
-              {% unless current_variant.available %}disabled{% endunless %}
-            >
-              {% if current_variant.available %}
-                <i class="ph ph-bag mr-2"></i>Add to cart
-              {% else %}
-                Sold out
-              {% endif %}
+            <button type="button" class="product-quantity-btn" data-quantity-plus aria-label="Increase quantity">
+              <i class="ph ph-plus"></i>
             </button>
-
-            {%- comment -%} Dynamic Checkout {%- endcomment -%}
-            <div class="mt-4 [&_.shopify-payment-button__button]:rounded-md [&_.shopify-payment-button__button]:py-3">
-              {{ form | payment_button }}
-            </div>
-          {% endform %}
+          </div>
         </div>
-      </div>
 
+        {%- comment -%} Add to Cart {%- endcomment -%}
+        <button
+          type="submit"
+          class="btn btn--primary btn--full product-add-btn"
+          data-add-to-cart
+          {% unless current_variant.available %}disabled{% endunless %}
+        >
+          <span class="product-add-btn-text">
+            {% if current_variant.available %}
+              <i class="ph ph-bag"></i>
+              <span>Add to Cart</span>
+            {% else %}
+              <span>Sold Out</span>
+            {% endif %}
+          </span>
+        </button>
+
+        {%- comment -%} Dynamic Checkout - styled as secondary button {%- endcomment -%}
+        <div class="shopify-payment-button-wrapper">
+          {{ form | payment_button }}
+        </div>
+      {% endform %}
+    </div>
+
+    {%- comment -%} Scroll Hint - relative as last item {%- endcomment -%}
+    <div class="product-scroll-hint">
+      <span>Scroll</span>
+      <div class="product-scroll-hint-line"></div>
     </div>
   </div>
 </section>
 
 <script>
-  (function() {
-    const variants = {{ product.variants | json }};
-    const moneyFormat = {{ shop.money_format | json }};
-    const select = document.getElementById('variant-select');
-    const priceEl = document.querySelector('[data-product-price]');
-    const compareEl = document.querySelector('[data-compare-price]');
-    const addButton = document.querySelector('[data-add-to-cart]');
+(function() {
+  const section = document.querySelector('[data-product-section]');
+  if (!section) return;
 
-    function formatMoney(cents) {
-      const amount = (cents / 100).toFixed(2);
-      return moneyFormat.replace(/\{\{\s*amount\s*\}\}/, amount)
-                        .replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(cents / 100))
-                        .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, amount.replace('.', ','));
-    }
+  // Variant handling
+  const variants = {{ product.variants | json }};
+  const moneyFormat = {{ shop.money_format | json }};
+  const select = document.getElementById('variant-select');
+  const priceEl = section.querySelector('[data-product-price]');
+  const compareEl = section.querySelector('[data-compare-price]');
+  const addButton = section.querySelector('[data-add-to-cart]');
 
-    if (!select) return;
+  function formatMoney(cents) {
+    const amount = (cents / 100).toFixed(2);
+    return moneyFormat.replace(/\{\{\s*amount\s*\}\}/, amount)
+                      .replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(cents / 100))
+                      .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, amount.replace('.', ','));
+  }
 
+  if (select) {
     select.addEventListener('change', function() {
       const variant = variants.find(v => v.id === parseInt(this.value));
       if (!variant) return;
@@ -192,122 +714,377 @@
       if (addButton) {
         if (variant.available) {
           addButton.disabled = false;
-          addButton.innerHTML = '<i class="ph ph-bag mr-2"></i>Add to cart';
+          addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>Add to Cart</span>';
         } else {
           addButton.disabled = true;
-          addButton.textContent = 'Sold out';
+          addButton.querySelector('.product-add-btn-text').innerHTML = '<span>Sold Out</span>';
         }
       }
 
-      // Update URL with variant
+      // Update URL
       const url = new URL(window.location);
       url.searchParams.set('variant', variant.id);
       window.history.replaceState({}, '', url);
     });
-  })();
+  }
+
+  // Quantity buttons with animation
+  const quantityWrapper = section.querySelector('[data-quantity-wrapper]');
+  const quantityInput = section.querySelector('[data-quantity-input]');
+  const minusBtn = section.querySelector('[data-quantity-minus]');
+  const plusBtn = section.querySelector('[data-quantity-plus]');
+
+  function animateQuantityChange() {
+    if (quantityWrapper) {
+      quantityWrapper.classList.remove('is-changing');
+      // Trigger reflow
+      void quantityWrapper.offsetWidth;
+      quantityWrapper.classList.add('is-changing');
+    }
+  }
+
+  if (minusBtn && plusBtn && quantityInput) {
+    minusBtn.addEventListener('click', () => {
+      const val = parseInt(quantityInput.value) || 1;
+      if (val > 1) {
+        quantityInput.value = val - 1;
+        animateQuantityChange();
+      }
+    });
+
+    plusBtn.addEventListener('click', () => {
+      const val = parseInt(quantityInput.value) || 1;
+      quantityInput.value = val + 1;
+      animateQuantityChange();
+    });
+
+    // Also animate on direct input change
+    quantityInput.addEventListener('change', animateQuantityChange);
+  }
+
+  // Image gallery
+  const galleryImages = section.querySelectorAll('[data-gallery-image]');
+  const thumbnails = section.querySelectorAll('[data-thumbnail]');
+  const counterCurrent = section.querySelector('[data-counter-current]');
+  let currentImageIndex = 0;
+
+  function showImage(index) {
+    galleryImages.forEach((img, i) => {
+      img.classList.toggle('is-active', i === index);
+    });
+    thumbnails.forEach((thumb, i) => {
+      thumb.classList.toggle('is-active', i === index);
+    });
+    if (counterCurrent) {
+      counterCurrent.textContent = String(index + 1).padStart(2, '0');
+    }
+    currentImageIndex = index;
+  }
+
+  thumbnails.forEach((thumb, index) => {
+    thumb.addEventListener('click', () => showImage(index));
+  });
+
+  // Click on main image to cycle
+  const galleryMain = section.querySelector('[data-gallery-main]');
+  if (galleryMain && galleryImages.length > 1) {
+    galleryMain.style.cursor = 'pointer';
+    galleryMain.addEventListener('click', () => {
+      const nextIndex = (currentImageIndex + 1) % galleryImages.length;
+      showImage(nextIndex);
+    });
+  }
+})();
 </script>
 
 <script>
-  /**
-   * Product Intro Animation
-   * Split text reveal effect with GSAP
-   */
-  (function() {
-    function initProductIntro() {
-      const section = document.querySelector('[data-product-intro]');
-      if (!section) return;
-      if (section.dataset.introInitialized) return;
+/**
+ * Product Hero Animation
+ * Awwwards-style intro with GSAP
+ */
+(function() {
+  function initProductAnimation() {
+    const section = document.querySelector('[data-product-section]');
+    if (!section) return;
+    if (section.dataset.animInitialized) return;
 
-      // Check for GSAP - wait if not loaded yet
-      let gsap = window.gsap;
-      if (!gsap && window.pieces && window.pieces.gsap) {
-        gsap = window.pieces.gsap;
-      }
+    // Check for GSAP
+    let gsap = window.gsap;
+    if (!gsap && window.pieces && window.pieces.gsap) {
+      gsap = window.pieces.gsap;
+    }
 
-      if (!gsap) {
-        // GSAP not loaded yet, retry shortly
-        setTimeout(initProductIntro, 50);
-        return;
-      }
+    if (!gsap) {
+      setTimeout(initProductAnimation, 50);
+      return;
+    }
 
-      section.dataset.introInitialized = 'true';
+    section.dataset.animInitialized = 'true';
 
-      const images = section.querySelectorAll('.product-intro-image');
-      const titleSpans = section.querySelectorAll('.product-intro-title .overflow-hidden span');
-      const priceSpans = section.querySelectorAll('.product-intro-price .overflow-hidden span');
-      const descSpans = section.querySelectorAll('.product-intro-description .overflow-hidden span');
-      const form = section.querySelector('.product-intro-form');
+    const galleryMain = section.querySelector('[data-gallery-main]');
+    const titleLines = section.querySelectorAll('.product-title-line > span');
+    const vendor = section.querySelector('.product-vendor');
+    const priceDisplay = section.querySelector('[data-price-display]');
+    const description = section.querySelector('[data-shuffle-text]');
+    const form = section.querySelector('[data-product-form]');
+    const thumbnails = section.querySelector('[data-thumbnails]');
+    const counter = section.querySelector('[data-image-counter]');
+    const scrollHint = section.querySelector('.product-scroll-hint');
 
-      // Create timeline
-      const tl = gsap.timeline({
-        onComplete: () => section.classList.add('product-intro--animated')
-      });
+    // Set initial animation states via GSAP (not CSS class, for reliability)
+    if (galleryMain) {
+      gsap.set(galleryMain, { clipPath: 'inset(0 100% 0 0)' });
+    }
+    if (titleLines.length) {
+      gsap.set(titleLines, { yPercent: 100 });
+    }
+    if (vendor) {
+      gsap.set(vendor, { opacity: 0, y: 20 });
+    }
+    if (priceDisplay) {
+      const priceSpan = priceDisplay.querySelector('.inline-block');
+      if (priceSpan) gsap.set(priceSpan, { yPercent: 100 });
+    }
+    if (description) {
+      gsap.set(description, { opacity: 0, y: 20 });
+    }
+    if (form) {
+      gsap.set(form, { opacity: 0, y: 20 });
+    }
+    if (thumbnails) {
+      gsap.set(thumbnails, { opacity: 0, y: 20 });
+    }
+    if (counter) {
+      gsap.set(counter, { opacity: 0, y: 20 });
+    }
+    if (scrollHint) {
+      gsap.set(scrollHint, { opacity: 0 });
+    }
 
-      // Small delay to ensure page is ready
-      tl.addLabel('start', 0.1);
+    const tl = gsap.timeline();
 
-      // Animate images with clip-path reveal
-      if (images.length) {
-        tl.to(images, {
-          clipPath: 'inset(0 0% 0 0)',
-          scale: 1,
-          duration: 1,
-          ease: 'expo.out',
-          stagger: 0.1
-        }, 'start');
-      }
+    // Image reveal - dramatic clip-path
+    if (galleryMain) {
+      tl.to(galleryMain, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.4,
+        ease: 'expo.out'
+      }, 0);
+    }
 
-      // Split text reveal for title - using yPercent
-      if (titleSpans.length) {
-        gsap.set(titleSpans, { yPercent: 100 });
-        tl.to(titleSpans, {
-          yPercent: 0,
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.1
-        }, 'start+=0.2');
-      }
+    // Title reveal - staggered from bottom
+    if (titleLines.length) {
+      tl.to(titleLines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1
+      }, 0.3);
+    }
 
-      // Split text reveal for price
-      if (priceSpans.length) {
-        gsap.set(priceSpans, { yPercent: 100 });
-        tl.to(priceSpans, {
+    // Vendor fade in
+    if (vendor) {
+      tl.to(vendor, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.5);
+    }
+
+    // Price reveal
+    if (priceDisplay) {
+      const priceSpan = priceDisplay.querySelector('.inline-block');
+      if (priceSpan) {
+        tl.to(priceSpan, {
           yPercent: 0,
           duration: 0.8,
-          ease: 'power4.out',
-          stagger: 0.05
-        }, 'start+=0.4');
-      }
-
-      // Split text reveal for description
-      if (descSpans.length) {
-        gsap.set(descSpans, { yPercent: 100 });
-        tl.to(descSpans, {
-          yPercent: 0,
-          duration: 0.8,
-          ease: 'power4.out',
-          stagger: 0.01
-        }, 'start+=0.5');
-      }
-
-      // Animate form
-      if (form) {
-        tl.to(form, {
-          y: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, 'start+=0.7');
+          ease: 'power4.out'
+        }, 0.6);
       }
     }
 
-    // Run when DOM is ready
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initProductIntro);
-    } else {
-      initProductIntro();
+    // Description - text shuffle effect
+    if (description) {
+      const originalText = description.textContent.trim();
+      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+
+      // Start scrambled
+      description.textContent = originalText.split('').map(char =>
+        char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+      ).join('');
+
+      tl.to(description, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, 0.7);
+
+      // Shuffle animation
+      const shuffleObj = { progress: 0 };
+      tl.to(shuffleObj, {
+        progress: 1,
+        duration: 1.5,
+        ease: 'none',
+        onUpdate: () => {
+          const progress = shuffleObj.progress;
+          const revealedCount = Math.floor(progress * originalText.length);
+          description.textContent = originalText.split('').map((char, i) => {
+            if (char === ' ') return ' ';
+            if (i < revealedCount) return char;
+            return chars[Math.floor(Math.random() * chars.length)];
+          }).join('');
+        },
+        onComplete: () => {
+          description.textContent = originalText;
+        }
+      }, 0.8);
     }
-  })();
+
+    // Form fade in
+    if (form) {
+      tl.to(form, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.9);
+    }
+
+    // Thumbnails and counter
+    if (thumbnails) {
+      tl.to(thumbnails, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, 1);
+    }
+
+    if (counter) {
+      tl.to(counter, {
+        opacity: 1,
+        y: 0,
+        duration: 0.6,
+        ease: 'power3.out'
+      }, 1);
+    }
+
+    // Scroll hint
+    if (scrollHint) {
+      tl.to(scrollHint, {
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, 1.2);
+    }
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initProductAnimation);
+  } else {
+    initProductAnimation();
+  }
+
+  // Reinitialize after Swup
+  window.addEventListener('swup:contentReplaced', () => {
+    requestAnimationFrame(initProductAnimation);
+  });
+})();
+</script>
+
+<script>
+/**
+ * Shopify Buy Button Hover Effect
+ * Uses JavaScript to handle hover since button is dynamically loaded
+ */
+(function() {
+  function setupBuyButton() {
+    const buyButtonWrapper = document.querySelector('shopify-buy-it-now-button');
+    if (!buyButtonWrapper) {
+      setTimeout(setupBuyButton, 100);
+      return;
+    }
+
+    const button = buyButtonWrapper.querySelector('button');
+    if (!button) {
+      setTimeout(setupBuyButton, 100);
+      return;
+    }
+
+    // Check if already set up
+    if (button.dataset.piecesHover) return;
+    button.dataset.piecesHover = 'true';
+
+    // Create the fill overlay element
+    const fillOverlay = document.createElement('span');
+    fillOverlay.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: var(--color-primary);
+      transform: scaleX(0);
+      transform-origin: right;
+      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+      z-index: 0;
+      pointer-events: none;
+    `;
+
+    // Wrap button text in a span for z-index control
+    const buttonText = button.textContent;
+    button.textContent = '';
+
+    const textSpan = document.createElement('span');
+    textSpan.textContent = buttonText;
+    textSpan.style.cssText = `
+      position: relative;
+      z-index: 1;
+      transition: color 0.4s ease;
+    `;
+
+    button.appendChild(fillOverlay);
+    button.appendChild(textSpan);
+
+    // Add hover listeners
+    button.addEventListener('mouseenter', () => {
+      fillOverlay.style.transformOrigin = 'left';
+      fillOverlay.style.transform = 'scaleX(1)';
+      textSpan.style.color = 'var(--color-primary-contrast)';
+    });
+
+    button.addEventListener('mouseleave', () => {
+      fillOverlay.style.transformOrigin = 'right';
+      fillOverlay.style.transform = 'scaleX(0)';
+      textSpan.style.color = '';
+    });
+  }
+
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setupBuyButton);
+  } else {
+    setupBuyButton();
+  }
+
+  // Watch for dynamic insertion of the button
+  const observer = new MutationObserver(() => {
+    const buyButtonWrapper = document.querySelector('shopify-buy-it-now-button');
+    if (buyButtonWrapper && buyButtonWrapper.querySelector('button')) {
+      setupBuyButton();
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+
+  // Reinitialize after Swup page transitions
+  window.addEventListener('swup:contentReplaced', () => {
+    setTimeout(setupBuyButton, 100);
+  });
+})();
 </script>
 
 {% schema %}

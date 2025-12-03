@@ -393,7 +393,7 @@
           {% if paginate.next %}
             <button
               type="button"
-              class="load-more-btn btn-secondary px-8 py-4 text-sm font-medium transition-colors hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-contrast)] hover:border-[var(--color-primary)] min-w-[140px]"
+              class="load-more-btn btn btn--secondary"
               data-next-url="{{ paginate.next.url }}"
             >
               <span class="load-more-text">Load More</span>
@@ -412,10 +412,11 @@
         </div>
       {% else %}
         {%- comment -%} Previous / Next Navigation {%- endcomment -%}
-        <nav class="flex items-center justify-center gap-2 py-16 {{ container_class }}">
+        <nav class="flex items-center justify-center gap-4 py-16 {{ container_class }}">
           {% if paginate.previous %}
-            <a href="{{ paginate.previous.url }}" class="btn-secondary px-6 py-3 text-sm transition-colors hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-contrast)] hover:border-[var(--color-primary)]">
-              <i class="ph ph-arrow-left mr-2"></i>Previous
+            <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
+              <i class="ph ph-arrow-left"></i>
+              <span>Previous</span>
             </a>
           {% endif %}
 
@@ -424,8 +425,9 @@
           </span>
 
           {% if paginate.next %}
-            <a href="{{ paginate.next.url }}" class="btn-secondary px-6 py-3 text-sm transition-colors hover:bg-[var(--color-primary)] hover:text-[var(--color-primary-contrast)] hover:border-[var(--color-primary)]">
-              Next<i class="ph ph-arrow-right ml-2"></i>
+            <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
+              <span>Next</span>
+              <i class="ph ph-arrow-right"></i>
             </a>
           {% endif %}
         </nav>

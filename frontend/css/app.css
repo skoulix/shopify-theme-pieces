@@ -75,6 +75,115 @@
   .visually-hidden {
     @apply sr-only;
   }
+
+  /* ==========================================================================
+     Button System - Primary & Secondary with Fill Hover Effect
+     ========================================================================== */
+
+  /* Base button styles */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    border: none;
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.4s ease;
+    text-decoration: none;
+  }
+
+  .btn span,
+  .btn > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+
+  .btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Primary Button - Dark background, light text → Light fill, dark text */
+  .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+  }
+
+  .btn--primary span,
+  .btn--primary i,
+  .btn--primary > * {
+    transition: color 0.4s ease;
+  }
+
+  .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+
+  .btn--primary:hover,
+  .btn--primary:hover span,
+  .btn--primary:hover i,
+  .btn--primary:hover > * {
+    color: var(--color-primary);
+  }
+
+  /* Secondary Button - Light background with border, dark text → Dark fill, light text */
+  .btn--secondary {
+    color: var(--color-primary);
+    background: transparent;
+    border: 1px solid var(--color-primary);
+  }
+
+  .btn--secondary span,
+  .btn--secondary i,
+  .btn--secondary * {
+    transition: color 0.4s ease;
+  }
+
+  .btn--secondary::before {
+    background: var(--color-primary);
+  }
+
+  .btn--secondary:hover,
+  .btn--secondary:hover span,
+  .btn--secondary:hover i,
+  .btn--secondary:hover * {
+    color: var(--color-primary-contrast);
+  }
+
+  /* Full width modifier */
+  .btn--full {
+    width: 100%;
+  }
+
+  /* Small button modifier */
+  .btn--sm {
+    padding: 0.875rem 1.5rem;
+    font-size: 0.6875rem;
+  }
+
+  /* Large button modifier */
+  .btn--lg {
+    padding: 1.5rem 2.5rem;
+    font-size: 0.875rem;
+  }
 }
 
 /* ==========================================================================

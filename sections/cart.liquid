@@ -62,22 +62,22 @@
           </div>
           <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
 
-          <div class="mt-6 flex flex-col gap-4">
-            <button
-              type="submit"
-              name="update"
-              class="flex items-center justify-center rounded-md border border-gray-300 bg-white px-6 py-3 text-base font-medium text-gray-700 hover:bg-gray-50"
-            >
-              <i class="ph ph-arrows-clockwise mr-2"></i>
-              {{ 'cart.update' | t }}
-            </button>
+          <div class="mt-6 flex flex-col gap-3">
             <button
               type="submit"
               name="checkout"
-              class="flex items-center justify-center rounded-md border border-transparent bg-indigo-600 px-6 py-3 text-base font-medium text-white hover:bg-indigo-700"
+              class="btn btn--primary btn--full"
             >
-              <i class="ph ph-credit-card mr-2"></i>
-              {{ 'cart.checkout' | t }}
+              <i class="ph ph-credit-card"></i>
+              <span>{{ 'cart.checkout' | t }}</span>
+            </button>
+            <button
+              type="submit"
+              name="update"
+              class="btn btn--secondary btn--full"
+            >
+              <i class="ph ph-arrows-clockwise"></i>
+              <span>{{ 'cart.update' | t }}</span>
             </button>
           </div>
         </div>
