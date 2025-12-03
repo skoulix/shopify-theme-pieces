@@ -92,7 +92,7 @@
 
   .collection-header-description {
     margin-top: 2rem;
-    max-width: 280px;
+    max-width: 380px;
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -406,7 +406,7 @@
               </span>
             </button>
           {% endif %}
-          <span class="mt-4 text-sm text-gray-500">
+          <span class="mt-4 text-sm text-gray-500" data-products-showing>
             Showing {{ paginate.current_offset | plus: 1 }}-{{ paginate.current_offset | plus: paginate.page_size | at_most: paginate.items }} of {{ paginate.items }} products
           </span>
         </div>
@@ -569,8 +569,8 @@
       if (imgWrap) {
         tl.to(imgWrap, {
           clipPath: 'inset(0 0% 0 0)',
-          duration: 0.8,
-          ease: 'power3.out'
+          duration: 1.6,
+          ease: 'expo.inOut'
         }, 0);
       }
 
@@ -601,8 +601,8 @@
       if (inner) {
         gsap.to(inner, {
           clipPath: 'inset(0 0% 0 0)',
-          duration: 1,
-          ease: 'power3.out'
+          duration: 1.6,
+          ease: 'expo.inOut'
         });
       }
     }
@@ -823,6 +823,28 @@
         tl.to(headerDesc, {
           opacity: 0,
           y: -20,
+          duration: 0.4,
+          ease: 'power4.in'
+        }, 0);
+      }
+
+      // Animate out "Showing X products" text
+      const productsShowing = wrapper.querySelector('[data-products-showing]');
+      if (productsShowing) {
+        tl.to(productsShowing, {
+          opacity: 0,
+          y: 20,
+          duration: 0.4,
+          ease: 'power4.in'
+        }, 0);
+      }
+
+      // Animate out Load More button
+      const loadMoreBtn = wrapper.querySelector('.load-more-btn');
+      if (loadMoreBtn) {
+        tl.to(loadMoreBtn, {
+          opacity: 0,
+          y: 20,
           duration: 0.4,
           ease: 'power4.in'
         }, 0);
