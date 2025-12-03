@@ -54,11 +54,14 @@
 
     {% sections 'header-group' %}
 
-    <main id="main" tabindex="-1">
-      <div id="swup-container">
-        {{ content_for_layout }}
-      </div>
-    </main>
+    {%- comment -%} Main content wrapper for sticky footer reveal effect {%- endcomment -%}
+    <div class="site-content" data-site-content>
+      <main id="main" tabindex="-1">
+        <div id="swup-container">
+          {{ content_for_layout }}
+        </div>
+      </main>
+    </div>
 
     {% sections 'footer-group' %}
 

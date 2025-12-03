@@ -16,6 +16,23 @@
      Footer Section - Custom CSS for animations and clamp()
      ========================================================================== */
 
+  /* Sticky reveal footer - fixed at bottom, revealed as content scrolls past */
+  .footer-wrapper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 0;
+  }
+
+  /* Main content sits above footer and has bottom margin for reveal */
+  .site-content {
+    position: relative;
+    z-index: 1;
+    background-color: var(--color-background);
+    margin-bottom: var(--footer-height, 0px);
+  }
+
   /* Footer padding - requires clamp() */
   .footer-section {
     padding: clamp(4rem, 10vh, 8rem) 0 clamp(2rem, 4vh, 3rem);
@@ -119,6 +136,7 @@
   }
 </style>
 
+<div class="footer-wrapper" data-footer-wrapper>
 <footer class="footer-section" data-footer-section>
   <div class="{{ container_class }}">
     {%- comment -%} Upper Footer Content - Newsletter & Navigation {%- endcomment -%}
@@ -282,12 +300,33 @@
     {% endif %}
   </div>
 </footer>
+</div>
 
 <script>
 (function() {
+  const footerWrapper = document.querySelector('[data-footer-wrapper]');
   const footer = document.querySelector('[data-footer-section]');
   if (!footer || footer.dataset.footerInitialized) return;
   footer.dataset.footerInitialized = 'true';
+
+  // Calculate and set footer height for sticky reveal effect
+  function updateFooterHeight() {
+    if (footerWrapper) {
+      const footerHeight = footerWrapper.offsetHeight;
+      document.documentElement.style.setProperty('--footer-height', `${footerHeight}px`);
+    }
+  }
+
+  // Initial calculation
+  updateFooterHeight();
+
+  // Recalculate on resize
+  window.addEventListener('resize', updateFooterHeight);
+
+  // Recalculate after Swup page transitions
+  window.addEventListener('swup:contentReplaced', () => {
+    requestAnimationFrame(updateFooterHeight);
+  });
 
   // Back to top functionality
   const backToTopButtons = footer.querySelectorAll('[data-back-to-top]');
