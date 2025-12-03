@@ -12,6 +12,25 @@
 -%}
 
 <style>
+  /* Reading Progress Bar */
+  .article-progress {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 3px;
+    z-index: 9999;
+    background: transparent;
+    pointer-events: none;
+  }
+
+  .article-progress-bar {
+    height: 100%;
+    width: 0%;
+    background: var(--color-primary);
+    transition: width 0.1s ease-out;
+  }
+
   /* Article Hero */
   .article-hero {
     position: relative;
@@ -63,12 +82,24 @@
   }
 
   .article-hero-title {
-    font-size: clamp(2rem, 6vw, 4.5rem);
+    font-size: clamp(1.75rem, 5vw, 2.75rem);
     font-weight: 700;
     line-height: 1.05;
     letter-spacing: -0.03em;
     color: var(--color-text);
     max-width: 900px;
+  }
+
+  @media (min-width: 1024px) {
+    .article-hero-title {
+      font-size: clamp(2.5rem, 4vw, 3.5rem);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .article-hero-title {
+      font-size: clamp(3rem, 3.5vw, 4rem);
+    }
   }
 
   .article-hero-title-line {
@@ -250,18 +281,35 @@
   }
 
   .article-nav-item--next .article-nav-label {
-    flex-direction: row-reverse;
+    /* Arrow comes after "Next" text naturally */
   }
 
-  .article-nav-title {
+  .article-nav-link {
+    text-decoration: none;
+    color: inherit;
+  }
+
+  .article-nav-label i {
+    transition: transform 0.3s ease;
+  }
+
+  .article-nav-item:hover .article-nav-label .ph-arrow-left {
+    transform: translateX(-4px);
+  }
+
+  .article-nav-item:hover .article-nav-label .ph-arrow-right {
+    transform: translateX(4px);
+  }
+
+  .article-nav-title-text {
     font-size: 1rem;
     font-weight: 600;
     color: var(--color-text);
     transition: color 0.3s ease;
   }
 
-  .article-nav-item:hover .article-nav-title {
-    color: var(--color-text-secondary);
+  .article-nav-link:hover .article-nav-title-text {
+    color: var(--color-primary);
   }
 
   /* Comments Section */
@@ -381,6 +429,11 @@
   }
 </style>
 
+{%- comment -%} Reading Progress Bar {%- endcomment -%}
+<div class="article-progress" data-article-progress>
+  <div class="article-progress-bar" data-article-progress-bar></div>
+</div>
+
 <article class="article-wrapper is-loading" data-article-wrapper>
   {%- comment -%} Hero Section {%- endcomment -%}
   <header class="article-hero">
@@ -488,24 +541,24 @@
       {% if blog.previous_article or blog.next_article %}
         <nav class="article-nav">
           {% if blog.previous_article %}
-            <a href="{{ blog.previous_article.url }}" class="article-nav-item">
+            <a href="{{ blog.previous_article.url }}" class="article-nav-item article-nav-link">
               <span class="article-nav-label">
                 <i class="ph ph-arrow-left"></i>
                 Previous
               </span>
-              <span class="article-nav-title">{{ blog.previous_article.title | truncate: 50 }}</span>
+              <span class="article-nav-title-text">{{ blog.previous_article.title | truncate: 50 }}</span>
             </a>
           {% else %}
             <div></div>
           {% endif %}
 
           {% if blog.next_article %}
-            <a href="{{ blog.next_article.url }}" class="article-nav-item article-nav-item--next">
+            <a href="{{ blog.next_article.url }}" class="article-nav-item article-nav-item--next article-nav-link">
               <span class="article-nav-label">
                 Next
                 <i class="ph ph-arrow-right"></i>
               </span>
-              <span class="article-nav-title">{{ blog.next_article.title | truncate: 50 }}</span>
+              <span class="article-nav-title-text">{{ blog.next_article.title | truncate: 50 }}</span>
             </a>
           {% endif %}
         </nav>
@@ -718,22 +771,88 @@
     });
   }
 
+  // Reading Progress Bar
+  function initProgressBar() {
+    const progressBar = document.querySelector('[data-article-progress-bar]');
+    const wrapper = document.querySelector('[data-article-wrapper]');
+    if (!progressBar || !wrapper) return;
+
+    // Track if we've cleaned up
+    let isDestroyed = false;
+
+    function updateProgress() {
+      if (isDestroyed) return;
+
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const wrapperTop = window.scrollY + wrapperRect.top;
+      const wrapperHeight = wrapper.offsetHeight;
+      const windowHeight = window.innerHeight;
+      const scrollY = window.scrollY;
+
+      // Calculate progress based on article content
+      const start = wrapperTop;
+      const end = wrapperTop + wrapperHeight - windowHeight;
+      const current = scrollY;
+
+      let progress = 0;
+      if (current >= start && current <= end) {
+        progress = ((current - start) / (end - start)) * 100;
+      } else if (current > end) {
+        progress = 100;
+      }
+
+      progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
+    }
+
+    // Use requestAnimationFrame for smooth updates
+    let ticking = false;
+    function onScroll() {
+      if (!ticking) {
+        requestAnimationFrame(() => {
+          updateProgress();
+          ticking = false;
+        });
+        ticking = true;
+      }
+    }
+
+    window.addEventListener('scroll', onScroll, { passive: true });
+    updateProgress(); // Initial update
+
+    // Cleanup function for Swup navigation
+    function cleanup() {
+      isDestroyed = true;
+      window.removeEventListener('scroll', onScroll);
+    }
+
+    // Store cleanup function
+    window._articleProgressCleanup = cleanup;
+  }
+
   // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => {
       initArticleAnimation();
       initCopyLink();
+      initProgressBar();
     });
   } else {
     initArticleAnimation();
     initCopyLink();
+    initProgressBar();
   }
 
   // Reinitialize after Swup
   window.addEventListener('swup:contentReplaced', () => {
+    // Cleanup previous progress bar listener
+    if (window._articleProgressCleanup) {
+      window._articleProgressCleanup();
+    }
+
     requestAnimationFrame(() => {
       initArticleAnimation();
       initCopyLink();
+      initProgressBar();
     });
   });
 })();

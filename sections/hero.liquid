@@ -17,11 +17,18 @@
      ========================================================================== */
   .hero-section {
     position: relative;
-    min-height: 100vh;
+    min-height: 100svh;
     display: flex;
     align-items: flex-end;
     overflow: hidden;
     background-color: var(--color-background);
+  }
+
+  /* Fallback for browsers that don't support svh */
+  @supports not (min-height: 100svh) {
+    .hero-section {
+      min-height: 100vh;
+    }
   }
 
   .hero-section.is-loading .hero-content {
@@ -72,12 +79,24 @@
 
   /* Title Styling */
   .hero-title {
-    font-size: clamp(3rem, 15vw, 12rem);
+    font-size: clamp(2.5rem, 12vw, 5rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.04em;
     line-height: 0.85;
     color: {{ section.settings.text_color }};
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: clamp(4rem, 8vw, 7rem);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .hero-title {
+      font-size: clamp(5rem, 8vw, 9rem);
+    }
   }
 
   .hero-title-line {
@@ -86,11 +105,11 @@
   }
 
   .hero-title-line:nth-child(2) {
-    margin-left: clamp(1rem, 10vw, 8rem);
+    margin-left: clamp(1rem, 8vw, 5rem);
   }
 
   .hero-title-line:nth-child(3) {
-    margin-left: clamp(2rem, 20vw, 16rem);
+    margin-left: clamp(2rem, 12vw, 8rem);
   }
 
   /* Subtitle */

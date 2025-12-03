@@ -51,12 +51,24 @@
   }
 
   .marquee-text {
-    font-size: clamp(2rem, 8vw, 6rem);
+    font-size: clamp(1.5rem, 6vw, 3rem);
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: -0.03em;
     color: {{ section.settings.text_color }};
     line-height: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .marquee-text {
+      font-size: clamp(2rem, 4vw, 3.5rem);
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .marquee-text {
+      font-size: clamp(2.5rem, 3.5vw, 4.5rem);
+    }
   }
 
   .marquee-text.outline {
@@ -65,8 +77,8 @@
   }
 
   .marquee-separator {
-    width: clamp(8px, 1.5vw, 16px);
-    height: clamp(8px, 1.5vw, 16px);
+    width: clamp(6px, 1vw, 12px);
+    height: clamp(6px, 1vw, 12px);
     border-radius: 50%;
     background-color: {{ section.settings.text_color }};
     opacity: 0.4;
@@ -74,9 +86,15 @@
   }
 
   .marquee-icon {
-    font-size: clamp(1.5rem, 4vw, 3rem);
+    font-size: clamp(1.25rem, 3vw, 2rem);
     color: {{ section.settings.text_color }};
     opacity: 0.6;
+  }
+
+  @media (min-width: 1536px) {
+    .marquee-icon {
+      font-size: clamp(1.5rem, 2.5vw, 2.5rem);
+    }
   }
 </style>
 
