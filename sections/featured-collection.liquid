@@ -102,6 +102,9 @@
 
   /* Product Card */
   .featured-product-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     cursor: pointer;
   }
 
@@ -110,11 +113,6 @@
     overflow: hidden;
     aspect-ratio: 3/4;
     background-color: var(--color-background-secondary, #f5f5f5);
-  }
-
-  /* Initial animation state - only when JS is ready */
-  .featured-collection[data-fc-anim-ready] .featured-product-card-image {
-    clip-path: inset(0 100% 0 0);
   }
 
   .featured-product-card-image img,
@@ -203,10 +201,10 @@
     <div class="featured-collection-grid" data-fc-grid>
       {% if collection != blank %}
         {% for product in collection.products limit: products_to_show %}
-          <article
+          <a
+            href="{{ product.url | within: collection }}"
             class="featured-product-card"
             data-fc-card="{{ forloop.index0 }}"
-            data-product-url="{{ product.url | within: collection }}"
           >
             <div class="featured-product-card-image">
               {% if product.featured_image %}
@@ -236,7 +234,7 @@
                 <span>{{ product.price | money }}</span>
               {% endif %}
             </div>
-          </article>
+          </a>
         {% endfor %}
       {% else %}
         {%- comment -%} Placeholder cards {%- endcomment -%}
@@ -362,16 +360,6 @@
             stagger: 0.02
           }, delay + 0.5);
         }
-
-        // Click to navigate
-        card.addEventListener('click', () => {
-          const url = card.dataset.productUrl;
-          if (url && window.swupManager) {
-            window.swupManager.navigateTo(url);
-          } else if (url) {
-            window.location.href = url;
-          }
-        });
       });
     }
 

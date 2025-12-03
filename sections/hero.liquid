@@ -164,15 +164,6 @@
     background: currentColor;
     transform-origin: top;
   }
-
-  /* Initial animation states - only when JS is ready */
-  .hero-section[data-hero-anim-ready] .hero-media {
-    clip-path: inset(0 0 100% 0);
-  }
-
-  .hero-section.is-ready .hero-media {
-    clip-path: none;
-  }
 </style>
 
 <section
@@ -272,6 +263,7 @@
       const scroll = section.querySelector('[data-hero-scroll]');
 
       // Set initial states
+      if (media) gsap.set(media, { clipPath: 'inset(0 0 100% 0)' });
       if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100 });
       if (subtitle) gsap.set(subtitle, { opacity: 0, y: 30 });
       if (cta) gsap.set(cta, { opacity: 0, y: 20 });

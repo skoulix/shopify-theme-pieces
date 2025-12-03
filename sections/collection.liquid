@@ -306,7 +306,7 @@
       {%- endfor -%}
     </h1>
     {% if collection.description != blank %}
-      <div class="collection-header-description" data-shuffle-text>
+      <div class="collection-header-description" data-shuffle-text data-original-text="{{ collection.description | strip_html | escape }}">
         {{ collection.description | strip_html }}
       </div>
     {% endif %}
@@ -517,7 +517,8 @@
       // Header description - fade in with text shuffle animation
       const headerDesc = wrapper.querySelector('[data-shuffle-text]');
       if (headerDesc) {
-        const originalText = headerDesc.textContent.trim();
+        // Use data attribute for original text (survives Swup navigation)
+        const originalText = headerDesc.dataset.originalText || headerDesc.textContent.trim();
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
 
         // Start with scrambled text and hidden
