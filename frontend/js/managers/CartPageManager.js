@@ -1,28 +1,31 @@
-import { gsap } from 'gsap';
+import { cartState } from './CartState.js';
 
 /**
  * CartPageManager - Handles cart page functionality
- * Reactive cart page with internal state and GSAP animations
+ * Uses global CartState for data with GSAP animations
  */
 class CartPageManager {
   constructor() {
     this.wrapper = null;
-    this.cart = null;
     this.noteTimeout = null;
     this.isInitialized = false;
+    this.isReady = false;
+    this.unsubscribe = null;
   }
 
   /**
    * Initialize the cart page
    */
-  async init() {
+  init() {
     this.wrapper = document.querySelector('[data-cart-wrapper]');
     if (!this.wrapper) return;
     if (this.wrapper.dataset.cartPageInitialized) return;
     this.wrapper.dataset.cartPageInitialized = 'true';
 
-    // Fetch initial cart state
-    await this.fetchCart();
+    // Subscribe to cart state changes
+    this.unsubscribe = cartState.subscribe((cart, isUpdating) => {
+      this.onCartStateChange(cart, isUpdating);
+    });
 
     this.bindEvents();
     this.initAnimations();
@@ -31,16 +34,20 @@ class CartPageManager {
   }
 
   /**
-   * Fetch cart data from Shopify
+   * Handle cart state changes
    */
-  async fetchCart() {
-    try {
-      const response = await fetch('/cart.js');
-      this.cart = await response.json();
-      return this.cart;
-    } catch (error) {
-      console.error('Error fetching cart:', error);
-      return null;
+  onCartStateChange(cart, isUpdating) {
+    if (!this.wrapper) return;
+
+    // Update loading state
+    if (isUpdating) {
+      this.wrapper.classList.add('is-updating');
+    } else {
+      this.wrapper.classList.remove('is-updating');
+      // Only re-render after initial animations are complete
+      if (cart && this.isReady) {
+        this.render();
+      }
     }
   }
 
@@ -48,8 +55,6 @@ class CartPageManager {
    * Bind event listeners
    */
   bindEvents() {
-    const form = this.wrapper.querySelector('[data-cart-form]');
-
     // Quantity buttons (delegated)
     this.wrapper.addEventListener('click', async (e) => {
       const minus = e.target.closest('[data-quantity-minus]');
@@ -67,7 +72,7 @@ class CartPageManager {
         if (plus) quantity++;
         if (remove) quantity = 0;
 
-        await this.updateCartLine(line, quantity);
+        await cartState.updateLine(line, quantity);
       }
     });
 
@@ -76,7 +81,7 @@ class CartPageManager {
       if (e.target.matches('[data-quantity-input]')) {
         const line = parseInt(e.target.dataset.line);
         const quantity = parseInt(e.target.value) || 0;
-        await this.updateCartLine(line, quantity);
+        await cartState.updateLine(line, quantity);
       }
     });
 
@@ -86,11 +91,7 @@ class CartPageManager {
       noteInput.addEventListener('input', (e) => {
         clearTimeout(this.noteTimeout);
         this.noteTimeout = setTimeout(() => {
-          fetch('/cart/update.js', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ note: e.target.value })
-          });
+          cartState.updateNote(e.target.value);
         }, 500);
       });
     }
@@ -111,133 +112,94 @@ class CartPageManager {
     const emptyState = this.wrapper.querySelector('.cart-empty');
 
     const tl = gsapInstance.timeline({
-      onComplete: () => this.wrapper.classList.add('is-ready')
+      onComplete: () => {
+        this.wrapper.classList.add('is-ready');
+        this.isReady = true;
+      }
     });
 
     // Title reveal
-    const titleSpans = this.wrapper.querySelectorAll('.cart-page-title .overflow-hidden > span');
+    const titleSpans = this.wrapper.querySelectorAll('.cart-page-title-line > span');
     if (titleSpans.length) {
-      gsapInstance.set(titleSpans, { yPercent: 100 });
-      tl.to(titleSpans, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      }, 0);
+      tl.fromTo(titleSpans,
+        { yPercent: 100 },
+        { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: 0.1, immediateRender: true },
+        0
+      );
     }
 
     // Subtitle
     const subtitleLine = this.wrapper.querySelector('[data-subtitle-line]');
     const subtitleText = this.wrapper.querySelector('[data-subtitle-text]');
     if (subtitleLine) {
-      gsapInstance.set(subtitleLine, { scaleX: 0 });
-      tl.to(subtitleLine, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 0.4);
+      tl.fromTo(subtitleLine, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out', immediateRender: true }, 0.4);
     }
     if (subtitleText) {
-      gsapInstance.set(subtitleText, { yPercent: 100 });
-      tl.to(subtitleText, { yPercent: 0, duration: 0.8, ease: 'power4.out' }, 0.6);
+      tl.fromTo(subtitleText, { yPercent: 100 }, { yPercent: 0, duration: 0.8, ease: 'power4.out', immediateRender: true }, 0.6);
     }
 
     // Cart items
     if (items.length) {
       items.forEach((item, i) => {
         const img = item.querySelector('.cart-item-image');
-        gsapInstance.set(item, { opacity: 0, y: 30 });
-        if (img) gsapInstance.set(img, { clipPath: 'inset(0 100% 0 0)' });
 
-        tl.to(item, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, 0.5 + i * 0.1);
+        tl.fromTo(item,
+          { opacity: 0, y: 30 },
+          { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' },
+          0.5 + i * 0.1
+        );
 
         if (img) {
-          tl.to(img, {
-            clipPath: 'inset(0 0% 0 0)',
-            duration: 1,
-            ease: 'expo.inOut'
-          }, 0.5 + i * 0.1);
+          tl.fromTo(img,
+            { clipPath: 'inset(0 100% 0 0)' },
+            { clipPath: 'inset(0 0% 0 0)', duration: 1, ease: 'expo.inOut' },
+            0.5 + i * 0.1
+          );
         }
       });
     }
 
     // Summary
     if (summary) {
-      gsapInstance.set(summary, { opacity: 0, y: 30 });
-      tl.to(summary, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.7);
+      tl.fromTo(summary,
+        { opacity: 0, y: 30 },
+        { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' },
+        0.7
+      );
     }
 
     // Empty state
     if (emptyState) {
-      gsapInstance.set(emptyState, { opacity: 0 });
-      tl.to(emptyState, {
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.5);
+      tl.fromTo(emptyState,
+        { opacity: 0 },
+        { opacity: 1, duration: 0.8, ease: 'power3.out' },
+        0.5
+      );
     }
 
     this.wrapper.classList.remove('is-loading');
   }
 
   /**
-   * Update cart line quantity
-   */
-  async updateCartLine(line, quantity) {
-    this.wrapper.classList.add('is-updating');
-
-    try {
-      const response = await fetch('/cart/change.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ line, quantity })
-      });
-
-      if (response.ok) {
-        // Fetch fresh cart data
-        await this.fetchCart();
-
-        // Render the updated cart
-        this.render();
-
-        // Update cart count badges everywhere
-        this.updateCartCount(this.cart.item_count);
-
-        // Dispatch cart:updated event for other components
-        document.dispatchEvent(new CustomEvent('cart:updated'));
-      }
-    } catch (error) {
-      console.error('Error updating cart:', error);
-    } finally {
-      this.wrapper.classList.remove('is-updating');
-    }
-  }
-
-  /**
-   * Render cart page content from internal state
+   * Render cart page content from global state
    */
   render() {
-    if (!this.cart || !this.wrapper) return;
+    const cart = cartState.get();
+    if (!cart || !this.wrapper) return;
 
     // Update subtitle item count
     const subtitleText = this.wrapper.querySelector('[data-subtitle-text]');
     if (subtitleText) {
-      const itemWord = this.cart.item_count === 1 ? 'Item' : 'Items';
-      subtitleText.textContent = `${this.cart.item_count} ${itemWord}`;
+      const itemWord = cart.item_count === 1 ? 'Item' : 'Items';
+      subtitleText.textContent = `${cart.item_count} ${itemWord}`;
     }
 
-    if (this.cart.item_count === 0) {
+    if (cart.item_count === 0) {
       // Show empty cart state
       this.renderEmptyState();
     } else {
       // Render cart items and summary
-      this.renderCartContent();
+      this.renderCartContent(cart);
     }
   }
 
@@ -278,15 +240,15 @@ class CartPageManager {
   /**
    * Render cart items and summary
    */
-  renderCartContent() {
+  renderCartContent(cart) {
     // Render items list
     const itemsList = this.wrapper.querySelector('[data-cart-form] ul');
     if (itemsList) {
-      itemsList.innerHTML = this.cart.items.map((item, index) => this.renderCartItem(item, index + 1)).join('');
+      itemsList.innerHTML = cart.items.map((item, index) => this.renderCartItem(item, index + 1)).join('');
     }
 
     // Update summary totals
-    this.updateSummary();
+    this.updateSummary(cart);
   }
 
   /**
@@ -305,7 +267,7 @@ class CartPageManager {
             ${item.image ? `
               <a href="${item.url}">
                 <img
-                  src="${this.getSizedImageUrl(item.image, '300x')}"
+                  src="${cartState.getSizedImageUrl(item.image, '300x')}"
                   alt="${item.title}"
                   class="w-full h-full object-cover"
                   loading="lazy"
@@ -327,8 +289,8 @@ class CartPageManager {
                   ${hasSellingPlan ? `<p class="mt-1 text-xs text-[--color-text-secondary]">${item.selling_plan_allocation.selling_plan.name}</p>` : ''}
                 </div>
                 <div class="text-right">
-                  <p class="text-base font-medium text-[--color-text]">${this.formatMoney(item.final_line_price)}</p>
-                  ${hasDiscount ? `<p class="text-sm text-[--color-text-secondary] line-through">${this.formatMoney(item.original_line_price)}</p>` : ''}
+                  <p class="text-base font-medium text-[--color-text]">${cartState.formatMoney(item.final_line_price)}</p>
+                  ${hasDiscount ? `<p class="text-sm text-[--color-text-secondary] line-through">${cartState.formatMoney(item.original_line_price)}</p>` : ''}
                 </div>
               </div>
             </div>
@@ -373,94 +335,31 @@ class CartPageManager {
   /**
    * Update cart summary section
    */
-  updateSummary() {
+  updateSummary(cart) {
     // Update subtotal
     const subtotalEl = this.wrapper.querySelector('[data-cart-subtotal]');
     if (subtotalEl) {
-      subtotalEl.textContent = this.formatMoney(this.cart.total_price);
+      subtotalEl.textContent = cartState.formatMoney(cart.total_price);
     }
 
     // Update total
     const totalEl = this.wrapper.querySelector('[data-cart-total]');
     if (totalEl) {
-      totalEl.textContent = this.formatMoney(this.cart.total_price);
+      totalEl.textContent = cartState.formatMoney(cart.total_price);
     }
 
     // Update cart note
     const noteInput = this.wrapper.querySelector('[data-cart-note]');
-    if (noteInput && this.cart.note !== noteInput.value) {
-      noteInput.value = this.cart.note || '';
+    if (noteInput && cart.note !== noteInput.value) {
+      noteInput.value = cart.note || '';
     }
-  }
-
-  /**
-   * Get sized image URL from Shopify image
-   */
-  getSizedImageUrl(url, size) {
-    if (!url) return '';
-    const match = url.match(/^(.+?)(\.(jpg|jpeg|png|gif|webp))(\?.*)?$/i);
-    if (match) {
-      return `${match[1]}_${size}${match[2]}${match[4] || ''}`;
-    }
-    return url;
-  }
-
-  /**
-   * Format money according to shop settings
-   * Handles all Shopify money format placeholders
-   */
-  formatMoney(cents) {
-    if (typeof cents === 'string') {
-      cents = cents.replace('.', '');
-    }
-    cents = parseInt(cents, 10) || 0;
-
-    const moneyFormat = window.themeSettings?.moneyFormat || '${{amount}}';
-
-    // Calculate different amount formats
-    const value = cents / 100;
-    const amount = value.toFixed(2); // 10.00
-    const amountNoDecimals = Math.floor(value); // 10
-    const amountWithCommaSeparator = amount.replace('.', ','); // 10,00
-    const amountNoDecimalsWithCommaSeparator = amountNoDecimals.toString(); // 10
-    const amountWithApostropheSeparator = amount.replace('.', "'"); // 10'00
-
-    // Add thousand separators for larger amounts
-    const addThousandSeparator = (numStr, sep) => {
-      const parts = numStr.split(/[.,]/);
-      parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, sep);
-      return parts.join(numStr.includes(',') ? ',' : '.');
-    };
-
-    const amountWithSpaceSeparator = addThousandSeparator(amount, ' '); // 1 000.00
-
-    // Replace all possible placeholders
-    return moneyFormat
-      .replace('{{amount_with_comma_separator}}', amountWithCommaSeparator)
-      .replace('{{amount_no_decimals_with_comma_separator}}', amountNoDecimalsWithCommaSeparator)
-      .replace('{{amount_with_apostrophe_separator}}', amountWithApostropheSeparator)
-      .replace('{{amount_no_decimals_with_space_separator}}', addThousandSeparator(amountNoDecimals.toString(), ' '))
-      .replace('{{amount_with_space_separator}}', amountWithSpaceSeparator)
-      .replace('{{amount_no_decimals}}', amountNoDecimals.toString())
-      .replace('{{amount}}', amount);
-  }
-
-  /**
-   * Update cart count in header and other places
-   */
-  updateCartCount(count) {
-    document.querySelectorAll('[data-cart-count]').forEach(el => {
-      el.textContent = count;
-    });
   }
 
   /**
    * Re-initialize after page transitions
    */
   reinit() {
-    this.wrapper = null;
-    this.cart = null;
-    this.isInitialized = false;
+    this.destroy();
     this.init();
   }
 
@@ -468,10 +367,16 @@ class CartPageManager {
    * Clean up
    */
   destroy() {
+    // Unsubscribe from cart state
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = null;
+    }
+
     clearTimeout(this.noteTimeout);
     this.wrapper = null;
-    this.cart = null;
     this.isInitialized = false;
+    this.isReady = false;
   }
 }
 

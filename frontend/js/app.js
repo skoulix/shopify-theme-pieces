@@ -19,6 +19,7 @@ import '../css/app.css';
 import { lenisManager } from './managers/LenisManager.js';
 import { swupManager } from './managers/SwupManager.js';
 import { animationManager } from './managers/AnimationManager.js';
+import { cartState } from './managers/CartState.js';
 import { cartDrawerManager } from './managers/CartDrawerManager.js';
 import { cartPageManager } from './managers/CartPageManager.js';
 
@@ -45,12 +46,13 @@ function initAnimations() {
  * Re-initialize animations after page transition
  */
 function handleContentReplaced() {
-  setTimeout(() => {
+  // Use requestAnimationFrame for smoother transitions
+  requestAnimationFrame(() => {
     animationManager.refresh();
     initAnimations();
     cartDrawerManager.reinit();
     cartPageManager.reinit();
-  }, 100);
+  });
 }
 
 /**
@@ -103,6 +105,24 @@ function init() {
   // Handle menu events
   handleMenuEvents();
 
+  // Initialize global cart state
+  cartState.init();
+
+  // Subscribe to cart state for header count updates
+  cartState.subscribe((cart) => {
+    if (cart) {
+      document.querySelectorAll('[data-cart-count]').forEach(el => {
+        el.textContent = cart.item_count;
+        // Toggle visibility based on count
+        if (cart.item_count > 0) {
+          el.removeAttribute('hidden');
+        } else {
+          el.setAttribute('hidden', '');
+        }
+      });
+    }
+  });
+
   // Initialize cart drawer and cart page
   cartDrawerManager.init();
   cartPageManager.init();
@@ -131,6 +151,7 @@ function init() {
     lenis: lenisManager,
     swup: swupManager,
     animation: animationManager,
+    cartState: cartState,
     cartDrawer: cartDrawerManager,
     cartPage: cartPageManager,
     gsap,

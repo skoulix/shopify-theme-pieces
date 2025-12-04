@@ -79,15 +79,26 @@
       {% endif %}
 
       {%- comment -%} Cart {%- endcomment -%}
-      <a
-        href="{{ routes.cart_url }}"
-        class="group p-2 flex items-center text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
-        {% if settings.cart_type == 'drawer' %}data-cart-drawer-toggle{% endif %}
-      >
-        <i class="ph ph-bag text-xl"></i>
-        <span class="ml-1 text-sm font-medium text-[--color-text] group-hover:text-[--color-primary]" data-cart-count>{{ cart.item_count }}</span>
-        <span class="sr-only">items in cart</span>
-      </a>
+      {% if settings.cart_type == 'drawer' %}
+        <button
+          type="button"
+          class="group p-2 flex items-center text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
+          data-cart-drawer-toggle
+        >
+          <i class="ph ph-bag text-xl"></i>
+          <span class="ml-1 text-sm font-medium text-[--color-text] group-hover:text-[--color-primary]" data-cart-count>{{ cart.item_count }}</span>
+          <span class="sr-only">items in cart</span>
+        </button>
+      {% else %}
+        <a
+          href="{{ routes.cart_url }}"
+          class="group p-2 flex items-center text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
+        >
+          <i class="ph ph-bag text-xl"></i>
+          <span class="ml-1 text-sm font-medium text-[--color-text] group-hover:text-[--color-primary]" data-cart-count>{{ cart.item_count }}</span>
+          <span class="sr-only">items in cart</span>
+        </a>
+      {% endif %}
     </div>
   </nav>
 
@@ -146,15 +157,26 @@
             <i class="ph ph-magnifying-glass"></i>
             <span>Search</span>
           </a>
-          <a
-            href="{{ routes.cart_url }}"
-            class="mobile-nav__footer-link"
-            data-mobile-nav-close
-            {% if settings.cart_type == 'drawer' %}data-cart-drawer-toggle{% endif %}
-          >
-            <i class="ph ph-bag"></i>
-            <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
-          </a>
+          {% if settings.cart_type == 'drawer' %}
+            <button
+              type="button"
+              class="mobile-nav__footer-link"
+              data-mobile-nav-close
+              data-cart-drawer-toggle
+            >
+              <i class="ph ph-bag"></i>
+              <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
+            </button>
+          {% else %}
+            <a
+              href="{{ routes.cart_url }}"
+              class="mobile-nav__footer-link"
+              data-mobile-nav-close
+            >
+              <i class="ph ph-bag"></i>
+              <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
+            </a>
+          {% endif %}
         </div>
       </div>
     </div>
@@ -245,7 +267,11 @@
   // Close buttons (X, backdrop, links)
   closeBtns.forEach(btn => {
     btn.addEventListener('click', (e) => {
-      if (e.target.closest('a')) {
+      const isLink = e.target.closest('a');
+      const isCartToggle = e.target.closest('[data-cart-drawer-toggle]');
+
+      if (isLink || isCartToggle) {
+        // Delay close for links and cart drawer toggle to allow navigation/drawer open
         setTimeout(closeMobileNav, 100);
       } else {
         closeMobileNav();
