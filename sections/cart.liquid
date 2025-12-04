@@ -2,17 +2,17 @@
   Cart Section - Skeleton + Tailwind
 {%- endcomment -%}
 
-<section class="bg-white">
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ 'cart.title' | t }}</h1>
+<section class="bg-[--color-background]">
+  <div class="page-container section-spacing">
+    <h1 class="text-3xl font-bold tracking-tight text-[--color-text]">{{ 'cart.title' | t }}</h1>
 
     {% if cart.item_count > 0 %}
       <form action="{{ routes.cart_url }}" method="post" class="mt-12">
         <div class="flow-root">
-          <ul role="list" class="-my-6 divide-y divide-gray-200">
+          <ul role="list" class="-my-6 divide-y divide-[--color-border]">
             {% for item in cart.items %}
               <li class="flex py-6">
-                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-md bg-gray-100">
+                <div class="h-24 w-24 flex-shrink-0 overflow-hidden rounded-[--card-radius] bg-[--color-background-secondary]">
                   {% if item.image %}
                     {{ item.image | image_url: width: 200 | image_tag:
                       class: 'h-full w-full object-cover object-center'
@@ -22,30 +22,31 @@
 
                 <div class="ml-4 flex flex-1 flex-col">
                   <div>
-                    <div class="flex justify-between text-base font-medium text-gray-900">
+                    <div class="flex justify-between text-base font-medium text-[--color-text]">
                       <h3>
                         <a href="{{ item.url }}">{{ item.product.title }}</a>
                       </h3>
                       <p class="ml-4">{{ item.line_price | money }}</p>
                     </div>
                     {% unless item.product.has_only_default_variant %}
-                      <p class="mt-1 text-sm text-gray-500">{{ item.variant.title }}</p>
+                      <p class="mt-1 text-sm text-[--color-text-secondary]">{{ item.variant.title }}</p>
                     {% endunless %}
                   </div>
                   <div class="flex flex-1 items-end justify-between text-sm">
                     <div class="flex items-center gap-2">
-                      <label for="quantity-{{ item.index }}" class="text-gray-500">Qty</label>
+                      <label for="quantity-{{ item.index }}" class="text-[--color-text-secondary]">Qty</label>
                       <input
                         type="number"
                         id="quantity-{{ item.index }}"
                         name="updates[]"
                         value="{{ item.quantity }}"
                         min="0"
-                        class="w-16 rounded-md border-0 py-1.5 px-2 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm"
+                        class="w-16 py-1.5 px-2 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+                        style="border-width: var(--input-border-width);"
                       >
                     </div>
 
-                    <a href="{{ item.url_to_remove }}" class="font-medium text-indigo-600 hover:text-indigo-500">
+                    <a href="{{ item.url_to_remove }}" class="font-medium text-[--color-primary] hover:opacity-80">
                       {{ 'cart.remove' | t }}
                     </a>
                   </div>
@@ -55,12 +56,12 @@
           </ul>
         </div>
 
-        <div class="mt-10 border-t border-gray-200 pt-8">
-          <div class="flex justify-between text-base font-medium text-gray-900">
+        <div class="mt-10 border-t border-[--color-border] pt-8">
+          <div class="flex justify-between text-base font-medium text-[--color-text]">
             <p>Subtotal</p>
             <p>{{ cart.total_price | money }}</p>
           </div>
-          <p class="mt-0.5 text-sm text-gray-500">Shipping and taxes calculated at checkout.</p>
+          <p class="mt-0.5 text-sm text-[--color-text-secondary]">Shipping and taxes calculated at checkout.</p>
 
           <div class="mt-6 flex flex-col gap-3">
             <button
@@ -84,10 +85,10 @@
       </form>
     {% else %}
       <div class="mt-12 text-center">
-        <i class="ph ph-bag text-6xl text-gray-300"></i>
-        <h2 class="mt-4 text-lg font-medium text-gray-900">Your cart is empty</h2>
-        <p class="mt-2 text-sm text-gray-500">Start shopping to add items to your cart.</p>
-        <a href="{{ routes.all_products_collection_url }}" class="mt-6 inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
+        <i class="ph ph-bag text-6xl text-[--color-border]"></i>
+        <h2 class="mt-4 text-lg font-medium text-[--color-text]">Your cart is empty</h2>
+        <p class="mt-2 text-sm text-[--color-text-secondary]">Start shopping to add items to your cart.</p>
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary mt-6">
           Continue shopping
         </a>
       </div>

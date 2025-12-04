@@ -46,7 +46,10 @@ class SwupManager {
       containers: ['#swup-container'],
       cache: true,
       animateHistoryBrowsing: true,
-      linkSelector: 'a[href^="' + window.location.origin + '"]:not([data-no-swup]), a[href^="/"]:not([data-no-swup]):not([href^="//"]), a[href^="#"]:not([data-no-swup])',
+      linkSelector:
+        'a[href^="' +
+        window.location.origin +
+        '"]:not([data-no-swup]), a[href^="/"]:not([data-no-swup]):not([href^="//"]), a[href^="#"]:not([data-no-swup])',
       plugins: [
         new SwupJsPlugin(animationOptions),
         new SwupHeadPlugin({
@@ -88,7 +91,7 @@ class SwupManager {
     // After new content is replaced
     this.swup.hooks.on('content:replace', () => {
       // Kill old ScrollTriggers before content change
-      ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
       // Scroll to top
       lenisManager.scrollTo(0, { immediate: true });
@@ -140,26 +143,29 @@ class SwupManager {
 
     const tl = gsap.timeline();
 
-    // Fade out current content
-    tl.to(container, {
-      opacity: 0,
-      y: -20,
-      duration: this.pageTransitionDuration * 0.5,
-      ease: 'power2.in',
-    });
-
-    // Optional: Animate overlay
+    // Dramatic curtain wipe from bottom
     if (overlay) {
-      tl.to(
-        overlay,
-        {
-          scaleY: 1,
-          duration: this.pageTransitionDuration * 0.5,
-          ease: 'power2.inOut',
-        },
-        '<0.2'
-      );
+      // Reset overlay to bottom origin
+      gsap.set(overlay, { transformOrigin: 'bottom', scaleY: 0 });
+
+      // Curtain slides up to cover the page
+      tl.to(overlay, {
+        scaleY: 1,
+        duration: 0.6,
+        ease: 'power3.inOut',
+      });
     }
+
+    // Fade out content as curtain covers
+    tl.to(
+      container,
+      {
+        opacity: 0,
+        duration: 0.3,
+        ease: 'power2.in',
+      },
+      0.3
+    );
 
     return tl;
   }
@@ -178,40 +184,30 @@ class SwupManager {
       this.skipAnimation = false;
       // Just ensure container is visible
       gsap.set(container, { opacity: 1, y: 0 });
+      if (overlay) gsap.set(overlay, { scaleY: 0 });
       return Promise.resolve();
     }
 
-    // Reset container position
-    gsap.set(container, { opacity: 0, y: 20 });
+    // Ensure container is ready but hidden
+    gsap.set(container, { opacity: 1, y: 0 });
 
     const tl = gsap.timeline();
 
-    // Hide overlay first if present
+    // Curtain slides up to reveal new page
     if (overlay) {
+      gsap.set(overlay, { transformOrigin: 'top', scaleY: 1 });
+
       tl.to(overlay, {
         scaleY: 0,
-        transformOrigin: 'top',
-        duration: this.pageTransitionDuration * 0.4,
-        ease: 'power2.inOut',
+        duration: 0.6,
+        ease: 'power3.inOut',
       });
     }
 
-    // Fade in new content
-    tl.to(
-      container,
-      {
-        opacity: 1,
-        y: 0,
-        duration: this.pageTransitionDuration * 0.6,
-        ease: 'power2.out',
-      },
-      overlay ? '<0.1' : 0
-    );
-
-    // Animate reveal elements
+    // Animate reveal elements after curtain starts moving
     tl.add(() => {
       this.animateRevealElements();
-    }, '-=0.3');
+    }, 0.2);
 
     return tl;
   }

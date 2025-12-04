@@ -2,16 +2,16 @@
   404 Section - Skeleton + Tailwind
 {%- endcomment -%}
 
-<section class="bg-white">
-  <div class="mx-auto max-w-7xl px-4 py-24 sm:px-6 sm:py-32 lg:px-8">
+<section class="bg-[--color-background]">
+  <div class="page-container section-spacing">
     <div class="text-center">
-      <p class="text-base font-semibold text-indigo-600">404</p>
-      <h1 class="mt-4 text-3xl font-bold tracking-tight text-gray-900 sm:text-5xl">{{ '404.title' | t }}</h1>
-      <p class="mt-6 text-base leading-7 text-gray-600">{{ '404.not_found' | t }}</p>
+      <p class="text-base font-semibold text-[--color-primary]">404</p>
+      <h1 class="mt-4 text-3xl font-bold tracking-tight text-[--color-text] sm:text-5xl">{{ '404.title' | t }}</h1>
+      <p class="mt-6 text-base leading-7 text-[--color-text-secondary]">{{ '404.not_found' | t }}</p>
       <div class="mt-10">
-        <a href="{{ routes.all_products_collection_url }}" class="inline-flex items-center rounded-md bg-indigo-600 px-4 py-2 text-sm font-semibold text-white hover:bg-indigo-500">
-          <i class="ph ph-arrow-left mr-2"></i>
-          {{ '404.back_to_shopping' | t }}
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
+          <i class="ph ph-arrow-left"></i>
+          <span>{{ '404.back_to_shopping' | t }}</span>
         </a>
       </div>
     </div>

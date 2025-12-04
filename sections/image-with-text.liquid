@@ -5,13 +5,13 @@
 {%- liquid
   if section.settings.full_width
     if section.settings.layout == 'image_left'
-      assign container_class = 'lg:pr-8'
+      assign container_class = 'lg:pr-[--page-padding]'
     else
-      assign container_class = 'lg:pl-8'
+      assign container_class = 'lg:pl-[--page-padding]'
     endif
-    assign content_class = 'px-4 sm:px-6 lg:px-0'
+    assign content_class = 'page-full lg:px-0'
   else
-    assign container_class = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+    assign container_class = 'page-container'
     assign content_class = ''
   endif
 -%}

@@ -2,13 +2,13 @@
   Contact Form Section - Skeleton + Tailwind
 {%- endcomment -%}
 
-<section class="bg-white">
-  <div class="mx-auto max-w-2xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ section.settings.heading | default: 'Contact us' }}</h1>
+<section class="bg-[--color-background]">
+  <div class="page-container section-spacing max-w-2xl">
+    <h1 class="text-3xl font-bold tracking-tight text-[--color-text]">{{ section.settings.heading | default: 'Contact us' }}</h1>
 
     {% form 'contact', id: 'ContactForm' %}
       {% if form.posted_successfully? %}
-        <div class="mt-8 rounded-md bg-green-50 p-4">
+        <div class="mt-8 rounded-[--card-radius] bg-green-50 p-4">
           <div class="flex items-center">
             <i class="ph ph-check-circle text-green-400 text-xl mr-3"></i>
             <p class="text-sm font-medium text-green-800">Thanks for your message! We'll get back to you soon.</p>
@@ -17,7 +17,7 @@
       {% endif %}
 
       {% if form.errors %}
-        <div class="mt-8 rounded-md bg-red-50 p-4">
+        <div class="mt-8 rounded-[--card-radius] bg-red-50 p-4">
           <div class="flex items-center">
             <i class="ph ph-warning text-red-400 text-xl mr-3"></i>
             <p class="text-sm font-medium text-red-800">
@@ -29,19 +29,20 @@
 
       <div class="mt-8 grid gap-6 sm:grid-cols-2">
         <div>
-          <label for="ContactForm-name" class="block text-sm font-medium text-gray-700">Name</label>
+          <label for="ContactForm-name" class="block text-sm font-medium text-[--color-text-secondary]">Name</label>
           <input
             type="text"
             id="ContactForm-name"
             name="contact[name]"
             autocomplete="name"
             value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-            class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="mt-1 block w-full py-2 px-3 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+            style="border-width: var(--input-border-width);"
           >
         </div>
 
         <div>
-          <label for="ContactForm-email" class="block text-sm font-medium text-gray-700">Email *</label>
+          <label for="ContactForm-email" class="block text-sm font-medium text-[--color-text-secondary]">Email *</label>
           <input
             type="email"
             id="ContactForm-email"
@@ -49,29 +50,32 @@
             autocomplete="email"
             required
             value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-            class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="mt-1 block w-full py-2 px-3 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+            style="border-width: var(--input-border-width);"
           >
         </div>
 
         <div class="sm:col-span-2">
-          <label for="ContactForm-phone" class="block text-sm font-medium text-gray-700">Phone</label>
+          <label for="ContactForm-phone" class="block text-sm font-medium text-[--color-text-secondary]">Phone</label>
           <input
             type="tel"
             id="ContactForm-phone"
             name="contact[phone]"
             autocomplete="tel"
             value="{% if form.phone %}{{ form.phone }}{% endif %}"
-            class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="mt-1 block w-full py-2 px-3 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+            style="border-width: var(--input-border-width);"
           >
         </div>
 
         <div class="sm:col-span-2">
-          <label for="ContactForm-body" class="block text-sm font-medium text-gray-700">Message</label>
+          <label for="ContactForm-body" class="block text-sm font-medium text-[--color-text-secondary]">Message</label>
           <textarea
             id="ContactForm-body"
             name="contact[body]"
             rows="4"
-            class="mt-1 block w-full rounded-md border-0 py-2 px-3 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="mt-1 block w-full py-2 px-3 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+            style="border-width: var(--input-border-width);"
           >{{ form.body }}</textarea>
         </div>
       </div>

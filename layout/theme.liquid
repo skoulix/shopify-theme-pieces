@@ -66,7 +66,7 @@
     {% sections 'footer-group' %}
 
     {%- comment -%} Page transition overlay for Swup (z-30 to stay below header z-40) {%- endcomment -%}
-    <div class="page-transition-overlay fixed inset-0 z-30 pointer-events-none bg-white origin-bottom" style="transform: scaleY(0);"></div>
+    <div class="page-transition-overlay fixed inset-0 z-30 pointer-events-none bg-[--color-primary] origin-bottom" style="transform: scaleY(0);"></div>
 
     <script>
       window.shopUrl = '{{ request.origin }}';

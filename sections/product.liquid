@@ -7,9 +7,9 @@
 
 {%- liquid
   if section.settings.full_width
-    assign container_class = 'px-4 md:px-8'
+    assign container_class = 'page-full'
   else
-    assign container_class = 'max-w-7xl mx-auto px-4 sm:px-6 lg:px-8'
+    assign container_class = 'page-container'
   endif
 -%}
 
@@ -634,8 +634,14 @@
 
     {%- comment -%} Description - Shuffle Text Effect {%- endcomment -%}
     {% if product.description != blank %}
-      <div class="product-description" data-shuffle-text>
-        {{ product.description | strip_html | truncate: 200 }}
+      {%- assign desc_text = product.description | strip_html | truncate: 200 -%}
+      {%- assign desc_length = desc_text | size -%}
+      {%- comment -%} Estimate lines: ~50 chars per line at this width/font-size {%- endcomment -%}
+      {%- assign estimated_lines = desc_length | divided_by: 50 | plus: 1 -%}
+      {%- comment -%} line-height is 1.8, font-size is 0.75rem {%- endcomment -%}
+      {%- assign min_height = estimated_lines | times: 1.35 -%}
+      <div class="product-description" style="min-height: {{ min_height }}rem;" data-shuffle-text data-original-text="{{ desc_text | escape }}">
+        {{ desc_text }}
       </div>
     {% endif %}
 

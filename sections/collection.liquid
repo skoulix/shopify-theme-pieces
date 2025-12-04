@@ -9,9 +9,9 @@
   assign full_width = section.settings.full_width
 
   if full_width
-    assign container_class = 'px-4 md:px-8'
+    assign container_class = 'page-full'
   else
-    assign container_class = 'max-w-7xl mx-auto px-4 md:px-8'
+    assign container_class = 'page-container'
   endif
 -%}
 
@@ -208,14 +208,22 @@
       {%- endfor -%}
     </h1>
 
-    <p class="page-header-subtitle">
-      <span class="page-header-subtitle-line" data-subtitle-line></span>
-      <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</span></span>
-    </p>
+    {% if section.settings.show_product_count %}
+      <p class="page-header-subtitle">
+        <span class="page-header-subtitle-line" data-subtitle-line></span>
+        <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</span></span>
+      </p>
+    {% endif %}
 
-    {% if collection.description != blank %}
-      <div class="collection-header-description mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ collection.description | strip_html | escape }}">
-        {{ collection.description | strip_html }}
+    {% if section.settings.show_description and collection.description != blank %}
+      {%- assign desc_text = collection.description | strip_html -%}
+      {%- assign desc_length = desc_text | size -%}
+      {%- comment -%} Estimate lines: ~45 chars per line at this width/font-size {%- endcomment -%}
+      {%- assign estimated_lines = desc_length | divided_by: 45 | plus: 1 -%}
+      {%- comment -%} line-height is ~1.625 (leading-relaxed), font-size is 0.75rem (text-xs) {%- endcomment -%}
+      {%- assign min_height = estimated_lines | times: 1.22 -%}
+      <div class="collection-header-description mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" style="min-height: {{ min_height }}rem;" data-shuffle-text data-original-text="{{ desc_text | escape }}">
+        {{ desc_text }}
       </div>
     {% endif %}
   </header>
@@ -857,6 +865,18 @@
       "label": "Full width",
       "default": true,
       "info": "Remove max-width container constraint"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_product_count",
+      "label": "Show product count",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_description",
+      "label": "Show collection description",
+      "default": true
     },
     {
       "type": "select",

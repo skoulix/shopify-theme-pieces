@@ -2,9 +2,9 @@
   Search Section - Skeleton + Tailwind
 {%- endcomment -%}
 
-<section class="bg-white">
-  <div class="mx-auto max-w-7xl px-4 py-16 sm:px-6 sm:py-24 lg:px-8">
-    <h1 class="text-3xl font-bold tracking-tight text-gray-900">{{ 'search.title' | t }}</h1>
+<section class="bg-[--color-background]">
+  <div class="page-container section-spacing">
+    <h1 class="text-3xl font-bold tracking-tight text-[--color-text]">{{ 'search.title' | t }}</h1>
 
     <form action="{{ routes.search_url }}" method="get" role="search" class="mt-8">
       <div class="flex gap-4">
@@ -14,7 +14,8 @@
             name="q"
             value="{{ search.terms | escape }}"
             placeholder="{{ 'search.placeholder' | t }}"
-            class="block w-full rounded-md border-0 py-3 px-4 text-gray-900 ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm"
+            class="block w-full py-3 px-4 text-[--color-text] placeholder:text-[--color-text-secondary] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] focus:border-[--color-primary] focus:outline-none sm:text-sm"
+            style="border-width: var(--input-border-width);"
           >
         </div>
         <button type="submit" class="btn btn--primary btn--sm">
@@ -26,9 +27,9 @@
 
     {% if search.performed %}
       {% if search.results_count == 0 %}
-        <p class="mt-8 text-gray-500">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
+        <p class="mt-8 text-[--color-text-secondary]">{{ 'search.no_results_html' | t: terms: search.terms }}</p>
       {% else %}
-        <p class="mt-8 text-sm text-gray-500">{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
+        <p class="mt-8 text-sm text-[--color-text-secondary]">{{ 'search.results_for_html' | t: terms: search.terms, count: search.results_count }}</p>
 
         <div class="mt-8 grid grid-cols-1 gap-x-6 gap-y-10 sm:grid-cols-2 lg:grid-cols-4 xl:gap-x-8">
           {% paginate search.results by 20 %}
@@ -36,7 +37,7 @@
               <div class="group relative">
                 <a href="{{ result.url }}" class="block">
                   {% assign featured_image = result.featured_image | default: result.image %}
-                  <div class="aspect-square w-full overflow-hidden rounded-lg bg-gray-100">
+                  <div class="aspect-square w-full overflow-hidden rounded-[--card-radius] bg-[--color-background-secondary]">
                     {% if featured_image %}
                       {{ featured_image | image_url: width: 400 | image_tag:
                         class: 'h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity',
@@ -49,9 +50,9 @@
                     {% endif %}
                   </div>
                   <div class="mt-4">
-                    <h3 class="text-sm font-medium text-gray-900">{{ result.title }}</h3>
+                    <h3 class="text-sm font-medium text-[--color-text]">{{ result.title }}</h3>
                     {% if result.price %}
-                      <p class="mt-1 text-sm text-gray-500">{{ result.price | money }}</p>
+                      <p class="mt-1 text-sm text-[--color-text-secondary]">{{ result.price | money }}</p>
                     {% endif %}
                   </div>
                 </a>
@@ -63,12 +64,12 @@
         {% if paginate.pages > 1 %}
           <nav class="mt-10 flex items-center justify-center gap-2">
             {% if paginate.previous %}
-              <a href="{{ paginate.previous.url }}" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
                 <i class="ph ph-arrow-left"></i>
               </a>
             {% endif %}
             {% if paginate.next %}
-              <a href="{{ paginate.next.url }}" class="rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 ring-1 ring-inset ring-gray-300 hover:bg-gray-50">
+              <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
                 <i class="ph ph-arrow-right"></i>
               </a>
             {% endif %}

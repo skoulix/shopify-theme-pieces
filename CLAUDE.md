@@ -41,13 +41,63 @@
 ### CSS Variable Usage with Tailwind
 
 Use arbitrary value syntax for theme CSS variables:
+
+**Colors:**
 - `text-[--color-text]`
 - `text-[--color-text-secondary]`
 - `bg-[--color-background]`
 - `bg-[--color-background-secondary]`
 - `border-[--color-border]`
+- `text-[--color-primary]`
+
+**Border Radius (from theme settings):**
 - `rounded-[--card-radius]`
+- `rounded-[--button-radius]`
+- `rounded-[--input-radius]`
+
+**Custom sizes:**
 - `text-[0.65rem]` (for specific sizes)
+
+### Layout Utility Classes
+
+The theme provides utility classes that respect theme settings:
+
+**Container classes (use these instead of hardcoded max-w/px values):**
+```liquid
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+```
+
+- `.page-container` - Centered container with max-width from theme settings (`--page-max-width`) and page padding (`--page-padding`)
+- `.page-full` - Full width with page padding only
+- `.section-spacing` - Vertical padding using theme's section spacing (`--section-spacing`)
+- `.section-spacing-top` - Top padding only
+- `.section-spacing-bottom` - Bottom padding only
+
+**DO:**
+```liquid
+<div class="page-container section-spacing">
+```
+
+**DON'T:**
+```liquid
+<div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-16">
+```
+
+### Input Styling with CSS Variables
+
+For inputs, use Tailwind arbitrary values with inline style for border-width:
+```html
+<input
+  class="w-full py-3 px-4 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] focus:border-[--color-primary] focus:outline-none"
+  style="border-width: var(--input-border-width);"
+>
+```
 
 ### Responsive Classes
 
