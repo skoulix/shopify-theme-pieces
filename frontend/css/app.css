@@ -575,11 +575,18 @@ html.scroll-locked body {
 }
 
 /* Loading state */
-.cart-drawer.is-loading {
+.cart-drawer.is-loading,
+.cart-drawer.is-updating {
   cursor: wait;
 }
 
-.cart-drawer.is-loading .cart-drawer__content {
+.cart-drawer.is-loading *,
+.cart-drawer.is-updating * {
+  cursor: wait !important;
+}
+
+.cart-drawer.is-loading .cart-drawer__content,
+.cart-drawer.is-updating .cart-drawer__content {
   opacity: 0.5;
   pointer-events: none;
 }

@@ -88,6 +88,7 @@
         enablePageTransitions: {{ settings.enable_page_transitions | default: true }},
         pageTransitionStyle: '{{ settings.page_transition_style | default: "slide" }}',
         cartType: '{{ settings.cart_type | default: "drawer" }}',
+        moneyFormat: {{ shop.money_format | json }},
       };
       window.routes = {
         cart_add_url: '{{ routes.cart_add_url }}',
@@ -95,7 +96,23 @@
         cart_update_url: '{{ routes.cart_update_url }}',
         cart_url: '{{ routes.cart_url }}',
         predictive_search_url: '{{ routes.predictive_search_url }}',
+        allProductsCollectionUrl: '{{ routes.all_products_collection_url }}',
       };
+
+      window.themeStrings = {
+        cartEmpty: `{{ 'cart.empty' | t }}`,
+        cartEmptyDescription: `{{ 'cart.empty_description' | t }}`,
+        cartStartShopping: `{{ 'cart.start_shopping' | t }}`,
+        cartAddNote: `{{ 'cart.add_note' | t }}`,
+        cartNotePlaceholder: `{{ 'cart.note_placeholder' | t }}`,
+        cartSubtotal: `{{ 'cart.subtotal' | t }}`,
+        cartTaxesNote: `{{ 'cart.taxes_shipping_note' | t }}`,
+        cartViewCart: `{{ 'cart.view_cart' | t }}`,
+        cartCheckout: `{{ 'cart.checkout' | t }}`,
+        cartRemove: `{{ 'cart.remove' | t }}`,
+        backHome: `{{ '404.back_home' | t }}`,
+      };
+      window.routes.rootUrl = '{{ routes.root_url }}';
 
       window.cartStrings = {
         error: `{{ 'sections.cart.cart_error' | t }}`,

@@ -1,9 +1,10 @@
 import { gsap } from 'gsap';
 import { lenisManager } from './LenisManager.js';
+import { cartState } from './CartState.js';
 
 /**
  * CartDrawerManager - Handles cart drawer functionality
- * Reactive cart drawer with GSAP animations and Lenis integration
+ * Uses global CartState for data, GSAP for animations, Lenis for scroll
  */
 class CartDrawerManager {
   constructor() {
@@ -14,6 +15,7 @@ class CartDrawerManager {
     this.isAnimating = false;
     this.noteTimeout = null;
     this.boundHandlers = {};
+    this.unsubscribe = null;
   }
 
   /**
@@ -26,8 +28,32 @@ class CartDrawerManager {
     this.backdrop = this.drawer.querySelector('.cart-drawer__backdrop');
     this.panel = this.drawer.querySelector('.cart-drawer__panel');
 
+    // Subscribe to cart state changes
+    this.unsubscribe = cartState.subscribe((cart, isUpdating) => {
+      this.onCartStateChange(cart, isUpdating);
+    });
+
     this.bindEvents();
     this.bindGlobalEvents();
+  }
+
+  /**
+   * Handle cart state changes
+   */
+  onCartStateChange(cart, isUpdating) {
+    if (!this.drawer) return;
+
+    // Update loading state
+    if (isUpdating) {
+      this.drawer.classList.add('is-loading');
+    } else {
+      this.drawer.classList.remove('is-loading');
+    }
+
+    // Re-render if drawer is open
+    if (this.isOpen && cart) {
+      this.render();
+    }
   }
 
   /**
@@ -71,10 +97,6 @@ class CartDrawerManager {
     // Listen for cart:toggle
     this.boundHandlers.toggle = this.toggle.bind(this);
     document.addEventListener('cart:toggle', this.boundHandlers.toggle);
-
-    // Listen for cart:refresh
-    this.boundHandlers.refresh = this.refresh.bind(this);
-    document.addEventListener('cart:refresh', this.boundHandlers.refresh);
   }
 
   /**
@@ -107,7 +129,7 @@ class CartDrawerManager {
       if (plusBtn) quantity++;
       if (removeBtn) quantity = 0;
 
-      await this.updateCartLine(line, quantity);
+      await cartState.updateLine(line, quantity);
     }
   }
 
@@ -118,7 +140,7 @@ class CartDrawerManager {
     if (e.target.matches('[data-quantity-input]')) {
       const line = parseInt(e.target.dataset.line);
       const quantity = parseInt(e.target.value) || 0;
-      await this.updateCartLine(line, quantity);
+      await cartState.updateLine(line, quantity);
     }
   }
 
@@ -128,11 +150,7 @@ class CartDrawerManager {
   handleNoteInput(e) {
     clearTimeout(this.noteTimeout);
     this.noteTimeout = setTimeout(() => {
-      fetch('/cart/update.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ note: e.target.value })
-      });
+      cartState.updateNote(e.target.value);
     }, 500);
   }
 
@@ -148,9 +166,13 @@ class CartDrawerManager {
   /**
    * Open the cart drawer
    */
-  open() {
+  async open() {
     if (this.isAnimating || this.isOpen || !this.drawer) return;
     this.isAnimating = true;
+
+    // Fetch fresh cart data and render before opening
+    await cartState.fetch();
+    this.render();
 
     // Set initial states
     gsap.set(this.backdrop, { opacity: 0 });
@@ -211,79 +233,192 @@ class CartDrawerManager {
   }
 
   /**
-   * Update cart line quantity
+   * Render cart drawer content from global state
    */
-  async updateCartLine(line, quantity) {
-    this.drawer.classList.add('is-loading');
+  render() {
+    const cart = cartState.get();
+    if (!cart || !this.drawer) return;
 
-    try {
-      const response = await fetch('/cart/change.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ line, quantity })
-      });
+    const content = this.drawer.querySelector('[data-cart-drawer-content]');
+    const footer = this.drawer.querySelector('.cart-drawer__footer');
 
-      if (response.ok) {
-        await this.refresh();
-        document.dispatchEvent(new CustomEvent('cart:updated'));
+    if (cart.item_count === 0) {
+      // Render empty cart
+      content.innerHTML = this.renderEmptyCart();
+      if (footer) footer.remove();
+    } else {
+      // Render cart items
+      content.innerHTML = this.renderCartItems(cart);
+
+      // Render or update footer
+      if (footer) {
+        footer.outerHTML = this.renderFooter(cart);
+      } else {
+        this.panel.insertAdjacentHTML('beforeend', this.renderFooter(cart));
       }
-    } catch (error) {
-      console.error('Error updating cart:', error);
-    } finally {
-      this.drawer.classList.remove('is-loading');
     }
   }
 
   /**
-   * Refresh cart drawer content via AJAX
+   * Render empty cart state
    */
-  async refresh() {
-    if (!this.drawer) return;
+  renderEmptyCart() {
+    const emptyTitle = window.themeStrings?.cartEmpty || 'Your cart is empty';
+    const emptyDescription = window.themeStrings?.cartEmptyDescription || 'Add some items to get started';
+    const startShopping = window.themeStrings?.cartStartShopping || 'Start shopping';
+    const collectionsUrl = window.routes?.allProductsCollectionUrl || '/collections/all';
 
-    try {
-      const response = await fetch('/?sections=cart-drawer-content');
-      const data = await response.json();
-
-      if (data['cart-drawer-content']) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data['cart-drawer-content'], 'text/html');
-
-        // Update content
-        const newContent = doc.querySelector('[data-cart-drawer-content]');
-        const currentContent = this.drawer.querySelector('[data-cart-drawer-content]');
-        if (newContent && currentContent) {
-          currentContent.innerHTML = newContent.innerHTML;
-        }
-
-        // Update footer
-        const newFooter = doc.querySelector('.cart-drawer__footer');
-        const currentFooter = this.drawer.querySelector('.cart-drawer__footer');
-        if (newFooter && currentFooter) {
-          currentFooter.outerHTML = newFooter.outerHTML;
-        } else if (newFooter && !currentFooter) {
-          this.panel.appendChild(newFooter.cloneNode(true));
-        } else if (!newFooter && currentFooter) {
-          currentFooter.remove();
-        }
-
-        // Update count
-        const cart = await fetch('/cart.js').then(r => r.json());
-        this.updateCartCount(cart.item_count);
-      }
-    } catch (error) {
-      console.error('Error refreshing cart:', error);
-      // Fallback: reload page
-      window.location.reload();
-    }
+    return `
+      <div class="cart-drawer__empty">
+        <h3 class="text-xl font-semibold text-[--color-text] font-heading">${emptyTitle}</h3>
+        <p>${emptyDescription}</p>
+        <a href="${collectionsUrl}" class="btn btn--primary btn--full" data-cart-drawer-close>
+          <i class="ph ph-storefront"></i>
+          <span>${startShopping}</span>
+        </a>
+      </div>
+    `;
   }
 
   /**
-   * Update cart count in header and drawer
+   * Render cart items list
    */
-  updateCartCount(count) {
-    document.querySelectorAll('[data-cart-count]').forEach(el => {
-      el.textContent = count;
-    });
+  renderCartItems(cart) {
+    return `
+      <ul class="cart-drawer__items" role="list">
+        ${cart.items.map((item, index) => this.renderCartItem(item, index + 1)).join('')}
+      </ul>
+    `;
+  }
+
+  /**
+   * Render a single cart item
+   */
+  renderCartItem(item, lineIndex) {
+    const hasVariant = item.variant_title && item.variant_title !== 'Default Title';
+    const hasDiscount = item.original_line_price !== item.final_line_price;
+
+    return `
+      <li class="cart-drawer__item" data-cart-item data-line-index="${lineIndex}">
+        <div class="cart-drawer__item-image">
+          ${item.image ? `
+            <a href="${item.url}">
+              <img
+                src="${cartState.getSizedImageUrl(item.image, '200x')}"
+                alt="${item.title}"
+                class="w-full h-full object-cover"
+                loading="lazy"
+              >
+            </a>
+          ` : ''}
+        </div>
+
+        <div class="cart-drawer__item-details">
+          <a href="${item.url}" class="cart-drawer__item-title">
+            ${item.product_title}
+          </a>
+          ${hasVariant ? `<p class="cart-drawer__item-variant">${item.variant_title}</p>` : ''}
+
+          <div class="cart-drawer__item-price">
+            ${hasDiscount ? `<span class="cart-drawer__item-price--compare">${cartState.formatMoney(item.original_line_price)}</span>` : ''}
+            <span class="${hasDiscount ? 'sale-price' : ''}">${cartState.formatMoney(item.final_line_price)}</span>
+          </div>
+
+          <div class="cart-drawer__item-actions">
+            <div class="cart-drawer__quantity" data-quantity-wrapper>
+              <button
+                type="button"
+                class="cart-drawer__quantity-btn"
+                data-quantity-minus
+                data-line="${lineIndex}"
+                aria-label="Decrease quantity"
+              >
+                <i class="ph ph-minus"></i>
+              </button>
+              <div class="cart-drawer__quantity-value">
+                <input
+                  type="number"
+                  class="cart-drawer__quantity-input"
+                  value="${item.quantity}"
+                  min="0"
+                  data-quantity-input
+                  data-line="${lineIndex}"
+                  aria-label="Quantity"
+                >
+              </div>
+              <button
+                type="button"
+                class="cart-drawer__quantity-btn"
+                data-quantity-plus
+                data-line="${lineIndex}"
+                aria-label="Increase quantity"
+              >
+                <i class="ph ph-plus"></i>
+              </button>
+            </div>
+            <button
+              type="button"
+              class="cart-drawer__remove"
+              data-remove-item
+              data-line="${lineIndex}"
+              aria-label="Remove ${item.product_title}"
+            >
+              <i class="ph ph-trash"></i>
+            </button>
+          </div>
+        </div>
+      </li>
+    `;
+  }
+
+  /**
+   * Render cart footer with totals and actions
+   */
+  renderFooter(cart) {
+    const addNote = window.themeStrings?.cartAddNote || 'Add a note';
+    const notePlaceholder = window.themeStrings?.cartNotePlaceholder || 'Add special instructions...';
+    const subtotal = window.themeStrings?.cartSubtotal || 'Subtotal';
+    const taxNote = window.themeStrings?.cartTaxesNote || 'Taxes and shipping calculated at checkout';
+    const viewCart = window.themeStrings?.cartViewCart || 'View cart';
+    const checkout = window.themeStrings?.cartCheckout || 'Checkout';
+    const cartUrl = window.routes?.cartUrl || '/cart';
+
+    return `
+      <div class="cart-drawer__footer">
+        <details class="cart-drawer__note-wrapper">
+          <summary class="cart-drawer__note-toggle">
+            <span>${addNote}</span>
+            <i class="ph ph-caret-down"></i>
+          </summary>
+          <div class="cart-drawer__note-content">
+            <textarea
+              name="note"
+              class="cart-drawer__note-input"
+              placeholder="${notePlaceholder}"
+              data-cart-note
+            >${cart.note || ''}</textarea>
+          </div>
+        </details>
+
+        <div class="cart-drawer__subtotal">
+          <span>${subtotal}</span>
+          <span data-cart-subtotal>${cartState.formatMoney(cart.total_price)}</span>
+        </div>
+        <p class="cart-drawer__tax-note">${taxNote}</p>
+
+        <div class="cart-drawer__actions">
+          <a href="${cartUrl}" class="btn btn--secondary btn--full" data-cart-drawer-close>
+            <span>${viewCart}</span>
+          </a>
+          <form action="${cartUrl}" method="post">
+            <button type="submit" name="checkout" class="btn btn--primary btn--full">
+              <i class="ph ph-lock-simple"></i>
+              <span>${checkout}</span>
+            </button>
+          </form>
+        </div>
+      </div>
+    `;
   }
 
   /**
@@ -299,6 +434,12 @@ class CartDrawerManager {
    */
   destroy() {
     if (!this.drawer) return;
+
+    // Unsubscribe from cart state
+    if (this.unsubscribe) {
+      this.unsubscribe();
+      this.unsubscribe = null;
+    }
 
     // Remove close button listeners
     this.drawer.querySelectorAll('[data-cart-drawer-close]').forEach(btn => {
@@ -321,7 +462,6 @@ class CartDrawerManager {
     // Remove global listeners
     document.removeEventListener('cart:open', this.boundHandlers.open);
     document.removeEventListener('cart:toggle', this.boundHandlers.toggle);
-    document.removeEventListener('cart:refresh', this.boundHandlers.refresh);
 
     // Clear timeout
     clearTimeout(this.noteTimeout);
