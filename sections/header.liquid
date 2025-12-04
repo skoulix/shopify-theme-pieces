@@ -87,64 +87,65 @@
     </div>
   </nav>
 
-  {%- comment -%} Mobile Menu {%- endcomment -%}
-  <div id="mobile-menu" class="hidden lg:hidden" role="dialog" aria-modal="true">
-    <div class="fixed inset-0 z-50 bg-black/25" onclick="document.getElementById('mobile-menu').classList.add('hidden')"></div>
-    <div class="fixed inset-y-0 right-0 z-50 w-full overflow-y-auto bg-[--color-background] px-6 py-6 sm:max-w-sm sm:ring-1 sm:ring-[--color-border]">
-      <div class="flex items-center justify-between">
-        <a href="{{ routes.root_url }}" class="-m-1.5 p-1.5">
-          <span class="sr-only">{{ shop.name }}</span>
-          {% if settings.logo != blank %}
-            {{ settings.logo | image_url: width: 200 | image_tag:
-              class: 'h-8 w-auto',
-              alt: shop.name
-            }}
-          {% else %}
-            <span class="text-lg font-bold text-[--color-text]">{{ shop.name }}</span>
-          {% endif %}
-        </a>
-        <button
-          type="button"
-          class="-m-2.5 rounded-md p-2.5 text-[--color-text]"
-          onclick="document.getElementById('mobile-menu').classList.add('hidden')"
-        >
+  {%- comment -%} Mobile Menu - Full Screen Drawer with Reveal Effects {%- endcomment -%}
+  <div id="mobile-menu" class="mobile-nav" role="dialog" aria-modal="true" aria-hidden="true">
+    {%- comment -%} Backdrop {%- endcomment -%}
+    <div class="mobile-nav__backdrop" data-mobile-nav-close></div>
+
+    {%- comment -%} Drawer Panel {%- endcomment -%}
+    <div class="mobile-nav__drawer">
+      {%- comment -%} Header {%- endcomment -%}
+      <div class="mobile-nav__header">
+        <button type="button" class="mobile-nav__close" data-mobile-nav-close>
           <span class="sr-only">Close menu</span>
-          <i class="ph ph-x text-2xl"></i>
+          <i class="ph ph-x"></i>
         </button>
       </div>
 
-      <div class="mt-6 flow-root">
-        <div class="-my-6 divide-y divide-[--color-border]">
-          <div class="space-y-2 py-6">
-            {% for link in section.settings.menu.links %}
-              {%- liquid
-                assign is_active = false
-                if link.url == request.path
-                  assign is_active = true
-                elsif link.url != '/' and request.path contains link.url
-                  assign is_active = true
-                endif
-              -%}
+      {%- comment -%} Main Navigation {%- endcomment -%}
+      <nav class="mobile-nav__content">
+        <ul class="mobile-nav__list">
+          {% for link in section.settings.menu.links %}
+            {%- liquid
+              assign is_active = false
+              if link.url == request.path
+                assign is_active = true
+              elsif link.url != '/' and request.path contains link.url
+                assign is_active = true
+              endif
+            -%}
+            <li class="mobile-nav__item" style="--item-index: {{ forloop.index0 }}">
               <a
                 href="{{ link.url }}"
-                class="-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 text-[--color-text] hover:bg-[--color-background-secondary]{% if is_active %} bg-[--color-background-secondary] text-[--color-primary]{% endif %}"
+                class="mobile-nav__link font-heading{% if is_active %} is-active{% endif %}"
                 data-nav-link
+                data-mobile-nav-close
               >
-                {{ link.title }}
+                <span class="mobile-nav__link-text">{{ link.title }}</span>
+                <span class="mobile-nav__link-line"></span>
               </a>
-            {% endfor %}
-          </div>
+            </li>
+          {% endfor %}
+        </ul>
+      </nav>
 
-          <div class="py-6 space-y-2">
-            {% if shop.customer_accounts_enabled %}
-              <a href="{{ routes.account_url }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-[--color-text] hover:bg-[--color-background-secondary]">
-                <i class="ph ph-user mr-2"></i>Account
-              </a>
-            {% endif %}
-            <a href="{{ routes.cart_url }}" class="-mx-3 block rounded-lg px-3 py-2.5 text-base font-semibold leading-7 text-[--color-text] hover:bg-[--color-background-secondary]">
-              <i class="ph ph-bag mr-2"></i>Cart ({{ cart.item_count }})
+      {%- comment -%} Footer {%- endcomment -%}
+      <div class="mobile-nav__footer">
+        <div class="mobile-nav__footer-links">
+          {% if shop.customer_accounts_enabled %}
+            <a href="{{ routes.account_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
+              <i class="ph ph-user"></i>
+              <span>Account</span>
             </a>
-          </div>
+          {% endif %}
+          <a href="{{ routes.search_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
+            <i class="ph ph-magnifying-glass"></i>
+            <span>Search</span>
+          </a>
+          <a href="{{ routes.cart_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
+            <i class="ph ph-bag"></i>
+            <span>Cart ({{ cart.item_count }})</span>
+          </a>
         </div>
       </div>
     </div>
@@ -153,9 +154,105 @@
 
 <script>
 (function() {
+  const mobileNav = document.getElementById('mobile-menu');
+  const closeBtns = document.querySelectorAll('[data-mobile-nav-close]');
+  let isAnimating = false;
+  let openTimeline = null;
+
+  function openMobileNav() {
+    if (isAnimating || mobileNav.classList.contains('is-open')) return;
+    isAnimating = true;
+
+    const backdrop = mobileNav.querySelector('.mobile-nav__backdrop');
+    const drawer = mobileNav.querySelector('.mobile-nav__drawer');
+    const header = mobileNav.querySelector('.mobile-nav__header');
+    const linkTexts = mobileNav.querySelectorAll('.mobile-nav__link-text');
+    const footer = mobileNav.querySelector('.mobile-nav__footer');
+
+    // Use GSAP if available, otherwise rely on CSS
+    if (window.gsap) {
+      // Set initial states BEFORE making visible
+      gsap.set(backdrop, { opacity: 0 });
+      // drawer and linkTexts already hidden via CSS transform
+      gsap.set(header, { opacity: 0 });
+      gsap.set(footer, { opacity: 0 });
+    }
+
+    // Now make visible
+    mobileNav.classList.add('is-open');
+    mobileNav.setAttribute('aria-hidden', 'false');
+    document.body.style.overflow = 'hidden';
+    document.dispatchEvent(new CustomEvent('menu:open'));
+
+    if (window.gsap) {
+      openTimeline = gsap.timeline({
+        onComplete: () => { isAnimating = false; }
+      });
+
+      openTimeline
+        .to(backdrop, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0)
+        .to(drawer, { y: 0, duration: 0.5, ease: 'power3.out' }, 0)
+        .to(header, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0.2)
+        .to(linkTexts, { y: 0, duration: 1.2, stagger: 0.1, ease: 'power4.out' }, 0.25)
+        .to(footer, { opacity: 1, duration: 0.4, ease: 'power2.out' }, 0.6);
+    } else {
+      isAnimating = false;
+    }
+  }
+
+  function closeMobileNav() {
+    if (isAnimating || !mobileNav.classList.contains('is-open')) return;
+    isAnimating = true;
+
+    document.dispatchEvent(new CustomEvent('menu:close'));
+
+    const backdrop = mobileNav.querySelector('.mobile-nav__backdrop');
+    const drawer = mobileNav.querySelector('.mobile-nav__drawer');
+
+    if (window.gsap) {
+      if (openTimeline) openTimeline.kill();
+
+      gsap.timeline({
+        onComplete: () => {
+          mobileNav.classList.remove('is-open');
+          mobileNav.setAttribute('aria-hidden', 'true');
+          document.body.style.overflow = '';
+          isAnimating = false;
+        }
+      })
+        .to(backdrop, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0)
+        .to(drawer, { y: '-100%', duration: 0.4, ease: 'power3.in' }, 0);
+    } else {
+      mobileNav.classList.remove('is-open');
+      mobileNav.setAttribute('aria-hidden', 'true');
+      document.body.style.overflow = '';
+      isAnimating = false;
+    }
+  }
+
+  // Open button (hamburger)
+  document.querySelector('.lg\\:hidden button')?.addEventListener('click', openMobileNav);
+
+  // Close buttons (X, backdrop, links)
+  closeBtns.forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      if (e.target.closest('a')) {
+        setTimeout(closeMobileNav, 100);
+      } else {
+        closeMobileNav();
+      }
+    });
+  });
+
+  // Close on escape key
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && mobileNav.classList.contains('is-open')) {
+      closeMobileNav();
+    }
+  });
+
   /**
    * Update active nav links based on current URL
-   * Called on initial load and after Swup page transitions
    */
   function updateActiveLinks() {
     const currentPath = window.location.pathname;
@@ -163,37 +260,34 @@
 
     navLinks.forEach(link => {
       const linkPath = new URL(link.href, window.location.origin).pathname;
-
-      // Remove trailing slashes for comparison
       const normalizedCurrent = currentPath.replace(/\/$/, '') || '/';
       const normalizedLink = linkPath.replace(/\/$/, '') || '/';
 
       let isActive = false;
 
-      // Exact match
       if (normalizedCurrent === normalizedLink) {
         isActive = true;
-      }
-      // Partial match for nested pages (e.g., /collections matches /collections/all)
-      else if (normalizedLink !== '/' && normalizedCurrent.startsWith(normalizedLink + '/')) {
+      } else if (normalizedLink !== '/' && normalizedCurrent.startsWith(normalizedLink + '/')) {
         isActive = true;
-      }
-      // Special case: collection pages should match /collections link
-      else if (normalizedLink !== '/' && normalizedCurrent.startsWith(normalizedLink)) {
+      } else if (normalizedLink !== '/' && normalizedCurrent.startsWith(normalizedLink)) {
         isActive = true;
       }
 
       link.classList.toggle('is-active', isActive);
+
+      // Also update Tailwind underline classes for desktop nav
+      if (isActive) {
+        link.classList.remove('after:w-0');
+        link.classList.add('after:w-full');
+      } else {
+        link.classList.remove('after:w-full');
+        link.classList.add('after:w-0');
+      }
     });
   }
 
-  // Update on initial page load
   updateActiveLinks();
-
-  // Update after Swup page transitions
   window.addEventListener('swup:contentReplaced', updateActiveLinks);
-
-  // Also listen for popstate (browser back/forward)
   window.addEventListener('popstate', updateActiveLinks);
 })();
 </script>
