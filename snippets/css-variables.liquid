@@ -135,7 +135,9 @@
   /* Buttons - Base */
   .btn,
   .btn-primary,
+  .btn--primary,
   .btn-secondary,
+  .btn--secondary,
   button[type="submit"] {
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
   }
@@ -169,7 +171,8 @@
 
   /* Section links */
   .text-hover-reveal,
-  .section-link {
+  .section-link,
+  .link-cta {
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
   }
 
