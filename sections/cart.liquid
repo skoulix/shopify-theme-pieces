@@ -218,15 +218,17 @@
     </div>
   {% else %}
     <div class="cart-empty {{ container_class }} pb-[--page-vertical-padding]">
-      <div class="max-w-md mx-auto text-center py-16">
-        <div class="w-32 h-32 mx-auto mb-8 rounded-full bg-[--color-background-secondary] flex items-center justify-center">
-          <i class="ph ph-bag text-5xl text-[--color-text-secondary]"></i>
-        </div>
-        <h2 class="text-2xl font-semibold text-[--color-text] font-heading">{{ 'cart.empty' | t }}</h2>
-        <p class="mt-4 text-[--color-text-secondary]">{{ 'cart.empty_description' | t }}</p>
-        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary mt-8">
+      <h2 class="text-2xl md:text-3xl font-semibold text-[--color-text] font-heading">{{ 'cart.empty' | t }}</h2>
+      <p class="mt-4 text-[--color-text-secondary] max-w-sm">{{ 'cart.empty_description' | t }}</p>
+
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none">
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary w-full sm:w-auto">
           <i class="ph ph-storefront"></i>
           <span>{{ 'cart.start_shopping' | t }}</span>
+        </a>
+        <a href="{{ routes.root_url }}" class="btn btn--secondary w-full sm:w-auto">
+          <i class="ph ph-house"></i>
+          <span>{{ '404.back_home' | t }}</span>
         </a>
       </div>
     </div>

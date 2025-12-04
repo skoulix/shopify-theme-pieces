@@ -99,10 +99,11 @@
         </ul>
       {% else %}
         <div class="cart-drawer__empty">
-          <i class="ph ph-bag"></i>
-          <p>{{ 'cart.empty' | t }}</p>
-          <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary btn--sm" data-cart-drawer-close>
-            {{ 'cart.continue_shopping' | t }}
+          <h3 class="text-xl font-semibold text-[--color-text] font-heading">{{ 'cart.empty' | t }}</h3>
+          <p>{{ 'cart.empty_description' | t }}</p>
+          <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary btn--full" data-cart-drawer-close>
+            <i class="ph ph-storefront"></i>
+            <span>{{ 'cart.start_shopping' | t }}</span>
           </a>
         </div>
       {% endif %}
