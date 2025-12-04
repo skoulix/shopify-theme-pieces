@@ -21,12 +21,11 @@
     {%- comment -%} Actions {%- endcomment -%}
     <div class="cart-notification__actions">
       <a href="{{ routes.cart_url }}" class="btn btn--secondary btn--sm btn--full">
-        {{ 'cart.view_cart' | t }}
-        (<span data-cart-count>{{ cart.item_count }}</span>)
+        <span>{{ 'cart.view_cart' | t }} (<span data-cart-count>{{ cart.item_count }}</span>)</span>
       </a>
       <form action="{{ routes.cart_url }}" method="post">
         <button type="submit" name="checkout" class="btn btn--primary btn--sm btn--full">
-          {{ 'cart.checkout' | t }}
+          <span>{{ 'cart.checkout' | t }}</span>
         </button>
       </form>
     </div>

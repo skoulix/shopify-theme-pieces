@@ -12,7 +12,6 @@
     {%- comment -%} Header {%- endcomment -%}
     <div class="cart-drawer__header">
       <h2 class="cart-drawer__title font-heading">{{ 'cart.title' | t }}</h2>
-      <span class="cart-drawer__count" data-cart-count>{{ cart.item_count }}</span>
       <button type="button" class="cart-drawer__close" data-cart-drawer-close>
         <span class="sr-only">{{ 'cart.close' | t }}</span>
         <i class="ph ph-x"></i>
@@ -54,7 +53,7 @@
                 </div>
 
                 <div class="cart-drawer__item-actions">
-                  <div class="cart-drawer__quantity">
+                  <div class="cart-drawer__quantity" data-quantity-wrapper>
                     <button
                       type="button"
                       class="cart-drawer__quantity-btn"
@@ -64,15 +63,17 @@
                     >
                       <i class="ph ph-minus"></i>
                     </button>
-                    <input
-                      type="number"
-                      class="cart-drawer__quantity-input"
-                      value="{{ item.quantity }}"
-                      min="0"
-                      data-quantity-input
-                      data-line="{{ forloop.index }}"
-                      aria-label="Quantity"
-                    >
+                    <div class="cart-drawer__quantity-value">
+                      <input
+                        type="number"
+                        class="cart-drawer__quantity-input"
+                        value="{{ item.quantity }}"
+                        min="0"
+                        data-quantity-input
+                        data-line="{{ forloop.index }}"
+                        aria-label="Quantity"
+                      >
+                    </div>
                     <button
                       type="button"
                       class="cart-drawer__quantity-btn"
@@ -140,7 +141,7 @@
         {%- comment -%} Actions {%- endcomment -%}
         <div class="cart-drawer__actions">
           <a href="{{ routes.cart_url }}" class="btn btn--secondary btn--full" data-cart-drawer-close>
-            {{ 'cart.view_cart' | t }}
+            <span>{{ 'cart.view_cart' | t }}</span>
           </a>
           <form action="{{ routes.cart_url }}" method="post">
             <button type="submit" name="checkout" class="btn btn--primary btn--full">
@@ -153,228 +154,3 @@
     {% endif %}
   </div>
 </div>
-
-<script>
-(function() {
-  const cartDrawer = document.getElementById('cart-drawer');
-  if (!cartDrawer) return;
-
-  const closeBtns = cartDrawer.querySelectorAll('[data-cart-drawer-close]');
-  let isAnimating = false;
-
-  /**
-   * Open the cart drawer
-   */
-  function openCartDrawer() {
-    if (isAnimating || cartDrawer.classList.contains('is-open')) return;
-    isAnimating = true;
-
-    const backdrop = cartDrawer.querySelector('.cart-drawer__backdrop');
-    const panel = cartDrawer.querySelector('.cart-drawer__panel');
-
-    if (window.gsap) {
-      gsap.set(backdrop, { opacity: 0 });
-      gsap.set(panel, { x: '100%' });
-    }
-
-    cartDrawer.classList.add('is-open');
-    cartDrawer.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    document.dispatchEvent(new CustomEvent('cart:open'));
-
-    if (window.gsap) {
-      gsap.timeline({ onComplete: () => { isAnimating = false; } })
-        .to(backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0)
-        .to(panel, { x: '0%', duration: 0.4, ease: 'power3.out' }, 0);
-    } else {
-      cartDrawer.classList.add('is-visible');
-      isAnimating = false;
-    }
-  }
-
-  /**
-   * Close the cart drawer
-   */
-  function closeCartDrawer() {
-    if (isAnimating || !cartDrawer.classList.contains('is-open')) return;
-    isAnimating = true;
-
-    const backdrop = cartDrawer.querySelector('.cart-drawer__backdrop');
-    const panel = cartDrawer.querySelector('.cart-drawer__panel');
-
-    document.dispatchEvent(new CustomEvent('cart:close'));
-
-    if (window.gsap) {
-      gsap.timeline({
-        onComplete: () => {
-          cartDrawer.classList.remove('is-open');
-          cartDrawer.setAttribute('aria-hidden', 'true');
-          document.body.style.overflow = '';
-          isAnimating = false;
-        }
-      })
-        .to(backdrop, { opacity: 0, duration: 0.25, ease: 'power2.in' }, 0)
-        .to(panel, { x: '100%', duration: 0.3, ease: 'power3.in' }, 0);
-    } else {
-      cartDrawer.classList.remove('is-open', 'is-visible');
-      cartDrawer.setAttribute('aria-hidden', 'true');
-      document.body.style.overflow = '';
-      isAnimating = false;
-    }
-  }
-
-  // Close buttons
-  closeBtns.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      if (e.target.closest('a')) {
-        setTimeout(closeCartDrawer, 100);
-      } else {
-        closeCartDrawer();
-      }
-    });
-  });
-
-  // Close on escape
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && cartDrawer.classList.contains('is-open')) {
-      closeCartDrawer();
-    }
-  });
-
-  // Quantity controls
-  cartDrawer.addEventListener('click', async (e) => {
-    const minusBtn = e.target.closest('[data-quantity-minus]');
-    const plusBtn = e.target.closest('[data-quantity-plus]');
-    const removeBtn = e.target.closest('[data-remove-item]');
-
-    if (minusBtn || plusBtn || removeBtn) {
-      e.preventDefault();
-      const line = parseInt(minusBtn?.dataset.line || plusBtn?.dataset.line || removeBtn?.dataset.line);
-      const input = cartDrawer.querySelector(`[data-quantity-input][data-line="${line}"]`);
-      let quantity = parseInt(input?.value || 0);
-
-      if (minusBtn && quantity > 0) quantity--;
-      if (plusBtn) quantity++;
-      if (removeBtn) quantity = 0;
-
-      await updateCartLine(line, quantity);
-    }
-  });
-
-  // Quantity input change
-  cartDrawer.addEventListener('change', async (e) => {
-    if (e.target.matches('[data-quantity-input]')) {
-      const line = parseInt(e.target.dataset.line);
-      const quantity = parseInt(e.target.value) || 0;
-      await updateCartLine(line, quantity);
-    }
-  });
-
-  // Cart note
-  const noteInput = cartDrawer.querySelector('[data-cart-note]');
-  if (noteInput) {
-    let noteTimeout;
-    noteInput.addEventListener('input', () => {
-      clearTimeout(noteTimeout);
-      noteTimeout = setTimeout(() => {
-        fetch('/cart/update.js', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ note: noteInput.value })
-        });
-      }, 500);
-    });
-  }
-
-  /**
-   * Update cart line quantity
-   */
-  async function updateCartLine(line, quantity) {
-    cartDrawer.classList.add('is-loading');
-
-    try {
-      const response = await fetch('/cart/change.js', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ line, quantity })
-      });
-
-      if (response.ok) {
-        await refreshCartDrawer();
-        document.dispatchEvent(new CustomEvent('cart:updated'));
-      }
-    } catch (error) {
-      console.error('Error updating cart:', error);
-    } finally {
-      cartDrawer.classList.remove('is-loading');
-    }
-  }
-
-  /**
-   * Refresh cart drawer content via AJAX
-   */
-  async function refreshCartDrawer() {
-    try {
-      const response = await fetch('/?sections=cart-drawer-content');
-      const data = await response.json();
-
-      if (data['cart-drawer-content']) {
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(data['cart-drawer-content'], 'text/html');
-
-        // Update content
-        const newContent = doc.querySelector('[data-cart-drawer-content]');
-        const currentContent = cartDrawer.querySelector('[data-cart-drawer-content]');
-        if (newContent && currentContent) {
-          currentContent.innerHTML = newContent.innerHTML;
-        }
-
-        // Update footer
-        const newFooter = doc.querySelector('.cart-drawer__footer');
-        const currentFooter = cartDrawer.querySelector('.cart-drawer__footer');
-        if (newFooter && currentFooter) {
-          currentFooter.outerHTML = newFooter.outerHTML;
-        } else if (newFooter && !currentFooter) {
-          cartDrawer.querySelector('.cart-drawer__panel').appendChild(newFooter.cloneNode(true));
-        } else if (!newFooter && currentFooter) {
-          currentFooter.remove();
-        }
-
-        // Update count
-        const cart = await fetch('/cart.js').then(r => r.json());
-        updateCartCount(cart.item_count);
-      }
-    } catch (error) {
-      console.error('Error refreshing cart:', error);
-      // Fallback: reload page
-      window.location.reload();
-    }
-  }
-
-  /**
-   * Update cart count in header and drawer
-   */
-  function updateCartCount(count) {
-    document.querySelectorAll('[data-cart-count]').forEach(el => {
-      el.textContent = count;
-    });
-  }
-
-  // Listen for cart:open events (from add-to-cart)
-  document.addEventListener('cart:open', openCartDrawer);
-
-  // Listen for cart:toggle
-  document.addEventListener('cart:toggle', () => {
-    if (cartDrawer.classList.contains('is-open')) {
-      closeCartDrawer();
-    } else {
-      openCartDrawer();
-    }
-  });
-
-  // Make functions globally available
-  window.openCartDrawer = openCartDrawer;
-  window.closeCartDrawer = closeCartDrawer;
-  window.refreshCartDrawer = refreshCartDrawer;
-})();
-</script>

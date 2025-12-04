@@ -19,11 +19,16 @@
   .cart-item-image { clip-path: inset(0 100% 0 0); }
   .cart-wrapper.is-ready .cart-item { opacity: 1; transform: translateY(0); }
   .cart-wrapper.is-ready .cart-item-image { clip-path: inset(0 0% 0 0); }
-  .cart-quantity { display: flex; align-items: center; border: 1px solid var(--color-border); }
-  .cart-quantity-btn { width: 36px; height: 36px; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--color-text); transition: background 0.2s, color 0.2s; }
+  .cart-quantity { display: inline-flex; align-items: center; background: transparent; border-radius: var(--input-radius); padding: 0; position: relative; overflow: hidden; border: var(--input-border-width) solid var(--color-border); }
+  .cart-quantity-btn { width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--color-text); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .cart-quantity-btn:hover { background: var(--color-primary); color: var(--color-primary-contrast); }
-  .cart-quantity-input { width: 50px; height: 36px; text-align: center; font-size: 0.875rem; font-weight: 500; background: transparent; border: none; border-left: 1px solid var(--color-border); border-right: 1px solid var(--color-border); color: var(--color-text); -moz-appearance: textfield; }
+  .cart-quantity-btn:active { transform: scale(0.95); }
+  .cart-quantity-value { width: 3.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; }
+  .cart-quantity-input { width: 100%; height: 100%; text-align: center; font-size: 1rem; font-weight: 600; background: transparent; border: none !important; border-width: 0 !important; color: var(--color-text); -moz-appearance: textfield; outline: none; }
   .cart-quantity-input::-webkit-outer-spin-button, .cart-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+  .cart-quantity-input:focus { outline: none; border: none !important; }
+  .cart-quantity.is-changing .cart-quantity-input { animation: cartQuantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+  @keyframes cartQuantityPop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
   .cart-summary { opacity: 0; transform: translateY(30px); }
   .cart-wrapper.is-ready .cart-summary { opacity: 1; transform: translateY(0); }
   .cart-empty { opacity: 0; }
@@ -94,22 +99,24 @@
 
                       <div class="flex items-center justify-between mt-4">
                         {%- comment -%} Quantity {%- endcomment -%}
-                        <div class="cart-quantity">
+                        <div class="cart-quantity" data-quantity-wrapper>
                           <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
-                            <i class="ph ph-minus text-sm"></i>
+                            <i class="ph ph-minus"></i>
                           </button>
-                          <input
-                            type="number"
-                            name="updates[]"
-                            value="{{ item.quantity }}"
-                            min="0"
-                            class="cart-quantity-input"
-                            data-quantity-input
-                            data-line="{{ forloop.index }}"
-                            aria-label="Quantity"
-                          >
+                          <div class="cart-quantity-value">
+                            <input
+                              type="number"
+                              name="updates[]"
+                              value="{{ item.quantity }}"
+                              min="0"
+                              class="cart-quantity-input"
+                              data-quantity-input
+                              data-line="{{ forloop.index }}"
+                              aria-label="Quantity"
+                            >
+                          </div>
                           <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="Increase quantity">
-                            <i class="ph ph-plus text-sm"></i>
+                            <i class="ph ph-plus"></i>
                           </button>
                         </div>
 

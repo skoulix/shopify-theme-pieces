@@ -84,7 +84,7 @@ class SwupManager {
 
   setupEventListeners() {
     // Before page transition starts
-    this.swup.hooks.on('visit:start', () => {
+    this.swup.hooks.on('visit:start', (visit) => {
       document.documentElement.classList.add('is-changing');
 
       // Lock scroll and compensate for scrollbar width to prevent layout shift
@@ -93,6 +93,11 @@ class SwupManager {
       document.documentElement.classList.add('scroll-locked');
 
       lenisManager.stop();
+
+      // Clear cache for cart page to ensure fresh cart data
+      if (visit.to.url.includes('/cart')) {
+        this.swup.cache.delete(visit.to.url);
+      }
     });
 
     // After new content is replaced
@@ -352,6 +357,32 @@ class SwupManager {
    */
   goBack() {
     window.history.back();
+  }
+
+  /**
+   * Clear cached pages that may have stale data
+   * @param {string|string[]} patterns - URL patterns to clear (e.g., '/cart', '/account')
+   */
+  clearCache(patterns) {
+    if (!this.swup || !this.swup.cache) return;
+
+    const patternsArray = Array.isArray(patterns) ? patterns : [patterns];
+
+    // Get all cached URLs
+    this.swup.cache.all.forEach((page, url) => {
+      if (patternsArray.some(pattern => url.includes(pattern))) {
+        this.swup.cache.delete(url);
+      }
+    });
+  }
+
+  /**
+   * Clear all cached pages
+   */
+  clearAllCache() {
+    if (this.swup && this.swup.cache) {
+      this.swup.cache.clear();
+    }
   }
 
   /**

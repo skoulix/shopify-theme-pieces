@@ -19,6 +19,7 @@ import '../css/app.css';
 import { lenisManager } from './managers/LenisManager.js';
 import { swupManager } from './managers/SwupManager.js';
 import { animationManager } from './managers/AnimationManager.js';
+import { cartDrawerManager } from './managers/CartDrawerManager.js';
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Flip);
@@ -46,6 +47,7 @@ function handleContentReplaced() {
   setTimeout(() => {
     animationManager.refresh();
     initAnimations();
+    cartDrawerManager.reinit();
   }, 100);
 }
 
@@ -99,6 +101,14 @@ function init() {
   // Handle menu events
   handleMenuEvents();
 
+  // Initialize cart drawer
+  cartDrawerManager.init();
+
+  // Clear cart page cache when cart is updated
+  document.addEventListener('cart:updated', () => {
+    swupManager.clearCache('/cart');
+  });
+
   // Handle anchor link clicks for smooth scroll
   document.addEventListener('click', (e) => {
     const anchor = e.target.closest('a[href^="#"]');
@@ -118,11 +128,17 @@ function init() {
     lenis: lenisManager,
     swup: swupManager,
     animation: animationManager,
+    cartDrawer: cartDrawerManager,
     gsap,
     ScrollTrigger,
     Flip,
     Lenis,
   };
+
+  // Expose cart functions globally for compatibility
+  window.openCartDrawer = () => cartDrawerManager.open();
+  window.closeCartDrawer = () => cartDrawerManager.close();
+  window.refreshCartDrawer = () => cartDrawerManager.refresh();
 
   console.log('Pieces theme initialized');
 }
