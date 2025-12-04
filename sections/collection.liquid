@@ -66,10 +66,7 @@
 
     {% if section.settings.show_description and collection.description != blank %}
       {%- assign desc_text = collection.description | strip_html -%}
-      {%- assign desc_length = desc_text | size -%}
-      {%- assign estimated_lines = desc_length | divided_by: 45 | plus: 1 -%}
-      {%- assign min_height = estimated_lines | times: 1.22 -%}
-      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" style="min-height: {{ min_height }}rem;" data-shuffle-text data-original-text="{{ desc_text | escape }}">
+      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ desc_text | escape }}">
         {{ desc_text }}
       </div>
     {% endif %}
@@ -260,6 +257,10 @@
         const originalText = headerDesc.dataset.originalText || headerDesc.textContent.trim();
         const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
 
+        // Lock height before animation to prevent layout shifts
+        const initialHeight = headerDesc.offsetHeight;
+        headerDesc.style.height = initialHeight + 'px';
+
         // Start with scrambled text and hidden
         headerDesc.textContent = originalText.split('').map(char =>
           char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
@@ -292,6 +293,8 @@
           },
           onComplete: () => {
             headerDesc.textContent = originalText;
+            // Remove fixed height after animation completes
+            headerDesc.style.height = '';
           }
         }, 0.6);
       }

@@ -1,20 +1,100 @@
 {%- comment -%}
-  Page Section - Skeleton + Tailwind
+  Page Section - Large typography header matching collection template
 {%- endcomment -%}
 
-<section class="bg-[--color-background]">
-  <div class="page-container py-[--page-vertical-padding] max-w-3xl">
-    <h1 class="text-3xl font-bold tracking-tight text-[--color-text] sm:text-4xl font-heading">{{ page.title }}</h1>
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
 
-    <div class="mt-8 prose max-w-none text-[--color-text]">
+<style>
+  .page-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
+  @media (min-width: 1024px) { .page-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
+  @media (min-width: 1536px) { .page-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
+  .page-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
+  .page-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
+  .page-wrapper.is-loading .page-header-title-line span { opacity: 0; transform: translateY(100%); }
+</style>
+
+<section class="page-wrapper is-loading bg-[--color-background]" data-page-wrapper>
+  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+    <h1 class="page-header-title font-bold text-[--color-text] font-heading">
+      {%- assign title_words = page.title | split: ' ' -%}
+      {%- for word in title_words -%}
+        <span class="page-header-title-line block overflow-hidden">
+          <span class="inline-block">{{ word }}</span>
+        </span>
+      {%- endfor -%}
+    </h1>
+  </header>
+
+  <div class="{{ container_class }} pb-[--page-vertical-padding]">
+    <div class="prose max-w-3xl text-[--color-text]">
       {{ page.content }}
     </div>
   </div>
 </section>
 
+<script>
+(function() {
+  const wrapper = document.querySelector('[data-page-wrapper]');
+  if (!wrapper || wrapper.dataset.pageInitialized) return;
+  wrapper.dataset.pageInitialized = 'true';
+
+  // Animate header on load
+  function animateHeader() {
+    const titleLines = wrapper.querySelectorAll('.page-header-title-line span');
+
+    if (typeof gsap === 'undefined') {
+      wrapper.classList.remove('is-loading');
+      return;
+    }
+
+    const tl = gsap.timeline({
+      onComplete: () => wrapper.classList.remove('is-loading')
+    });
+
+    // Title lines slide up
+    tl.to(titleLines, {
+      y: 0,
+      opacity: 1,
+      duration: 0.8,
+      stagger: 0.1,
+      ease: 'power3.out'
+    }, 0.2);
+  }
+
+  // Run on load or Swup navigation
+  if (document.readyState === 'complete') {
+    animateHeader();
+  } else {
+    window.addEventListener('load', animateHeader);
+  }
+
+  // Re-run on Swup content replace
+  window.addEventListener('swup:contentReplaced', () => {
+    const newWrapper = document.querySelector('[data-page-wrapper]');
+    if (newWrapper && !newWrapper.dataset.pageInitialized) {
+      newWrapper.dataset.pageInitialized = 'true';
+      animateHeader();
+    }
+  });
+})();
+</script>
+
 {% schema %}
 {
   "name": "Page",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    }
+  ]
 }
 {% endschema %}

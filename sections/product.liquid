@@ -12,15 +12,17 @@
   .product-section-wrapper { max-width: var(--page-max-width); margin: 0 auto; padding: 0; }
   @media (min-width: 1024px) { .product-section-wrapper { padding: 0 var(--page-padding); } }
   .product-section-wrapper.is-full-width { max-width: none; padding: 0; }
-  .product-hero { display: grid; grid-template-columns: 1fr; position: relative; overflow: hidden; }
+  .product-hero { display: grid; grid-template-columns: 1fr; position: relative; }
   @media (min-width: 1024px) { .product-hero { grid-template-columns: 1.2fr 1fr; } }
   .product-info { container-type: inline-size; display: flex; flex-direction: column; justify-content: center; padding: 6rem var(--page-padding) 3rem; }
   @media (min-width: 1024px) { .product-info { padding: 4rem 0 4rem 4rem; } }
   .product-info.is-full-width { padding: 6rem var(--page-padding) 3rem; }
   @media (min-width: 1024px) { .product-info.is-full-width { padding: 4rem 4rem 4rem 4rem; } }
-  .product-title { font-size: calc(clamp(2rem, 12cqw, 3.5rem) * var(--heading-font-scale, 1)); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; color: var(--color-text); }
-  @container (min-width: 400px) { .product-title { font-size: calc(clamp(2.5rem, 10cqw, 4.5rem) * var(--heading-font-scale, 1)); } }
-  @container (min-width: 600px) { .product-title { font-size: calc(clamp(3rem, 8cqw, 5.5rem) * var(--heading-font-scale, 1)); } }
+  .product-title { font-size: calc(clamp(1.75rem, 10cqw, 3rem) * var(--heading-font-scale, 1)); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; color: var(--color-text); }
+  @container (min-width: 400px) { .product-title { font-size: calc(clamp(2rem, 8cqw, 3.5rem) * var(--heading-font-scale, 1)); } }
+  @container (min-width: 600px) { .product-title { font-size: calc(clamp(2.5rem, 7cqw, 4.5rem) * var(--heading-font-scale, 1)); } }
+  @media (min-width: 1400px) { .product-title { font-size: calc(clamp(3rem, 3.5vw, 4.5rem) * var(--heading-font-scale, 1)); } }
+  @media (min-width: 1800px) { .product-title { font-size: calc(clamp(3.5rem, 3vw, 5rem) * var(--heading-font-scale, 1)); } }
   .product-title-line { display: block; overflow: hidden; }
   .product-title-line:nth-child(2) { margin-left: clamp(1rem, 8cqw, 4rem); }
   .product-title-line:nth-child(3) { margin-left: clamp(2rem, 12cqw, 7rem); }
@@ -40,7 +42,7 @@
   .product-thumbnail:hover, .product-thumbnail.is-active { opacity: 1; }
   .product-thumbnail.is-active { border-color: var(--color-text); }
   .product-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-  .product-description { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.8; color: var(--color-text-secondary); max-width: 320px; margin-top: 2rem; }
+  .product-description { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.8; color: var(--color-text-secondary); max-width: 420px; margin-top: 2rem; }
   .product-form { margin-top: 3rem; }
   .product-form-group { margin-bottom: 1.5rem; }
   .product-form-label { display: block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
@@ -150,10 +152,7 @@
 
     {% if section.settings.show_description and product.description != blank %}
       {%- assign desc_text = product.description | strip_html | truncate: 200 -%}
-      {%- assign desc_length = desc_text | size -%}
-      {%- assign estimated_lines = desc_length | divided_by: 50 | plus: 1 -%}
-      {%- assign min_height = estimated_lines | times: 1.35 -%}
-      <div class="product-description" style="min-height: {{ min_height }}rem;" data-shuffle-text data-original-text="{{ desc_text | escape }}">
+      <div class="product-description" data-shuffle-text data-original-text="{{ desc_text | escape }}">
         {{ desc_text }}
       </div>
     {% endif %}
@@ -458,6 +457,10 @@
       const originalText = description.textContent.trim();
       const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
+      // Lock height before animation to prevent layout shifts
+      const initialHeight = description.offsetHeight;
+      description.style.height = initialHeight + 'px';
+
       // Start scrambled
       description.textContent = originalText.split('').map(char =>
         char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
@@ -487,6 +490,8 @@
         },
         onComplete: () => {
           description.textContent = originalText;
+          // Remove fixed height after animation completes
+          description.style.height = '';
         }
       }, 0.8);
     }

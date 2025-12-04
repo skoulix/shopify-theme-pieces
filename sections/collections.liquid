@@ -1,46 +1,596 @@
-{%- comment -%}
-  Collections List Section - Skeleton + Tailwind
-  Used in list-collections template to show all collections.
-{%- endcomment -%}
+{%- liquid
+  assign layout_style = section.settings.layout_style
+  assign full_width = section.settings.full_width
 
-<section class="bg-[--color-background]">
-  <div class="page-container py-[--page-vertical-padding]">
-    <h1 class="text-3xl font-bold tracking-tight text-[--color-text] font-heading">{{ 'collections.title' | t }}</h1>
+  if full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
 
-    <div class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-      {% for collection in collections %}
-        <a href="{{ collection.url }}" class="group block">
-          <div class="aspect-square overflow-hidden rounded-[--card-radius] bg-[--color-background-secondary]">
-            {% if collection.featured_image %}
-              {{ collection.featured_image | image_url: width: 600 | image_tag:
-                class: 'h-full w-full object-cover object-center group-hover:opacity-75 transition-opacity',
-                loading: 'lazy'
-              }}
-            {% else %}
-              <div class="flex h-full items-center justify-center">
-                <i class="ph ph-folder text-4xl text-[--color-border]"></i>
+<style>
+  .collections-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
+  @media (min-width: 1024px) { .collections-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
+  @media (min-width: 1536px) { .collections-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
+  .collections-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
+  .collections-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
+  .collections-grid { grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); }
+  @media (min-width: 768px) { .collections-grid { grid-template-columns: repeat(var(--columns-tablet, 2), 1fr); } }
+  @media (min-width: 1024px) { .collections-grid { grid-template-columns: repeat(var(--columns-desktop, 3), 1fr); } }
+  .collections-wrapper.is-loading .collection-card-image { clip-path: inset(0 100% 0 0); }
+  .collections-metro { grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); }
+  @media (min-width: 768px) { .collections-metro { grid-template-columns: repeat(var(--columns-tablet, 2), 1fr); } }
+  @media (min-width: 1024px) { .collections-metro { grid-template-columns: repeat(var(--columns-desktop, 4), 1fr); } }
+  .collections-metro-item-image { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .collections-metro-item-large { grid-column: span 2; grid-row: span 2; }
+  .collections-metro-item-wide { grid-column: span 2; }
+  .collections-metro-item-tall { grid-row: span 2; }
+  @media (max-width: 767px) { .collections-metro-item-large, .collections-metro-item-wide, .collections-metro-item-tall { grid-column: span 1; grid-row: span 1; } }
+  .collections-metro-item-large .collections-metro-item-inner, .collections-metro-item-wide .collections-metro-item-inner { aspect-ratio: 16/9; }
+  .collections-metro-item-tall .collections-metro-item-inner { aspect-ratio: 3/5; }
+  .collections-metro-item-normal .collections-metro-item-inner { aspect-ratio: 1/1; }
+  @media (max-width: 640px) { .collections-metro-item .collections-metro-item-inner { aspect-ratio: 4/5; } }
+  .collections-metro-item-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); }
+  .collections-metro-item:hover .collections-metro-item-overlay { opacity: 1; }
+  .collections-metro-item:hover .collections-metro-item-image { transform: scale(1.05); }
+  .collections-metro-item-content { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
+  .collections-metro-item:hover .collections-metro-item-content { transform: translateY(0); opacity: 1; }
+  .collections-metro-item-large .collections-metro-item-title { font-size: 1.5rem; }
+  .collections-wrapper.is-loading .collections-metro-item-inner { clip-path: inset(0 100% 0 0); }
+  /* Grid card styles */
+  .collection-card { position: relative; overflow: hidden; }
+  .collection-card-image { position: relative; overflow: hidden; aspect-ratio: 4/5; background: var(--color-background-secondary); clip-path: inset(0 100% 0 0); }
+  .collection-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
+  .collection-card:hover .collection-card-image img { transform: scale(1.05); }
+  .collection-card-title { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; margin-top: 1rem; }
+  .collection-card-title .overflow-hidden span { display: inline-block; }
+  .collection-card-count { font-size: 0.65rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-top: 0.25rem; }
+  .collection-card-count .overflow-hidden span { display: inline-block; }
+</style>
+
+<div
+  class="collections-wrapper is-loading min-h-screen"
+  data-collections-wrapper
+  data-layout-style="{{ layout_style }}"
+  style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};"
+>
+  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+    <h1 class="collections-header-title font-bold text-[--color-text] font-heading">
+      {%- assign title_words = section.settings.title | default: 'Collections' | split: ' ' -%}
+      {%- for word in title_words -%}
+        <span class="collections-header-title-line block overflow-hidden">
+          <span class="inline-block">{{ word }}</span>
+        </span>
+      {%- endfor -%}
+    </h1>
+
+    {% if section.settings.show_collection_count %}
+      <p class="page-header-subtitle mt-6">
+        <span class="page-header-subtitle-line" data-subtitle-line></span>
+        <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ collections.size }} {{ collections.size | pluralize: 'Collection', 'Collections' }}</span></span>
+      </p>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ section.settings.description | escape }}">
+        {{ section.settings.description }}
+      </div>
+    {% endif %}
+  </header>
+
+  {% case layout_style %}
+
+    {% when 'metro' %}
+      <div class="collections-metro grid gap-1 {{ container_class }} pb-16" data-collections-content>
+        {% for collection in collections %}
+          {%- liquid
+            assign item_class = 'collections-metro-item-normal'
+            assign mod = forloop.index0 | modulo: 6
+
+            if mod == 0
+              assign item_class = 'collections-metro-item-large'
+            elsif mod == 3
+              assign item_class = 'collections-metro-item-wide'
+            elsif mod == 4
+              assign item_class = 'collections-metro-item-tall'
+            endif
+          -%}
+
+          <a
+            href="{{ collection.url }}"
+            class="collections-metro-item block relative overflow-hidden cursor-pointer no-underline text-inherit {{ item_class }}"
+            data-collections-item="{{ forloop.index0 }}"
+          >
+            <div class="collections-metro-item-inner relative overflow-hidden bg-[--color-background-secondary]">
+              {% if collection.featured_image %}
+                {{ collection.featured_image | image_url: width: 1200 | image_tag:
+                  class: 'collections-metro-item-image w-full h-full object-cover',
+                  loading: 'lazy',
+                  sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
+                  widths: '400, 600, 800, 1200'
+                }}
+              {% else %}
+                <div class="collections-metro-item-image w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
+                  <i class="ph ph-folder text-6xl text-[--color-text-secondary] opacity-30"></i>
+                </div>
+              {% endif %}
+
+              <div class="collections-metro-item-overlay absolute inset-0 opacity-0 transition-opacity duration-500"></div>
+
+              <div class="collections-metro-item-content absolute bottom-0 left-0 right-0 p-6 translate-y-5 opacity-0">
+                <h3 class="collections-metro-item-title text-white font-semibold tracking-[0.05em] font-heading">{{ collection.title }}</h3>
+                <p class="text-white/80 text-sm mt-1">{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</p>
               </div>
-            {% endif %}
-          </div>
-          <div class="mt-4">
-            <h3 class="text-sm font-medium text-[--color-text] group-hover:text-[--color-primary] transition-colors">{{ collection.title }}</h3>
-            {% if collection.description != blank %}
-              <p class="mt-1 text-sm text-[--color-text-secondary] line-clamp-2">{{ collection.description | strip_html | truncatewords: 15 }}</p>
-            {% endif %}
-          </div>
-        </a>
-      {% endfor %}
-    </div>
-  </div>
-</section>
+            </div>
+          </a>
+        {% endfor %}
+      </div>
+
+    {% else %}
+      <div class="collections-grid grid gap-8 {{ container_class }} pb-16" data-collections-content>
+        {% for collection in collections %}
+          <a href="{{ collection.url }}" class="collection-card block no-underline text-inherit" data-collections-item="{{ forloop.index0 }}">
+            <div class="collection-card-image">
+              {% if collection.featured_image %}
+                {{ collection.featured_image | image_url: width: 800 | image_tag:
+                  class: '',
+                  loading: 'lazy',
+                  sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+                  widths: '400, 600, 800'
+                }}
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center">
+                  <i class="ph ph-folder text-5xl text-[--color-text-secondary] opacity-30"></i>
+                </div>
+              {% endif %}
+            </div>
+            <h3 class="collection-card-title font-heading text-[--color-text]">
+              {%- assign card_title_words = collection.title | split: ' ' -%}
+              {%- for word in card_title_words -%}
+                <span class="overflow-hidden"><span>{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+              {%- endfor -%}
+            </h3>
+            <p class="collection-card-count">
+              <span class="overflow-hidden"><span>{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</span></span>
+            </p>
+          </a>
+        {% endfor %}
+      </div>
+
+  {% endcase %}
+</div>
+
+<script>
+(function() {
+  const wrapper = document.querySelector('[data-collections-wrapper]');
+  if (!wrapper) return;
+  if (wrapper.dataset.collectionsInitialized) return;
+  wrapper.dataset.collectionsInitialized = 'true';
+
+  const layoutStyle = wrapper.dataset.layoutStyle;
+
+  function initCollections() {
+    if (typeof gsap === 'undefined') {
+      if (window.pieces && window.pieces.gsap) {
+        window.gsap = window.pieces.gsap;
+      } else {
+        setTimeout(initCollections, 100);
+        return;
+      }
+    }
+
+    const items = wrapper.querySelectorAll('[data-collections-item]');
+
+    // Get ScrollTrigger from pieces or window
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+    // Header intro animation
+    function runHeaderAnimation() {
+      const tl = gsap.timeline();
+
+      // Header title split text reveal
+      const headerSpans = wrapper.querySelectorAll('.collections-header-title .overflow-hidden > span');
+      if (headerSpans.length) {
+        gsap.set(headerSpans, { yPercent: 100 });
+        tl.to(headerSpans, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.1
+        }, 0);
+      }
+
+      // Subtitle line draw animation
+      const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
+      if (subtitleLine) {
+        gsap.set(subtitleLine, { scaleX: 0 });
+        tl.to(subtitleLine, {
+          scaleX: 1,
+          duration: 0.8,
+          ease: 'power3.out'
+        }, 0.4);
+      }
+
+      // Subtitle text reveal
+      const subtitleText = wrapper.querySelector('[data-subtitle-text]');
+      if (subtitleText) {
+        gsap.set(subtitleText, { yPercent: 100 });
+        tl.to(subtitleText, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out'
+        }, 0.6);
+      }
+
+      // Header description - fade in with text shuffle animation
+      const headerDesc = wrapper.querySelector('[data-shuffle-text]');
+      if (headerDesc) {
+        const originalText = headerDesc.dataset.originalText || headerDesc.textContent.trim();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
+
+        // Lock height before animation to prevent layout shifts
+        const initialHeight = headerDesc.offsetHeight;
+        headerDesc.style.height = initialHeight + 'px';
+
+        // Start with scrambled text and hidden
+        headerDesc.textContent = originalText.split('').map(char =>
+          char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+        ).join('');
+        gsap.set(headerDesc, { opacity: 0 });
+
+        // Fade in
+        tl.to(headerDesc, {
+          opacity: 1,
+          duration: 0.4,
+          ease: 'power2.out'
+        }, 0.6);
+
+        // Shuffle animation
+        const shuffleObj = { progress: 0 };
+        tl.to(shuffleObj, {
+          progress: 1,
+          duration: 1.8,
+          ease: 'none',
+          onUpdate: () => {
+            const progress = shuffleObj.progress;
+            const revealedCount = Math.floor(progress * originalText.length);
+
+            headerDesc.textContent = originalText.split('').map((char, i) => {
+              if (char === ' ') return ' ';
+              if (i < revealedCount) return char;
+              return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+          },
+          onComplete: () => {
+            headerDesc.textContent = originalText;
+            headerDesc.style.height = '';
+          }
+        }, 0.6);
+      }
+    }
+
+    // Animate single collection card (grid layout)
+    function animateCollectionCard(item) {
+      const imgWrap = item.querySelector('.collection-card-image');
+      const titleSpans = item.querySelectorAll('.collection-card-title .overflow-hidden span');
+      const countSpans = item.querySelectorAll('.collection-card-count .overflow-hidden span');
+
+      const tl = gsap.timeline();
+
+      // Horizontal reveal
+      if (imgWrap) {
+        tl.to(imgWrap, {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1.6,
+          ease: 'expo.inOut'
+        }, 0);
+      }
+
+      // Split text reveal for title words
+      if (titleSpans.length) {
+        tl.to(titleSpans, {
+          yPercent: 0,
+          duration: 0.8,
+          ease: 'power4.out',
+          stagger: 0.05
+        }, 0.2);
+      }
+
+      // Split text reveal for count
+      if (countSpans.length) {
+        tl.to(countSpans, {
+          yPercent: 0,
+          duration: 0.6,
+          ease: 'power4.out'
+        }, 0.3);
+      }
+    }
+
+    // Animate single metro item
+    function animateMetroItem(item) {
+      const inner = item.querySelector('.collections-metro-item-inner');
+      if (inner) {
+        gsap.to(inner, {
+          clipPath: 'inset(0 0% 0 0)',
+          duration: 1.6,
+          ease: 'expo.inOut'
+        });
+      }
+    }
+
+    // Check if element is in viewport
+    function isInViewport(element, threshold = 0.85) {
+      const rect = element.getBoundingClientRect();
+      const windowHeight = window.innerHeight;
+      return rect.top < windowHeight * threshold;
+    }
+
+    // Set initial states and create ScrollTriggers
+    function initScrollAnimations() {
+      wrapper.classList.remove('is-loading');
+
+      const columnsDesktop = parseInt(wrapper.style.getPropertyValue('--columns-desktop')) || 4;
+      const columnsTablet = parseInt(wrapper.style.getPropertyValue('--columns-tablet')) || 2;
+      const columnsMobile = parseInt(wrapper.style.getPropertyValue('--columns-mobile')) || 1;
+
+      function getColumnCount() {
+        if (window.innerWidth >= 1024) return columnsDesktop;
+        if (window.innerWidth >= 768) return columnsTablet;
+        return columnsMobile;
+      }
+
+      const cols = getColumnCount();
+
+      if (layoutStyle === 'metro') {
+        const inViewItems = [];
+        const outOfViewItems = [];
+
+        items.forEach((item, index) => {
+          const inner = item.querySelector('.collections-metro-item-inner');
+          if (inner) {
+            gsap.set(inner, { clipPath: 'inset(0 100% 0 0)' });
+          }
+
+          if (isInViewport(item)) {
+            inViewItems.push({ item, index });
+          } else {
+            outOfViewItems.push({ item, index });
+          }
+        });
+
+        inViewItems.forEach(({ item, index }) => {
+          const colIndex = index % cols;
+          const delay = colIndex * 0.08;
+          gsap.delayedCall(delay, () => animateMetroItem(item));
+        });
+
+        outOfViewItems.forEach(({ item, index }) => {
+          ScrollTrigger.create({
+            trigger: item,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+              const colIndex = index % cols;
+              const delay = colIndex * 0.08;
+              gsap.delayedCall(delay, () => animateMetroItem(item));
+            }
+          });
+        });
+      } else {
+        const inViewItems = [];
+        const outOfViewItems = [];
+
+        items.forEach((item, index) => {
+          const imgWrap = item.querySelector('.collection-card-image');
+          const titleSpans = item.querySelectorAll('.collection-card-title .overflow-hidden span');
+          const countSpans = item.querySelectorAll('.collection-card-count .overflow-hidden span');
+
+          if (imgWrap) {
+            gsap.set(imgWrap, { clipPath: 'inset(0 100% 0 0)' });
+          }
+          if (titleSpans.length) {
+            gsap.set(titleSpans, { yPercent: 100 });
+          }
+          if (countSpans.length) {
+            gsap.set(countSpans, { yPercent: 100 });
+          }
+
+          if (isInViewport(item)) {
+            inViewItems.push({ item, index });
+          } else {
+            outOfViewItems.push({ item, index });
+          }
+        });
+
+        inViewItems.forEach(({ item, index }) => {
+          const colIndex = index % cols;
+          const delay = colIndex * 0.1;
+          gsap.delayedCall(delay, () => animateCollectionCard(item));
+        });
+
+        outOfViewItems.forEach(({ item, index }) => {
+          ScrollTrigger.create({
+            trigger: item,
+            start: 'top 85%',
+            once: true,
+            onEnter: () => {
+              const colIndex = index % cols;
+              const delay = colIndex * 0.1;
+              gsap.delayedCall(delay, () => animateCollectionCard(item));
+            }
+          });
+        });
+      }
+    }
+
+    // Run animations
+    runHeaderAnimation();
+    initScrollAnimations();
+
+    // Hover effects for grid layout
+    if (layoutStyle !== 'metro') {
+      items.forEach((item) => {
+        const imgWrap = item.querySelector('.collection-card-image');
+        const img = item.querySelector('.collection-card-image img');
+
+        item.addEventListener('mouseenter', () => {
+          gsap.to(imgWrap, {
+            scale: 0.98,
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+
+          if (img) {
+            gsap.to(img, {
+              scale: 1.08,
+              duration: 0.5,
+              ease: 'power2.out'
+            });
+          }
+        });
+
+        item.addEventListener('mouseleave', () => {
+          gsap.to(imgWrap, {
+            scale: 1,
+            duration: 0.5,
+            ease: 'power2.out'
+          });
+
+          if (img) {
+            gsap.to(img, {
+              scale: 1,
+              duration: 0.5,
+              ease: 'power2.out'
+            });
+          }
+        });
+      });
+    }
+
+    // Cleanup ScrollTriggers
+    function cleanup() {
+      if (ScrollTrigger) {
+        ScrollTrigger.getAll().forEach(trigger => {
+          if (wrapper && wrapper.contains(trigger.trigger)) {
+            trigger.kill();
+          }
+        });
+      }
+    }
+
+    window.addEventListener('swup:contentReplaced', cleanup, { once: true });
+  }
+
+  // Initialize
+  function init() {
+    initCollections();
+  }
+
+  function handleSwupContentReplaced() {
+    requestAnimationFrame(() => {
+      initCollections();
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+
+  window.addEventListener('swup:contentReplaced', handleSwupContentReplaced);
+})();
+</script>
 
 {% schema %}
 {
-  "name": "Collections",
-  "settings": [],
+  "name": "Collections List",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Collections"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "info": "Optional description displayed below the title"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false,
+      "info": "Remove max-width container constraint"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_collection_count",
+      "label": "Show collection count",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout style",
+      "options": [
+        {
+          "value": "grid",
+          "label": "Grid"
+        },
+        {
+          "value": "metro",
+          "label": "Metro"
+        }
+      ],
+      "default": "grid"
+    },
+    {
+      "type": "header",
+      "content": "Layout settings"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "label": "Columns on desktop",
+      "info": "For Metro style, 4 columns recommended"
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Columns on tablet"
+    },
+    {
+      "type": "select",
+      "id": "columns_mobile",
+      "label": "Columns on mobile",
+      "options": [
+        {
+          "value": "1",
+          "label": "1"
+        },
+        {
+          "value": "2",
+          "label": "2"
+        }
+      ],
+      "default": "1"
+    }
+  ],
   "presets": [
     {
-      "name": "Collections Grid"
+      "name": "Collections List"
     }
   ]
 }
