@@ -1,0 +1,577 @@
+{%- comment -%}
+  Video Section - Displays a video with optional looping
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = ''
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
+<style>
+  .video-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    {% unless section.settings.remove_padding %}
+    padding: clamp(4rem, 10vh, 8rem) 0;
+    {% endunless %}
+  }
+
+  .video-container-{{ section.id }} {
+    position: relative;
+    aspect-ratio: {{ section.settings.aspect_ratio }};
+    overflow: hidden;
+    border-radius: {{ section.settings.border_radius }}px;
+  }
+
+  .video-container-{{ section.id }} video {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .video-placeholder-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #0a0a0a;
+    overflow: hidden;
+  }
+
+  .video-placeholder-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.2), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(255, 119, 198, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(120, 200, 255, 0.12), transparent);
+  }
+
+  .video-placeholder-pattern-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  .video-placeholder-grid-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .video-placeholder-glow-{{ section.id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(120, 119, 198, 0.15) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: video-glow-pulse-{{ section.id }} 4s ease-in-out infinite;
+  }
+
+  @keyframes video-glow-pulse-{{ section.id }} {
+    0%, 100% { opacity: 0.5; transform: translate(-50%, -50%) scale(1); }
+    50% { opacity: 0.8; transform: translate(-50%, -50%) scale(1.1); }
+  }
+
+  .video-placeholder-content-{{ section.id }} {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2rem;
+  }
+
+  .video-placeholder-icon-{{ section.id }} {
+    position: relative;
+    width: 6rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .video-placeholder-icon-{{ section.id }}::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .video-placeholder-icon-{{ section.id }}::after {
+    content: '';
+    position: absolute;
+    inset: -20px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.1);
+    animation: video-spin-{{ section.id }} 20s linear infinite;
+  }
+
+  .video-placeholder-icon-{{ section.id }} i {
+    position: relative;
+    font-size: 1.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-left: 3px;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+  }
+
+  .video-placeholder-text-{{ section.id }} {
+    text-align: center;
+  }
+
+  .video-placeholder-text-{{ section.id }} p {
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.75rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .video-placeholder-bars-{{ section.id }} {
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    gap: 3px;
+    height: 20px;
+    margin-top: 1rem;
+  }
+
+  .video-placeholder-bars-{{ section.id }} span {
+    width: 3px;
+    background: linear-gradient(to top, rgba(120, 119, 198, 0.6), rgba(255, 119, 198, 0.6));
+    border-radius: 2px;
+    animation: video-bar-{{ section.id }} 1s ease-in-out infinite;
+  }
+
+  .video-placeholder-bars-{{ section.id }} span:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .video-placeholder-bars-{{ section.id }} span:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+  .video-placeholder-bars-{{ section.id }} span:nth-child(3) { height: 50%; animation-delay: 0.2s; }
+  .video-placeholder-bars-{{ section.id }} span:nth-child(4) { height: 90%; animation-delay: 0.3s; }
+  .video-placeholder-bars-{{ section.id }} span:nth-child(5) { height: 60%; animation-delay: 0.4s; }
+
+  @keyframes video-spin-{{ section.id }} {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes video-bar-{{ section.id }} {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.5); }
+  }
+
+  /* Overlay */
+  .video-overlay-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    background: {{ section.settings.overlay_color }};
+    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+    pointer-events: none;
+  }
+
+  /* Content */
+  .video-content-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: {{ section.settings.content_alignment }};
+    justify-content: {{ section.settings.content_position }};
+    padding: clamp(2rem, 5vw, 4rem);
+    color: {{ section.settings.text_color }};
+    text-align: {% if section.settings.content_alignment == 'flex-start' %}left{% elsif section.settings.content_alignment == 'flex-end' %}right{% else %}center{% endif %};
+  }
+
+  .video-title-{{ section.id }} {
+    font-size: calc(clamp(2rem, 6vw, 4rem) * var(--heading-font-scale, 1));
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+    color: {{ section.settings.text_color }};
+  }
+
+  @media (min-width: 1024px) {
+    .video-title-{{ section.id }} {
+      font-size: calc(clamp(2.5rem, 5vw, 5rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  .video-title-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
+
+  .video-text-{{ section.id }} {
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    max-width: 36rem;
+    opacity: 0.9;
+    color: {{ section.settings.text_color }};
+  }
+
+  .video-content-{{ section.id }} .btn--secondary {
+    color: {{ section.settings.text_color }};
+    border-color: {{ section.settings.text_color }};
+  }
+
+  .video-content-{{ section.id }} .btn--secondary::before {
+    background: {{ section.settings.text_color }};
+  }
+
+  .video-content-{{ section.id }} .btn--secondary:hover,
+  .video-content-{{ section.id }} .btn--secondary:hover span,
+  .video-content-{{ section.id }} .btn--secondary:hover i {
+    color: {{ section.settings.background_color }};
+  }
+
+  /* Animation states */
+  .video-container-{{ section.id }} {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html.animations-disabled .video-container-{{ section.id }} {
+    clip-path: none;
+  }
+</style>
+
+<section class="video-section-{{ section.id }}" data-video-section="{{ section.id }}">
+  <div class="{{ container_class }}">
+    <div class="video-container-{{ section.id }}" data-video-container>
+      {% if section.settings.video != blank %}
+        {{ section.settings.video | video_tag:
+          autoplay: true,
+          loop: section.settings.loop,
+          muted: true,
+          playsinline: true,
+          controls: section.settings.show_controls,
+          preload: 'auto'
+        }}
+      {% else %}
+        <div class="video-placeholder-{{ section.id }}">
+          <div class="video-placeholder-pattern-{{ section.id }}"></div>
+          <div class="video-placeholder-grid-{{ section.id }}"></div>
+          <div class="video-placeholder-glow-{{ section.id }}"></div>
+          <div class="video-placeholder-content-{{ section.id }}">
+            <div class="video-placeholder-icon-{{ section.id }}">
+              <i class="ph ph-play"></i>
+            </div>
+            <div class="video-placeholder-text-{{ section.id }}">
+              <p>Select a video</p>
+              <div class="video-placeholder-bars-{{ section.id }}">
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+                <span></span>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endif %}
+
+      {% if section.settings.overlay_opacity > 0 %}
+        <div class="video-overlay-{{ section.id }}"></div>
+      {% endif %}
+
+      {% if section.settings.title != blank or section.settings.text != blank or section.settings.button_text != blank %}
+        <div class="video-content-{{ section.id }}">
+          {% if section.settings.label != blank %}
+            <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-70 mb-4" data-intro>
+              {{ section.settings.label }}
+            </span>
+          {% endif %}
+
+          {% if section.settings.title != blank %}
+            <h2 class="video-title-{{ section.id }} font-bold font-heading" data-video-title>
+              {{ section.settings.title }}
+            </h2>
+          {% endif %}
+
+          {% if section.settings.text != blank %}
+            <p class="video-text-{{ section.id }} mt-4" data-intro>
+              {{ section.settings.text }}
+            </p>
+          {% endif %}
+
+          {% if section.settings.button_text != blank and section.settings.button_link != blank %}
+            <a
+              href="{{ section.settings.button_link }}"
+              class="btn btn--secondary mt-8"
+              data-intro
+            >
+              <span>{{ section.settings.button_text }}</span>
+              <i class="ph ph-arrow-right"></i>
+            </a>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const section = document.querySelector('[data-video-section="{{ section.id }}"]');
+  if (!section || section.dataset.videoAnimInitialized) return;
+  section.dataset.videoAnimInitialized = 'true';
+
+  // If animations disabled, skip
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  function initAnimation() {
+    let gsap = window.gsap;
+    if (!gsap && window.pieces && window.pieces.gsap) {
+      gsap = window.pieces.gsap;
+    }
+
+    let SplitText = window.SplitText;
+    if (!SplitText && window.pieces && window.pieces.SplitText) {
+      SplitText = window.pieces.SplitText;
+    }
+
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+    if (!gsap || !SplitText || !ScrollTrigger) {
+      setTimeout(initAnimation, 50);
+      return;
+    }
+
+    const container = section.querySelector('[data-video-container]');
+    const title = section.querySelector('[data-video-title]');
+
+    // Animate container with clip-path swipe
+    if (container) {
+      gsap.set(container, { clipPath: 'inset(0 100% 0 0)' });
+
+      gsap.to(container, {
+        clipPath: 'inset(0 0% 0 0)',
+        duration: 1.6,
+        ease: 'expo.inOut',
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 70%',
+          once: true
+        }
+      });
+    }
+
+    // Animate title with SplitText line reveal
+    if (title) {
+      const split = new SplitText(title, { type: 'lines', linesClass: 'video-title-line' });
+
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
+
+      gsap.set(split.lines, { yPercent: 120 });
+
+      gsap.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1,
+        delay: 0.3,
+        scrollTrigger: {
+          trigger: section,
+          start: 'top 70%',
+          once: true
+        }
+      });
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnimation);
+  } else {
+    requestAnimationFrame(initAnimation);
+  }
+
+  window.addEventListener('swup:contentReplaced', () => {
+    requestAnimationFrame(initAnimation);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Video",
+  "tag": "section",
+  "class": "video-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Video"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Video",
+      "info": "Video will autoplay and be muted"
+    },
+    {
+      "type": "checkbox",
+      "id": "loop",
+      "default": true,
+      "label": "Loop video"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_controls",
+      "default": false,
+      "label": "Show video controls"
+    },
+    {
+      "type": "select",
+      "id": "aspect_ratio",
+      "options": [
+        { "value": "16/9", "label": "Landscape (16:9)" },
+        { "value": "21/9", "label": "Cinematic (21:9)" },
+        { "value": "4/3", "label": "Standard (4:3)" },
+        { "value": "1/1", "label": "Square (1:1)" },
+        { "value": "9/16", "label": "Portrait (9:16)" }
+      ],
+      "default": "16/9",
+      "label": "Aspect ratio"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 0,
+      "unit": "px",
+      "label": "Border radius"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "default": "#000000",
+      "label": "Overlay color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 80,
+      "step": 5,
+      "default": 30,
+      "unit": "%",
+      "label": "Overlay opacity"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "textarea",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "button_text",
+      "label": "Button text"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link"
+    },
+    {
+      "type": "select",
+      "id": "content_position",
+      "options": [
+        { "value": "flex-start", "label": "Top" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Bottom" }
+      ],
+      "default": "center",
+      "label": "Content vertical position"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        { "value": "flex-start", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "flex-end", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": true,
+      "label": "Full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "remove_padding",
+      "default": true,
+      "label": "Remove vertical padding"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#000000",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text color"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Video"
+    }
+  ]
+}
+{% endschema %}

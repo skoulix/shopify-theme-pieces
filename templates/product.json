@@ -13,13 +13,16 @@
       "type": "product",
       "blocks": {
         "vendor": {
-          "type": "vendor"
+          "type": "vendor",
+          "settings": {}
         },
         "title": {
-          "type": "title"
+          "type": "title",
+          "settings": {}
         },
         "price": {
-          "type": "price"
+          "type": "price",
+          "settings": {}
         },
         "description": {
           "type": "description",
@@ -102,6 +105,28 @@
         "text_color": "#000000"
       }
     },
+    "video": {
+      "type": "video",
+      "settings": {
+        "loop": true,
+        "show_controls": true,
+        "aspect_ratio": "16/9",
+        "border_radius": 0,
+        "overlay_color": "#000000",
+        "overlay_opacity": 30,
+        "label": "",
+        "title": "",
+        "text": "",
+        "button_text": "Tes",
+        "button_link": "",
+        "content_position": "center",
+        "content_alignment": "center",
+        "full_width": true,
+        "remove_padding": true,
+        "background_color": "#000000",
+        "text_color": "#ffffff"
+      }
+    },
     "related-products": {
       "type": "related-products",
       "settings": {
@@ -118,6 +143,7 @@
   "order": [
     "main",
     "faq",
+    "video",
     "related-products"
   ]
 }

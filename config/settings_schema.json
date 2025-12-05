@@ -195,17 +195,6 @@
       },
       {
         "type": "header",
-        "content": "Scroll animations"
-      },
-      {
-        "type": "checkbox",
-        "id": "enable_scroll_animations",
-        "default": true,
-        "label": "Enable scroll animations",
-        "info": "Elements animate as they come into view"
-      },
-      {
-        "type": "header",
         "content": "Page transitions"
       },
       {
@@ -234,6 +223,17 @@
         "id": "page_transition_color",
         "label": "Transition overlay color",
         "default": "#f5f5f5"
+      },
+      {
+        "type": "header",
+        "content": "Scroll animations"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_scroll_animations",
+        "default": true,
+        "label": "Enable scroll animations",
+        "info": "Elements animate as they come into view"
       }
     ]
   },
