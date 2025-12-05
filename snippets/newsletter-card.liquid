@@ -24,12 +24,12 @@
             required
             placeholder="{{ 'customers.register.email' | t }}"
             autocomplete="email"
-            class="min-w-0 flex-auto rounded-md px-3.5 py-2.5 text-sm bg-current/10 border border-current/20 placeholder:opacity-70 focus:outline-none focus:border-current/50 transition-colors"
-            style="color: inherit;"
+            class="min-w-0 flex-auto rounded-md px-3.5 py-2.5 text-sm placeholder:opacity-70 focus:outline-none transition-colors"
+            style="background-color: {{ text_color }}15; color: {{ text_color }}; border: 1px solid {{ text_color }}30; caret-color: {{ text_color }};"
           >
           <input type="hidden" name="contact[tags]" value="newsletter">
-          <button type="submit" class="flex-none rounded-md px-4 py-2.5 text-sm font-semibold transition-opacity hover:opacity-80" style="background-color: {{ text_color }}; color: {{ card_color }};">
-            {{ button_text | default: 'Subscribe' }}
+          <button type="submit" class="btn btn--primary flex-none !py-2.5 !px-5 !text-xs">
+            <span>{{ button_text | default: 'Subscribe' }}</span>
           </button>
         </div>
         {% if privacy_link != blank %}

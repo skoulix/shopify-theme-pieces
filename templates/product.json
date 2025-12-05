@@ -3,9 +3,45 @@
     "main": {
       "type": "product",
       "settings": {}
+    },
+    "faq": {
+      "type": "faq",
+      "blocks": {
+        "faq_1": {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy on all items. If you're not satisfied with your purchase, simply return it in its original condition for a full refund.</p>"
+          }
+        },
+        "faq_2": {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Standard shipping typically takes 5-7 business days. Express shipping is available for 2-3 business day delivery.</p>"
+          }
+        },
+        "faq_3": {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer international shipping?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping rates and delivery times vary by location.</p>"
+          }
+        }
+      },
+      "block_order": ["faq_1", "faq_2", "faq_3"],
+      "settings": {
+        "full_width": false,
+        "label": "Support",
+        "title": "Frequently Asked Questions",
+        "description": "",
+        "background_color": "#ffffff",
+        "text_color": "#000000"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "faq"
   ]
 }

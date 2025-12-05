@@ -1,0 +1,291 @@
+{%- comment -%}
+  FAQ Section - Accordion style questions and answers
+  Reusable across all page types
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+    assign content_class = ''
+  else
+    assign container_class = 'page-container'
+    assign content_class = 'mx-auto'
+  endif
+-%}
+
+<style>
+  .faq-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: clamp(4rem, 10vh, 8rem) 0;
+  }
+
+  .faq-section-{{ section.id }} .faq-title {
+    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
+    letter-spacing: -0.03em;
+    line-height: 0.95;
+  }
+
+  @media (min-width: 1024px) {
+    .faq-section-{{ section.id }} .faq-title {
+      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  .faq-section-{{ section.id }} .faq-item {
+    border-bottom: 1px solid {{ section.settings.text_color }}15;
+  }
+
+  .faq-section-{{ section.id }} .faq-item:first-child {
+    border-top: 1px solid {{ section.settings.text_color }}15;
+  }
+
+  .faq-section-{{ section.id }} .faq-question {
+    padding: 1.5rem 0;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    transition: opacity 0.3s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-question::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-section-{{ section.id }} .faq-question:hover {
+    opacity: 0.7;
+  }
+
+  .faq-section-{{ section.id }} .faq-question-text {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    font-weight: 500;
+    line-height: 1.4;
+  }
+
+  .faq-section-{{ section.id }} .faq-icon {
+    flex-shrink: 0;
+    width: 2rem;
+    height: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid {{ section.settings.text_color }}30;
+    border-radius: 50%;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-icon i {
+    font-size: 0.875rem;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-section-{{ section.id }} .faq-item[open] .faq-icon {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
+  }
+
+  .faq-section-{{ section.id }} .faq-item[open] .faq-icon i {
+    transform: rotate(45deg);
+  }
+
+  .faq-section-{{ section.id }} .faq-answer {
+    padding-bottom: 1.5rem;
+    padding-right: 3rem;
+  }
+
+  .faq-section-{{ section.id }} .faq-answer-text {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    line-height: 1.7;
+    opacity: 0.75;
+  }
+
+  /* Animation for answer content */
+  .faq-section-{{ section.id }} .faq-answer-inner {
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+  }
+
+  .faq-section-{{ section.id }} .faq-item[open] .faq-answer-inner {
+    opacity: 1;
+    transform: translateY(0);
+  }
+</style>
+
+<section class="faq-section-{{ section.id }}" data-faq-section="{{ section.id }}">
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
+      <div class="mb-12 lg:mb-16 max-w-4xl {{ content_class }}">
+        {% if section.settings.label != blank %}
+          <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4">
+            {{ section.settings.label }}
+          </span>
+        {% endif %}
+
+        {% if section.settings.title != blank %}
+          <h2 class="faq-title font-bold font-heading">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
+
+        {% if section.settings.description != blank %}
+          <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl">
+            {{ section.settings.description }}
+          </p>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} FAQ Items {%- endcomment -%}
+    {% if section.blocks.size > 0 %}
+      <div class="faq-list max-w-4xl {{ content_class }}">
+        {% for block in section.blocks %}
+          {% if block.type == 'faq_item' %}
+            <details class="faq-item" {{ block.shopify_attributes }}>
+              <summary class="faq-question">
+                <span class="faq-question-text">{{ block.settings.question }}</span>
+                <span class="faq-icon">
+                  <i class="ph ph-plus"></i>
+                </span>
+              </summary>
+              <div class="faq-answer">
+                <div class="faq-answer-inner">
+                  <div class="faq-answer-text">
+                    {{ block.settings.answer }}
+                  </div>
+                </div>
+              </div>
+            </details>
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      {%- comment -%} Placeholder for theme editor {%- endcomment -%}
+      <div class="faq-list max-w-4xl {{ content_class }}">
+        {% for i in (1..3) %}
+          <details class="faq-item" {% if forloop.first %}open{% endif %}>
+            <summary class="faq-question">
+              <span class="faq-question-text">What is your return policy?</span>
+              <span class="faq-icon">
+                <i class="ph ph-plus"></i>
+              </span>
+            </summary>
+            <div class="faq-answer">
+              <div class="faq-answer-inner">
+                <div class="faq-answer-text">
+                  We offer a 30-day return policy on all items. If you're not satisfied with your purchase, simply return it in its original condition for a full refund. Shipping costs for returns are the responsibility of the customer unless the item arrived damaged or defective.
+                </div>
+              </div>
+            </div>
+          </details>
+        {% endfor %}
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "FAQ",
+  "tag": "section",
+  "class": "faq-section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Support"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Find answers to common questions about our products and services."
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq_item",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "What is your return policy?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer",
+          "default": "<p>We offer a 30-day return policy on all items. If you're not satisfied with your purchase, simply return it in its original condition for a full refund.</p>"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQ",
+      "blocks": [
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "What is your return policy?",
+            "answer": "<p>We offer a 30-day return policy on all items. If you're not satisfied with your purchase, simply return it in its original condition for a full refund.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "How long does shipping take?",
+            "answer": "<p>Standard shipping typically takes 5-7 business days. Express shipping is available for 2-3 business day delivery. International orders may take 10-14 business days.</p>"
+          }
+        },
+        {
+          "type": "faq_item",
+          "settings": {
+            "question": "Do you offer international shipping?",
+            "answer": "<p>Yes, we ship to most countries worldwide. Shipping rates and delivery times vary by location. You can see the exact shipping cost at checkout.</p>"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
