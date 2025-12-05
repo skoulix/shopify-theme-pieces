@@ -3,9 +3,16 @@
   Centered card with gradient background effect
 {%- endcomment -%}
 
+{%- liquid
+  # Use global card settings
+  assign card_radius = settings.card_radius
+  assign card_border_width = settings.card_border_width
+  assign card_shadow = settings.card_shadow
+-%}
+
 <div class="py-16 sm:py-24" style="background-color: {{ background_color }};">
   <div class="page-container">
-    <div class="relative isolate overflow-hidden rounded-2xl px-6 py-16 sm:rounded-3xl sm:px-16 xl:py-24" data-intro style="background-color: {{ card_color }}; color: {{ text_color }};">
+    <div class="relative isolate overflow-hidden px-6 py-16 sm:px-16 xl:py-24" data-intro style="background-color: {{ card_color }}; color: {{ text_color }}; border-radius: {{ card_radius }}px;{% if card_border_width > 0 %} border: {{ card_border_width }}px solid {{ text_color }}20;{% endif %}{% case card_shadow %}{% when 'sm' %} box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);{% when 'md' %} box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);{% when 'lg' %} box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);{% when 'hard' %} box-shadow: 4px 4px 0 0 {{ text_color }}20;{% endcase %}">
       {% if title != blank %}
         <h2 class="mx-auto max-w-3xl text-center text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-heading" data-newsletter-title>
           {{ title }}

@@ -9,14 +9,8 @@
     assign container_class = 'page-container'
   endif
 
-  # Use section card_radius if set, otherwise fall back to global theme setting
-  if section.settings.card_radius != blank
-    assign card_radius = section.settings.card_radius
-  else
-    assign card_radius = settings.card_radius
-  endif
-
-  # Get global border settings
+  # Use global card settings
+  assign card_radius = settings.card_radius
   assign card_border_width = settings.card_border_width
   assign card_shadow = settings.card_shadow
 -%}
