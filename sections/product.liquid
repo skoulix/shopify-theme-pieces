@@ -43,7 +43,7 @@
   .product-thumbnail.is-active { border-color: var(--color-text); }
   .product-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
   .product-description { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.08em; line-height: 1.8; color: var(--color-text-secondary); max-width: 420px; margin-top: 2rem; }
-  .product-form { margin-top: 3rem; }
+  .product-form { margin-top: 1.5rem; }
   .product-form-group { margin-bottom: 1.5rem; }
   .product-form-label { display: block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
   .product-form-select { width: 100%; padding: 1rem 0; font-size: 0.875rem; background: transparent; border: none; border-bottom: 1px solid var(--color-border); color: var(--color-text); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0 center; background-size: 1.25rem; }
@@ -72,9 +72,51 @@
   .product-vendor { font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text-secondary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
   .product-vendor::before { content: ''; width: 2rem; height: 1px; background: var(--color-text-secondary); }
   @media (max-width: 1023px) { .product-thumbnails { position: relative; right: auto; top: auto; transform: none; flex-direction: row; justify-content: center; padding: 1rem; gap: 0.5rem; } .product-thumbnail { width: 40px; height: 52px; } .product-image-counter { bottom: auto; top: 1rem; left: 1rem; } }
-  .product-vendor, .product-title, .product-price, [data-shuffle-text], [data-product-form], [data-thumbnails], [data-image-counter] { opacity: 0; }
+  [data-thumbnails], [data-image-counter] { opacity: 0; }
+
+  /* Variant picker styles */
+  .variant-picker__option { margin-bottom: 1.5rem; border: none; padding: 0; }
+  .variant-picker__option:last-child { margin-bottom: 0; }
+  .variant-picker__label { display: block; font-size: 0.65rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .variant-picker__selected { font-weight: 400; opacity: 0.7; }
+
+  /* Swatch styles */
+  .swatch { --swatch-size: 2.75rem; display: block; width: var(--swatch-size); height: var(--swatch-size); background: var(--swatch-bg); background-position: var(--swatch-focal-point, center); background-size: cover; background-origin: border-box; border: 1px solid var(--color-border); border-radius: 50%; transition: transform 0.2s ease; }
+  .swatch--square { border-radius: 0.25rem; }
+  .swatch--sm { --swatch-size: 1.5rem; }
+  .swatch--lg { --swatch-size: 3.5rem; }
+  .swatch--unavailable { border-style: dashed; opacity: 0.5; }
+
+  /* Swatch input styles */
+  .swatch-input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .swatch-input-label { display: inline-block; cursor: pointer; border-radius: 50%; outline: 2px solid transparent; outline-offset: 2px; transition: outline-color 0.2s ease; }
+  .swatch-input-label--square { border-radius: 0.25rem; }
+  .swatch-input:checked + .swatch-input-label { outline-color: var(--color-text); }
+  .swatch-input:hover + .swatch-input-label { outline-color: var(--color-text-secondary); }
+  .swatch-input:checked:hover + .swatch-input-label { outline-color: var(--color-text); }
+  .swatch-input-label--disabled { opacity: 0.5; cursor: not-allowed; }
+  .swatch-input-label--disabled .swatch { position: relative; overflow: hidden; }
+  .swatch-input-label--disabled .swatch::after { content: ''; position: absolute; top: 50%; left: -10%; width: 120%; height: 1px; background: var(--color-text); transform: rotate(-45deg); }
+
+  .variant-picker__swatches { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  /* Button picker styles */
+  .variant-picker__input { position: absolute; opacity: 0; width: 0; height: 0; }
+  .variant-picker__buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .variant-picker__button { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--color-border); background: transparent; color: var(--color-text); cursor: pointer; transition: all 0.2s ease; }
+  .variant-picker__input:checked + .variant-picker__button { background: var(--color-text); color: var(--color-background); border-color: var(--color-text); }
+  .variant-picker__input:hover + .variant-picker__button { border-color: var(--color-text); }
+  .variant-picker__button--disabled { opacity: 0.5; cursor: not-allowed; text-decoration: line-through; }
+
+  /* Dropdown picker styles */
+  .variant-picker__select-wrapper { position: relative; display: flex; align-items: center; }
+  .variant-picker__dropdown-swatch { position: absolute; left: 0; pointer-events: none; z-index: 1; }
+  .variant-picker__select { width: 100%; padding: 1rem 2.5rem 1rem 0; font-size: 0.875rem; background: transparent; border: none; border-bottom: 1px solid var(--color-border); color: var(--color-text); cursor: pointer; appearance: none; }
+  .variant-picker__select--with-swatch { padding-left: 2.5rem; }
+  .variant-picker__select:focus { outline: none; border-color: var(--color-text); }
+  .variant-picker__select-icon { position: absolute; right: 0; pointer-events: none; color: var(--color-text-secondary); }
   .product-hero.is-ready .product-gallery-main { clip-path: none; }
-  .product-hero.is-ready .product-vendor, .product-hero.is-ready .product-title, .product-hero.is-ready .product-price, .product-hero.is-ready [data-shuffle-text], .product-hero.is-ready [data-product-form], .product-hero.is-ready [data-thumbnails], .product-hero.is-ready [data-image-counter] { opacity: 1; }
+  .product-hero.is-ready [data-thumbnails], .product-hero.is-ready [data-image-counter] { opacity: 1; }
   /* Image fit modes - controls how images display within gallery */
   .product-gallery .product-gallery-image { display: flex; align-items: center; justify-content: center; }
   .product-gallery .product-gallery-image img { object-fit: cover; object-position: center; }
@@ -126,85 +168,130 @@
 
   <div class="product-info {% if section.settings.full_width %} is-full-width{% endif %}">
     <div class="{% if section.settings.full_width %}lg:max-w-2xl{% endif %}">
-    {% if section.settings.show_vendor and product.vendor != blank %}
-      <div class="product-vendor overflow-hidden">
-        <span class="inline-block">{{ product.vendor }}</span>
-      </div>
-    {% endif %}
+      {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-    <h1 class="product-title font-heading">
-      {%- assign title_words = product.title | split: ' ' -%}
-      {%- for word in title_words -%}
-        <span class="product-title-line">
-          <span class="inline-block">{{ word }}</span>
-        </span>
-      {%- endfor -%}
-    </h1>
+      {%- for block in section.blocks -%}
+        {%- case block.type -%}
 
-    <div class="product-price-display mt-6 overflow-hidden" data-price-display>
-      <span class="inline-block">
-        {% if current_variant.compare_at_price > current_variant.price %}
-          <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
-        {% endif %}
-        <span data-product-price>{{ current_variant.price | money }}</span>
-      </span>
-    </div>
-
-    {% if section.settings.show_description and product.description != blank %}
-      {%- assign desc_text = product.description | strip_html | truncate: 200 -%}
-      <div class="product-description" data-shuffle-text data-original-text="{{ desc_text | escape }}">
-        {{ desc_text }}
-      </div>
-    {% endif %}
-
-    <div class="product-form" data-product-form>
-      {% form 'product', product %}
-        {% if product.variants.size > 1 %}
-          <div class="product-form-group">
-            <label for="variant-select" class="product-form-label">Select Option</label>
-            <select id="variant-select" name="id" class="product-form-select">
-              {% for variant in product.variants %}
-                <option value="{{ variant.id }}" {% if variant == current_variant %}selected{% endif %} {% unless variant.available %}disabled{% endunless %}>
-                  {{ variant.title }}{% unless variant.available %} — Sold Out{% endunless %}
-                </option>
-              {% endfor %}
-            </select>
-          </div>
-        {% else %}
-          <input type="hidden" name="id" value="{{ current_variant.id }}">
-        {% endif %}
-
-        <div class="product-form-group">
-          <label class="product-form-label">Quantity</label>
-          <div class="product-quantity" data-quantity-wrapper>
-            <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
-              <i class="ph ph-minus"></i>
-            </button>
-            <div class="product-quantity-value !border-none">
-              <input type="number" id="quantity" name="quantity" value="1" min="1" class="product-quantity-input !border-none" data-quantity-input aria-label="Quantity">
-            </div>
-            <button type="button" class="product-quantity-btn" data-quantity-plus aria-label="Increase quantity">
-              <i class="ph ph-plus"></i>
-            </button>
-          </div>
-        </div>
-
-        <button type="submit" class="btn btn--primary btn--full product-add-btn" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %}>
-          <span class="product-add-btn-text">
-            {% if current_variant.available %}
-              <i class="ph ph-bag"></i>
-              <span>Add to Cart</span>
-            {% else %}
-              <span>Sold Out</span>
+          {%- when 'vendor' -%}
+            {% if product.vendor != blank %}
+              <div class="product-vendor overflow-hidden" data-intro style="--intro-delay: 0.3s" {{ block.shopify_attributes }}>
+                <span class="inline-block">{{ product.vendor }}</span>
+              </div>
             {% endif %}
-          </span>
-        </button>
 
-        <div>
-          {{ form | payment_button }}
-        </div>
-      {% endform %}
-    </div>
+          {%- when 'title' -%}
+            <h1 class="product-title font-heading" data-intro style="--intro-delay: 0.35s" {{ block.shopify_attributes }}>
+              {%- assign title_words = product.title | split: ' ' -%}
+              {%- for word in title_words -%}
+                <span class="product-title-line">
+                  <span class="inline-block">{{ word }}</span>
+                </span>
+              {%- endfor -%}
+            </h1>
+
+          {%- when 'price' -%}
+            <div class="product-price-display mt-6 overflow-hidden" data-intro style="--intro-delay: 0.4s" data-price-display {{ block.shopify_attributes }}>
+              <span class="inline-block">
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+                {% endif %}
+                <span data-product-price>{{ current_variant.price | money }}</span>
+              </span>
+            </div>
+
+          {%- when 'description' -%}
+            {% if product.description != blank %}
+              {%- assign desc_text = product.description | strip_html | truncate: block.settings.truncate_length -%}
+              <div class="product-description" data-intro style="--intro-delay: 0.45s" data-shuffle-text data-original-text="{{ desc_text | escape }}" {{ block.shopify_attributes }}>
+                {{ desc_text }}
+              </div>
+            {% endif %}
+
+          {%- when 'variant_picker' -%}
+            {% if product.variants.size > 1 %}
+              <div class="mt-8" data-intro style="--intro-delay: 0.5s">
+                {% render 'product-variant-picker',
+                  product: product,
+                  block: block,
+                  product_form_id: product_form_id,
+                  section_id: section.id
+                %}
+              </div>
+            {% endif %}
+
+          {%- when 'quantity_selector' -%}
+            <div class="product-form-group" data-intro style="--intro-delay: 0.55s" {{ block.shopify_attributes }}>
+              <label class="product-form-label">{{ block.settings.label | default: 'Quantity' }}</label>
+              <div class="product-quantity" data-quantity-wrapper>
+                <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
+                  <i class="ph ph-minus"></i>
+                </button>
+                <div class="product-quantity-value !border-none">
+                  <input type="number" id="quantity-{{ section.id }}" name="quantity" form="{{ product_form_id }}" value="1" min="1" class="product-quantity-input !border-none" data-quantity-input aria-label="Quantity">
+                </div>
+                <button type="button" class="product-quantity-btn" data-quantity-plus aria-label="Increase quantity">
+                  <i class="ph ph-plus"></i>
+                </button>
+              </div>
+            </div>
+
+          {%- when 'buy_buttons' -%}
+            <div class="product-form" data-intro style="--intro-delay: 0.6s" data-product-form {{ block.shopify_attributes }}>
+              {% form 'product', product, id: product_form_id %}
+                {%- comment -%} Hidden variant input if no variant picker block {%- endcomment -%}
+                {% unless product.has_only_default_variant %}
+                  {%- assign has_variant_picker = false -%}
+                  {%- for b in section.blocks -%}
+                    {%- if b.type == 'variant_picker' -%}
+                      {%- assign has_variant_picker = true -%}
+                      {%- break -%}
+                    {%- endif -%}
+                  {%- endfor -%}
+                  {% unless has_variant_picker %}
+                    <input type="hidden" name="id" value="{{ current_variant.id }}">
+                  {% endunless %}
+                {% else %}
+                  <input type="hidden" name="id" value="{{ current_variant.id }}">
+                {% endunless %}
+
+                <button type="submit" class="btn btn--primary btn--full product-add-btn" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %}>
+                  <span class="product-add-btn-text">
+                    {% if current_variant.available %}
+                      <i class="ph ph-bag"></i>
+                      <span>{{ block.settings.add_to_cart_text | default: 'Add to Cart' }}</span>
+                    {% else %}
+                      <span>{{ block.settings.sold_out_text | default: 'Sold Out' }}</span>
+                    {% endif %}
+                  </span>
+                </button>
+
+                {% if block.settings.show_dynamic_checkout %}
+                  <div>
+                    {{ form | payment_button }}
+                  </div>
+                {% endif %}
+              {% endform %}
+            </div>
+
+          {%- when 'text' -%}
+            <div class="product-custom-text mt-4 text-sm text-[--color-text-secondary]" data-intro style="--intro-delay: 0.65s" {{ block.shopify_attributes }}>
+              {{ block.settings.text }}
+            </div>
+
+          {%- when 'collapsible_tab' -%}
+            <details class="product-accordion mt-4 border-t border-[--color-border]" data-intro style="--intro-delay: 0.65s" {{ block.shopify_attributes }}>
+              <summary class="flex items-center justify-between py-4 cursor-pointer">
+                <span class="text-sm font-medium">{{ block.settings.heading }}</span>
+                <i class="ph ph-plus text-sm transition-transform"></i>
+              </summary>
+              <div class="pb-4 text-sm text-[--color-text-secondary] leading-relaxed">
+                {{ block.settings.content }}
+              </div>
+            </details>
+
+        {%- endcase -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -218,7 +305,8 @@
   // Variant handling
   const variants = {{ product.variants | json }};
   const moneyFormat = {{ shop.money_format | json }};
-  const select = document.getElementById('variant-select');
+  const variantPicker = section.querySelector('[data-variant-picker]');
+  const hiddenSelect = section.querySelector('[data-variant-select]');
   const priceEl = section.querySelector('[data-product-price]');
   const compareEl = section.querySelector('[data-compare-price]');
   const addButton = section.querySelector('[data-add-to-cart]');
@@ -230,41 +318,139 @@
                       .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, amount.replace('.', ','));
   }
 
-  if (select) {
-    select.addEventListener('change', function() {
+  function updateVariant(variant) {
+    if (!variant) return;
+
+    // Update hidden select for form submission
+    if (hiddenSelect) {
+      hiddenSelect.value = variant.id;
+    }
+
+    // Update price
+    if (priceEl) {
+      priceEl.textContent = formatMoney(variant.price);
+    }
+
+    // Update compare price
+    if (compareEl) {
+      if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+        compareEl.textContent = formatMoney(variant.compare_at_price);
+        compareEl.style.display = '';
+      } else {
+        compareEl.style.display = 'none';
+      }
+    }
+
+    // Update button state
+    if (addButton) {
+      if (variant.available) {
+        addButton.disabled = false;
+        addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>Add to Cart</span>';
+      } else {
+        addButton.disabled = true;
+        addButton.querySelector('.product-add-btn-text').innerHTML = '<span>Sold Out</span>';
+      }
+    }
+
+    // Update URL
+    const url = new URL(window.location);
+    url.searchParams.set('variant', variant.id);
+    window.history.replaceState({}, '', url);
+  }
+
+  function getSelectedOptions() {
+    const options = [];
+    if (!variantPicker) return options;
+
+    // Get from radio buttons (button/swatch pickers)
+    const radioInputs = variantPicker.querySelectorAll('input[type="radio"]:checked');
+    radioInputs.forEach(input => {
+      const position = parseInt(input.dataset.optionPosition);
+      if (position) {
+        options[position - 1] = input.value;
+      }
+    });
+
+    // Get from select dropdowns
+    const selects = variantPicker.querySelectorAll('.variant-picker__select');
+    selects.forEach(select => {
+      const position = parseInt(select.dataset.optionPosition);
+      if (position) {
+        options[position - 1] = select.value;
+      }
+    });
+
+    return options;
+  }
+
+  function findVariantFromOptions(options) {
+    return variants.find(variant => {
+      return variant.options.every((opt, index) => opt === options[index]);
+    });
+  }
+
+  function updateSelectedLabels() {
+    if (!variantPicker) return;
+    const selectedLabels = variantPicker.querySelectorAll('[data-option-selected]');
+    selectedLabels.forEach(label => {
+      const optionIndex = parseInt(label.dataset.optionSelected);
+      const options = getSelectedOptions();
+      if (options[optionIndex]) {
+        label.textContent = options[optionIndex];
+      }
+    });
+  }
+
+  function updateDropdownSwatches() {
+    if (!variantPicker) return;
+    const dropdownSwatches = variantPicker.querySelectorAll('[data-dropdown-swatch]');
+    dropdownSwatches.forEach(swatchWrapper => {
+      const optionIndex = parseInt(swatchWrapper.dataset.dropdownSwatch);
+      const select = variantPicker.querySelector(`.variant-picker__select[data-option-position="${optionIndex + 1}"]`);
+      if (!select) return;
+
+      const selectedOption = select.options[select.selectedIndex];
+      const swatch = swatchWrapper.querySelector('.swatch');
+      if (!swatch) return;
+
+      const swatchColor = selectedOption.dataset.swatchColor;
+      const swatchImage = selectedOption.dataset.swatchImage;
+
+      if (swatchImage) {
+        swatch.style.setProperty('--swatch-bg', `url(${swatchImage})`);
+        swatch.classList.remove('swatch--unavailable');
+      } else if (swatchColor) {
+        swatch.style.setProperty('--swatch-bg', swatchColor);
+        swatch.classList.remove('swatch--unavailable');
+      } else {
+        swatch.style.removeProperty('--swatch-bg');
+        swatch.classList.add('swatch--unavailable');
+      }
+    });
+  }
+
+  function handleOptionChange() {
+    const options = getSelectedOptions();
+    const variant = findVariantFromOptions(options);
+    updateVariant(variant);
+    updateSelectedLabels();
+    updateDropdownSwatches();
+  }
+
+  if (variantPicker) {
+    // Listen for radio button changes (button/swatch pickers)
+    variantPicker.addEventListener('change', (e) => {
+      if (e.target.matches('input[type="radio"]') || e.target.matches('.variant-picker__select')) {
+        handleOptionChange();
+      }
+    });
+  }
+
+  // Fallback: Listen for changes on hidden select (if no variant picker)
+  if (hiddenSelect && !variantPicker) {
+    hiddenSelect.addEventListener('change', function() {
       const variant = variants.find(v => v.id === parseInt(this.value));
-      if (!variant) return;
-
-      // Update price
-      if (priceEl) {
-        priceEl.textContent = formatMoney(variant.price);
-      }
-
-      // Update compare price
-      if (compareEl) {
-        if (variant.compare_at_price && variant.compare_at_price > variant.price) {
-          compareEl.textContent = formatMoney(variant.compare_at_price);
-          compareEl.style.display = '';
-        } else {
-          compareEl.style.display = 'none';
-        }
-      }
-
-      // Update button state
-      if (addButton) {
-        if (variant.available) {
-          addButton.disabled = false;
-          addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>Add to Cart</span>';
-        } else {
-          addButton.disabled = true;
-          addButton.querySelector('.product-add-btn-text').innerHTML = '<span>Sold Out</span>';
-        }
-      }
-
-      // Update URL
-      const url = new URL(window.location);
-      url.searchParams.set('variant', variant.id);
-      window.history.replaceState({}, '', url);
+      updateVariant(variant);
     });
   }
 
@@ -772,22 +958,152 @@
         { "value": "portrait", "label": "Portrait" },
         { "value": "landscape", "label": "Landscape" }
       ]
+    }
+  ],
+  "blocks": [
+    {
+      "type": "vendor",
+      "name": "Vendor",
+      "limit": 1
     },
     {
-      "type": "header",
-      "content": "Content"
+      "type": "title",
+      "name": "Title",
+      "limit": 1
     },
     {
-      "type": "checkbox",
-      "id": "show_vendor",
-      "default": true,
-      "label": "Show vendor"
+      "type": "price",
+      "name": "Price",
+      "limit": 1
     },
     {
-      "type": "checkbox",
-      "id": "show_description",
-      "default": true,
-      "label": "Show description"
+      "type": "description",
+      "name": "Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "range",
+          "id": "truncate_length",
+          "label": "Character limit",
+          "min": 50,
+          "max": 500,
+          "step": 10,
+          "default": 200
+        }
+      ]
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "picker_type",
+          "label": "Picker type",
+          "options": [
+            {
+              "value": "dropdown",
+              "label": "Dropdown"
+            },
+            {
+              "value": "button",
+              "label": "Buttons"
+            }
+          ],
+          "default": "button"
+        },
+        {
+          "type": "select",
+          "id": "swatch_shape",
+          "label": "Color swatch style",
+          "info": "Options with color swatches will display as visual swatches instead of the picker type above.",
+          "options": [
+            {
+              "value": "circle",
+              "label": "Circle"
+            },
+            {
+              "value": "square",
+              "label": "Square"
+            },
+            {
+              "value": "none",
+              "label": "None (use picker type)"
+            }
+          ],
+          "default": "circle"
+        }
+      ]
+    },
+    {
+      "type": "quantity_selector",
+      "name": "Quantity selector",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Quantity"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy buttons",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "add_to_cart_text",
+          "label": "Add to cart text",
+          "default": "Add to Cart"
+        },
+        {
+          "type": "text",
+          "id": "sold_out_text",
+          "label": "Sold out text",
+          "default": "Sold Out"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Show dynamic checkout button",
+          "info": "Using the payment methods available on your store, customers see their preferred option, like PayPal or Apple Pay.",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Add custom text like shipping info or care instructions.</p>"
+        }
+      ]
+    },
+    {
+      "type": "collapsible_tab",
+      "name": "Collapsible tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Shipping & Returns"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content",
+          "default": "<p>Add content for this collapsible tab.</p>"
+        }
+      ]
     }
   ],
   "disabled_on": {

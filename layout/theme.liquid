@@ -85,6 +85,7 @@
       window.shopUrl = '{{ request.origin }}';
       window.themeSettings = {
         enableSmoothScroll: {{ settings.enable_smooth_scroll | default: true }},
+        enableScrollAnimations: {{ settings.enable_scroll_animations | default: true }},
         enablePageTransitions: {{ settings.enable_page_transitions | default: true }},
         pageTransitionStyle: '{{ settings.page_transition_style | default: "slide" }}',
         cartType: '{{ settings.cart_type | default: "drawer" }}',

@@ -11,6 +11,7 @@ class AnimationManager {
   constructor() {
     this.animations = [];
     this.scrollTriggers = [];
+    this.introObserver = null;
   }
 
   /**
@@ -164,6 +165,84 @@ class AnimationManager {
   }
 
   /**
+   * Initialize global intro animations for elements with [data-intro]
+   * Uses Intersection Observer for scroll-triggered animations
+   * Respects theme setting for enable_scroll_animations
+   */
+  initIntroAnimations() {
+    // Check if scroll animations are enabled
+    const scrollAnimationsEnabled = window.themeSettings?.enableScrollAnimations !== false;
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+    // If disabled, immediately show all elements
+    if (!scrollAnimationsEnabled || prefersReducedMotion) {
+      document.querySelectorAll('[data-intro]').forEach((el) => {
+        el.classList.add('intro-visible');
+      });
+      return;
+    }
+
+    // Kill existing observer
+    if (this.introObserver) {
+      this.introObserver.disconnect();
+      this.introObserver = null;
+    }
+
+    // Track animation queue for sequential staggering
+    let animationQueue = [];
+    let isAnimating = false;
+    const staggerDelay = 80; // ms between each element animation
+
+    const processQueue = () => {
+      if (animationQueue.length === 0) {
+        isAnimating = false;
+        return;
+      }
+
+      isAnimating = true;
+      const el = animationQueue.shift();
+
+      // Add the visible class to trigger animation
+      el.classList.add('intro-visible');
+
+      // Process next element after stagger delay
+      setTimeout(processQueue, staggerDelay);
+    };
+
+    // Create Intersection Observer
+    this.introObserver = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            const el = entry.target;
+
+            // Unobserve immediately to prevent re-triggering
+            this.introObserver.unobserve(el);
+
+            // Add to queue
+            animationQueue.push(el);
+
+            // Start processing if not already animating
+            if (!isAnimating) {
+              processQueue();
+            }
+          }
+        });
+      },
+      {
+        root: null,
+        rootMargin: '0px 0px -10% 0px', // Trigger slightly before element is fully visible
+        threshold: 0.1,
+      }
+    );
+
+    // Observe all intro elements
+    document.querySelectorAll('[data-intro]:not(.intro-visible)').forEach((el) => {
+      this.introObserver.observe(el);
+    });
+  }
+
+  /**
    * Animate a page header subtitle with line draw effect
    * @param {GSAPTimeline} tl - GSAP timeline to add animations to
    * @param {HTMLElement} container - Container element with data attributes
@@ -294,6 +373,10 @@ class AnimationManager {
   destroy() {
     this.killScrollTriggers();
     this.killAnimations();
+    if (this.introObserver) {
+      this.introObserver.disconnect();
+      this.introObserver = null;
+    }
   }
 }
 

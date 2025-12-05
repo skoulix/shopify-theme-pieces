@@ -1117,3 +1117,23 @@ html.scroll-locked body {
   animation: spin 1s linear infinite;
 }
 
+/* ==========================================================================
+   Global Intro Animation - Fade up effect for any element
+   Usage: <div data-intro>Content</div>
+          <div data-intro="0.2">Content with 0.2s delay</div>
+   Parent must receive .is-ready class to trigger animation
+   ========================================================================== */
+
+[data-intro] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--intro-delay, 0s);
+}
+
+.is-ready [data-intro] {
+  opacity: 1;
+  transform: translateY(0);
+}
+

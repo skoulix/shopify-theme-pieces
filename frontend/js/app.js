@@ -39,6 +39,7 @@ function initAnimations() {
   animationManager.initStaggerAnimations();
   animationManager.initParallax();
   animationManager.initImageReveals();
+  animationManager.initIntroAnimations();
 }
 
 /**

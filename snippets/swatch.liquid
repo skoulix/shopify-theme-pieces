@@ -1,0 +1,46 @@
+{% comment %}
+  Renders a color/pattern swatch.
+  Uses Shopify's native swatch system for variants.
+
+  Accepts:
+  - swatch: {SwatchDrop} the swatch object from variant option value
+  - shape: {String} 'circle' or 'square', defaults to 'circle'
+  - size: {String} 'sm', 'md', 'lg', defaults to 'md'
+
+  Usage:
+  {% render 'swatch', swatch: value.swatch, shape: 'circle', size: 'md' %}
+{% endcomment %}
+
+{%- liquid
+  assign swatch_value = null
+  assign swatch_focal_point = null
+
+  if swatch.image
+    assign image_url = swatch.image | image_url: width: 50
+    assign swatch_value = 'url(' | append: image_url | append: ')'
+    assign swatch_focal_point = swatch.image.presentation.focal_point
+  elsif swatch.color
+    assign swatch_value = 'rgb(' | append: swatch.color.rgb | append: ')'
+  endif
+
+  assign shape_class = ''
+  if shape == 'square'
+    assign shape_class = 'swatch--square'
+  endif
+
+  assign size_class = 'swatch--md'
+  if size == 'sm'
+    assign size_class = 'swatch--sm'
+  elsif size == 'lg'
+    assign size_class = 'swatch--lg'
+  endif
+-%}
+
+<span
+  {% if swatch_value %}
+    class="swatch {{ shape_class }} {{ size_class }}"
+    style="--swatch-bg: {{ swatch_value }};{% if swatch_focal_point %} --swatch-focal-point: {{ swatch_focal_point }};{% endif %}"
+  {% else %}
+    class="swatch swatch--unavailable {{ shape_class }} {{ size_class }}"
+  {% endif %}
+></span>

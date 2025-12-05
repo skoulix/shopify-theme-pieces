@@ -139,3 +139,32 @@ Example:
   - `yPercent: 100` → `yPercent: 0` for text reveals
   - `clip-path: inset(0 100% 0 0)` → `clip-path: inset(0 0% 0 0)` for image reveals
   - `opacity: 0, y: 20` → `opacity: 1, y: 0` for fade-up effects
+
+### Global Intro Animation (`data-intro`)
+
+Use `data-intro` attribute for fade-up intro animations on any element. This is a global system that can be applied anywhere.
+
+**Usage:**
+```liquid
+<div data-intro>Content fades up on page load</div>
+<div data-intro style="--intro-delay: 0.2s">With 0.2s delay</div>
+<div data-intro style="--intro-delay: 0.4s">With 0.4s delay</div>
+```
+
+**How it works:**
+- Elements with `data-intro` start with `opacity: 0` and `transform: translateY(20px)`
+- When the parent container gets `.is-ready` class, elements animate in
+- Optional delay via `--intro-delay` CSS variable in the style attribute
+- CSS handles the animation, no JavaScript required per-element
+
+**CSS (defined in frontend/css/app.css):**
+```css
+[data-intro] {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1),
+              transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transition-delay: var(--intro-delay, 0s);
+}
+.is-ready [data-intro] { opacity: 1; transform: translateY(0); }
+```
