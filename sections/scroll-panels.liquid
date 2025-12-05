@@ -1,0 +1,528 @@
+{%- comment -%}
+  Scroll Panels Section
+  Inspired by tympanus.net/Development/ScrollPanels
+  Panels stack and reveal as you scroll with pinned effect
+{%- endcomment -%}
+
+{%- liquid
+  assign panel_count = section.blocks.size
+  if panel_count == 0
+    assign panel_count = 1
+  endif
+-%}
+
+<style>
+  .scroll-panels-{{ section.id }} {
+    position: relative;
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+  }
+
+  .scroll-panels-wrapper-{{ section.id }} {
+    position: relative;
+    height: {{ panel_count | times: 100 }}vh;
+  }
+
+  .scroll-panels-sticky-{{ section.id }} {
+    position: sticky;
+    top: 0;
+    height: 100vh;
+    overflow: hidden;
+  }
+
+  .scroll-panel-{{ section.id }} {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    will-change: transform, opacity;
+  }
+
+  .scroll-panel-bg-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
+  }
+
+  .scroll-panel-bg-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transform: scale(1.1);
+    transition: transform 0.1s linear;
+  }
+
+  .scroll-panel-overlay-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to bottom,
+      {{ section.settings.overlay_color }}{{ section.settings.overlay_opacity | times: 2.55 | round | prepend: '00' | slice: -2, 2 }} 0%,
+      {{ section.settings.overlay_color }}{{ section.settings.overlay_opacity | times: 2.55 | round | divided_by: 2 | prepend: '00' | slice: -2, 2 }} 100%
+    );
+  }
+
+  .scroll-panel-content-{{ section.id }} {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    padding: clamp(2rem, 5vw, 4rem);
+    max-width: 900px;
+  }
+
+  .scroll-panel-number-{{ section.id }} {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.3em;
+    text-transform: uppercase;
+    opacity: 0.6;
+    margin-bottom: 1.5rem;
+  }
+
+  .scroll-panel-title-{{ section.id }} {
+    font-size: calc(clamp(2.5rem, 8vw, 5rem) * var(--heading-font-scale, 1));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+  }
+
+  .scroll-panel-text-{{ section.id }} {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    opacity: 0.8;
+    max-width: 600px;
+    margin: 0 auto 2rem;
+  }
+
+  .scroll-panel-button-{{ section.id }} {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    background: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    border-radius: var(--button-radius, 4px);
+    transition: transform 0.3s ease, opacity 0.3s ease;
+  }
+
+  .scroll-panel-button-{{ section.id }}:hover {
+    transform: scale(1.05);
+    opacity: 0.9;
+  }
+
+  /* Progress indicator */
+  .scroll-panels-progress-{{ section.id }} {
+    position: fixed;
+    right: 2rem;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .scroll-panels-progress-{{ section.id }}.is-visible {
+    opacity: 1;
+  }
+
+  .scroll-panels-progress-dot-{{ section.id }} {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: {{ section.settings.text_color }};
+    opacity: 0.3;
+    transition: opacity 0.3s ease, transform 0.3s ease;
+    cursor: pointer;
+  }
+
+  .scroll-panels-progress-dot-{{ section.id }}.is-active {
+    opacity: 1;
+    transform: scale(1.5);
+  }
+
+  /* Animation styles */
+  .scroll-panel-{{ section.id }}[data-panel-state="below"] {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  .scroll-panel-{{ section.id }}[data-panel-state="active"] {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  .scroll-panel-{{ section.id }}[data-panel-state="above"] {
+    opacity: 0;
+    transform: translateY(-30%);
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .scroll-panels-wrapper-{{ section.id }} {
+      height: auto;
+    }
+
+    .scroll-panels-sticky-{{ section.id }} {
+      position: relative;
+      height: auto;
+    }
+
+    .scroll-panel-{{ section.id }} {
+      position: relative;
+      height: 100vh;
+      opacity: 1 !important;
+      transform: none !important;
+    }
+  }
+
+  html.animations-disabled .scroll-panels-wrapper-{{ section.id }} {
+    height: auto;
+  }
+
+  html.animations-disabled .scroll-panels-sticky-{{ section.id }} {
+    position: relative;
+    height: auto;
+  }
+
+  html.animations-disabled .scroll-panel-{{ section.id }} {
+    position: relative;
+    height: 100vh;
+    opacity: 1 !important;
+    transform: none !important;
+  }
+</style>
+
+<section class="scroll-panels-{{ section.id }}" data-scroll-panels="{{ section.id }}">
+  <div class="scroll-panels-wrapper-{{ section.id }}" data-panels-wrapper>
+    <div class="scroll-panels-sticky-{{ section.id }}" data-panels-sticky>
+      {% for block in section.blocks %}
+        <div
+          class="scroll-panel-{{ section.id }}"
+          data-panel="{{ forloop.index0 }}"
+          data-panel-state="{% if forloop.first %}active{% else %}below{% endif %}"
+          {{ block.shopify_attributes }}
+        >
+          <div class="scroll-panel-bg-{{ section.id }}">
+            {% if block.settings.image != blank %}
+              {{ block.settings.image | image_url: width: 2000 | image_tag:
+                loading: 'eager',
+                class: 'scroll-panel-img',
+                sizes: '100vw'
+              }}
+            {% else %}
+              <div style="width: 100%; height: 100%; background: linear-gradient(135deg, {{ section.settings.background_color }} 0%, {{ section.settings.text_color }}20 100%);"></div>
+            {% endif %}
+            <div class="scroll-panel-overlay-{{ section.id }}"></div>
+          </div>
+
+          <div class="scroll-panel-content-{{ section.id }}">
+            {% if section.settings.show_numbers %}
+              <div class="scroll-panel-number-{{ section.id }}">
+                {{ forloop.index | prepend: '0' }} / {{ panel_count | prepend: '0' }}
+              </div>
+            {% endif %}
+
+            {% if block.settings.title != blank %}
+              <h2 class="scroll-panel-title-{{ section.id }} font-heading">
+                {{ block.settings.title }}
+              </h2>
+            {% endif %}
+
+            {% if block.settings.text != blank %}
+              <p class="scroll-panel-text-{{ section.id }}">
+                {{ block.settings.text }}
+              </p>
+            {% endif %}
+
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
+              <a href="{{ block.settings.button_link }}" class="scroll-panel-button-{{ section.id }}">
+                {{ block.settings.button_text }}
+                <i class="ph ph-arrow-right"></i>
+              </a>
+            {% endif %}
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if section.settings.show_progress and section.blocks.size > 1 %}
+    <div class="scroll-panels-progress-{{ section.id }}" data-panels-progress>
+      {% for block in section.blocks %}
+        <button
+          class="scroll-panels-progress-dot-{{ section.id }}{% if forloop.first %} is-active{% endif %}"
+          data-progress-dot="{{ forloop.index0 }}"
+          aria-label="Go to panel {{ forloop.index }}"
+        ></button>
+      {% endfor %}
+    </div>
+  {% endif %}
+</section>
+
+<script>
+(function() {
+  const section = document.querySelector('[data-scroll-panels="{{ section.id }}"]');
+  if (!section || section.dataset.scrollPanelsInitialized) return;
+  section.dataset.scrollPanelsInitialized = 'true';
+
+  // Skip animation setup if disabled
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  const wrapper = section.querySelector('[data-panels-wrapper]');
+  const sticky = section.querySelector('[data-panels-sticky]');
+  const panels = section.querySelectorAll('[data-panel]');
+  const progress = section.querySelector('[data-panels-progress]');
+  const progressDots = section.querySelectorAll('[data-progress-dot]');
+  const panelCount = panels.length;
+
+  if (panelCount === 0) return;
+
+  let currentPanel = 0;
+  let isInView = false;
+
+  function updatePanels(scrollProgress) {
+    // scrollProgress: 0 = start, 1 = end
+    const panelProgress = scrollProgress * panelCount;
+    const newCurrentPanel = Math.min(Math.floor(panelProgress), panelCount - 1);
+
+    panels.forEach((panel, index) => {
+      const panelStart = index / panelCount;
+      const panelEnd = (index + 1) / panelCount;
+      const withinPanel = scrollProgress >= panelStart && scrollProgress < panelEnd;
+
+      let state = 'below';
+      if (index < newCurrentPanel) {
+        state = 'above';
+      } else if (index === newCurrentPanel) {
+        state = 'active';
+      }
+
+      panel.dataset.panelState = state;
+
+      // Parallax effect on background image
+      if (state === 'active') {
+        const localProgress = (scrollProgress - panelStart) / (panelEnd - panelStart);
+        const img = panel.querySelector('.scroll-panel-img');
+        if (img) {
+          const scale = 1.1 - (localProgress * 0.1);
+          img.style.transform = `scale(${scale})`;
+        }
+      }
+    });
+
+    // Update progress dots
+    if (newCurrentPanel !== currentPanel) {
+      currentPanel = newCurrentPanel;
+      progressDots.forEach((dot, index) => {
+        dot.classList.toggle('is-active', index === currentPanel);
+      });
+    }
+  }
+
+  function handleScroll() {
+    const rect = wrapper.getBoundingClientRect();
+    const wrapperHeight = wrapper.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    // Calculate scroll progress through the section
+    const scrolled = -rect.top;
+    const scrollableDistance = wrapperHeight - viewportHeight;
+    const scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
+
+    // Check if section is in view
+    const newIsInView = rect.top < viewportHeight && rect.bottom > 0;
+
+    if (newIsInView !== isInView) {
+      isInView = newIsInView;
+      if (progress) {
+        progress.classList.toggle('is-visible', isInView);
+      }
+    }
+
+    if (isInView) {
+      updatePanels(scrollProgress);
+    }
+  }
+
+  // Progress dot click handlers
+  progressDots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      const wrapperRect = wrapper.getBoundingClientRect();
+      const wrapperTop = window.scrollY + wrapperRect.top;
+      const wrapperHeight = wrapper.offsetHeight;
+      const viewportHeight = window.innerHeight;
+      const scrollableDistance = wrapperHeight - viewportHeight;
+
+      const targetProgress = index / panelCount;
+      const targetScroll = wrapperTop + (targetProgress * scrollableDistance);
+
+      if (window.pieces && window.pieces.lenis) {
+        window.pieces.lenis.scrollTo(targetScroll, { duration: 1 });
+      } else {
+        window.scrollTo({ top: targetScroll, behavior: 'smooth' });
+      }
+    });
+  });
+
+  // Use native scroll with RAF for performance
+  let ticking = false;
+  function onScroll() {
+    if (!ticking) {
+      requestAnimationFrame(() => {
+        handleScroll();
+        ticking = false;
+      });
+      ticking = true;
+    }
+  }
+
+  window.addEventListener('scroll', onScroll, { passive: true });
+  handleScroll(); // Initial call
+
+  // Cleanup on Swup navigation
+  window.addEventListener('swup:willReplaceContent', function cleanup() {
+    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('swup:willReplaceContent', cleanup);
+  });
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Scroll Panels",
+  "tag": "section",
+  "class": "scroll-panels-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Display"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_numbers",
+      "default": true,
+      "label": "Show panel numbers"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress",
+      "default": true,
+      "label": "Show progress indicator"
+    },
+    {
+      "type": "header",
+      "content": "Overlay"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "default": "#000000",
+      "label": "Overlay color"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 40,
+      "unit": "%",
+      "label": "Overlay opacity"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#000000",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text color"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "panel",
+      "name": "Panel",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Background image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "default": "Panel Title",
+          "label": "Title"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "default": "Add compelling copy that tells your brand story.",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text"
+        },
+        {
+          "type": "url",
+          "id": "button_link",
+          "label": "Button link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Scroll Panels",
+      "blocks": [
+        {
+          "type": "panel",
+          "settings": {
+            "title": "Discover Our Story",
+            "text": "Every great brand has a story. This is where yours begins.",
+            "button_text": "Learn More"
+          }
+        },
+        {
+          "type": "panel",
+          "settings": {
+            "title": "Crafted With Care",
+            "text": "We believe in quality over quantity. Each product is made to last.",
+            "button_text": "Our Process"
+          }
+        },
+        {
+          "type": "panel",
+          "settings": {
+            "title": "Join the Movement",
+            "text": "Be part of something bigger. Shop consciously, live intentionally.",
+            "button_text": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

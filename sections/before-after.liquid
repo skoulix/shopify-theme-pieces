@@ -2,14 +2,6 @@
   Before/After Comparison Section - Interactive image comparison slider
 {%- endcomment -%}
 
-{%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
--%}
-
 <style>
   .before-after-{{ section.id }} {
     background-color: {{ section.settings.background_color }};
@@ -23,12 +15,13 @@
   }
 
   .before-after-label-{{ section.id }} {
+    display: block;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
     opacity: 0.5;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
 
   .before-after-title-{{ section.id }} {
@@ -55,12 +48,18 @@
 
   .before-after-container-{{ section.id }} {
     position: relative;
+    {% unless section.settings.full_width %}
     max-width: 1000px;
     margin: 0 auto;
-    border-radius: {{ section.settings.card_radius }}px;
+    {% endunless %}
+    border-radius: var(--card-radius);
     overflow: hidden;
     cursor: ew-resize;
     touch-action: pan-y pinch-zoom;
+  }
+
+  .before-after-{{ section.id }}.is-full-width .before-after-container-{{ section.id }} {
+    border-radius: 0;
   }
 
   .before-after-image-{{ section.id }} {
@@ -187,10 +186,10 @@
 </style>
 
 <section
-  class="before-after-{{ section.id }}"
+  class="before-after-{{ section.id }}{% if section.settings.full_width %} is-full-width{% endif %}"
   data-before-after-section="{{ section.id }}"
 >
-  <div class="{{ container_class }}">
+  <div class="page-container">
     {%- comment -%} Header {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
       <div class="before-after-header-{{ section.id }}">
@@ -218,34 +217,36 @@
     <div
       class="before-after-container-{{ section.id }}"
       data-before-after-container
+      data-intro
       role="img"
       aria-label="Image comparison slider: {{ section.settings.before_label }} vs {{ section.settings.after_label }}"
     >
       {%- comment -%} After Image (Background) {%- endcomment -%}
+      {%- capture image_class -%}before-after-image-{{ section.id }}{%- endcapture -%}
       {% if section.settings.image_after != blank %}
         {{ section.settings.image_after | image_url: width: 2000 | image_tag:
-          class: 'before-after-image-' | append: section.id,
+          class: image_class,
           loading: 'lazy',
           sizes: '(max-width: 1000px) 100vw, 1000px',
           widths: '600, 800, 1000, 1200, 1600, 2000',
           alt: section.settings.after_label
         }}
       {% else %}
-        {{ 'product-1' | placeholder_svg_tag: 'before-after-image-' | append: section.id }}
+        {{ 'product-1' | placeholder_svg_tag: image_class }}
       {% endif %}
 
       {%- comment -%} Before Image (Overlay) {%- endcomment -%}
       <div class="before-after-before-{{ section.id }}" data-before-after-before>
         {% if section.settings.image_before != blank %}
           {{ section.settings.image_before | image_url: width: 2000 | image_tag:
-            class: 'before-after-image-' | append: section.id,
+            class: image_class,
             loading: 'lazy',
             sizes: '(max-width: 1000px) 100vw, 1000px',
             widths: '600, 800, 1000, 1200, 1600, 2000',
             alt: section.settings.before_label
           }}
         {% else %}
-          {{ 'product-2' | placeholder_svg_tag: 'before-after-image-' | append: section.id }}
+          {{ 'product-2' | placeholder_svg_tag: image_class }}
         {% endif %}
       </div>
 
@@ -278,7 +279,8 @@
   if (!section || section.dataset.beforeAfterInitialized) return;
   section.dataset.beforeAfterInitialized = 'true';
 
-  function initBeforeAfter() {
+  // Title split text animation
+  function initTitleAnimation() {
     let gsap = window.gsap;
     if (!gsap && window.pieces && window.pieces.gsap) {
       gsap = window.pieces.gsap;
@@ -291,7 +293,6 @@
 
     const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
 
-    // Title animation
     const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
     const title = section.querySelector('[data-before-after-title]');
 
@@ -373,7 +374,6 @@
 
   // Keyboard support
   handle.querySelector('button').addEventListener('keydown', (e) => {
-    const rect = container.getBoundingClientRect();
     const currentLeft = parseFloat(handle.style.left) || 50;
     let newPosition = currentLeft;
 
@@ -387,14 +387,15 @@
     handle.style.left = `${newPosition}%`;
   });
 
+  // Initialize title animation
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBeforeAfter);
+    document.addEventListener('DOMContentLoaded', initTitleAnimation);
   } else {
-    requestAnimationFrame(initBeforeAfter);
+    requestAnimationFrame(initTitleAnimation);
   }
 
   window.addEventListener('swup:contentReplaced', () => {
-    requestAnimationFrame(initBeforeAfter);
+    requestAnimationFrame(initTitleAnimation);
   });
 })();
 </script>
@@ -484,20 +485,6 @@
       "id": "after_label",
       "default": "After",
       "label": "After label"
-    },
-    {
-      "type": "header",
-      "content": "Style"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 16,
-      "unit": "px",
-      "label": "Corner radius"
     },
     {
       "type": "header",
