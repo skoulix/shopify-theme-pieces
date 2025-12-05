@@ -315,7 +315,7 @@
     // Title reveal
     const titleSpans = wrapper.querySelectorAll('.search-page-title .overflow-hidden > span');
     if (titleSpans.length) {
-      gsap.set(titleSpans, { yPercent: 100 });
+      gsap.set(titleSpans, { yPercent: 120 });
       tl.to(titleSpans, {
         yPercent: 0,
         duration: 1.2,
@@ -332,7 +332,7 @@
       tl.to(subtitleLine, { scaleX: 1, duration: 0.8, ease: 'power3.out' }, 0.4);
     }
     if (subtitleText) {
-      gsap.set(subtitleText, { yPercent: 100 });
+      gsap.set(subtitleText, { yPercent: 120 });
       tl.to(subtitleText, { yPercent: 0, duration: 0.8, ease: 'power4.out' }, 0.6);
     }
 

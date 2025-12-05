@@ -23,6 +23,11 @@
   html.animations-disabled .cart-wrapper.is-loading .cart-item-image,
   html.animations-disabled .cart-item-image { clip-path: none; }
   html.animations-disabled .cart-item { opacity: 1; transform: none; }
+  html.animations-disabled .cart-summary { opacity: 1; transform: none; }
+  html.animations-disabled .cart-empty { opacity: 1; }
+  html.animations-disabled .cart-page-title-line > span { transform: none; }
+  html.animations-disabled [data-subtitle-line] { transform: scaleX(1); }
+  html.animations-disabled [data-subtitle-text] { transform: none; }
   .cart-quantity { display: inline-flex; align-items: center; background: transparent; border-radius: var(--input-radius); padding: 0; position: relative; overflow: hidden; border: var(--input-border-width) solid var(--color-border); }
   .cart-quantity-btn { width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--color-text); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .cart-quantity-btn:hover { background: var(--color-primary); color: var(--color-primary-contrast); }

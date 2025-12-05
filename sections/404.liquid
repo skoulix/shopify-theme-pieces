@@ -25,24 +25,27 @@
     left: 50%;
     transform: translate(-50%, -50%);
   }
+
+  /* Title line reveal animation */
+  .error-title-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
 </style>
 
-<div class="min-h-screen flex items-center relative overflow-hidden">
+<div class="min-h-screen flex items-center relative overflow-hidden" data-error-section>
   {%- comment -%} Creative Background Text {%- endcomment -%}
   <span class="error-bg-text text-[--color-text] font-heading">404</span>
 
   <div class="{{ container_class }} py-[--page-vertical-padding] w-full relative z-10">
     <div class="max-w-4xl mx-auto text-center">
       {%- comment -%} Content {%- endcomment -%}
-      <h1 class="text-3xl md:text-4xl font-semibold text-[--color-text] font-heading">
+      <h1 class="text-3xl md:text-4xl font-semibold text-[--color-text] font-heading" data-error-title>
         {{ '404.title' | t }}
       </h1>
-      <p class="mt-4 text-lg text-[--color-text-secondary] max-w-md mx-auto">
+      <p class="mt-4 text-lg text-[--color-text-secondary] max-w-md mx-auto" data-error-description>
         {{ '404.description' | t }}
       </p>
 
       {%- comment -%} Actions {%- endcomment -%}
-      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xs sm:max-w-none mx-auto">
+      <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xs sm:max-w-none mx-auto" data-error-actions>
         <a href="{{ routes.root_url }}" class="btn btn--primary w-full sm:w-auto">
           <i class="ph ph-house"></i>
           <span>{{ '404.back_home' | t }}</span>
@@ -55,6 +58,94 @@
     </div>
   </div>
 </div>
+
+<script>
+(function() {
+  const section = document.querySelector('[data-error-section]');
+  if (!section || section.dataset.errorAnimInitialized) return;
+  section.dataset.errorAnimInitialized = 'true';
+
+  // If animations disabled, skip
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  function initAnimation() {
+    let gsap = window.gsap;
+    if (!gsap && window.pieces && window.pieces.gsap) {
+      gsap = window.pieces.gsap;
+    }
+
+    let SplitText = window.SplitText;
+    if (!SplitText && window.pieces && window.pieces.SplitText) {
+      SplitText = window.pieces.SplitText;
+    }
+
+    if (!gsap || !SplitText) {
+      setTimeout(initAnimation, 50);
+      return;
+    }
+
+    const title = section.querySelector('[data-error-title]');
+    const description = section.querySelector('[data-error-description]');
+    const actions = section.querySelector('[data-error-actions]');
+
+    const tl = gsap.timeline({ delay: 0.2 });
+
+    // Title split text reveal
+    if (title) {
+      const split = new SplitText(title, { type: 'lines', linesClass: 'error-title-line' });
+
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
+
+      gsap.set(split.lines, { yPercent: 120 });
+
+      tl.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1
+      }, 0);
+    }
+
+    // Description fade from bottom
+    if (description) {
+      gsap.set(description, { opacity: 0, y: 30 });
+      tl.to(description, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
+    }
+
+    // Actions fade from bottom
+    if (actions) {
+      gsap.set(actions, { opacity: 0, y: 30 });
+      tl.to(actions, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.6);
+    }
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnimation);
+  } else {
+    requestAnimationFrame(initAnimation);
+  }
+
+  window.addEventListener('swup:contentReplaced', () => {
+    requestAnimationFrame(initAnimation);
+  });
+})();
+</script>
 
 {% schema %}
 {

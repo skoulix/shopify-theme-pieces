@@ -244,7 +244,7 @@
           lineWrapper.appendChild(line);
         });
 
-        gsap.set(split.lines, { yPercent: 100 });
+        gsap.set(split.lines, { yPercent: 120 });
         tl.to(split.lines, {
           yPercent: 0,
           duration: 1.2,
@@ -267,7 +267,7 @@
       // Subtitle text reveal
       const subtitleText = wrapper.querySelector('[data-subtitle-text]');
       if (subtitleText) {
-        gsap.set(subtitleText, { yPercent: 100 });
+        gsap.set(subtitleText, { yPercent: 120 });
         tl.to(subtitleText, {
           yPercent: 0,
           duration: 0.8,

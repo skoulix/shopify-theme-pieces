@@ -101,6 +101,14 @@ class CartPageManager {
    * Initialize GSAP animations
    */
   initAnimations() {
+    // If animations disabled, just mark as ready and show content
+    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
+      this.wrapper.classList.remove('is-loading');
+      this.wrapper.classList.add('is-ready');
+      this.isReady = true;
+      return;
+    }
+
     const gsapInstance = window.gsap || (window.pieces && window.pieces.gsap);
     if (!gsapInstance) {
       setTimeout(() => this.initAnimations(), 50);
@@ -122,7 +130,7 @@ class CartPageManager {
     const titleSpans = this.wrapper.querySelectorAll('.cart-page-title-line > span');
     if (titleSpans.length) {
       tl.fromTo(titleSpans,
-        { yPercent: 100 },
+        { yPercent: 120 },
         { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: 0.1, immediateRender: true },
         0
       );
@@ -135,7 +143,7 @@ class CartPageManager {
       tl.fromTo(subtitleLine, { scaleX: 0 }, { scaleX: 1, duration: 0.8, ease: 'power3.out', immediateRender: true }, 0.4);
     }
     if (subtitleText) {
-      tl.fromTo(subtitleText, { yPercent: 100 }, { yPercent: 0, duration: 0.8, ease: 'power4.out', immediateRender: true }, 0.6);
+      tl.fromTo(subtitleText, { yPercent: 120 }, { yPercent: 0, duration: 0.8, ease: 'power4.out', immediateRender: true }, 0.6);
     }
 
     // Cart items

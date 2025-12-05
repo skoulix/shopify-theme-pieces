@@ -201,7 +201,7 @@
       // Header title split text reveal
       const headerSpans = wrapper.querySelectorAll('.collections-header-title .overflow-hidden > span');
       if (headerSpans.length) {
-        gsap.set(headerSpans, { yPercent: 100 });
+        gsap.set(headerSpans, { yPercent: 120 });
         tl.to(headerSpans, {
           yPercent: 0,
           duration: 1.2,
@@ -224,7 +224,7 @@
       // Subtitle text reveal
       const subtitleText = wrapper.querySelector('[data-subtitle-text]');
       if (subtitleText) {
-        gsap.set(subtitleText, { yPercent: 100 });
+        gsap.set(subtitleText, { yPercent: 120 });
         tl.to(subtitleText, {
           yPercent: 0,
           duration: 0.8,
