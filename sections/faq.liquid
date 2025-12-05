@@ -120,7 +120,7 @@
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
-      <div class="mb-12 lg:mb-16">
+      <div class="mb-12 lg:mb-16" style="text-align: {{ section.settings.header_alignment }}">
         {% if section.settings.label != blank %}
           <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
             {{ section.settings.label }}
@@ -289,6 +289,16 @@
       "id": "description",
       "label": "Description",
       "default": "Find answers to common questions about our products and services."
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     },
     {
       "type": "header",

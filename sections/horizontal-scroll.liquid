@@ -48,7 +48,8 @@
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: flex-start;
+    align-items: {% if section.settings.header_alignment == 'center' %}center{% else %}flex-start{% endif %};
+    text-align: {{ section.settings.header_alignment }};
     padding: clamp(2rem, 5vw, 6rem);
   }
 
@@ -455,6 +456,16 @@
       "id": "description",
       "default": "Scroll to discover our carefully curated selection of products and experiences.",
       "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     },
     {
       "type": "header",

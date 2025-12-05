@@ -20,7 +20,7 @@
   }
 
   .logo-marquee-header-{{ section.id }} {
-    text-align: center;
+    text-align: {{ section.settings.header_alignment }};
     margin-bottom: clamp(2rem, 4vh, 3rem);
   }
 
@@ -241,6 +241,16 @@
       "id": "label",
       "default": "As Featured In",
       "label": "Label"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center",
+      "label": "Header alignment"
     },
     {
       "type": "header",

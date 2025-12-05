@@ -26,7 +26,7 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    <header class="featured-collection-header flex flex-col gap-4 md:flex-row md:justify-between md:items-end">
+    <header class="featured-collection-header flex flex-col gap-4 {% if section.settings.header_alignment == 'center' %}items-center text-center{% else %}md:flex-row md:justify-between md:items-end{% endif %}">
       <h2 class="featured-collection-title font-bold text-[--color-text] font-heading" data-fc-title>
         {% if section.settings.title != blank %}
           {{ section.settings.title }}
@@ -189,6 +189,16 @@
       "id": "title",
       "label": "Title",
       "info": "Leave blank to use collection title"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     },
     {
       "type": "range",

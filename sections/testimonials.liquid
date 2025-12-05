@@ -25,6 +25,7 @@
 
   .testimonials-header-{{ section.id }} {
     margin-bottom: clamp(3rem, 6vh, 5rem);
+    text-align: {{ section.settings.header_alignment }};
   }
 
   .testimonials-label-{{ section.id }} {
@@ -560,6 +561,16 @@
       "id": "title",
       "default": "What Our Customers Say",
       "label": "Title"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     },
     {
       "type": "checkbox",

@@ -194,7 +194,7 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    <div class="flex items-end justify-between gap-6 mb-12 lg:mb-16 max-w-none {{ content_class }}">
+    <div class="{% if section.settings.header_alignment == 'center' %}text-center mb-12 lg:mb-16{% else %}flex items-end justify-between gap-6 mb-12 lg:mb-16{% endif %} max-w-none {{ content_class }}">
       <div>
         {% if section.settings.label != blank %}
           <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
@@ -210,7 +210,7 @@
       </div>
 
       {%- comment -%} Navigation {%- endcomment -%}
-      <div class="flex items-center gap-3" data-intro data-carousel-nav>
+      <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% endif %}" data-intro data-carousel-nav>
         <button
           type="button"
           class="related-products__nav-btn"
@@ -517,6 +517,16 @@
       "id": "title",
       "label": "Title",
       "default": "Related Products"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     },
     {
       "type": "range",

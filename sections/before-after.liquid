@@ -2,6 +2,14 @@
   Before/After Comparison Section - Interactive image comparison slider
 {%- endcomment -%}
 
+{%- liquid
+  if section.settings.full_width
+    assign container_class = ''
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
 <style>
   .before-after-{{ section.id }} {
     background-color: {{ section.settings.background_color }};
@@ -48,10 +56,6 @@
 
   .before-after-container-{{ section.id }} {
     position: relative;
-    {% unless section.settings.full_width %}
-    max-width: 1000px;
-    margin: 0 auto;
-    {% endunless %}
     border-radius: var(--card-radius);
     overflow: hidden;
     cursor: ew-resize;
@@ -79,27 +83,15 @@
     width: 50%;
   }
 
-  .before-after-before-{{ section.id }} img {
+  .before-after-before-{{ section.id }} img,
+  .before-after-before-{{ section.id }} svg {
     position: absolute;
     top: 0;
     left: 0;
-    width: 100%;
     height: 100%;
     max-width: none;
-  }
-
-  /* Adjust image width to match container */
-  .before-after-before-{{ section.id }} img {
-    width: auto;
-    min-width: 100%;
-  }
-
-  @supports (object-fit: cover) {
-    .before-after-before-{{ section.id }} img {
-      width: 100%;
-      object-fit: cover;
-      object-position: left center;
-    }
+    object-fit: cover;
+    object-position: left center;
   }
 
   /* Handle / Slider */
@@ -189,7 +181,7 @@
   class="before-after-{{ section.id }}{% if section.settings.full_width %} is-full-width{% endif %}"
   data-before-after-section="{{ section.id }}"
 >
-  <div class="page-container">
+  <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
       <div class="before-after-header-{{ section.id }}">
@@ -327,8 +319,19 @@
   const container = section.querySelector('[data-before-after-container]');
   const before = section.querySelector('[data-before-after-before]');
   const handle = section.querySelector('[data-before-after-handle]');
+  const beforeImage = before ? before.querySelector('img, svg') : null;
 
   if (!container || !before || !handle) return;
+
+  // Set before image width to match container width (prevents scaling when dragging)
+  function updateBeforeImageWidth() {
+    if (beforeImage) {
+      beforeImage.style.width = container.offsetWidth + 'px';
+    }
+  }
+
+  updateBeforeImageWidth();
+  window.addEventListener('resize', updateBeforeImageWidth);
 
   let isDragging = false;
 
