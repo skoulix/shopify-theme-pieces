@@ -18,7 +18,9 @@
   }
 
   .hscroll-wrapper-{{ section.id }} {
-    height: {{ section.blocks.size | plus: 1 | times: 100 }}vh;
+    /* Height = scroll distance (panels * 100vw) + viewport height for sticky */
+    /* This ensures enough scroll room even when section is last on page */
+    height: calc({{ section.blocks.size | times: 100 }}vw + 100vh);
   }
 
   .hscroll-sticky-{{ section.id }} {
@@ -84,12 +86,15 @@
 
   .hscroll-item-{{ section.id }} {
     position: relative;
+    display: block;
     width: 80vw;
     max-width: 900px;
     height: 70vh;
     max-height: 600px;
     overflow: hidden;
     border-radius: {{ section.settings.card_radius }}px;
+    text-decoration: none;
+    color: inherit;
   }
 
   @media (min-width: 1024px) {
@@ -109,6 +114,22 @@
 
   .hscroll-item-{{ section.id }}:hover img {
     transform: scale(1.05);
+  }
+
+  /* Placeholder styling */
+  .hscroll-placeholder-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+  }
+
+  .hscroll-placeholder-{{ section.id }} i {
+    font-size: 4rem;
+    opacity: 0.15;
+    color: #ffffff;
   }
 
   .hscroll-item-overlay-{{ section.id }} {
@@ -226,7 +247,11 @@
         {%- comment -%} Image Panels {%- endcomment -%}
         {% for block in section.blocks %}
           <div class="hscroll-panel-{{ section.id }}" data-hscroll-panel {{ block.shopify_attributes }}>
-            <div class="hscroll-item-{{ section.id }}" data-hscroll-item>
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}" class="hscroll-item-{{ section.id }}" data-hscroll-item>
+            {% else %}
+              <div class="hscroll-item-{{ section.id }}" data-hscroll-item>
+            {% endif %}
               {% if block.settings.image != blank %}
                 {{ block.settings.image | image_url: width: 1600 | image_tag:
                   class: '',
@@ -235,8 +260,9 @@
                   widths: '800, 1000, 1200, 1400, 1600'
                 }}
               {% else %}
-                {%- assign placeholder_index = forloop.index0 | modulo: 6 | plus: 1 -%}
-                {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full object-cover' }}
+                <div class="hscroll-placeholder-{{ section.id }}">
+                  <i class="ph ph-image"></i>
+                </div>
               {% endif %}
 
               <div class="hscroll-item-overlay-{{ section.id }}"></div>
@@ -252,7 +278,11 @@
                   <p class="hscroll-item-text-{{ section.id }}">{{ block.settings.text }}</p>
                 {% endif %}
               </div>
-            </div>
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
           </div>
         {% endfor %}
       </div>
