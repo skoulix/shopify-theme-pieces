@@ -8,7 +8,7 @@
 
 <style>
   .article-progress-bar { transition: width 0.1s ease-out; }
-  .article-hero-title { font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; }
+  .article-hero-title { font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; clip-path: inset(0 0 100% 0); }
   @media (min-width: 1024px) { .article-hero-title { font-size: calc(clamp(2.5rem, 4vw, 3.5rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .article-hero-title { font-size: calc(clamp(3rem, 3.5vw, 4rem) * var(--heading-font-scale, 1)); } }
   .article-hero-category::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--color-text-secondary); }
@@ -25,36 +25,24 @@
   <header class="pt-[--page-vertical-padding] pb-16">
     <div class="{{ container_class }}">
       {%- capture back_text -%}Back to {{ blog.title }}{%- endcapture -%}
-      <div class="overflow-hidden mb-12">
-        <a href="{{ blog.url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary]" data-back-link>
+      <div class="mb-12" data-intro>
+        <a href="{{ blog.url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary]">
           <i class="ph ph-arrow-left"></i>
           <span data-hover="{{ back_text }}">{{ back_text }}</span>
         </a>
       </div>
 
       {% if article.tags.size > 0 %}
-        <p class="article-hero-category text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[--color-text-secondary] mb-6 flex items-center gap-4 overflow-hidden">
-          <span class="inline-block">{{ article.tags.first }}</span>
+        <p class="article-hero-category text-[0.65rem] font-semibold uppercase tracking-[0.2em] text-[--color-text-secondary] mb-6 flex items-center gap-4" data-intro>
+          {{ article.tags.first }}
         </p>
       {% endif %}
 
       <h1 class="article-hero-title font-bold leading-[1.05] text-[--color-text] max-w-[900px] font-heading">
-        {%- assign title_words = article.title | split: ' ' -%}
-        {%- assign words_per_line = title_words.size | divided_by: 2 | plus: 1 -%}
-        {%- for word in title_words -%}
-          {%- assign word_index = forloop.index0 | modulo: words_per_line -%}
-          {%- if word_index == 0 -%}
-            <span class="block overflow-hidden">
-          {%- endif -%}
-          <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
-          {%- assign next_index = forloop.index | modulo: words_per_line -%}
-          {%- if next_index == 0 or forloop.last -%}
-            </span>
-          {%- endif -%}
-        {%- endfor -%}
+        {{ article.title }}
       </h1>
 
-      <div class="flex flex-wrap items-center gap-6 mt-10 text-[0.8125rem] text-[--color-text-secondary]" data-article-meta>
+      <div class="flex flex-wrap items-center gap-6 mt-10 text-[0.8125rem] text-[--color-text-secondary]" data-intro>
         <div class="flex items-center gap-3">
           <div class="w-10 h-10 rounded-full bg-[--color-background-secondary] flex items-center justify-center font-semibold text-sm text-[--color-text]">
             {{ article.author | slice: 0 | upcase }}
@@ -224,81 +212,31 @@
     }
 
     wrapper.dataset.articleAnimInitialized = 'true';
+    wrapper.classList.remove('is-loading');
 
-    const backLink = wrapper.querySelector('[data-back-link]');
-    const category = wrapper.querySelector('.article-hero-category span');
-    const titleSpans = wrapper.querySelectorAll('.article-hero-title .overflow-hidden span');
-    const meta = wrapper.querySelector('[data-article-meta]');
     const image = wrapper.querySelector('.article-image');
-    const content = wrapper.querySelector('[data-article-content]');
+    const title = wrapper.querySelector('.article-hero-title');
 
-    // Set initial states
-    if (backLink) gsap.set(backLink, { yPercent: 100 });
-    if (category) gsap.set(category, { yPercent: 100 });
-    if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100 });
-    if (meta) gsap.set(meta, { opacity: 0, y: 20 });
-    if (content) gsap.set(content, { opacity: 0, y: 30 });
+    const tl = gsap.timeline();
 
-    // Create timeline
-    const tl = gsap.timeline({
-      onComplete: () => wrapper.classList.remove('is-loading')
-    });
-
-    // Back link
-    if (backLink) {
-      tl.to(backLink, {
-        yPercent: 0,
-        duration: 0.6,
-        ease: 'power4.out'
+    // Animate title with clip-path reveal from bottom
+    if (title) {
+      gsap.set(title, { clipPath: 'inset(0 0 100% 0)' });
+      tl.to(title, {
+        clipPath: 'inset(0 0 0% 0)',
+        duration: 1.4,
+        ease: 'expo.out'
       }, 0);
     }
 
-    // Category
-    if (category) {
-      tl.to(category, {
-        yPercent: 0,
-        duration: 0.6,
-        ease: 'power4.out'
-      }, 0.1);
-    }
-
-    // Title
-    if (titleSpans.length) {
-      tl.to(titleSpans, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.05
-      }, 0.2);
-    }
-
-    // Meta
-    if (meta) {
-      tl.to(meta, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.5);
-    }
-
-    // Image
+    // Animate article image with clip-path swipe
     if (image) {
+      gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
       tl.to(image, {
         clipPath: 'inset(0 0% 0 0)',
         duration: 1.8,
         ease: 'expo.inOut'
-      }, 0.4);
-    }
-
-    // Content
-    if (content) {
-      tl.to(content, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.8);
+      }, 0.2);
     }
   }
 
@@ -324,8 +262,7 @@
     });
   }
 
-  // Initialize - always run immediately since script only exists on article pages
-  // Use slight delay to ensure DOM is fully ready after Swup transition
+  // Initialize
   function init() {
     initArticleAnimation(true);
     initCopyLink();
@@ -334,7 +271,6 @@
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', init);
   } else {
-    // Small delay to ensure Swup has finished all DOM operations
     requestAnimationFrame(init);
   }
 })();

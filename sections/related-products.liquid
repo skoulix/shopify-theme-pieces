@@ -207,7 +207,7 @@
       </div>
 
       {%- comment -%} Navigation {%- endcomment -%}
-      <div class="flex items-center gap-3" data-carousel-nav>
+      <div class="flex items-center gap-3" data-intro data-carousel-nav>
         <button
           type="button"
           class="related-products__nav-btn"
@@ -229,7 +229,7 @@
     </div>
 
     {%- comment -%} Carousel Container {%- endcomment -%}
-    <div class="relative max-w-none {{ content_class }}">
+    <div class="relative max-w-none {{ content_class }}" data-intro>
       <div class="overflow-hidden" data-carousel-viewport>
         {%- comment -%} Loading State {%- endcomment -%}
         <div class="related-products__loading" data-carousel-loading>

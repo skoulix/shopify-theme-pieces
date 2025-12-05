@@ -7,15 +7,16 @@
   <div class="page-container grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-8">
     <div class="lg:col-span-7">
       {% if title != blank %}
-        <h2 class="max-w-xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl font-heading">
+        <h2 class="max-w-xl text-balance text-3xl font-semibold tracking-tight sm:text-4xl font-heading" data-intro>
           {{ title }}
         </h2>
       {% endif %}
       {% if text != blank %}
-        <p class="mt-4 max-w-xl text-base opacity-70">{{ text }}</p>
+        <p class="mt-4 max-w-xl text-base opacity-70" data-intro>{{ text }}</p>
       {% endif %}
     </div>
-    {% form 'customer', class: 'w-full max-w-md lg:col-span-5 lg:pt-2' %}
+    <div class="w-full max-w-md lg:col-span-5 lg:pt-2" data-intro>
+    {% form 'customer' %}
       <div class="flex gap-x-4">
         <label for="newsletter-email-side" class="sr-only">{{ 'customers.register.email' | t }}</label>
         <input
@@ -45,5 +46,6 @@
         <p class="mt-4 text-sm text-red-500">{{ form.errors.messages['email'] }}</p>
       {% endif %}
     {% endform %}
+    </div>
   </div>
 </div>

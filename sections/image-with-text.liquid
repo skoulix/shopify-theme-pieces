@@ -55,11 +55,11 @@
 
     <div class="max-w-2xl lg:mx-auto {{ content_class }}" data-iwt-content>
       {% if section.settings.label != blank %}
-        <span class="iwt-label inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-6" data-iwt-label>{{ section.settings.label }}</span>
+        <span class="iwt-label inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-6" data-intro>{{ section.settings.label }}</span>
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="iwt-title font-bold mb-6 font-heading" data-iwt-title>
+        <h2 class="iwt-title font-bold mb-6 font-heading" data-intro>
           {%- assign title_words = section.settings.title | split: ' ' -%}
           {%- assign words_per_line = 3 -%}
           {%- for word in title_words -%}
@@ -77,13 +77,13 @@
       {% endif %}
 
       {% if section.settings.text != blank %}
-        <div class="iwt-text leading-relaxed opacity-80 mb-8" data-iwt-text>
+        <div class="iwt-text leading-relaxed opacity-80 mb-8" data-intro>
           {{ section.settings.text }}
         </div>
       {% endif %}
 
       {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-        <a href="{{ section.settings.button_link }}" class="iwt-cta section-link inline-flex items-center gap-3 text-xs font-semibold tracking-[0.1em]" data-iwt-cta>
+        <a href="{{ section.settings.button_link }}" class="iwt-cta section-link inline-flex items-center gap-3 text-xs font-semibold tracking-[0.1em]" data-intro>
           <span class="iwt-cta-text-wrapper">
             <span class="iwt-cta-text" data-hover="{{ section.settings.button_text }}">{{ section.settings.button_text }}</span>
           </span>
@@ -92,12 +92,12 @@
       {% endif %}
 
       {% if section.blocks.size > 0 %}
-        <div class="iwt-stats flex mt-12 pt-8 border-t" data-iwt-stats>
+        <div class="iwt-stats flex mt-12 pt-8 border-t" data-intro>
           {% for block in section.blocks %}
             {% if block.type == 'stat' %}
               <div class="iwt-stat overflow-hidden" {{ block.shopify_attributes }}>
                 <div class="iwt-stat-number font-bold leading-none overflow-hidden">
-                  <span class="inline-block" data-iwt-stat-number>{{ block.settings.number }}</span>
+                  <span class="inline-block">{{ block.settings.number }}</span>
                 </div>
                 <div class="iwt-stat-label mt-2 text-[0.65rem] uppercase tracking-[0.1em] opacity-60">{{ block.settings.label }}</div>
               </div>
@@ -116,7 +116,19 @@
     section.dataset.iwtAnimInitialized = 'true';
 
     function initAnimation() {
-      if (typeof gsap === 'undefined' || typeof ScrollTrigger === 'undefined') {
+      // Get gsap from window.pieces or window
+      if (typeof gsap === 'undefined') {
+        if (window.pieces && window.pieces.gsap) {
+          window.gsap = window.pieces.gsap;
+        } else {
+          requestAnimationFrame(initAnimation);
+          return;
+        }
+      }
+
+      // Get ScrollTrigger from window.pieces or window
+      const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+      if (!ScrollTrigger) {
         requestAnimationFrame(initAnimation);
         return;
       }
@@ -125,87 +137,21 @@
       section.dataset.iwtAnimReady = 'true';
 
       const image = section.querySelector('[data-iwt-image]');
-      const label = section.querySelector('[data-iwt-label]');
-      const title = section.querySelector('[data-iwt-title]');
-      const titleSpans = title ? title.querySelectorAll('.inline-block') : [];
-      const text = section.querySelector('[data-iwt-text]');
-      const cta = section.querySelector('[data-iwt-cta]');
-      const statNumbers = section.querySelectorAll('[data-iwt-stat-number]');
 
-      // Set initial states
-      if (image) gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
-      if (label) gsap.set(label, { opacity: 0, y: 20 });
-      if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100 });
-      if (text) gsap.set(text, { opacity: 0, y: 30 });
-      if (cta) gsap.set(cta, { opacity: 0, y: 20 });
-      if (statNumbers.length) gsap.set(statNumbers, { yPercent: 100 });
-
-      // Main timeline with ScrollTrigger
-      const tl = gsap.timeline({
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 70%',
-          once: true
-        }
-      });
-
-      // Image reveal
+      // Only animate image with clip-path swipe - text uses data-intro
       if (image) {
-        tl.to(image, {
+        gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
+
+        gsap.to(image, {
           clipPath: 'inset(0 0% 0 0)',
           duration: 1.6,
-          ease: 'expo.inOut'
-        }, 0);
-      }
-
-      // Label
-      if (label) {
-        tl.to(label, {
-          opacity: 0.6,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, 0.4);
-      }
-
-      // Title
-      if (titleSpans.length) {
-        tl.to(titleSpans, {
-          yPercent: 0,
-          duration: 1,
-          ease: 'power4.out',
-          stagger: 0.04
-        }, 0.5);
-      }
-
-      // Text
-      if (text) {
-        tl.to(text, {
-          opacity: 0.8,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, 0.8);
-      }
-
-      // CTA
-      if (cta) {
-        tl.to(cta, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, 1);
-      }
-
-      // Stats
-      if (statNumbers.length) {
-        tl.to(statNumbers, {
-          yPercent: 0,
-          duration: 0.8,
-          ease: 'power4.out',
-          stagger: 0.1
-        }, 1.1);
+          ease: 'expo.inOut',
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 70%',
+            once: true
+          }
+        });
       }
     }
 

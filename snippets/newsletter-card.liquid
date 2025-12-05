@@ -5,16 +5,17 @@
 
 <div class="py-16 sm:py-24" style="background-color: {{ background_color }};">
   <div class="page-container">
-    <div class="relative isolate overflow-hidden rounded-2xl px-6 py-16 sm:rounded-3xl sm:px-16 xl:py-24" style="background-color: {{ card_color }}; color: {{ text_color }};">
+    <div class="relative isolate overflow-hidden rounded-2xl px-6 py-16 sm:rounded-3xl sm:px-16 xl:py-24" data-intro style="background-color: {{ card_color }}; color: {{ text_color }};">
       {% if title != blank %}
-        <h2 class="mx-auto max-w-3xl text-center text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-heading">
+        <h2 class="mx-auto max-w-3xl text-center text-3xl font-semibold tracking-tight sm:text-4xl lg:text-5xl font-heading" data-intro>
           {{ title }}
         </h2>
       {% endif %}
       {% if text != blank %}
-        <p class="mx-auto mt-6 max-w-lg text-center text-base opacity-70">{{ text }}</p>
+        <p class="mx-auto mt-6 max-w-lg text-center text-base opacity-70" data-intro>{{ text }}</p>
       {% endif %}
-      {% form 'customer', class: 'mx-auto mt-10 max-w-md' %}
+      <div class="mx-auto mt-10 max-w-md" data-intro>
+      {% form 'customer' %}
         <div class="flex gap-x-4">
           <label for="newsletter-email-card" class="sr-only">{{ 'customers.register.email' | t }}</label>
           <input
@@ -44,6 +45,7 @@
           <p class="mt-4 text-center text-sm text-red-400">{{ form.errors.messages['email'] }}</p>
         {% endif %}
       {% endform %}
+      </div>
 
       {%- comment -%} Decorative gradient blob {%- endcomment -%}
       <svg viewBox="0 0 1024 1024" aria-hidden="true" class="absolute left-1/2 top-1/2 -z-10 w-[64rem] max-w-none -translate-x-1/2 opacity-20">

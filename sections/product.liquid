@@ -26,9 +26,10 @@
   .product-title-line { display: block; overflow: hidden; }
   .product-title-line:nth-child(2) { margin-left: clamp(1rem, 8cqw, 4rem); }
   .product-title-line:nth-child(3) { margin-left: clamp(2rem, 12cqw, 7rem); }
-  .product-price-display { font-size: clamp(1rem, 5cqw, 1.75rem); font-weight: 300; letter-spacing: 0.02em; color: var(--color-text); opacity: 0.6; }
+  .product-price-display { font-size: clamp(1rem, 5cqw, 1.75rem); font-weight: 300; letter-spacing: 0.02em; color: var(--color-text); }
+  .product-price-display.intro-visible { opacity: 0.6; }
   @container (min-width: 400px) { .product-price-display { font-size: clamp(1.25rem, 4cqw, 2rem); } }
-  .product-price-display .compare-price { font-size: 0.5em; text-decoration: line-through; opacity: 0.5; margin-right: 0.5em; }
+  .product-price-display .compare-price { font-size: 0.75em; text-decoration: line-through; opacity: 0.6; margin-right: 0.5em; }
   .product-gallery { position: relative; height: 100%; }
   @media (max-width: 1023px) { .product-gallery { min-height: 50vh; } }
   .product-gallery-main { position: relative; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 100% 0 0); }
@@ -181,7 +182,7 @@
             {% endif %}
 
           {%- when 'title' -%}
-            <h1 class="product-title font-heading" data-intro {{ block.shopify_attributes }}>
+            <h1 class="product-title font-heading" {{ block.shopify_attributes }}>
               {%- assign title_words = product.title | split: ' ' -%}
               {%- for word in title_words -%}
                 <span class="product-title-line">
@@ -191,19 +192,17 @@
             </h1>
 
           {%- when 'price' -%}
-            <div class="product-price-display mt-6 overflow-hidden" data-intro data-price-display {{ block.shopify_attributes }}>
-              <span class="inline-block">
-                {% if current_variant.compare_at_price > current_variant.price %}
-                  <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
-                {% endif %}
-                <span data-product-price>{{ current_variant.price | money }}</span>
-              </span>
+            <div class="product-price-display mt-6" data-intro data-price-display {{ block.shopify_attributes }}>
+              {% if current_variant.compare_at_price > current_variant.price %}
+                <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+              {% endif %}
+              <span data-product-price>{{ current_variant.price | money }}</span>
             </div>
 
           {%- when 'description' -%}
             {% if product.description != blank %}
               {%- assign desc_text = product.description | strip_html | truncate: block.settings.truncate_length -%}
-              <div class="product-description" data-intro data-shuffle-text data-original-text="{{ desc_text | escape }}" {{ block.shopify_attributes }}>
+              <div class="product-description" data-intro {{ block.shopify_attributes }}>
                 {{ desc_text }}
               </div>
             {% endif %}
@@ -221,7 +220,7 @@
             {% endif %}
 
           {%- when 'quantity_selector' -%}
-            <div class="product-form-group" data-intro {{ block.shopify_attributes }}>
+            <div class="product-form-group mt-8" data-intro {{ block.shopify_attributes }}>
               <label class="product-form-label">{{ block.settings.label | default: 'Quantity' }}</label>
               <div class="product-quantity" data-quantity-wrapper>
                 <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
@@ -544,51 +543,22 @@
     section.dataset.animInitialized = 'true';
 
     const galleryMain = section.querySelector('[data-gallery-main]');
-    const titleContainer = section.querySelector('.product-title');
     const titleLines = section.querySelectorAll('.product-title-line > span');
-    const vendor = section.querySelector('.product-vendor');
-    const priceContainer = section.querySelector('.product-price');
-    const priceDisplay = section.querySelector('[data-price-display]');
-    const description = section.querySelector('[data-shuffle-text]');
-    const form = section.querySelector('[data-product-form]');
     const thumbnails = section.querySelector('[data-thumbnails]');
     const counter = section.querySelector('[data-image-counter]');
-    const scrollHint = section.querySelector('.product-scroll-hint');
 
-    // Set initial animation states via GSAP (overrides CSS for reliability)
+    // Set initial animation states
     if (galleryMain) {
       gsap.set(galleryMain, { clipPath: 'inset(0 100% 0 0)' });
-    }
-    if (titleContainer) {
-      gsap.set(titleContainer, { opacity: 1 }); // Override CSS opacity: 0
     }
     if (titleLines.length) {
       gsap.set(titleLines, { yPercent: 100 });
     }
-    if (vendor) {
-      gsap.set(vendor, { opacity: 0, y: 20 });
-    }
-    if (priceContainer) {
-      gsap.set(priceContainer, { opacity: 1 }); // Override CSS opacity: 0
-    }
-    if (priceDisplay) {
-      const priceSpan = priceDisplay.querySelector('.inline-block');
-      if (priceSpan) gsap.set(priceSpan, { yPercent: 100 });
-    }
-    if (description) {
-      gsap.set(description, { opacity: 0, y: 20 });
-    }
-    if (form) {
-      gsap.set(form, { opacity: 0, y: 20 });
-    }
     if (thumbnails) {
-      gsap.set(thumbnails, { opacity: 0, y: 20 });
+      gsap.set(thumbnails, { opacity: 0 });
     }
     if (counter) {
-      gsap.set(counter, { opacity: 0, y: 20 });
-    }
-    if (scrollHint) {
-      gsap.set(scrollHint, { opacity: 0 });
+      gsap.set(counter, { opacity: 0 });
     }
 
     const tl = gsap.timeline({
@@ -606,7 +576,7 @@
       }, 0);
     }
 
-    // Title reveal - staggered from bottom
+    // Title reveal - staggered from bottom (only title has split effect)
     if (titleLines.length) {
       tl.to(titleLines, {
         yPercent: 0,
@@ -616,87 +586,10 @@
       }, 0.3);
     }
 
-    // Vendor fade in
-    if (vendor) {
-      tl.to(vendor, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.5);
-    }
-
-    // Price reveal
-    if (priceDisplay) {
-      const priceSpan = priceDisplay.querySelector('.inline-block');
-      if (priceSpan) {
-        tl.to(priceSpan, {
-          yPercent: 0,
-          duration: 0.8,
-          ease: 'power4.out'
-        }, 0.6);
-      }
-    }
-
-    // Description - text shuffle effect
-    if (description) {
-      const originalText = description.textContent.trim();
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-
-      // Lock height before animation to prevent layout shifts
-      const initialHeight = description.offsetHeight;
-      description.style.height = initialHeight + 'px';
-
-      // Start scrambled
-      description.textContent = originalText.split('').map(char =>
-        char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
-      ).join('');
-
-      tl.to(description, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power3.out'
-      }, 0.7);
-
-      // Shuffle animation
-      const shuffleObj = { progress: 0 };
-      tl.to(shuffleObj, {
-        progress: 1,
-        duration: 1.5,
-        ease: 'none',
-        onUpdate: () => {
-          const progress = shuffleObj.progress;
-          const revealedCount = Math.floor(progress * originalText.length);
-          description.textContent = originalText.split('').map((char, i) => {
-            if (char === ' ') return ' ';
-            if (i < revealedCount) return char;
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('');
-        },
-        onComplete: () => {
-          description.textContent = originalText;
-          // Remove fixed height after animation completes
-          description.style.height = '';
-        }
-      }, 0.8);
-    }
-
-    // Form fade in
-    if (form) {
-      tl.to(form, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.9);
-    }
-
     // Thumbnails and counter
     if (thumbnails) {
       tl.to(thumbnails, {
         opacity: 1,
-        y: 0,
         duration: 0.6,
         ease: 'power3.out'
       }, 1);
@@ -705,19 +598,9 @@
     if (counter) {
       tl.to(counter, {
         opacity: 1,
-        y: 0,
         duration: 0.6,
         ease: 'power3.out'
       }, 1);
-    }
-
-    // Scroll hint
-    if (scrollHint) {
-      tl.to(scrollHint, {
-        opacity: 1,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, 1.2);
     }
   }
 

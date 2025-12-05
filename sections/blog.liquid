@@ -19,19 +19,14 @@
 <section class="blog-wrapper is-loading" data-blog-wrapper>
   <div class="pt-[--page-vertical-padding] pb-16">
     <div class="{{ container_class }}">
-      <h1 class="blog-hero-title font-bold text-[--color-text] font-heading">
-        {%- assign title_words = blog.title | split: ' ' -%}
-        {%- for word in title_words -%}
-          <span class="blog-hero-title-line block overflow-hidden">
-            <span class="inline-block">{{ word }}</span>
-          </span>
-        {%- endfor -%}
+      <h1 class="blog-hero-title font-bold text-[--color-text] font-heading" data-intro>
+        {{ blog.title }}
       </h1>
 
       {% if section.settings.show_article_count %}
-        <p class="page-header-subtitle mt-6">
-          <span class="page-header-subtitle-line" data-subtitle-line></span>
-          <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span></span>
+        <p class="page-header-subtitle mt-6" data-intro>
+          <span class="page-header-subtitle-line"></span>
+          <span>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span>
         </p>
       {% endif %}
     </div>
@@ -48,6 +43,7 @@
           <article
             class="blog-item bg-[--color-background-secondary] rounded-[--card-radius] overflow-hidden{% if is_featured %} blog-item--featured col-span-full lg:grid lg:grid-cols-2 lg:gap-16 lg:items-stretch{% endif %}"
             style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);"
+            data-intro
             data-blog-item="{{ forloop.index0 }}"
             data-article-url="{{ article.url }}"
           >
@@ -141,10 +137,10 @@
 
 <script>
 (function() {
-  function initBlogAnimation() {
+  function initBlogAnimation(forceReinit = false) {
     const wrapper = document.querySelector('[data-blog-wrapper]');
     if (!wrapper) return;
-    if (wrapper.dataset.blogAnimInitialized) return;
+    if (!forceReinit && wrapper.dataset.blogAnimInitialized) return;
 
     let gsap = window.gsap;
     if (!gsap && window.pieces && window.pieces.gsap) {
@@ -152,160 +148,56 @@
     }
 
     if (!gsap) {
-      setTimeout(initBlogAnimation, 50);
+      setTimeout(() => initBlogAnimation(forceReinit), 50);
+      return;
+    }
+
+    // Get ScrollTrigger
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    if (!ScrollTrigger) {
+      setTimeout(() => initBlogAnimation(forceReinit), 50);
       return;
     }
 
     wrapper.dataset.blogAnimInitialized = 'true';
+    wrapper.classList.remove('is-loading');
 
-    const heroTitle = wrapper.querySelectorAll('.blog-hero-title-line > span');
-    const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
-    const subtitleText = wrapper.querySelector('[data-subtitle-text]');
     const blogItems = wrapper.querySelectorAll('[data-blog-item]');
 
-    // Set initial states
-    if (heroTitle.length) {
-      gsap.set(heroTitle, { yPercent: 100, opacity: 0 });
-    }
-    if (subtitleLine) {
-      gsap.set(subtitleLine, { scaleX: 0 });
-    }
-    if (subtitleText) {
-      gsap.set(subtitleText, { yPercent: 100, opacity: 0 });
-    }
-
-    blogItems.forEach(item => {
-      const image = item.querySelector('.blog-item-image');
-      const category = item.querySelector('.blog-item-category span');
-      const titleSpans = item.querySelectorAll('.blog-item-title .overflow-hidden > span');
-      const excerpt = item.querySelector('.blog-item-excerpt');
-      const meta = item.querySelector('.blog-item-meta');
-      const readLink = item.querySelector('.text-hover-reveal');
-
-      if (category) gsap.set(category, { yPercent: 100, opacity: 0 });
-      if (titleSpans.length) gsap.set(titleSpans, { yPercent: 100, opacity: 0 });
-      if (excerpt) gsap.set(excerpt, { opacity: 0, y: 20 });
-      if (meta) gsap.set(meta.querySelectorAll('.inline-block'), { yPercent: 100, opacity: 0 });
-      if (readLink) gsap.set(readLink, { opacity: 0, y: 10 });
-    });
-
-    // Create intro timeline
-    const tl = gsap.timeline({
-      onComplete: () => wrapper.classList.remove('is-loading')
-    });
-
-    // Animate hero title
-    if (heroTitle.length) {
-      tl.to(heroTitle, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      }, 0);
-    }
-
-    // Animate subtitle line (draw from left)
-    if (subtitleLine) {
-      tl.to(subtitleLine, {
-        scaleX: 1,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.4);
-    }
-
-    // Animate subtitle text
-    if (subtitleText) {
-      tl.to(subtitleText, {
-        yPercent: 0,
-        opacity: 1,
-        duration: 0.8,
-        ease: 'power4.out'
-      }, 0.6);
-    }
-
-    // Animate blog items with stagger
+    // Only animate blog item images with clip-path swipe
     blogItems.forEach((item, index) => {
       const image = item.querySelector('.blog-item-image');
-      const category = item.querySelector('.blog-item-category span');
-      const titleSpans = item.querySelectorAll('.blog-item-title .overflow-hidden > span');
-      const excerpt = item.querySelector('.blog-item-excerpt');
-      const meta = item.querySelector('.blog-item-meta');
-      const readLink = item.querySelector('.text-hover-reveal');
+      if (!image) return;
 
-      const delay = 0.5 + index * 0.1;
+      gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
 
-      // Image reveal
-      tl.to(image, {
+      gsap.to(image, {
         clipPath: 'inset(0 0% 0 0)',
         duration: 1.6,
-        ease: 'expo.inOut'
-      }, delay);
-
-      // Category
-      if (category) {
-        tl.to(category, {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power4.out'
-        }, delay + 0.2);
-      }
-
-      // Title
-      if (titleSpans.length) {
-        tl.to(titleSpans, {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.8,
-          ease: 'power4.out',
-          stagger: 0.03
-        }, delay + 0.25);
-      }
-
-      // Excerpt
-      if (excerpt) {
-        tl.to(excerpt, {
-          opacity: 1,
-          y: 0,
-          duration: 0.6,
-          ease: 'power3.out'
-        }, delay + 0.35);
-      }
-
-      // Meta
-      if (meta) {
-        tl.to(meta.querySelectorAll('.inline-block'), {
-          yPercent: 0,
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power4.out',
-          stagger: 0.05
-        }, delay + 0.4);
-      }
-
-      // Read link
-      if (readLink) {
-        tl.to(readLink, {
-          opacity: 1,
-          y: 0,
-          duration: 0.5,
-          ease: 'power3.out'
-        }, delay + 0.5);
-      }
+        ease: 'expo.inOut',
+        delay: index * 0.1,
+        scrollTrigger: {
+          trigger: item,
+          start: 'top 85%',
+          once: true
+        }
+      });
     });
+
+    // Refresh ScrollTrigger after animations are set up
+    ScrollTrigger.refresh();
   }
 
   // Initialize
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initBlogAnimation);
+    document.addEventListener('DOMContentLoaded', () => initBlogAnimation(false));
   } else {
-    initBlogAnimation();
+    initBlogAnimation(false);
   }
 
-  // Reinitialize after Swup
+  // Reinitialize after Swup - force reinit on new content
   window.addEventListener('swup:contentReplaced', () => {
-    requestAnimationFrame(initBlogAnimation);
+    requestAnimationFrame(() => initBlogAnimation(true));
   });
 })();
 </script>
