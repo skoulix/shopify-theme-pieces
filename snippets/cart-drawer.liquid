@@ -3,7 +3,7 @@
   Renders when settings.cart_type == 'drawer'
 {%- endcomment -%}
 
-<div id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" aria-hidden="true" aria-label="{{ 'cart.title' | t }}">
+<div id="cart-drawer" class="cart-drawer" role="dialog" aria-modal="true" inert aria-label="{{ 'cart.title' | t }}">
   {%- comment -%} Backdrop {%- endcomment -%}
   <div class="cart-drawer__backdrop" data-cart-drawer-close></div>
 
@@ -44,10 +44,23 @@
                 {% endunless %}
 
                 <div class="cart-drawer__item-price">
-                  {% if item.original_line_price != item.final_line_price %}
+                  {%- liquid
+                    assign has_compare_at = false
+                    if item.variant.compare_at_price > item.variant.price
+                      assign has_compare_at = true
+                      assign compare_at_line_price = item.variant.compare_at_price | times: item.quantity
+                    endif
+                    assign has_discount = false
+                    if item.original_line_price != item.final_line_price
+                      assign has_discount = true
+                    endif
+                  -%}
+                  {% if has_compare_at %}
+                    <span class="cart-drawer__item-price--compare">{{ compare_at_line_price | money }}</span>
+                  {% elsif has_discount %}
                     <span class="cart-drawer__item-price--compare">{{ item.original_line_price | money }}</span>
                   {% endif %}
-                  <span class="{% if item.original_line_price != item.final_line_price %}sale-price{% endif %}">
+                  <span class="{% if has_compare_at or has_discount %}sale-price{% endif %}">
                     {{ item.final_line_price | money }}
                   </span>
                 </div>

@@ -343,10 +343,15 @@
 
   /**
    * Cart drawer toggle (when cart_type is 'drawer')
+   * Skip if already on cart page
    */
   document.querySelectorAll('[data-cart-drawer-toggle]').forEach(btn => {
     btn.addEventListener('click', (e) => {
       e.preventDefault();
+      // Don't open drawer if already on cart page
+      if (window.location.pathname.includes('/cart')) {
+        return;
+      }
       document.dispatchEvent(new CustomEvent('cart:toggle'));
     });
   });

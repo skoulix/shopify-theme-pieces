@@ -84,6 +84,28 @@ class CartDrawerManager {
     // Escape key
     this.boundHandlers.handleKeydown = this.handleKeydown.bind(this);
     document.addEventListener('keydown', this.boundHandlers.handleKeydown);
+
+    // Close drawer when clicking product links (for Swup navigation)
+    this.boundHandlers.handleLinkClick = this.handleLinkClick.bind(this);
+    this.drawer.addEventListener('click', this.boundHandlers.handleLinkClick);
+  }
+
+  /**
+   * Handle link clicks inside drawer to close before navigation
+   */
+  handleLinkClick(e) {
+    const link = e.target.closest('a[href]');
+    if (!link) return;
+
+    // Skip links with data-cart-drawer-close (already handled)
+    if (link.hasAttribute('data-cart-drawer-close')) return;
+
+    // Skip external links and anchors
+    const href = link.getAttribute('href');
+    if (!href || href.startsWith('#') || href.startsWith('http') || href.startsWith('//')) return;
+
+    // Close drawer for internal navigation
+    this.close();
   }
 
   /**
@@ -97,6 +119,14 @@ class CartDrawerManager {
     // Listen for cart:toggle
     this.boundHandlers.toggle = this.toggle.bind(this);
     document.addEventListener('cart:toggle', this.boundHandlers.toggle);
+
+    // Close drawer when Swup starts navigation
+    this.boundHandlers.closeOnNavigation = () => {
+      if (this.isOpen) {
+        this.close();
+      }
+    };
+    window.addEventListener('swup:contentReplaced', this.boundHandlers.closeOnNavigation);
   }
 
   /**
@@ -170,6 +200,9 @@ class CartDrawerManager {
     if (this.isAnimating || this.isOpen || !this.drawer) return;
     this.isAnimating = true;
 
+    // Store the element that triggered the open for focus restoration
+    this.previouslyFocused = document.activeElement;
+
     // Fetch fresh cart data and render before opening
     await cartState.fetch();
     this.render();
@@ -178,9 +211,10 @@ class CartDrawerManager {
     gsap.set(this.backdrop, { opacity: 0 });
     gsap.set(this.panel, { x: '100%' });
 
-    // Update state
+    // Update state - use inert instead of aria-hidden to properly handle focus
     this.drawer.classList.add('is-open');
-    this.drawer.setAttribute('aria-hidden', 'false');
+    this.drawer.removeAttribute('inert');
+    this.drawer.removeAttribute('aria-hidden');
     this.isOpen = true;
 
     // Stop smooth scrolling
@@ -189,8 +223,15 @@ class CartDrawerManager {
     // Dispatch event
     document.dispatchEvent(new CustomEvent('cart:opened'));
 
-    // Animate in
-    gsap.timeline({ onComplete: () => { this.isAnimating = false; } })
+    // Animate in and focus close button when complete
+    gsap.timeline({
+      onComplete: () => {
+        this.isAnimating = false;
+        // Focus the close button for accessibility
+        const closeBtn = this.drawer.querySelector('[data-cart-drawer-close]');
+        if (closeBtn) closeBtn.focus();
+      }
+    })
       .to(this.backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0)
       .to(this.panel, { x: '0%', duration: 0.4, ease: 'power3.out' }, 0);
   }
@@ -209,12 +250,19 @@ class CartDrawerManager {
     gsap.timeline({
       onComplete: () => {
         this.drawer.classList.remove('is-open');
-        this.drawer.setAttribute('aria-hidden', 'true');
+        // Use inert instead of aria-hidden to properly handle focus
+        this.drawer.setAttribute('inert', '');
         this.isOpen = false;
         this.isAnimating = false;
 
         // Resume smooth scrolling
         lenisManager.start();
+
+        // Restore focus to the element that opened the drawer
+        if (this.previouslyFocused && this.previouslyFocused.focus) {
+          this.previouslyFocused.focus();
+          this.previouslyFocused = null;
+        }
       }
     })
       .to(this.backdrop, { opacity: 0, duration: 0.25, ease: 'power2.in' }, 0)
@@ -233,9 +281,53 @@ class CartDrawerManager {
   }
 
   /**
-   * Render cart drawer content from global state
+   * Render cart drawer content using Section Rendering API
+   * This ensures compare-at prices are properly rendered via Liquid
    */
-  render() {
+  async render() {
+    if (!this.drawer) return;
+
+    try {
+      // Use Section Rendering API for proper Liquid rendering (compare-at prices, etc.)
+      const response = await fetch('/?section_id=cart-drawer');
+      if (response.ok) {
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Extract content and footer from the fetched section
+        const newContent = doc.querySelector('[data-cart-drawer-content]');
+        const newFooter = doc.querySelector('.cart-drawer__footer');
+
+        const content = this.drawer.querySelector('[data-cart-drawer-content]');
+        const footer = this.drawer.querySelector('.cart-drawer__footer');
+
+        if (newContent && content) {
+          content.innerHTML = newContent.innerHTML;
+        }
+
+        if (newFooter) {
+          if (footer) {
+            footer.outerHTML = newFooter.outerHTML;
+          } else {
+            this.panel.insertAdjacentHTML('beforeend', newFooter.outerHTML);
+          }
+        } else if (footer) {
+          // No footer in new content (empty cart)
+          footer.remove();
+        }
+      }
+    } catch (error) {
+      console.error('Error rendering cart drawer:', error);
+      // Fallback to JS rendering
+      this.renderFallback();
+    }
+  }
+
+  /**
+   * Fallback render using cart.js data (no compare-at prices)
+   */
+  renderFallback() {
     const cart = cartState.get();
     if (!cart || !this.drawer) return;
 
@@ -296,7 +388,10 @@ class CartDrawerManager {
    */
   renderCartItem(item, lineIndex) {
     const hasVariant = item.variant_title && item.variant_title !== 'Default Title';
+    // Check for discounts - cart.js API provides original vs final line prices
+    // Note: compare_at_price is only available on initial Liquid render, not cart.js
     const hasDiscount = item.original_line_price !== item.final_line_price;
+    const comparePrice = item.original_line_price;
 
     return `
       <li class="cart-drawer__item" data-cart-item data-line-index="${lineIndex}">
@@ -320,7 +415,7 @@ class CartDrawerManager {
           ${hasVariant ? `<p class="cart-drawer__item-variant">${item.variant_title}</p>` : ''}
 
           <div class="cart-drawer__item-price">
-            ${hasDiscount ? `<span class="cart-drawer__item-price--compare">${cartState.formatMoney(item.original_line_price)}</span>` : ''}
+            ${hasDiscount ? `<span class="cart-drawer__item-price--compare">${cartState.formatMoney(comparePrice)}</span>` : ''}
             <span class="${hasDiscount ? 'sale-price' : ''}">${cartState.formatMoney(item.final_line_price)}</span>
           </div>
 
@@ -422,6 +517,14 @@ class CartDrawerManager {
   }
 
   /**
+   * Refresh cart drawer with fresh data from server
+   */
+  async refresh() {
+    await cartState.fetch();
+    this.render();
+  }
+
+  /**
    * Re-bind events after content refresh (e.g., Swup page transition)
    */
   reinit() {
@@ -448,6 +551,7 @@ class CartDrawerManager {
 
     // Remove delegated listeners
     this.drawer.removeEventListener('click', this.boundHandlers.handleClick);
+    this.drawer.removeEventListener('click', this.boundHandlers.handleLinkClick);
     this.drawer.removeEventListener('change', this.boundHandlers.handleChange);
 
     // Remove note input listener
@@ -462,6 +566,7 @@ class CartDrawerManager {
     // Remove global listeners
     document.removeEventListener('cart:open', this.boundHandlers.open);
     document.removeEventListener('cart:toggle', this.boundHandlers.toggle);
+    window.removeEventListener('swup:contentReplaced', this.boundHandlers.closeOnNavigation);
 
     // Clear timeout
     clearTimeout(this.noteTimeout);

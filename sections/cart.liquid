@@ -93,8 +93,21 @@
                             {% endif %}
                           </div>
                           <div class="text-right">
-                            <p class="text-base font-medium text-[--color-text]">{{ item.final_line_price | money }}</p>
-                            {% if item.original_line_price != item.final_line_price %}
+                            {%- liquid
+                              assign has_compare_at = false
+                              if item.variant.compare_at_price > item.variant.price
+                                assign has_compare_at = true
+                                assign compare_at_line_price = item.variant.compare_at_price | times: item.quantity
+                              endif
+                              assign has_discount = false
+                              if item.original_line_price != item.final_line_price
+                                assign has_discount = true
+                              endif
+                            -%}
+                            <p class="text-base font-medium {% if has_compare_at or has_discount %}text-red-600{% else %}text-[--color-text]{% endif %}">{{ item.final_line_price | money }}</p>
+                            {% if has_compare_at %}
+                              <p class="text-sm text-[--color-text-secondary] line-through">{{ compare_at_line_price | money }}</p>
+                            {% elsif has_discount %}
                               <p class="text-sm text-[--color-text-secondary] line-through">{{ item.original_line_price | money }}</p>
                             {% endif %}
                           </div>
