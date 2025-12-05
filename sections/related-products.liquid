@@ -18,7 +18,6 @@
     background-color: {{ section.settings.background_color }};
     color: {{ section.settings.text_color }};
     padding: clamp(4rem, 10vh, 8rem) 0;
-    overflow: hidden;
   }
 
   .related-products-{{ section.id }} .related-products__title {
@@ -130,7 +129,6 @@
     transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* Loading state */
   .related-products-{{ section.id }} .related-products__loading {
     display: flex;
     gap: 1.5rem;
@@ -185,7 +183,7 @@
 </style>
 
 <section
-  class="related-products-{{ section.id }}"
+  class="related-products-{{ section.id }} overflow-hidden"
   data-related-products
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
