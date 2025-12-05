@@ -91,7 +91,7 @@
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "collection": "",
+        "collection": "frontpage",
         "title": "New Arrivals",
         "products_to_show": 4,
         "columns": 4,
@@ -123,6 +123,7 @@
         "stat_2"
       ],
       "settings": {
+        "image": "shopify://shop_images/photo-1599751449029-e4ea8f21d966.jpg",
         "image_ratio": "4/5",
         "label": "Our Story",
         "title": "Crafted With Purpose",
@@ -130,8 +131,8 @@
         "button_text": "Learn More",
         "button_link": "shopify://pages/about",
         "layout": "image_left",
-        "full_width": false,
-        "remove_padding": false,
+        "full_width": true,
+        "remove_padding": true,
         "background_color": "#ffffff",
         "text_color": "#000000"
       }
@@ -139,7 +140,7 @@
     "featured_collection_2": {
       "type": "featured-collection",
       "settings": {
-        "collection": "",
+        "collection": "hydrogen",
         "title": "Best Sellers",
         "products_to_show": 4,
         "columns": 4,
@@ -171,6 +172,7 @@
         "stat_4"
       ],
       "settings": {
+        "image": "shopify://shop_images/photo-1584890131712-18ee8e3ed49c.jpg",
         "image_ratio": "4/5",
         "label": "Quality",
         "title": "Made To Last",
@@ -178,8 +180,8 @@
         "button_text": "Our Process",
         "button_link": "shopify://pages/about",
         "layout": "image_right",
-        "full_width": false,
-        "remove_padding": false,
+        "full_width": true,
+        "remove_padding": true,
         "background_color": "#f5f5f5",
         "text_color": "#000000"
       }
