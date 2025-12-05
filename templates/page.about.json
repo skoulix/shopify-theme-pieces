@@ -9,20 +9,50 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
+    "scroll_panels_rz7BBR": {
+      "type": "scroll-panels",
+      "blocks": {
+        "panel_YdyzBG": {
+          "type": "panel",
+          "settings": {
+            "title": "Discover Our Story",
+            "text": "Every great brand has a story. This is where yours begins.",
+            "button_text": "Learn More",
+            "button_link": ""
+          }
+        },
+        "panel_LYWUQm": {
+          "type": "panel",
+          "settings": {
+            "title": "Crafted With Care",
+            "text": "We believe in quality over quantity. Each product is made to last.",
+            "button_text": "Our Process",
+            "button_link": ""
+          }
+        },
+        "panel_FQybEd": {
+          "type": "panel",
+          "settings": {
+            "title": "Join the Movement",
+            "text": "Be part of something bigger. Shop consciously, live intentionally.",
+            "button_text": "Shop Now",
+            "button_link": ""
+          }
+        }
+      },
+      "block_order": [
+        "panel_YdyzBG",
+        "panel_LYWUQm",
+        "panel_FQybEd"
+      ],
+      "name": "Scroll Panels",
       "settings": {
-        "overlay_opacity": 40,
-        "title": "Our Story",
-        "words_per_line": 1,
-        "subtitle": "We believe in crafting timeless pieces that blend form and function, designed to elevate your everyday.",
-        "button_text": "Explore Collection",
-        "button_link": "shopify://collections/all",
-        "text_color": "#ffffff",
-        "button_background": "#ffffff",
-        "button_text_color": "#000000",
-        "full_width": false,
-        "show_scroll_indicator": true
+        "show_numbers": true,
+        "show_progress": true,
+        "overlay_color": "#000000",
+        "overlay_opacity": 80,
+        "background_color": "#000000",
+        "text_color": "#ffffff"
       }
     },
     "text_reveal": {
@@ -436,7 +466,7 @@
     }
   },
   "order": [
-    "hero",
+    "scroll_panels_rz7BBR",
     "text_reveal",
     "timeline",
     "stacking_cards",
