@@ -488,6 +488,12 @@ html.scroll-locked body {
 /* Link Text */
 .mobile-nav__link-text {
   display: inline-block;
+  overflow: hidden;
+}
+
+/* Split chars for reveal animation */
+.mobile-nav-char {
+  display: inline-block;
 }
 
 /* Animated underline on hover */
