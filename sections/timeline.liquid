@@ -23,6 +23,7 @@
   }
 
   .timeline-label-{{ section.id }} {
+    display: inline-block;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -163,13 +164,11 @@
   /* Content */
   .timeline-content-{{ section.id }} {
     opacity: 0.6;
-    transform: translateY(20px);
-    transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .timeline-item-{{ section.id }}.is-active .timeline-content-{{ section.id }} {
     opacity: 1;
-    transform: translateY(0);
   }
 
   .timeline-item-title-{{ section.id }} {
@@ -207,7 +206,6 @@
   /* Animation states */
   html.animations-disabled .timeline-content-{{ section.id }} {
     opacity: 1;
-    transform: none;
   }
 
   html.animations-disabled .timeline-dot-{{ section.id }} {

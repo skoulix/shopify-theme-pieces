@@ -23,6 +23,7 @@
   }
 
   .team-label-{{ section.id }} {
+    display: inline-block;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -150,20 +151,29 @@
     transform: translateY(0);
   }
 
+  .team-member-bio-wrapper-{{ section.id }} {
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    margin-top: 0;
+  }
+
+  .team-member-{{ section.id }}:hover .team-member-bio-wrapper-{{ section.id }} {
+    grid-template-rows: 1fr;
+    margin-top: 0.75rem;
+  }
+
   .team-member-bio-{{ section.id }} {
     font-size: 0.875rem;
     line-height: 1.6;
     opacity: 0;
-    max-height: 0;
     overflow: hidden;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
-    margin-top: 0;
+    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
+    min-height: 0;
   }
 
   .team-member-{{ section.id }}:hover .team-member-bio-{{ section.id }} {
     opacity: 0.8;
-    max-height: 100px;
-    margin-top: 1rem;
   }
 
   .team-member-social-{{ section.id }} {
@@ -283,9 +293,11 @@
             {% endif %}
 
             {% if block.settings.bio != blank %}
-              <p class="team-member-bio-{{ section.id }}">
-                {{ block.settings.bio }}
-              </p>
+              <div class="team-member-bio-wrapper-{{ section.id }}">
+                <p class="team-member-bio-{{ section.id }}">
+                  {{ block.settings.bio }}
+                </p>
+              </div>
             {% endif %}
 
             {% if block.settings.linkedin != blank or block.settings.twitter != blank or block.settings.instagram != blank %}
