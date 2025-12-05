@@ -9,7 +9,7 @@
   .site-content { position: relative; z-index: 1; background-color: var(--color-background); margin-bottom: var(--footer-height, 0px); }
   .footer-content-{{ section.id }}.has-reveal { opacity: 0; transform: translateY(40px); }
   {% endif %}
-  .footer-section { padding: clamp(4rem, 10vh, 6rem) 0; }
+  .footer-section { padding: var(--section-vertical-padding) 0; }
   .back-to-top-text { position: relative; display: inline-block; overflow: hidden; }
   .back-to-top-text span { display: inline-block; transition: transform 0.3s ease; }
   .back-to-top-text span::after { content: attr(data-hover); position: absolute; left: 0; top: 100%; white-space: nowrap; }

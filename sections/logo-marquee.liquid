@@ -15,7 +15,7 @@
   .logo-marquee-{{ section.id }} {
     background-color: {{ section.settings.background_color }};
     color: {{ section.settings.text_color }};
-    padding: clamp(3rem, 6vh, 5rem) 0;
+    padding: calc(var(--section-vertical-padding) * 0.6) 0;
     overflow: hidden;
   }
 

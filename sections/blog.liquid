@@ -18,24 +18,24 @@
   html.animations-disabled .blog-item-image { clip-path: none; }
 </style>
 
-<section class="blog-wrapper is-loading" data-blog-wrapper>
-  <div class="pt-[--page-vertical-padding] pb-16">
+<section class="blog-wrapper is-loading py-[--page-vertical-padding]" data-blog-wrapper>
+  <div class="mb-12 lg:mb-16">
     <div class="{{ container_class }}">
       <h1 class="blog-hero-title font-bold text-[--color-text] font-heading" data-blog-title>
         {{ blog.title }}
       </h1>
 
       {% if section.settings.show_article_count %}
-        <p class="page-header-subtitle mt-6" data-intro>
-          <span class="page-header-subtitle-line"></span>
-          <span>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span>
+        <p class="page-header-subtitle mt-6">
+          <span class="page-header-subtitle-line" data-subtitle-line></span>
+          <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span></span>
         </p>
       {% endif %}
     </div>
   </div>
 
   {% paginate blog.articles by section.settings.articles_per_page %}
-    <div class="{{ container_class }} pb-8">
+    <div class="{{ container_class }}">
       <div class="grid gap-12 md:grid-cols-2 md:gap-8 lg:grid-cols-3 lg:gap-10" data-blog-grid>
         {% for article in blog.articles %}
           {%- assign is_featured = false -%}
@@ -108,7 +108,7 @@
     </div>
 
     {% if paginate.pages > 1 %}
-      <nav class="{{ container_class }} flex items-center justify-center gap-2 py-12">
+      <nav class="{{ container_class }} flex items-center justify-center gap-2 mt-12">
         {% if paginate.previous %}
           <a href="{{ paginate.previous.url }}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] hover:bg-[--color-background-secondary] transition-colors" aria-label="Previous page">
             <i class="ph ph-arrow-left"></i>
@@ -178,7 +178,11 @@
     wrapper.classList.remove('is-loading');
 
     const title = wrapper.querySelector('[data-blog-title]');
+    const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
+    const subtitleText = wrapper.querySelector('[data-subtitle-text]');
     const blogItems = wrapper.querySelectorAll('[data-blog-item]');
+
+    const tl = gsap.timeline();
 
     // Animate title with SplitText line reveal
     if (title) {
@@ -194,12 +198,32 @@
       });
 
       gsap.set(split.lines, { yPercent: 120 });
-      gsap.to(split.lines, {
+      tl.to(split.lines, {
         yPercent: 0,
         duration: 1.2,
         ease: 'power4.out',
         stagger: 0.1
-      });
+      }, 0);
+    }
+
+    // Subtitle line draw animation
+    if (subtitleLine) {
+      gsap.set(subtitleLine, { scaleX: 0 });
+      tl.to(subtitleLine, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
+    }
+
+    // Subtitle text reveal
+    if (subtitleText) {
+      gsap.set(subtitleText, { yPercent: 120 });
+      tl.to(subtitleText, {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power4.out'
+      }, 0.6);
     }
 
     // Only animate blog item images with clip-path swipe

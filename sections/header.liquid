@@ -12,15 +12,22 @@
 -%}
 
 <style>
-  [data-header] {
+  /* Header group wrapper - handles sticky and hide/reveal */
+  .header-group {
+    z-index: 40;
     transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   }
-  [data-header].is-hidden {
+  .header-group.is-sticky {
+    position: sticky;
+    top: 0;
+  }
+  .header-group.is-hidden {
     transform: translateY(-100%);
   }
 </style>
 
-<header class="{% if section.settings.sticky_header %}sticky top-0{% endif %} z-40 border-b bg-[--color-background] border-[--color-border]" data-header{% if section.settings.hide_on_scroll %} data-hide-on-scroll{% endif %}>
+<div class="header-group{% if section.settings.sticky_header %} is-sticky{% endif %}" data-header-group{% if section.settings.hide_on_scroll %} data-hide-on-scroll{% endif %}>
+  <header class="border-b bg-[--color-background] border-[--color-border]" data-header>
   <nav class="{{ nav_class }} relative flex items-center justify-between py-4">
     {%- comment -%} Mobile: Hamburger (left) | Desktop: Logo (left) {%- endcomment -%}
     <div class="flex lg:flex-1">
@@ -206,6 +213,7 @@
     </div>
   </div>
 </header>
+</div>
 
 <script>
 (function() {
@@ -429,42 +437,48 @@
   /**
    * Hide header on scroll down, reveal on scroll up
    * Only enabled when data-hide-on-scroll attribute is present
+   * Works with both native scroll and Lenis smooth scroll
    */
-  const header = document.querySelector('[data-header]');
-  if (header && header.hasAttribute('data-hide-on-scroll')) {
+  const headerGroup = document.querySelector('[data-header-group]');
+  if (headerGroup && headerGroup.hasAttribute('data-hide-on-scroll')) {
     let lastScrollY = window.scrollY;
-    let ticking = false;
     const scrollThreshold = 50; // Min scroll before hiding
+    const scrollDelta = 5; // Min scroll delta to trigger hide/show
 
     function updateHeaderVisibility() {
       const currentScrollY = window.scrollY;
+      const scrollDiff = currentScrollY - lastScrollY;
 
       // Don't hide if mobile menu is open
-      if (mobileNav.classList.contains('is-open')) {
-        ticking = false;
+      if (mobileNav && mobileNav.classList.contains('is-open')) {
+        lastScrollY = currentScrollY;
         return;
       }
 
       // Always show header when at top of page
       if (currentScrollY < scrollThreshold) {
-        header.classList.remove('is-hidden');
+        headerGroup.classList.remove('is-hidden');
       }
-      // Scrolling down - hide header
-      else if (currentScrollY > lastScrollY && currentScrollY > scrollThreshold) {
-        header.classList.add('is-hidden');
+      // Scrolling down past threshold - hide header
+      else if (scrollDiff > scrollDelta) {
+        headerGroup.classList.add('is-hidden');
       }
       // Scrolling up - show header
-      else if (currentScrollY < lastScrollY) {
-        header.classList.remove('is-hidden');
+      else if (scrollDiff < -scrollDelta) {
+        headerGroup.classList.remove('is-hidden');
       }
 
       lastScrollY = currentScrollY;
-      ticking = false;
     }
 
+    // Use native scroll event - works with both Lenis and without
+    let ticking = false;
     window.addEventListener('scroll', () => {
       if (!ticking) {
-        requestAnimationFrame(updateHeaderVisibility);
+        requestAnimationFrame(() => {
+          updateHeaderVisibility();
+          ticking = false;
+        });
         ticking = true;
       }
     }, { passive: true });
@@ -472,7 +486,7 @@
     // Reset on page transitions
     window.addEventListener('swup:contentReplaced', () => {
       lastScrollY = window.scrollY;
-      header.classList.remove('is-hidden');
+      headerGroup.classList.remove('is-hidden');
     });
   }
 })();

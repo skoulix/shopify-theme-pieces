@@ -30,8 +30,8 @@
   .contact-form-input:focus { box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 79, 70, 229), 0.1); }
 </style>
 
-<section class="contact-wrapper is-loading bg-[--color-background]" data-contact-wrapper>
-  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+<section class="contact-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-contact-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }}">
     <h1 class="contact-header-title font-bold text-[--color-text] font-heading">
       {%- assign title_words = heading | split: ' ' -%}
       {%- for word in title_words -%}
@@ -48,7 +48,7 @@
     {% endif %}
   </header>
 
-  <div class="{{ container_class }} pb-[--page-vertical-padding]">
+  <div class="{{ container_class }}">
     <div class="contact-form max-w-2xl">
       {% form 'contact', id: 'ContactForm' %}
         {% if form.posted_successfully? %}

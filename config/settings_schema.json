@@ -184,7 +184,18 @@
         "default": 80,
         "unit": "px",
         "label": "Page vertical padding",
-        "info": "Top/bottom padding on templates and pages"
+        "info": "Top/bottom padding on templates like collection, blog, cart"
+      },
+      {
+        "type": "range",
+        "id": "section_vertical_padding",
+        "min": 40,
+        "max": 120,
+        "step": 10,
+        "default": 80,
+        "unit": "px",
+        "label": "Section vertical padding",
+        "info": "Top/bottom padding for all sections"
       },
       {
         "type": "checkbox",

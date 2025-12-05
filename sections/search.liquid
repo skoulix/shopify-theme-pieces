@@ -38,8 +38,8 @@
   .search-wrapper.is-ready .search-filters { opacity: 1; transform: translateY(0); }
 </style>
 
-<div class="search-wrapper is-loading min-h-screen" data-search-wrapper>
-  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+<div class="search-wrapper is-loading min-h-screen py-[--page-vertical-padding]" data-search-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }}">
     <h1 class="search-page-title font-bold text-[--color-text] font-heading">
       <span class="search-page-title-line block overflow-hidden">
         <span class="inline-block">{{ 'search.title' | t }}</span>
@@ -114,7 +114,7 @@
   </div>
 
   {%- comment -%} Search Results {%- endcomment -%}
-  <div class="{{ container_class }} pt-12 pb-[--page-vertical-padding]">
+  <div class="{{ container_class }} pt-12">
     {% if search.performed %}
       {% if search.results_count > 0 %}
         {% paginate search.results by 20 %}

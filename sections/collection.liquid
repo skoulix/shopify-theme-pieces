@@ -44,12 +44,12 @@
 </style>
 
 <div
-  class="collection-wrapper is-loading min-h-screen"
+  class="collection-wrapper is-loading min-h-screen py-[--page-vertical-padding]"
   data-collection-wrapper
   data-layout-style="{{ layout_style }}"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};"
 >
-  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+  <header class="mb-12 lg:mb-16 {{ container_class }}">
     <h1 class="collection-header-title font-bold text-[--color-text] font-heading" data-collection-title>
       {{ collection.title }}
     </h1>
@@ -74,7 +74,7 @@
     {% case layout_style %}
 
       {% when 'metro' %}
-        <div class="collection-metro grid gap-1 {{ container_class }} pb-16" data-collection-content>
+        <div class="collection-metro grid gap-1 {{ container_class }}" data-collection-content>
           {% for product in collection.products %}
             {%- liquid
               assign item_class = 'metro-item-normal'
@@ -131,7 +131,7 @@
         </div>
 
       {% else %}
-        <div class="collection-grid grid gap-8 {{ container_class }} pb-16" data-collection-content>
+        <div class="collection-grid grid gap-8 {{ container_class }}" data-collection-content>
           {% for product in collection.products %}
             {% render 'product-card', product: product, collection: collection, index: forloop.index0 %}
           {% endfor %}

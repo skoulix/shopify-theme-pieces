@@ -53,12 +53,12 @@
 </style>
 
 <div
-  class="collections-wrapper is-loading min-h-screen"
+  class="collections-wrapper is-loading min-h-screen py-[--page-vertical-padding]"
   data-collections-wrapper
   data-layout-style="{{ layout_style }}"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};"
 >
-  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+  <header class="mb-12 lg:mb-16 {{ container_class }}">
     <h1 class="collections-header-title font-bold text-[--color-text] font-heading">
       {%- assign title_words = section.settings.title | default: 'Collections' | split: ' ' -%}
       {%- for word in title_words -%}
@@ -85,7 +85,7 @@
   {% case layout_style %}
 
     {% when 'metro' %}
-      <div class="collections-metro grid gap-1 {{ container_class }} pb-16" data-collections-content>
+      <div class="collections-metro grid gap-1 {{ container_class }}" data-collections-content>
         {% for collection in collections %}
           {%- liquid
             assign item_class = 'collections-metro-item-normal'
@@ -131,7 +131,7 @@
       </div>
 
     {% else %}
-      <div class="collections-grid grid gap-8 {{ container_class }} pb-16" data-collections-content>
+      <div class="collections-grid grid gap-8 {{ container_class }}" data-collections-content>
         {% for collection in collections %}
           <a href="{{ collection.url }}" class="collection-card block no-underline text-inherit" data-collections-item="{{ forloop.index0 }}">
             <div class="collection-card-image">

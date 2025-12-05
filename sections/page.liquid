@@ -20,8 +20,8 @@
   html.animations-disabled .page-wrapper.is-loading .page-header-title-line span { opacity: 1; transform: none; }
 </style>
 
-<section class="page-wrapper is-loading bg-[--color-background]" data-page-wrapper>
-  <header class="pt-[--page-vertical-padding] pb-16 {{ container_class }}">
+<section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }}">
     <h1 class="page-header-title font-bold text-[--color-text] font-heading">
       {%- assign title_words = page.title | split: ' ' -%}
       {%- for word in title_words -%}
@@ -32,7 +32,7 @@
     </h1>
   </header>
 
-  <div class="{{ container_class }} pb-[--page-vertical-padding]">
+  <div class="{{ container_class }}">
     <div class="prose max-w-3xl text-[--color-text]">
       {{ page.content }}
     </div>
