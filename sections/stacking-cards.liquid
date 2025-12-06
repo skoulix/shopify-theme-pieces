@@ -385,33 +385,6 @@
       });
     }
 
-    // Title animation with SplitText
-    if (title && SplitText) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'stacking-cards-title-line' });
-
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
-
-      gsap.set(split.lines, { yPercent: 120 });
-
-      gsap.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: section,
-          start: 'top 70%',
-          once: true
-        }
-      });
-    }
-
     // Card stacking animation
     // Header scroll space is based on header height
     const headerEl = section.querySelector('[data-stacking-header]');
