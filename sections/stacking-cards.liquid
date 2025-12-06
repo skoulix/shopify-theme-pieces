@@ -23,20 +23,17 @@
   }
 
   .stacking-cards-wrapper-{{ section.id }} {
-    min-height: calc({{ section.blocks.size | times: 70 }}vh + var(--section-vertical-padding) * 2);
+    min-height: {{ section.blocks.size | times: 100 }}vh;
     position: relative;
   }
 
   .stacking-cards-header-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
+    height: 100vh;
     text-align: {{ section.settings.header_alignment }};
   }
 
   .stacking-cards-header-content-{{ section.id }} {
-    position: sticky;
-    top: var(--section-vertical-padding);
-    z-index: 1;
-    transition: opacity 0.1s ease, transform 0.1s ease;
+    padding-top: var(--section-vertical-padding);
   }
 
   .stacking-cards-label-{{ section.id }} {
@@ -85,8 +82,6 @@
     align-items: center;
     justify-content: center;
     padding: 2rem;
-    perspective: 1200px;
-    perspective-origin: center 40%;
   }
 
   .stacking-card-{{ section.id }} {
@@ -96,9 +91,7 @@
     background: {{ section.settings.card_background }};
     border-radius: {{ card_radius }}px;
     overflow: hidden;
-    transform-origin: center bottom;
-    transform-style: preserve-3d;
-    will-change: transform, opacity;
+    transform-origin: center top;
     {% if card_border_width > 0 %}
     border: {{ card_border_width }}px solid currentColor;
     border-color: {{ section.settings.card_text_color }}20;
@@ -216,31 +209,7 @@
   }
 
   /* Card stacking animation states - JS handles initial positioning */
-
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .stacking-cards-wrapper-{{ section.id }} {
-      min-height: auto;
-    }
-
-    .stacking-cards-header-content-{{ section.id }} {
-      position: relative;
-      top: 0;
-    }
-
-    .stacking-cards-sticky-{{ section.id }} {
-      position: relative;
-      height: auto;
-      flex-direction: column;
-      gap: 2rem;
-    }
-
-    .stacking-card-{{ section.id }} {
-      position: relative;
-      opacity: 1;
-      transform: none;
-    }
-  }
+  /* Note: This section requires scroll animation to function - no reduced motion fallback */
 
 </style>
 
@@ -372,20 +341,45 @@
     const title = section.querySelector('[data-stacking-title]');
     const totalCards = cards.length;
 
-    // Header fade-out animation on scroll
-    // Header stays sticky at the top, then fades out as we scroll toward the cards
+    // Header animation on scroll
+    // Header starts at top, moves to center, then fades out before cards appear
     const header = section.querySelector('[data-stacking-header]');
     if (headerContent && header) {
+      // Calculate the vertical distance to move to center
+      const calculateCenterOffset = () => {
+        const headerHeight = header.offsetHeight;
+        const contentHeight = headerContent.offsetHeight;
+        const paddingTop = parseFloat(getComputedStyle(headerContent).paddingTop) || 0;
+        // Target Y is the center of the viewport minus half the content height, minus current padding
+        return (headerHeight / 2) - (contentHeight / 2) - paddingTop;
+      };
+
+      // Phase 1: Move header content to center (first 60% of header scroll)
       ScrollTrigger.create({
         trigger: header,
-        start: 'bottom 80%',
-        end: 'bottom 30%',
+        start: 'top top',
+        end: 'center top',
+        scrub: true,
+        onUpdate: (self) => {
+          const progress = self.progress;
+          const centerOffset = calculateCenterOffset();
+          gsap.set(headerContent, {
+            y: progress * centerOffset
+          });
+        }
+      });
+
+      // Phase 2: Fade out header content (last 40% of header scroll)
+      ScrollTrigger.create({
+        trigger: header,
+        start: 'center top',
+        end: 'bottom top',
         scrub: true,
         onUpdate: (self) => {
           const progress = self.progress;
           gsap.set(headerContent, {
             opacity: 1 - progress,
-            y: progress * -30
+            scale: 1 - (progress * 0.1)
           });
         }
       });
@@ -426,34 +420,27 @@
     cards.forEach((card, i) => {
       const cardIndex = parseInt(card.dataset.cardIndex);
 
-      // Initial state - cards positioned far below with rotation for depth
+      // Initial state - cards stacked below
       gsap.set(card, {
         opacity: 0,
-        y: window.innerHeight * 0.8,
-        scale: 0.85,
-        rotateX: 15
+        y: 100,
+        scale: 0.95
       });
 
       // Animate card into view (offset by header scroll space)
-      // Using larger scroll distance per card for smoother animation
-      const scrollPerCard = window.innerHeight * 0.7;
-
       ScrollTrigger.create({
         trigger: wrapper,
-        start: () => `top+=${headerScrollSpace + cardIndex * scrollPerCard} top`,
-        end: () => `top+=${headerScrollSpace + (cardIndex + 0.8) * scrollPerCard} top`,
-        scrub: 0.8,
+        start: () => `top+=${headerScrollSpace + cardIndex * (window.innerHeight * 0.5)} top`,
+        end: () => `top+=${headerScrollSpace + (cardIndex + 1) * (window.innerHeight * 0.5)} top`,
+        scrub: 0.5,
         onUpdate: (self) => {
-          // Use eased progress for more natural feel
           const progress = self.progress;
-          const easedProgress = 1 - Math.pow(1 - progress, 3); // easeOutCubic
 
-          // Card rises from bottom with rotation flattening out
+          // Fade in and move up
           gsap.set(card, {
-            opacity: Math.min(progress * 2.5, 1),
-            y: (window.innerHeight * 0.8) * (1 - easedProgress),
-            scale: 0.85 + (easedProgress * 0.15),
-            rotateX: 15 * (1 - easedProgress)
+            opacity: Math.min(progress * 2, 1),
+            y: 100 - (progress * 100),
+            scale: 0.95 + (progress * 0.05)
           });
         }
       });
@@ -462,12 +449,12 @@
       if (i < totalCards - 1) {
         ScrollTrigger.create({
           trigger: wrapper,
-          start: () => `top+=${headerScrollSpace + (cardIndex + 0.8) * scrollPerCard} top`,
-          end: () => `top+=${headerScrollSpace + (totalCards) * scrollPerCard} top`,
+          start: () => `top+=${headerScrollSpace + (cardIndex + 1) * (window.innerHeight * 0.5)} top`,
+          end: () => `top+=${headerScrollSpace + (totalCards) * (window.innerHeight * 0.5)} top`,
           scrub: 0.5,
           onUpdate: (self) => {
-            const scaleReduction = (totalCards - 1 - cardIndex) * 0.025;
-            const yOffset = (totalCards - 1 - cardIndex) * 20;
+            const scaleReduction = (totalCards - 1 - cardIndex) * 0.02;
+            const yOffset = (totalCards - 1 - cardIndex) * 15;
 
             gsap.set(card, {
               scale: 1 - (self.progress * scaleReduction),

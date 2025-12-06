@@ -134,18 +134,20 @@
     z-index: 100;
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: 1rem;
     opacity: 0;
+    pointer-events: none;
     transition: opacity 0.3s ease;
   }
 
   .scroll-panels-progress-{{ section.id }}.is-visible {
     opacity: 1;
+    pointer-events: auto;
   }
 
   .scroll-panels-progress-dot-{{ section.id }} {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
     border-radius: 50%;
     background: {{ section.settings.text_color }};
     opacity: 0.3;
@@ -153,9 +155,13 @@
     cursor: pointer;
   }
 
+  .scroll-panels-progress-dot-{{ section.id }}:hover {
+    opacity: 0.6;
+  }
+
   .scroll-panels-progress-dot-{{ section.id }}.is-active {
     opacity: 1;
-    transform: scale(1.5);
+    transform: scale(1.25);
   }
 
   /* Animation styles */
@@ -174,24 +180,7 @@
     transform: translateY(-30%);
   }
 
-  /* Reduced motion */
-  @media (prefers-reduced-motion: reduce) {
-    .scroll-panels-wrapper-{{ section.id }} {
-      height: auto;
-    }
-
-    .scroll-panels-sticky-{{ section.id }} {
-      position: relative;
-      height: auto;
-    }
-
-    .scroll-panel-{{ section.id }} {
-      position: relative;
-      height: 100vh;
-      opacity: 1 !important;
-      transform: none !important;
-    }
-  }
+  /* Note: This section requires scroll animation to function - no reduced motion fallback */
 </style>
 
 <section class="scroll-panels-{{ section.id }}" data-scroll-panels="{{ section.id }}">
@@ -338,17 +327,19 @@
     const scrollableDistance = wrapperHeight - viewportHeight;
     const scrollProgress = Math.max(0, Math.min(1, scrolled / scrollableDistance));
 
-    // Check if section is in view
-    const newIsInView = rect.top < viewportHeight && rect.bottom > 0;
+    // Check if section is actively being scrolled through (sticky container is pinned)
+    // Only show progress when the section is in the "active scroll" zone
+    const sectionIsActive = rect.top <= 0 && rect.bottom >= viewportHeight;
 
-    if (newIsInView !== isInView) {
-      isInView = newIsInView;
+    if (sectionIsActive !== isInView) {
+      isInView = sectionIsActive;
       if (progress) {
         progress.classList.toggle('is-visible', isInView);
       }
     }
 
-    if (isInView) {
+    // Update panels whenever section is at least partially visible
+    if (rect.top < viewportHeight && rect.bottom > 0) {
       updatePanels(scrollProgress);
     }
   }
@@ -362,8 +353,15 @@
       const viewportHeight = window.innerHeight;
       const scrollableDistance = wrapperHeight - viewportHeight;
 
-      const targetProgress = index / panelCount;
+      // Target the middle of the panel's scroll range for reliable detection
+      const targetProgress = (index + 0.5) / panelCount;
       const targetScroll = wrapperTop + (targetProgress * scrollableDistance);
+
+      // Immediately update active dot for responsive feel
+      progressDots.forEach((d, i) => {
+        d.classList.toggle('is-active', i === index);
+      });
+      currentPanel = index;
 
       if (window.pieces && window.pieces.lenis) {
         window.pieces.lenis.scrollTo(targetScroll, { duration: 1 });

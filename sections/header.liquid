@@ -616,20 +616,54 @@
   }
 
   /**
+   * Handle transparent header state on page transitions
+   * Header is transparent only on homepage, so we need to update after Swup navigation
+   */
+  {% if section.settings.transparent_home %}
+  const headerGroupEl = document.querySelector('[data-header-group]');
+  if (headerGroupEl) {
+    window.addEventListener('swup:contentReplaced', () => {
+      // Check if we're now on the homepage
+      const isHomepage = window.location.pathname === '/' || window.location.pathname === '';
+
+      if (isHomepage) {
+        headerGroupEl.classList.add('is-transparent');
+        headerGroupEl.setAttribute('data-transparent-header', '');
+      } else {
+        headerGroupEl.classList.remove('is-transparent', 'is-scrolled');
+        headerGroupEl.removeAttribute('data-transparent-header');
+      }
+    });
+  }
+  {% endif %}
+
+  /**
    * Transparent header scroll state
    * Adds is-scrolled class when user scrolls past threshold
    */
-  const transparentHeader = document.querySelector('[data-transparent-header]');
-  if (transparentHeader) {
-    const scrolledThreshold = 50;
+  const scrolledThreshold = 50;
+  let transparentScrollAttached = false;
 
-    function updateScrolledState(scrollY) {
-      if (scrollY > scrolledThreshold) {
-        transparentHeader.classList.add('is-scrolled');
-      } else {
-        transparentHeader.classList.remove('is-scrolled');
-      }
+  function updateScrolledState(scrollY) {
+    const header = document.querySelector('[data-transparent-header]');
+    if (!header) return;
+
+    if (scrollY > scrolledThreshold) {
+      header.classList.add('is-scrolled');
+    } else {
+      header.classList.remove('is-scrolled');
     }
+  }
+
+  function initTransparentScroll() {
+    const header = document.querySelector('[data-transparent-header]');
+    if (!header) return;
+
+    // Check initial state
+    updateScrolledState(window.scrollY);
+
+    // Lenis scroll handler already set up once
+    if (transparentScrollAttached) return;
 
     // Try Lenis first, fall back to native scroll
     function attachTransparentScroll() {
@@ -637,6 +671,7 @@
         window.pieces.lenis.lenis.on('scroll', (e) => {
           updateScrolledState(e.scroll);
         });
+        transparentScrollAttached = true;
         return true;
       }
       return false;
@@ -653,14 +688,20 @@
         window.addEventListener('scroll', () => {
           updateScrolledState(window.scrollY);
         }, { passive: true });
+        transparentScrollAttached = true;
       }
     }
 
     tryAttachTransparent();
-
-    // Check initial state
-    updateScrolledState(window.scrollY);
   }
+
+  // Initialize on page load
+  initTransparentScroll();
+
+  // Re-initialize after page transitions (for when navigating back to homepage)
+  window.addEventListener('swup:contentReplaced', () => {
+    requestAnimationFrame(initTransparentScroll);
+  });
 })();
 </script>
 
