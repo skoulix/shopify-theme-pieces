@@ -49,6 +49,7 @@
   class="collection-wrapper is-loading min-h-screen py-[--page-vertical-padding]"
   data-collection-wrapper
   data-layout-style="{{ layout_style }}"
+  {% if settings.card_border_width == 0 %}data-card-no-border{% endif %}
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};"
 >
   <header class="mb-12 lg:mb-16 {{ container_class }}">
@@ -149,6 +150,9 @@
         <div class="collection-grid grid gap-8 {{ container_class }}" data-collection-content>
           {% for product in collection.products %}
             {% render 'product-card', product: product, collection: collection, index: forloop.index0 %}
+            {% unless forloop.last %}
+              <hr class="collection-grid__divider hidden border-[--color-border]">
+            {% endunless %}
           {% endfor %}
         </div>
 

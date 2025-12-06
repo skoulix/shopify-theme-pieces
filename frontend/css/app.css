@@ -1299,3 +1299,65 @@ html.animations-disabled [data-intro] {
   }
 }
 
+/* View toggle buttons */
+.facets-view-btn {
+  color: var(--color-text-secondary);
+  background: transparent;
+}
+
+.facets-view-btn:hover {
+  color: var(--color-text);
+  background: var(--color-background-secondary);
+}
+
+.facets-view-btn.is-active {
+  color: var(--color-background);
+  background: var(--color-text);
+}
+
+/* List view styles */
+.collection-wrapper[data-view="list"] .collection-grid {
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+.collection-wrapper[data-view="list"] .product-card {
+  display: grid;
+  grid-template-columns: 120px 1fr;
+  gap: 1rem;
+  align-items: center;
+}
+
+.collection-wrapper[data-view="list"] .product-card-image {
+  aspect-ratio: 1;
+}
+
+.collection-wrapper[data-view="list"] .product-card-image img {
+  object-fit: contain;
+}
+
+.collection-wrapper[data-view="list"] .product-card-content {
+  padding-top: 0;
+}
+
+@media (min-width: 768px) {
+  .collection-wrapper[data-view="list"] .product-card {
+    grid-template-columns: 160px 1fr;
+    gap: 1.5rem;
+  }
+}
+
+/* List view dividers when card has no border */
+.collection-wrapper[data-view="list"][data-card-no-border] .collection-grid {
+  gap: 0;
+}
+
+.collection-wrapper[data-view="list"][data-card-no-border] .product-card {
+  padding: 1rem 0;
+}
+
+.collection-wrapper[data-view="list"][data-card-no-border] .collection-grid__divider {
+  display: block;
+  margin: 0;
+}
+

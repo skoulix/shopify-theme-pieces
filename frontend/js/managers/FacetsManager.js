@@ -96,6 +96,45 @@ class FacetFiltersForm extends HTMLElement {
         }
       });
     });
+
+    // View toggle (grid/list)
+    this.setupViewToggle();
+  }
+
+  setupViewToggle() {
+    const viewBtns = this.querySelectorAll('[data-view-toggle]');
+    const wrapper = document.querySelector('[data-collection-wrapper]');
+
+    if (!viewBtns.length || !wrapper) return;
+
+    // Restore saved view preference
+    const savedView = localStorage.getItem('collection-view') || 'grid';
+    wrapper.dataset.view = savedView;
+    viewBtns.forEach((btn) => {
+      const isActive = btn.dataset.viewToggle === savedView;
+      btn.classList.toggle('is-active', isActive);
+      btn.setAttribute('aria-pressed', isActive);
+    });
+
+    // Handle view toggle clicks
+    viewBtns.forEach((btn) => {
+      btn.addEventListener('click', () => {
+        const view = btn.dataset.viewToggle;
+
+        // Update wrapper
+        wrapper.dataset.view = view;
+
+        // Update buttons
+        viewBtns.forEach((b) => {
+          const isActive = b.dataset.viewToggle === view;
+          b.classList.toggle('is-active', isActive);
+          b.setAttribute('aria-pressed', isActive);
+        });
+
+        // Save preference
+        localStorage.setItem('collection-view', view);
+      });
+    });
   }
 
   setupHistoryListener() {

@@ -54,8 +54,32 @@
       {% endif %}
     </div>
 
-    <div class="facets-product-count text-sm text-[--color-text-secondary]" id="ProductCount">
-      <span>{{ results.products_count }} {{ results.products_count | pluralize: 'product', 'products' }}</span>
+    <div class="flex items-center gap-4">
+      <div class="facets-product-count text-sm text-[--color-text-secondary]" id="ProductCount">
+        <span>{{ results.products_count }} {{ results.products_count | pluralize: 'product', 'products' }}</span>
+      </div>
+
+      {%- comment -%} View Toggle {%- endcomment -%}
+      <div class="facets-view-toggle hidden md:flex items-center border border-[--color-border] rounded-[--input-radius] overflow-hidden">
+        <button
+          type="button"
+          class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors is-active"
+          data-view-toggle="grid"
+          aria-label="Grid view"
+          aria-pressed="true"
+        >
+          <i class="ph ph-squares-four text-base"></i>
+        </button>
+        <button
+          type="button"
+          class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors"
+          data-view-toggle="list"
+          aria-label="List view"
+          aria-pressed="false"
+        >
+          <i class="ph ph-list text-base"></i>
+        </button>
+      </div>
     </div>
   </div>
 
