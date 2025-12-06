@@ -86,10 +86,6 @@ class SwupManager {
     // Before page transition starts
     this.swup.hooks.on('visit:start', (visit) => {
       document.documentElement.classList.add('is-changing');
-
-      // Lock scroll and compensate for scrollbar width to prevent layout shift
-      const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
-      document.body.style.setProperty('--scrollbar-width', scrollbarWidth + 'px');
       document.documentElement.classList.add('scroll-locked');
 
       lenisManager.stop();
@@ -125,7 +121,6 @@ class SwupManager {
     this.swup.hooks.on('visit:end', () => {
       document.documentElement.classList.remove('is-changing');
       document.documentElement.classList.remove('scroll-locked');
-      document.body.style.removeProperty('--scrollbar-width');
       lenisManager.start();
 
       // Dispatch event for components that need to initialize after transition completes

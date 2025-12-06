@@ -104,6 +104,8 @@
   /* Apply base styles */
   html {
     font-size: calc(1rem * var(--body-font-scale));
+    /* Prevent layout shift when scrollbar appears/disappears during page transitions */
+    scrollbar-gutter: stable;
   }
 
   body {
