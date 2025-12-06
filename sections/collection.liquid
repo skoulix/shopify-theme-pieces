@@ -599,6 +599,12 @@
 
             // Append new items to the grid
             newItems.forEach((item, index) => {
+              // Add divider before each item (for list view)
+              // This creates the <hr> elements that are shown in list view
+              const divider = document.createElement('hr');
+              divider.className = 'collection-grid__divider hidden border-[--color-border]';
+              contentContainer.appendChild(divider);
+
               // Clone and append
               const clone = item.cloneNode(true);
               contentContainer.appendChild(clone);

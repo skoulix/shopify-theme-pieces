@@ -32,7 +32,7 @@
 
     {%- comment -%} Social Links - Centered {%- endcomment -%}
     {% if section.settings.show_social %}
-      <div class="mt-16 flex justify-center gap-x-10">
+      <div class="mt-16 flex justify-center gap-x-5">
         {% if settings.social_instagram_link != blank %}
           <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
             <span class="sr-only">Instagram</span>
@@ -74,7 +74,7 @@
 
     {%- comment -%} Payment Icons {%- endcomment -%}
     {% if section.settings.show_payment_icons %}
-      <div class="mt-10 flex flex-wrap justify-center gap-3">
+      <div class="mt-10 flex flex-wrap justify-center gap-3 {% if section.settings.grayscale_payment_icons %}grayscale opacity-60{% endif %}">
         {% for type in shop.enabled_payment_types %}
           {{ type | payment_type_svg_tag: class: 'h-6' }}
         {% endfor %}
@@ -266,6 +266,13 @@
       "id": "show_payment_icons",
       "label": "Show payment icons",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "grayscale_payment_icons",
+      "label": "Grayscale payment icons",
+      "default": false,
+      "info": "Display payment icons in grayscale for a more minimal look"
     },
     {
       "type": "header",
