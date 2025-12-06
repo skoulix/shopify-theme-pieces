@@ -51,10 +51,11 @@
     border-color: transparent;
   }
 
-  .header-group.is-transparent .header-inner,
-  .header-group.is-transparent .header-inner a,
-  .header-group.is-transparent .header-inner button,
-  .header-group.is-transparent .header-inner [data-cart-count] {
+  /* Transparent header colors - only apply to main nav bar, not mobile drawer */
+  .header-group.is-transparent .header-inner > nav,
+  .header-group.is-transparent .header-inner > nav a,
+  .header-group.is-transparent .header-inner > nav button,
+  .header-group.is-transparent .header-inner > nav [data-cart-count] {
     color: {{ section.settings.transparent_text_color }};
   }
 
@@ -65,16 +66,15 @@
     border-color: var(--color-border);
   }
 
-  .header-group.is-transparent.is-scrolled .header-inner,
-  .header-group.is-transparent.is-scrolled .header-inner a,
-  .header-group.is-transparent.is-scrolled .header-inner button,
-  .header-group.is-transparent.is-scrolled .header-inner [data-cart-count] {
+  .header-group.is-transparent.is-scrolled .header-inner > nav,
+  .header-group.is-transparent.is-scrolled .header-inner > nav a,
+  .header-group.is-transparent.is-scrolled .header-inner > nav button,
+  .header-group.is-transparent.is-scrolled .header-inner > nav [data-cart-count] {
     color: var(--color-text);
   }
 
-
-  .header-group.is-transparent.is-scrolled .header-inner a:hover,
-  .header-group.is-transparent.is-scrolled .header-inner button:hover {
+  .header-group.is-transparent.is-scrolled .header-inner > nav a:hover,
+  .header-group.is-transparent.is-scrolled .header-inner > nav button:hover {
     color: var(--color-primary);
   }
 
@@ -292,6 +292,9 @@
     if (isAnimating || mobileNav.classList.contains('is-open')) return;
     isAnimating = true;
 
+    // Check if text animations should run (evaluated at runtime to ensure shouldAnimate is defined)
+    const shouldAnimateText = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
+
     const backdrop = mobileNav.querySelector('.mobile-nav__backdrop');
     const drawer = mobileNav.querySelector('.mobile-nav__drawer');
     const header = mobileNav.querySelector('.mobile-nav__header');
@@ -299,47 +302,54 @@
     const linkTexts = mobileNav.querySelectorAll('[data-mobile-nav-link-text]');
     const footer = mobileNav.querySelector('.mobile-nav__footer');
 
-    // Get SplitText
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
+    // Get SplitText (only if animations enabled)
+    let SplitText = null;
+    if (shouldAnimateText) {
+      SplitText = window.SplitText;
+      if (!SplitText && window.pieces && window.pieces.SplitText) {
+        SplitText = window.pieces.SplitText;
+      }
     }
+
+    // Always clean up previous splits (in case animations were toggled)
+    linkSplits.forEach(split => {
+      if (split.element && split.inner) {
+        const text = split.inner.textContent;
+        split.element.textContent = text;
+      }
+    });
+    linkSplits = [];
 
     // Use GSAP for drawer transition (always, if available)
     if (window.gsap) {
       // Set initial states BEFORE making visible
       gsap.set(backdrop, { opacity: 0 });
       gsap.set(drawer, { clipPath: 'inset(0 0 100% 0)' });
-      gsap.set(header, { opacity: 0, y: -20 });
-      gsap.set(linkItems, { opacity: 1 }); // Items visible, chars will animate
-      gsap.set(footer, { opacity: 0, y: 20 });
 
-      // Clean up previous splits
-      linkSplits.forEach(split => {
-        if (split.element && split.inner) {
-          const text = split.inner.textContent;
-          split.element.textContent = text;
+      // Only set up text animations if enabled
+      if (shouldAnimateText) {
+        gsap.set(header, { opacity: 0, y: -20 });
+        gsap.set(linkItems, { opacity: 1 }); // Items visible, chars will animate
+        gsap.set(footer, { opacity: 0, y: 20 });
+
+        // Set link texts to hidden initially, will reveal by line
+        if (SplitText) {
+          linkTexts.forEach(text => {
+            // Wrap content in a line wrapper for the reveal
+            const wrapper = document.createElement('span');
+            wrapper.className = 'mobile-nav-line-wrapper';
+            wrapper.style.cssText = 'display: block; overflow: hidden;';
+            const inner = document.createElement('span');
+            inner.className = 'mobile-nav-line';
+            inner.style.cssText = 'display: block;';
+            inner.textContent = text.textContent;
+            text.textContent = '';
+            wrapper.appendChild(inner);
+            text.appendChild(wrapper);
+            linkSplits.push({ element: text, inner });
+            gsap.set(inner, { yPercent: 100 });
+          });
         }
-      });
-      linkSplits = [];
-
-      // Set link texts to hidden initially, will reveal by line
-      if (SplitText) {
-        linkTexts.forEach(text => {
-          // Wrap content in a line wrapper for the reveal
-          const wrapper = document.createElement('span');
-          wrapper.className = 'mobile-nav-line-wrapper';
-          wrapper.style.cssText = 'display: block; overflow: hidden;';
-          const inner = document.createElement('span');
-          inner.className = 'mobile-nav-line';
-          inner.style.cssText = 'display: block;';
-          inner.textContent = text.textContent;
-          text.textContent = '';
-          wrapper.appendChild(inner);
-          text.appendChild(wrapper);
-          linkSplits.push({ element: text, inner });
-          gsap.set(inner, { yPercent: 100 });
-        });
       }
     }
 
@@ -354,26 +364,29 @@
         onComplete: () => { isAnimating = false; }
       });
 
-      // Animate drawer open
+      // Animate drawer open (always)
       openTimeline
         .to(backdrop, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0)
         .to(drawer, { clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'power4.inOut' }, 0);
 
-      // Animate header
-      openTimeline.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.4);
+      // Only animate text content if enabled
+      if (shouldAnimateText) {
+        // Animate header
+        openTimeline.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.4);
 
-      // Animate each link line reveal with stagger
-      if (linkSplits.length > 0) {
-        const lines = linkSplits.map(s => s.inner);
-        openTimeline.to(lines, {
-          yPercent: 0,
-          duration: 0.8,
-          stagger: 0.08,
-          ease: 'power4.out'
-        }, 0.5);
+        // Animate each link line reveal with stagger
+        if (linkSplits.length > 0) {
+          const lines = linkSplits.map(s => s.inner);
+          openTimeline.to(lines, {
+            yPercent: 0,
+            duration: 0.8,
+            stagger: 0.08,
+            ease: 'power4.out'
+          }, 0.5);
+        }
+
+        openTimeline.to(footer, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.9);
       }
-
-      openTimeline.to(footer, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.9);
     } else {
       isAnimating = false;
     }
