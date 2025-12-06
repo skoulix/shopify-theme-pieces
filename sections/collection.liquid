@@ -211,10 +211,93 @@
   if (wrapper.dataset.collectionInitialized) return;
   wrapper.dataset.collectionInitialized = 'true';
 
-  // If animations disabled, just show content immediately
+  // If animations disabled, just show content immediately but still init load more
   if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
     wrapper.classList.remove('is-loading');
+    initLoadMoreNoAnimation();
     return;
+  }
+
+  // Load more functionality without animations
+  function initLoadMoreNoAnimation() {
+    const loadMoreContainer = wrapper.querySelector('[data-pagination-load-more]');
+    if (!loadMoreContainer) return;
+
+    const loadMoreBtn = loadMoreContainer.querySelector('.load-more-btn');
+    if (!loadMoreBtn) return;
+
+    loadMoreBtn.addEventListener('click', async function() {
+      const nextUrl = this.dataset.nextUrl;
+      if (!nextUrl) return;
+
+      const textSpan = this.querySelector('.load-more-text');
+      const loadingSpan = this.querySelector('.load-more-loading');
+
+      // Show loading state
+      textSpan.classList.add('hidden');
+      loadingSpan.classList.remove('hidden');
+      loadingSpan.classList.add('inline-flex');
+      this.disabled = true;
+
+      try {
+        // Fetch the next page
+        const response = await fetch(nextUrl);
+        const html = await response.text();
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Get new products from the fetched page
+        const newWrapper = doc.querySelector('[data-collection-wrapper]');
+        const contentContainer = wrapper.querySelector('[data-collection-content]');
+        const newContent = newWrapper?.querySelector('[data-collection-content]');
+
+        if (newContent && contentContainer) {
+          const newItems = newContent.querySelectorAll('[data-collection-item], [data-product-card]');
+
+          // Append new items to the grid
+          newItems.forEach((item) => {
+            // Add divider before each item (for list view)
+            const divider = document.createElement('hr');
+            divider.className = 'collection-grid__divider hidden border-[--color-border]';
+            contentContainer.appendChild(divider);
+
+            // Clone and append
+            const clone = item.cloneNode(true);
+            contentContainer.appendChild(clone);
+          });
+
+          // Update the pagination
+          const newPagination = newWrapper.querySelector('[data-pagination-load-more]');
+          if (newPagination) {
+            loadMoreContainer.innerHTML = newPagination.innerHTML;
+            // Reinitialize load more for the new button
+            initLoadMoreNoAnimation();
+          } else {
+            // No more pages, hide the button
+            loadMoreBtn.style.display = 'none';
+          }
+
+          // Update the count text
+          const countSpan = loadMoreContainer.querySelector('span:last-child');
+          const newCountSpan = newPagination?.querySelector('span:last-child');
+          if (countSpan && newCountSpan) {
+            countSpan.textContent = newCountSpan.textContent;
+          }
+
+          // Refresh Lenis scroll bounds
+          if (window.pieces && window.pieces.lenis) {
+            window.pieces.lenis.resize();
+          }
+        }
+      } catch (error) {
+        console.error('Error loading more products:', error);
+        // Reset button state on error
+        textSpan.classList.remove('hidden');
+        loadingSpan.classList.add('hidden');
+        loadingSpan.classList.remove('inline-flex');
+        this.disabled = false;
+      }
+    });
   }
 
   const layoutStyle = wrapper.dataset.layoutStyle;
