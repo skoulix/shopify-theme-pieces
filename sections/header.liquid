@@ -46,7 +46,8 @@
         <span class="sr-only">{{ shop.name }}</span>
         {% if settings.logo != blank %}
           {{ settings.logo | image_url: width: 300 | image_tag:
-            class: 'h-8 w-auto',
+            class: 'h-auto',
+            style: 'width: var(--logo-width);',
             alt: shop.name,
             loading: 'eager'
           }}
@@ -62,7 +63,8 @@
         <span class="sr-only">{{ shop.name }}</span>
         {% if settings.logo != blank %}
           {{ settings.logo | image_url: width: 300 | image_tag:
-            class: 'h-8 w-auto',
+            class: 'h-auto',
+            style: 'width: var(--logo-width);',
             alt: shop.name,
             loading: 'eager'
           }}
@@ -441,12 +443,12 @@
    */
   const headerGroup = document.querySelector('[data-header-group]');
   if (headerGroup && headerGroup.hasAttribute('data-hide-on-scroll')) {
-    let lastScrollY = window.scrollY;
+    let lastScrollY = 0;
     const scrollThreshold = 50; // Min scroll before hiding
     const scrollDelta = 5; // Min scroll delta to trigger hide/show
+    let lenisScrollHandler = null;
 
-    function updateHeaderVisibility() {
-      const currentScrollY = window.scrollY;
+    function updateHeaderVisibility(currentScrollY) {
       const scrollDiff = currentScrollY - lastScrollY;
 
       // Don't hide if mobile menu is open
@@ -471,21 +473,77 @@
       lastScrollY = currentScrollY;
     }
 
-    // Use native scroll event - works with both Lenis and without
-    let ticking = false;
-    window.addEventListener('scroll', () => {
-      if (!ticking) {
-        requestAnimationFrame(() => {
-          updateHeaderVisibility();
-          ticking = false;
-        });
-        ticking = true;
+    // Try to attach to Lenis scroll event
+    function attachToLenis() {
+      // Check if Lenis is available via window.pieces
+      if (window.pieces && window.pieces.lenis && window.pieces.lenis.lenis) {
+        const lenis = window.pieces.lenis.lenis;
+
+        // Remove any previous handler
+        if (lenisScrollHandler) {
+          lenis.off('scroll', lenisScrollHandler);
+        }
+
+        // Create scroll handler - Lenis passes the lenis instance as the argument
+        lenisScrollHandler = function(lenisInstance) {
+          updateHeaderVisibility(lenisInstance.scroll);
+        };
+
+        // Attach to Lenis scroll event
+        lenis.on('scroll', lenisScrollHandler);
+
+        // Initialize with current scroll position
+        lastScrollY = lenis.scroll;
+
+        return true;
       }
-    }, { passive: true });
+      return false;
+    }
+
+    // Fallback to native scroll for when Lenis is not available
+    function attachNativeScroll() {
+      let ticking = false;
+      function onScroll() {
+        if (!ticking) {
+          requestAnimationFrame(() => {
+            updateHeaderVisibility(window.scrollY);
+            ticking = false;
+          });
+          ticking = true;
+        }
+      }
+      window.addEventListener('scroll', onScroll, { passive: true });
+    }
+
+    // Try to attach to Lenis, poll until available or fall back to native
+    let attempts = 0;
+    const maxAttempts = 50; // 5 seconds max
+
+    function tryAttach() {
+      if (attachToLenis()) {
+        return; // Successfully attached to Lenis
+      }
+
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(tryAttach, 100);
+      } else {
+        // Fall back to native scroll if Lenis never becomes available
+        attachNativeScroll();
+      }
+    }
+
+    // Start trying to attach
+    tryAttach();
 
     // Reset on page transitions
     window.addEventListener('swup:contentReplaced', () => {
-      lastScrollY = window.scrollY;
+      // Re-attach to Lenis after page transition (Lenis instance persists)
+      if (window.pieces && window.pieces.lenis && window.pieces.lenis.lenis) {
+        lastScrollY = window.pieces.lenis.lenis.scroll;
+      } else {
+        lastScrollY = window.scrollY;
+      }
       headerGroup.classList.remove('is-hidden');
     });
   }

@@ -28,8 +28,11 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
-    opacity: 0.5;
     margin-bottom: 1rem;
+  }
+
+  .before-after-label-{{ section.id }}.intro-visible {
+    opacity: 0.5;
   }
 
   .before-after-title-{{ section.id }} {
@@ -46,12 +49,15 @@
   .before-after-description-{{ section.id }} {
     margin-top: 1.5rem;
     font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-    opacity: 0.7;
     max-width: 50ch;
     {% if section.settings.header_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;
     {% endif %}
+  }
+
+  .before-after-description-{{ section.id }}.intro-visible {
+    opacity: 0.7;
   }
 
   .before-after-container-{{ section.id }} {
@@ -169,10 +175,18 @@
   }
 
   /* Animation states */
-  html.animations-disabled .before-after-title-{{ section.id }},
-  html.animations-disabled .before-after-label-{{ section.id }},
-  html.animations-disabled .before-after-description-{{ section.id }} {
+  html.animations-disabled .before-after-title-{{ section.id }} {
     opacity: 1;
+    transform: none;
+  }
+
+  html.animations-disabled .before-after-label-{{ section.id }} {
+    opacity: 0.5;
+    transform: none;
+  }
+
+  html.animations-disabled .before-after-description-{{ section.id }} {
+    opacity: 0.7;
     transform: none;
   }
 </style>

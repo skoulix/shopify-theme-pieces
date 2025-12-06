@@ -29,6 +29,9 @@
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.2em;
+  }
+
+  .logo-marquee-label-{{ section.id }}.intro-visible {
     opacity: 0.5;
   }
 
@@ -155,6 +158,11 @@
 
   html.animations-disabled .logo-marquee-track-{{ section.id }} {
     animation: none;
+  }
+
+  html.animations-disabled .logo-marquee-label-{{ section.id }} {
+    opacity: 0.5;
+    transform: none;
   }
 </style>
 

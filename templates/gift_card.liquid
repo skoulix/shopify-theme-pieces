@@ -53,7 +53,7 @@
         {%- comment -%} Header with Shop Name {%- endcomment -%}
         <div class="gift-card-animate text-center mb-8">
           {% if settings.logo %}
-            {{ settings.logo | image_url: width: 200 | image_tag: class: 'h-10 w-auto mx-auto', alt: shop.name }}
+            {{ settings.logo | image_url: width: 300 | image_tag: class: 'h-auto mx-auto', style: 'width: var(--logo-width);', alt: shop.name }}
           {% else %}
             <span class="text-xl font-bold text-[--color-text] font-heading">{{ shop.name }}</span>
           {% endif %}

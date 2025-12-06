@@ -23,7 +23,17 @@
         "step": 10,
         "default": 120,
         "unit": "px",
-        "label": "Logo width"
+        "label": "Desktop logo width"
+      },
+      {
+        "type": "range",
+        "id": "logo_width_mobile",
+        "min": 40,
+        "max": 200,
+        "step": 10,
+        "default": 80,
+        "unit": "px",
+        "label": "Mobile logo width"
       },
       {
         "type": "image_picker",

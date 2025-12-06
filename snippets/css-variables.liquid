@@ -75,6 +75,7 @@
     --page-padding: 24px;
     --page-vertical-padding: {{ settings.page_vertical_padding | times: 0.4 }}px;
     --section-vertical-padding: {{ settings.section_vertical_padding | default: 80 | times: 0.5 }}px;
+    --header-height: 65px;
 
     /* Buttons */
     --button-radius: {{ settings.button_radius }}px;
@@ -91,7 +92,13 @@
     --input-border-width: {{ settings.input_border_width }}px;
 
     /* Logo */
-    --logo-width: {{ settings.logo_width }}px;
+    --logo-width: {{ settings.logo_width_mobile | default: 80 }}px;
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --logo-width: {{ settings.logo_width }}px;
+    }
   }
 
   /* Apply base styles */
