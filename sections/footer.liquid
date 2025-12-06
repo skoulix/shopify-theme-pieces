@@ -26,12 +26,7 @@
         {% when 'navigation' %}
           {%- comment -%} Navigation Links {%- endcomment -%}
           {% if block.settings.menu != blank %}
-            <nav
-              aria-label="Footer"
-              class="footer-block flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm {% if block.settings.uppercase %}uppercase tracking-wider{% endif %}"
-              {% if block.settings.color != blank %}style="color: {{ block.settings.color }};"{% endif %}
-              {{ block.shopify_attributes }}
-            >
+            <nav aria-label="Footer" class="footer-block flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm" {{ block.shopify_attributes }}>
               {% for link in block.settings.menu.links %}
                 <a href="{{ link.url }}">
                   {{ link.title }}
@@ -291,18 +286,6 @@
           "id": "menu",
           "label": "Menu",
           "default": "footer"
-        },
-        {
-          "type": "checkbox",
-          "id": "uppercase",
-          "label": "Uppercase",
-          "default": false
-        },
-        {
-          "type": "color",
-          "id": "color",
-          "label": "Link color",
-          "default": ""
         }
       ]
     },

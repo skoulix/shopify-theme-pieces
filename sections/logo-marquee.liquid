@@ -105,18 +105,14 @@
     max-width: {{ section.settings.logo_max_width }}px;
     object-fit: contain;
     opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
-    transition: opacity 0.3s ease, transform 0.3s ease;
-    {% if section.settings.grayscale %}
-    filter: grayscale(100%);
-    {% endif %}
+    transition: opacity 0.3s ease, transform 0.3s ease, filter 0.3s ease;
+    filter: {% if section.settings.grayscale %}grayscale(100%){% endif %}{% if section.settings.invert %}{% if section.settings.grayscale %} {% endif %}invert(1){% endif %};
   }
 
   .logo-marquee-item-{{ section.id }}:hover img {
     opacity: 1;
     transform: scale(1.05);
-    {% if section.settings.grayscale %}
-    filter: grayscale(0%);
-    {% endif %}
+    filter: {% if section.settings.invert %}invert(1){% else %}none{% endif %};
   }
 
   .logo-marquee-item-{{ section.id }} svg {
@@ -325,6 +321,13 @@
       "default": true,
       "label": "Grayscale logos",
       "info": "Color on hover"
+    },
+    {
+      "type": "checkbox",
+      "id": "invert",
+      "default": false,
+      "label": "Invert logos",
+      "info": "Invert logo colors (useful for dark backgrounds)"
     },
     {
       "type": "header",
