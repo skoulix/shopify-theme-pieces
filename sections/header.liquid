@@ -194,7 +194,7 @@
   </nav>
 
   {%- comment -%} Mobile Menu - Full Screen Drawer with Reveal Effects {%- endcomment -%}
-  <div id="mobile-menu" class="mobile-nav" role="dialog" aria-modal="true" aria-hidden="true">
+  <div id="mobile-menu" class="mobile-nav" role="dialog" aria-modal="true" inert>
     {%- comment -%} Backdrop {%- endcomment -%}
     <div class="mobile-nav__backdrop" data-mobile-nav-close></div>
 
@@ -352,7 +352,7 @@
 
     // Now make visible
     mobileNav.classList.add('is-open');
-    mobileNav.setAttribute('aria-hidden', 'false');
+    mobileNav.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
     document.dispatchEvent(new CustomEvent('menu:open'));
 
@@ -405,7 +405,7 @@
       gsap.timeline({
         onComplete: () => {
           mobileNav.classList.remove('is-open');
-          mobileNav.setAttribute('aria-hidden', 'true');
+          mobileNav.setAttribute('inert', '');
           document.body.style.overflow = '';
           isAnimating = false;
         }
@@ -414,7 +414,7 @@
         .to(drawer, { clipPath: 'inset(0 0 100% 0)', duration: 0.4, ease: 'power3.in' }, 0);
     } else {
       mobileNav.classList.remove('is-open');
-      mobileNav.setAttribute('aria-hidden', 'true');
+      mobileNav.setAttribute('inert', '');
       document.body.style.overflow = '';
       isAnimating = false;
     }

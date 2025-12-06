@@ -1,0 +1,276 @@
+{%- comment -%}
+  Facets - Collection filtering and sorting
+
+  Accepts:
+  - results: {Object} Collection or Search results object
+  - enable_filtering: {Boolean} Enable filter functionality
+  - enable_sorting: {Boolean} Enable sort functionality
+  - section_id: {String} Section ID for form targeting
+{%- endcomment -%}
+
+{%- liquid
+  assign sort_by = results.sort_by | default: results.default_sort_by
+  assign total_active_values = 0
+
+  for filter in results.filters
+    assign total_active_values = total_active_values | plus: filter.active_values.size
+  endfor
+-%}
+
+<facet-filters-form class="facets-container" data-section-id="{{ section_id }}">
+  {%- comment -%} Toolbar - Filter button, sort, and product count {%- endcomment -%}
+  <div class="facets-toolbar flex flex-wrap items-center justify-between gap-4 mb-8">
+    <div class="flex items-center gap-4">
+      {% if enable_filtering %}
+        <button
+          type="button"
+          class="facets-open-btn btn btn--secondary btn--sm"
+          data-facets-open
+          aria-controls="FacetsDrawer"
+          aria-expanded="false"
+        >
+          <i class="ph ph-funnel"></i>
+          <span>Filter{% if total_active_values > 0 %} ({{ total_active_values }}){% endif %}</span>
+        </button>
+      {% endif %}
+
+      {% if enable_sorting %}
+        <div class="facets-sort relative hidden lg:block">
+          <label for="SortBy" class="sr-only">Sort by</label>
+          <select
+            name="sort_by"
+            id="SortBy"
+            class="facets-sort__select appearance-none bg-transparent border border-[--color-border] rounded-[--input-radius] px-4 pr-10 text-sm cursor-pointer hover:border-[--color-text] transition-colors"
+            form="FacetFiltersForm"
+          >
+            {%- for option in results.sort_options -%}
+              <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+                {{ option.name }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <i class="ph ph-caret-down absolute right-3 top-1/2 -translate-y-1/2 pointer-events-none text-xs"></i>
+        </div>
+      {% endif %}
+    </div>
+
+    <div class="facets-product-count text-sm text-[--color-text-secondary]" id="ProductCount">
+      <span>{{ results.products_count }} {{ results.products_count | pluralize: 'product', 'products' }}</span>
+    </div>
+  </div>
+
+  {%- comment -%} Active Filters Pills {%- endcomment -%}
+  <div class="active-facets mb-6 {% if total_active_values == 0 %}hidden{% endif %}" id="ActiveFacets">
+    <div class="flex flex-wrap items-center gap-2">
+      {%- for filter in results.filters -%}
+        {%- for value in filter.active_values -%}
+          <a
+            href="{{ value.url_to_remove }}"
+            class="active-facets__pill inline-flex items-center gap-1.5 px-3 py-1.5 text-xs border border-[--color-border] rounded-full hover:border-[--color-text] transition-colors"
+            data-facet-remove
+          >
+            <span class="text-[--color-text-secondary]">{{ filter.label }}:</span>
+            <span>{{ value.label }}</span>
+            <i class="ph ph-x text-[10px]"></i>
+          </a>
+        {%- endfor -%}
+
+        {%- if filter.type == "price_range" -%}
+          {%- if filter.min_value.value != nil or filter.max_value.value != nil -%}
+            <a
+              href="{{ filter.url_to_remove }}"
+              class="active-facets__pill inline-flex items-center gap-1.5 px-3 py-1.5 text-xs border border-[--color-border] rounded-full hover:border-[--color-text] transition-colors"
+              data-facet-remove
+            >
+              <span class="text-[--color-text-secondary]">{{ filter.label }}:</span>
+              <span>
+                {%- if filter.min_value.value -%}{{ filter.min_value.value | money_without_trailing_zeros }}{%- else -%}{{ 0 | money_without_trailing_zeros }}{%- endif -%}
+                -
+                {%- if filter.max_value.value -%}{{ filter.max_value.value | money_without_trailing_zeros }}{%- else -%}{{ filter.range_max | money_without_trailing_zeros }}{%- endif -%}
+              </span>
+              <i class="ph ph-x text-[10px]"></i>
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {% if total_active_values > 0 %}
+        <a
+          href="{{ results.url }}"
+          class="active-facets__clear text-xs text-[--color-text-secondary] hover:text-[--color-text] underline underline-offset-2 ml-2"
+          data-facet-clear-all
+        >
+          Clear all
+        </a>
+      {% endif %}
+    </div>
+  </div>
+
+  {%- comment -%} Filter Drawer {%- endcomment -%}
+  <div
+    id="FacetsDrawer"
+    class="facets-drawer fixed inset-0 z-[100] pointer-events-none"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Filters"
+    inert
+  >
+    {%- comment -%} Backdrop {%- endcomment -%}
+    <div class="facets-drawer__backdrop absolute inset-0 opacity-0 transition-opacity duration-300" data-facets-close></div>
+
+    {%- comment -%} Drawer Panel {%- endcomment -%}
+    <div class="facets-drawer__panel absolute left-0 top-0 bottom-0 w-full max-w-md bg-[--color-background] transform -translate-x-full transition-transform duration-300 ease-out flex flex-col">
+      {%- comment -%} Header {%- endcomment -%}
+      <div class="facets-drawer__header flex items-center justify-between px-6 py-4 border-b border-[--color-border]">
+        <h2 class="text-lg font-semibold font-heading">Filter & Sort</h2>
+        <button
+          type="button"
+          class="facets-drawer__close w-10 h-10 -mr-2 flex items-center justify-center hover:opacity-60 transition-opacity"
+          data-facets-close
+          aria-label="Close filters"
+        >
+          <i class="ph ph-x text-xl"></i>
+        </button>
+      </div>
+
+      {%- comment -%} Filter Form {%- endcomment -%}
+      <form id="FacetFiltersForm" class="facets-drawer__content flex-1 overflow-y-auto" data-facets-form>
+        <input type="hidden" name="section_id" value="{{ section_id }}">
+
+        {%- comment -%} Filters {%- endcomment -%}
+        <div class="facets-drawer__filters">
+          {%- for filter in results.filters -%}
+            <details
+              class="facets-disclosure border-b border-[--color-border]"
+              id="Filter-{{ filter.param_name | handle }}"
+              {% if filter.active_values.size > 0 or filter.type == "price_range" and filter.min_value.value or filter.max_value.value %}open{% endif %}
+            >
+              <summary class="facets-disclosure__summary flex items-center justify-between px-6 py-4 cursor-pointer select-none hover:bg-[--color-background-secondary] transition-colors">
+                <span class="font-medium">{{ filter.label }}</span>
+                <span class="flex items-center gap-2 -mr-1">
+                  {% if filter.active_values.size > 0 %}
+                    <span class="text-xs text-[--color-text-secondary]">({{ filter.active_values.size }})</span>
+                  {% endif %}
+                  <i class="ph ph-caret-down text-sm transition-transform"></i>
+                </span>
+              </summary>
+
+              <div class="facets-disclosure__content px-6 pb-4">
+                {% case filter.type %}
+                  {% when 'list' or 'boolean' %}
+                    <ul class="facets-list space-y-2 max-h-64 overflow-y-auto" role="list">
+                      {%- for value in filter.values -%}
+                        <li class="facets-list__item">
+                          <label class="facets-checkbox flex items-center gap-3 cursor-pointer group">
+                            <input
+                              type="checkbox"
+                              name="{{ value.param_name }}"
+                              value="{{ value.value }}"
+                              id="Filter-{{ filter.param_name | handle }}-{{ forloop.index }}"
+                              {% if value.active %}checked{% endif %}
+                              {% if value.count == 0 and value.active == false %}disabled{% endif %}
+                              class="facets-checkbox__input sr-only peer"
+                            >
+                            <span class="facets-checkbox__box w-5 h-5 border border-[--color-border] rounded flex items-center justify-center transition-all peer-checked:bg-[--color-text] peer-checked:border-[--color-text] peer-focus-visible:ring-2 peer-focus-visible:ring-[--color-primary] peer-focus-visible:ring-offset-2 group-hover:border-[--color-text]">
+                              <i class="ph ph-check text-xs text-[--color-background] opacity-0 peer-checked:opacity-100 transition-opacity"></i>
+                            </span>
+                            <span class="facets-checkbox__label flex-1 text-sm {% if value.count == 0 and value.active == false %}text-[--color-text-secondary] opacity-50{% endif %}">
+                              {{ value.label }}
+                            </span>
+                            <span class="facets-checkbox__count text-xs text-[--color-text-secondary]">({{ value.count }})</span>
+                          </label>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+
+                  {% when 'price_range' %}
+                    <div class="facets-price-range">
+                      <div class="flex items-center gap-4">
+                        <div class="flex-1">
+                          <label for="Filter-{{ filter.min_value.param_name }}" class="sr-only">Min price</label>
+                          <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[--color-text-secondary]">{{ cart.currency.symbol }}</span>
+                            <input
+                              type="number"
+                              name="{{ filter.min_value.param_name }}"
+                              id="Filter-{{ filter.min_value.param_name }}"
+                              {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              placeholder="0"
+                              class="facets-price-input w-full border border-[--color-border] rounded-[--input-radius] px-3 py-2 pl-7 text-sm focus:border-[--color-text] focus:outline-none transition-colors"
+                            >
+                          </div>
+                        </div>
+                        <span class="text-[--color-text-secondary]">to</span>
+                        <div class="flex-1">
+                          <label for="Filter-{{ filter.max_value.param_name }}" class="sr-only">Max price</label>
+                          <div class="relative">
+                            <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-[--color-text-secondary]">{{ cart.currency.symbol }}</span>
+                            <input
+                              type="number"
+                              name="{{ filter.max_value.param_name }}"
+                              id="Filter-{{ filter.max_value.param_name }}"
+                              {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency | replace: ',', '' }}"{% endif %}
+                              min="0"
+                              max="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              placeholder="{{ filter.range_max | money_without_currency | replace: ',', '' }}"
+                              class="facets-price-input w-full border border-[--color-border] rounded-[--input-radius] px-3 py-2 pl-7 text-sm focus:border-[--color-text] focus:outline-none transition-colors"
+                            >
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                {% endcase %}
+              </div>
+            </details>
+          {%- endfor -%}
+        </div>
+
+        {%- comment -%} Sort (inside drawer for mobile) {%- endcomment -%}
+        {% if enable_sorting %}
+          <div class="facets-drawer__sort px-6 py-4 border-t border-[--color-border] lg:hidden">
+            <label for="SortByMobile" class="block text-sm font-medium mb-2">Sort by</label>
+            <select
+              name="sort_by"
+              id="SortByMobile"
+              class="facets-sort__select w-full appearance-none bg-transparent border border-[--color-border] rounded-[--input-radius] px-4 py-2 pr-10 text-sm cursor-pointer hover:border-[--color-text] transition-colors"
+            >
+              {%- for option in results.sort_options -%}
+                <option value="{{ option.value }}" {% if option.value == sort_by %}selected{% endif %}>
+                  {{ option.name }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+        {% endif %}
+      </form>
+
+      {%- comment -%} Footer {%- endcomment -%}
+      <div class="facets-drawer__footer px-6 py-4 border-t border-[--color-border] flex items-center gap-4">
+        <a
+          href="{{ results.url }}"
+          class="btn btn--secondary flex-1 text-center"
+          data-facet-clear-all
+        >
+          <span>Clear all</span>
+        </a>
+        <button
+          type="button"
+          class="btn btn--primary flex-1"
+          data-facets-apply
+        >
+          <span>Apply</span>
+        </button>
+      </div>
+    </div>
+  </div>
+
+  {%- comment -%} Loading Spinner {%- endcomment -%}
+  <div class="facets-loading fixed inset-0 z-40 bg-[--color-background]/80 flex items-center justify-center opacity-0 pointer-events-none transition-opacity" data-facets-loading>
+    <svg class="animate-spin h-8 w-8 text-[--color-text]" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  </div>
+</facet-filters-form>

@@ -1,6 +1,8 @@
 {%- liquid
   assign layout_style = section.settings.layout_style
   assign full_width = section.settings.full_width
+  assign enable_filtering = section.settings.enable_filtering
+  assign enable_sorting = section.settings.enable_sorting
 
   if full_width
     assign container_class = 'page-full'
@@ -71,6 +73,19 @@
 
   {% paginate collection.products by section.settings.products_per_page %}
 
+    {%- comment -%} Filters and Sorting {%- endcomment -%}
+    {% if enable_filtering or enable_sorting %}
+      <div class="{{ container_class }}">
+        {% render 'facets',
+          results: collection,
+          enable_filtering: enable_filtering,
+          enable_sorting: enable_sorting,
+          section_id: section.id
+        %}
+      </div>
+    {% endif %}
+
+    <div id="ProductGridContainer" data-product-grid-container>
     {% case layout_style %}
 
       {% when 'metro' %}
@@ -138,6 +153,7 @@
         </div>
 
     {% endcase %}
+    </div>{%- comment -%} End ProductGridContainer {%- endcomment -%}
 
     {% if paginate.pages > 1 %}
       {% if section.settings.pagination_type == 'load_more' %}
@@ -826,6 +842,24 @@
       "step": 1,
       "default": 12,
       "label": "Products per page"
+    },
+    {
+      "type": "header",
+      "content": "Filtering and sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_filtering",
+      "label": "Enable filtering",
+      "default": true,
+      "info": "Allow customers to filter products by availability, price, and other options"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sorting",
+      "default": true,
+      "info": "Allow customers to sort products"
     }
   ]
 }

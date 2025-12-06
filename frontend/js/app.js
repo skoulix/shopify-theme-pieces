@@ -23,6 +23,7 @@ import { animationManager } from './managers/AnimationManager.js';
 import { cartState } from './managers/CartState.js';
 import { cartDrawerManager } from './managers/CartDrawerManager.js';
 import { cartPageManager } from './managers/CartPageManager.js';
+import './managers/FacetsManager.js'; // Self-registering custom element
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Flip, SplitText);

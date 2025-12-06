@@ -131,7 +131,7 @@
   .btn--primary span,
   .btn--primary i,
   .btn--primary > * {
-    transition: color 0.4s ease;
+    transition: color 0.3s ease 0.1s;
   }
 
   .btn--primary::before {
@@ -145,6 +145,12 @@
     color: var(--color-primary);
   }
 
+  .btn--primary:not(:hover) span,
+  .btn--primary:not(:hover) i,
+  .btn--primary:not(:hover) > * {
+    transition-delay: 0s;
+  }
+
   /* Secondary Button - Light background with border, dark text → Dark fill, light text */
   .btn--secondary {
     color: var(--color-text);
@@ -155,7 +161,7 @@
   .btn--secondary span,
   .btn--secondary i,
   .btn--secondary * {
-    transition: color 0.4s ease;
+    transition: color 0.3s ease 0.1s;
   }
 
   .btn--secondary::before {
@@ -167,6 +173,12 @@
   .btn--secondary:hover i,
   .btn--secondary:hover * {
     color: var(--color-background);
+  }
+
+  .btn--secondary:not(:hover) span,
+  .btn--secondary:not(:hover) i,
+  .btn--secondary:not(:hover) * {
+    transition-delay: 0s;
   }
 
   /* Full width modifier */
@@ -1154,5 +1166,136 @@ html.animations-disabled [data-intro] {
   opacity: 1;
   transform: none;
   transition: none;
+}
+
+/* ================================
+   Facets / Collection Filters
+   ================================ */
+
+/* Sort select - match button height */
+.facets-sort__select {
+  height: calc(0.6875rem + 0.875rem * 2 + 2px); /* font-size + padding-y * 2 + border */
+  padding-top: 0;
+  padding-bottom: 0;
+}
+
+/* Drawer states */
+.facets-drawer {
+  visibility: hidden;
+}
+
+.facets-drawer.is-open {
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Backdrop - matches cart drawer */
+.facets-drawer__backdrop {
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.facets-drawer.is-open .facets-drawer__backdrop {
+  opacity: 1;
+}
+
+.facets-drawer.is-open .facets-drawer__panel {
+  transform: translateX(0);
+}
+
+/* Panel scrollbar */
+.facets-drawer__content {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.facets-drawer__content::-webkit-scrollbar {
+  width: 6px;
+}
+
+.facets-drawer__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.facets-drawer__content::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 3px;
+}
+
+/* Disclosure open state */
+.facets-disclosure[open] .ph-caret-down {
+  transform: rotate(180deg);
+}
+
+/* Checkbox custom styling - the actual visual checkbox */
+.facets-checkbox__box {
+  position: relative;
+}
+
+.facets-checkbox__input:checked + .facets-checkbox__box {
+  background-color: var(--color-text);
+  border-color: var(--color-text);
+}
+
+.facets-checkbox__input:checked + .facets-checkbox__box .ph-check {
+  opacity: 1;
+}
+
+.facets-checkbox__input:focus-visible + .facets-checkbox__box {
+  outline: 2px solid var(--color-primary);
+  outline-offset: 2px;
+}
+
+/* Filter list scrollbar */
+.facets-list {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-border) transparent;
+}
+
+.facets-list::-webkit-scrollbar {
+  width: 4px;
+}
+
+.facets-list::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.facets-list::-webkit-scrollbar-thumb {
+  background-color: var(--color-border);
+  border-radius: 2px;
+}
+
+/* Price input focus */
+.facets-price-input:focus {
+  border-color: var(--color-text);
+  outline: none;
+}
+
+/* Active facets pills animation */
+.active-facets__pill {
+  transition: all 0.2s ease;
+}
+
+.active-facets__pill:hover {
+  background-color: var(--color-background-secondary);
+}
+
+/* Loading state fade */
+.facets-loading {
+  backdrop-filter: blur(2px);
+}
+
+/* Collection transitioning state */
+.collection-wrapper.is-transitioning [data-collection-content] {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+/* Mobile drawer full width */
+@media (max-width: 640px) {
+  .facets-drawer__panel {
+    max-width: 100%;
+  }
 }
 
