@@ -33,14 +33,15 @@
     {%- comment -%} CSS Variables & Font Loading {%- endcomment -%}
     {% render 'css-variables' %}
 
-    {%- comment -%} Phosphor Icons {%- endcomment -%}
-    <link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css">
+    {%- comment -%} Phosphor Icons - loaded asynchronously to prevent render blocking {%- endcomment -%}
+    <link rel="preload" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
 
     {%- comment -%} Tailwind CSS (compiled) {%- endcomment -%}
     {{ 'pieces-app.css' | asset_url | stylesheet_tag: preload: true }}
 
-    {%- comment -%} Pieces App - Swup, Lenis, GSAP {%- endcomment -%}
-    <script src="{{ 'pieces-app.js' | asset_url }}" type="module"></script>
+    {%- comment -%} Pieces App - Swup, Lenis, GSAP (defer prevents render blocking) {%- endcomment -%}
+    <script src="{{ 'pieces-app.js' | asset_url }}" type="module" defer></script>
 
     {{ content_for_header }}
 

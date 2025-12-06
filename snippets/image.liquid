@@ -19,6 +19,8 @@
   assign width = width | default: image.width | default: 800
   assign loading = loading | default: 'lazy'
   assign alt = alt | default: image.alt | default: ''
+  assign sizes = sizes | default: '(max-width: 768px) 100vw, 50vw'
+  assign widths = widths | default: '400, 600, 800, 1200'
 -%}
 
 {%- if url -%}
@@ -26,6 +28,8 @@
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
       class: 'w-full h-auto object-cover',
       loading: loading,
+      sizes: sizes,
+      widths: widths,
       alt: alt
     }}
   </a>
@@ -34,6 +38,8 @@
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
       class: 'w-full h-auto object-cover',
       loading: loading,
+      sizes: sizes,
+      widths: widths,
       alt: alt
     }}
   </div>
