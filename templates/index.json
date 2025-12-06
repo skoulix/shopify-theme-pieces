@@ -93,6 +93,7 @@
       "settings": {
         "collection": "frontpage",
         "title": "New Arrivals",
+        "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
         "show_vendor": false,
@@ -143,6 +144,7 @@
       "settings": {
         "collection": "hydrogen",
         "title": "Best Sellers",
+        "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
         "show_vendor": false,
@@ -194,6 +196,7 @@
         "logo_1": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-352.svg",
             "alt": "",
             "link": ""
           }
@@ -201,6 +204,7 @@
         "logo_2": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-371.svg",
             "alt": "",
             "link": ""
           }
@@ -208,6 +212,7 @@
         "logo_3": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-347.svg",
             "alt": "",
             "link": ""
           }
@@ -215,6 +220,7 @@
         "logo_4": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-284.svg",
             "alt": "",
             "link": ""
           }
@@ -222,6 +228,7 @@
         "logo_5": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-261.svg",
             "alt": "",
             "link": ""
           }
@@ -229,6 +236,7 @@
         "logo_6": {
           "type": "logo",
           "settings": {
+            "logo": "shopify://shop_images/logoipsum-290.svg",
             "alt": "",
             "link": ""
           }
@@ -244,12 +252,13 @@
       ],
       "settings": {
         "label": "As Seen In",
+        "header_alignment": "center",
         "direction": "left",
         "speed": 30,
-        "logo_height": 100,
+        "logo_height": 40,
         "logo_max_width": 200,
-        "logo_opacity": 60,
-        "grayscale": true,
+        "logo_opacity": 100,
+        "grayscale": false,
         "full_width": true,
         "background_color": "#ffffff",
         "text_color": "#000000"

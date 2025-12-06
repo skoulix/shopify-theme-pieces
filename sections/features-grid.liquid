@@ -10,7 +10,6 @@
   endif
 
   # Use global card settings
-  assign card_radius = settings.card_radius
   assign card_border_width = settings.card_border_width
   assign card_shadow = settings.card_shadow
 -%}
@@ -103,7 +102,7 @@
     position: relative;
     padding: clamp(1.5rem, 3vw, 2.5rem);
     background: {{ section.settings.card_background }};
-    border-radius: {{ card_radius }}px;
+    border-radius: var(--card-radius);
     overflow: hidden;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     {% if card_border_width > 0 %}
@@ -464,16 +463,6 @@
     {
       "type": "header",
       "content": "Cards"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "min": 0,
-      "max": 32,
-      "step": 4,
-      "default": 16,
-      "unit": "px",
-      "label": "Card corner radius"
     },
     {
       "type": "color",
