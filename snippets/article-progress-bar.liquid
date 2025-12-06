@@ -1,0 +1,10 @@
+{%- comment -%}
+  Article Progress Bar
+  Fixed progress indicator that shows reading progress on article pages.
+  Lives outside swup-container to persist across page transitions.
+  Visibility is controlled via JavaScript based on article presence.
+{%- endcomment -%}
+
+<div id="article-progress" style="position: fixed; top: 0; left: 0; width: 100%; height: 3px; z-index: 9999; pointer-events: none; display: none;">
+  <div id="article-progress-bar" style="height: 100%; width: 0%; background-color: var(--color-primary); transition: width 0.1s ease-out;"></div>
+</div>

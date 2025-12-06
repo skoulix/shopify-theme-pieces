@@ -48,6 +48,7 @@ function initAnimations() {
 /**
  * Initialize article progress bar
  * Handles scroll progress indicator on article pages
+ * Progress bar lives in theme.liquid (outside swup) and is shown/hidden based on article presence
  */
 function initArticleProgressBar() {
   // Cleanup any previous instance first
@@ -56,29 +57,46 @@ function initArticleProgressBar() {
     window._articleProgressCleanup = null;
   }
 
-  const progressBar = document.querySelector('[data-article-progress-bar]');
-  const progressContainer = document.querySelector('[data-article-progress]');
+  // Progress bar is in theme.liquid, use IDs
+  const progressContainer = document.getElementById('article-progress');
+  const progressBar = document.getElementById('article-progress-bar');
   const wrapper = document.querySelector('[data-article-wrapper]');
 
-  // If no article on page, exit (no need to hide - element won't exist)
-  if (!wrapper || !progressBar) {
+  // If no progress bar element, exit
+  if (!progressContainer || !progressBar) {
+    return;
+  }
+
+  // If no article on page, hide progress bar and exit
+  if (!wrapper) {
+    progressContainer.style.display = 'none';
+    progressBar.style.width = '0%';
     return;
   }
 
   // Show progress bar and reset width
+  progressContainer.style.display = 'block';
   progressBar.style.width = '0%';
 
   // Track if we've cleaned up
   let isDestroyed = false;
 
+  // Get current scroll position (Lenis or native)
+  function getScrollY() {
+    if (window.pieces && window.pieces.lenis && window.pieces.lenis.lenis) {
+      return window.pieces.lenis.lenis.scroll;
+    }
+    return window.scrollY;
+  }
+
   function updateProgress() {
     if (isDestroyed) return;
 
+    const scrollY = getScrollY();
     const wrapperRect = wrapper.getBoundingClientRect();
-    const wrapperTop = window.scrollY + wrapperRect.top;
+    const wrapperTop = scrollY + wrapperRect.top;
     const wrapperHeight = wrapper.offsetHeight;
     const windowHeight = window.innerHeight;
-    const scrollY = window.scrollY;
 
     // Calculate progress based on article content
     const start = wrapperTop;
@@ -95,9 +113,46 @@ function initArticleProgressBar() {
     progressBar.style.width = `${Math.min(100, Math.max(0, progress))}%`;
   }
 
-  // Use native scroll event - works with both Lenis and without
+  // Track Lenis scroll handler for cleanup
+  let lenisScrollHandler = null;
+
+  // Attach to Lenis scroll event
+  function attachToLenis() {
+    if (window.pieces && window.pieces.lenis && window.pieces.lenis.lenis) {
+      const lenis = window.pieces.lenis.lenis;
+      lenisScrollHandler = () => updateProgress();
+      lenis.on('scroll', lenisScrollHandler);
+      return true;
+    }
+    return false;
+  }
+
+  // Try to attach to Lenis immediately
+  if (!attachToLenis()) {
+    // Lenis not ready yet, poll for it
+    let attempts = 0;
+    const maxAttempts = 50;
+
+    function tryAttachLenis() {
+      if (isDestroyed) return;
+
+      if (attachToLenis()) {
+        updateProgress(); // Update once attached
+        return;
+      }
+
+      attempts++;
+      if (attempts < maxAttempts) {
+        setTimeout(tryAttachLenis, 100);
+      }
+    }
+
+    tryAttachLenis();
+  }
+
+  // Also listen to native scroll as a fallback (some browsers/situations)
   let ticking = false;
-  function onScroll() {
+  function onNativeScroll() {
     if (!ticking) {
       requestAnimationFrame(() => {
         updateProgress();
@@ -106,14 +161,22 @@ function initArticleProgressBar() {
       ticking = true;
     }
   }
+  window.addEventListener('scroll', onNativeScroll, { passive: true });
 
-  window.addEventListener('scroll', onScroll, { passive: true });
   updateProgress(); // Initial update
 
   // Cleanup function for navigation
   function cleanup() {
     isDestroyed = true;
-    window.removeEventListener('scroll', onScroll);
+    window.removeEventListener('scroll', onNativeScroll);
+
+    // Remove Lenis listener if attached
+    if (lenisScrollHandler && window.pieces && window.pieces.lenis && window.pieces.lenis.lenis) {
+      window.pieces.lenis.lenis.off('scroll', lenisScrollHandler);
+    }
+
+    // Hide progress bar and reset
+    if (progressContainer) progressContainer.style.display = 'none';
     if (progressBar) progressBar.style.width = '0%';
   }
 
@@ -135,7 +198,6 @@ function handleContentReplaced() {
         initAnimations();
         ScrollTrigger.refresh();
       }
-      initArticleProgressBar();
       cartDrawerManager.reinit();
       cartPageManager.reinit();
     });
@@ -154,10 +216,10 @@ function handleContentReplaced() {
  * Initialize components that need the page to be fully visible
  */
 function handleTransitionEnd() {
-  // Use setTimeout to ensure DOM is fully settled
+  // Use setTimeout to ensure DOM is fully settled and Lenis is running
   setTimeout(() => {
     initArticleProgressBar();
-  }, 50);
+  }, 100);
 }
 
 /**
