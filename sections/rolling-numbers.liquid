@@ -1,0 +1,471 @@
+{%- comment -%}
+  Rolling Numbers Section
+  Animated statistics/metrics display with rolling number animations
+  Uses layflags-rolling-number web component
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
+<style>
+  .rolling-numbers-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: var(--section-vertical-padding) 0;
+  }
+
+  .rolling-numbers-grid-{{ section.id }} {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+  }
+
+  @media (min-width: 640px) {
+    .rolling-numbers-grid-{{ section.id }} {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rolling-numbers-grid-{{ section.id }} {
+      grid-template-columns: repeat({{ section.blocks.size | at_most: 4 }}, 1fr);
+      gap: 4rem;
+    }
+  }
+
+  .rolling-numbers-item-{{ section.id }} {
+    text-align: {{ section.settings.content_alignment }};
+    opacity: 0;
+    transform: translateY(30px);
+  }
+
+  .rolling-numbers-item-{{ section.id }}.is-visible {
+    opacity: 1;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .rolling-numbers-value-{{ section.id }} {
+    display: flex;
+    align-items: baseline;
+    justify-content: {{ section.settings.content_alignment }};
+    gap: 0.1em;
+    font-size: calc(clamp(3rem, 10vw, 6rem) * var(--heading-font-scale, 1));
+    font-weight: 700;
+    font-family: var(--font-heading);
+    line-height: 1;
+    letter-spacing: -0.03em;
+  }
+
+  .rolling-numbers-value-{{ section.id }} layflags-rolling-number {
+    --roll-duration: {{ section.settings.animation_duration }}ms;
+  }
+
+  .rolling-numbers-prefix-{{ section.id }},
+  .rolling-numbers-suffix-{{ section.id }} {
+    font-size: 0.5em;
+    opacity: 0.7;
+  }
+
+  .rolling-numbers-label-{{ section.id }} {
+    margin-top: 1rem;
+    font-size: clamp(0.75rem, 1.5vw, 0.875rem);
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    opacity: 0.6;
+  }
+
+  .rolling-numbers-description-{{ section.id }} {
+    margin-top: 0.5rem;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    opacity: 0.8;
+    max-width: 280px;
+    {% if section.settings.content_alignment == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
+    {% elsif section.settings.content_alignment == 'right' %}
+    margin-left: auto;
+    {% endif %}
+  }
+
+  .rolling-numbers-header-{{ section.id }} {
+    text-align: {{ section.settings.content_alignment }};
+    margin-bottom: 4rem;
+  }
+
+  .rolling-numbers-title-{{ section.id }} {
+    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
+    font-weight: 700;
+    letter-spacing: -0.03em;
+    line-height: 1.1;
+  }
+
+  .rolling-numbers-title-line:nth-child(2) {
+    margin-left: clamp(0.5rem, 4vw, 2rem);
+  }
+
+  .rolling-numbers-subtitle-{{ section.id }} {
+    margin-top: 1rem;
+    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+    opacity: 0.7;
+    max-width: 600px;
+    {% if section.settings.content_alignment == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
+    {% endif %}
+  }
+
+  /* Divider style */
+  {% if section.settings.show_dividers %}
+  .rolling-numbers-item-{{ section.id }}:not(:last-child) {
+    position: relative;
+  }
+
+  @media (min-width: 1024px) {
+    .rolling-numbers-item-{{ section.id }}:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60%;
+      background: {{ section.settings.text_color }};
+      opacity: 0.2;
+    }
+  }
+  {% endif %}
+
+  /* Reduced motion fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .rolling-numbers-value-{{ section.id }} layflags-rolling-number {
+      --roll-duration: 0ms;
+    }
+
+    .rolling-numbers-item-{{ section.id }} {
+      opacity: 1;
+      transform: none;
+    }
+  }
+</style>
+
+<section class="rolling-numbers-{{ section.id }}" data-rolling-numbers="{{ section.id }}">
+  <div class="{{ container_class }}">
+    {% if section.settings.title != blank or section.settings.subtitle != blank %}
+      <header class="rolling-numbers-header-{{ section.id }}">
+        {% if section.settings.title != blank %}
+          <h2 class="rolling-numbers-title-{{ section.id }} font-heading" data-rolling-title>{{ section.settings.title }}</h2>
+        {% endif %}
+        {% if section.settings.subtitle != blank %}
+          <p class="rolling-numbers-subtitle-{{ section.id }}">{{ section.settings.subtitle }}</p>
+        {% endif %}
+      </header>
+    {% endif %}
+
+    <div class="rolling-numbers-grid-{{ section.id }}">
+      {% for block in section.blocks %}
+        <div
+          class="rolling-numbers-item-{{ section.id }}"
+          data-rolling-item
+          style="transition-delay: {{ forloop.index0 | times: 150 }}ms;"
+          {{ block.shopify_attributes }}
+        >
+          <div class="rolling-numbers-value-{{ section.id }}">
+            {% if block.settings.prefix != blank %}
+              <span class="rolling-numbers-prefix-{{ section.id }}">{{ block.settings.prefix }}</span>
+            {% endif %}
+            <layflags-rolling-number data-target="{{ block.settings.number }}">0</layflags-rolling-number>
+            {% if block.settings.suffix != blank %}
+              <span class="rolling-numbers-suffix-{{ section.id }}">{{ block.settings.suffix }}</span>
+            {% endif %}
+          </div>
+          {% if block.settings.label != blank %}
+            <p class="rolling-numbers-label-{{ section.id }}">{{ block.settings.label }}</p>
+          {% endif %}
+          {% if block.settings.description != blank %}
+            <p class="rolling-numbers-description-{{ section.id }}">{{ block.settings.description }}</p>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<script type="module">
+  // Load the rolling number web component
+  import 'https://unpkg.com/@layflags/rolling-number@1.0.0/rolling-number.js';
+
+  (function() {
+    const section = document.querySelector('[data-rolling-numbers="{{ section.id }}"]');
+    if (!section || section.dataset.initialized) return;
+    section.dataset.initialized = 'true';
+
+    const items = section.querySelectorAll('[data-rolling-item]');
+    const rollingNumbers = section.querySelectorAll('layflags-rolling-number');
+    const title = section.querySelector('[data-rolling-title]');
+
+    // Check if animations should run
+    const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
+
+    if (!shouldAnimate) {
+      // Show everything immediately without animation
+      items.forEach(item => item.classList.add('is-visible'));
+      rollingNumbers.forEach(el => {
+        const target = el.dataset.target;
+        if (target) el.setAttribute('value', target);
+      });
+      return;
+    }
+
+    // Title animation with GSAP SplitText
+    function initTitleAnimation() {
+      const gsap = window.gsap || (window.pieces && window.pieces.gsap);
+      let SplitText = window.SplitText;
+      if (!SplitText && window.pieces && window.pieces.SplitText) {
+        SplitText = window.pieces.SplitText;
+      }
+      const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+      if (!gsap || !SplitText || !ScrollTrigger) {
+        requestAnimationFrame(initTitleAnimation);
+        return;
+      }
+
+      if (title) {
+        const split = new SplitText(title, { type: 'lines', linesClass: 'rolling-numbers-title-line' });
+
+        split.lines.forEach(line => {
+          const lineWrapper = document.createElement('div');
+          lineWrapper.style.overflow = 'hidden';
+          lineWrapper.style.display = 'block';
+          line.parentNode.insertBefore(lineWrapper, line);
+          lineWrapper.appendChild(line);
+        });
+
+        gsap.set(split.lines, { yPercent: 120 });
+
+        gsap.to(split.lines, {
+          yPercent: 0,
+          duration: 1.2,
+          ease: 'power4.out',
+          stagger: 0.1,
+          scrollTrigger: {
+            trigger: section,
+            start: 'top 70%',
+            once: true
+          }
+        });
+      }
+    }
+
+    initTitleAnimation();
+
+    // Create intersection observer for scroll-triggered animation
+    const observerOptions = {
+      root: null,
+      rootMargin: '0px 0px -10% 0px',
+      threshold: 0.1
+    };
+
+    let hasAnimated = false;
+
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting && !hasAnimated) {
+          hasAnimated = true;
+
+          // Animate items in
+          items.forEach(item => {
+            item.classList.add('is-visible');
+          });
+
+          // Trigger rolling numbers animation by setting value attribute
+          rollingNumbers.forEach((el, index) => {
+            const target = el.dataset.target;
+            if (target) {
+              // Small delay between each number
+              setTimeout(() => {
+                el.setAttribute('value', target);
+              }, index * 100);
+            }
+          });
+
+          observer.disconnect();
+        }
+      });
+    }, observerOptions);
+
+    observer.observe(section);
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Rolling Numbers",
+  "tag": "section",
+  "class": "rolling-numbers-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "By the Numbers"
+    },
+    {
+      "type": "textarea",
+      "id": "subtitle",
+      "label": "Subtitle"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "center",
+      "label": "Content alignment"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 500,
+      "max": 3000,
+      "step": 100,
+      "default": 1500,
+      "unit": "ms",
+      "label": "Roll duration",
+      "info": "How long the number rolling animation takes"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "default": "#0a0a0a",
+      "label": "Background color"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "default": "#ffffff",
+      "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_dividers",
+      "default": true,
+      "label": "Show dividers between items",
+      "info": "Vertical lines between stats on desktop"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "stat",
+      "name": "Statistic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "number",
+          "label": "Number",
+          "default": "100",
+          "info": "The target number to animate to"
+        },
+        {
+          "type": "text",
+          "id": "prefix",
+          "label": "Prefix",
+          "info": "Symbol before number (e.g., $, +)"
+        },
+        {
+          "type": "text",
+          "id": "suffix",
+          "label": "Suffix",
+          "info": "Symbol after number (e.g., %, K, M)"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label",
+          "default": "Happy Customers"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "info": "Optional short description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rolling Numbers",
+      "category": "Text & content",
+      "blocks": [
+        {
+          "type": "stat",
+          "settings": {
+            "number": "50",
+            "suffix": "K+",
+            "label": "Happy Customers",
+            "description": "Worldwide satisfaction"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "98",
+            "suffix": "%",
+            "label": "Satisfaction Rate",
+            "description": "Based on reviews"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "150",
+            "suffix": "+",
+            "label": "Countries",
+            "description": "Global shipping"
+          }
+        },
+        {
+          "type": "stat",
+          "settings": {
+            "number": "24",
+            "suffix": "/7",
+            "label": "Support",
+            "description": "Always here to help"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

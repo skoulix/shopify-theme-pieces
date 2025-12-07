@@ -92,7 +92,7 @@
     height: 70vh;
     max-height: 600px;
     overflow: hidden;
-    border-radius: {{ section.settings.card_radius }}px;
+    border-radius: {{ settings.card_radius }}px;
     text-decoration: none;
     color: inherit;
   }
@@ -514,16 +514,6 @@
       "id": "full_width",
       "default": true,
       "label": "Full width"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 12,
-      "unit": "px",
-      "label": "Card corner radius"
     },
     {
       "type": "header",

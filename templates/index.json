@@ -190,6 +190,63 @@
         "text_color": "#000000"
       }
     },
+    "rolling_numbers": {
+      "type": "rolling-numbers",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "50",
+            "suffix": "K+",
+            "label": "Happy Customers",
+            "description": "Worldwide satisfaction"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "98",
+            "suffix": "%",
+            "label": "Satisfaction Rate",
+            "description": "Based on reviews"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "150",
+            "suffix": "+",
+            "label": "Countries",
+            "description": "Global shipping"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "24",
+            "suffix": "/7",
+            "label": "Support",
+            "description": "Always here to help"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4"
+      ],
+      "settings": {
+        "title": "By the Numbers",
+        "subtitle": "",
+        "content_alignment": "center",
+        "animation_duration": 1500,
+        "background_color": "#0a0a0a",
+        "text_color": "#ffffff",
+        "full_width": false,
+        "show_dividers": true
+      }
+    },
     "logo_marquee": {
       "type": "logo-marquee",
       "blocks": {
@@ -288,6 +345,7 @@
     "image_with_text",
     "featured_collection_2",
     "image_with_text_2",
+    "rolling_numbers",
     "logo_marquee",
     "newsletter"
   ]
