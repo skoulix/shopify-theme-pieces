@@ -189,6 +189,7 @@
             href="{{ link.url }}"
             class="relative text-sm font-semibold leading-6 text-[--color-text] hover:text-[--color-primary] transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-0.5 after:bg-current after:transition-all after:duration-300 after:ease-out{% if is_active %} after:w-full{% else %} after:w-0 hover:after:w-full{% endif %}"
             data-nav-link
+            {% if is_active %}aria-current="page"{% endif %}
           >
             {{ link.title }}
           </a>
@@ -310,6 +311,7 @@
                           class="mobile-nav__submenu-link{% if child_active %} is-active{% endif %}"
                           data-mobile-nav-close
                           style="--child-index: {{ forloop.index0 }}"
+                          {% if child_active %}aria-current="page"{% endif %}
                         >
                           <span class="mobile-nav__submenu-link-text">{{ child.title }}</span>
                           <span class="mobile-nav__submenu-link-line"></span>
@@ -324,6 +326,7 @@
                   class="mobile-nav__link font-heading{% if is_active %} is-active{% endif %}"
                   data-nav-link
                   data-mobile-nav-close
+                  {% if is_active %}aria-current="page"{% endif %}
                 >
                   <span class="mobile-nav__link-text" data-mobile-nav-link-text>{{ link.title }}</span>
                   <span class="mobile-nav__link-line"></span>
