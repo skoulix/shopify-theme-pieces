@@ -5,7 +5,7 @@
     else
       assign container_class = 'lg:pl-[--page-padding]'
     endif
-    assign content_class = 'page-full lg:px-0'
+    assign content_class = 'lg:px-0'
   else
     assign container_class = 'page-container'
     assign content_class = ''
@@ -13,10 +13,11 @@
 -%}
 
 <style>
-  .iwt-section-wrapper { background-color: {{ section.settings.background_color }}; }
-  .iwt-section { {% if section.settings.remove_padding %}padding: 0 0 calc(var(--section-vertical-padding) * 0.5) 0;{% else %}padding: var(--section-vertical-padding) 0;{% endif %} }
-  @media (min-width: 1024px) { .iwt-section { {% if section.settings.remove_padding %}padding: 0;{% endif %} } .iwt-section[data-layout="image_right"] .iwt-container { direction: rtl; } .iwt-section[data-layout="image_right"] .iwt-container > * { direction: ltr; } }
+  #shopify-section-{{ section.id }} { background-color: {{ section.settings.background_color }}; }
+  [data-iwt-section="{{ section.id }}"] { {% if section.settings.remove_padding %}padding: 0 0 calc(var(--section-vertical-padding) * 0.5) 0;{% else %}padding: var(--section-vertical-padding) 0;{% endif %} }
+  @media (min-width: 1024px) { [data-iwt-section="{{ section.id }}"] { {% if section.settings.remove_padding %}padding: 0;{% endif %} } [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container { direction: rtl; } [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container > * { direction: ltr; } }
   .iwt-container { gap: clamp(2rem, 5vw, 4rem); }
+  {% if section.settings.container_background_color != blank %}[data-iwt-section="{{ section.id }}"] .iwt-container { background-color: {{ section.settings.container_background_color }}; }{% endif %}
   .iwt-image { aspect-ratio: {{ section.settings.image_ratio }}; }
   .iwt-title { font-size: calc(clamp(1.75rem, 5vw, 2.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.95; color: {{ section.settings.text_color }}; }
   @media (min-width: 1024px) { .iwt-title { font-size: calc(clamp(2rem, 3.5vw, 3rem) * var(--heading-font-scale, 1)); } }
@@ -288,7 +289,12 @@
       "type": "color",
       "id": "background_color",
       "default": "#ffffff",
-      "label": "Background color"
+      "label": "Section background color"
+    },
+    {
+      "type": "color",
+      "id": "container_background_color",
+      "label": "Container background color"
     },
     {
       "type": "color",
