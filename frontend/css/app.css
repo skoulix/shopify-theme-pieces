@@ -590,7 +590,7 @@ html.scroll-locked body {
 
 /* Plus/minus toggle icon */
 .mobile-nav__toggle-icon {
-  font-size: clamp(1rem, 3vw, 1.25rem);
+  font-size: clamp(1.5rem, 5vw, 1.75rem);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   flex-shrink: 0;
 }
@@ -611,7 +611,7 @@ html.scroll-locked body {
   grid-template-rows: 1fr;
 }
 
-.mobile-nav__submenu > * {
+.mobile-nav__submenu-inner {
   overflow: hidden;
 }
 

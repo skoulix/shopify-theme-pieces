@@ -284,36 +284,38 @@
 
                   {%- comment -%} Submenu {%- endcomment -%}
                   <div class="mobile-nav__submenu" data-mobile-submenu-panel>
-                    {%- comment -%} View all link if parent has URL {%- endcomment -%}
-                    {% if link.url != '#' and link.url != '' %}
-                      <a
-                        href="{{ link.url }}"
-                        class="mobile-nav__submenu-all"
-                        data-mobile-nav-close
-                      >
-                        <span>View All {{ link.title }}</span>
-                        <i class="ph ph-arrow-right"></i>
-                      </a>
-                    {% endif %}
+                    <div class="mobile-nav__submenu-inner">
+                      {%- comment -%} View all link if parent has URL {%- endcomment -%}
+                      {% if link.url != '#' and link.url != '' %}
+                        <a
+                          href="{{ link.url }}"
+                          class="mobile-nav__submenu-all"
+                          data-mobile-nav-close
+                        >
+                          <span>View All {{ link.title }}</span>
+                          <i class="ph ph-arrow-right"></i>
+                        </a>
+                      {% endif %}
 
-                    {%- comment -%} Child links {%- endcomment -%}
-                    {% for child in link.links %}
-                      {%- liquid
-                        assign child_active = false
-                        if child.url == request.path
-                          assign child_active = true
-                        endif
-                      -%}
-                      <a
-                        href="{{ child.url }}"
-                        class="mobile-nav__submenu-link{% if child_active %} is-active{% endif %}"
-                        data-mobile-nav-close
-                        style="--child-index: {{ forloop.index0 }}"
-                      >
-                        <span class="mobile-nav__submenu-link-text">{{ child.title }}</span>
-                        <span class="mobile-nav__submenu-link-line"></span>
-                      </a>
-                    {% endfor %}
+                      {%- comment -%} Child links {%- endcomment -%}
+                      {% for child in link.links %}
+                        {%- liquid
+                          assign child_active = false
+                          if child.url == request.path
+                            assign child_active = true
+                          endif
+                        -%}
+                        <a
+                          href="{{ child.url }}"
+                          class="mobile-nav__submenu-link{% if child_active %} is-active{% endif %}"
+                          data-mobile-nav-close
+                          style="--child-index: {{ forloop.index0 }}"
+                        >
+                          <span class="mobile-nav__submenu-link-text">{{ child.title }}</span>
+                          <span class="mobile-nav__submenu-link-line"></span>
+                        </a>
+                      {% endfor %}
+                    </div>
                   </div>
                 </div>
               {% else %}
@@ -397,6 +399,7 @@
     const header = mobileNav.querySelector('.mobile-nav__header');
     const linkItems = mobileNav.querySelectorAll('.mobile-nav__item');
     const linkTexts = mobileNav.querySelectorAll('[data-mobile-nav-link-text]');
+    const toggleIcons = mobileNav.querySelectorAll('.mobile-nav__toggle-icon');
     const footer = mobileNav.querySelector('.mobile-nav__footer');
 
     // Get SplitText (only if animations enabled)
@@ -427,6 +430,7 @@
       if (shouldAnimateText) {
         gsap.set(header, { opacity: 0, y: -20 });
         gsap.set(linkItems, { opacity: 1 }); // Items visible, chars will animate
+        gsap.set(toggleIcons, { opacity: 0, scale: 0, rotation: -90 });
         gsap.set(footer, { opacity: 0, y: 20 });
 
         // Set link texts to hidden initially, will reveal by line
@@ -480,6 +484,18 @@
             stagger: 0.08,
             ease: 'power4.out'
           }, 0.5);
+        }
+
+        // Animate toggle icons with a playful spin-in
+        if (toggleIcons.length > 0) {
+          openTimeline.to(toggleIcons, {
+            opacity: 1,
+            scale: 1,
+            rotation: 0,
+            duration: 0.6,
+            stagger: 0.08,
+            ease: 'back.out(1.7)'
+          }, 0.7);
         }
 
         openTimeline.to(footer, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.9);
