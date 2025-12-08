@@ -67,11 +67,13 @@ USED_ICONS = [
 
 # Get directory paths
 SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
-ASSETS_DIR = os.path.join(os.path.dirname(SCRIPT_DIR), "assets")
+PROJECT_DIR = os.path.dirname(SCRIPT_DIR)
+ASSETS_DIR = os.path.join(PROJECT_DIR, "assets")
 CSS_FILE = os.path.join(ASSETS_DIR, "phosphor-icons.css")
-TTF_FILE = os.path.join(ASSETS_DIR, "pieces-Phosphor.ttf")
-OUTPUT_TTF = os.path.join(ASSETS_DIR, "pieces-Phosphor-subset.ttf")
-OUTPUT_WOFF2 = os.path.join(ASSETS_DIR, "pieces-Phosphor-subset.woff2")
+# Use full font from node_modules for subsetting
+TTF_FILE = os.path.join(PROJECT_DIR, "node_modules/@phosphor-icons/web/src/regular/Phosphor.ttf")
+OUTPUT_TTF = os.path.join(ASSETS_DIR, "pieces-Phosphor.ttf")
+OUTPUT_WOFF2 = os.path.join(ASSETS_DIR, "pieces-Phosphor.woff2")
 OUTPUT_CSS = os.path.join(ASSETS_DIR, "phosphor-icons-subset.css")
 
 def extract_unicode_map(css_file):
@@ -144,7 +146,8 @@ def main():
         return
 
     # Get file sizes
-    original_size = os.path.getsize(os.path.join(ASSETS_DIR, "pieces-Phosphor.woff2"))
+    original_woff2 = os.path.join(PROJECT_DIR, "node_modules/@phosphor-icons/web/src/regular/Phosphor.woff2")
+    original_size = os.path.getsize(original_woff2)
     new_size = os.path.getsize(OUTPUT_WOFF2)
 
     print(f"\nOriginal woff2: {original_size / 1024:.1f} KB")
@@ -165,8 +168,8 @@ def generate_subset_css(unicode_map):
     css_content = '''@font-face {
   font-family: "Phosphor";
   src:
-    url("pieces-Phosphor-subset.woff2") format("woff2"),
-    url("pieces-Phosphor-subset.ttf") format("truetype");
+    url("pieces-Phosphor.woff2") format("woff2"),
+    url("pieces-Phosphor.ttf") format("truetype");
   font-weight: normal;
   font-style: normal;
   font-display: swap;
