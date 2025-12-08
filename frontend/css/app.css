@@ -379,6 +379,17 @@ html.scroll-locked body {
   transform-origin: left;
 }
 
+/* Show line immediately when animations are disabled */
+html.animations-disabled .page-header-subtitle-line {
+  transform: scaleX(1);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .page-header-subtitle-line {
+    transform: scaleX(1);
+  }
+}
+
 /* ==========================================================================
    Mobile Navigation Drawer - Full Screen with Large Typography & Reveal Effects
    Uses GSAP for animations when available, CSS fallback otherwise
