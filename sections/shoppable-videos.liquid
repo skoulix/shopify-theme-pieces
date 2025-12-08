@@ -96,29 +96,18 @@
     {% endcase %}
   }
 
-  /* Slider track */
-  .shoppable-videos-track-{{ section.id }} {
-    display: flex;
-    gap: {% case video_spacing %}{% when 'none' %}0{% when 'small' %}0.5rem{% when 'large' %}1.5rem{% else %}1rem{% endcase %};
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
   .shoppable-video-slide-{{ section.id }} {
     flex-shrink: 0;
-    {%- comment -%} Mobile: Show configured number with peek for next slide {%- endcomment -%}
+    {%- comment -%} Mobile: Centered with nearby slides visible {%- endcomment -%}
     {%- case videos_mobile -%}
       {%- when '2' -%}
         width: calc(50% - 0.5rem);
       {%- else -%}
-        width: calc(85% - 0.5rem);
+        width: 75%;
     {%- endcase -%}
   }
 
   @media (min-width: 768px) {
-    .shoppable-videos-track-{{ section.id }} {
-      gap: {% case video_spacing %}{% when 'none' %}0{% when 'small' %}0.5rem{% when 'large' %}1.5rem{% else %}1rem{% endcase %};
-    }
-
     .shoppable-video-slide-{{ section.id }} {
       {%- comment -%} Tablet: Show configured number with peek {%- endcomment -%}
       {%- case videos_tablet -%}
@@ -354,15 +343,20 @@
     }
   }
 
-  /* Slider container */
+  /* Slider container - transform-based infinite carousel */
   .shoppable-videos-slider-{{ section.id }} {
     position: relative;
-    overflow: visible;
+    overflow: hidden;
   }
 
-  /* Override data-intro transform once visible so slider translateX works */
-  .shoppable-videos-slider-{{ section.id }}.intro-visible {
-    transform: none !important;
+  .shoppable-videos-track-{{ section.id }} {
+    display: flex;
+    gap: {% case video_spacing %}{% when 'none' %}0{% when 'small' %}0.5rem{% when 'large' %}1.5rem{% else %}1rem{% endcase %};
+    will-change: transform;
+  }
+
+  .shoppable-videos-track-{{ section.id }}.is-animating {
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
   /* Animation states */
@@ -411,7 +405,7 @@
     {% endif %}
 
     <!-- Videos Carousel -->
-    <div class="shoppable-videos-slider-{{ section.id }}" data-intro>
+    <div class="shoppable-videos-slider-{{ section.id }}" data-shoppable-videos-slider data-intro>
       <div class="shoppable-videos-track-{{ section.id }}" data-shoppable-videos-track>
         {% for block in section.blocks %}
           {% if block.type == 'video' %}
@@ -612,96 +606,186 @@
     }
   }
 
-  // Slider functionality - matching testimonials pattern exactly
+  // Infinite carousel with transform and cloned slides
+  const slider = section.querySelector('[data-shoppable-videos-slider]');
   const track = section.querySelector('[data-shoppable-videos-track]');
-  const slides = section.querySelectorAll('[data-video-slide]');
+  const originalSlides = Array.from(section.querySelectorAll('[data-video-slide]'));
   const prevBtn = section.querySelector('[data-shoppable-videos-prev]');
   const nextBtn = section.querySelector('[data-shoppable-videos-next]');
 
-  if (slides.length <= 1) {
-    // Hide nav if only one slide
+  if (originalSlides.length <= 1) {
     if (prevBtn) prevBtn.style.display = 'none';
     if (nextBtn) nextBtn.style.display = 'none';
   }
 
+  const totalOriginal = originalSlides.length;
   let currentIndex = 0;
-  const totalSlides = slides.length;
+  let isTransitioning = false;
+
+  // Clone slides for infinite effect
+  function setupInfiniteSlider() {
+    if (totalOriginal <= 1) return;
+
+    // Clone last few slides to prepend
+    const clonesAtStart = [];
+    for (let i = totalOriginal - 1; i >= Math.max(0, totalOriginal - 3); i--) {
+      const clone = originalSlides[i].cloneNode(true);
+      clone.setAttribute('data-clone', 'start');
+      clone.removeAttribute('data-video-slide');
+      clonesAtStart.unshift(clone);
+    }
+
+    // Clone first few slides to append
+    const clonesAtEnd = [];
+    for (let i = 0; i < Math.min(3, totalOriginal); i++) {
+      const clone = originalSlides[i].cloneNode(true);
+      clone.setAttribute('data-clone', 'end');
+      clone.removeAttribute('data-video-slide');
+      clonesAtEnd.push(clone);
+    }
+
+    // Prepend clones
+    clonesAtStart.forEach(clone => track.insertBefore(clone, track.firstChild));
+
+    // Append clones
+    clonesAtEnd.forEach(clone => track.appendChild(clone));
+
+    // Set initial position to first real slide (after prepended clones)
+    currentIndex = clonesAtStart.length;
+    updatePosition(false);
+  }
 
   function getSlideWidth() {
-    const slide = slides[0];
+    const allSlides = track.children;
+    if (!allSlides[0]) return 0;
     const trackStyle = getComputedStyle(track);
     const gap = parseFloat(trackStyle.gap) || 0;
-    return slide.offsetWidth + gap;
+    return allSlides[0].offsetWidth + gap;
   }
 
-  function getMaxTranslate() {
-    const slideWidth = slides[0].offsetWidth;
-    const trackStyle = getComputedStyle(track);
-    const gap = parseFloat(trackStyle.gap) || 0;
-    const totalTrackWidth = (slideWidth * totalSlides) + (gap * (totalSlides - 1));
-    const containerWidth = track.parentElement.offsetWidth;
-    return Math.max(0, totalTrackWidth - containerWidth);
+  function getCenterOffset() {
+    // On mobile (< 768px), center the active slide
+    // On desktop, align to left (no offset)
+    if (window.innerWidth < 768) {
+      const allSlides = track.children;
+      if (!allSlides[0]) return 0;
+      const slideWidth = allSlides[0].offsetWidth;
+      const sliderWidth = slider.offsetWidth;
+      // Offset = (container width - slide width) / 2
+      return (sliderWidth - slideWidth) / 2;
+    }
+    return 0;
   }
 
-  function updateSlider(index) {
+  function updatePosition(animate = true) {
     const slideWidth = getSlideWidth();
-    let translateX = index * slideWidth;
-    const maxTranslate = getMaxTranslate();
-    translateX = Math.min(translateX, maxTranslate);
-    track.style.transform = 'translateX(' + (-translateX) + 'px)';
-    currentIndex = index;
+    const centerOffset = getCenterOffset();
+    const translateX = -currentIndex * slideWidth + centerOffset;
+
+    if (animate) {
+      track.classList.add('is-animating');
+    } else {
+      track.classList.remove('is-animating');
+    }
+
+    track.style.transform = 'translateX(' + translateX + 'px)';
+  }
+
+  function handleTransitionEnd() {
+    const allSlides = track.children;
+    const numClonesAtStart = track.querySelectorAll('[data-clone="start"]').length;
+    const numClonesAtEnd = track.querySelectorAll('[data-clone="end"]').length;
+    const totalSlides = allSlides.length;
+
+    // If at a clone at the end, jump to the real slide at the start
+    if (currentIndex >= totalSlides - numClonesAtEnd) {
+      currentIndex = numClonesAtStart + (currentIndex - (totalSlides - numClonesAtEnd));
+      updatePosition(false);
+    }
+    // If at a clone at the start, jump to the real slide at the end
+    else if (currentIndex < numClonesAtStart) {
+      currentIndex = totalSlides - numClonesAtEnd - (numClonesAtStart - currentIndex);
+      updatePosition(false);
+    }
+
+    isTransitioning = false;
   }
 
   function nextSlide() {
-    const next = (currentIndex + 1) % totalSlides;
-    updateSlider(next);
+    if (isTransitioning || totalOriginal <= 1) return;
+    isTransitioning = true;
+    currentIndex++;
+    updatePosition(true);
   }
 
   function prevSlide() {
-    const prev = (currentIndex - 1 + totalSlides) % totalSlides;
-    updateSlider(prev);
+    if (isTransitioning || totalOriginal <= 1) return;
+    isTransitioning = true;
+    currentIndex--;
+    updatePosition(true);
   }
 
-  // Event listeners - attach directly to buttons
+  // Listen for transition end to handle infinite loop repositioning
+  if (track) {
+    track.addEventListener('transitionend', handleTransitionEnd);
+  }
+
+  // Event listeners
   if (prevBtn) {
     prevBtn.onclick = function(e) {
       e.preventDefault();
+      e.stopPropagation();
       prevSlide();
     };
   }
   if (nextBtn) {
     nextBtn.onclick = function(e) {
       e.preventDefault();
+      e.stopPropagation();
       nextSlide();
     };
   }
 
   // Touch/swipe support
   let touchStartX = 0;
-  if (track) {
-    track.addEventListener('touchstart', function(e) {
+  let touchDiff = 0;
+
+  if (slider) {
+    slider.addEventListener('touchstart', function(e) {
+      if (isTransitioning) return;
       touchStartX = e.touches[0].clientX;
+      track.classList.remove('is-animating');
     }, { passive: true });
 
-    track.addEventListener('touchend', function(e) {
-      const touchEndX = e.changedTouches[0].clientX;
-      const diff = touchStartX - touchEndX;
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          nextSlide();
-        } else {
-          prevSlide();
-        }
+    slider.addEventListener('touchmove', function(e) {
+      if (isTransitioning) return;
+      touchDiff = e.touches[0].clientX - touchStartX;
+      const slideWidth = getSlideWidth();
+      const centerOffset = getCenterOffset();
+      const baseTranslate = -currentIndex * slideWidth + centerOffset;
+      track.style.transform = 'translateX(' + (baseTranslate + touchDiff) + 'px)';
+    }, { passive: true });
+
+    slider.addEventListener('touchend', function() {
+      if (isTransitioning) return;
+      const threshold = getSlideWidth() * 0.2;
+      if (touchDiff > threshold) {
+        prevSlide();
+      } else if (touchDiff < -threshold) {
+        nextSlide();
+      } else {
+        updatePosition(true);
       }
+      touchDiff = 0;
     }, { passive: true });
   }
 
-  // Initial position
-  updateSlider(0);
+  // Initialize infinite slider
+  setupInfiniteSlider();
 
   // Recalculate on resize
   window.addEventListener('resize', function() {
-    updateSlider(currentIndex);
+    updatePosition(false);
   });
 
   // Video autoplay on visibility
