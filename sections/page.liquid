@@ -84,12 +84,13 @@
   // Re-run on Swup content replace
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('page_animation', () => {
-    const newWrapper = document.querySelector('[data-page-wrapper]');
-    if (newWrapper && !newWrapper.dataset.pageInitialized) {
-      newWrapper.dataset.pageInitialized = 'true';
-      animateHeader();
-    }
-  });
+      const newWrapper = document.querySelector('[data-page-wrapper]');
+      if (newWrapper && !newWrapper.dataset.pageInitialized) {
+        newWrapper.dataset.pageInitialized = 'true';
+        animateHeader();
+      }
+    });
+  }
 })();
 </script>
 
