@@ -244,7 +244,7 @@
         <button
           class="scroll-panels-progress-dot-{{ section.id }}{% if forloop.first %} is-active{% endif %}"
           data-progress-dot="{{ forloop.index0 }}"
-          aria-label="Go to panel {{ forloop.index }}"
+          aria-label="{{ 'accessibility.go_to_panel' | t: index: forloop.index }}"
         ></button>
       {% endfor %}
     </div>

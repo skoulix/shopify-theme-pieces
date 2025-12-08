@@ -110,7 +110,7 @@
     {% if paginate.pages > 1 %}
       <nav class="{{ container_class }} flex items-center justify-center gap-2 mt-12">
         {% if paginate.previous %}
-          <a href="{{ paginate.previous.url }}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] hover:bg-[--color-background-secondary] transition-colors" aria-label="Previous page">
+          <a href="{{ paginate.previous.url }}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] hover:bg-[--color-background-secondary] transition-colors" aria-label="{{ 'accessibility.previous_page' | t }}">
             <i class="ph ph-arrow-left"></i>
           </a>
         {% endif %}
@@ -128,7 +128,7 @@
         {% endfor %}
 
         {% if paginate.next %}
-          <a href="{{ paginate.next.url }}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] hover:bg-[--color-background-secondary] transition-colors" aria-label="Next page">
+          <a href="{{ paginate.next.url }}" class="w-10 h-10 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] hover:bg-[--color-background-secondary] transition-colors" aria-label="{{ 'accessibility.next_page' | t }}">
             <i class="ph ph-arrow-right"></i>
           </a>
         {% endif %}

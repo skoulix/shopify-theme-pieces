@@ -193,7 +193,7 @@
               {% if paginate.previous %}
                 <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
                   <i class="ph ph-arrow-left"></i>
-                  <span>Previous</span>
+                  <span>{{ 'accessibility.previous' | t }}</span>
                 </a>
               {% endif %}
 
@@ -203,7 +203,7 @@
 
               {% if paginate.next %}
                 <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
-                  <span>Next</span>
+                  <span>{{ 'accessibility.next' | t }}</span>
                   <i class="ph ph-arrow-right"></i>
                 </a>
               {% endif %}

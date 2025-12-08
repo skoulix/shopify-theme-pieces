@@ -340,10 +340,10 @@
     if (addButton) {
       if (variant.available) {
         addButton.disabled = false;
-        addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>Add to Cart</span>';
+        addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>{{ 'products.product.add_to_cart' | t }}</span>';
       } else {
         addButton.disabled = true;
-        addButton.querySelector('.product-add-btn-text').innerHTML = '<span>Sold Out</span>';
+        addButton.querySelector('.product-add-btn-text').innerHTML = '<span>{{ 'products.product.sold_out' | t }}</span>';
       }
     }
 
@@ -731,7 +731,7 @@
 
       // Loading state
       addButton.disabled = true;
-      addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-spinner animate-spin"></i><span>Adding...</span></span>';
+      addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-spinner animate-spin"></i><span>{{ 'cart.adding' | t }}</span></span>';
 
       try {
         const formData = new FormData(form);
@@ -786,7 +786,7 @@
         }
 
         // Success state
-        addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-check"></i><span>Added!</span></span>';
+        addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-check"></i><span>{{ 'cart.added' | t }}</span></span>';
 
         setTimeout(() => {
           addButton.innerHTML = originalText;
@@ -797,7 +797,7 @@
         console.error('Add to cart error:', error);
 
         // Error state
-        addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-x"></i><span>Error</span></span>';
+        addButton.innerHTML = '<span class="product-add-btn-text"><i class="ph ph-x"></i><span>{{ 'cart.error' | t }}</span></span>';
 
         setTimeout(() => {
           addButton.innerHTML = originalText;

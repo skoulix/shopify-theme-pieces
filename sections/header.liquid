@@ -95,7 +95,7 @@
         class="lg:hidden -m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-[--color-text]"
         data-mobile-nav-open
       >
-        <span class="sr-only">Open menu</span>
+        <span class="sr-only">{{ 'accessibility.open_menu' | t }}</span>
         <i class="ph ph-list text-2xl"></i>
       </button>
 
@@ -166,7 +166,7 @@
                 {%- comment -%} Featured/Parent link {%- endcomment -%}
                 {% if link.url != '#' and link.url != '' %}
                   <a href="{{ link.url }}" class="dropdown-featured" data-dropdown-item>
-                    <span class="dropdown-featured__label">Explore</span>
+                    <span class="dropdown-featured__label">{{ 'accessibility.explore' | t }}</span>
                     <span class="dropdown-featured__title font-heading">{{ link.title }}</span>
                     <i class="ph ph-arrow-right dropdown-featured__arrow"></i>
                   </a>
@@ -201,14 +201,14 @@
     <div class="flex flex-1 justify-end gap-x-1 lg:gap-x-2">
       {%- comment -%} Search - Desktop only {%- endcomment -%}
       <a href="{{ routes.search_url }}" class="hidden lg:block p-2 text-[--color-text-secondary] hover:text-[--color-text] transition-colors">
-        <span class="sr-only">Search</span>
+        <span class="sr-only">{{ 'accessibility.search' | t }}</span>
         <i class="ph ph-magnifying-glass text-xl"></i>
       </a>
 
       {%- comment -%} Account - Desktop only {%- endcomment -%}
       {% if shop.customer_accounts_enabled %}
         <a href="{{ routes.account_url }}" class="hidden lg:block p-2 text-[--color-text-secondary] hover:text-[--color-text] transition-colors">
-          <span class="sr-only">Account</span>
+          <span class="sr-only">{{ 'accessibility.account' | t }}</span>
           <i class="ph ph-user text-xl"></i>
         </a>
       {% endif %}
@@ -247,7 +247,7 @@
       {%- comment -%} Header {%- endcomment -%}
       <div class="mobile-nav__header">
         <button type="button" class="mobile-nav__close" data-mobile-nav-close>
-          <span class="sr-only">Close menu</span>
+          <span class="sr-only">{{ 'accessibility.close_menu' | t }}</span>
           <i class="ph ph-x"></i>
         </button>
       </div>
@@ -343,12 +343,12 @@
           {% if shop.customer_accounts_enabled %}
             <a href="{{ routes.account_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
               <i class="ph ph-user"></i>
-              <span>Account</span>
+              <span>{{ 'accessibility.account' | t }}</span>
             </a>
           {% endif %}
           <a href="{{ routes.search_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
             <i class="ph ph-magnifying-glass"></i>
-            <span>Search</span>
+            <span>{{ 'accessibility.search' | t }}</span>
           </a>
           {% if settings.cart_type == 'drawer' %}
             <button

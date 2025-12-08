@@ -335,17 +335,17 @@
             {% if block.settings.linkedin != blank or block.settings.twitter != blank or block.settings.instagram != blank %}
               <div class="team-member-social-{{ section.id }}">
                 {% if block.settings.linkedin != blank %}
-                  <a href="{{ block.settings.linkedin }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="LinkedIn">
+                  <a href="{{ block.settings.linkedin }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.linkedin' | t }}">
                     <i class="ph ph-linkedin-logo"></i>
                   </a>
                 {% endif %}
                 {% if block.settings.twitter != blank %}
-                  <a href="{{ block.settings.twitter }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="Twitter">
+                  <a href="{{ block.settings.twitter }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.twitter' | t }}">
                     <i class="ph ph-x-logo"></i>
                   </a>
                 {% endif %}
                 {% if block.settings.instagram != blank %}
-                  <a href="{{ block.settings.instagram }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="Instagram">
+                  <a href="{{ block.settings.instagram }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.instagram' | t }}">
                     <i class="ph ph-instagram-logo"></i>
                   </a>
                 {% endif %}

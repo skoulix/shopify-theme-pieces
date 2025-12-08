@@ -125,7 +125,7 @@
                       <div class="flex items-center justify-between mt-4">
                         {%- comment -%} Quantity {%- endcomment -%}
                         <div class="cart-quantity" data-quantity-wrapper>
-                          <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
+                          <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="{{ 'accessibility.decrease_quantity' | t }}">
                             <i class="ph ph-minus"></i>
                           </button>
                           <div class="cart-quantity-value">
@@ -137,10 +137,10 @@
                               class="cart-quantity-input"
                               data-quantity-input
                               data-line="{{ forloop.index }}"
-                              aria-label="Quantity"
+                              aria-label="{{ 'accessibility.quantity' | t }}"
                             >
                           </div>
-                          <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="Increase quantity">
+                          <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="{{ 'accessibility.increase_quantity' | t }}">
                             <i class="ph ph-plus"></i>
                           </button>
                         </div>

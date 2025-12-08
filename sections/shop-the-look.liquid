@@ -569,12 +569,39 @@
         body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
       })
       .then(function(response) { return response.json(); })
-      .then(function(data) {
+      .then(async function(item) {
         button.innerHTML = '<i class="ph ph-check"></i>';
 
-        // Refresh cart and open drawer
+        // Refresh cart
         document.dispatchEvent(new CustomEvent('cart:refresh'));
-        document.dispatchEvent(new CustomEvent('cart:open'));
+
+        // Get updated cart
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+
+        // Update cart count
+        document.querySelectorAll('[data-cart-count]').forEach(function(el) {
+          el.textContent = cart.item_count;
+        });
+
+        // Check cart type setting
+        const cartType = window.themeSettings?.cartType || 'drawer';
+
+        if (cartType === 'drawer') {
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        } else if (cartType === 'notification') {
+          const productInfo = {
+            title: item.items ? item.items[0].product_title : item.product_title,
+            variant_title: (item.items ? item.items[0].variant_title : item.variant_title) !== 'Default Title' ? (item.items ? item.items[0].variant_title : item.variant_title) : null,
+            image: (item.items ? item.items[0].image : item.image) ? (item.items ? item.items[0].image : item.image).replace(/(\.[^.]+)$/, '_200x$1') : null
+          };
+          document.dispatchEvent(new CustomEvent('cart:notification', {
+            detail: { product: productInfo, cart: cart }
+          }));
+        } else {
+          window.location.href = '/cart';
+          return;
+        }
 
         setTimeout(function() {
           button.innerHTML = originalHtml;
@@ -617,12 +644,41 @@
         body: JSON.stringify({ items: items })
       })
       .then(function(response) { return response.json(); })
-      .then(function(data) {
+      .then(async function(data) {
         addAllButton.innerHTML = '<i class="ph ph-check mr-2"></i><span>{{ 'cart.added' | t }}</span>';
 
-        // Refresh cart and open drawer
+        // Refresh cart
         document.dispatchEvent(new CustomEvent('cart:refresh'));
-        document.dispatchEvent(new CustomEvent('cart:open'));
+
+        // Get updated cart
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+
+        // Update cart count
+        document.querySelectorAll('[data-cart-count]').forEach(function(el) {
+          el.textContent = cart.item_count;
+        });
+
+        // Check cart type setting
+        const cartType = window.themeSettings?.cartType || 'drawer';
+
+        if (cartType === 'drawer') {
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        } else if (cartType === 'notification') {
+          // For multiple items, show notification for the first one
+          const firstItem = data.items ? data.items[0] : data;
+          const productInfo = {
+            title: firstItem.product_title,
+            variant_title: firstItem.variant_title !== 'Default Title' ? firstItem.variant_title : null,
+            image: firstItem.image ? firstItem.image.replace(/(\.[^.]+)$/, '_200x$1') : null
+          };
+          document.dispatchEvent(new CustomEvent('cart:notification', {
+            detail: { product: productInfo, cart: cart }
+          }));
+        } else {
+          window.location.href = '/cart';
+          return;
+        }
 
         setTimeout(function() {
           addAllButton.innerHTML = originalHtml;

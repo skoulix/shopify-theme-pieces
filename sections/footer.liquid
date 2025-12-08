@@ -40,37 +40,37 @@
           <div class="footer-block flex justify-center gap-x-5" {{ block.shopify_attributes }}>
             {% if settings.social_instagram_link != blank %}
               <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">Instagram</span>
+                <span class="sr-only">{{ 'social.instagram' | t }}</span>
                 <i class="ph ph-instagram-logo text-2xl"></i>
               </a>
             {% endif %}
             {% if settings.social_facebook_link != blank %}
               <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">Facebook</span>
+                <span class="sr-only">{{ 'social.facebook' | t }}</span>
                 <i class="ph ph-facebook-logo text-2xl"></i>
               </a>
             {% endif %}
             {% if settings.social_twitter_link != blank %}
               <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">X</span>
+                <span class="sr-only">{{ 'social.twitter' | t }}</span>
                 <i class="ph ph-x-logo text-2xl"></i>
               </a>
             {% endif %}
             {% if settings.social_tiktok_link != blank %}
               <a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">TikTok</span>
+                <span class="sr-only">{{ 'social.tiktok' | t }}</span>
                 <i class="ph ph-tiktok-logo text-2xl"></i>
               </a>
             {% endif %}
             {% if settings.social_pinterest_link != blank %}
               <a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">Pinterest</span>
+                <span class="sr-only">{{ 'social.pinterest' | t }}</span>
                 <i class="ph ph-pinterest-logo text-2xl"></i>
               </a>
             {% endif %}
             {% if settings.social_youtube_link != blank %}
               <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">YouTube</span>
+                <span class="sr-only">{{ 'social.youtube' | t }}</span>
                 <i class="ph ph-youtube-logo text-2xl"></i>
               </a>
             {% endif %}

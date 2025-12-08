@@ -97,7 +97,7 @@
 
   {% if section.settings.show_scroll_indicator %}
     <div class="absolute bottom-8 right-[--page-padding] flex flex-col items-center gap-2 opacity-60 z-10" style="color: {{ section.settings.text_color }};" data-hero-scroll>
-      <span class="text-[0.65rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl]">Scroll</span>
+      <span class="text-[0.65rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl]">{{ 'accessibility.scroll_down' | t }}</span>
       <div class="hero-scroll-line w-px h-[60px] bg-current origin-top"></div>
     </div>
   {% endif %}

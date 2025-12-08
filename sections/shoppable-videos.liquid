@@ -983,14 +983,48 @@
         button.innerHTML = '<span>{{ "cart.adding" | t }}</span>';
 
         fetch('/cart/add.js', { method: 'POST', body: new FormData(form) })
-          .then(response => {
+          .then(async response => {
             if (response.ok) {
+              const item = await response.json();
               button.innerHTML = '<span>{{ "cart.added" | t }}</span>';
               document.dispatchEvent(new CustomEvent('cart:refresh'));
-              if (typeof window.openCartDrawer === 'function') {
-                setTimeout(() => { closeLightbox(); window.openCartDrawer(); }, 500);
+
+              // Get updated cart for count and notification
+              const cartResponse = await fetch('/cart.js');
+              const cart = await cartResponse.json();
+
+              // Update cart count in header
+              document.querySelectorAll('[data-cart-count]').forEach(el => {
+                el.textContent = cart.item_count;
+              });
+
+              // Check cart type setting
+              const cartType = window.themeSettings?.cartType || 'drawer';
+
+              if (cartType === 'drawer') {
+                if (typeof window.openCartDrawer === 'function') {
+                  setTimeout(() => { closeLightbox(); window.openCartDrawer(); }, 500);
+                } else if (window.refreshCartDrawer) {
+                  await window.refreshCartDrawer();
+                  setTimeout(() => { closeLightbox(); document.dispatchEvent(new CustomEvent('cart:open')); }, 500);
+                } else {
+                  setTimeout(() => { button.innerHTML = originalText; button.disabled = false; }, 2000);
+                }
+              } else if (cartType === 'notification') {
+                // Show notification instead of drawer
+                const productInfo = {
+                  title: item.product_title,
+                  variant_title: item.variant_title !== 'Default Title' ? item.variant_title : null,
+                  image: item.image ? item.image.replace(/(\.[^.]+)$/, '_200x$1') : null
+                };
+                document.dispatchEvent(new CustomEvent('cart:notification', {
+                  detail: { product: productInfo, cart: cart }
+                }));
+                setTimeout(() => { closeLightbox(); button.innerHTML = originalText; button.disabled = false; }, 500);
               } else {
-                setTimeout(() => { button.innerHTML = originalText; button.disabled = false; }, 2000);
+                // cartType === 'page' - redirect to cart
+                closeLightbox();
+                window.location.href = '/cart';
               }
             } else {
               button.innerHTML = '<span>{{ "cart.error" | t }}</span>';
