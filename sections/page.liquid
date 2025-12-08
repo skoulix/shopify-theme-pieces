@@ -3,11 +3,14 @@
 {%- endcomment -%}
 
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  case section.settings.header_alignment
+    when 'center'
+      assign header_align_class = 'text-center'
+      assign title_align_class = 'mx-auto'
+    else
+      assign header_align_class = 'text-left'
+      assign title_align_class = ''
+  endcase
 -%}
 
 <style>
@@ -16,13 +19,15 @@
   @media (min-width: 1536px) { .page-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
   .page-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
   .page-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
+  .page-header-title.text-center .page-header-title-line:nth-child(2),
+  .page-header-title.text-center .page-header-title-line:nth-child(3) { margin-left: 0; }
   .page-wrapper.is-loading .page-header-title-line span { opacity: 0; transform: translateY(100%); }
   html.animations-disabled .page-wrapper.is-loading .page-header-title-line span { opacity: 1; transform: none; }
 </style>
 
 <section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>
-  <header class="mb-12 lg:mb-16 {{ container_class }}">
-    <h1 class="page-header-title font-bold text-[--color-text] font-heading">
+  <header class="mb-12 lg:mb-16 page-container {{ header_align_class }}">
+    <h1 class="page-header-title font-bold text-[--color-text] font-heading {{ header_align_class }}">
       {%- assign title_words = page.title | split: ' ' -%}
       {%- for word in title_words -%}
         <span class="page-header-title-line block overflow-hidden">
@@ -32,8 +37,8 @@
     </h1>
   </header>
 
-  <div class="{{ container_class }}">
-    <div class="prose max-w-3xl text-[--color-text]">
+  <div class="page-container">
+    <div class="prose max-w-none text-[--color-text]">
       {{ page.content }}
     </div>
   </div>
@@ -99,10 +104,14 @@
   "name": "Page",
   "settings": [
     {
-      "type": "checkbox",
-      "id": "full_width",
-      "default": false,
-      "label": "Full width"
+      "type": "select",
+      "id": "header_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" }
+      ],
+      "default": "left",
+      "label": "Header alignment"
     }
   ]
 }
