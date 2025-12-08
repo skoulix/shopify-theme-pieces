@@ -1,5 +1,5 @@
 {%- comment -%}
-  Logo Marquee Section - Infinite scrolling logo carousel
+  Logo Marquee Section - Infinite scrolling logo carousel with GSAP
   For "As seen in", partners, or brand logos
 {%- endcomment -%}
 
@@ -70,24 +70,6 @@
   .logo-marquee-track-{{ section.id }} {
     display: flex;
     width: max-content;
-    animation: logo-marquee-scroll-{{ section.id }} {{ section.settings.speed }}s linear infinite;
-  }
-
-  .logo-marquee-{{ section.id }}[data-direction="right"] .logo-marquee-track-{{ section.id }} {
-    animation-direction: reverse;
-  }
-
-  .logo-marquee-{{ section.id }}:hover .logo-marquee-track-{{ section.id }} {
-    animation-play-state: paused;
-  }
-
-  @keyframes logo-marquee-scroll-{{ section.id }} {
-    from {
-      transform: translateX(0);
-    }
-    to {
-      transform: translateX(-50%);
-    }
   }
 
   .logo-marquee-item-{{ section.id }} {
@@ -145,15 +127,19 @@
     opacity: 0.3;
   }
 
-  /* Reduced motion */
+  /* Reduced motion - show static logos */
   @media (prefers-reduced-motion: reduce) {
     .logo-marquee-track-{{ section.id }} {
-      animation: none;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 1rem;
     }
   }
 
   html.animations-disabled .logo-marquee-track-{{ section.id }} {
-    animation: none;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1rem;
   }
 
   html.animations-disabled .logo-marquee-label-{{ section.id }} {
@@ -166,6 +152,7 @@
   class="logo-marquee-{{ section.id }}"
   data-logo-marquee="{{ section.id }}"
   data-direction="{{ section.settings.direction }}"
+  data-speed="{{ section.settings.speed }}"
 >
   <div class="{{ container_class }}">
     {% if section.settings.label != blank %}
@@ -179,7 +166,6 @@
 
   <div class="logo-marquee-track-wrapper-{{ section.id }}">
     <div class="logo-marquee-track-{{ section.id }}" data-logo-track>
-      {%- comment -%} First set of logos {%- endcomment -%}
       {% for block in section.blocks %}
         <div class="logo-marquee-item-{{ section.id }}" {{ block.shopify_attributes }}>
           {% if block.settings.logo != blank %}
@@ -202,33 +188,102 @@
           {% endif %}
         </div>
       {% endfor %}
-
-      {%- comment -%} Duplicate set for seamless loop {%- endcomment -%}
-      {% for block in section.blocks %}
-        <div class="logo-marquee-item-{{ section.id }}" aria-hidden="true">
-          {% if block.settings.logo != blank %}
-            {% if block.settings.link != blank %}
-              <a href="{{ block.settings.link }}" target="_blank" rel="noopener" tabindex="-1">
-            {% endif %}
-
-            {{ block.settings.logo | image_url: height: 200 | image_tag:
-              loading: 'lazy',
-              alt: block.settings.alt
-            }}
-
-            {% if block.settings.link != blank %}
-              </a>
-            {% endif %}
-          {% else %}
-            <div class="logo-marquee-placeholder-{{ section.id }}">
-              <i class="ph ph-image"></i>
-            </div>
-          {% endif %}
-        </div>
-      {% endfor %}
     </div>
   </div>
 </section>
+
+<script>
+(function() {
+  const section = document.querySelector('[data-logo-marquee="{{ section.id }}"]');
+  if (!section || section.dataset.marqueeInitialized) return;
+  section.dataset.marqueeInitialized = 'true';
+
+  const track = section.querySelector('[data-logo-track]');
+  if (!track) return;
+
+  const direction = section.dataset.direction === 'right' ? 1 : -1;
+  const speed = parseInt(section.dataset.speed, 10) || 30;
+
+  // Check if animations should run
+  const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
+  if (!shouldAnimate) return;
+
+  function initMarquee() {
+    const gsap = window.pieces?.gsap || window.gsap;
+    if (!gsap) {
+      setTimeout(initMarquee, 100);
+      return;
+    }
+
+    const items = track.querySelectorAll('[class*="logo-marquee-item-"]');
+    if (items.length === 0) return;
+
+    // Calculate total width of one set of items
+    let totalWidth = 0;
+    items.forEach(item => {
+      totalWidth += item.offsetWidth;
+    });
+
+    // Clone items to fill the track for seamless loop
+    const viewportWidth = window.innerWidth;
+    const clonesNeeded = Math.ceil((viewportWidth * 2) / totalWidth) + 1;
+
+    for (let i = 0; i < clonesNeeded; i++) {
+      items.forEach(item => {
+        const clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+        track.appendChild(clone);
+      });
+    }
+
+    // Calculate animation duration based on speed setting
+    // Speed setting is in seconds for full loop - higher = slower
+    const duration = speed;
+
+    // Create the infinite scroll animation
+    const tween = gsap.to(track, {
+      x: direction === -1 ? -totalWidth : totalWidth,
+      duration: duration,
+      ease: 'none',
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize(x => {
+          // Use modulo for seamless looping
+          return parseFloat(x) % totalWidth;
+        })
+      }
+    });
+
+    // Pause on hover
+    section.addEventListener('mouseenter', () => {
+      gsap.to(tween, { timeScale: 0, duration: 0.5, ease: 'power2.out' });
+    });
+
+    section.addEventListener('mouseleave', () => {
+      gsap.to(tween, { timeScale: 1, duration: 0.5, ease: 'power2.out' });
+    });
+
+    // Store reference for cleanup
+    section._marqueeAnimation = tween;
+  }
+
+  // Wait for GSAP to be available
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMarquee);
+  } else {
+    requestAnimationFrame(initMarquee);
+  }
+
+  // Reinitialize after Swup transitions
+  window.addEventListener('swup:contentReplaced', () => {
+    if (section._marqueeAnimation) {
+      section._marqueeAnimation.kill();
+    }
+    requestAnimationFrame(initMarquee);
+  });
+})();
+</script>
 
 {% schema %}
 {
