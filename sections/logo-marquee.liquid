@@ -175,7 +175,7 @@
 
             {{ block.settings.logo | image_url: height: 200 | image_tag:
               loading: 'lazy',
-              alt: block.settings.logo.alt | default: 'Partner logo ' | append: forloop.index
+              alt: block.settings.logo.alt | default: section.settings.label
             }}
 
             {% if block.settings.link != blank %}

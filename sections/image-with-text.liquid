@@ -57,7 +57,8 @@
             class: 'w-full h-full object-cover',
             loading: 'lazy',
             sizes: '(max-width: 1024px) 100vw, 50vw',
-            widths: '600, 800, 1000, 1200'
+            widths: '600, 800, 1000, 1200',
+            alt: section.settings.image.alt | default: section.settings.title
           }}
         {% else %}
           {{ 'lifestyle-2' | placeholder_svg_tag: 'w-full h-full object-cover' }}

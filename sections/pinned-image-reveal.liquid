@@ -94,7 +94,7 @@
                 <img
                   class="mobile-parallax-img block w-full h-[130%] object-cover"
                   src="{{ block.settings.image | image_url: width: 1200 }}"
-                  alt="{{ block.settings.image.alt | default: 'sections.pinned_image_reveal.image_alt' | t | escape }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | default: section.settings.title }}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                   loading="lazy"
@@ -188,7 +188,7 @@
               {%- if block.settings.image != blank -%}
                 <img
                   src="{{ block.settings.image | image_url: width: 1200 }}"
-                  alt="{{ block.settings.image.alt | default: 'sections.pinned_image_reveal.image_alt' | t | escape }}"
+                  alt="{{ block.settings.image.alt | default: block.settings.title | default: section.settings.title }}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                   loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"

@@ -65,7 +65,8 @@
         class: 'w-full h-auto block',
         loading: 'eager',
         sizes: '100vw',
-        widths: '600, 900, 1200, 1600'
+        widths: '600, 900, 1200, 1600',
+        alt: article.image.alt | default: article.title
       }}
     </div>
   {% endif %}

@@ -257,7 +257,8 @@
                   class: '',
                   loading: 'lazy',
                   sizes: '80vw',
-                  widths: '800, 1000, 1200, 1400, 1600'
+                  widths: '800, 1000, 1200, 1400, 1600',
+                  alt: block.settings.image.alt | default: block.settings.title | default: section.settings.heading
                 }}
               {% else %}
                 {%- assign placeholder_id = forloop.index | modulo: 4 | plus: 1 -%}
