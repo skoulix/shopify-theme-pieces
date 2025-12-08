@@ -228,7 +228,7 @@
       data-before-after-container
       data-intro
       role="img"
-      aria-label="Image comparison slider: {{ section.settings.before_label }} vs {{ section.settings.after_label }}"
+      aria-label="{{ 'sections.before_after.comparison_label' | t: before: section.settings.before_label, after: section.settings.after_label }}"
     >
       {%- comment -%} After Image (Background) {%- endcomment -%}
       {%- capture image_class -%}before-after-image-{{ section.id }}{%- endcapture -%}

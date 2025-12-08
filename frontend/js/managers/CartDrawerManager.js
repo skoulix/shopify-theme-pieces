@@ -426,7 +426,7 @@ class CartDrawerManager {
                 class="cart-drawer__quantity-btn"
                 data-quantity-minus
                 data-line="${lineIndex}"
-                aria-label="Decrease quantity"
+                aria-label="${window.themeStrings?.decreaseQuantity || 'Decrease quantity'}"
               >
                 <i class="ph ph-minus"></i>
               </button>
@@ -438,7 +438,7 @@ class CartDrawerManager {
                   min="0"
                   data-quantity-input
                   data-line="${lineIndex}"
-                  aria-label="Quantity"
+                  aria-label="${window.themeStrings?.quantity || 'Quantity'}"
                 >
               </div>
               <button
@@ -446,7 +446,7 @@ class CartDrawerManager {
                 class="cart-drawer__quantity-btn"
                 data-quantity-plus
                 data-line="${lineIndex}"
-                aria-label="Increase quantity"
+                aria-label="${window.themeStrings?.increaseQuantity || 'Increase quantity'}"
               >
                 <i class="ph ph-plus"></i>
               </button>
@@ -456,7 +456,7 @@ class CartDrawerManager {
               class="cart-drawer__remove"
               data-remove-item
               data-line="${lineIndex}"
-              aria-label="Remove ${item.product_title}"
+              aria-label="${(window.themeStrings?.removeItem || 'Remove {{ title }}').replace('{{ title }}', item.product_title)}"
             >
               <i class="ph ph-trash"></i>
             </button>

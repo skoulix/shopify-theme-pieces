@@ -305,7 +305,7 @@ class CartPageManager {
 
             <div class="flex items-center justify-between mt-4">
               <div class="cart-quantity" data-quantity-wrapper>
-                <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="Decrease quantity">
+                <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="${window.themeStrings?.decreaseQuantity || 'Decrease quantity'}">
                   <i class="ph ph-minus"></i>
                 </button>
                 <div class="cart-quantity-value">
@@ -317,10 +317,10 @@ class CartPageManager {
                     class="cart-quantity-input"
                     data-quantity-input
                     data-line="${lineIndex}"
-                    aria-label="Quantity"
+                    aria-label="${window.themeStrings?.quantity || 'Quantity'}"
                   >
                 </div>
-                <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="Increase quantity">
+                <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="${window.themeStrings?.increaseQuantity || 'Increase quantity'}">
                   <i class="ph ph-plus"></i>
                 </button>
               </div>
