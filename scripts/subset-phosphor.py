@@ -10,6 +10,7 @@ import os
 
 # Icons used in the theme
 USED_ICONS = [
+    "arrow-counter-clockwise",
     "arrow-left",
     "arrow-right",
     "arrow-up",
@@ -28,10 +29,12 @@ USED_ICONS = [
     "folder",
     "funnel",
     "gift",
+    "headset",
     "house",
     "image",
     "instagram-logo",
     "key",
+    "leaf",
     "link",
     "linkedin-logo",
     "list",

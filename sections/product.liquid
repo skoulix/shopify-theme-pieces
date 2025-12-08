@@ -228,7 +228,7 @@
 
           {%- when 'quantity_selector' -%}
             <div class="product-form-group mt-8" data-intro {{ block.shopify_attributes }}>
-              <label class="product-form-label">{{ block.settings.label | default: 'products.product.quantity' | t }}</label>
+              <label class="product-form-label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'products.product.quantity' | t }}{% endif %}</label>
               <div class="product-quantity" data-quantity-wrapper>
                 <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">
                   <i class="ph ph-minus"></i>
