@@ -18,6 +18,8 @@
   @media (min-width: 1536px) { .contact-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
   .contact-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
   .contact-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
+  .contact-wrapper.is-loading [data-contact-title] { opacity: 0; }
+  html.animations-disabled .contact-wrapper.is-loading [data-contact-title] { opacity: 1; }
   .contact-wrapper.is-loading [data-contact-subheading] { opacity: 0; }
   .contact-wrapper.is-loading .contact-form-group { opacity: 0; transform: translateY(20px); }
   .contact-wrapper.is-loading .contact-form-submit { opacity: 0; transform: translateY(20px); }

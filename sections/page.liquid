@@ -19,6 +19,11 @@
   .page-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
   .page-header-title.text-center .page-header-title-line:nth-child(2),
   .page-header-title.text-center .page-header-title-line:nth-child(3) { margin-left: 0; }
+  /* Hide title and content while loading to prevent FOUC before animation */
+  .page-wrapper.is-loading [data-page-title] { opacity: 0; }
+  .page-wrapper.is-loading [data-page-content] { opacity: 0; transform: translateY(30px); }
+  html.animations-disabled .page-wrapper.is-loading [data-page-title],
+  html.animations-disabled .page-wrapper.is-loading [data-page-content] { opacity: 1; transform: none; }
 </style>
 
 <section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>
@@ -28,7 +33,7 @@
     </h1>
   </header>
 
-  <div class="page-container">
+  <div class="page-container" data-page-content>
     <div class="prose max-w-none text-[--color-text]">
       {{ page.content }}
     </div>
@@ -49,6 +54,7 @@
 
   function initAnimation() {
     const title = wrapper.querySelector('[data-page-title]');
+    const content = wrapper.querySelector('[data-page-content]');
 
     // Get GSAP and SplitText from pieces or window
     let gsap = window.gsap;
@@ -68,28 +74,40 @@
 
     wrapper.classList.remove('is-loading');
 
-    if (!title) return;
+    const tl = gsap.timeline();
 
     // Split title into lines
-    const split = new SplitText(title, { type: 'lines', linesClass: 'page-header-title-line' });
+    if (title) {
+      const split = new SplitText(title, { type: 'lines', linesClass: 'page-header-title-line' });
 
-    // Wrap each line in an overflow-hidden container for the reveal effect
-    split.lines.forEach(line => {
-      const lineWrapper = document.createElement('div');
-      lineWrapper.style.overflow = 'hidden';
-      lineWrapper.style.display = 'block';
-      line.parentNode.insertBefore(lineWrapper, line);
-      lineWrapper.appendChild(line);
-    });
+      // Wrap each line in an overflow-hidden container for the reveal effect
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
 
-    // Set initial state and animate
-    gsap.set(split.lines, { yPercent: 120 });
-    gsap.to(split.lines, {
-      yPercent: 0,
-      duration: 1.2,
-      ease: 'power4.out',
-      stagger: 0.1
-    });
+      // Set initial state and animate
+      gsap.set(split.lines, { yPercent: 120 });
+      tl.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1
+      }, 0);
+    }
+
+    // Animate content fade up
+    if (content) {
+      tl.to(content, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
+    }
   }
 
   // Run on load
