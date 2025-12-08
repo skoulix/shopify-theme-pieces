@@ -76,6 +76,41 @@
   #pinned-reveal-{{ section.id }} .slide-description {
     color: {{ text_color }};
   }
+
+  #pinned-reveal-{{ section.id }} .btn {
+    position: relative;
+    color: {{ text_color }};
+    background: transparent;
+    border: 1px solid {{ text_color }};
+    overflow: hidden;
+    transition: color 0.4s ease;
+  }
+
+  #pinned-reveal-{{ section.id }} .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: {{ text_color }};
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  #pinned-reveal-{{ section.id }} .btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  #pinned-reveal-{{ section.id }} .btn:hover {
+    color: {{ background_color }};
+  }
+
+  #pinned-reveal-{{ section.id }} .btn span {
+    position: relative;
+    z-index: 1;
+  }
 </style>
 
 <section
@@ -121,7 +156,7 @@
                 {%- if block.settings.button_text != blank -%}
                   <a
                     href="{{ block.settings.button_url | default: '#' }}"
-                    class="btn btn--primary"
+                    class="btn"
                     data-intro
                   >
                     <span>{{ block.settings.button_text }}</span>
@@ -165,7 +200,7 @@
                 {%- if block.settings.button_text != blank -%}
                   <a
                     href="{{ block.settings.button_url | default: '#' }}"
-                    class="btn btn--primary"
+                    class="btn"
                     data-intro
                   >
                     <span>{{ block.settings.button_text }}</span>

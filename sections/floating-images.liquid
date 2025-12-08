@@ -64,6 +64,42 @@
     margin-top: 1.5rem;
   }
 
+  .floating-images-{{ section.id }} .btn {
+    position: relative;
+    color: {{ text_color }};
+    background: transparent;
+    border: 1px solid {{ text_color }};
+    overflow: hidden;
+    transition: color 0.4s ease;
+  }
+
+  .floating-images-{{ section.id }} .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: {{ text_color }};
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .floating-images-{{ section.id }} .btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .floating-images-{{ section.id }} .btn:hover {
+    color: {{ background_color }};
+  }
+
+  .floating-images-{{ section.id }} .btn span,
+  .floating-images-{{ section.id }} .btn i {
+    position: relative;
+    z-index: 1;
+  }
+
   .floating-images-{{ section.id }} .parallax-image {
     will-change: transform;
     opacity: {{ image_opacity }};
@@ -183,7 +219,7 @@
         <div class="mt-8" data-intro>
           <a
             href="{{ section.settings.button_link | default: '#' }}"
-            class="btn btn--primary"
+            class="btn"
           >
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>

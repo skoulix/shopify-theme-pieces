@@ -10,7 +10,44 @@
   assign card_shadow = settings.card_shadow
 -%}
 
-<div class="py-16 sm:py-24" style="background-color: {{ background_color }};">
+<style>
+  .newsletter-card .newsletter-btn {
+    position: relative;
+    color: {{ text_color }};
+    background: transparent;
+    border: 1px solid {{ text_color }};
+    overflow: hidden;
+    transition: color 0.4s ease;
+  }
+
+  .newsletter-card .newsletter-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: {{ text_color }};
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+    pointer-events: none;
+  }
+
+  .newsletter-card .newsletter-btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  .newsletter-card .newsletter-btn:hover {
+    color: {{ card_color }};
+  }
+
+  .newsletter-card .newsletter-btn span {
+    position: relative;
+    z-index: 1;
+  }
+</style>
+
+<div class="newsletter-card py-16 sm:py-24" style="background-color: {{ background_color }};">
   <div class="page-container">
     <div class="relative isolate overflow-hidden px-6 py-16 sm:px-16 xl:py-24" data-intro style="background-color: {{ card_color }}; color: {{ text_color }}; border-radius: {{ card_radius }}px;{% if card_border_width > 0 %} border: {{ card_border_width }}px solid {{ text_color }}20;{% endif %}{% case card_shadow %}{% when 'sm' %} box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);{% when 'md' %} box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);{% when 'lg' %} box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);{% when 'hard' %} box-shadow: 4px 4px 0 0 {{ text_color }}20;{% endcase %}">
       {% if title != blank %}
@@ -36,7 +73,7 @@
             style="background-color: {{ text_color }}15; color: {{ text_color }}; border: 1px solid {{ text_color }}30; caret-color: {{ text_color }};"
           >
           <input type="hidden" name="contact[tags]" value="newsletter">
-          <button type="submit" class="btn btn--primary flex-none !py-2.5 !px-5 !text-xs">
+          <button type="submit" class="btn newsletter-btn flex-none !py-2.5 !px-5 !text-xs">
             <span>{{ button_text | default: 'Subscribe' }}</span>
           </button>
         </div>
