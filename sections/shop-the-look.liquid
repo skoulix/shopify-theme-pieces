@@ -301,7 +301,7 @@
                 loading: 'lazy',
                 sizes: '(max-width: 1024px) 100vw, 50vw',
                 widths: '600, 800, 1000, 1200',
-                alt: section.settings.image_alt | default: 'Shop the look'
+                alt: section.settings.image.alt | default: section.settings.title | default: 'Shop the look'
               }}
 
               {%- comment -%} Hotspot Dots {%- endcomment -%}
@@ -400,7 +400,7 @@
                   <div class="shop-the-look-badge-{{ section.id }}">{{ forloop.index }}</div>
 
                   {%- comment -%} Product Image {%- endcomment -%}
-                  <a href="{{ product.url }}" class="shop-the-look-product-image-{{ section.id }}">
+                  <a href="{{ product.url }}" class="shop-the-look-product-image-{{ section.id }}" aria-label="{{ product.title }}">
                     {% if product.featured_image != blank %}
                       {{ product.featured_image | image_url: width: 200 | image_tag:
                         class: 'w-full h-full object-cover',
@@ -833,13 +833,8 @@
     {
       "type": "image_picker",
       "id": "image",
-      "label": "Image"
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Image alt text",
-      "default": "Shop the look"
+      "label": "Image",
+      "info": "Add alt text via the image's metadata in Files"
     },
     {
       "type": "header",

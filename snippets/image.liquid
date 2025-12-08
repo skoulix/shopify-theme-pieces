@@ -3,6 +3,7 @@
 
   @param {image} image - The image to render
   @param {string} [url] - Optional link URL
+  @param {string} [link_label] - Accessible label for the link (for image-only links)
   @param {string} [class] - Additional CSS classes
   @param {number} [width] - Max width for srcset
   @param {number} [height] - Max height (for aspect ratio)
@@ -12,7 +13,7 @@
 
   @example
   {% render 'image', image: product.featured_image %}
-  {% render 'image', image: product.featured_image, url: product.url, class: 'rounded-lg' %}
+  {% render 'image', image: product.featured_image, url: product.url, link_label: product.title, class: 'rounded-lg' %}
 {%- endcomment -%}
 
 {%- liquid
@@ -21,10 +22,11 @@
   assign alt = alt | default: image.alt | default: ''
   assign sizes = sizes | default: '(max-width: 768px) 100vw, 50vw'
   assign widths = widths | default: '400, 600, 800, 1200'
+  assign link_label = link_label | default: alt
 -%}
 
 {%- if url -%}
-  <a href="{{ url }}" class="block {{ class }}">
+  <a href="{{ url }}" class="block {{ class }}"{% if link_label != blank %} aria-label="{{ link_label }}"{% endif %}>
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
       class: 'w-full h-auto object-cover',
       loading: loading,

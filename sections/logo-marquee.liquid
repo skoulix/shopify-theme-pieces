@@ -175,7 +175,7 @@
 
             {{ block.settings.logo | image_url: height: 200 | image_tag:
               loading: 'lazy',
-              alt: block.settings.alt
+              alt: block.settings.logo.alt | default: 'Partner logo ' | append: forloop.index
             }}
 
             {% if block.settings.link != blank %}
@@ -432,13 +432,8 @@
         {
           "type": "image_picker",
           "id": "logo",
-          "label": "Logo image"
-        },
-        {
-          "type": "text",
-          "id": "alt",
-          "label": "Alt text",
-          "info": "Describe the logo for accessibility"
+          "label": "Logo image",
+          "info": "Add alt text via the image's metadata in Files"
         },
         {
           "type": "url",
@@ -453,12 +448,12 @@
       "name": "Logo Marquee",
       "category": "Social proof",
       "blocks": [
-        { "type": "logo", "settings": { "alt": "Brand 1" } },
-        { "type": "logo", "settings": { "alt": "Brand 2" } },
-        { "type": "logo", "settings": { "alt": "Brand 3" } },
-        { "type": "logo", "settings": { "alt": "Brand 4" } },
-        { "type": "logo", "settings": { "alt": "Brand 5" } },
-        { "type": "logo", "settings": { "alt": "Brand 6" } }
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" }
       ]
     }
   ]

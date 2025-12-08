@@ -335,7 +335,8 @@
                     {{ block.settings.avatar | image_url: width: 120 | image_tag:
                       loading: 'lazy',
                       sizes: '56px',
-                      widths: '56, 112'
+                      widths: '56, 112',
+                      alt: block.settings.avatar.alt | default: block.settings.author
                     }}
                   {% else %}
                     <div class="testimonial-avatar-placeholder-{{ section.id }}">

@@ -131,7 +131,7 @@
                     {{ block.settings.image | image_url: width: 600 }} 600w,
                     {{ block.settings.image | image_url: width: 800 }} 800w"
             sizes="(max-width: 768px) 150px, (max-width: 1024px) 250px, {{ base_width }}px"
-            alt="{{ block.settings.image_alt | default: block.settings.image.alt | default: 'sections.floating_images.image_alt' | t | escape }}"
+            alt="{{ block.settings.image.alt | default: 'Decorative image ' | append: forloop.index }}"
             class="parallax-image absolute -translate-x-1/2 -translate-y-1/2 w-[120px] md:w-[180px] lg:w-[{{ base_width | minus: 80 }}px] xl:w-[{{ base_width }}px]"
             data-speed="{{ speed }}"
             style="left: {{ pos_x }}%; top: {{ pos_y }}%;"
@@ -455,13 +455,8 @@
         {
           "type": "image_picker",
           "id": "image",
-          "label": "Image"
-        },
-        {
-          "type": "text",
-          "id": "image_alt",
-          "label": "Image alt text",
-          "info": "Describe the image for accessibility"
+          "label": "Image",
+          "info": "Add alt text via the image's metadata in Files"
         }
       ]
     }

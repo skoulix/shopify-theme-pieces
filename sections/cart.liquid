@@ -74,10 +74,11 @@
                     {%- comment -%} Image {%- endcomment -%}
                     <div class="cart-item-image w-28 h-36 flex-shrink-0 overflow-hidden bg-[--color-background-secondary]">
                       {% if item.image %}
-                        <a href="{{ item.url }}">
+                        <a href="{{ item.url }}" aria-label="{{ item.product.title }}">
                           {{ item.image | image_url: width: 300 | image_tag:
                             class: 'w-full h-full object-cover',
-                            loading: 'lazy'
+                            loading: 'lazy',
+                            alt: item.image.alt | default: item.product.title
                           }}
                         </a>
                       {% endif %}

@@ -26,10 +26,11 @@
             <li class="cart-drawer__item" data-cart-item data-line-index="{{ forloop.index }}">
               <div class="cart-drawer__item-image">
                 {% if item.image %}
-                  <a href="{{ item.url }}">
+                  <a href="{{ item.url }}" aria-label="{{ item.product.title }}">
                     {{ item.image | image_url: width: 200 | image_tag:
                       class: 'w-full h-full object-cover',
-                      loading: 'lazy'
+                      loading: 'lazy',
+                      alt: item.image.alt | default: item.product.title
                     }}
                   </a>
                 {% endif %}

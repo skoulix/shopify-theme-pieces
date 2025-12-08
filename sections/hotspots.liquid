@@ -279,7 +279,7 @@
                   {{ section.settings.desktop_image | image_url: width: 1280 }} 1280w,
                   {{ section.settings.desktop_image | image_url: width: 1920 }} 1920w"
           sizes="100vw"
-          alt="{{ section.settings.image_alt | escape }}"
+          alt="{{ section.settings.desktop_image.alt | default: section.settings.title | default: 'Interactive hotspots image' }}"
           class="hotspots-image-{{ section.id }} hidden md:block"
           loading="lazy"
           width="{{ section.settings.desktop_image.width }}"
@@ -294,7 +294,7 @@
                     {{ section.settings.mobile_image | image_url: width: 600 }} 600w,
                     {{ section.settings.mobile_image | image_url: width: 800 }} 800w"
             sizes="100vw"
-            alt="{{ section.settings.image_alt | escape }}"
+            alt="{{ section.settings.mobile_image.alt | default: section.settings.desktop_image.alt | default: section.settings.title | default: 'Interactive hotspots image' }}"
             class="hotspots-image-{{ section.id }} block md:hidden"
             loading="lazy"
             width="{{ section.settings.mobile_image.width }}"
@@ -303,7 +303,7 @@
         {% else %}
           <img
             src="{{ section.settings.desktop_image | image_url: width: 800 }}"
-            alt="{{ section.settings.image_alt | escape }}"
+            alt="{{ section.settings.desktop_image.alt | default: section.settings.title | default: 'Interactive hotspots image' }}"
             class="hotspots-image-{{ section.id }} block md:hidden"
             loading="lazy"
             width="{{ section.settings.desktop_image.width }}"
@@ -724,18 +724,14 @@
     {
       "type": "image_picker",
       "id": "desktop_image",
-      "label": "Desktop image"
+      "label": "Desktop image",
+      "info": "Add alt text via the image's metadata in Files"
     },
     {
       "type": "image_picker",
       "id": "mobile_image",
       "label": "Mobile image",
       "info": "Optional: Different image for mobile devices"
-    },
-    {
-      "type": "text",
-      "id": "image_alt",
-      "label": "Image alt text"
     },
     {
       "type": "header",

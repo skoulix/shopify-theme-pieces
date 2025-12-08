@@ -167,7 +167,7 @@
       <div class="product-thumbnails" data-thumbnails>
         {% for image in product.images %}
           <button class="product-thumbnail{% if forloop.first %} is-active{% endif %}" data-thumbnail="{{ forloop.index0 }}" aria-label="{{ 'accessibility.view_image' | t: index: forloop.index, total: product.images.size }}">
-            {{ image | image_url: width: 150 | image_tag }}
+            {{ image | image_url: width: 150 | image_tag: alt: image.alt | default: product.title }}
           </button>
         {% endfor %}
       </div>
