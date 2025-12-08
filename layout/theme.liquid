@@ -33,9 +33,8 @@
     {%- comment -%} CSS Variables & Font Loading {%- endcomment -%}
     {% render 'css-variables' %}
 
-    {%- comment -%} Phosphor Icons - loaded asynchronously to prevent render blocking {%- endcomment -%}
-    <link rel="preload" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
-    <noscript><link rel="stylesheet" href="https://unpkg.com/@phosphor-icons/web@2.1.1/src/regular/style.css"></noscript>
+    {%- comment -%} Phosphor Icons {%- endcomment -%}
+    {{ 'phosphor-icons.css' | asset_url | stylesheet_tag: preload: true }}
 
     {%- comment -%} Tailwind CSS (compiled) {%- endcomment -%}
     {{ 'pieces-app.css' | asset_url | stylesheet_tag: preload: true }}

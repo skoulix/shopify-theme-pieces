@@ -300,6 +300,8 @@
             alt="{{ section.settings.image_alt | escape }}"
             class="hotspots-image-{{ section.id }} block md:hidden"
             loading="lazy"
+            width="{{ section.settings.desktop_image.width }}"
+            height="{{ section.settings.desktop_image.height }}"
           >
         {% endif %}
       {% else %}
