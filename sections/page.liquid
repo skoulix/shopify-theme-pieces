@@ -6,10 +6,8 @@
   case section.settings.header_alignment
     when 'center'
       assign header_align_class = 'text-center'
-      assign title_align_class = 'mx-auto'
     else
       assign header_align_class = 'text-left'
-      assign title_align_class = ''
   endcase
 -%}
 
@@ -21,19 +19,12 @@
   .page-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
   .page-header-title.text-center .page-header-title-line:nth-child(2),
   .page-header-title.text-center .page-header-title-line:nth-child(3) { margin-left: 0; }
-  .page-wrapper.is-loading .page-header-title-line span { opacity: 0; transform: translateY(100%); }
-  html.animations-disabled .page-wrapper.is-loading .page-header-title-line span { opacity: 1; transform: none; }
 </style>
 
 <section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>
   <header class="mb-12 lg:mb-16 page-container {{ header_align_class }}">
-    <h1 class="page-header-title font-bold text-[--color-text] font-heading {{ header_align_class }}">
-      {%- assign title_words = page.title | split: ' ' -%}
-      {%- for word in title_words -%}
-        <span class="page-header-title-line block overflow-hidden">
-          <span class="inline-block">{{ word }}</span>
-        </span>
-      {%- endfor -%}
+    <h1 class="page-header-title font-bold text-[--color-text] font-heading {{ header_align_class }}" data-page-title>
+      {{ page.title }}
     </h1>
   </header>
 
@@ -56,45 +47,56 @@
     return;
   }
 
-  // Animate header on load
-  function animateHeader() {
-    const titleLines = wrapper.querySelectorAll('.page-header-title-line span');
+  function initAnimation() {
+    const title = wrapper.querySelector('[data-page-title]');
 
-    if (typeof gsap === 'undefined') {
-      wrapper.classList.remove('is-loading');
+    // Get GSAP and SplitText from pieces or window
+    let gsap = window.gsap;
+    if (!gsap && window.pieces && window.pieces.gsap) {
+      gsap = window.pieces.gsap;
+    }
+
+    let SplitText = window.SplitText;
+    if (!SplitText && window.pieces && window.pieces.SplitText) {
+      SplitText = window.pieces.SplitText;
+    }
+
+    if (!gsap || !SplitText) {
+      requestAnimationFrame(initAnimation);
       return;
     }
 
-    const tl = gsap.timeline({
-      onComplete: () => wrapper.classList.remove('is-loading')
+    wrapper.classList.remove('is-loading');
+
+    if (!title) return;
+
+    // Split title into lines
+    const split = new SplitText(title, { type: 'lines', linesClass: 'page-header-title-line' });
+
+    // Wrap each line in an overflow-hidden container for the reveal effect
+    split.lines.forEach(line => {
+      const lineWrapper = document.createElement('div');
+      lineWrapper.style.overflow = 'hidden';
+      lineWrapper.style.display = 'block';
+      line.parentNode.insertBefore(lineWrapper, line);
+      lineWrapper.appendChild(line);
     });
 
-    // Title lines slide up
-    tl.to(titleLines, {
-      y: 0,
-      opacity: 1,
-      duration: 0.8,
-      stagger: 0.1,
-      ease: 'power3.out'
-    }, 0.2);
+    // Set initial state and animate
+    gsap.set(split.lines, { yPercent: 120 });
+    gsap.to(split.lines, {
+      yPercent: 0,
+      duration: 1.2,
+      ease: 'power4.out',
+      stagger: 0.1
+    });
   }
 
-  // Run on load or Swup navigation
+  // Run on load
   if (document.readyState === 'complete') {
-    animateHeader();
+    initAnimation();
   } else {
-    window.addEventListener('load', animateHeader);
-  }
-
-  // Re-run on Swup content replace
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('page_animation', () => {
-      const newWrapper = document.querySelector('[data-page-wrapper]');
-      if (newWrapper && !newWrapper.dataset.pageInitialized) {
-        newWrapper.dataset.pageInitialized = 'true';
-        animateHeader();
-      }
-    });
+    window.addEventListener('load', initAnimation);
   }
 })();
 </script>
