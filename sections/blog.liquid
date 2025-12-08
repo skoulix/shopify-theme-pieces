@@ -100,8 +100,9 @@
               </div>
 
               <a href="{{ article.url }}" class="text-hover-reveal inline-flex items-center gap-2 mt-6 text-xs font-semibold tracking-widest text-[--color-text]">
-                <span data-hover="Read Article">Read Article</span>
-                <i class="ph ph-arrow-right"></i>
+                <span data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span>
+                <span class="sr-only">: {{ article.title }}</span>
+                <i class="ph ph-arrow-right" aria-hidden="true"></i>
               </a>
             </div>
           </article>

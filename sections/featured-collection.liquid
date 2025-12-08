@@ -48,7 +48,8 @@
       {% if section.settings.show_view_all and collection %}
         <a href="{{ collection.url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-[--color-text] opacity-70 hover:opacity-100 transition-opacity duration-300" data-intro>
           <span data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span>
-          <i class="ph ph-arrow-right"></i>
+          <span class="sr-only">{{ collection.title }}</span>
+          <i class="ph ph-arrow-right" aria-hidden="true"></i>
         </a>
       {% endif %}
     </header>
