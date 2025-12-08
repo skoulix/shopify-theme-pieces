@@ -30,11 +30,19 @@
     {%- comment -%} CSS Variables & Font Loading {%- endcomment -%}
     {% render 'css-variables' %}
 
-    {%- comment -%} Phosphor Icons {%- endcomment -%}
-    {{ 'phosphor-icons.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- comment -%} Critical CSS - Inlined for fast initial render {%- endcomment -%}
+    {% render 'critical-css' %}
 
-    {%- comment -%} Tailwind CSS (compiled) {%- endcomment -%}
-    {{ 'pieces-app.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- comment -%}
+      Non-critical CSS - Loaded asynchronously using preload + onload pattern
+      This defers render-blocking CSS while maintaining load priority
+    {%- endcomment -%}
+    <link rel="preload" href="{{ 'phosphor-icons.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <link rel="preload" href="{{ 'pieces-app.css' | asset_url }}" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript>
+      {{ 'phosphor-icons.css' | asset_url | stylesheet_tag }}
+      {{ 'pieces-app.css' | asset_url | stylesheet_tag }}
+    </noscript>
 
     {%- comment -%} Pieces App - Swup, Lenis, GSAP (defer prevents render blocking) {%- endcomment -%}
     <script src="{{ 'pieces-app.js' | asset_url }}" type="module" defer></script>

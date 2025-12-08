@@ -17,6 +17,10 @@ function debounce(fn, wait) {
 class FacetFiltersForm extends HTMLElement {
   constructor() {
     super();
+    this.boundHandlers = {};
+  }
+
+  connectedCallback() {
     this.sectionId = this.dataset.sectionId;
     this.form = this.querySelector('[data-facets-form]');
     this.drawer = this.querySelector('#FacetsDrawer');
@@ -28,17 +32,30 @@ class FacetFiltersForm extends HTMLElement {
     }
 
     // Bind methods
-    this.onFormChange = debounce(this.onFormChange.bind(this), 500);
-    this.onActiveFilterClick = this.onActiveFilterClick.bind(this);
+    this.boundHandlers.onFormChange = debounce(this.onFormChange.bind(this), 500);
+    this.boundHandlers.onActiveFilterClick = this.onActiveFilterClick.bind(this);
+    this.boundHandlers.onKeydown = this.onKeydown.bind(this);
+    this.boundHandlers.onPopState = this.onPopState.bind(this);
 
     this.bindEvents();
     this.setupHistoryListener();
   }
 
+  disconnectedCallback() {
+    // Clean up document-level event listeners
+    document.removeEventListener('keydown', this.boundHandlers.onKeydown);
+    window.removeEventListener('popstate', this.boundHandlers.onPopState);
+
+    // Remove drawer from body if it was moved there
+    if (this.drawer && this.drawer.parentNode === document.body) {
+      this.drawer.remove();
+    }
+  }
+
   bindEvents() {
     // Form input changes
     if (this.form) {
-      this.form.addEventListener('input', this.onFormChange);
+      this.form.addEventListener('input', this.boundHandlers.onFormChange);
     }
 
     // Open drawer button
@@ -62,13 +79,13 @@ class FacetFiltersForm extends HTMLElement {
 
     // Active filter removal
     this.querySelectorAll('[data-facet-remove], [data-facet-clear-all]').forEach((link) => {
-      link.addEventListener('click', this.onActiveFilterClick);
+      link.addEventListener('click', this.boundHandlers.onActiveFilterClick);
     });
 
     // Sort change (desktop)
     const sortSelect = this.querySelector('#SortBy');
     if (sortSelect) {
-      sortSelect.addEventListener('change', this.onFormChange);
+      sortSelect.addEventListener('change', this.boundHandlers.onFormChange);
     }
 
     // Sort change (mobile - inside drawer)
@@ -83,11 +100,7 @@ class FacetFiltersForm extends HTMLElement {
     }
 
     // Close drawer on escape
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && this.isDrawerOpen()) {
-        this.closeDrawer();
-      }
-    });
+    document.addEventListener('keydown', this.boundHandlers.onKeydown);
 
     // Disclosure toggle animation
     this.querySelectorAll('.facets-disclosure').forEach((details) => {
@@ -205,11 +218,25 @@ class FacetFiltersForm extends HTMLElement {
     FacetFiltersForm.searchParamsPrev = window.location.search.slice(1);
 
     // Listen for browser back/forward
-    window.addEventListener('popstate', (event) => {
-      const searchParams = event.state?.searchParams ?? FacetFiltersForm.searchParamsInitial;
-      if (searchParams === FacetFiltersForm.searchParamsPrev) return;
-      this.renderPage(searchParams, false);
-    });
+    window.addEventListener('popstate', this.boundHandlers.onPopState);
+  }
+
+  /**
+   * Handle keydown events (escape to close drawer)
+   */
+  onKeydown(e) {
+    if (e.key === 'Escape' && this.isDrawerOpen()) {
+      this.closeDrawer();
+    }
+  }
+
+  /**
+   * Handle browser back/forward navigation
+   */
+  onPopState(event) {
+    const searchParams = event.state?.searchParams ?? FacetFiltersForm.searchParamsInitial;
+    if (searchParams === FacetFiltersForm.searchParamsPrev) return;
+    this.renderPage(searchParams, false);
   }
 
   isDrawerOpen() {
@@ -474,7 +501,7 @@ class FacetFiltersForm extends HTMLElement {
 
       // Re-bind click handlers
       this.querySelectorAll('[data-facet-remove], [data-facet-clear-all]').forEach((link) => {
-        link.addEventListener('click', this.onActiveFilterClick);
+        link.addEventListener('click', this.boundHandlers.onActiveFilterClick);
       });
     }
 

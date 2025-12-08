@@ -1,6 +1,7 @@
 import { gsap } from 'gsap';
 import { lenisManager } from './LenisManager.js';
 import { cartState } from './CartState.js';
+import { createFocusTrap } from '../utils/dom.js';
 
 /**
  * CartDrawerManager - Handles cart drawer functionality
@@ -16,6 +17,7 @@ class CartDrawerManager {
     this.noteTimeout = null;
     this.boundHandlers = {};
     this.unsubscribe = null;
+    this.focusTrap = null;
   }
 
   /**
@@ -223,13 +225,12 @@ class CartDrawerManager {
     // Dispatch event
     document.dispatchEvent(new CustomEvent('cart:opened'));
 
-    // Animate in and focus close button when complete
+    // Animate in and set up focus trap when complete
     gsap.timeline({
       onComplete: () => {
         this.isAnimating = false;
-        // Focus the close button for accessibility
-        const closeBtn = this.drawer.querySelector('[data-cart-drawer-close]');
-        if (closeBtn) closeBtn.focus();
+        // Create focus trap for accessibility
+        this.focusTrap = createFocusTrap(this.panel);
       }
     })
       .to(this.backdrop, { opacity: 1, duration: 0.3, ease: 'power2.out' }, 0)
@@ -242,6 +243,12 @@ class CartDrawerManager {
   close() {
     if (this.isAnimating || !this.isOpen || !this.drawer) return;
     this.isAnimating = true;
+
+    // Destroy focus trap
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+      this.focusTrap = null;
+    }
 
     // Dispatch event
     document.dispatchEvent(new CustomEvent('cart:closed'));
@@ -569,6 +576,12 @@ class CartDrawerManager {
 
     // Clear timeout
     clearTimeout(this.noteTimeout);
+
+    // Destroy focus trap
+    if (this.focusTrap) {
+      this.focusTrap.destroy();
+      this.focusTrap = null;
+    }
 
     // Reset state
     this.drawer = null;

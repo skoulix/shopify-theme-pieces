@@ -1,3 +1,5 @@
+import { toast } from '../utils/toast.js';
+
 /**
  * CartState - Global cart state management
  * Single source of truth for cart data across all components
