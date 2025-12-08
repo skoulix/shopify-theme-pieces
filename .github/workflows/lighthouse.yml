@@ -1,0 +1,28 @@
+name: Shopify Lighthouse CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run Lighthouse CI
+        uses: shopify/lighthouse-ci-action@v1
+        with:
+          access_token: ${{ secrets.SHOP_ACCESS_TOKEN }}
+          store: ${{ secrets.SHOP_STORE }}
+          password: ${{ secrets.SHOP_PASSWORD }}
+          product_handle: ${{ secrets.SHOP_PRODUCT_HANDLE }}
+          collection_handle: ${{ secrets.SHOP_COLLECTION_HANDLE }}
+          lhci_github_app_token: ${{ secrets.LHCI_GITHUB_APP_TOKEN }}
+          lhci_min_score_performance: 0.6
+          lhci_min_score_accessibility: 0.9
