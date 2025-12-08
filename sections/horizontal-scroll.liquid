@@ -264,12 +264,13 @@
       <div class="hscroll-bg-{{ section.id }}" data-hscroll-bg>
         {% for block in section.blocks %}
           {% if block.settings.image != blank %}
-            {{ block.settings.image | image_url: width: 800 | image_tag:
-              class: 'hscroll-bg-image-' | append: section.id,
-              loading: 'lazy',
-              data-bg-index: forloop.index0,
-              alt: ''
-            }}
+            <img
+              src="{{ block.settings.image | image_url: width: 800 }}"
+              class="hscroll-bg-image-{{ section.id }}"
+              loading="lazy"
+              data-bg-index="{{ forloop.index0 }}"
+              alt=""
+            >
           {% endif %}
         {% endfor %}
         <div class="hscroll-bg-overlay-{{ section.id }}"></div>
