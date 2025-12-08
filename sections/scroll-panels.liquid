@@ -105,24 +105,25 @@
     margin: 0 auto 2rem;
   }
 
-  .scroll-panel-button-{{ section.id }} {
+  .scroll-panel-button-{{ section.id }} .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    color: {{ section.settings.text_color }};
+    background: transparent;
+    border: 1px solid {{ section.settings.text_color }};
     border-radius: var(--button-radius, 4px);
-    transition: transform 0.3s ease, opacity 0.3s ease;
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  .scroll-panel-button-{{ section.id }}:hover {
-    transform: scale(1.05);
-    opacity: 0.9;
+  .scroll-panel-button-{{ section.id }} .btn:hover {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
   }
 
   /* Placeholder styling */
@@ -245,10 +246,12 @@
             {% endif %}
 
             {% if block.settings.button_text != blank and block.settings.button_link != blank %}
-              <a href="{{ block.settings.button_link }}" class="scroll-panel-button-{{ section.id }}">
-                {{ block.settings.button_text }}
-                <i class="ph ph-arrow-right"></i>
-              </a>
+              <div class="scroll-panel-button-{{ section.id }}">
+                <a href="{{ block.settings.button_link }}" class="btn">
+                  {{ block.settings.button_text }}
+                  <i class="ph ph-arrow-right"></i>
+                </a>
+              </div>
             {% endif %}
           </div>
         </div>

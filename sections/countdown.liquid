@@ -125,53 +125,25 @@
     text-align: {{ section.settings.content_alignment }};
   }
 
-  .countdown-cta-{{ section.id }} a {
+  .countdown-cta-{{ section.id }} .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
     padding: 1rem 2rem;
     font-size: 0.75rem;
     font-weight: 600;
+    letter-spacing: 0.1em;
     text-transform: uppercase;
-    letter-spacing: 0.15em;
-    color: {{ section.settings.button_text_color }};
-    background-color: {{ section.settings.button_background }};
-    border-radius: var(--button-radius);
-    position: relative;
-    overflow: hidden;
-    transition: color 0.4s ease;
+    color: {{ section.settings.text_color }};
+    background: transparent;
+    border: 1px solid {{ section.settings.text_color }};
+    border-radius: var(--button-radius, 4px);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  .countdown-cta-{{ section.id }} a::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: {{ section.settings.button_text_color }};
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 0;
-  }
-
-  .countdown-cta-{{ section.id }} a:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .countdown-cta-{{ section.id }} a:hover {
-    color: {{ section.settings.button_background }};
-  }
-
-  .countdown-cta-{{ section.id }} a span,
-  .countdown-cta-{{ section.id }} a i {
-    position: relative;
-    z-index: 1;
-    transition: color 0.4s ease;
-  }
-
-  .countdown-cta-{{ section.id }} a:hover span,
-  .countdown-cta-{{ section.id }} a:hover i {
-    color: {{ section.settings.button_background }};
+  .countdown-cta-{{ section.id }} .btn:hover {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
   }
 
   /* Divider style for hero */
@@ -307,23 +279,25 @@
     opacity: 0.5;
   }
 
-  .countdown-cta-{{ section.id }} a {
+  .countdown-cta-{{ section.id }} .btn {
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
     padding: 0.75rem 1.5rem;
     font-size: 0.7rem;
     font-weight: 600;
-    text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: {{ section.settings.button_text_color }};
-    background-color: {{ section.settings.button_background }};
-    border-radius: var(--button-radius);
-    transition: opacity 0.3s ease;
+    text-transform: uppercase;
+    color: {{ section.settings.text_color }};
+    background: transparent;
+    border: 1px solid {{ section.settings.text_color }};
+    border-radius: var(--button-radius, 4px);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
-  .countdown-cta-{{ section.id }} a:hover {
-    opacity: 0.85;
+  .countdown-cta-{{ section.id }} .btn:hover {
+    background-color: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }};
   }
 
   /* Divider style for compact */
@@ -390,18 +364,19 @@
     margin: 0 0.15rem;
   }
 
-  .countdown-cta-{{ section.id }} a {
+  .countdown-cta-{{ section.id }} .btn {
     font-size: clamp(0.65rem, 1vw, 0.75rem);
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.1em;
     text-decoration: underline;
     text-underline-offset: 2px;
+    color: {{ section.settings.text_color }};
     opacity: 0.9;
     transition: opacity 0.2s ease;
   }
 
-  .countdown-cta-{{ section.id }} a:hover {
+  .countdown-cta-{{ section.id }} .btn:hover {
     opacity: 1;
   }
   {% endcase %}
@@ -452,7 +427,7 @@
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
       <div class="countdown-cta-{{ section.id }}">
-        <a href="{{ section.settings.button_link }}">
+        <a href="{{ section.settings.button_link }}" class="btn">
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>
@@ -509,7 +484,7 @@
 
       {% if section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta-{{ section.id }}">
-          <a href="{{ section.settings.button_link }}">
+          <a href="{{ section.settings.button_link }}" class="btn">
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>
           </a>
@@ -552,7 +527,7 @@
 
       {% if section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta-{{ section.id }}">
-          <a href="{{ section.settings.button_link }}">{{ section.settings.button_text }}</a>
+          <a href="{{ section.settings.button_link }}" class="btn">{{ section.settings.button_text }}</a>
         </div>
       {% endif %}
     </div>
@@ -831,19 +806,6 @@
       "id": "text_color",
       "default": "#ffffff",
       "label": "Text color"
-    },
-    {
-      "type": "color",
-      "id": "button_background",
-      "default": "#ffffff",
-      "label": "Button background",
-      "info": "Used in Hero and Compact designs"
-    },
-    {
-      "type": "color",
-      "id": "button_text_color",
-      "default": "#000000",
-      "label": "Button text color"
     },
     {
       "type": "header",
