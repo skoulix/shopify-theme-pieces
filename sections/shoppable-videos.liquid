@@ -96,6 +96,10 @@
     {% endcase %}
   }
 
+  .shoppable-video-card-{{ section.id }} .carousel-video {
+    border-radius: {{ card_radius }}px;
+  }
+
   .shoppable-video-slide-{{ section.id }} {
     flex-shrink: 0;
     {%- comment -%} Mobile: Centered with nearby slides visible {%- endcomment -%}
@@ -439,21 +443,14 @@
                      {% if video_hosted.alt != blank %}aria-label="{{ video_hosted.alt }}"{% endif %}>
 
                   {% if has_video %}
-                    <video
-                      class="carousel-video absolute inset-0 z-0 w-full h-full object-cover block pointer-events-none"
-                      style="border-radius: {{ card_radius }}px;"
-                      autoplay
-                      muted
-                      loop
-                      playsinline
-                      preload="metadata"
-                      {% if video_hosted.alt != blank %}aria-label="{{ video_hosted.alt }}"{% endif %}>
-                      {%- comment -%} theme-check-disable RemoteAsset - video.sources returns Shopify CDN URLs {%- endcomment -%}
-                      {%- for source in video_hosted.sources -%}
-                        <source src="{{ source.url }}" type="{{ source.mime_type }}">
-                      {%- endfor -%}
-                      {%- comment -%} theme-check-enable RemoteAsset {%- endcomment -%}
-                    </video>
+                    {{ video_hosted | video_tag:
+                      class: 'carousel-video absolute inset-0 z-0 w-full h-full object-cover block pointer-events-none',
+                      autoplay: true,
+                      muted: true,
+                      loop: true,
+                      playsinline: true,
+                      preload: 'metadata'
+                    }}
                   {% else %}
                     <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0" style="background: {{ section.settings.text_color }}08;">
                       <i class="ph ph-video-camera text-6xl" style="color: {{ section.settings.text_color }}20;"></i>

@@ -271,22 +271,14 @@
   <div class="{{ container_class }}">
     <div class="video-container-{{ section.id }}" data-video-container>
       {% if section.settings.video != blank %}
-        {%- liquid
-          assign video_attrs = 'autoplay muted playsinline preload="auto"'
-          if section.settings.loop
-            assign video_attrs = video_attrs | append: ' loop'
-          endif
-          if section.settings.show_controls
-            assign video_attrs = video_attrs | append: ' controls'
-          endif
-        -%}
-        <video {{ video_attrs }}>
-          {%- comment -%} theme-check-disable RemoteAsset - video.sources returns Shopify CDN URLs {%- endcomment -%}
-          {% for source in section.settings.video.sources %}
-            <source src="{{ source.url }}" type="{{ source.mime_type }}">
-          {% endfor %}
-          {%- comment -%} theme-check-enable RemoteAsset {%- endcomment -%}
-        </video>
+        {{ section.settings.video | video_tag:
+          autoplay: true,
+          muted: true,
+          playsinline: true,
+          preload: 'auto',
+          loop: section.settings.loop,
+          controls: section.settings.show_controls
+        }}
       {% else %}
         <div class="video-placeholder-{{ section.id }}">
           <div class="video-placeholder-pattern-{{ section.id }}"></div>
