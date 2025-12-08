@@ -5,13 +5,14 @@
 {%- liquid
   assign background_color = section.settings.background_color | default: '#ffffff'
   assign text_color = section.settings.text_color | default: '#000000'
-  assign heading_color = section.settings.heading_color | default: text_color
   assign section_height = section.settings.section_height | default: 300
   assign section_height_mobile = section.settings.section_height_mobile | default: 200
-  assign image_opacity = section.settings.image_opacity | default: 0.15
+  assign image_opacity_percent = section.settings.image_opacity | default: 15
+  assign image_opacity = image_opacity_percent | divided_by: 100.0
 
-  # Predefined positions for floating images (alternating sides, varying depths)
-  assign positions = '15,20,0.5,120|75,40,0.3,280|25,100,0.6,400|85,140,0.4,280|40,180,0.7,350|10,220,0.3,260|65,250,0.5,320|90,270,0.4,420|20,150,0.6,280|55,70,0.4,260|30,200,0.5,350' | split: '|'
+  # Predefined positions for floating images (x%, y%, parallax speed, base width in px)
+  # Y positions are percentages of section height (0-100), spread throughout section
+  assign positions = '12,8,0.3,180|82,15,0.5,280|18,28,0.4,220|75,35,0.6,320|8,48,0.35,200|88,55,0.45,260|25,65,0.5,300|70,72,0.4,240|15,82,0.55,280|55,90,0.3,200|40,45,0.45,260' | split: '|'
 -%}
 
 <style>
@@ -45,7 +46,7 @@
     font-weight: 700;
     letter-spacing: -0.03em;
     line-height: 1.1;
-    color: {{ heading_color }};
+    color: {{ text_color }};
   }
 
   .floating-images-title-line:nth-child(2) {
@@ -106,7 +107,7 @@
   {%- comment -%} Floating Background Images {%- endcomment -%}
   <div class="absolute inset-0 pointer-events-none overflow-hidden">
     {% for block in section.blocks %}
-      {% if block.type == 'image' and block.settings.image != blank %}
+      {% if block.type == 'image' %}
         {%- liquid
           assign index = forloop.index0
           assign pos_index = index | modulo: 11
@@ -115,22 +116,40 @@
           assign pos_y = position_data[1]
           assign speed = position_data[2]
           assign base_width = position_data[3]
+
+          # Placeholder names to cycle through
+          assign placeholder_names = 'product-1,product-2,product-3,product-4,product-5,product-6,collection-1,collection-2,collection-3,collection-4' | split: ','
+          assign placeholder_index = index | modulo: 10
+          assign placeholder_name = placeholder_names[placeholder_index]
         -%}
 
-        <img
-          src="{{ block.settings.image | image_url: width: 800 }}"
-          srcset="{{ block.settings.image | image_url: width: 200 }} 200w,
-                  {{ block.settings.image | image_url: width: 400 }} 400w,
-                  {{ block.settings.image | image_url: width: 600 }} 600w,
-                  {{ block.settings.image | image_url: width: 800 }} 800w"
-          sizes="(max-width: 768px) 150px, (max-width: 1024px) 250px, {{ base_width }}px"
-          alt="{{ block.settings.image_alt | default: 'Floating image' | escape }}"
-          class="parallax-image absolute -translate-x-1/2 -translate-y-1/2 w-[120px] md:w-[180px] lg:w-[{{ base_width | minus: 80 }}px] xl:w-[{{ base_width }}px]"
-          data-speed="{{ speed }}"
-          style="left: {{ pos_x }}%; top: {{ pos_y }}vh;"
-          loading="lazy"
-          {{ block.shopify_attributes }}
-        >
+        {% if block.settings.image != blank %}
+          <img
+            src="{{ block.settings.image | image_url: width: 800 }}"
+            srcset="{{ block.settings.image | image_url: width: 200 }} 200w,
+                    {{ block.settings.image | image_url: width: 400 }} 400w,
+                    {{ block.settings.image | image_url: width: 600 }} 600w,
+                    {{ block.settings.image | image_url: width: 800 }} 800w"
+            sizes="(max-width: 768px) 150px, (max-width: 1024px) 250px, {{ base_width }}px"
+            alt="{{ block.settings.image_alt | default: block.settings.image.alt | default: 'sections.floating_images.image_alt' | t | escape }}"
+            class="parallax-image absolute -translate-x-1/2 -translate-y-1/2 w-[120px] md:w-[180px] lg:w-[{{ base_width | minus: 80 }}px] xl:w-[{{ base_width }}px]"
+            data-speed="{{ speed }}"
+            style="left: {{ pos_x }}%; top: {{ pos_y }}%;"
+            width="{{ block.settings.image.width }}"
+            height="{{ block.settings.image.height }}"
+            loading="lazy"
+            {{ block.shopify_attributes }}
+          >
+        {% else %}
+          <div
+            class="parallax-image absolute -translate-x-1/2 -translate-y-1/2 w-[120px] md:w-[180px] lg:w-[{{ base_width | minus: 80 }}px] xl:w-[{{ base_width }}px]"
+            data-speed="{{ speed }}"
+            style="left: {{ pos_x }}%; top: {{ pos_y }}%;"
+            {{ block.shopify_attributes }}
+          >
+            {{ placeholder_name | placeholder_svg_tag: 'w-full h-full' }}
+          </div>
+        {% endif %}
       {% endif %}
     {% endfor %}
   </div>
@@ -160,7 +179,7 @@
         <div class="mt-8" data-intro>
           <a
             href="{{ section.settings.button_link | default: '#' }}"
-            class="btn btn--{{ section.settings.button_style }}"
+            class="btn btn--primary"
           >
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>
@@ -194,12 +213,20 @@
       const scrolled = window.pageYOffset;
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
+      const viewportHeight = window.innerHeight;
 
-      // Only apply parallax when section is in viewport
-      if (scrolled + window.innerHeight > sectionTop && scrolled < sectionTop + sectionHeight) {
+      // Calculate scroll progress through the section (0 to 1)
+      const scrollStart = sectionTop - viewportHeight;
+      const scrollEnd = sectionTop + sectionHeight;
+      const scrollRange = scrollEnd - scrollStart;
+      const progress = Math.max(0, Math.min(1, (scrolled - scrollStart) / scrollRange));
+
+      // Only apply parallax when section is in or near viewport
+      if (scrolled + viewportHeight > sectionTop && scrolled < sectionTop + sectionHeight) {
         images.forEach(function(img) {
           const speed = parseFloat(img.dataset.speed) || 0.5;
-          const yPos = -(scrolled * speed);
+          // Move images based on scroll progress, scaled by speed
+          const yPos = (progress - 0.5) * sectionHeight * speed * 0.5;
           img.style.transform = 'translate(-50%, calc(-50% + ' + yPos + 'px))';
         });
       }
@@ -357,16 +384,6 @@
       "label": "Button link"
     },
     {
-      "type": "select",
-      "id": "button_style",
-      "label": "Button style",
-      "options": [
-        { "value": "primary", "label": "Primary" },
-        { "value": "secondary", "label": "Secondary" }
-      ],
-      "default": "primary"
-    },
-    {
       "type": "header",
       "content": "Layout"
     },
@@ -399,11 +416,12 @@
       "type": "range",
       "id": "image_opacity",
       "label": "Image opacity",
-      "default": 0.15,
-      "min": 0.05,
-      "max": 1,
-      "step": 0.05,
-      "info": "1 = fully visible"
+      "default": 50,
+      "min": 5,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "info": "100% = fully visible"
     },
     {
       "type": "checkbox",
@@ -427,12 +445,6 @@
       "id": "text_color",
       "label": "Text color",
       "default": "#000000"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading color",
-      "info": "Leave empty to use text color"
     }
   ],
   "blocks": [
@@ -457,7 +469,7 @@
   "presets": [
     {
       "name": "Floating Images",
-      "category": "Image & media",
+      "category": "Scrolling & animation",
       "blocks": [
         { "type": "image" },
         { "type": "image" },

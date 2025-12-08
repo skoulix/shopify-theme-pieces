@@ -1,0 +1,487 @@
+{%- liquid
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
+-%}
+
+<style>
+  #shopify-section-{{ section.id }} {
+    background-color: {{ background_color }};
+  }
+
+  #pinned-reveal-{{ section.id }} {
+    padding: var(--section-vertical-padding) 0;
+  }
+
+  @media (min-width: 768px) {
+    #pinned-reveal-{{ section.id }} {
+      padding: 0;
+    }
+    /* Main grid uses position relative for the pinned child */
+    #pinned-reveal-{{ section.id }} .pinned-grid {
+      position: relative;
+    }
+
+    /* Content blocks are 100vh each, vertically centered */
+    #pinned-reveal-{{ section.id }} .pinned-content .slide-content {
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    /* Images container - sticky positioning as fallback, GSAP will pin */
+    #pinned-reveal-{{ section.id }} .pinned-images {
+      height: 100vh;
+      position: sticky;
+      top: 0;
+      align-self: flex-start;
+    }
+
+    /* Stack all images centered vertically with fixed height */
+    #pinned-reveal-{{ section.id }} .pinned-images .slide-image {
+      position: absolute;
+      top: 50%;
+      left: 0;
+      transform: translateY(-50%);
+      width: 100%;
+      height: 400px;
+      border-radius: var(--card-border-radius);
+      overflow: hidden;
+    }
+
+    /* Image fills wrapper */
+    #pinned-reveal-{{ section.id }} .pinned-images .slide-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center;
+    }
+
+    /* Placeholder SVG styling */
+    #pinned-reveal-{{ section.id }} .pinned-images .slide-image svg {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+
+  #pinned-reveal-{{ section.id }} .slide-label {
+    color: {{ text_color }};
+  }
+
+  #pinned-reveal-{{ section.id }} .slide-title {
+    color: {{ text_color }};
+  }
+
+  #pinned-reveal-{{ section.id }} .slide-description {
+    color: {{ text_color }};
+  }
+</style>
+
+<section
+  id="pinned-reveal-{{ section.id }}"
+  class="pinned-reveal relative transition-colors duration-500"
+  data-section-id="{{ section.id }}"
+>
+  <div class="page-container">
+    {%- comment -%} Mobile layout: interleaved image + content blocks {%- endcomment -%}
+    <div class="pinned-grid-mobile md:hidden flex flex-col gap-y-6">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'slide' -%}
+          <div class="mobile-block mb-8" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
+            {%- if block.settings.image != blank -%}
+              <div class="mobile-image-wrapper w-full h-[360px] overflow-hidden mb-4" style="border-radius: var(--card-border-radius);">
+                <img
+                  class="mobile-parallax-img block w-full h-[130%] object-cover"
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  alt="{{ block.settings.image.alt | default: 'sections.pinned_image_reveal.image_alt' | t | escape }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="lazy"
+                >
+              </div>
+            {%- endif -%}
+            <div class="slide-content" data-bg-color="{{ block.settings.background_color | default: '#ffffff' }}">
+              <div class="content w-full">
+                {%- if block.settings.label != blank -%}
+                  <span class="slide-label block text-sm uppercase tracking-widest mb-4 opacity-60" data-intro>
+                    {{- block.settings.label -}}
+                  </span>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <h2 class="slide-title text-3xl font-bold leading-tight tracking-tight mb-2" data-intro>
+                    {{- block.settings.title -}}
+                  </h2>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <p class="slide-description text-base leading-relaxed mb-7 opacity-80" data-intro>
+                    {{- block.settings.description -}}
+                  </p>
+                {%- endif -%}
+                {%- if block.settings.button_text != blank -%}
+                  <a
+                    href="{{ block.settings.button_url | default: '#' }}"
+                    class="btn btn--primary"
+                    data-intro
+                  >
+                    <span>{{ block.settings.button_text }}</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+
+    {%- comment -%} Desktop/Tablet layout: two columns with pinned images {%- endcomment -%}
+    <div class="pinned-grid hidden md:flex md:flex-row md:gap-8 lg:gap-16">
+      {%- comment -%} Left column - Text content {%- endcomment -%}
+      <div class="pinned-content md:w-1/2 lg:w-3/5 flex flex-col">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'slide' -%}
+            <div
+              class="slide-content py-5 max-w-2xl"
+              data-index="{{ forloop.index0 }}"
+              data-bg-color="{{ block.settings.background_color | default: '#ffffff' }}"
+              {{ block.shopify_attributes }}
+            >
+              <div class="content w-full">
+                {%- if block.settings.label != blank -%}
+                  <span class="slide-label block text-sm uppercase tracking-widest mb-4 opacity-60" data-intro>
+                    {{- block.settings.label -}}
+                  </span>
+                {%- endif -%}
+                {%- if block.settings.title != blank -%}
+                  <h2 class="slide-title text-3xl lg:text-[42px] font-bold leading-tight tracking-tight mb-2" data-intro>
+                    {{- block.settings.title -}}
+                  </h2>
+                {%- endif -%}
+                {%- if block.settings.description != blank -%}
+                  <p class="slide-description text-base lg:text-lg leading-relaxed mb-7 opacity-80" data-intro>
+                    {{- block.settings.description -}}
+                  </p>
+                {%- endif -%}
+                {%- if block.settings.button_text != blank -%}
+                  <a
+                    href="{{ block.settings.button_url | default: '#' }}"
+                    class="btn btn--primary"
+                    data-intro
+                  >
+                    <span>{{ block.settings.button_text }}</span>
+                  </a>
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- comment -%} Right column - Pinned images {%- endcomment -%}
+      <div class="pinned-images md:w-1/2 lg:w-2/5">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'slide' -%}
+            <div
+              class="slide-image w-full overflow-hidden"
+              data-index="{{ forloop.index0 }}"
+            >
+              {%- if block.settings.image != blank -%}
+                <img
+                  src="{{ block.settings.image | image_url: width: 1200 }}"
+                  alt="{{ block.settings.image.alt | default: 'sections.pinned_image_reveal.image_alt' | t | escape }}"
+                  width="{{ block.settings.image.width }}"
+                  height="{{ block.settings.image.height }}"
+                  loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                >
+              {%- else -%}
+                {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('pinned-reveal-' + sectionId);
+  if (!section || section.dataset.pinnedRevealInitialized) return;
+  section.dataset.pinnedRevealInitialized = 'true';
+
+  // If animations disabled, skip
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  function initPinnedReveal() {
+    // Get gsap from window.pieces or window
+    if (typeof gsap === 'undefined') {
+      if (window.pieces && window.pieces.gsap) {
+        window.gsap = window.pieces.gsap;
+      } else {
+        requestAnimationFrame(initPinnedReveal);
+        return;
+      }
+    }
+
+    // Get ScrollTrigger from window.pieces or window
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    if (!ScrollTrigger) {
+      requestAnimationFrame(initPinnedReveal);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    // Wait for all images in section to load before initializing animations
+    const images = section.querySelectorAll('img');
+    const imagePromises = Array.from(images).map(function(img) {
+      if (img.complete) return Promise.resolve();
+      return new Promise(function(resolve) {
+        img.onload = resolve;
+        img.onerror = resolve;
+      });
+    });
+
+    Promise.all(imagePromises).then(function() {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          initAnimations();
+          ScrollTrigger.refresh(true);
+        });
+      });
+    });
+  }
+
+  function initAnimations() {
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const defaultBg = '{{ background_color }}';
+
+    // Mobile parallax
+    if (isMobile) {
+      const mobileBlocks = gsap.utils.toArray('#pinned-reveal-' + sectionId + ' .mobile-block');
+      const mobileImages = gsap.utils.toArray('#pinned-reveal-' + sectionId + ' .mobile-parallax-img');
+      const mobileContentBlocks = gsap.utils.toArray('#pinned-reveal-' + sectionId + ' .pinned-grid-mobile .slide-content');
+      const mobileBgColors = mobileContentBlocks.map(function(block) {
+        return block.getAttribute('data-bg-color') || defaultBg;
+      });
+
+      mobileImages.forEach(function(img, index) {
+        const wrapper = mobileBlocks[index];
+
+        // Parallax effect - image moves slower than scroll
+        gsap.fromTo(img,
+          { yPercent: -15 },
+          {
+            yPercent: 15,
+            ease: 'none',
+            scrollTrigger: {
+              trigger: wrapper,
+              start: 'top bottom',
+              end: 'bottom top',
+              scrub: true
+            }
+          }
+        );
+
+        // Background color transition
+        if (index > 0) {
+          gsap.to(section, {
+            backgroundColor: mobileBgColors[index],
+            ease: 'none',
+            scrollTrigger: {
+              trigger: wrapper,
+              start: 'top 60%',
+              end: 'top 40%',
+              scrub: true
+            }
+          });
+        }
+      });
+
+      return;
+    }
+
+    // Get slide containers (works for both img and svg placeholders)
+    const slideContainers = gsap.utils.toArray('#pinned-reveal-' + sectionId + ' .pinned-grid .slide-image');
+    const contentBlocks = gsap.utils.toArray('#pinned-reveal-' + sectionId + ' .pinned-grid .slide-content');
+    const bgColors = contentBlocks.map(function(block) {
+      return block.getAttribute('data-bg-color') || defaultBg;
+    });
+
+    if (slideContainers.length === 0) return;
+
+    // Set z-index for slide containers - first on top (highest z-index)
+    slideContainers.forEach(function(element, index) {
+      element.style.zIndex = slideContainers.length - index;
+    });
+
+    // Set initial state for all slide containers
+    gsap.set(slideContainers, {
+      clipPath: 'inset(0)'
+    });
+
+    // Create ScrollTrigger for each content block to trigger image transitions
+    contentBlocks.forEach(function(contentBlock, index) {
+      const currentSlide = slideContainers[index];
+      const nextSlide = slideContainers[index + 1];
+      const nextBgColor = bgColors[index + 1] || bgColors[index];
+
+      if (nextSlide && currentSlide) {
+        // Image reveal animation tied to scrolling past each content block
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: contentBlock,
+            start: 'center center',
+            end: 'bottom top',
+            scrub: true
+          }
+        })
+        .to(section, {
+          backgroundColor: nextBgColor,
+          duration: 1,
+          ease: 'none'
+        }, 0)
+        .to(currentSlide, {
+          clipPath: 'inset(0px 0px 100%)',
+          duration: 1,
+          ease: 'none'
+        }, 0);
+      }
+    });
+  }
+
+  // Wait for DOM, then images, then initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initPinnedReveal);
+  } else {
+    initPinnedReveal();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Pinned Image Reveal",
+  "tag": "section",
+  "class": "pinned-reveal-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "slide",
+      "name": "Slide",
+      "settings": [
+        {
+          "type": "header",
+          "content": "Image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Label"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Discover Our Story"
+        },
+        {
+          "type": "textarea",
+          "id": "description",
+          "label": "Description",
+          "default": "Scroll to reveal beautiful imagery and learn more about what makes us unique."
+        },
+        {
+          "type": "header",
+          "content": "Button"
+        },
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "header",
+          "content": "Colors"
+        },
+        {
+          "type": "color",
+          "id": "background_color",
+          "label": "Background color",
+          "default": "#ffffff",
+          "info": "Background color when this slide is active"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Pinned Image Reveal",
+      "category": "Scrolling & animation",
+      "blocks": [
+        {
+          "type": "slide",
+          "settings": {
+            "background_color": "#EDF9FF",
+            "title": "Green Cityscape",
+            "description": "Vibrant streets with vertical gardens and solar buildings. This oasis thrives on renewable energy, smart transport, and green spaces for biodiversity.",
+            "button_text": "Learn More"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "background_color": "#FFECF2",
+            "title": "Blue Urban Oasis",
+            "description": "Avenues with azure facades and eco-structures. This hub uses clean energy, smart transit, and parks for urban wildlife.",
+            "button_text": "Learn More"
+          }
+        },
+        {
+          "type": "slide",
+          "settings": {
+            "background_color": "#FFE8DB",
+            "title": "Fluid Architecture",
+            "description": "Desert refuge with fluid architecture and glowing interiors. This sanctuary harnesses solar power, sustainable design, and natural harmony.",
+            "button_text": "Learn More"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
