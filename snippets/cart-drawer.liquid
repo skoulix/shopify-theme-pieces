@@ -72,7 +72,7 @@
                       class="cart-drawer__quantity-btn"
                       data-quantity-minus
                       data-line="{{ forloop.index }}"
-                      aria-label="Decrease quantity"
+                      aria-label="{{ 'products.product.decrease_quantity' | t }}"
                     >
                       <i class="ph ph-minus"></i>
                     </button>
@@ -84,7 +84,7 @@
                         min="0"
                         data-quantity-input
                         data-line="{{ forloop.index }}"
-                        aria-label="Quantity"
+                        aria-label="{{ 'products.product.quantity' | t }}"
                       >
                     </div>
                     <button
@@ -92,7 +92,7 @@
                       class="cart-drawer__quantity-btn"
                       data-quantity-plus
                       data-line="{{ forloop.index }}"
-                      aria-label="Increase quantity"
+                      aria-label="{{ 'products.product.increase_quantity' | t }}"
                     >
                       <i class="ph ph-plus"></i>
                     </button>
@@ -102,7 +102,7 @@
                     class="cart-drawer__remove"
                     data-remove-item
                     data-line="{{ forloop.index }}"
-                    aria-label="Remove {{ item.product.title }}"
+                    aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}"
                   >
                     <i class="ph ph-trash"></i>
                   </button>

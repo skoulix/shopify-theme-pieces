@@ -16,7 +16,20 @@
     "previous_slide": "Slide left",
     "loading": "Loading...",
     "total_reviews": "total reviews",
-    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars"
+    "star_reviews_info": "{{ rating_value }} out of {{ rating_max }} stars",
+    "view_image": "View image {{ index }} of {{ total }}",
+    "previous": "Previous",
+    "next": "Next",
+    "previous_page": "Previous page",
+    "next_page": "Next page",
+    "previous_testimonial": "Previous testimonial",
+    "next_testimonial": "Next testimonial",
+    "go_to_testimonial": "Go to testimonial {{ index }}",
+    "previous_products": "Previous products",
+    "next_products": "Next products",
+    "grid_view": "Grid view",
+    "list_view": "List view",
+    "close_filters": "Close filters"
   },
   "general": {
     "newsletter": {
@@ -27,7 +40,21 @@
     },
     "copyright": "All rights reserved.",
     "back_to_top": "Back Top",
-    "view_all": "View All"
+    "view_all": "View All",
+    "previous": "Previous",
+    "next": "Next",
+    "page_of": "Page {{ current }} of {{ total }}",
+    "load_more": "Load More",
+    "showing_products": "Showing {{ from }}-{{ to }} of {{ total }} products",
+    "share": "Share",
+    "apply": "Apply",
+    "clear_all": "Clear all",
+    "filter": "Filter",
+    "filter_and_sort": "Filter & Sort",
+    "sort_by": "Sort by",
+    "min_price": "Min price",
+    "max_price": "Max price",
+    "to": "to"
   },
   "404": {
     "title": "Page not found",
@@ -45,14 +72,18 @@
     "comment_form_body": "Comment",
     "comment_form_email": "Email",
     "comment_form_name": "Name",
-    "comment_form_submit": "Post",
-    "comment_form_title": "Add a comment"
+    "comment_form_submit": "Post comment",
+    "comment_form_title": "Leave a comment",
+    "back_to_blog": "Back to {{ blog }}",
+    "min_read": "{{ minutes }} min read",
+    "comments_count": "{{ count }} Comments"
   },
   "cart": {
     "checkout": "Checkout",
     "title": "Cart",
     "update": "Update",
     "remove": "Remove",
+    "remove_item": "Remove {{ title }}",
     "subtotal": "Subtotal",
     "total": "Total",
     "taxes_shipping_note": "Taxes and shipping calculated at checkout",
@@ -66,7 +97,10 @@
     "view_cart": "View cart",
     "added_to_cart": "Added to cart",
     "close": "Close cart",
-    "copied": "Copied!"
+    "copied": "Copied!",
+    "adding": "Adding...",
+    "added": "Added!",
+    "error": "Error"
   },
   "sections": {
     "cart": {
@@ -96,7 +130,22 @@
     }
   },
   "collections": {
-    "title": "Collections"
+    "title": "Collections",
+    "product_count": {
+      "one": "{{ count }} Product",
+      "other": "{{ count }} Products"
+    }
+  },
+  "contact": {
+    "form": {
+      "title": "Contact",
+      "name": "Name",
+      "email": "Email",
+      "phone": "Phone",
+      "message": "Message",
+      "submit": "Send message",
+      "success": "Thanks for your message! We'll get back to you soon."
+    }
   },
   "gift_card": {
     "add_to_apple_wallet": "Add to Apple Wallet",

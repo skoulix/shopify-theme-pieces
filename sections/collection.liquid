@@ -60,7 +60,7 @@
     {% if section.settings.show_product_count %}
       <p class="page-header-subtitle mt-6">
         <span class="page-header-subtitle-line" data-subtitle-line></span>
-        <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</span></span>
+        <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ 'collections.product_count' | t: count: collection.products_count }}</span></span>
       </p>
     {% endif %}
 
@@ -164,18 +164,20 @@
         <div class="flex flex-col items-center justify-center py-16 {{ container_class }}" data-pagination-load-more>
           {% if paginate.next %}
             <button type="button" class="load-more-btn btn btn--secondary" data-next-url="{{ paginate.next.url }}">
-              <span class="load-more-text">Load More</span>
+              <span class="load-more-text">{{ 'general.load_more' | t }}</span>
               <span class="load-more-loading hidden items-center">
                 <svg class="animate-spin -ml-1 mr-2 h-3 w-3" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                   <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="2"></circle>
                   <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
                 </svg>
-                Loading...
+                {{ 'accessibility.loading' | t }}
               </span>
             </button>
           {% endif %}
+          {%- assign showing_from = paginate.current_offset | plus: 1 -%}
+          {%- assign showing_to = paginate.current_offset | plus: paginate.page_size | at_most: paginate.items -%}
           <span class="mt-4 text-sm text-[--color-text-secondary]" data-products-showing>
-            Showing {{ paginate.current_offset | plus: 1 }}-{{ paginate.current_offset | plus: paginate.page_size | at_most: paginate.items }} of {{ paginate.items }} products
+            {{ 'general.showing_products' | t: from: showing_from, to: showing_to, total: paginate.items }}
           </span>
         </div>
       {% else %}
@@ -183,17 +185,17 @@
           {% if paginate.previous %}
             <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
               <i class="ph ph-arrow-left"></i>
-              <span>Previous</span>
+              <span>{{ 'general.previous' | t }}</span>
             </a>
           {% endif %}
 
           <span class="px-4 py-2 text-sm text-[--color-text-secondary]">
-            Page {{ paginate.current_page }} of {{ paginate.pages }}
+            {{ 'general.page_of' | t: current: paginate.current_page, total: paginate.pages }}
           </span>
 
           {% if paginate.next %}
             <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
-              <span>Next</span>
+              <span>{{ 'general.next' | t }}</span>
               <i class="ph ph-arrow-right"></i>
             </a>
           {% endif %}

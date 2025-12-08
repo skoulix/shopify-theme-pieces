@@ -364,7 +364,7 @@
     {%- comment -%} Navigation {%- endcomment -%}
     {% if section.blocks.size > 1 %}
       <div class="testimonials-nav-{{ section.id }}" data-intro>
-        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-prev aria-label="Previous testimonial">
+        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-prev aria-label="{{ 'accessibility.previous_testimonial' | t }}">
           <i class="ph ph-arrow-left"></i>
         </button>
 
@@ -373,12 +373,12 @@
             <button
               class="testimonials-dot-{{ section.id }}{% if forloop.first %} is-active{% endif %}"
               data-testimonials-dot="{{ forloop.index0 }}"
-              aria-label="Go to testimonial {{ forloop.index }}"
+              aria-label="{{ 'accessibility.go_to_testimonial' | t: index: forloop.index }}"
             ></button>
           {% endfor %}
         </div>
 
-        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-next aria-label="Next testimonial">
+        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-next aria-label="{{ 'accessibility.next_testimonial' | t }}">
           <i class="ph ph-arrow-right"></i>
         </button>
       </div>

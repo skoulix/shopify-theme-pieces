@@ -55,7 +55,7 @@
           <div class="mb-8 rounded-[--card-radius] bg-green-50 p-4">
             <div class="flex items-center">
               <i class="ph ph-check-circle text-green-400 text-xl mr-3"></i>
-              <p class="text-sm font-medium text-green-800">Thanks for your message! We'll get back to you soon.</p>
+              <p class="text-sm font-medium text-green-800">{{ 'contact.form.success' | t }}</p>
             </div>
           </div>
         {% endif %}
@@ -73,7 +73,7 @@
 
         <div class="grid gap-6 sm:grid-cols-2">
           <div class="contact-form-group">
-            <label for="ContactForm-name" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">Name</label>
+            <label for="ContactForm-name" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.name' | t }}</label>
             <input
               type="text"
               id="ContactForm-name"
@@ -86,7 +86,7 @@
           </div>
 
           <div class="contact-form-group">
-            <label for="ContactForm-email" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">Email *</label>
+            <label for="ContactForm-email" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.email' | t }} *</label>
             <input
               type="email"
               id="ContactForm-email"
@@ -100,7 +100,7 @@
           </div>
 
           <div class="contact-form-group sm:col-span-2">
-            <label for="ContactForm-phone" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">Phone</label>
+            <label for="ContactForm-phone" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.phone' | t }}</label>
             <input
               type="tel"
               id="ContactForm-phone"
@@ -113,7 +113,7 @@
           </div>
 
           <div class="contact-form-group sm:col-span-2">
-            <label for="ContactForm-body" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">Message</label>
+            <label for="ContactForm-body" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.message' | t }}</label>
             <textarea
               id="ContactForm-body"
               name="contact[body]"
@@ -126,7 +126,7 @@
 
         <div class="contact-form-submit mt-8">
           <button type="submit" class="btn btn--primary">
-            <span>Send message</span>
+            <span>{{ 'contact.form.submit' | t }}</span>
             <i class="ph ph-arrow-right"></i>
           </button>
         </div>
