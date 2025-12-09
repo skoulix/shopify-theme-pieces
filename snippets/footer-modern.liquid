@@ -124,31 +124,40 @@
           </div>
         {%- endif -%}
       {%- endfor -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'copyright' -%}
-          <p class="footer-modern__copyright" {{ block.shopify_attributes }}>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
-        {%- endif -%}
-      {%- endfor -%}
-      {%- for block in section.blocks -%}
-        {%- if block.type == 'back_to_top' -%}
-          <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
-            <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
-            <i class="ph ph-arrow-up"></i>
-          </button>
-        {%- endif -%}
-      {%- endfor -%}
     </div>
   </div>
 </div>
 
-{%- for block in section.blocks -%}
-  {%- if block.type == 'payment' -%}
-    <div class="footer-modern__bar" {{ block.shopify_attributes }}>
-      <div class="footer-modern__payment{% if block.settings.grayscale %} footer-modern__payment--grayscale{% endif %}">
-        {% for type in shop.enabled_payment_types %}
-          {{ type | payment_type_svg_tag }}
-        {% endfor %}
-      </div>
-    </div>
-  {%- endif -%}
-{%- endfor -%}
+{%- liquid
+  assign has_bar_content = false
+  for block in section.blocks
+    if block.type == 'copyright' or block.type == 'payment' or block.type == 'back_to_top'
+      assign has_bar_content = true
+      break
+    endif
+  endfor
+-%}
+
+{%- if has_bar_content -%}
+  <div class="footer-modern__bar">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'copyright' -%}
+          <p class="footer-modern__copyright" {{ block.shopify_attributes }}>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.copyright' | t }}</p>
+
+        {%- when 'payment' -%}
+          <div class="footer-modern__payment{% if block.settings.grayscale %} footer-modern__payment--grayscale{% endif %}" {{ block.shopify_attributes }}>
+            {% for type in shop.enabled_payment_types %}
+              {{ type | payment_type_svg_tag }}
+            {% endfor %}
+          </div>
+
+        {%- when 'back_to_top' -%}
+          <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
+            <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
+            <i class="ph ph-arrow-up"></i>
+          </button>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+{%- endif -%}
