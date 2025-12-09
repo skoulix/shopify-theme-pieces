@@ -1,7 +1,11 @@
 {%- comment -%}
-  Footer Section - Block-based footer
-  Each element (nav, socials, payment, copyright, back to top) is a separate block
+  Footer Section - Multiple design options
+  Designs: Minimal (centered), Modern (branding + newsletter), Classic (multi-column)
 {%- endcomment -%}
+
+{%- liquid
+  assign footer_design = section.settings.footer_design | default: 'minimal'
+-%}
 
 <style>
   {% if section.settings.enable_reveal_effect %}
@@ -10,111 +14,30 @@
   .footer-content-{{ section.id }}.has-reveal { opacity: 0; transform: translateY(40px); }
   {% endif %}
   .footer-section { padding: var(--section-vertical-padding) 0; }
+  .footer-section nav a, .footer-section .footer-classic__menu a { color: inherit; opacity: 0.7; transition: opacity 0.3s ease; }
+  .footer-section nav a:hover, .footer-section .footer-classic__menu a:hover { opacity: 1; }
+  .back-to-top { display: inline-flex; align-items: center; gap: 0.5rem; font-size: 0.75rem; font-weight: 500; letter-spacing: 0.1em; text-transform: uppercase; cursor: pointer; background: none; border: none; color: inherit; padding: 0; }
   .back-to-top-text { position: relative; display: inline-block; overflow: hidden; }
   .back-to-top-text span { display: inline-block; transition: transform 0.3s ease; }
   .back-to-top-text span::after { content: attr(data-hover); position: absolute; left: 0; top: 100%; white-space: nowrap; }
   .back-to-top:hover .back-to-top-text span { transform: translateY(-100%); }
-  .footer-block + .footer-block { margin-top: 2.5rem; }
 </style>
 
 <div class="footer-wrapper" data-footer-wrapper>
-<footer class="footer-section overflow-hidden" style="background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};" data-footer-section>
+<footer
+  class="footer-section overflow-hidden"
+  style="--footer-bg: {{ section.settings.background_color }}; background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};"
+  data-footer-section
+>
   <div class="page-container footer-content-{{ section.id }}" data-footer-content>
-    {% for block in section.blocks %}
-      {% case block.type %}
-
-        {% when 'navigation' %}
-          {%- comment -%} Navigation Links {%- endcomment -%}
-          {% if block.settings.menu != blank %}
-            <nav aria-label="Footer" class="footer-block flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm" {{ block.shopify_attributes }}>
-              {% for link in block.settings.menu.links %}
-                <a href="{{ link.url }}">
-                  {{ link.title }}
-                </a>
-              {% endfor %}
-            </nav>
-          {% endif %}
-
-        {% when 'social' %}
-          {%- comment -%} Social Links {%- endcomment -%}
-          <div class="footer-block flex justify-center gap-x-5" {{ block.shopify_attributes }}>
-            {% if settings.social_instagram_link != blank %}
-              <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.instagram' | t }}</span>
-                <i class="ph ph-instagram-logo text-2xl"></i>
-              </a>
-            {% endif %}
-            {% if settings.social_facebook_link != blank %}
-              <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.facebook' | t }}</span>
-                <i class="ph ph-facebook-logo text-2xl"></i>
-              </a>
-            {% endif %}
-            {% if settings.social_twitter_link != blank %}
-              <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.twitter' | t }}</span>
-                <i class="ph ph-x-logo text-2xl"></i>
-              </a>
-            {% endif %}
-            {% if settings.social_tiktok_link != blank %}
-              <a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.tiktok' | t }}</span>
-                <i class="ph ph-tiktok-logo text-2xl"></i>
-              </a>
-            {% endif %}
-            {% if settings.social_pinterest_link != blank %}
-              <a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.pinterest' | t }}</span>
-                <i class="ph ph-pinterest-logo text-2xl"></i>
-              </a>
-            {% endif %}
-            {% if settings.social_youtube_link != blank %}
-              <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" class="opacity-60 hover:opacity-100 transition-opacity duration-300">
-                <span class="sr-only">{{ 'social.youtube' | t }}</span>
-                <i class="ph ph-youtube-logo text-2xl"></i>
-              </a>
-            {% endif %}
-          </div>
-
-        {% when 'payment' %}
-          {%- comment -%} Payment Icons {%- endcomment -%}
-          <div class="footer-block flex flex-wrap justify-center gap-3 {% if block.settings.grayscale %}grayscale opacity-60{% endif %}" {{ block.shopify_attributes }}>
-            {% for type in shop.enabled_payment_types %}
-              {{ type | payment_type_svg_tag: class: 'h-6' }}
-            {% endfor %}
-          </div>
-
-        {% when 'copyright' %}
-          {%- comment -%} Copyright {%- endcomment -%}
-          <p class="footer-block text-center text-sm" {{ block.shopify_attributes }}>
-            &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.copyright' | t }}
-          </p>
-
-        {% when 'back_to_top' %}
-          {%- comment -%} Back to Top {%- endcomment -%}
-          <div class="footer-block flex justify-center" {{ block.shopify_attributes }}>
-            <button
-              type="button"
-              class="back-to-top section-link inline-flex items-center gap-2 text-xs font-medium tracking-widest cursor-pointer"
-              data-back-to-top
-            >
-              <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
-              <i class="ph ph-arrow-up"></i>
-            </button>
-          </div>
-
-        {% when 'text' %}
-          {%- comment -%} Custom Text {%- endcomment -%}
-          <div class="footer-block text-center text-sm" {{ block.shopify_attributes }}>
-            {{ block.settings.text }}
-          </div>
-
-        {% when 'spacer' %}
-          {%- comment -%} Spacer {%- endcomment -%}
-          <div class="footer-block" style="height: {{ block.settings.height }}px;" {{ block.shopify_attributes }}></div>
-
-      {% endcase %}
-    {% endfor %}
+    {%- case footer_design -%}
+      {%- when 'minimal' -%}
+        {%- render 'footer-minimal', section: section -%}
+      {%- when 'modern' -%}
+        {%- render 'footer-modern', section: section -%}
+      {%- when 'classic' -%}
+        {%- render 'footer-classic', section: section -%}
+    {%- endcase -%}
   </div>
 </footer>
 </div>
@@ -128,10 +51,8 @@
   footer.dataset.footerInitialized = 'true';
 
   {% if section.settings.enable_reveal_effect %}
-  // Store the current ScrollTrigger instance for cleanup
   let footerScrollTrigger = null;
 
-  // Calculate and set footer height for sticky reveal effect
   function updateFooterHeight() {
     if (footerWrapper) {
       const footerHeight = footerWrapper.offsetHeight;
@@ -139,41 +60,29 @@
     }
   }
 
-  // Initial calculation
   updateFooterHeight();
-
-  // Recalculate on resize
   window.addEventListener('resize', updateFooterHeight);
 
-  // ScrollTrigger reveal animation
   function initFooterReveal() {
-    // Check for GSAP via window.pieces (exposed by app.js) or global
     const _gsap = window.pieces?.gsap || window.gsap;
     const _ScrollTrigger = window.pieces?.ScrollTrigger || window.ScrollTrigger;
 
     if (!_gsap || !_ScrollTrigger) return;
     if (!footerContent || !footerWrapper) return;
 
-    // Get the site content element that reveals the footer
     const siteContent = document.querySelector('.site-content');
     if (!siteContent) return;
 
-    // Register ScrollTrigger plugin
     _gsap.registerPlugin(_ScrollTrigger);
 
-    // Kill previous ScrollTrigger if exists
     if (footerScrollTrigger) {
       footerScrollTrigger.kill();
       footerScrollTrigger = null;
     }
 
-    // Add class to enable initial hidden state only when animation is ready
     footerContent.classList.add('has-reveal');
-
-    // Set initial state explicitly
     _gsap.set(footerContent, { y: 40, opacity: 0 });
 
-    // Create the scroll-triggered animation
     const tween = _gsap.to(footerContent, {
       y: 0,
       opacity: 1,
@@ -187,14 +96,11 @@
       }
     });
 
-    // Store reference for cleanup
     footerScrollTrigger = tween.scrollTrigger;
   }
 
-  // Initialize when GSAP is ready and fonts are loaded
   function waitForGsapAndFonts(callback) {
     if (window.pieces?.gsap && window.pieces?.ScrollTrigger) {
-      // Wait for fonts before initializing
       if (document.fonts && document.fonts.ready) {
         document.fonts.ready.then(callback);
       } else {
@@ -207,24 +113,20 @@
         callback();
       }
     } else {
-      // Check again after a short delay
       setTimeout(() => waitForGsapAndFonts(callback), 100);
     }
   }
 
-  // Start checking when DOM is ready
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', () => waitForGsapAndFonts(initFooterReveal));
   } else {
     waitForGsapAndFonts(initFooterReveal);
   }
 
-  // Reinitialize after Swup page transitions
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('footer-reveal', () => {
       requestAnimationFrame(() => {
         updateFooterHeight();
-        // Reinitialize the footer reveal with the new .site-content element
         waitForGsapAndFonts(initFooterReveal);
       });
     });
@@ -235,7 +137,6 @@
   const backToTopButtons = footer.querySelectorAll('[data-back-to-top]');
   backToTopButtons.forEach(btn => {
     btn.addEventListener('click', () => {
-      // Use Lenis if available for smooth scroll
       if (window.pieces && window.pieces.lenis) {
         window.pieces.lenis.scrollTo(0, { duration: 1.5 });
       } else {
@@ -252,7 +153,19 @@
   "settings": [
     {
       "type": "header",
-      "content": "Layout"
+      "content": "Design"
+    },
+    {
+      "type": "select",
+      "id": "footer_design",
+      "label": "Footer design",
+      "options": [
+        { "value": "minimal", "label": "Minimal" },
+        { "value": "modern", "label": "Modern" },
+        { "value": "classic", "label": "Classic" }
+      ],
+      "default": "minimal",
+      "info": "Minimal: Centered blocks. Modern: Split layout with newsletter. Classic: Multi-column."
     },
     {
       "type": "checkbox",
@@ -276,6 +189,23 @@
       "id": "text_color",
       "default": "#000000",
       "label": "Text color"
+    },
+    {
+      "type": "header",
+      "content": "Branding"
+    },
+    {
+      "type": "image_picker",
+      "id": "logo",
+      "label": "Logo",
+      "info": "Used for Modern & Classic designs. If not set, shop name will be displayed."
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Your brand tagline or brief description goes here.",
+      "info": "Used for Modern & Classic designs"
     }
   ],
   "blocks": [
@@ -288,6 +218,48 @@
           "id": "menu",
           "label": "Menu",
           "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "menu_column",
+      "name": "Menu column",
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used for Classic design"
+        },
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Quick links"
+        },
+        {
+          "type": "link_list",
+          "id": "menu",
+          "label": "Menu",
+          "default": "footer"
+        }
+      ]
+    },
+    {
+      "type": "newsletter",
+      "name": "Newsletter",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Subscribe to our newsletter"
+        },
+        {
+          "type": "text",
+          "id": "description",
+          "label": "Description",
+          "default": "Get the latest updates and offers.",
+          "info": "Used for Classic design"
         }
       ]
     },
@@ -333,6 +305,10 @@
       "name": "Text",
       "settings": [
         {
+          "type": "paragraph",
+          "content": "Used for Minimal design"
+        },
+        {
           "type": "richtext",
           "id": "text",
           "label": "Text",
@@ -344,6 +320,10 @@
       "type": "spacer",
       "name": "Spacer",
       "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used for Minimal design"
+        },
         {
           "type": "range",
           "id": "height",

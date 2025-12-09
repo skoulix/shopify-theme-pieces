@@ -1,0 +1,35 @@
+{%- comment -%}
+  Footer Social Icons
+  Renders social media icons from theme settings
+{%- endcomment -%}
+
+{% if settings.social_instagram_link != blank %}
+  <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.instagram' | t }}">
+    <i class="ph ph-instagram-logo text-2xl"></i>
+  </a>
+{% endif %}
+{% if settings.social_facebook_link != blank %}
+  <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.facebook' | t }}">
+    <i class="ph ph-facebook-logo text-2xl"></i>
+  </a>
+{% endif %}
+{% if settings.social_twitter_link != blank %}
+  <a href="{{ settings.social_twitter_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.twitter' | t }}">
+    <i class="ph ph-x-logo text-2xl"></i>
+  </a>
+{% endif %}
+{% if settings.social_tiktok_link != blank %}
+  <a href="{{ settings.social_tiktok_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.tiktok' | t }}">
+    <i class="ph ph-tiktok-logo text-2xl"></i>
+  </a>
+{% endif %}
+{% if settings.social_pinterest_link != blank %}
+  <a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.pinterest' | t }}">
+    <i class="ph ph-pinterest-logo text-2xl"></i>
+  </a>
+{% endif %}
+{% if settings.social_youtube_link != blank %}
+  <a href="{{ settings.social_youtube_link }}" target="_blank" rel="noopener" aria-label="{{ 'social.youtube' | t }}">
+    <i class="ph ph-youtube-logo text-2xl"></i>
+  </a>
+{% endif %}

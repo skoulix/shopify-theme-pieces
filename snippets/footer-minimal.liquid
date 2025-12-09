@@ -1,0 +1,61 @@
+{%- comment -%}
+  Footer Minimal Design
+  Centered, block-based layout
+
+  Required variables:
+  - section: The section object with blocks and settings
+{%- endcomment -%}
+
+<style>
+  .footer-minimal .footer-block + .footer-block { margin-top: 2.5rem; }
+</style>
+
+<div class="footer-minimal">
+  {% for block in section.blocks %}
+    {% case block.type %}
+
+      {% when 'navigation' %}
+        {% if block.settings.menu != blank %}
+          <nav aria-label="Footer" class="footer-block flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm" {{ block.shopify_attributes }}>
+            {% for link in block.settings.menu.links %}
+              <a href="{{ link.url }}">{{ link.title }}</a>
+            {% endfor %}
+          </nav>
+        {% endif %}
+
+      {% when 'social' %}
+        <div class="footer-block flex justify-center gap-x-5" {{ block.shopify_attributes }}>
+          {%- render 'footer-social-icons' -%}
+        </div>
+
+      {% when 'payment' %}
+        <div class="footer-block flex flex-wrap justify-center gap-3 {% if block.settings.grayscale %}grayscale{% endif %}" {{ block.shopify_attributes }}>
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag: class: 'h-6' }}
+          {% endfor %}
+        </div>
+
+      {% when 'copyright' %}
+        <p class="footer-block text-center text-sm" {{ block.shopify_attributes }}>
+          &copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.copyright' | t }}
+        </p>
+
+      {% when 'back_to_top' %}
+        <div class="footer-block flex justify-center" {{ block.shopify_attributes }}>
+          <button type="button" class="back-to-top" data-back-to-top>
+            <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
+            <i class="ph ph-arrow-up"></i>
+          </button>
+        </div>
+
+      {% when 'text' %}
+        <div class="footer-block text-center text-sm" {{ block.shopify_attributes }}>
+          {{ block.settings.text }}
+        </div>
+
+      {% when 'spacer' %}
+        <div class="footer-block" style="height: {{ block.settings.height }}px;" {{ block.shopify_attributes }}></div>
+
+    {% endcase %}
+  {% endfor %}
+</div>

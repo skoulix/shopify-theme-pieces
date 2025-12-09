@@ -1,0 +1,154 @@
+{%- comment -%}
+  Footer Modern Design
+  Split layout with branding on left, navigation and social on right
+  Uses blocks for flexible content arrangement
+
+  Required variables:
+  - section: The section object with blocks and settings
+{%- endcomment -%}
+
+<style>
+  .footer-modern { display: grid; gap: 3rem; }
+  @media (min-width: 1024px) {
+    .footer-modern { grid-template-columns: 1fr 1fr; gap: 4rem; }
+  }
+  .footer-modern__brand { max-width: 480px; }
+  .footer-modern__logo { max-height: 48px; width: auto; }
+  .footer-modern__description { margin-top: 1.5rem; font-size: 0.9375rem; line-height: 1.7; }
+  .footer-modern__newsletter { margin-top: 2rem; }
+  .footer-modern__newsletter-heading { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .footer-modern__newsletter-form { display: flex; gap: 0; }
+  .footer-modern__newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: var(--input-radius) 0 0 var(--input-radius);
+    color: inherit;
+    font-size: 0.875rem;
+    min-width: 0;
+  }
+  .footer-modern__newsletter-input::placeholder { color: inherit; opacity: 0.5; }
+  .footer-modern__newsletter-input:focus { outline: none; }
+  .footer-modern__newsletter-btn {
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-left: none;
+    border-radius: 0 var(--input-radius) var(--input-radius) 0;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-modern__newsletter-btn i { font-size: 1.125rem; }
+  .footer-modern__newsletter-btn:hover { opacity: 0.7; }
+  .footer-modern__right { display: flex; flex-direction: column; justify-content: space-between; gap: 2rem; }
+  @media (min-width: 1024px) {
+    .footer-modern__right { align-items: flex-end; text-align: right; }
+  }
+  .footer-modern__nav { display: flex; flex-wrap: wrap; gap: 1.5rem 3rem; }
+  @media (min-width: 1024px) {
+    .footer-modern__nav { justify-content: flex-end; }
+  }
+  .footer-modern__nav a { font-size: 0.875rem; }
+  .footer-modern__bottom { display: flex; flex-wrap: wrap; align-items: center; gap: 1.5rem; }
+  @media (min-width: 1024px) {
+    .footer-modern__bottom { justify-content: flex-end; }
+  }
+  .footer-modern__social { display: flex; gap: 1rem; }
+  .footer-modern__copyright { font-size: 0.75rem; }
+  .footer-modern__bar { margin-top: 3rem; padding-top: 2rem; border-top: 1px solid currentColor; border-color: rgba(currentColor, 0.15); display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem; }
+  .footer-modern__bar::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: currentColor; opacity: 0.15; }
+  .footer-modern__bar { position: relative; border: none; }
+  .footer-modern__payment { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-modern__payment svg { height: 1.5rem; }
+  .footer-modern__payment--grayscale { filter: grayscale(1); }
+</style>
+
+<div class="footer-modern">
+  <div class="footer-modern__brand">
+    {%- if section.settings.logo != blank -%}
+      {{ section.settings.logo | image_url: width: 400 | image_tag: class: 'footer-modern__logo', loading: 'lazy' }}
+    {%- else -%}
+      <span class="text-2xl font-bold font-heading">{{ shop.name }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="footer-modern__description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'newsletter' -%}
+        <div class="footer-modern__newsletter" {{ block.shopify_attributes }}>
+          <h3 class="footer-modern__newsletter-heading">{{ block.settings.heading | default: 'Subscribe to our newsletter' }}</h3>
+          {%- form 'customer', id: 'FooterNewsletterModern' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="footer-modern__newsletter-form">
+              <input
+                type="email"
+                name="contact[email]"
+                class="footer-modern__newsletter-input"
+                placeholder="{{ 'newsletter.label' | t }}"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="footer-modern__newsletter-btn" aria-label="{{ 'newsletter.button_label' | t }}">
+                <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  <div class="footer-modern__right">
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'navigation' and block.settings.menu != blank -%}
+        <nav class="footer-modern__nav" aria-label="Footer" {{ block.shopify_attributes }}>
+          {%- for link in block.settings.menu.links -%}
+            <a href="{{ link.url }}">{{ link.title }}</a>
+          {%- endfor -%}
+        </nav>
+      {%- endif -%}
+    {%- endfor -%}
+
+    <div class="footer-modern__bottom">
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'social' -%}
+          <div class="footer-modern__social" {{ block.shopify_attributes }}>
+            {%- render 'footer-social-icons' -%}
+          </div>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'copyright' -%}
+          <p class="footer-modern__copyright" {{ block.shopify_attributes }}>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}</p>
+        {%- endif -%}
+      {%- endfor -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'back_to_top' -%}
+          <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
+            <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
+            <i class="ph ph-arrow-up"></i>
+          </button>
+        {%- endif -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+{%- for block in section.blocks -%}
+  {%- if block.type == 'payment' -%}
+    <div class="footer-modern__bar" {{ block.shopify_attributes }}>
+      <div class="footer-modern__payment{% if block.settings.grayscale %} footer-modern__payment--grayscale{% endif %}">
+        {% for type in shop.enabled_payment_types %}
+          {{ type | payment_type_svg_tag }}
+        {% endfor %}
+      </div>
+    </div>
+  {%- endif -%}
+{%- endfor -%}

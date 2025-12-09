@@ -1,0 +1,182 @@
+{%- comment -%}
+  Footer Classic Design
+  Traditional multi-column layout with brand, menu columns, and newsletter
+  Uses blocks for flexible content arrangement
+
+  Required variables:
+  - section: The section object with blocks and settings
+{%- endcomment -%}
+
+
+<style>
+  .footer-classic__top { display: flex; flex-direction: column; gap: 3rem; margin-bottom: 3rem; }
+  @media (min-width: 1024px) {
+    .footer-classic__top { flex-direction: row; justify-content: space-between; }
+  }
+  .footer-classic__brand-col { max-width: 320px; }
+  .footer-classic__columns { display: flex; flex-wrap: wrap; gap: 2rem 3rem; }
+  @media (min-width: 1024px) {
+    .footer-classic__columns { gap: 2rem 4rem; }
+  }
+  .footer-classic__column-heading {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    margin-bottom: 1.25rem;
+    opacity: 0.6;
+  }
+  .footer-classic__menu { list-style: none; padding: 0; margin: 0; }
+  .footer-classic__menu li + li { margin-top: 0.75rem; }
+  .footer-classic__menu a { font-size: 0.875rem; }
+  .footer-classic__logo { max-height: 40px; width: auto; margin-bottom: 1rem; }
+  .footer-classic__description { font-size: 0.875rem; line-height: 1.7; margin-bottom: 1.5rem; }
+  .footer-classic__social { display: flex; gap: 0.75rem; }
+  .footer-classic__newsletter-col { }
+  .footer-classic__newsletter-text { font-size: 0.875rem; line-height: 1.6; margin-bottom: 1rem; }
+  .footer-classic__newsletter-form { display: flex; gap: 0; }
+  .footer-classic__newsletter-input {
+    flex: 1;
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-radius: var(--input-radius) 0 0 var(--input-radius);
+    color: inherit;
+    font-size: 0.875rem;
+    min-width: 0;
+  }
+  .footer-classic__newsletter-input::placeholder { color: inherit; opacity: 0.5; }
+  .footer-classic__newsletter-input:focus { outline: none; }
+  .footer-classic__newsletter-btn {
+    padding: 0.75rem 1rem;
+    background: transparent;
+    border: 1px solid currentColor;
+    border-left: none;
+    border-radius: 0 var(--input-radius) var(--input-radius) 0;
+    color: inherit;
+    cursor: pointer;
+    transition: opacity 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .footer-classic__newsletter-btn i { font-size: 1.125rem; }
+  .footer-classic__newsletter-btn:hover { opacity: 0.7; }
+  .footer-classic__bottom {
+    padding-top: 2rem;
+    border-top: 1px solid currentColor;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1rem;
+  }
+  .footer-classic__bottom-border { border-color: currentColor; opacity: 1; }
+  .footer-classic__bottom-border::before { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px; background: currentColor; opacity: 0.15; }
+  .footer-classic__bottom { position: relative; border: none; }
+  .footer-classic__copyright { font-size: 0.75rem; }
+  .footer-classic__payment { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+  .footer-classic__payment svg { height: 1.25rem; }
+  .footer-classic__payment--grayscale { filter: grayscale(1); }
+</style>
+
+<div class="footer-classic__top">
+  {%- comment -%} Brand column (always first) {%- endcomment -%}
+  <div class="footer-classic__brand-col">
+    {%- if section.settings.logo != blank -%}
+      {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'footer-classic__logo', loading: 'lazy' }}
+    {%- else -%}
+      <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <p class="footer-classic__description">{{ section.settings.description }}</p>
+    {%- endif -%}
+
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'social' -%}
+        <div class="footer-classic__social" {{ block.shopify_attributes }}>
+          {%- render 'footer-social-icons' -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+  </div>
+
+  {%- comment -%} Content columns - respects block order {%- endcomment -%}
+  <div class="footer-classic__columns">
+    {%- for block in section.blocks -%}
+      {%- case block.type -%}
+        {%- when 'menu_column' -%}
+          <div class="footer-classic__column" {{ block.shopify_attributes }}>
+            {%- if block.settings.heading != blank -%}
+              <h3 class="footer-classic__column-heading">{{ block.settings.heading }}</h3>
+            {%- endif -%}
+            {%- if block.settings.menu != blank -%}
+              <ul class="footer-classic__menu">
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            {%- endif -%}
+          </div>
+
+        {%- when 'navigation' -%}
+          {%- if block.settings.menu != blank -%}
+            <div class="footer-classic__column" {{ block.shopify_attributes }}>
+              <ul class="footer-classic__menu">
+                {%- for link in block.settings.menu.links -%}
+                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+        {%- when 'newsletter' -%}
+          <div class="footer-classic__newsletter-col" {{ block.shopify_attributes }}>
+            <h3 class="footer-classic__column-heading">{{ block.settings.heading | default: 'Newsletter' }}</h3>
+            {%- if block.settings.description != blank -%}
+              <p class="footer-classic__newsletter-text">{{ block.settings.description }}</p>
+            {%- endif -%}
+            {%- form 'customer', id: 'FooterNewsletterClassic' -%}
+              <input type="hidden" name="contact[tags]" value="newsletter">
+              <div class="footer-classic__newsletter-form">
+                <input
+                  type="email"
+                  name="contact[email]"
+                  class="footer-classic__newsletter-input"
+                  placeholder="{{ 'newsletter.label' | t }}"
+                  autocomplete="email"
+                  required
+                >
+                <button type="submit" class="footer-classic__newsletter-btn" aria-label="{{ 'newsletter.button_label' | t }}">
+                  <i class="ph ph-arrow-right"></i>
+                </button>
+              </div>
+            {%- endform -%}
+          </div>
+      {%- endcase -%}
+    {%- endfor -%}
+  </div>
+</div>
+
+<div class="footer-classic__bottom footer-classic__bottom-border">
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'copyright' -%}
+        <p class="footer-classic__copyright" {{ block.shopify_attributes }}>&copy; {{ 'now' | date: '%Y' }} {{ shop.name }}. {{ 'general.copyright' | t }}</p>
+
+      {%- when 'payment' -%}
+        <div class="footer-classic__payment{% if block.settings.grayscale %} footer-classic__payment--grayscale{% endif %}" {{ block.shopify_attributes }}>
+          {% for type in shop.enabled_payment_types %}
+            {{ type | payment_type_svg_tag }}
+          {% endfor %}
+        </div>
+
+      {%- when 'back_to_top' -%}
+        <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
+          <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
+          <i class="ph ph-arrow-up"></i>
+        </button>
+    {%- endcase -%}
+  {%- endfor -%}
+</div>
