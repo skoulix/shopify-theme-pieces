@@ -142,26 +142,26 @@
 <style>
   /* Mega menu panel - full width dropdown */
   .mega-menu-panel {
-    position: fixed;
+    position: absolute;
     top: 100%;
-    left: 0;
-    right: 0;
+    left: 50%;
+    transform: translateX(-50%) translateY(-10px);
+    width: 100vw;
     background: var(--color-background);
     border-bottom: 1px solid var(--color-border);
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
     opacity: 0;
     visibility: hidden;
     pointer-events: none;
-    transform: translateY(-10px);
     transition: opacity 0.3s ease, visibility 0.3s ease, transform 0.3s ease;
-    z-index: 49;
+    z-index: 100;
   }
 
   .mega-menu-wrapper.is-open .mega-menu-panel {
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateY(0);
+    transform: translateX(-50%) translateY(0);
   }
 
   .mega-menu-panel__inner {
@@ -375,110 +375,6 @@
   .mega-menu-featured__product:nth-child(3) { transition-delay: 0.2s; }
 </style>
 
-<script>
-(function() {
-  const megaMenus = document.querySelectorAll('[data-mega-menu]');
-  let activeMegaMenu = null;
-  let closeTimeout = null;
-
-  function openMegaMenu(menu) {
-    if (activeMegaMenu === menu) return;
-
-    // Close any open mega menu first
-    if (activeMegaMenu) {
-      closeMegaMenu(activeMegaMenu);
-    }
-
-    clearTimeout(closeTimeout);
-    activeMegaMenu = menu;
-
-    const trigger = menu.querySelector('[data-mega-menu-trigger]');
-    trigger.setAttribute('aria-expanded', 'true');
-    menu.classList.add('is-open');
-  }
-
-  function closeMegaMenu(menu) {
-    if (!menu) return;
-
-    const trigger = menu.querySelector('[data-mega-menu-trigger]');
-    trigger.setAttribute('aria-expanded', 'false');
-    menu.classList.remove('is-open');
-
-    if (activeMegaMenu === menu) {
-      activeMegaMenu = null;
-    }
-  }
-
-  megaMenus.forEach(menu => {
-    const trigger = menu.querySelector('[data-mega-menu-trigger]');
-    const panel = menu.querySelector('[data-mega-menu-panel]');
-
-    // Mouse enter - open menu
-    menu.addEventListener('mouseenter', () => {
-      clearTimeout(closeTimeout);
-      openMegaMenu(menu);
-    });
-
-    // Mouse leave - close menu with delay
-    menu.addEventListener('mouseleave', () => {
-      closeTimeout = setTimeout(() => {
-        closeMegaMenu(menu);
-      }, 200);
-    });
-
-    // Keep open when hovering panel
-    panel.addEventListener('mouseenter', () => {
-      clearTimeout(closeTimeout);
-    });
-
-    panel.addEventListener('mouseleave', () => {
-      closeTimeout = setTimeout(() => {
-        closeMegaMenu(menu);
-      }, 200);
-    });
-
-    // Keyboard support
-    trigger.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        if (menu.classList.contains('is-open')) {
-          closeMegaMenu(menu);
-        } else {
-          openMegaMenu(menu);
-        }
-      }
-
-      if (e.key === 'Escape' && menu.classList.contains('is-open')) {
-        closeMegaMenu(menu);
-        trigger.focus();
-      }
-    });
-
-    // Click toggle for touch devices
-    trigger.addEventListener('click', (e) => {
-      e.preventDefault();
-      if (menu.classList.contains('is-open')) {
-        closeMegaMenu(menu);
-      } else {
-        openMegaMenu(menu);
-      }
-    });
-  });
-
-  // Close when clicking outside
-  document.addEventListener('click', (e) => {
-    if (activeMegaMenu && !activeMegaMenu.contains(e.target)) {
-      closeMegaMenu(activeMegaMenu);
-    }
-  });
-
-  // Close on escape globally
-  document.addEventListener('keydown', (e) => {
-    if (e.key === 'Escape' && activeMegaMenu) {
-      const trigger = activeMegaMenu.querySelector('[data-mega-menu-trigger]');
-      closeMegaMenu(activeMegaMenu);
-      trigger?.focus();
-    }
-  });
-})();
-</script>
+{%- comment -%}
+  Mega menu JavaScript is initialized in header.liquid to ensure single initialization
+{%- endcomment -%}

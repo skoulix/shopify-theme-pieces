@@ -14,22 +14,46 @@
     "header": {
       "type": "header",
       "blocks": {
+        "mega_menu_XddmDW": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item": "Theme Sections",
+            "show_featured": true,
+            "featured_heading": "Featured",
+            "featured_collection": "frontpage",
+            "featured_limit": 3,
+            "promo_image": "shopify://shop_images/Mid-Air_Majesty__Snowboarders_Flight_Against_the_Blue.png",
+            "promo_heading": "",
+            "promo_text": "",
+            "promo_link": ""
+          }
+        },
         "announcement-1": {
           "type": "announcement",
           "settings": {
             "text": "Free shipping on orders over $50",
-            "icon": "truck"
+            "link": "",
+            "icon": "truck",
+            "show_countdown": false,
+            "countdown_date": ""
           }
         },
         "announcement-2": {
           "type": "announcement",
           "settings": {
             "text": "Use code SAVE20 for 20% off",
-            "icon": "tag"
+            "link": "",
+            "icon": "tag",
+            "show_countdown": false,
+            "countdown_date": ""
           }
         }
       },
-      "block_order": ["announcement-1", "announcement-2"],
+      "block_order": [
+        "mega_menu_XddmDW",
+        "announcement-1",
+        "announcement-2"
+      ],
       "settings": {
         "full_width": false,
         "menu": "main-menu",

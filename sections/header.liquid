@@ -61,18 +61,22 @@
     border-color: transparent;
   }
 
-  /* Transparent header colors - only apply to main nav bar, not dropdowns */
+  /* Transparent header colors - only apply to main nav bar, not dropdowns/mega menus */
   .header-wrapper.is-transparent .header-inner > nav,
   .header-wrapper.is-transparent .header-inner > nav > div > a,
   .header-wrapper.is-transparent .header-inner > nav > div > .dropdown-wrapper > button,
+  .header-wrapper.is-transparent .header-inner > nav > div > .mega-menu-wrapper > button,
   .header-wrapper.is-transparent .header-inner > nav button[data-cart-drawer-toggle],
   .header-wrapper.is-transparent .header-inner > nav [data-cart-count] {
     color: {{ section.settings.transparent_text_color }};
   }
 
-  /* Dropdown panel should always use normal text colors, even in transparent mode */
+  /* Dropdown and mega menu panels should always use normal text colors, even in transparent mode */
   .header-wrapper.is-transparent .dropdown-panel,
-  .header-wrapper.is-transparent .dropdown-panel a {
+  .header-wrapper.is-transparent .dropdown-panel a,
+  .header-wrapper.is-transparent .mega-menu-panel,
+  .header-wrapper.is-transparent .mega-menu-panel a,
+  .header-wrapper.is-transparent .mega-menu-panel button {
     color: var(--color-text);
   }
 
@@ -85,13 +89,15 @@
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav,
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > a,
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > .dropdown-wrapper > button,
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > .mega-menu-wrapper > button,
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav button[data-cart-drawer-toggle],
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav [data-cart-count] {
     color: var(--color-text);
   }
 
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > a:hover,
-  .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > .dropdown-wrapper > button:hover {
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > .dropdown-wrapper > button:hover,
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > .mega-menu-wrapper > button:hover {
     color: var(--color-primary);
   }
 
@@ -346,12 +352,16 @@
           endif
 
           # Check if this link has a mega menu block configured
+          # Matches by comparing handleized versions of both the menu item title and block setting
           assign mega_menu_block = nil
           assign link_handle = link.title | handleize
           for block in section.blocks
-            if block.type == 'mega_menu' and block.settings.menu_item == link_handle
-              assign mega_menu_block = block
-              break
+            if block.type == 'mega_menu'
+              assign block_handle = block.settings.menu_item | handleize
+              if block_handle == link_handle
+                assign mega_menu_block = block
+                break
+              endif
             endif
           endfor
         -%}
@@ -1172,6 +1182,117 @@
   });
 
   /**
+   * Mega Menu Navigation
+   * Hover-triggered full-width dropdown panels
+   */
+  function initMegaMenus() {
+    const megaMenus = document.querySelectorAll('[data-mega-menu]');
+    if (megaMenus.length === 0) return;
+
+    let activeMegaMenu = null;
+    let megaCloseTimeout = null;
+
+    function openMegaMenu(megaMenu) {
+      if (activeMegaMenu === megaMenu) return;
+
+      // Close any open mega menu first
+      if (activeMegaMenu) {
+        closeMegaMenu(activeMegaMenu, true);
+      }
+
+      // Also close any open dropdowns
+      if (activeDropdown) {
+        closeDropdown(activeDropdown, true);
+      }
+
+      clearTimeout(megaCloseTimeout);
+      activeMegaMenu = megaMenu;
+
+      const trigger = megaMenu.querySelector('[data-mega-menu-trigger]');
+      trigger.setAttribute('aria-expanded', 'true');
+      megaMenu.classList.add('is-open');
+    }
+
+    function closeMegaMenu(megaMenu, immediate = false) {
+      if (!megaMenu) return;
+
+      const trigger = megaMenu.querySelector('[data-mega-menu-trigger]');
+      trigger.setAttribute('aria-expanded', 'false');
+      megaMenu.classList.remove('is-open');
+
+      if (activeMegaMenu === megaMenu) {
+        activeMegaMenu = null;
+      }
+    }
+
+    megaMenus.forEach(megaMenu => {
+      const trigger = megaMenu.querySelector('[data-mega-menu-trigger]');
+      const panel = megaMenu.querySelector('[data-mega-menu-panel]');
+
+      // Mouse enter - open mega menu
+      megaMenu.addEventListener('mouseenter', () => {
+        clearTimeout(megaCloseTimeout);
+        openMegaMenu(megaMenu);
+      });
+
+      // Mouse leave - close mega menu with delay
+      megaMenu.addEventListener('mouseleave', () => {
+        megaCloseTimeout = setTimeout(() => {
+          closeMegaMenu(megaMenu);
+        }, 150);
+      });
+
+      // Keyboard support - toggle on Enter/Space
+      trigger.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (megaMenu.classList.contains('is-open')) {
+            closeMegaMenu(megaMenu);
+          } else {
+            openMegaMenu(megaMenu);
+          }
+        }
+
+        // Close on Escape
+        if (e.key === 'Escape' && megaMenu.classList.contains('is-open')) {
+          closeMegaMenu(megaMenu);
+          trigger.focus();
+        }
+      });
+
+      // Close on escape when focused within panel
+      if (panel) {
+        panel.addEventListener('keydown', (e) => {
+          if (e.key === 'Escape') {
+            closeMegaMenu(megaMenu);
+            trigger.focus();
+          }
+        });
+      }
+
+      // Click support for touch devices
+      trigger.addEventListener('click', (e) => {
+        e.preventDefault();
+        if (megaMenu.classList.contains('is-open')) {
+          closeMegaMenu(megaMenu);
+        } else {
+          openMegaMenu(megaMenu);
+        }
+      });
+    });
+
+    // Close mega menus when clicking outside
+    document.addEventListener('click', (e) => {
+      if (activeMegaMenu && !activeMegaMenu.contains(e.target)) {
+        closeMegaMenu(activeMegaMenu);
+      }
+    });
+  }
+
+  // Initialize mega menus
+  initMegaMenus();
+
+  /**
    * Mobile Submenu Toggle
    * Accordion-style expand/collapse for nested navigation
    * Uses event delegation - attached once to mobileNav container
@@ -1449,8 +1570,8 @@
         {
           "type": "text",
           "id": "menu_item",
-          "label": "Menu item handle",
-          "info": "Enter the handle of the menu item (lowercase, hyphens for spaces). Example: 'shop' or 'collections'"
+          "label": "Menu item",
+          "info": "Enter the name of the menu item exactly as it appears in your navigation (e.g., 'Shop', 'Collections', 'Theme Sections')"
         },
         {
           "type": "header",
