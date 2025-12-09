@@ -183,7 +183,7 @@
       {%- comment -%} Success state {%- endcomment -%}
       <div data-newsletter-popup-success class="hidden" role="status" aria-live="polite">
         <p class="text-center py-3 text-sm text-green-500">
-          {{ settings.popup_success_msg | default: 'general.newsletter.success' | t }}
+          {{ settings.popup_success_msg }}
         </p>
 
         {% if settings.popup_show_discount and settings.popup_discount_code != blank %}
