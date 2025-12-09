@@ -1,0 +1,149 @@
+{%- comment -%}
+  Customer Login Page
+  Handles login form and guest checkout option
+{%- endcomment -%}
+
+<div class="page-container py-12 lg:py-20">
+  <div class="max-w-md mx-auto">
+    {%- comment -%} Login Form {%- endcomment -%}
+    <div id="customer-login" class="text-center">
+      <h1 class="text-3xl font-semibold font-heading mb-2" data-intro>
+        {{ 'customers.login.title' | t }}
+      </h1>
+      <p class="text-[--color-text-secondary] mb-8">
+        {{ 'customers.login.subtitle' | t }}
+      </p>
+
+      {% form 'customer_login', class: 'space-y-4' %}
+        {% if form.errors %}
+          <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" role="alert">
+            <i class="ph ph-warning-circle mr-2"></i>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div>
+          <label for="customer-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
+          <input
+            type="email"
+            id="customer-email"
+            name="customer[email]"
+            autocomplete="email"
+            autocapitalize="off"
+            autocorrect="off"
+            required
+            placeholder="{{ 'customers.login.email' | t }}"
+            class="input w-full"
+            {% if form.errors contains 'form' %}
+              autofocus
+            {% endif %}
+          >
+        </div>
+
+        <div>
+          <label for="customer-password" class="sr-only">{{ 'customers.login.password' | t }}</label>
+          <input
+            type="password"
+            id="customer-password"
+            name="customer[password]"
+            autocomplete="current-password"
+            required
+            placeholder="{{ 'customers.login.password' | t }}"
+            class="input w-full"
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">
+          <span>{{ 'customers.login.sign_in' | t }}</span>
+        </button>
+
+        <p class="text-sm text-center">
+          <a href="#recover" class="text-[--color-primary] hover:underline" data-toggle-recover>
+            {{ 'customers.login.forgot_password' | t }}
+          </a>
+        </p>
+      {% endform %}
+
+      <div class="mt-8 pt-8 border-t border-[--color-border]">
+        <p class="text-[--color-text-secondary] mb-4">{{ 'customers.login.new_customer' | t }}</p>
+        <a href="{{ routes.account_register_url }}" class="btn btn-secondary w-full">
+          <span>{{ 'customers.login.create_account' | t }}</span>
+        </a>
+      </div>
+    </div>
+
+    {%- comment -%} Password Recovery Form {%- endcomment -%}
+    <div id="recover-password" class="hidden text-center">
+      <h1 class="text-3xl font-semibold font-heading mb-2" data-intro>
+        {{ 'customers.recover_password.title' | t }}
+      </h1>
+      <p class="text-[--color-text-secondary] mb-8">
+        {{ 'customers.recover_password.subtext' | t }}
+      </p>
+
+      {% form 'recover_customer_password', class: 'space-y-4' %}
+        {% if form.posted_successfully? %}
+          <div class="p-4 bg-green-50 border border-green-200 rounded-lg text-green-600 text-sm" role="status">
+            <i class="ph ph-check-circle mr-2"></i>
+            {{ 'customers.recover_password.success' | t }}
+          </div>
+        {% endif %}
+
+        {% if form.errors %}
+          <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" role="alert">
+            <i class="ph ph-warning-circle mr-2"></i>
+            {{ form.errors | default_errors }}
+          </div>
+        {% endif %}
+
+        <div>
+          <label for="recover-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
+          <input
+            type="email"
+            id="recover-email"
+            name="email"
+            autocomplete="email"
+            autocapitalize="off"
+            autocorrect="off"
+            required
+            placeholder="{{ 'customers.login.email' | t }}"
+            class="input w-full"
+          >
+        </div>
+
+        <button type="submit" class="btn btn-primary w-full">
+          <span>{{ 'customers.recover_password.submit' | t }}</span>
+        </button>
+
+        <p class="text-sm text-center">
+          <a href="#login" class="text-[--color-primary] hover:underline" data-toggle-recover>
+            {{ 'customers.recover_password.cancel' | t }}
+          </a>
+        </p>
+      {% endform %}
+    </div>
+  </div>
+</div>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const loginForm = document.getElementById('customer-login');
+    const recoverForm = document.getElementById('recover-password');
+    const toggleButtons = document.querySelectorAll('[data-toggle-recover]');
+
+    // Check URL hash for recover
+    if (window.location.hash === '#recover') {
+      loginForm.classList.add('hidden');
+      recoverForm.classList.remove('hidden');
+    }
+
+    toggleButtons.forEach(btn => {
+      btn.addEventListener('click', function(e) {
+        e.preventDefault();
+        loginForm.classList.toggle('hidden');
+        recoverForm.classList.toggle('hidden');
+        history.replaceState(null, '', this.getAttribute('href'));
+      });
+    });
+  });
+</script>

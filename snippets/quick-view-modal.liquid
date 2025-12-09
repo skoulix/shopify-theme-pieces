@@ -1,0 +1,271 @@
+{%- comment -%}
+  Quick View Modal
+  Modal for viewing product details and adding to cart without leaving the page
+{%- endcomment -%}
+
+<style>
+  .quick-view-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  .quick-view-modal.is-open {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .quick-view-modal__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+  }
+
+  .quick-view-modal__content {
+    position: relative;
+    width: 90vw;
+    max-width: 900px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: var(--color-background);
+    border-radius: var(--card-radius, 0);
+    transform: scale(0.95);
+    transition: transform 0.3s;
+  }
+
+  .quick-view-modal.is-open .quick-view-modal__content {
+    transform: scale(1);
+  }
+
+  .quick-view-modal__close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    z-index: 10;
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-background);
+    border: 1px solid var(--color-border);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .quick-view-modal__close:hover {
+    background: var(--color-background-secondary);
+  }
+
+  .quick-view-modal__loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+  }
+
+  .quick-view-modal__spinner {
+    width: 2rem;
+    height: 2rem;
+    border: 2px solid var(--color-border);
+    border-top-color: var(--color-primary);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+</style>
+
+<div class="quick-view-modal" data-quick-view-modal role="dialog" aria-modal="true" aria-label="Quick view">
+  <div class="quick-view-modal__backdrop" data-quick-view-close></div>
+  <div class="quick-view-modal__content">
+    <button type="button" class="quick-view-modal__close" data-quick-view-close aria-label="{{ 'accessibility.close' | t }}">
+      <i class="ph ph-x"></i>
+    </button>
+    <div class="quick-view-modal__body" data-quick-view-body>
+      <div class="quick-view-modal__loading">
+        <div class="quick-view-modal__spinner"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const modal = document.querySelector('[data-quick-view-modal]');
+  if (!modal) return;
+
+  const body = modal.querySelector('[data-quick-view-body]');
+  const closeButtons = modal.querySelectorAll('[data-quick-view-close]');
+  let currentHandle = null;
+
+  function openModal(productHandle) {
+    if (currentHandle === productHandle && body.querySelector('.quick-view-product')) {
+      // Already loaded this product
+      modal.classList.add('is-open');
+      document.body.style.overflow = 'hidden';
+      return;
+    }
+
+    currentHandle = productHandle;
+    body.innerHTML = '<div class="quick-view-modal__loading"><div class="quick-view-modal__spinner"></div></div>';
+    modal.classList.add('is-open');
+    document.body.style.overflow = 'hidden';
+
+    // Fetch product data
+    fetch(`/products/${productHandle}?section_id=quick-view-product`)
+      .then(res => res.text())
+      .then(html => {
+        body.innerHTML = html;
+        initQuickViewForm();
+      })
+      .catch(err => {
+        body.innerHTML = '<div class="p-8 text-center text-red-500">Error loading product. Please try again.</div>';
+      });
+  }
+
+  function closeModal() {
+    modal.classList.remove('is-open');
+    document.body.style.overflow = '';
+  }
+
+  function initQuickViewForm() {
+    const form = body.querySelector('form[action="/cart/add"]');
+    if (!form) return;
+
+    form.addEventListener('submit', async function(e) {
+      e.preventDefault();
+
+      const submitBtn = form.querySelector('[type="submit"]');
+      const btnText = submitBtn.querySelector('[data-add-text]');
+      const btnAdding = submitBtn.querySelector('[data-adding-text]');
+      const btnAdded = submitBtn.querySelector('[data-added-text]');
+
+      submitBtn.disabled = true;
+      if (btnText) btnText.classList.add('hidden');
+      if (btnAdding) btnAdding.classList.remove('hidden');
+
+      try {
+        const formData = new FormData(form);
+        const res = await fetch('/cart/add.js', {
+          method: 'POST',
+          body: formData
+        });
+
+        if (!res.ok) throw new Error('Failed to add to cart');
+
+        const item = await res.json();
+
+        // Update cart count
+        const cartCount = document.querySelectorAll('[data-cart-count]');
+        const cartRes = await fetch('/cart.js');
+        const cart = await cartRes.json();
+        cartCount.forEach(el => el.textContent = cart.item_count);
+
+        // Show success state
+        if (btnAdding) btnAdding.classList.add('hidden');
+        if (btnAdded) btnAdded.classList.remove('hidden');
+
+        // Open cart drawer if available
+        if (window.themeSettings?.cartType === 'drawer') {
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        }
+
+        setTimeout(() => {
+          closeModal();
+          // Reset button
+          submitBtn.disabled = false;
+          if (btnAdded) btnAdded.classList.add('hidden');
+          if (btnText) btnText.classList.remove('hidden');
+        }, 1000);
+
+      } catch (err) {
+        submitBtn.disabled = false;
+        if (btnAdding) btnAdding.classList.add('hidden');
+        if (btnText) btnText.classList.remove('hidden');
+        console.error('Error adding to cart:', err);
+      }
+    });
+
+    // Variant selectors
+    const variantSelects = body.querySelectorAll('[data-variant-select]');
+    const variantInput = body.querySelector('input[name="id"]');
+    const priceEl = body.querySelector('[data-quick-view-price]');
+    const compareEl = body.querySelector('[data-quick-view-compare]');
+    const productData = body.querySelector('[data-product-json]');
+
+    if (productData && variantSelects.length > 0) {
+      const product = JSON.parse(productData.textContent);
+
+      variantSelects.forEach(select => {
+        select.addEventListener('change', () => {
+          // Get all selected options
+          const selectedOptions = Array.from(variantSelects).map(s => s.value);
+
+          // Find matching variant
+          const variant = product.variants.find(v => {
+            return v.options.every((opt, i) => opt === selectedOptions[i]);
+          });
+
+          if (variant) {
+            variantInput.value = variant.id;
+
+            // Update price
+            if (priceEl) {
+              priceEl.textContent = Shopify.formatMoney(variant.price);
+            }
+            if (compareEl) {
+              if (variant.compare_at_price > variant.price) {
+                compareEl.textContent = Shopify.formatMoney(variant.compare_at_price);
+                compareEl.classList.remove('hidden');
+              } else {
+                compareEl.classList.add('hidden');
+              }
+            }
+
+            // Update availability
+            const submitBtn = form.querySelector('[type="submit"]');
+            if (!variant.available) {
+              submitBtn.disabled = true;
+              submitBtn.querySelector('[data-add-text]').textContent = '{{ "products.product.sold_out" | t }}';
+            } else {
+              submitBtn.disabled = false;
+              submitBtn.querySelector('[data-add-text]').textContent = '{{ "products.product.add_to_cart" | t }}';
+            }
+          }
+        });
+      });
+    }
+  }
+
+  // Event listeners for triggers
+  document.addEventListener('click', function(e) {
+    const trigger = e.target.closest('[data-quick-view-trigger]');
+    if (trigger) {
+      e.preventDefault();
+      openModal(trigger.dataset.quickViewTrigger);
+    }
+  });
+
+  // Close handlers
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && modal.classList.contains('is-open')) {
+      closeModal();
+    }
+  });
+})();
+</script>

@@ -10,63 +10,128 @@
     - collection: Collection object (optional) - preserves collection context in URL
     - index: Card index for animation stagger (optional, default: 0)
     - show_vendor: Show vendor name (optional, default: false)
+    - show_quick_add: Show quick add button (optional, default: true)
 {%- endcomment -%}
 
 {%- liquid
   assign index = index | default: 0
   assign show_vendor = show_vendor | default: false
+  assign show_quick_add = show_quick_add | default: true
 
   if collection
     assign product_url = product.url | within: collection
   else
     assign product_url = product.url
   endif
+
+  assign first_available_variant = product.selected_or_first_available_variant
+  assign has_variants = false
+  if product.variants.size > 1
+    assign has_variants = true
+  endif
 -%}
 
-<a
-  href="{{ product_url }}"
-  class="product-card block cursor-pointer no-underline text-inherit rounded-[--card-radius] overflow-hidden"
+<div
+  class="product-card group relative block cursor-pointer no-underline text-inherit rounded-[--card-radius] overflow-hidden"
   style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);"
   data-product-card="{{ index }}"
+  data-product-id="{{ product.id }}"
 >
-  <div class="product-card-image relative overflow-hidden aspect-[3/4]">
-    {% if product.featured_image %}
-      {{ product.featured_image | image_url: width: 1200 | image_tag:
-        class: 'w-full h-full object-cover',
-        loading: 'lazy',
-        decoding: 'async',
-        sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
-        widths: '400, 600, 800, 1200',
-        alt: product.title
-      }}
-    {% else %}
-      <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
-        <i class="ph ph-image text-5xl text-[--color-text-secondary] opacity-30" aria-hidden="true"></i>
-      </div>
-    {% endif %}
-  </div>
-
-  <div class="product-card-content p-4 bg-[--color-background]">
-    {% if show_vendor and product.vendor != blank %}
-      <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
-        <span class="inline-block">{{ product.vendor }}</span>
-      </p>
-    {% endif %}
-
-    <h3 class="product-card-title mt-2 text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading">
-      {%- assign title_words = product.title | split: ' ' -%}
-      {%- for word in title_words -%}
-        <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
-      {%- endfor -%}
-    </h3>
-
-    <div class="product-card-price mt-2 text-sm text-[--color-text-secondary]">
-      {% if product.compare_at_price > product.price %}
-        <span class="overflow-hidden inline-block"><span class="inline-block line-through opacity-60 mr-2">{{ product.compare_at_price | money }}</span></span>
-        <span class="overflow-hidden inline-block"><span class="inline-block text-[--color-sale]">{{ product.price | money }}</span></span>
+  <a href="{{ product_url }}" class="block">
+    <div class="product-card-image relative overflow-hidden aspect-[3/4]">
+      {% if product.featured_image %}
+        {{ product.featured_image | image_url: width: 1200 | image_tag:
+          class: 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105',
+          loading: 'lazy',
+          decoding: 'async',
+          sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
+          widths: '400, 600, 800, 1200',
+          alt: product.title
+        }}
+        {%- comment -%} Secondary image on hover {%- endcomment -%}
+        {% if product.images.size > 1 %}
+          {{ product.images[1] | image_url: width: 1200 | image_tag:
+            class: 'absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+            loading: 'lazy',
+            decoding: 'async',
+            sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
+            widths: '400, 600, 800, 1200',
+            alt: product.title
+          }}
+        {% endif %}
       {% else %}
-        <span class="overflow-hidden inline-block"><span class="inline-block">{{ product.price | money }}</span></span>
+        <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
+          <i class="ph ph-image text-5xl text-[--color-text-secondary] opacity-30" aria-hidden="true"></i>
+        </div>
+      {% endif %}
+
+      {%- comment -%} Badges {%- endcomment -%}
+      <div class="absolute top-3 left-3 flex flex-col gap-2">
+        {% if product.compare_at_price > product.price %}
+          {%- assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+          <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-sale] text-white rounded">
+            -{{ save_percent }}%
+          </span>
+        {% endif %}
+        {% unless product.available %}
+          <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-text] text-[--color-background] rounded">
+            {{ 'products.product.sold_out' | t }}
+          </span>
+        {% endunless %}
+      </div>
+    </div>
+
+    <div class="product-card-content p-4 bg-[--color-background]">
+      {% if show_vendor and product.vendor != blank %}
+        <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
+          <span class="inline-block">{{ product.vendor }}</span>
+        </p>
+      {% endif %}
+
+      <h3 class="product-card-title mt-2 text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading">
+        {%- assign title_words = product.title | split: ' ' -%}
+        {%- for word in title_words -%}
+          <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}
+        {%- endfor -%}
+      </h3>
+
+      <div class="product-card-price mt-2 text-sm text-[--color-text-secondary]">
+        {% if product.compare_at_price > product.price %}
+          <span class="overflow-hidden inline-block"><span class="inline-block line-through opacity-60 mr-2">{{ product.compare_at_price | money }}</span></span>
+          <span class="overflow-hidden inline-block"><span class="inline-block text-[--color-sale]">{{ product.price | money }}</span></span>
+        {% else %}
+          <span class="overflow-hidden inline-block"><span class="inline-block">{{ product.price | money }}</span></span>
+        {% endif %}
+      </div>
+    </div>
+  </a>
+
+  {%- comment -%} Quick Add Button {%- endcomment -%}
+  {% if show_quick_add and product.available %}
+    <div class="product-card-quick-add absolute bottom-[4.5rem] left-4 right-4 opacity-0 translate-y-2 transition-all duration-300 group-hover:opacity-100 group-hover:translate-y-0 pointer-events-none group-hover:pointer-events-auto">
+      {% if has_variants %}
+        {%- comment -%} Multiple variants - open quick view modal {%- endcomment -%}
+        <button
+          type="button"
+          class="w-full py-2.5 px-4 text-xs font-semibold uppercase tracking-wider bg-[--color-background] text-[--color-text] border border-[--color-border] hover:bg-[--color-text] hover:text-[--color-background] transition-colors rounded-[--button-radius]"
+          data-quick-view-trigger="{{ product.handle }}"
+          aria-label="{{ 'products.product.quick_view' | t }}: {{ product.title }}"
+        >
+          <span>{{ 'products.product.quick_view' | t }}</span>
+        </button>
+      {% else %}
+        {%- comment -%} Single variant - direct add to cart {%- endcomment -%}
+        <button
+          type="button"
+          class="w-full py-2.5 px-4 text-xs font-semibold uppercase tracking-wider bg-[--color-text] text-[--color-background] border border-[--color-text] hover:bg-transparent hover:text-[--color-text] transition-colors rounded-[--button-radius]"
+          data-quick-add="{{ first_available_variant.id }}"
+          aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}"
+        >
+          <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
+          <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
+          <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
+        </button>
       {% endif %}
     </div>
-  </div>
-</a>
+  {% endif %}
+</div>

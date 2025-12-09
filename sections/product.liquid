@@ -297,6 +297,44 @@
               </div>
             </details>
 
+          {%- when 'size_chart' -%}
+            {%- comment -%} Size chart link and modal {%- endcomment -%}
+            {%- liquid
+              assign has_size_option = false
+              for option in product.options
+                assign option_downcase = option | downcase
+                if option_downcase contains 'size' or option_downcase contains 'taille'
+                  assign has_size_option = true
+                  break
+                endif
+              endfor
+            -%}
+            {% if has_size_option or block.settings.show_always %}
+              <div class="size-chart-trigger mt-4" data-intro {{ block.shopify_attributes }}>
+                <button
+                  type="button"
+                  class="inline-flex items-center gap-2 text-sm text-[--color-text-secondary] hover:text-[--color-primary] transition-colors"
+                  data-size-chart-open
+                  aria-haspopup="dialog"
+                >
+                  <i class="ph ph-ruler text-lg"></i>
+                  <span class="underline underline-offset-2">{{ block.settings.link_text | default: 'Size Guide' }}</span>
+                </button>
+              </div>
+
+              {% render 'size-chart-modal',
+                heading: block.settings.modal_heading,
+                page: block.settings.page,
+                content: block.settings.content
+              %}
+            {% endif %}
+
+          {%- when 'back_in_stock' -%}
+            {%- comment -%} Back in stock notification form {%- endcomment -%}
+            <div data-intro {{ block.shopify_attributes }}>
+              {% render 'back-in-stock-form', product: product, variant: current_variant %}
+            </div>
+
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -1027,6 +1065,50 @@
           "default": "<p>Add content for this collapsible tab.</p>"
         }
       ]
+    },
+    {
+      "type": "size_chart",
+      "name": "Size chart",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text",
+          "default": "Size Guide"
+        },
+        {
+          "type": "text",
+          "id": "modal_heading",
+          "label": "Modal heading",
+          "default": "Size Guide"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Size chart page",
+          "info": "Select a page with your size chart content. Leave blank to use default table or custom content below."
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Custom content",
+          "info": "Used if no page is selected. Leave blank for default size chart table."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_always",
+          "label": "Show for all products",
+          "default": false,
+          "info": "By default, only shows for products with a Size option"
+        }
+      ]
+    },
+    {
+      "type": "back_in_stock",
+      "name": "Back in stock",
+      "limit": 1,
+      "settings": []
     }
   ],
   "disabled_on": {

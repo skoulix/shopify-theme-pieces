@@ -1,0 +1,58 @@
+{%- comment -%}
+  Customer Account Activation Page
+  Allows users to activate their account and set a password
+{%- endcomment -%}
+
+<div class="page-container py-12 lg:py-20">
+  <div class="max-w-md mx-auto text-center">
+    <h1 class="text-3xl font-semibold font-heading mb-2" data-intro>
+      {{ 'customers.activate_account.title' | t }}
+    </h1>
+    <p class="text-[--color-text-secondary] mb-8">
+      {{ 'customers.activate_account.subtext' | t }}
+    </p>
+
+    {% form 'activate_customer_password', class: 'space-y-4 text-left' %}
+      {% if form.errors %}
+        <div class="p-4 bg-red-50 border border-red-200 rounded-lg text-red-600 text-sm" role="alert">
+          <i class="ph ph-warning-circle mr-2"></i>
+          {{ form.errors | default_errors }}
+        </div>
+      {% endif %}
+
+      <div>
+        <label for="activate-password" class="block text-sm font-medium mb-2">{{ 'customers.activate_account.password' | t }}</label>
+        <input
+          type="password"
+          id="activate-password"
+          name="customer[password]"
+          autocomplete="new-password"
+          required
+          class="input w-full"
+        >
+      </div>
+
+      <div>
+        <label for="activate-password-confirm" class="block text-sm font-medium mb-2">{{ 'customers.activate_account.password_confirm' | t }}</label>
+        <input
+          type="password"
+          id="activate-password-confirm"
+          name="customer[password_confirmation]"
+          autocomplete="new-password"
+          required
+          class="input w-full"
+        >
+      </div>
+
+      <button type="submit" class="btn btn-primary w-full">
+        <span>{{ 'customers.activate_account.submit' | t }}</span>
+      </button>
+
+      <p class="text-center">
+        <a href="{{ routes.account_login_url }}" class="text-sm text-[--color-text-secondary] hover:text-[--color-text] transition-colors">
+          {{ 'customers.activate_account.cancel' | t }}
+        </a>
+      </p>
+    {% endform %}
+  </div>
+</div>

@@ -11,6 +11,34 @@
   "name": "Header",
   "type": "header",
   "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "message-1": {
+          "type": "message",
+          "settings": {
+            "text": "Free shipping on orders over $50",
+            "icon": "truck"
+          }
+        },
+        "message-2": {
+          "type": "message",
+          "settings": {
+            "text": "Use code SAVE20 for 20% off",
+            "icon": "tag"
+          }
+        }
+      },
+      "block_order": ["message-1", "message-2"],
+      "settings": {
+        "background_color": "#111827",
+        "text_color": "#ffffff",
+        "bar_height": 40,
+        "rotation_speed": 5,
+        "show_arrows": false,
+        "dismissible": true
+      }
+    },
     "header": {
       "type": "header",
       "settings": {
@@ -24,6 +52,7 @@
     }
   },
   "order": [
+    "announcement-bar",
     "header"
   ]
 }

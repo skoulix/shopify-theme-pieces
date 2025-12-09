@@ -1,0 +1,201 @@
+{%- comment -%}
+  Customer Order Details Page
+  Shows full order information
+{%- endcomment -%}
+
+<div class="page-container py-12 lg:py-20">
+  <div class="max-w-4xl mx-auto">
+    {%- comment -%} Back Link {%- endcomment -%}
+    <a href="{{ routes.account_url }}" class="inline-flex items-center gap-2 text-sm text-[--color-text-secondary] hover:text-[--color-text] transition-colors mb-6">
+      <i class="ph ph-arrow-left"></i>
+      {{ 'customers.account.return' | t }}
+    </a>
+
+    {%- comment -%} Order Header {%- endcomment -%}
+    <header class="mb-8">
+      <h1 class="text-3xl font-semibold font-heading mb-2" data-intro>
+        {{ 'customers.order.title' | t: name: order.name }}
+      </h1>
+      <p class="text-[--color-text-secondary]">
+        {{ 'customers.order.date_html' | t: date: order.created_at | date: format: 'date' }}
+      </p>
+    </header>
+
+    {%- comment -%} Order Status {%- endcomment -%}
+    <div class="flex flex-wrap gap-3 mb-8">
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm
+        {% if order.financial_status == 'paid' %}
+          bg-green-100 text-green-800
+        {% elsif order.financial_status == 'pending' %}
+          bg-yellow-100 text-yellow-800
+        {% else %}
+          bg-gray-100 text-gray-800
+        {% endif %}
+      ">
+        {{ order.financial_status_label }}
+      </span>
+      <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm
+        {% if order.fulfillment_status == 'fulfilled' %}
+          bg-green-100 text-green-800
+        {% elsif order.fulfillment_status == 'partial' %}
+          bg-yellow-100 text-yellow-800
+        {% else %}
+          bg-gray-100 text-gray-800
+        {% endif %}
+      ">
+        {{ order.fulfillment_status_label }}
+      </span>
+      {% if order.cancelled %}
+        <span class="inline-flex items-center gap-2 px-3 py-1 rounded-full text-sm bg-red-100 text-red-800">
+          {{ 'customers.order.cancelled_on' | t: date: order.cancelled_at | date: format: 'date' }}
+        </span>
+      {% endif %}
+    </div>
+
+    <div class="grid lg:grid-cols-3 gap-8">
+      {%- comment -%} Order Items {%- endcomment -%}
+      <div class="lg:col-span-2">
+        <div class="border border-[--color-border] rounded-lg overflow-hidden">
+          <table class="w-full">
+            <thead class="bg-[--color-background-secondary] text-sm">
+              <tr>
+                <th class="text-left p-4 font-medium">{{ 'customers.order.product' | t }}</th>
+                <th class="text-center p-4 font-medium hidden sm:table-cell">{{ 'customers.order.quantity' | t }}</th>
+                <th class="text-right p-4 font-medium">{{ 'customers.order.total' | t }}</th>
+              </tr>
+            </thead>
+            <tbody class="divide-y divide-[--color-border]">
+              {% for line_item in order.line_items %}
+                <tr data-intro>
+                  <td class="p-4">
+                    <div class="flex gap-4">
+                      {% if line_item.image %}
+                        <img
+                          src="{{ line_item.image | image_url: width: 120 }}"
+                          alt="{{ line_item.title | escape }}"
+                          width="60"
+                          height="60"
+                          class="w-15 h-15 object-cover rounded border border-[--color-border]"
+                          loading="lazy"
+                        >
+                      {% endif %}
+                      <div>
+                        <p class="font-medium">
+                          {% if line_item.url != blank %}
+                            <a href="{{ line_item.url }}" class="hover:text-[--color-primary] transition-colors">
+                              {{ line_item.product.title }}
+                            </a>
+                          {% else %}
+                            {{ line_item.title }}
+                          {% endif %}
+                        </p>
+                        {% if line_item.variant.title != 'Default Title' %}
+                          <p class="text-sm text-[--color-text-secondary]">{{ line_item.variant.title }}</p>
+                        {% endif %}
+                        {% if line_item.selling_plan_allocation %}
+                          <p class="text-sm text-[--color-text-secondary]">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+                        {% endif %}
+                        <p class="text-sm text-[--color-text-secondary] sm:hidden">{{ 'customers.order.quantity' | t }}: {{ line_item.quantity }}</p>
+                        {% if line_item.line_level_discount_allocations.size > 0 %}
+                          {% for discount in line_item.line_level_discount_allocations %}
+                            <p class="text-sm text-[--color-sale]">
+                              <i class="ph ph-tag"></i> {{ discount.discount_application.title }} (-{{ discount.amount | money }})
+                            </p>
+                          {% endfor %}
+                        {% endif %}
+                      </div>
+                    </div>
+                  </td>
+                  <td class="p-4 text-center hidden sm:table-cell">{{ line_item.quantity }}</td>
+                  <td class="p-4 text-right">
+                    {% if line_item.original_line_price != line_item.final_line_price %}
+                      <s class="text-[--color-text-secondary]">{{ line_item.original_line_price | money }}</s>
+                      <br>
+                    {% endif %}
+                    {{ line_item.final_line_price | money }}
+                  </td>
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+
+        {%- comment -%} Fulfillment Info {%- endcomment -%}
+        {% for line_item in order.line_items %}
+          {% if line_item.fulfillment %}
+            <div class="mt-4 p-4 border border-[--color-border] rounded-lg">
+              <p class="font-medium mb-2">
+                {{ 'customers.order.fulfilled_at_html' | t: date: line_item.fulfillment.created_at | date: format: 'date' }}
+              </p>
+              {% if line_item.fulfillment.tracking_url %}
+                <a href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-[--color-primary] hover:underline">
+                  <i class="ph ph-truck"></i>
+                  {{ 'customers.order.track_shipment' | t }}
+                  {% if line_item.fulfillment.tracking_number %}
+                    ({{ line_item.fulfillment.tracking_number }})
+                  {% endif %}
+                </a>
+              {% endif %}
+            </div>
+          {% endif %}
+        {% endfor %}
+      </div>
+
+      {%- comment -%} Order Summary Sidebar {%- endcomment -%}
+      <div class="lg:col-span-1 space-y-6">
+        {%- comment -%} Totals {%- endcomment -%}
+        <div class="border border-[--color-border] rounded-lg p-4">
+          <h3 class="font-semibold mb-4">{{ 'customers.order.order_summary' | t }}</h3>
+          <dl class="space-y-2 text-sm">
+            <div class="flex justify-between">
+              <dt>{{ 'customers.order.subtotal' | t }}</dt>
+              <dd>{{ order.line_items_subtotal_price | money }}</dd>
+            </div>
+
+            {% for discount in order.cart_level_discount_applications %}
+              <div class="flex justify-between text-[--color-sale]">
+                <dt><i class="ph ph-tag"></i> {{ discount.title }}</dt>
+                <dd>-{{ discount.total_allocated_amount | money }}</dd>
+              </div>
+            {% endfor %}
+
+            {% for shipping_method in order.shipping_methods %}
+              <div class="flex justify-between">
+                <dt>{{ 'customers.order.shipping' | t }} ({{ shipping_method.title }})</dt>
+                <dd>{{ shipping_method.price | money }}</dd>
+              </div>
+            {% endfor %}
+
+            {% for tax_line in order.tax_lines %}
+              <div class="flex justify-between">
+                <dt>{{ tax_line.title }} ({{ tax_line.rate_percentage }}%)</dt>
+                <dd>{{ tax_line.price | money }}</dd>
+              </div>
+            {% endfor %}
+
+            <div class="flex justify-between pt-2 border-t border-[--color-border] font-semibold text-base">
+              <dt>{{ 'customers.order.total' | t }}</dt>
+              <dd>{{ order.total_price | money }}</dd>
+            </div>
+          </dl>
+        </div>
+
+        {%- comment -%} Shipping Address {%- endcomment -%}
+        <div class="border border-[--color-border] rounded-lg p-4">
+          <h3 class="font-semibold mb-4">{{ 'customers.order.shipping_address' | t }}</h3>
+          <address class="text-sm text-[--color-text-secondary] not-italic">
+            {{ order.shipping_address | format_address }}
+          </address>
+        </div>
+
+        {%- comment -%} Billing Address {%- endcomment -%}
+        <div class="border border-[--color-border] rounded-lg p-4">
+          <h3 class="font-semibold mb-4">{{ 'customers.order.billing_address' | t }}</h3>
+          <address class="text-sm text-[--color-text-secondary] not-italic">
+            {{ order.billing_address | format_address }}
+          </address>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

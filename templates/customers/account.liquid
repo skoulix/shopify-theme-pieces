@@ -1,0 +1,157 @@
+{%- comment -%}
+  Customer Account Dashboard
+  Shows order history and account details
+{%- endcomment -%}
+
+<div class="page-container py-12 lg:py-20">
+  <div class="max-w-4xl mx-auto">
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="mb-10">
+      <h1 class="text-3xl lg:text-4xl font-semibold font-heading mb-2" data-intro>
+        {{ 'customers.account.title' | t }}
+      </h1>
+      <p class="text-[--color-text-secondary]">
+        {{ 'customers.account.welcome' | t: name: customer.first_name }}
+      </p>
+    </header>
+
+    <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+      {%- comment -%} Sidebar {%- endcomment -%}
+      <aside class="lg:col-span-1">
+        <nav class="space-y-1">
+          <a href="{{ routes.account_url }}" class="flex items-center gap-3 px-4 py-3 rounded-lg bg-[--color-background-secondary] font-medium">
+            <i class="ph ph-user text-lg"></i>
+            {{ 'customers.account.details' | t }}
+          </a>
+          <a href="{{ routes.account_addresses_url }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[--color-background-secondary] transition-colors">
+            <i class="ph ph-house text-lg"></i>
+            {{ 'customers.addresses.title' | t }}
+          </a>
+          <a href="{{ routes.account_logout_url }}" class="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[--color-background-secondary] transition-colors text-[--color-text-secondary]">
+            <i class="ph ph-sign-out text-lg"></i>
+            {{ 'customers.account.log_out' | t }}
+          </a>
+        </nav>
+
+        {%- comment -%} Account Details Card {%- endcomment -%}
+        <div class="mt-8 p-6 border border-[--color-border] rounded-lg">
+          <h3 class="font-semibold mb-4">{{ 'customers.account.details' | t }}</h3>
+          <p class="text-sm text-[--color-text-secondary]">{{ customer.email }}</p>
+          {% if customer.default_address %}
+            <div class="mt-4 pt-4 border-t border-[--color-border] text-sm text-[--color-text-secondary]">
+              {{ customer.default_address | format_address }}
+            </div>
+          {% endif %}
+        </div>
+      </aside>
+
+      {%- comment -%} Order History {%- endcomment -%}
+      <main class="lg:col-span-2">
+        <h2 class="text-xl font-semibold font-heading mb-6">{{ 'customers.orders.title' | t }}</h2>
+
+        {% paginate customer.orders by 10 %}
+          {% if customer.orders.size > 0 %}
+            <div class="space-y-4">
+              {% for order in customer.orders %}
+                <div class="border border-[--color-border] rounded-lg overflow-hidden" data-intro>
+                  {%- comment -%} Order Header {%- endcomment -%}
+                  <div class="flex flex-wrap items-center justify-between gap-4 p-4 bg-[--color-background-secondary]">
+                    <div>
+                      <a href="{{ order.customer_url }}" class="font-semibold hover:text-[--color-primary] transition-colors">
+                        {{ order.name }}
+                      </a>
+                      <p class="text-sm text-[--color-text-secondary]">
+                        {{ order.created_at | date: format: 'date' }}
+                      </p>
+                    </div>
+                    <div class="text-right">
+                      <p class="font-semibold">{{ order.total_price | money }}</p>
+                      <span class="inline-block px-2 py-0.5 text-xs rounded-full
+                        {% if order.fulfillment_status == 'fulfilled' %}
+                          bg-green-100 text-green-800
+                        {% elsif order.fulfillment_status == 'partial' %}
+                          bg-yellow-100 text-yellow-800
+                        {% else %}
+                          bg-gray-100 text-gray-800
+                        {% endif %}
+                      ">
+                        {{ order.fulfillment_status_label }}
+                      </span>
+                    </div>
+                  </div>
+
+                  {%- comment -%} Order Items Preview {%- endcomment -%}
+                  <div class="p-4">
+                    <div class="flex flex-wrap gap-2">
+                      {% for line_item in order.line_items limit: 4 %}
+                        {% if line_item.image %}
+                          <img
+                            src="{{ line_item.image | image_url: width: 80 }}"
+                            alt="{{ line_item.title | escape }}"
+                            width="40"
+                            height="40"
+                            class="w-10 h-10 object-cover rounded border border-[--color-border]"
+                            loading="lazy"
+                          >
+                        {% endif %}
+                      {% endfor %}
+                      {% if order.line_items.size > 4 %}
+                        <span class="w-10 h-10 flex items-center justify-center rounded border border-[--color-border] text-xs text-[--color-text-secondary]">
+                          +{{ order.line_items.size | minus: 4 }}
+                        </span>
+                      {% endif %}
+                    </div>
+                    <a href="{{ order.customer_url }}" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[--color-primary] hover:underline">
+                      {{ 'customers.orders.view_order' | t }}
+                      <i class="ph ph-arrow-right"></i>
+                    </a>
+                  </div>
+                </div>
+              {% endfor %}
+            </div>
+
+            {% if paginate.pages > 1 %}
+              <nav class="mt-8 flex justify-center gap-2" aria-label="Pagination">
+                {% if paginate.previous %}
+                  <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors">
+                    <i class="ph ph-caret-left"></i>
+                  </a>
+                {% endif %}
+
+                {% for part in paginate.parts %}
+                  {% if part.is_link %}
+                    <a href="{{ part.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors">
+                      {{ part.title }}
+                    </a>
+                  {% else %}
+                    {% if part.title == paginate.current_page %}
+                      <span class="px-4 py-2 border border-[--color-primary] bg-[--color-primary] text-[--color-primary-contrast] rounded">
+                        {{ part.title }}
+                      </span>
+                    {% else %}
+                      <span class="px-4 py-2">{{ part.title }}</span>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+
+                {% if paginate.next %}
+                  <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors">
+                    <i class="ph ph-caret-right"></i>
+                  </a>
+                {% endif %}
+              </nav>
+            {% endif %}
+          {% else %}
+            <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg">
+              <i class="ph ph-package text-4xl text-[--color-text-secondary] mb-4"></i>
+              <p class="text-[--color-text-secondary] mb-4">{{ 'customers.orders.none' | t }}</p>
+              <a href="{{ routes.all_products_collection_url }}" class="btn btn-primary">
+                <span>{{ 'customers.account.start_shopping' | t }}</span>
+              </a>
+            </div>
+          {% endif %}
+        {% endpaginate %}
+      </main>
+    </div>
+  </div>
+</div>

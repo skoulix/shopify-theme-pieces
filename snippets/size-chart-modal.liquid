@@ -1,0 +1,198 @@
+{%- comment -%}
+  Size Chart Modal
+  Renders a modal with size chart content.
+
+  Accepts:
+  - heading: {String} Modal heading (optional)
+  - page: {Page} Page object containing size chart content
+  - content: {String} Rich text content if no page is specified
+
+  Usage:
+  {% render 'size-chart-modal', heading: 'Size Guide', page: page %}
+{%- endcomment -%}
+
+<div
+  id="size-chart-modal"
+  class="size-chart-modal fixed inset-0 z-50 hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="size-chart-modal-title"
+  data-size-chart-modal
+>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div
+    class="size-chart-modal__backdrop absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"
+    data-size-chart-close
+  ></div>
+
+  {%- comment -%} Modal Content {%- endcomment -%}
+  <div class="size-chart-modal__container absolute inset-y-0 right-0 w-full max-w-2xl bg-[--color-background] shadow-xl translate-x-full transition-transform duration-300 ease-out flex flex-col">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="size-chart-modal__header flex items-center justify-between p-6 border-b border-[--color-border]">
+      <h2 id="size-chart-modal-title" class="text-xl font-semibold font-heading">
+        {{ heading | default: 'Size Guide' }}
+      </h2>
+      <button
+        type="button"
+        class="size-chart-modal__close w-10 h-10 flex items-center justify-center rounded-full hover:bg-[--color-background-secondary] transition-colors"
+        data-size-chart-close
+        aria-label="{{ 'accessibility.close' | t }}"
+      >
+        <i class="ph ph-x text-xl"></i>
+      </button>
+    </div>
+
+    {%- comment -%} Body {%- endcomment -%}
+    <div class="size-chart-modal__body flex-1 overflow-y-auto p-6">
+      {% if page != blank and page.content != blank %}
+        <div class="prose prose-sm max-w-none">
+          {{ page.content }}
+        </div>
+      {% elsif content != blank %}
+        <div class="prose prose-sm max-w-none">
+          {{ content }}
+        </div>
+      {% else %}
+        {%- comment -%} Default size chart table {%- endcomment -%}
+        <div class="space-y-6">
+          <div>
+            <h3 class="text-sm font-medium mb-2">{{ 'products.size_chart.how_to_measure' | t }}</h3>
+            <p class="text-sm text-[--color-text-secondary]">
+              {{ 'products.size_chart.measure_instructions' | t }}
+            </p>
+          </div>
+
+          <div class="overflow-x-auto">
+            <table class="w-full text-sm border-collapse">
+              <thead>
+                <tr class="border-b border-[--color-border]">
+                  <th class="py-3 px-4 text-left font-medium">{{ 'products.size_chart.size' | t }}</th>
+                  <th class="py-3 px-4 text-center font-medium">{{ 'products.size_chart.chest' | t }}</th>
+                  <th class="py-3 px-4 text-center font-medium">{{ 'products.size_chart.waist' | t }}</th>
+                  <th class="py-3 px-4 text-center font-medium">{{ 'products.size_chart.hips' | t }}</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-b border-[--color-border]">
+                  <td class="py-3 px-4 font-medium">XS</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">32-34"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">24-26"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">34-36"</td>
+                </tr>
+                <tr class="border-b border-[--color-border]">
+                  <td class="py-3 px-4 font-medium">S</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">34-36"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">26-28"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">36-38"</td>
+                </tr>
+                <tr class="border-b border-[--color-border]">
+                  <td class="py-3 px-4 font-medium">M</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">36-38"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">28-30"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">38-40"</td>
+                </tr>
+                <tr class="border-b border-[--color-border]">
+                  <td class="py-3 px-4 font-medium">L</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">38-40"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">30-32"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">40-42"</td>
+                </tr>
+                <tr class="border-b border-[--color-border]">
+                  <td class="py-3 px-4 font-medium">XL</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">40-42"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">32-34"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">42-44"</td>
+                </tr>
+                <tr>
+                  <td class="py-3 px-4 font-medium">XXL</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">42-44"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">34-36"</td>
+                  <td class="py-3 px-4 text-center text-[--color-text-secondary]">44-46"</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <div class="p-4 bg-[--color-background-secondary] rounded-lg">
+            <p class="text-sm text-[--color-text-secondary]">
+              <i class="ph ph-info mr-2"></i>
+              {{ 'products.size_chart.fit_note' | t }}
+            </p>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<script>
+(function() {
+  const modal = document.querySelector('[data-size-chart-modal]');
+  if (!modal) return;
+
+  const backdrop = modal.querySelector('.size-chart-modal__backdrop');
+  const container = modal.querySelector('.size-chart-modal__container');
+  const closeButtons = modal.querySelectorAll('[data-size-chart-close]');
+  const openTriggers = document.querySelectorAll('[data-size-chart-open]');
+
+  let isOpen = false;
+
+  function openModal() {
+    if (isOpen) return;
+    isOpen = true;
+
+    modal.classList.remove('hidden');
+    document.body.style.overflow = 'hidden';
+
+    // Trigger animations
+    requestAnimationFrame(() => {
+      backdrop.classList.remove('opacity-0');
+      backdrop.classList.add('opacity-100');
+      container.classList.remove('translate-x-full');
+      container.classList.add('translate-x-0');
+    });
+
+    // Trap focus
+    modal.focus();
+  }
+
+  function closeModal() {
+    if (!isOpen) return;
+    isOpen = false;
+
+    backdrop.classList.remove('opacity-100');
+    backdrop.classList.add('opacity-0');
+    container.classList.remove('translate-x-0');
+    container.classList.add('translate-x-full');
+
+    setTimeout(() => {
+      modal.classList.add('hidden');
+      document.body.style.overflow = '';
+    }, 300);
+  }
+
+  // Open triggers
+  openTriggers.forEach(trigger => {
+    trigger.addEventListener('click', (e) => {
+      e.preventDefault();
+      openModal();
+    });
+  });
+
+  // Close triggers
+  closeButtons.forEach(btn => {
+    btn.addEventListener('click', closeModal);
+  });
+
+  // Close on escape
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && isOpen) {
+      closeModal();
+    }
+  });
+
+  // Global event for opening from elsewhere
+  document.addEventListener('size-chart:open', openModal);
+  document.addEventListener('size-chart:close', closeModal);
+})();
+</script>

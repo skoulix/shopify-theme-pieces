@@ -1,0 +1,262 @@
+{%- comment -%}
+  Customer Addresses Page
+  Manage shipping addresses
+{%- endcomment -%}
+
+<div class="page-container py-12 lg:py-20">
+  <div class="max-w-4xl mx-auto">
+    {%- comment -%} Back Link {%- endcomment -%}
+    <a href="{{ routes.account_url }}" class="inline-flex items-center gap-2 text-sm text-[--color-text-secondary] hover:text-[--color-text] transition-colors mb-6">
+      <i class="ph ph-arrow-left"></i>
+      {{ 'customers.account.return' | t }}
+    </a>
+
+    {%- comment -%} Header {%- endcomment -%}
+    <header class="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <h1 class="text-3xl font-semibold font-heading" data-intro>
+        {{ 'customers.addresses.title' | t }}
+      </h1>
+      <button type="button" class="btn btn-primary" data-toggle-address-form>
+        <i class="ph ph-plus mr-2"></i>
+        <span>{{ 'customers.addresses.add_new' | t }}</span>
+      </button>
+    </header>
+
+    {%- comment -%} Add New Address Form (Hidden by default) {%- endcomment -%}
+    <div id="add-address-form" class="hidden mb-8 p-6 border border-[--color-border] rounded-lg">
+      <h2 class="text-xl font-semibold mb-6">{{ 'customers.addresses.add_new' | t }}</h2>
+
+      {% form 'customer_address', customer.new_address, class: 'space-y-4' %}
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="address-first-name" class="block text-sm font-medium mb-2">{{ 'customers.addresses.first_name' | t }}</label>
+            <input type="text" id="address-first-name" name="address[first_name]" autocomplete="given-name" class="input w-full">
+          </div>
+          <div>
+            <label for="address-last-name" class="block text-sm font-medium mb-2">{{ 'customers.addresses.last_name' | t }}</label>
+            <input type="text" id="address-last-name" name="address[last_name]" autocomplete="family-name" class="input w-full">
+          </div>
+        </div>
+
+        <div>
+          <label for="address-company" class="block text-sm font-medium mb-2">{{ 'customers.addresses.company' | t }}</label>
+          <input type="text" id="address-company" name="address[company]" autocomplete="organization" class="input w-full">
+        </div>
+
+        <div>
+          <label for="address-address1" class="block text-sm font-medium mb-2">{{ 'customers.addresses.address1' | t }}</label>
+          <input type="text" id="address-address1" name="address[address1]" autocomplete="address-line1" required class="input w-full">
+        </div>
+
+        <div>
+          <label for="address-address2" class="block text-sm font-medium mb-2">{{ 'customers.addresses.address2' | t }}</label>
+          <input type="text" id="address-address2" name="address[address2]" autocomplete="address-line2" class="input w-full">
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div>
+            <label for="address-city" class="block text-sm font-medium mb-2">{{ 'customers.addresses.city' | t }}</label>
+            <input type="text" id="address-city" name="address[city]" autocomplete="address-level2" required class="input w-full">
+          </div>
+          <div>
+            <label for="address-country" class="block text-sm font-medium mb-2">{{ 'customers.addresses.country' | t }}</label>
+            <select id="address-country" name="address[country]" autocomplete="country" data-default="{{ form.country }}" class="input w-full"></select>
+          </div>
+        </div>
+
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div id="address-province-container">
+            <label for="address-province" class="block text-sm font-medium mb-2">{{ 'customers.addresses.province' | t }}</label>
+            <select id="address-province" name="address[province]" autocomplete="address-level1" data-default="{{ form.province }}" class="input w-full"></select>
+          </div>
+          <div>
+            <label for="address-zip" class="block text-sm font-medium mb-2">{{ 'customers.addresses.zip' | t }}</label>
+            <input type="text" id="address-zip" name="address[zip]" autocomplete="postal-code" class="input w-full">
+          </div>
+        </div>
+
+        <div>
+          <label for="address-phone" class="block text-sm font-medium mb-2">{{ 'customers.addresses.phone' | t }}</label>
+          <input type="tel" id="address-phone" name="address[phone]" autocomplete="tel" class="input w-full">
+        </div>
+
+        <div class="flex items-center gap-2">
+          <input type="checkbox" id="address-default" name="address[default]" value="1" class="w-4 h-4">
+          <label for="address-default" class="text-sm">{{ 'customers.addresses.set_default' | t }}</label>
+        </div>
+
+        <div class="flex gap-3 pt-4">
+          <button type="submit" class="btn btn-primary">
+            <span>{{ 'customers.addresses.add' | t }}</span>
+          </button>
+          <button type="button" class="btn btn-secondary" data-toggle-address-form>
+            <span>{{ 'customers.addresses.cancel' | t }}</span>
+          </button>
+        </div>
+      {% endform %}
+    </div>
+
+    {%- comment -%} Address List {%- endcomment -%}
+    {% if customer.addresses.size > 0 %}
+      <div class="grid sm:grid-cols-2 gap-6">
+        {% for address in customer.addresses %}
+          <div class="relative p-6 border border-[--color-border] rounded-lg" data-address-card="{{ address.id }}" data-intro>
+            {% if address == customer.default_address %}
+              <span class="absolute top-4 right-4 px-2 py-0.5 text-xs font-medium bg-[--color-primary] text-[--color-primary-contrast] rounded">
+                {{ 'customers.addresses.default' | t }}
+              </span>
+            {% endif %}
+
+            <address class="not-italic text-sm text-[--color-text-secondary] mb-4">
+              {{ address | format_address }}
+            </address>
+
+            <div class="flex gap-3">
+              <button type="button" class="text-sm text-[--color-primary] hover:underline" data-edit-address="{{ address.id }}">
+                {{ 'customers.addresses.edit' | t }}
+              </button>
+              <button type="button" class="text-sm text-[--color-sale] hover:underline" data-delete-address="{{ address.id }}" data-confirm="{{ 'customers.addresses.delete_confirm' | t }}">
+                {{ 'customers.addresses.delete' | t }}
+              </button>
+            </div>
+
+            {%- comment -%} Edit Form (Hidden by default) {%- endcomment -%}
+            <div id="edit-address-{{ address.id }}" class="hidden mt-6 pt-6 border-t border-[--color-border]">
+              {% form 'customer_address', address, class: 'space-y-4' %}
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="edit-first-name-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.first_name' | t }}</label>
+                    <input type="text" id="edit-first-name-{{ address.id }}" name="address[first_name]" value="{{ address.first_name }}" autocomplete="given-name" class="input w-full">
+                  </div>
+                  <div>
+                    <label for="edit-last-name-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.last_name' | t }}</label>
+                    <input type="text" id="edit-last-name-{{ address.id }}" name="address[last_name]" value="{{ address.last_name }}" autocomplete="family-name" class="input w-full">
+                  </div>
+                </div>
+
+                <div>
+                  <label for="edit-company-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.company' | t }}</label>
+                  <input type="text" id="edit-company-{{ address.id }}" name="address[company]" value="{{ address.company }}" autocomplete="organization" class="input w-full">
+                </div>
+
+                <div>
+                  <label for="edit-address1-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.address1' | t }}</label>
+                  <input type="text" id="edit-address1-{{ address.id }}" name="address[address1]" value="{{ address.address1 }}" autocomplete="address-line1" required class="input w-full">
+                </div>
+
+                <div>
+                  <label for="edit-address2-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.address2' | t }}</label>
+                  <input type="text" id="edit-address2-{{ address.id }}" name="address[address2]" value="{{ address.address2 }}" autocomplete="address-line2" class="input w-full">
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div>
+                    <label for="edit-city-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.city' | t }}</label>
+                    <input type="text" id="edit-city-{{ address.id }}" name="address[city]" value="{{ address.city }}" autocomplete="address-level2" required class="input w-full">
+                  </div>
+                  <div>
+                    <label for="edit-country-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.country' | t }}</label>
+                    <select id="edit-country-{{ address.id }}" name="address[country]" data-default="{{ address.country }}" autocomplete="country" class="input w-full"></select>
+                  </div>
+                </div>
+
+                <div class="grid sm:grid-cols-2 gap-4">
+                  <div id="edit-province-container-{{ address.id }}">
+                    <label for="edit-province-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.province' | t }}</label>
+                    <select id="edit-province-{{ address.id }}" name="address[province]" data-default="{{ address.province }}" autocomplete="address-level1" class="input w-full"></select>
+                  </div>
+                  <div>
+                    <label for="edit-zip-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.zip' | t }}</label>
+                    <input type="text" id="edit-zip-{{ address.id }}" name="address[zip]" value="{{ address.zip }}" autocomplete="postal-code" class="input w-full">
+                  </div>
+                </div>
+
+                <div>
+                  <label for="edit-phone-{{ address.id }}" class="block text-sm font-medium mb-2">{{ 'customers.addresses.phone' | t }}</label>
+                  <input type="tel" id="edit-phone-{{ address.id }}" name="address[phone]" value="{{ address.phone }}" autocomplete="tel" class="input w-full">
+                </div>
+
+                <div class="flex items-center gap-2">
+                  <input type="checkbox" id="edit-default-{{ address.id }}" name="address[default]" value="1" {% if address == customer.default_address %}checked{% endif %} class="w-4 h-4">
+                  <label for="edit-default-{{ address.id }}" class="text-sm">{{ 'customers.addresses.set_default' | t }}</label>
+                </div>
+
+                <div class="flex gap-3 pt-4">
+                  <button type="submit" class="btn btn-primary">
+                    <span>{{ 'customers.addresses.update' | t }}</span>
+                  </button>
+                  <button type="button" class="btn btn-secondary" data-cancel-edit="{{ address.id }}">
+                    <span>{{ 'customers.addresses.cancel' | t }}</span>
+                  </button>
+                </div>
+              {% endform %}
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg">
+        <i class="ph ph-house text-4xl text-[--color-text-secondary] mb-4"></i>
+        <p class="text-[--color-text-secondary]">{{ 'customers.addresses.no_addresses' | t }}</p>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="{{ 'shopify_common.js' | shopify_asset_url }}" defer></script>
+<script src="{{ 'customer_area.js' | shopify_asset_url }}" defer></script>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    // Initialize country/province selectors
+    if (typeof Shopify !== 'undefined' && Shopify.CountryProvinceSelector) {
+      // New address form
+      new Shopify.CountryProvinceSelector('address-country', 'address-province', {
+        hideElement: 'address-province-container'
+      });
+
+      // Edit address forms
+      {% for address in customer.addresses %}
+        new Shopify.CountryProvinceSelector(
+          'edit-country-{{ address.id }}',
+          'edit-province-{{ address.id }}',
+          { hideElement: 'edit-province-container-{{ address.id }}' }
+        );
+      {% endfor %}
+    }
+
+    // Toggle add form
+    document.querySelectorAll('[data-toggle-address-form]').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.getElementById('add-address-form').classList.toggle('hidden');
+      });
+    });
+
+    // Toggle edit forms
+    document.querySelectorAll('[data-edit-address]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.dataset.editAddress;
+        document.getElementById('edit-address-' + id).classList.toggle('hidden');
+      });
+    });
+
+    // Cancel edit
+    document.querySelectorAll('[data-cancel-edit]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        const id = this.dataset.cancelEdit;
+        document.getElementById('edit-address-' + id).classList.add('hidden');
+      });
+    });
+
+    // Delete address
+    document.querySelectorAll('[data-delete-address]').forEach(btn => {
+      btn.addEventListener('click', function() {
+        if (confirm(this.dataset.confirm)) {
+          Shopify.postLink('/account/addresses/' + this.dataset.deleteAddress, {
+            parameters: { _method: 'delete' }
+          });
+        }
+      });
+    });
+  });
+</script>

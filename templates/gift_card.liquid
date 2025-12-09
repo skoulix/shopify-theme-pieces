@@ -104,11 +104,11 @@
         </div>
 
         {%- comment -%} QR Code {%- endcomment -%}
-        {%- comment -%} theme-check-disable UnknownFilter - qr_code is a valid Shopify filter for gift cards {%- endcomment -%}
+        {% # theme-check-disable UnknownFilter %}
         <div class="gift-card-animate qr-code mt-8">
           {{ gift_card.qr_code_identifier | qr_code }}
         </div>
-        {%- comment -%} theme-check-enable UnknownFilter {%- endcomment -%}
+        {% # theme-check-enable UnknownFilter %}
 
         {%- comment -%} Instructions {%- endcomment -%}
         <div class="gift-card-animate mt-8 text-center">
