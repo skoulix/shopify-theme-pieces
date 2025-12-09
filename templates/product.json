@@ -50,6 +50,20 @@
             "sold_out_text": "Sold Out",
             "show_dynamic_checkout": true
           }
+        },
+        "back_in_stock_rzrTB9": {
+          "type": "back_in_stock",
+          "settings": {}
+        },
+        "size_chart_xUw7Wm": {
+          "type": "size_chart",
+          "settings": {
+            "link_text": "",
+            "drawer_heading": "",
+            "page": "about",
+            "content": "",
+            "show_always": true
+          }
         }
       },
       "block_order": [
@@ -59,11 +73,14 @@
         "description",
         "variant_picker",
         "quantity_selector",
-        "buy_buttons"
+        "buy_buttons",
+        "back_in_stock_rzrTB9",
+        "size_chart_xUw7Wm"
       ],
       "settings": {
         "full_width": true,
-        "image_fit": "cover"
+        "image_fit": "cover",
+        "show_sticky_bar": true
       }
     },
     "features_grid": {

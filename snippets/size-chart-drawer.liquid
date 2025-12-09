@@ -1,40 +1,119 @@
 {%- comment -%}
-  Size Chart Modal
-  Renders a modal with size chart content.
+  Size Chart Drawer
+  Renders a drawer with size chart content.
 
   Accepts:
-  - heading: {String} Modal heading (optional)
+  - heading: {String} Drawer heading (optional)
   - page: {Page} Page object containing size chart content
   - content: {String} Rich text content if no page is specified
 
   Usage:
-  {% render 'size-chart-modal', heading: 'Size Guide', page: page %}
+  {% render 'size-chart-drawer', heading: 'Size Guide', page: page %}
 {%- endcomment -%}
 
+<style>
+  .size-chart-drawer {
+    position: fixed;
+    inset: 0;
+    z-index: 999;
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0s 0.3s;
+  }
+  .size-chart-drawer.is-open {
+    pointer-events: auto;
+    visibility: visible;
+    transition: visibility 0s 0s;
+  }
+  .size-chart-drawer__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    opacity: 0;
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: opacity 0.3s ease;
+  }
+  .size-chart-drawer.is-open .size-chart-drawer__backdrop {
+    opacity: 1;
+  }
+  .size-chart-drawer__panel {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 100%;
+    max-width: 540px;
+    height: 100%;
+    background: var(--color-background);
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  }
+  .size-chart-drawer.is-open .size-chart-drawer__panel {
+    transform: translateX(0);
+  }
+  .size-chart-drawer__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .size-chart-drawer__title {
+    font-size: 1.125rem;
+    font-weight: 600;
+  }
+  .size-chart-drawer__close {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    cursor: pointer;
+    color: inherit;
+    transition: opacity 0.2s ease;
+  }
+  .size-chart-drawer__close:hover {
+    opacity: 0.6;
+  }
+  .size-chart-drawer__body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1.5rem;
+  }
+</style>
+
 <div
-  id="size-chart-modal"
-  class="size-chart-modal fixed inset-0 z-50 hidden"
+  id="size-chart-drawer"
+  class="size-chart-drawer"
   role="dialog"
   aria-modal="true"
-  aria-labelledby="size-chart-modal-title"
-  data-size-chart-modal
+  aria-labelledby="size-chart-drawer-title"
+  data-size-chart-drawer
 >
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div
-    class="size-chart-modal__backdrop absolute inset-0 bg-black/50 opacity-0 transition-opacity duration-300"
-    data-size-chart-close
-  ></div>
+  <div class="size-chart-drawer__backdrop" data-size-chart-close></div>
 
-  {%- comment -%} Modal Content {%- endcomment -%}
-  <div class="size-chart-modal__container absolute inset-y-0 right-0 w-full max-w-2xl bg-[--color-background] shadow-xl translate-x-full transition-transform duration-300 ease-out flex flex-col">
+  {%- comment -%} Panel {%- endcomment -%}
+  <div class="size-chart-drawer__panel">
     {%- comment -%} Header {%- endcomment -%}
-    <div class="size-chart-modal__header flex items-center justify-between p-6 border-b border-[--color-border]">
-      <h2 id="size-chart-modal-title" class="text-xl font-semibold font-heading">
-        {{ heading | default: 'Size Guide' }}
+    <div class="size-chart-drawer__header">
+      <h2 id="size-chart-drawer-title" class="size-chart-drawer__title font-heading">
+        {%- liquid
+          if heading != blank
+            echo heading
+          else
+            echo 'products.size_chart.title' | t
+          endif
+        -%}
       </h2>
       <button
         type="button"
-        class="size-chart-modal__close w-10 h-10 flex items-center justify-center rounded-full hover:bg-[--color-background-secondary] transition-colors"
+        class="size-chart-drawer__close"
         data-size-chart-close
         aria-label="{{ 'accessibility.close' | t }}"
       >
@@ -43,7 +122,7 @@
     </div>
 
     {%- comment -%} Body {%- endcomment -%}
-    <div class="size-chart-modal__body flex-1 overflow-y-auto p-6">
+    <div class="size-chart-drawer__body">
       {% if page != blank and page.content != blank %}
         <div class="prose prose-sm max-w-none">
           {{ page.content }}
@@ -127,46 +206,36 @@
 
 <script>
 (function() {
-  const modal = document.querySelector('[data-size-chart-modal]');
-  if (!modal) return;
+  // Remove any existing size chart drawers from body (cleanup from previous page)
+  document.querySelectorAll('body > [data-size-chart-drawer]').forEach(el => el.remove());
 
-  const backdrop = modal.querySelector('.size-chart-modal__backdrop');
-  const container = modal.querySelector('.size-chart-modal__container');
-  const closeButtons = modal.querySelectorAll('[data-size-chart-close]');
+  const drawer = document.querySelector('[data-size-chart-drawer]');
+  if (!drawer) return;
+
+  // Move drawer to body to escape stacking context created by .site-content
+  document.body.appendChild(drawer);
+
+  const closeButtons = drawer.querySelectorAll('[data-size-chart-close]');
   const openTriggers = document.querySelectorAll('[data-size-chart-open]');
 
   let isOpen = false;
 
-  function openModal() {
+  function openDrawer() {
     if (isOpen) return;
     isOpen = true;
 
-    modal.classList.remove('hidden');
     document.body.style.overflow = 'hidden';
-
-    // Trigger animations
     requestAnimationFrame(() => {
-      backdrop.classList.remove('opacity-0');
-      backdrop.classList.add('opacity-100');
-      container.classList.remove('translate-x-full');
-      container.classList.add('translate-x-0');
+      drawer.classList.add('is-open');
     });
-
-    // Trap focus
-    modal.focus();
   }
 
-  function closeModal() {
+  function closeDrawer() {
     if (!isOpen) return;
     isOpen = false;
 
-    backdrop.classList.remove('opacity-100');
-    backdrop.classList.add('opacity-0');
-    container.classList.remove('translate-x-0');
-    container.classList.add('translate-x-full');
-
+    drawer.classList.remove('is-open');
     setTimeout(() => {
-      modal.classList.add('hidden');
       document.body.style.overflow = '';
     }, 300);
   }
@@ -175,24 +244,24 @@
   openTriggers.forEach(trigger => {
     trigger.addEventListener('click', (e) => {
       e.preventDefault();
-      openModal();
+      openDrawer();
     });
   });
 
   // Close triggers
   closeButtons.forEach(btn => {
-    btn.addEventListener('click', closeModal);
+    btn.addEventListener('click', closeDrawer);
   });
 
   // Close on escape
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape' && isOpen) {
-      closeModal();
+      closeDrawer();
     }
   });
 
   // Global event for opening from elsewhere
-  document.addEventListener('size-chart:open', openModal);
-  document.addEventListener('size-chart:close', closeModal);
+  document.addEventListener('size-chart:open', openDrawer);
+  document.addEventListener('size-chart:close', closeDrawer);
 })();
 </script>

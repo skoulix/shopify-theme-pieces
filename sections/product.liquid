@@ -318,12 +318,24 @@
                   aria-haspopup="dialog"
                 >
                   <i class="ph ph-ruler text-lg"></i>
-                  <span class="underline underline-offset-2">{{ block.settings.link_text | default: 'Size Guide' }}</span>
+                  {%- liquid
+                    assign link_text = block.settings.link_text
+                    if link_text == blank
+                      assign link_text = 'products.size_chart.title' | t
+                    endif
+                  -%}
+                  <span class="underline underline-offset-2">{{ link_text }}</span>
                 </button>
               </div>
 
-              {% render 'size-chart-modal',
-                heading: block.settings.modal_heading,
+              {%- liquid
+                assign drawer_heading = block.settings.drawer_heading
+                if drawer_heading == blank
+                  assign drawer_heading = 'products.size_chart.title' | t
+                endif
+              -%}
+              {% render 'size-chart-drawer',
+                heading: drawer_heading,
                 page: block.settings.page,
                 content: block.settings.content
               %}
@@ -1075,13 +1087,13 @@
           "type": "text",
           "id": "link_text",
           "label": "Link text",
-          "default": "Size Guide"
+          "info": "Leave blank to use default translation"
         },
         {
           "type": "text",
-          "id": "modal_heading",
-          "label": "Modal heading",
-          "default": "Size Guide"
+          "id": "drawer_heading",
+          "label": "Drawer heading",
+          "info": "Leave blank to use default translation"
         },
         {
           "type": "page",
