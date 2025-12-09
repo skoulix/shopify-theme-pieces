@@ -112,17 +112,17 @@
     transform: translateY(-100%);
   }
 
+  /* Spacer creates space below fixed header so content isn't hidden behind it.
+     Uses :has() to detect header state since spacer is not a sibling of header-wrapper.
+     JavaScript in header.liquid also updates this dynamically. */
   .header-spacer {
     display: none;
     height: var(--header-height, 65px);
   }
 
-  .header-group.is-sticky + .header-spacer {
+  /* Show spacer when header is sticky but NOT transparent */
+  body:has(.header-wrapper.is-sticky:not(.is-transparent)) .header-spacer {
     display: block;
-  }
-
-  .header-group.is-transparent + .header-spacer {
-    display: none;
   }
 
   .header-inner {

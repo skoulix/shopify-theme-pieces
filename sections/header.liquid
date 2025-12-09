@@ -42,11 +42,13 @@
   }
 
   /* Spacer to prevent content jump when header becomes fixed */
+  /* Uses :has() selector plus JavaScript fallback for dynamic updates */
   .header-spacer {
     display: none;
   }
 
-  .header-wrapper.is-sticky ~ .header-spacer {
+  /* Show spacer when header is sticky but NOT transparent */
+  body:has(.header-wrapper.is-sticky:not(.is-transparent)) .header-spacer {
     display: block;
   }
 
@@ -101,10 +103,7 @@
     color: var(--color-primary);
   }
 
-  /* Transparent header spacer should be hidden */
-  .header-wrapper.is-transparent ~ .header-spacer {
-    display: none;
-  }
+  /* Transparent header spacer should be hidden - controlled via JS */
 
   /* Announcement bar styles */
   .header-announcement {
@@ -974,24 +973,38 @@
     }
   }
 
-  // Set spacer height to match full header wrapper height (announcement bar + header)
+  // Set spacer height and --header-height CSS variable to match full header wrapper height
   const spacer = document.querySelector('[data-header-spacer]');
 
-  if (headerWrapper && spacer) {
-    function updateSpacerHeight() {
-      // Use the header wrapper height to include announcement bar
-      spacer.style.height = headerWrapper.offsetHeight + 'px';
+  if (headerWrapper) {
+    function updateHeaderHeight() {
+      // Update CSS variable with actual header height (includes announcement bar if visible)
+      const height = headerWrapper.offsetHeight;
+      document.documentElement.style.setProperty('--header-height', height + 'px');
+
+      // Also update spacer directly for immediate effect
+      if (spacer) {
+        const isSticky = headerWrapper.classList.contains('is-sticky');
+        const isTransparent = headerWrapper.classList.contains('is-transparent');
+
+        if (isSticky && !isTransparent) {
+          spacer.style.display = 'block';
+          spacer.style.height = height + 'px';
+        } else {
+          spacer.style.display = 'none';
+        }
+      }
     }
 
-    updateSpacerHeight();
-    window.addEventListener('resize', updateSpacerHeight);
+    updateHeaderHeight();
+    window.addEventListener('resize', updateHeaderHeight);
     // Recalculate when announcement bar is dismissed
     window.addEventListener('announcement:dismissed', () => {
       // Small delay to let CSS transition/display change complete
-      setTimeout(updateSpacerHeight, 50);
+      setTimeout(updateHeaderHeight, 50);
     });
     if (window.onSwupContentReplaced) {
-      window.onSwupContentReplaced('header-spacer-height', updateSpacerHeight);
+      window.onSwupContentReplaced('header-spacer-height', updateHeaderHeight);
     }
   }
 
@@ -1011,6 +1024,11 @@
       } else {
         headerWrapper.classList.remove('is-transparent', 'is-scrolled');
         headerWrapper.removeAttribute('data-transparent-header');
+      }
+
+      // Update spacer visibility after transparent state changes
+      if (typeof updateHeaderHeight === 'function') {
+        updateHeaderHeight();
       }
     });
   }
