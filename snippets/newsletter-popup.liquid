@@ -111,6 +111,7 @@
     role="dialog"
     aria-modal="true"
     aria-labelledby="newsletter-popup-title"
+    aria-describedby="newsletter-popup-description"
   >
     {%- comment -%} Side image {%- endcomment -%}
     {% if layout == 'side_image' and image %}
@@ -156,7 +157,7 @@
             name="contact[email]"
             class="w-full py-3 px-4 text-[15px] bg-transparent border transition-colors focus:outline-none"
             style="color: var(--popup-text); border-color: color-mix(in srgb, var(--popup-text) 20%, transparent); border-radius: {{ settings.input_radius }}px;"
-            placeholder="{{ settings.popup_placeholder | default: 'Enter your email' }}"
+            placeholder="{{ settings.popup_placeholder | default: 'general.newsletter.email_placeholder' | t }}"
             required
             autocomplete="email"
             aria-label="{{ 'customers.register.email' | t }}"
@@ -166,7 +167,7 @@
             type="submit"
             class="btn-primary w-full py-3.5 px-6 text-[13px] font-semibold tracking-wider cursor-pointer"
           >
-            <span>{{ settings.popup_button_text | default: 'Subscribe' }}</span>
+            <span>{{ settings.popup_button_text | default: 'general.newsletter.submit' | t }}</span>
           </button>
         {% endform %}
 
@@ -176,7 +177,7 @@
             style="color: var(--popup-text);"
             data-newsletter-popup-close
           >
-            {{ 'general.newsletter.no_thanks' | t | default: 'No thanks' }}
+            {{ 'general.newsletter.no_thanks' | t }}
           </button>
         </div>
       </div>
@@ -184,7 +185,7 @@
       {%- comment -%} Success state {%- endcomment -%}
       <div data-newsletter-popup-success class="hidden">
         <p class="text-center py-3 text-sm text-green-500">
-          {{ settings.popup_success_msg | default: 'Thanks for subscribing!' }}
+          {{ settings.popup_success_msg | default: 'general.newsletter.success' | t }}
         </p>
 
         {% if settings.popup_show_discount and settings.popup_discount_code != blank %}
@@ -195,7 +196,7 @@
               class="inline-flex items-center gap-2 mt-2 py-2 px-4 font-mono text-lg font-semibold tracking-widest cursor-pointer transition-colors hover:bg-black/5"
               style="background-color: color-mix(in srgb, var(--popup-text) 8%, transparent); border-radius: {{ settings.input_radius }}px;"
               data-discount-code="{{ settings.popup_discount_code }}"
-              title="{{ 'general.newsletter.copy_code' | t | default: 'Click to copy' }}"
+              title="{{ 'general.newsletter.copy_code' | t }}"
             >
               {{ settings.popup_discount_code }}
               <i class="ph ph-copy text-base opacity-60" aria-hidden="true"></i>
