@@ -342,8 +342,15 @@
 
 <script>
 (function() {
+  // Remove any existing sticky bars from body (cleanup from previous page)
+  document.querySelectorAll('body > [data-sticky-product-bar]').forEach(el => el.remove());
+
   const stickyBar = document.querySelector('[data-sticky-product-bar]');
   if (!stickyBar) return;
+
+  // Move sticky bar to body to escape stacking context created by .site-content
+  // This ensures it stays visible above the fixed footer reveal effect
+  document.body.appendChild(stickyBar);
 
   const productForm = document.querySelector('[data-product-form]');
   const footerWrapper = document.querySelector('[data-footer-wrapper]');
@@ -384,7 +391,7 @@
     // This works reliably regardless of footer positioning (fixed reveal or normal)
     const scrollTop = window.scrollY || document.documentElement.scrollTop;
     const documentHeight = document.documentElement.scrollHeight;
-    const threshold = 300; // Hide when within 300px of bottom
+    const threshold = 500; // Hide when within 500px of bottom
     const nearBottom = scrollTop + viewportHeight >= documentHeight - threshold;
 
     const shouldShow = formOutOfView && !nearBottom;

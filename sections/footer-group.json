@@ -16,8 +16,10 @@
       "blocks": {
         "brand_BzLHiG": {
           "type": "brand",
+          "disabled": true,
           "settings": {
-            "show_social": true
+            "description": "Your brand tagline or brief description goes here.",
+            "show_social": false
           }
         },
         "navigation": {
@@ -28,6 +30,7 @@
         },
         "newsletter_d4xaqD": {
           "type": "newsletter",
+          "disabled": true,
           "settings": {
             "heading": "Subscribe to our newsletter",
             "description": "Get the latest updates and offers."
@@ -39,6 +42,7 @@
         },
         "payment": {
           "type": "payment",
+          "disabled": true,
           "settings": {
             "grayscale": false
           }
@@ -66,8 +70,7 @@
         "enable_reveal_effect": true,
         "full_width": false,
         "background_color": "#000000",
-        "text_color": "#ffffff",
-        "description": "Your brand tagline or brief description goes here."
+        "text_color": "#ffffff"
       }
     }
   },

@@ -18,66 +18,70 @@
   endunless
 -%}
 
+<style>
+  .back-in-stock-form__input {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    flex: 1;
+    min-width: 0;
+    padding: 1rem;
+    font-family: inherit;
+    font-size: 0.875rem;
+    line-height: 1;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius, 0.25rem);
+    color: inherit;
+    transition: border-color 0.2s ease;
+  }
+  .back-in-stock-form__input::placeholder { color: var(--color-text-secondary); }
+  .back-in-stock-form__input:focus { outline: none; border-color: var(--color-text); }
+</style>
+
 <div
-  class="back-in-stock-form{% unless is_sold_out %} hidden{% endunless %} mt-4 p-4 bg-[--color-background-secondary] rounded-lg"
+  class="back-in-stock-form{% unless is_sold_out %} hidden{% endunless %} mt-6 pt-6 border-t border-[--color-border]"
   data-back-in-stock-form
   data-product-id="{{ product.id }}"
   data-variant-id="{{ current_variant.id }}"
 >
   <div class="back-in-stock-form__content" data-form-content>
-    <div class="flex items-start gap-3 mb-3">
-      <i class="ph ph-bell-ringing text-xl text-[--color-primary] flex-shrink-0 mt-0.5"></i>
-      <div>
-        <h4 class="text-sm font-medium">{{ 'products.back_in_stock.title' | t }}</h4>
-        <p class="text-xs text-[--color-text-secondary] mt-1">
-          {{ 'products.back_in_stock.description' | t }}
-        </p>
-      </div>
-    </div>
-
-    <form class="back-in-stock-form__form space-y-3" data-notify-form>
-      <div>
-        <label for="back-in-stock-email-{{ product.id }}" class="sr-only">
-          {{ 'products.back_in_stock.email_label' | t }}
-        </label>
-        <input
-          type="email"
-          id="back-in-stock-email-{{ product.id }}"
-          name="email"
-          required
-          placeholder="{{ 'products.back_in_stock.email_placeholder' | t }}"
-          class="input w-full text-sm"
-          autocomplete="email"
-        >
-      </div>
+    <p class="text-xs uppercase tracking-widest text-[--color-text-secondary] mb-3">{{ 'products.back_in_stock.title' | t }}</p>
+    <form class="back-in-stock-form__form flex gap-2" data-notify-form>
+      <label for="back-in-stock-email-{{ product.id }}" class="sr-only">
+        {{ 'products.back_in_stock.email_label' | t }}
+      </label>
+      <input
+        type="email"
+        id="back-in-stock-email-{{ product.id }}"
+        name="email"
+        required
+        placeholder="{{ 'products.back_in_stock.email_placeholder' | t }}"
+        class="back-in-stock-form__input"
+        autocomplete="email"
+      >
       <button
         type="submit"
-        class="btn btn-secondary w-full text-sm"
+        class="btn btn--secondary flex-shrink-0"
         data-notify-submit
       >
         <span data-btn-text>{{ 'products.back_in_stock.submit' | t }}</span>
-        <span data-btn-loading class="hidden">
-          <i class="ph ph-spinner animate-spin mr-2"></i>
-          {{ 'products.back_in_stock.submitting' | t }}
-        </span>
+        <span data-btn-loading class="hidden"><i class="ph ph-spinner animate-spin"></i></span>
       </button>
     </form>
   </div>
 
-  <div class="back-in-stock-form__success hidden text-center py-2" data-form-success>
-    <i class="ph ph-check-circle text-2xl text-green-500 mb-2"></i>
-    <p class="text-sm font-medium">{{ 'products.back_in_stock.success_title' | t }}</p>
-    <p class="text-xs text-[--color-text-secondary] mt-1">
-      {{ 'products.back_in_stock.success_message' | t }}
-    </p>
+  <div class="back-in-stock-form__success hidden" data-form-success>
+    <div class="flex items-center gap-3">
+      <span class="w-5 h-5 rounded-full bg-[--color-primary] flex items-center justify-center flex-shrink-0">
+        <i class="ph ph-check text-[--color-primary-contrast] text-xs"></i>
+      </span>
+      <p class="text-sm">{{ 'products.back_in_stock.success_title' | t }}</p>
+    </div>
   </div>
 
-  <div class="back-in-stock-form__error hidden text-center py-2" data-form-error>
-    <i class="ph ph-warning-circle text-2xl text-red-500 mb-2"></i>
-    <p class="text-sm font-medium">{{ 'products.back_in_stock.error_title' | t }}</p>
-    <p class="text-xs text-[--color-text-secondary] mt-1" data-error-message>
-      {{ 'products.back_in_stock.error_message' | t }}
-    </p>
+  <div class="back-in-stock-form__error hidden" data-form-error>
+    <p class="text-sm text-red-600" data-error-message>{{ 'products.back_in_stock.error_message' | t }}</p>
   </div>
 </div>
 
