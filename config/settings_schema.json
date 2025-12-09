@@ -418,5 +418,215 @@
         ]
       }
     ]
+  },
+  {
+    "name": "Newsletter popup",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Enable"
+      },
+      {
+        "type": "checkbox",
+        "id": "popup_enabled",
+        "default": false,
+        "label": "Enable newsletter popup",
+        "info": "Shows a popup to collect email signups"
+      },
+      {
+        "type": "checkbox",
+        "id": "popup_show_mobile",
+        "default": true,
+        "label": "Show on mobile"
+      },
+      {
+        "type": "header",
+        "content": "Trigger"
+      },
+      {
+        "type": "select",
+        "id": "popup_trigger",
+        "label": "Trigger type",
+        "default": "delay",
+        "options": [
+          { "value": "delay", "label": "Time delay" },
+          { "value": "scroll", "label": "Scroll percentage" },
+          { "value": "exit", "label": "Exit intent" }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "popup_delay",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "default": 5,
+        "unit": "s",
+        "label": "Delay before showing",
+        "info": "Only applies when trigger is 'Time delay'"
+      },
+      {
+        "type": "range",
+        "id": "popup_scroll_percent",
+        "min": 10,
+        "max": 90,
+        "step": 10,
+        "default": 50,
+        "unit": "%",
+        "label": "Scroll percentage",
+        "info": "Only applies when trigger is 'Scroll percentage'"
+      },
+      {
+        "type": "checkbox",
+        "id": "popup_exit_intent",
+        "default": true,
+        "label": "Also show on exit intent",
+        "info": "Shows popup when user moves mouse to leave the page (in addition to main trigger)"
+      },
+      {
+        "type": "header",
+        "content": "Frequency"
+      },
+      {
+        "type": "range",
+        "id": "popup_days_dismiss",
+        "min": 1,
+        "max": 30,
+        "step": 1,
+        "default": 7,
+        "unit": "d",
+        "label": "Days to hide after dismissal",
+        "info": "How long to wait before showing the popup again after a user closes it"
+      },
+      {
+        "type": "range",
+        "id": "popup_days_signup",
+        "min": 30,
+        "max": 360,
+        "step": 30,
+        "default": 360,
+        "unit": "d",
+        "label": "Days to hide after signup",
+        "info": "How long to wait before showing the popup again after a user signs up"
+      },
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "image_picker",
+        "id": "popup_image",
+        "label": "Image",
+        "info": "Optional image displayed alongside the form"
+      },
+      {
+        "type": "text",
+        "id": "popup_title",
+        "label": "Title",
+        "default": "Join Our Newsletter"
+      },
+      {
+        "type": "textarea",
+        "id": "popup_text",
+        "label": "Description",
+        "default": "Subscribe for exclusive offers, new arrivals, and insider-only discounts."
+      },
+      {
+        "type": "text",
+        "id": "popup_placeholder",
+        "label": "Email placeholder",
+        "default": "Enter your email"
+      },
+      {
+        "type": "text",
+        "id": "popup_button_text",
+        "label": "Button text",
+        "default": "Subscribe"
+      },
+      {
+        "type": "text",
+        "id": "popup_success_msg",
+        "label": "Success message",
+        "default": "Thanks for subscribing!"
+      },
+      {
+        "type": "header",
+        "content": "Discount code"
+      },
+      {
+        "type": "checkbox",
+        "id": "popup_show_discount",
+        "default": false,
+        "label": "Show discount code after signup",
+        "info": "Reveals a discount code when user successfully subscribes"
+      },
+      {
+        "type": "text",
+        "id": "popup_discount_code",
+        "label": "Discount code",
+        "default": "WELCOME10",
+        "info": "The discount code to reveal (must match a code in your Shopify admin)"
+      },
+      {
+        "type": "text",
+        "id": "popup_discount_msg",
+        "label": "Discount message",
+        "default": "Use code {code} for 10% off your first order!"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color",
+        "id": "popup_bg",
+        "label": "Background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "popup_text_color",
+        "label": "Text",
+        "default": "#111827"
+      },
+      {
+        "type": "color",
+        "id": "popup_btn_bg",
+        "label": "Button background",
+        "default": "#111827"
+      },
+      {
+        "type": "color",
+        "id": "popup_btn_text",
+        "label": "Button text",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Style"
+      },
+      {
+        "type": "select",
+        "id": "popup_layout",
+        "label": "Layout",
+        "default": "centered",
+        "options": [
+          { "value": "centered", "label": "Centered" },
+          { "value": "side_image", "label": "Side image" }
+        ],
+        "info": "Side image layout shows the image on the left"
+      },
+      {
+        "type": "select",
+        "id": "popup_size",
+        "label": "Size",
+        "default": "medium",
+        "options": [
+          { "value": "small", "label": "Small" },
+          { "value": "medium", "label": "Medium" },
+          { "value": "large", "label": "Large" }
+        ]
+      }
+    ]
   }
 ]

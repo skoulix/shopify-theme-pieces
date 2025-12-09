@@ -1,0 +1,297 @@
+{%- comment -%}
+  Newsletter Popup
+  Triggered by time delay, scroll percentage, or exit intent
+  Stores dismissal state in localStorage
+{%- endcomment -%}
+
+{%- if settings.newsletter_popup_enabled -%}
+  {%- liquid
+    assign popup_bg = settings.newsletter_popup_background
+    assign popup_text = settings.newsletter_popup_text_color
+    assign btn_bg = settings.newsletter_popup_button_background
+    assign btn_text = settings.newsletter_popup_button_text_color
+    assign layout = settings.newsletter_popup_layout
+    assign size = settings.newsletter_popup_size
+    assign image = settings.newsletter_popup_image
+
+    # Size classes for popup width
+    case size
+      when 'small'
+        assign size_class = 'max-w-sm'
+        assign side_size_class = 'max-w-xl'
+      when 'medium'
+        assign size_class = 'max-w-md'
+        assign side_size_class = 'max-w-2xl'
+      when 'large'
+        assign size_class = 'max-w-lg'
+        assign side_size_class = 'max-w-4xl'
+    endcase
+  -%}
+
+  {%- comment -%} Minimal CSS for dynamic colors and state transitions {%- endcomment -%}
+  <style>
+    .newsletter-popup-overlay {
+      --popup-bg: {{ popup_bg }};
+      --popup-text: {{ popup_text }};
+      --btn-bg: {{ btn_bg }};
+      --btn-text: {{ btn_text }};
+    }
+
+    .newsletter-popup-overlay:not(.is-visible),
+    .newsletter-popup:not(.is-visible) {
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+    }
+
+    .newsletter-popup:not(.is-visible) {
+      transform: translate(-50%, -50%) scale(0.95);
+    }
+
+    .newsletter-popup.is-visible {
+      transform: translate(-50%, -50%) scale(1);
+    }
+
+    {% unless settings.newsletter_popup_show_on_mobile %}
+      @media (max-width: 639px) {
+        .newsletter-popup,
+        .newsletter-popup-overlay {
+          display: none !important;
+        }
+      }
+    {% endunless %}
+  </style>
+
+  {%- comment -%} Overlay {%- endcomment -%}
+  <div
+    class="newsletter-popup-overlay fixed inset-0 z-[9998] bg-black/50 backdrop-blur-sm transition-all duration-300"
+    data-newsletter-popup-overlay
+  ></div>
+
+  {%- comment -%} Popup {%- endcomment -%}
+  <div
+    class="newsletter-popup fixed top-1/2 left-1/2 z-[9999] w-[90vw] overflow-hidden overflow-y-auto max-h-[90vh] transition-all duration-300 {% if layout == 'side_image' and image %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
+    style="background-color: var(--popup-bg); color: var(--popup-text); border-radius: {{ settings.card_radius }}px;"
+    data-newsletter-popup
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="newsletter-popup-title"
+  >
+    {%- comment -%} Side image {%- endcomment -%}
+    {% if layout == 'side_image' and image %}
+      <div class="hidden sm:block relative flex-[0_0_45%]">
+        <img
+          src="{{ image | image_url: width: 600 }}"
+          alt=""
+          width="600"
+          height="{{ 600 | divided_by: image.aspect_ratio | round }}"
+          loading="lazy"
+          class="absolute inset-0 w-full h-full object-cover"
+        >
+      </div>
+    {% endif %}
+
+    {%- comment -%} Content {%- endcomment -%}
+    <div class="flex-1 p-8 {% if layout == 'side_image' and image %}sm:p-10{% endif %}">
+      {%- comment -%} Close button {%- endcomment -%}
+      <button
+        class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer opacity-60 hover:opacity-100 transition-opacity z-10"
+        style="color: var(--popup-text);"
+        data-newsletter-popup-close
+        aria-label="{{ 'general.accessibility.close' | t }}"
+      >
+        <i class="ph ph-x" aria-hidden="true"></i>
+      </button>
+
+      {%- comment -%} Form container {%- endcomment -%}
+      <div data-newsletter-popup-form-container>
+        {% if settings.newsletter_popup_title != blank %}
+          <h2 class="text-2xl font-semibold mb-3 leading-tight font-heading" id="newsletter-popup-title">
+            {{ settings.newsletter_popup_title }}
+          </h2>
+        {% endif %}
+
+        {% if settings.newsletter_popup_text != blank %}
+          <p class="text-[15px] opacity-70 mb-6 leading-relaxed">{{ settings.newsletter_popup_text }}</p>
+        {% endif %}
+
+        {% form 'customer', id: 'newsletter-popup-form', class: 'flex flex-col gap-3' %}
+          <input
+            type="email"
+            name="contact[email]"
+            class="w-full py-3 px-4 text-[15px] bg-transparent border transition-colors focus:outline-none"
+            style="color: var(--popup-text); border-color: color-mix(in srgb, var(--popup-text) 20%, transparent); border-radius: {{ settings.input_radius }}px;"
+            placeholder="{{ settings.newsletter_popup_placeholder | default: 'Enter your email' }}"
+            required
+            autocomplete="email"
+            aria-label="{{ 'customers.register.email' | t }}"
+          >
+          <input type="hidden" name="contact[tags]" value="newsletter,popup">
+          <button
+            type="submit"
+            class="w-full py-3.5 px-6 text-[13px] font-semibold uppercase tracking-wider border-none cursor-pointer overflow-hidden transition-transform hover:scale-[1.02] active:scale-[0.98]"
+            style="background-color: var(--btn-bg); color: var(--btn-text); border-radius: {{ settings.button_radius }}px;"
+          >
+            <span class="relative z-10">{{ settings.newsletter_popup_button_text | default: 'Subscribe' }}</span>
+          </button>
+        {% endform %}
+
+        <div class="mt-4 text-center">
+          <button
+            class="bg-transparent border-none text-[13px] opacity-50 cursor-pointer underline hover:opacity-80 transition-opacity"
+            style="color: var(--popup-text);"
+            data-newsletter-popup-close
+          >
+            {{ 'general.newsletter.no_thanks' | t | default: 'No thanks' }}
+          </button>
+        </div>
+      </div>
+
+      {%- comment -%} Success state {%- endcomment -%}
+      <div data-newsletter-popup-success class="hidden">
+        <p class="text-center py-3 text-sm text-green-500">
+          {{ settings.newsletter_popup_success_message | default: 'Thanks for subscribing!' }}
+        </p>
+
+        {% if settings.newsletter_popup_show_discount and settings.newsletter_popup_discount_code != blank %}
+          <div class="mt-6 p-4 text-center" style="background-color: color-mix(in srgb, var(--popup-text) 5%, transparent); border-radius: {{ settings.card_radius }}px;">
+            {%- assign discount_msg = settings.newsletter_popup_discount_message | replace: '{code}', settings.newsletter_popup_discount_code -%}
+            <p>{{ discount_msg }}</p>
+            <div
+              class="inline-flex items-center gap-2 mt-2 py-2 px-4 font-mono text-lg font-semibold tracking-widest cursor-pointer transition-colors hover:bg-black/5"
+              style="background-color: color-mix(in srgb, var(--popup-text) 8%, transparent); border-radius: {{ settings.input_radius }}px;"
+              data-discount-code="{{ settings.newsletter_popup_discount_code }}"
+              title="{{ 'general.newsletter.copy_code' | t | default: 'Click to copy' }}"
+            >
+              {{ settings.newsletter_popup_discount_code }}
+              <i class="ph ph-copy text-base opacity-60" aria-hidden="true"></i>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      const STORAGE_KEY = 'pieces_newsletter_popup';
+      const DAYS_HIDDEN = {{ settings.newsletter_popup_days_hidden }};
+      const DAYS_HIDDEN_AFTER_SIGNUP = {{ settings.newsletter_popup_days_hidden_after_signup }};
+      const TRIGGER_TYPE = '{{ settings.newsletter_popup_trigger }}';
+      const TRIGGER_DELAY = {{ settings.newsletter_popup_delay }} * 1000;
+      const TRIGGER_SCROLL = {{ settings.newsletter_popup_scroll_percent }};
+      const ENABLE_EXIT_INTENT = {{ settings.newsletter_popup_exit_intent }};
+
+      const popup = document.querySelector('[data-newsletter-popup]');
+      const overlay = document.querySelector('[data-newsletter-popup-overlay]');
+      const closeButtons = document.querySelectorAll('[data-newsletter-popup-close]');
+      const form = document.getElementById('newsletter-popup-form');
+      const formContainer = document.querySelector('[data-newsletter-popup-form-container]');
+      const successContainer = document.querySelector('[data-newsletter-popup-success]');
+      const discountCode = document.querySelector('[data-discount-code]');
+
+      if (!popup || !overlay) return;
+
+      function shouldShowPopup() {
+        if (Shopify.designMode) return false;
+        const stored = localStorage.getItem(STORAGE_KEY);
+        if (!stored) return true;
+        try {
+          const data = JSON.parse(stored);
+          return Date.now() > (data.hideUntil || 0);
+        } catch (e) {
+          return true;
+        }
+      }
+
+      function saveState(type) {
+        const days = type === 'subscribed' ? DAYS_HIDDEN_AFTER_SIGNUP : DAYS_HIDDEN;
+        localStorage.setItem(STORAGE_KEY, JSON.stringify({
+          type: type,
+          hideUntil: Date.now() + (days * 24 * 60 * 60 * 1000)
+        }));
+      }
+
+      let hasShown = false;
+      function showPopup() {
+        if (hasShown || !shouldShowPopup()) return;
+        hasShown = true;
+        popup.classList.add('is-visible');
+        overlay.classList.add('is-visible');
+        document.body.style.overflow = 'hidden';
+        popup.querySelector('button, input')?.focus();
+      }
+
+      function hidePopup(type = 'dismissed') {
+        popup.classList.remove('is-visible');
+        overlay.classList.remove('is-visible');
+        document.body.style.overflow = '';
+        saveState(type);
+      }
+
+      closeButtons.forEach(btn => btn.addEventListener('click', () => hidePopup('dismissed')));
+      overlay.addEventListener('click', () => hidePopup('dismissed'));
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && popup.classList.contains('is-visible')) hidePopup('dismissed');
+      });
+
+      if (form) {
+        form.addEventListener('submit', function(e) {
+          e.preventDefault();
+          fetch('/contact#contact_form', {
+            method: 'POST',
+            body: new FormData(form),
+            headers: { 'Accept': 'application/json' }
+          }).finally(() => {
+            formContainer.classList.add('hidden');
+            successContainer.classList.remove('hidden');
+            saveState('subscribed');
+            {% unless settings.newsletter_popup_show_discount and settings.newsletter_popup_discount_code != blank %}
+              setTimeout(() => hidePopup('subscribed'), 3000);
+            {% endunless %}
+          });
+        });
+      }
+
+      if (discountCode) {
+        discountCode.addEventListener('click', function() {
+          navigator.clipboard.writeText(this.dataset.discountCode).then(() => {
+            const icon = this.querySelector('.ph');
+            if (icon) {
+              icon.classList.replace('ph-copy', 'ph-check');
+              setTimeout(() => icon.classList.replace('ph-check', 'ph-copy'), 2000);
+            }
+          });
+        });
+      }
+
+      if (shouldShowPopup()) {
+        if (TRIGGER_TYPE === 'delay') {
+          setTimeout(showPopup, TRIGGER_DELAY);
+        }
+
+        if (TRIGGER_TYPE === 'scroll') {
+          let triggered = false;
+          window.addEventListener('scroll', function check() {
+            if (triggered) return;
+            if ((window.scrollY / (document.documentElement.scrollHeight - window.innerHeight)) * 100 >= TRIGGER_SCROLL) {
+              triggered = true;
+              showPopup();
+              window.removeEventListener('scroll', check);
+            }
+          }, { passive: true });
+        }
+
+        if (TRIGGER_TYPE === 'exit' || ENABLE_EXIT_INTENT) {
+          let triggered = false;
+          document.addEventListener('mouseleave', (e) => {
+            if (!triggered && e.clientY < 10) {
+              triggered = true;
+              showPopup();
+            }
+          });
+        }
+      }
+    })();
+  </script>
+{%- endif -%}
