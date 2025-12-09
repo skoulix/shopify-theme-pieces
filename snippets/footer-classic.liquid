@@ -11,13 +11,11 @@
 <style>
   .footer-classic__top { display: flex; flex-direction: column; gap: 3rem; margin-bottom: 3rem; }
   @media (min-width: 1024px) {
-    .footer-classic__top { flex-direction: row; justify-content: space-between; }
+    .footer-classic__top { flex-direction: row; justify-content: space-between; gap: 4rem; }
   }
-  .footer-classic__brand-col { max-width: 320px; }
-  .footer-classic__columns { display: flex; flex-wrap: wrap; gap: 2rem 3rem; }
-  @media (min-width: 1024px) {
-    .footer-classic__columns { gap: 2rem 4rem; }
-  }
+  .footer-classic__brand-col { max-width: 280px; flex-shrink: 0; }
+  .footer-classic__column { flex-shrink: 0; }
+  .footer-classic__newsletter-col { max-width: 320px; flex-shrink: 0; }
   .footer-classic__column-heading {
     font-size: 0.6875rem;
     font-weight: 600;
@@ -81,82 +79,78 @@
 </style>
 
 <div class="footer-classic__top">
-  {%- comment -%} Brand column (always first) {%- endcomment -%}
-  <div class="footer-classic__brand-col">
-    {%- if section.settings.logo != blank -%}
-      {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'footer-classic__logo', loading: 'lazy' }}
-    {%- else -%}
-      <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
-    {%- endif -%}
-
-    {%- if section.settings.description != blank -%}
-      <p class="footer-classic__description">{{ section.settings.description }}</p>
-    {%- endif -%}
-
-    {%- for block in section.blocks -%}
-      {%- if block.type == 'social' -%}
-        <div class="footer-classic__social" {{ block.shopify_attributes }}>
-          {%- render 'footer-social-icons' -%}
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
-  </div>
-
-  {%- comment -%} Content columns - respects block order {%- endcomment -%}
-  <div class="footer-classic__columns">
-    {%- for block in section.blocks -%}
-      {%- case block.type -%}
-        {%- when 'menu_column' -%}
-          <div class="footer-classic__column" {{ block.shopify_attributes }}>
-            {%- if block.settings.heading != blank -%}
-              <h3 class="footer-classic__column-heading">{{ block.settings.heading }}</h3>
-            {%- endif -%}
-            {%- if block.settings.menu != blank -%}
-              <ul class="footer-classic__menu">
-                {%- for link in block.settings.menu.links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            {%- endif -%}
-          </div>
-
-        {%- when 'navigation' -%}
-          {%- if block.settings.menu != blank -%}
-            <div class="footer-classic__column" {{ block.shopify_attributes }}>
-              <ul class="footer-classic__menu">
-                {%- for link in block.settings.menu.links -%}
-                  <li><a href="{{ link.url }}">{{ link.title }}</a></li>
-                {%- endfor -%}
-              </ul>
-            </div>
+  {%- comment -%} All content columns - respects block order {%- endcomment -%}
+  {%- for block in section.blocks -%}
+    {%- case block.type -%}
+      {%- when 'brand' -%}
+        <div class="footer-classic__brand-col" {{ block.shopify_attributes }}>
+          {%- if section.settings.logo != blank -%}
+            {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'footer-classic__logo', loading: 'lazy' }}
+          {%- else -%}
+            <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
           {%- endif -%}
 
-        {%- when 'newsletter' -%}
-          <div class="footer-classic__newsletter-col" {{ block.shopify_attributes }}>
-            <h3 class="footer-classic__column-heading">{{ block.settings.heading | default: 'Newsletter' }}</h3>
-            {%- if block.settings.description != blank -%}
-              <p class="footer-classic__newsletter-text">{{ block.settings.description }}</p>
-            {%- endif -%}
-            {%- form 'customer', id: 'FooterNewsletterClassic' -%}
-              <input type="hidden" name="contact[tags]" value="newsletter">
-              <div class="footer-classic__newsletter-form">
-                <input
-                  type="email"
-                  name="contact[email]"
-                  class="footer-classic__newsletter-input"
-                  placeholder="{{ 'newsletter.label' | t }}"
-                  autocomplete="email"
-                  required
-                >
-                <button type="submit" class="footer-classic__newsletter-btn" aria-label="{{ 'newsletter.button_label' | t }}">
-                  <i class="ph ph-arrow-right"></i>
-                </button>
-              </div>
-            {%- endform -%}
+          {%- if section.settings.description != blank -%}
+            <p class="footer-classic__description">{{ section.settings.description }}</p>
+          {%- endif -%}
+
+          {%- if block.settings.show_social -%}
+            <div class="footer-classic__social">
+              {%- render 'footer-social-icons' -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+      {%- when 'menu_column' -%}
+        <div class="footer-classic__column" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}
+            <h3 class="footer-classic__column-heading">{{ block.settings.heading }}</h3>
+          {%- endif -%}
+          {%- if block.settings.menu != blank -%}
+            <ul class="footer-classic__menu">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+
+      {%- when 'navigation' -%}
+        {%- if block.settings.menu != blank -%}
+          <div class="footer-classic__column" {{ block.shopify_attributes }}>
+            <ul class="footer-classic__menu">
+              {%- for link in block.settings.menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title }}</a></li>
+              {%- endfor -%}
+            </ul>
           </div>
-      {%- endcase -%}
-    {%- endfor -%}
-  </div>
+        {%- endif -%}
+
+      {%- when 'newsletter' -%}
+        <div class="footer-classic__newsletter-col" {{ block.shopify_attributes }}>
+          <h3 class="footer-classic__column-heading">{{ block.settings.heading | default: 'Newsletter' }}</h3>
+          {%- if block.settings.description != blank -%}
+            <p class="footer-classic__newsletter-text">{{ block.settings.description }}</p>
+          {%- endif -%}
+          {%- form 'customer', id: 'FooterNewsletterClassic' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="footer-classic__newsletter-form">
+              <input
+                type="email"
+                name="contact[email]"
+                class="footer-classic__newsletter-input"
+                placeholder="{{ 'newsletter.label' | t }}"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="footer-classic__newsletter-btn" aria-label="{{ 'newsletter.button_label' | t }}">
+                <i class="ph ph-arrow-right"></i>
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+    {%- endcase -%}
+  {%- endfor -%}
 </div>
 
 <div class="footer-classic__bottom footer-classic__bottom-border">

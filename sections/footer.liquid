@@ -210,6 +210,23 @@
   ],
   "blocks": [
     {
+      "type": "brand",
+      "name": "Brand",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Used for Classic design. Logo and description are set in the section settings above."
+        },
+        {
+          "type": "checkbox",
+          "id": "show_social",
+          "label": "Show social links",
+          "default": true
+        }
+      ]
+    },
+    {
       "type": "navigation",
       "name": "Navigation",
       "settings": [
@@ -341,6 +358,9 @@
     {
       "name": "Footer",
       "blocks": [
+        { "type": "brand" },
+        { "type": "menu_column" },
+        { "type": "newsletter" },
         { "type": "navigation" },
         { "type": "social" },
         { "type": "payment" },
