@@ -5,6 +5,11 @@
 
 {%- liquid
   assign footer_design = section.settings.footer_design | default: 'minimal'
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
 -%}
 
 <style>
@@ -29,7 +34,7 @@
   style="--footer-bg: {{ section.settings.background_color }}; background-color: {{ section.settings.background_color }}; color: {{ section.settings.text_color }};"
   data-footer-section
 >
-  <div class="page-container footer-content-{{ section.id }}" data-footer-content>
+  <div class="{{ container_class }} footer-content-{{ section.id }}" data-footer-content>
     {%- case footer_design -%}
       {%- when 'minimal' -%}
         {%- render 'footer-minimal', section: section -%}
@@ -175,6 +180,12 @@
       "info": "Footer stays fixed at the bottom and is revealed as you scroll past the content"
     },
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    },
+    {
       "type": "header",
       "content": "Colors"
     },
@@ -197,15 +208,13 @@
     {
       "type": "image_picker",
       "id": "logo",
-      "label": "Logo",
-      "info": "Used for Modern & Classic designs. If not set, shop name will be displayed."
+      "label": "Logo"
     },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "Your brand tagline or brief description goes here.",
-      "info": "Used for Modern & Classic designs"
+      "default": "Your brand tagline or brief description goes here."
     }
   ],
   "blocks": [
@@ -214,10 +223,6 @@
       "name": "Brand",
       "limit": 1,
       "settings": [
-        {
-          "type": "paragraph",
-          "content": "Used for Classic design. Logo and description are set in the section settings above."
-        },
         {
           "type": "checkbox",
           "id": "show_social",
@@ -242,10 +247,6 @@
       "type": "menu_column",
       "name": "Menu column",
       "settings": [
-        {
-          "type": "paragraph",
-          "content": "Used for Classic design"
-        },
         {
           "type": "text",
           "id": "heading",
@@ -275,8 +276,7 @@
           "type": "text",
           "id": "description",
           "label": "Description",
-          "default": "Get the latest updates and offers.",
-          "info": "Used for Classic design"
+          "default": "Get the latest updates and offers."
         }
       ]
     },
@@ -322,10 +322,6 @@
       "name": "Text",
       "settings": [
         {
-          "type": "paragraph",
-          "content": "Used for Minimal design"
-        },
-        {
           "type": "richtext",
           "id": "text",
           "label": "Text",
@@ -337,10 +333,6 @@
       "type": "spacer",
       "name": "Spacer",
       "settings": [
-        {
-          "type": "paragraph",
-          "content": "Used for Minimal design"
-        },
         {
           "type": "range",
           "id": "height",

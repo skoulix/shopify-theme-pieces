@@ -14,6 +14,23 @@
   {% for block in section.blocks %}
     {% case block.type %}
 
+      {% when 'brand' %}
+        <div class="footer-block text-center" {{ block.shopify_attributes }}>
+          {%- if section.settings.logo != blank -%}
+            {{ section.settings.logo | image_url: width: 300 | image_tag: class: 'inline-block max-h-10 w-auto mb-4', loading: 'lazy' }}
+          {%- else -%}
+            <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
+          {%- endif -%}
+          {%- if section.settings.description != blank -%}
+            <p class="text-sm max-w-md mx-auto">{{ section.settings.description }}</p>
+          {%- endif -%}
+          {%- if block.settings.show_social -%}
+            <div class="flex justify-center gap-x-5 mt-4">
+              {%- render 'footer-social-icons' -%}
+            </div>
+          {%- endif -%}
+        </div>
+
       {% when 'navigation' %}
         {% if block.settings.menu != blank %}
           <nav aria-label="Footer" class="footer-block flex flex-wrap justify-center gap-x-12 gap-y-3 text-sm" {{ block.shopify_attributes }}>
@@ -22,6 +39,45 @@
             {% endfor %}
           </nav>
         {% endif %}
+
+      {% when 'menu_column' %}
+        <div class="footer-block text-center" {{ block.shopify_attributes }}>
+          {%- if block.settings.heading != blank -%}
+            <h3 class="text-xs font-semibold uppercase tracking-widest mb-4 opacity-60">{{ block.settings.heading }}</h3>
+          {%- endif -%}
+          {%- if block.settings.menu != blank -%}
+            <nav class="flex flex-wrap justify-center gap-x-8 gap-y-2 text-sm">
+              {%- for link in block.settings.menu.links -%}
+                <a href="{{ link.url }}">{{ link.title }}</a>
+              {%- endfor -%}
+            </nav>
+          {%- endif -%}
+        </div>
+
+      {% when 'newsletter' %}
+        <div class="footer-block text-center max-w-md mx-auto" {{ block.shopify_attributes }}>
+          <h3 class="text-xs font-semibold uppercase tracking-widest mb-4 opacity-60">{{ block.settings.heading | default: 'Newsletter' }}</h3>
+          {%- if block.settings.description != blank -%}
+            <p class="text-sm mb-4">{{ block.settings.description }}</p>
+          {%- endif -%}
+          {%- form 'customer', id: 'FooterNewsletterMinimal' -%}
+            <input type="hidden" name="contact[tags]" value="newsletter">
+            <div class="flex gap-0">
+              <input
+                type="email"
+                name="contact[email]"
+                class="flex-1 px-4 py-3 bg-transparent border border-current rounded-l-[--input-radius] text-sm min-w-0"
+                style="border-right: none;"
+                placeholder="{{ 'newsletter.label' | t }}"
+                autocomplete="email"
+                required
+              >
+              <button type="submit" class="px-4 py-3 bg-transparent border border-current rounded-r-[--input-radius] transition-opacity hover:opacity-70" aria-label="{{ 'newsletter.button_label' | t }}">
+                <i class="ph ph-arrow-right text-lg"></i>
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
 
       {% when 'social' %}
         <div class="footer-block flex justify-center gap-x-5" {{ block.shopify_attributes }}>
