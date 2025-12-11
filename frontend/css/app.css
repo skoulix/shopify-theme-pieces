@@ -994,7 +994,8 @@ html.animations-disabled .page-header-subtitle-line {
   flex-direction: column;
   transform: translateX(100%);
   will-change: transform;
-  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.1);
+  box-shadow: -4px 0 24px rgba(0, 0, 0, 0.15);
+  border-left: 1px solid var(--color-border);
 }
 
 /* Header */

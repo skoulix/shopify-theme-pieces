@@ -166,9 +166,24 @@
           if (addingText) addingText.classList.add('hidden');
           if (addedText) addedText.classList.remove('hidden');
 
-          // Open cart drawer if available
-          if (window.themeSettings?.cartType === 'drawer') {
+          // Handle cart type
+          const cartType = window.themeSettings?.cartType || 'drawer';
+          if (cartType === 'drawer') {
             document.dispatchEvent(new CustomEvent('cart:open'));
+          } else if (cartType === 'notification') {
+            // Get product info from the card for notification
+            const card = quickAddBtn.closest('.product-card');
+            const title = card?.querySelector('.product-card-title')?.textContent?.trim() || '';
+            const image = card?.querySelector('.product-card-image img')?.src || '';
+            document.dispatchEvent(new CustomEvent('cart:notification', {
+              detail: {
+                product: { title, image, variant_title: '' },
+                cart: cart
+              }
+            }));
+          } else if (cartType === 'page') {
+            window.location.href = '/cart';
+            return;
           }
 
           setTimeout(() => {

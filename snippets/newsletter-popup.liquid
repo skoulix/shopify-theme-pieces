@@ -90,7 +90,7 @@
     {%- comment -%} Popup {%- endcomment -%}
     <div
       class="fixed top-1/2 left-1/2 z-[9999] w-[90vw] overflow-hidden overflow-y-auto max-h-[90vh] transition-all duration-300 -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 invisible pointer-events-none [&.is-visible]:scale-100 [&.is-visible]:opacity-100 [&.is-visible]:visible [&.is-visible]:pointer-events-auto {% if layout == 'side_image' and image %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
-      style="background-color: var(--popup-bg); color: var(--popup-text); border-radius: {{ settings.card_radius }}px;"
+      style="background-color: var(--popup-bg); color: var(--popup-text); border-radius: {{ settings.card_radius }}px; border: 1px solid color-mix(in srgb, var(--popup-text) 15%, transparent); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);"
       data-newsletter-popup
       role="dialog"
       aria-modal="true"
@@ -254,8 +254,8 @@
 
         // Lock scroll
         scrollPosition = window.scrollY;
-        document.documentElement.classList.add('scroll-locked');
         document.body.style.top = `-${scrollPosition}px`;
+        document.documentElement.classList.add('scroll-locked');
         if (window.lenis) window.lenis.stop();
 
         popup.classList.add('is-visible');

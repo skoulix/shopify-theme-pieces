@@ -77,8 +77,8 @@
 
   function lockScroll() {
     scrollPosition = window.scrollY;
-    document.documentElement.classList.add('scroll-locked');
     document.body.style.top = `-${scrollPosition}px`;
+    document.documentElement.classList.add('scroll-locked');
     if (window.lenis) window.lenis.stop();
   }
 
@@ -193,9 +193,24 @@
         if (btnAdding) btnAdding.classList.add('hidden');
         if (btnAdded) btnAdded.classList.remove('hidden');
 
-        // Open cart drawer if available
-        if (window.themeSettings?.cartType === 'drawer') {
+        // Handle cart type
+        const cartType = window.themeSettings?.cartType || 'drawer';
+        if (cartType === 'drawer') {
           document.dispatchEvent(new CustomEvent('cart:open'));
+        } else if (cartType === 'notification') {
+          // Get product info from the quick view modal
+          const title = body.querySelector('.quick-view-product__info h2 a')?.textContent?.trim() || '';
+          const image = body.querySelector('[data-main-image-wrapper] img')?.src || '';
+          const variantTitle = body.querySelector('[data-variant-picker] input:checked + label')?.textContent?.trim() || '';
+          document.dispatchEvent(new CustomEvent('cart:notification', {
+            detail: {
+              product: { title, image, variant_title: variantTitle },
+              cart: cart
+            }
+          }));
+        } else if (cartType === 'page') {
+          window.location.href = '/cart';
+          return;
         }
 
         setTimeout(() => {

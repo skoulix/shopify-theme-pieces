@@ -25,7 +25,7 @@
   <div class="drawer-backdrop" data-size-chart-close></div>
 
   {%- comment -%} Panel {%- endcomment -%}
-  <div class="absolute top-0 right-0 w-full max-w-[540px] h-full bg-[--color-background] flex flex-col translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[-4px_0_24px_rgba(0,0,0,0.1)] group-[.is-open]:translate-x-0">
+  <div class="absolute top-0 right-0 w-full max-w-[540px] h-full bg-[--color-background] flex flex-col translate-x-full transition-transform duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-[--color-border] group-[.is-open]:translate-x-0">
     {%- comment -%} Header {%- endcomment -%}
     <div class="flex items-center justify-between p-6 border-b border-[--color-border]">
       <h2 id="size-chart-drawer-title" class="text-lg font-semibold font-heading" data-size-chart-title>
@@ -145,8 +145,8 @@
     isOpen = true;
 
     scrollPosition = window.scrollY;
-    document.documentElement.classList.add('scroll-locked');
     document.body.style.top = `-${scrollPosition}px`;
+    document.documentElement.classList.add('scroll-locked');
     if (window.lenis) window.lenis.stop();
 
     requestAnimationFrame(() => {

@@ -27,8 +27,8 @@ class CartDrawerManager {
     this.drawer = document.getElementById('cart-drawer');
     if (!this.drawer) return;
 
-    this.backdrop = this.drawer.querySelector('.cart-drawer__backdrop');
-    this.panel = this.drawer.querySelector('.cart-drawer__panel');
+    this.backdrop = this.drawer.querySelector('.drawer-backdrop');
+    this.panel = this.drawer.querySelector('[data-cart-drawer-panel]');
 
     // Subscribe to cart state changes
     this.unsubscribe = cartState.subscribe((cart, isUpdating) => {

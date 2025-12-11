@@ -82,7 +82,8 @@
     position: relative;
     color: {{ text_color }};
     background: transparent;
-    border: 1px solid {{ text_color }};
+    border: var(--button-border-width) solid {{ text_color }};
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     overflow: hidden;
     transition: color 0.4s ease;
   }

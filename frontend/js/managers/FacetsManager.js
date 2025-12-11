@@ -258,8 +258,8 @@ class FacetFiltersForm extends HTMLElement {
 
     // Store scroll position and lock scroll
     this.scrollPosition = window.scrollY;
-    document.documentElement.classList.add('scroll-locked');
     document.body.style.top = `-${this.scrollPosition}px`;
+    document.documentElement.classList.add('scroll-locked');
 
     // Stop Lenis
     if (window.pieces?.lenis) {

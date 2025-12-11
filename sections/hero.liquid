@@ -19,7 +19,7 @@
   .hero-title-line:nth-child(2) { margin-left: clamp(1rem, 8vw, 5rem); }
   .hero-title-line:nth-child(3) { margin-left: clamp(2rem, 12vw, 8rem); }
   .hero-subtitle { font-size: clamp(0.75rem, 1.5vw, 1rem); }
-  .hero-cta { color: {{ section.settings.text_color }}; background-color: transparent; border: 1px solid {{ section.settings.text_color }}; }
+  .hero-cta { color: {{ section.settings.text_color }}; background-color: transparent; border: var(--button-border-width) solid {{ section.settings.text_color }}; box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %}; }
   .hero-cta::before { content: ''; position: absolute; inset: 0; background: {{ section.settings.text_color }}; transform: scaleX(0); transform-origin: right; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
   .hero-cta:hover::before { transform: scaleX(1); transform-origin: left; }
   .hero-cta:hover, .hero-cta:hover span, .hero-cta:hover i { color: {{ section.settings.background_color }}; }
