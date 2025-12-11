@@ -476,6 +476,24 @@ html.animations-disabled .page-header-subtitle-line {
   -webkit-backdrop-filter: blur(4px);
 }
 
+/* ==========================================================================
+   Facets Drawer - Filter/Sort drawer with slide animation
+   ========================================================================== */
+
+.facets-drawer {
+  pointer-events: none;
+  visibility: hidden;
+  /* Delay visibility:hidden until after slide-out animation completes */
+  transition: visibility 0s 0.3s;
+}
+
+.facets-drawer.is-open {
+  pointer-events: auto;
+  visibility: visible;
+  /* No delay when opening - show immediately */
+  transition: visibility 0s 0s;
+}
+
 /* Quick view modal section wrapper - ensure full height for AJAX-loaded content */
 [id^="shopify-section-quick-view"] {
   display: contents;

@@ -36,6 +36,7 @@
   style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);"
   data-product-card="{{ index }}"
   data-product-id="{{ product.id }}"
+  data-intro
 >
   <a href="{{ product_url }}" class="flex flex-col flex-1 cursor-pointer">
     <div class="product-card-image relative overflow-hidden aspect-[3/4]">
@@ -121,7 +122,7 @@
 
   {%- comment -%} Add to Cart / Select Options Button {%- endcomment -%}
   {% if show_quick_add and product.available %}
-    <div class="product-card-quick-add px-4 pb-4 bg-[--color-background]" data-intro>
+    <div class="product-card-quick-add px-4 pb-4 bg-[--color-background]">
       {% if has_variants %}
         {%- comment -%} Multiple variants - go to product page {%- endcomment -%}
         <a

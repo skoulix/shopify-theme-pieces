@@ -243,9 +243,27 @@ class AnimationManager {
       }
     );
 
+    // Helper to check if element is already in viewport
+    const isInViewport = (el) => {
+      const rect = el.getBoundingClientRect();
+      const windowHeight = window.innerHeight || document.documentElement.clientHeight;
+      // Check if element is at least 10% visible (matches observer threshold)
+      return rect.top < windowHeight * 0.9 && rect.bottom > 0;
+    };
+
     // Observe all intro elements
     introElements.forEach((el) => {
-      this.introObserver.observe(el);
+      // For elements already in viewport, add directly to queue
+      // This handles dynamically added elements that won't trigger intersection
+      if (isInViewport(el)) {
+        animationQueue.push(el);
+        if (!isAnimating) {
+          processQueue();
+        }
+      } else {
+        // For elements not yet visible, use observer
+        this.introObserver.observe(el);
+      }
     });
   }
 

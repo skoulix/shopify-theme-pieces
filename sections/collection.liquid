@@ -279,6 +279,12 @@
             contentContainer.appendChild(clone);
           });
 
+          // Reinitialize intro animations for new [data-intro] elements
+          // This lets them animate in with fade-from-bottom effect
+          if (window.pieces && window.pieces.animationManager) {
+            window.pieces.animationManager.initIntroAnimations();
+          }
+
           // Update the pagination
           const newPagination = newWrapper.querySelector('[data-pagination-load-more]');
           if (newPagination) {
@@ -740,6 +746,13 @@
 
               // Clone and append
               const clone = item.cloneNode(true);
+
+              // Add intro-visible class so the card wrapper is visible
+              // (the GSAP animation handles the actual reveal effect)
+              if (clone.hasAttribute('data-intro')) {
+                clone.classList.add('intro-visible');
+              }
+
               contentContainer.appendChild(clone);
 
               // Set initial states for animation

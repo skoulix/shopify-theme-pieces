@@ -64,20 +64,26 @@ class FacetFiltersForm extends HTMLElement {
       openBtn.addEventListener('click', () => this.openDrawer());
     }
 
-    // Close drawer buttons (query from drawer since it's moved to body)
+    // Close drawer buttons, apply button, and clear all (use event delegation on drawer)
     if (this.drawer) {
-      this.drawer.querySelectorAll('[data-facets-close]').forEach((btn) => {
-        btn.addEventListener('click', () => this.closeDrawer());
+      this.drawer.addEventListener('click', (e) => {
+        // Close button or apply button - just close drawer
+        if (e.target.closest('[data-facets-close]') || e.target.closest('[data-facets-apply]')) {
+          this.closeDrawer();
+        }
+        // Clear all button in drawer footer - clear filters and close drawer
+        const clearAllBtn = e.target.closest('[data-facet-clear-all]');
+        if (clearAllBtn) {
+          e.preventDefault();
+          const url = clearAllBtn.href;
+          const searchParams = url.includes('?') ? url.slice(url.indexOf('?') + 1) : '';
+          this.renderPage(searchParams);
+          this.closeDrawer();
+        }
       });
-
-      // Apply button
-      const applyBtn = this.drawer.querySelector('[data-facets-apply]');
-      if (applyBtn) {
-        applyBtn.addEventListener('click', () => this.closeDrawer());
-      }
     }
 
-    // Active filter removal
+    // Active filter removal (for elements outside drawer)
     this.querySelectorAll('[data-facet-remove], [data-facet-clear-all]').forEach((link) => {
       link.addEventListener('click', this.boundHandlers.onActiveFilterClick);
     });
@@ -155,13 +161,7 @@ class FacetFiltersForm extends HTMLElement {
               grid.style.height = `${startHeight}px`;
               grid.style.overflow = 'hidden';
 
-              // Reset intro animations on product cards so they can re-animate
-              const introElements = grid.querySelectorAll('[data-intro].intro-visible');
-              introElements.forEach((el) => {
-                el.classList.remove('intro-visible');
-              });
-
-              // Change layout
+              // Change layout (keep intro-visible classes - grid opacity handles the transition)
               wrapper.dataset.view = view;
 
               // Get new height
@@ -186,11 +186,6 @@ class FacetFiltersForm extends HTMLElement {
                   grid.style.height = '';
                   grid.style.overflow = '';
 
-                  // Re-initialize intro animations for product cards
-                  if (window.pieces?.animationManager) {
-                    window.pieces.animationManager.initIntroAnimations();
-                  }
-
                   // Refresh Lenis
                   if (window.pieces?.lenis) {
                     window.pieces.lenis.resize();
@@ -200,17 +195,9 @@ class FacetFiltersForm extends HTMLElement {
             },
           });
         } else {
-          // No animation - reset and re-init intro animations
-          const introElements = grid?.querySelectorAll('[data-intro].intro-visible');
-          introElements?.forEach((el) => {
-            el.classList.remove('intro-visible');
-          });
-
+          // No animation - just change view
           wrapper.dataset.view = view;
 
-          if (window.pieces?.animationManager) {
-            window.pieces.animationManager.initIntroAnimations();
-          }
           if (window.pieces?.lenis) {
             window.pieces.lenis.resize();
           }
@@ -406,6 +393,19 @@ class FacetFiltersForm extends HTMLElement {
 
   animateNewItems(container) {
     const items = container.querySelectorAll('[data-collection-item], [data-product-card]');
+
+    // Mark all [data-intro] elements as visible immediately
+    // (they're dynamically loaded via filtering, so no need for scroll animation)
+    items.forEach((item) => {
+      // Check if the item itself has data-intro
+      if (item.hasAttribute('data-intro')) {
+        item.classList.add('intro-visible');
+      }
+      // Also check children
+      item.querySelectorAll('[data-intro]').forEach((el) => {
+        el.classList.add('intro-visible');
+      });
+    });
 
     if (typeof gsap !== 'undefined') {
       items.forEach((item, index) => {
