@@ -32,12 +32,12 @@
 -%}
 
 <div
-  class="product-card group relative block no-underline text-inherit rounded-[--card-radius] overflow-hidden"
+  class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full"
   style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);"
   data-product-card="{{ index }}"
   data-product-id="{{ product.id }}"
 >
-  <a href="{{ product_url }}" class="block cursor-pointer">
+  <a href="{{ product_url }}" class="flex flex-col flex-1 cursor-pointer">
     <div class="product-card-image relative overflow-hidden aspect-[3/4]">
       {%- comment -%} Quick View Button - Hover overlay on image {%- endcomment -%}
       {% if show_quick_add and product.available %}
@@ -94,7 +94,7 @@
       </div>
     </div>
 
-    <div class="product-card-content p-4 bg-[--color-background]">
+    <div class="product-card-content flex-1 p-4 bg-[--color-background]">
       {% if show_vendor and product.vendor != blank %}
         <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
           <span class="inline-block">{{ product.vendor }}</span>
