@@ -5,362 +5,53 @@
 {%- endcomment -%}
 
 <style>
-  .quick-view-modal {
-    position: fixed;
-    inset: 0;
-    z-index: 9999;
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
-  }
-
-  .quick-view-modal.is-open {
-    opacity: 1;
-    visibility: visible;
-    pointer-events: auto;
-  }
-
-  /* Lock body scroll when modal is open */
+  /* Lock body scroll when modal is open - uses reusable .scroll-lock class from app.css */
   body.quick-view-open {
     overflow: hidden !important;
     position: fixed;
     width: 100%;
     height: 100%;
   }
-
-  .quick-view-modal__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0);
-    backdrop-filter: blur(0);
-    transition: background 0.3s ease, backdrop-filter 0.3s ease;
-  }
-
-  .quick-view-modal.is-open .quick-view-modal__backdrop {
-    background: rgba(0, 0, 0, 0.4);
-    backdrop-filter: blur(4px);
-  }
-
-  .quick-view-modal__content {
-    position: fixed;
-    inset: 1rem;
-    display: flex;
-    flex-direction: column;
-    overflow: hidden;
-    background: var(--color-background);
-    border: var(--card-border-width) solid var(--color-border);
-    border-radius: var(--card-radius);
-    box-shadow: var(--card-shadow);
-    opacity: 0;
-    transform: translateY(20px) scale(0.98);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  @media (min-width: 768px) {
-    .quick-view-modal__content {
-      inset: auto;
-      bottom: 1.5rem;
-      right: 1.5rem;
-      width: 800px;
-      height: 450px;
-      max-width: calc(100vw - 3rem);
-      max-height: calc(100vh - 3rem);
-    }
-  }
-
-  .quick-view-modal.is-open .quick-view-modal__content {
-    opacity: 1;
-    transform: translateY(0) scale(1);
-  }
-
-  .quick-view-modal__close {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
-    width: 2.5rem;
-    height: 2.5rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-text);
-    color: var(--color-background);
-    border: none;
-    border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.2s ease, opacity 0.2s ease;
-  }
-
-  .quick-view-modal__close:hover {
-    transform: scale(1.1);
-    opacity: 0.9;
-  }
-
-  /* Skeleton Loading State */
-  .quick-view-skeleton {
-    display: grid;
-    grid-template-columns: 1fr;
-    height: 100%;
-    padding: 1.5rem;
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 768px) {
-    .quick-view-skeleton {
-      grid-template-columns: 1fr 1fr;
-      padding: 0;
-    }
-  }
-
-  .quick-view-skeleton__image {
-    background: var(--color-background-secondary, #f5f5f5);
-    border-radius: 0.5rem;
-    aspect-ratio: 1;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-  }
-
-  @media (min-width: 768px) {
-    .quick-view-skeleton__image {
-      border-radius: 1rem 0 0 1rem;
-      aspect-ratio: auto;
-      height: 100%;
-    }
-  }
-
-  .quick-view-skeleton__content {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    padding: 0;
-  }
-
-  @media (min-width: 768px) {
-    .quick-view-skeleton__content {
-      padding: 2rem 2rem 2rem 0;
-    }
-  }
-
-  .quick-view-skeleton__title {
-    height: 2rem;
-    width: 70%;
-    background: var(--color-background-secondary, #f5f5f5);
-    border-radius: 0.25rem;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-  }
-
-  .quick-view-skeleton__price {
-    height: 1.5rem;
-    width: 30%;
-    background: var(--color-background-secondary, #f5f5f5);
-    border-radius: 0.25rem;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-    animation-delay: 0.1s;
-  }
-
-  .quick-view-skeleton__options {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-    margin-top: 0.5rem;
-  }
-
-  .quick-view-skeleton__option {
-    height: 2.5rem;
-    width: 100%;
-    background: var(--color-background-secondary, #f5f5f5);
-    border-radius: 0.25rem;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-    animation-delay: 0.2s;
-  }
-
-  .quick-view-skeleton__button {
-    height: 3rem;
-    width: 100%;
-    background: var(--color-background-secondary, #f5f5f5);
-    border-radius: 0.5rem;
-    margin-top: auto;
-    animation: skeleton-pulse 1.5s ease-in-out infinite;
-    animation-delay: 0.3s;
-  }
-
-  @keyframes skeleton-pulse {
-    0%, 100% {
-      opacity: 1;
-    }
-    50% {
-      opacity: 0.5;
-    }
-  }
-
-  /* Quick view form inputs */
-  .quick-view-product__form select,
-  .quick-view-product__form input[type="number"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-    font-family: inherit;
-    font-size: 0.875rem;
-    line-height: 1;
-    background-color: var(--color-background);
-    border: 1px solid var(--color-border);
-    border-radius: var(--input-radius, 0.25rem);
-    color: inherit;
-    transition: border-color 0.2s ease;
-  }
-
-  .quick-view-product__form select {
-    padding: 0.75rem 2.5rem 0.75rem 1rem;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
-    background-position: right 0.5rem center;
-    background-repeat: no-repeat;
-    background-size: 1.5em 1.5em;
-  }
-
-  .quick-view-product__form select:focus,
-  .quick-view-product__form input[type="number"]:focus {
-    outline: none;
-    border-color: var(--color-text);
-  }
-
-  /* Quick view quantity spinner - matches product page design */
-  .quick-view-quantity {
-    display: inline-flex;
-    align-items: center;
-    background: transparent;
-    border-radius: var(--input-radius);
-    padding: 0;
-    position: relative;
-    overflow: hidden;
-    border: var(--input-border-width, 1px) solid var(--color-border);
-  }
-
-  .quick-view-quantity-btn {
-    width: 2.75rem;
-    height: 2.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: transparent;
-    border: none;
-    cursor: pointer;
-    color: var(--color-text);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .quick-view-quantity-btn:hover {
-    background: var(--color-primary);
-    color: var(--color-primary-contrast);
-  }
-
-  .quick-view-quantity-btn:active {
-    transform: scale(0.95);
-  }
-
-  .quick-view-quantity-value {
-    width: 3rem;
-    height: 2.75rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .quick-view-quantity-input {
-    width: 100%;
-    height: 100%;
-    text-align: center;
-    font-size: 1rem;
-    font-weight: 600;
-    background: transparent;
-    border: none !important;
-    color: var(--color-text);
-    -moz-appearance: textfield;
-  }
-
-  .quick-view-quantity-input::-webkit-outer-spin-button,
-  .quick-view-quantity-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-
-  .quick-view-quantity-input:focus {
-    outline: none;
-  }
-
-  /* Modal body fills content area */
-  .quick-view-modal__body {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-  }
-
-  /* Product grid layout */
-  .quick-view-product {
-    height: 100%;
-    display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: auto 1fr;
-  }
-
-  @media (min-width: 768px) {
-    .quick-view-product {
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr;
-    }
-  }
-
-  .quick-view-product__images {
-    position: relative;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  .quick-view-product__info {
-    overflow-y: auto;
-    overscroll-behavior: contain;
-    height: 100%;
-  }
-
-  @media (max-width: 767px) {
-    .quick-view-modal__body {
-      overflow-y: auto;
-      overflow-x: hidden;
-      overscroll-behavior: contain;
-      -webkit-overflow-scrolling: touch;
-    }
-
-    .quick-view-product {
-      height: auto;
-    }
-
-    .quick-view-product__images {
-      width: 100%;
-      aspect-ratio: 1;
-    }
-
-    .quick-view-product__info {
-      overflow: visible;
-    }
-  }
 </style>
 
-<div class="quick-view-modal" data-quick-view-modal role="dialog" aria-modal="true" aria-label="Quick view">
-  <div class="quick-view-modal__backdrop" data-quick-view-close></div>
-  <div class="quick-view-modal__content">
-    <button type="button" class="quick-view-modal__close" data-quick-view-close aria-label="{{ 'accessibility.close' | t }}">
+<div
+  class="quick-view-modal group fixed inset-0 z-[9999] opacity-0 invisible pointer-events-none [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto"
+  data-quick-view-modal
+  role="dialog"
+  aria-modal="true"
+  aria-label="Quick view"
+>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div class="drawer-backdrop" data-quick-view-close></div>
+
+  {%- comment -%} Modal Content {%- endcomment -%}
+  <div class="fixed inset-4 md:inset-auto md:bottom-6 md:right-6 md:w-[800px] md:h-[450px] md:max-w-[calc(100vw-3rem)] md:max-h-[calc(100vh-3rem)] flex flex-col overflow-hidden bg-[--color-background] border border-[--color-border] rounded-[--card-radius] shadow-lg opacity-0 translate-y-5 scale-[0.98] transition-all duration-300 ease-out group-[.is-open]:opacity-100 group-[.is-open]:translate-y-0 group-[.is-open]:scale-100">
+    {%- comment -%} Close Button {%- endcomment -%}
+    <button
+      type="button"
+      class="absolute top-4 right-4 z-10 w-10 h-10 flex items-center justify-center bg-[--color-text] text-[--color-background] rounded-full cursor-pointer transition-transform duration-200 hover:scale-110 hover:opacity-90"
+      data-quick-view-close
+      aria-label="{{ 'accessibility.close' | t }}"
+    >
       <i class="ph ph-x"></i>
     </button>
-    <div class="quick-view-modal__body" data-quick-view-body>
+
+    {%- comment -%} Modal Body {%- endcomment -%}
+    <div
+      class="flex-1 min-h-0 overflow-hidden max-md:overflow-y-auto max-md:overflow-x-hidden max-md:overscroll-contain max-md:[-webkit-overflow-scrolling:touch]"
+      data-quick-view-body
+    >
       {%- comment -%} Skeleton Loading State {%- endcomment -%}
-      <div class="quick-view-skeleton" data-quick-view-skeleton>
-        <div class="quick-view-skeleton__image"></div>
-        <div class="quick-view-skeleton__content">
-          <div class="quick-view-skeleton__title"></div>
-          <div class="quick-view-skeleton__price"></div>
-          <div class="quick-view-skeleton__options">
-            <div class="quick-view-skeleton__option"></div>
-            <div class="quick-view-skeleton__option"></div>
+      <div class="grid grid-cols-1 md:grid-cols-2 h-full p-6 md:p-0 gap-6" data-quick-view-skeleton>
+        <div class="bg-[--color-background-secondary] rounded-lg md:rounded-l-2xl md:rounded-r-none aspect-square md:aspect-auto md:h-full animate-pulse"></div>
+        <div class="flex flex-col gap-4 md:p-8 md:pr-8">
+          <div class="h-8 w-[70%] bg-[--color-background-secondary] rounded animate-pulse"></div>
+          <div class="h-6 w-[30%] bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.1s]"></div>
+          <div class="flex flex-col gap-3 mt-2">
+            <div class="h-10 w-full bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.2s]"></div>
+            <div class="h-10 w-full bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.2s]"></div>
           </div>
-          <div class="quick-view-skeleton__button"></div>
+          <div class="h-12 w-full bg-[--color-background-secondary] rounded-lg mt-auto animate-pulse [animation-delay:0.3s]"></div>
         </div>
       </div>
     </div>
@@ -379,16 +70,16 @@
 
   // Skeleton HTML for loading state
   const skeletonHTML = `
-    <div class="quick-view-skeleton" data-quick-view-skeleton>
-      <div class="quick-view-skeleton__image"></div>
-      <div class="quick-view-skeleton__content">
-        <div class="quick-view-skeleton__title"></div>
-        <div class="quick-view-skeleton__price"></div>
-        <div class="quick-view-skeleton__options">
-          <div class="quick-view-skeleton__option"></div>
-          <div class="quick-view-skeleton__option"></div>
+    <div class="grid grid-cols-1 md:grid-cols-2 h-full p-6 md:p-0 gap-6" data-quick-view-skeleton>
+      <div class="bg-[--color-background-secondary] rounded-lg md:rounded-l-2xl md:rounded-r-none aspect-square md:aspect-auto md:h-full animate-pulse"></div>
+      <div class="flex flex-col gap-4 md:p-8 md:pr-8">
+        <div class="h-8 w-[70%] bg-[--color-background-secondary] rounded animate-pulse"></div>
+        <div class="h-6 w-[30%] bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.1s]"></div>
+        <div class="flex flex-col gap-3 mt-2">
+          <div class="h-10 w-full bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.2s]"></div>
+          <div class="h-10 w-full bg-[--color-background-secondary] rounded animate-pulse [animation-delay:0.2s]"></div>
         </div>
-        <div class="quick-view-skeleton__button"></div>
+        <div class="h-12 w-full bg-[--color-background-secondary] rounded-lg mt-auto animate-pulse [animation-delay:0.3s]"></div>
       </div>
     </div>
   `;
@@ -664,36 +355,6 @@
       closeModal();
     }
   });
-
-  // Prevent wheel/touchpad scroll from reaching page behind modal
-  // Stop all wheel events on the backdrop
-  const backdrop = modal.querySelector('.quick-view-modal__backdrop');
-  backdrop.addEventListener('wheel', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-  }, { passive: false });
-
-  // Handle wheel events on modal content - allow scrolling within, prevent at boundaries
-  const content = modal.querySelector('.quick-view-modal__content');
-  content.addEventListener('wheel', function(e) {
-    e.stopPropagation(); // Stop event from reaching Lenis
-
-    const scrollableEl = modal.querySelector('.quick-view-product__info') ||
-                         modal.querySelector('.quick-view-modal__body');
-    if (!scrollableEl) {
-      e.preventDefault();
-      return;
-    }
-
-    const { scrollTop, scrollHeight, clientHeight } = scrollableEl;
-    const atTop = scrollTop <= 0;
-    const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
-
-    // If scrolling up at top or down at bottom, prevent default
-    if ((e.deltaY < 0 && atTop) || (e.deltaY > 0 && atBottom)) {
-      e.preventDefault();
-    }
-  }, { passive: false });
 
   // Close modal on Swup route change
   window.addEventListener('swup:contentReplaced', closeModal);

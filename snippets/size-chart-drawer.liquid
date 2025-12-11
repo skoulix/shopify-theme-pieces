@@ -27,18 +27,7 @@
     visibility: visible !important;
     transition: visibility 0s 0s;
   }
-  .size-chart-drawer__backdrop {
-    position: absolute;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.5);
-    opacity: 0;
-    backdrop-filter: blur(4px);
-    -webkit-backdrop-filter: blur(4px);
-    transition: opacity 0.3s ease;
-  }
-  .size-chart-drawer.is-open .size-chart-drawer__backdrop {
-    opacity: 1;
-  }
+  /* Backdrop uses reusable .drawer-backdrop from app.css */
   .size-chart-drawer__panel {
     position: absolute;
     top: 0;
@@ -99,7 +88,7 @@
   data-size-chart-drawer
 >
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div class="size-chart-drawer__backdrop" data-size-chart-close></div>
+  <div class="size-chart-drawer__backdrop drawer-backdrop" data-size-chart-close></div>
 
   {%- comment -%} Panel {%- endcomment -%}
   <div class="size-chart-drawer__panel">

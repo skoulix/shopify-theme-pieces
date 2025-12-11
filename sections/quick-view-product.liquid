@@ -9,9 +9,9 @@
   assign featured_image = current_variant.featured_image | default: product.featured_image
 -%}
 
-<div class="quick-view-product">
+<div class="quick-view-product h-auto md:h-full grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_1fr] md:grid-rows-1">
   {%- comment -%} Product Images {%- endcomment -%}
-  <div class="quick-view-product__images overflow-hidden">
+  <div class="quick-view-product__images relative w-full aspect-square md:aspect-auto md:h-full overflow-hidden">
     <div class="absolute inset-0 bg-[--color-background-secondary]" data-main-image-wrapper>
       {% if featured_image %}
         <img
@@ -51,7 +51,7 @@
   </div>
 
   {%- comment -%} Product Info {%- endcomment -%}
-  <div class="quick-view-product__info flex flex-col p-5 md:p-6 overflow-y-auto overscroll-contain">
+  <div class="quick-view-product__info flex flex-col p-5 md:p-6 overflow-visible md:overflow-y-auto md:h-full overscroll-contain">
     {% if product.vendor != blank %}
       <p class="text-xs text-[--color-text-secondary] uppercase tracking-wider mb-1">
         {{ product.vendor }}
@@ -120,29 +120,29 @@
       {%- comment -%} Quantity and Add to Cart {%- endcomment -%}
       <div class="mt-auto">
         <div class="flex items-center gap-3 mb-3">
-          <div class="quick-view-quantity" data-qty-wrapper>
+          <div class="inline-flex items-center rounded-[--input-radius] border border-[--color-border] overflow-hidden" data-qty-wrapper>
             <button
               type="button"
-              class="quick-view-quantity-btn"
+              class="w-11 h-11 flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
               data-qty-minus
               aria-label="{{ 'products.product.decrease_quantity' | t }}"
             >
               <i class="ph ph-minus text-sm"></i>
             </button>
-            <div class="quick-view-quantity-value">
+            <div class="w-12 h-11 flex items-center justify-center">
               <input
                 type="number"
                 id="quick-view-quantity"
                 name="quantity"
                 value="1"
                 min="1"
-                class="quick-view-quantity-input"
+                class="quick-view-quantity-input w-full h-full text-center text-base font-semibold bg-transparent border-none text-[--color-text] focus:outline-none"
                 data-qty-input
               >
             </div>
             <button
               type="button"
-              class="quick-view-quantity-btn"
+              class="w-11 h-11 flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
               data-qty-plus
               aria-label="{{ 'products.product.increase_quantity' | t }}"
             >
