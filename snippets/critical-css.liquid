@@ -172,6 +172,18 @@
   }
 
   /* ==========================================================================
+     Mobile Nav - Prevent FOUC (drawer hidden until CSS/JS loads)
+     ========================================================================== */
+  .mobile-nav {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  .mobile-nav__drawer {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* ==========================================================================
      Main Content Wrapper - Prevents content jump
      ========================================================================== */
   .site-content {
