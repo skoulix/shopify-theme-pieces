@@ -217,6 +217,13 @@
   if (wrapper.dataset.collectionInitialized) return;
   wrapper.dataset.collectionInitialized = 'true';
 
+  // Ensure GSAP is available globally (from pieces bundle)
+  if (typeof gsap === 'undefined' && window.pieces && window.pieces.gsap) {
+    window.gsap = window.pieces.gsap;
+    window.ScrollTrigger = window.pieces.ScrollTrigger;
+    window.SplitText = window.pieces.SplitText;
+  }
+
   // If animations disabled, just show content immediately but still init load more
   if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
     wrapper.classList.remove('is-loading');
@@ -492,10 +499,13 @@
       return rect.top < windowHeight * threshold;
     }
 
+    // Check if we're in a Swup transition
+    function isSwupTransitioning() {
+      return document.documentElement.classList.contains('is-changing');
+    }
+
     // Set initial states and create ScrollTriggers for each item
     function initScrollAnimations() {
-      wrapper.classList.remove('is-loading');
-
       // Get column count for stagger calculation
       const columnsDesktop = parseInt(wrapper.style.getPropertyValue('--columns-desktop')) || 4;
       const columnsTablet = parseInt(wrapper.style.getPropertyValue('--columns-tablet')) || 2;
@@ -515,24 +525,36 @@
         const inViewItems = [];
         const outOfViewItems = [];
 
+        // During Swup transition, getBoundingClientRect may be inaccurate
+        const transitioning = isSwupTransitioning();
+        const rowsInViewport = transitioning ? Math.ceil(window.innerHeight / 300) + 1 : Infinity;
+        const maxInitialItems = transitioning ? rowsInViewport * cols : Infinity;
+
         items.forEach((item, index) => {
           const inner = item.querySelector('.metro-item-inner');
           if (inner) {
             gsap.set(inner, { clipPath: 'inset(0 100% 0 0)' });
           }
 
-          // Check if item is already in viewport
-          if (isInViewport(item)) {
+          // During Swup transition, assume first N items are in viewport
+          const wouldBeInViewport = transitioning ? index < maxInitialItems : isInViewport(item);
+
+          if (wouldBeInViewport) {
             inViewItems.push({ item, index });
           } else {
             outOfViewItems.push({ item, index });
           }
         });
 
+        // Remove is-loading AFTER setting initial states to prevent flash
+        wrapper.classList.remove('is-loading');
+
         // Animate items already in viewport immediately with stagger
+        // During Swup transition, add extra delay to sync with page reveal
+        const baseDelay = transitioning ? 0.3 : 0;
         inViewItems.forEach(({ item, index }, i) => {
           const colIndex = index % cols;
-          const delay = colIndex * 0.08;
+          const delay = baseDelay + (colIndex * 0.08);
           gsap.delayedCall(delay, () => animateMetroItem(item));
         });
 
@@ -554,6 +576,13 @@
         const inViewItems = [];
         const outOfViewItems = [];
 
+        // During Swup transition, getBoundingClientRect may be inaccurate
+        // Calculate how many rows would fit in viewport (assuming scroll at top)
+        const transitioning = isSwupTransitioning();
+        const rowsInViewport = transitioning ? Math.ceil(window.innerHeight / 400) + 1 : Infinity;
+        const itemsPerRow = cols;
+        const maxInitialItems = transitioning ? rowsInViewport * itemsPerRow : Infinity;
+
         items.forEach((item, index) => {
           const imgWrap = item.querySelector('.product-card-image');
           const titleSpans = item.querySelectorAll('.product-card-title .overflow-hidden span');
@@ -570,18 +599,26 @@
             gsap.set(priceSpans, { yPercent: 100 });
           }
 
-          // Check if item is already in viewport
-          if (isInViewport(item)) {
+          // During Swup transition, assume first N items are in viewport (page scrolls to top)
+          // Otherwise, use actual viewport check
+          const wouldBeInViewport = transitioning ? index < maxInitialItems : isInViewport(item);
+
+          if (wouldBeInViewport) {
             inViewItems.push({ item, index });
           } else {
             outOfViewItems.push({ item, index });
           }
         });
 
+        // Remove is-loading AFTER setting initial states to prevent flash
+        wrapper.classList.remove('is-loading');
+
         // Animate items already in viewport immediately with stagger
+        // During Swup transition, add extra delay to sync with page reveal
+        const baseDelay = transitioning ? 0.3 : 0;
         inViewItems.forEach(({ item, index }) => {
           const colIndex = index % cols;
-          const delay = colIndex * 0.1;
+          const delay = baseDelay + (colIndex * 0.1);
           gsap.delayedCall(delay, () => animateProductCard(item));
         });
 
@@ -604,6 +641,13 @@
     // Run animations
     runHeaderAnimation();
     initScrollAnimations();
+
+    // Refresh ScrollTrigger after creating new triggers (important for Swup navigation)
+    if (ScrollTrigger) {
+      requestAnimationFrame(() => {
+        ScrollTrigger.refresh();
+      });
+    }
 
     // Hover effects for grid layout
     if (layoutStyle !== 'metro') {

@@ -32,8 +32,9 @@
 
     {%- comment -%} Cart Contents {%- endcomment -%}
     <div
-      class="flex-1 overflow-y-auto p-6 transition-opacity group-[.is-loading]:opacity-50 group-[.is-loading]:pointer-events-none group-[.is-updating]:opacity-50 group-[.is-updating]:pointer-events-none"
+      class="flex-1 overflow-y-auto p-6 transition-opacity group-[.is-loading]:opacity-50 group-[.is-loading]:pointer-events-none group-[.is-updating]:opacity-50 group-[.is-updating]:pointer-events-none overscroll-contain"
       data-cart-drawer-content
+      data-lenis-prevent
     >
       {% if cart.item_count > 0 %}
         <ul class="list-none m-0 p-0 flex flex-col gap-6" role="list">
