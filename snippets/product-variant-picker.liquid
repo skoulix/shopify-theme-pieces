@@ -147,7 +147,7 @@
             {%- endif -%}
             <select
               id="Option-{{ section_id }}-{{ option_index }}"
-              class="variant-picker__select{% if final_picker_type == 'swatch_dropdown' %} variant-picker__select--with-swatch{% endif %}"
+              class="variant-picker__select no-arrow{% if final_picker_type == 'swatch_dropdown' %} variant-picker__select--with-swatch{% endif %}"
               name="options[{{ option_name }}]"
               form="{{ product_form_id }}"
               data-option-position="{{ option.position }}"

@@ -9,7 +9,7 @@
   assign featured_image = current_variant.featured_image | default: product.featured_image
 -%}
 
-<div class="quick-view-product h-auto md:h-full grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_1fr] md:grid-rows-1">
+<div class="quick-view-product h-full grid grid-cols-1 md:grid-cols-2 grid-rows-[auto_1fr] md:grid-rows-1">
   {%- comment -%} Product Images {%- endcomment -%}
   <div class="quick-view-product__images relative w-full aspect-square md:aspect-auto md:h-full overflow-hidden">
     <div class="absolute inset-0 bg-[--color-background-secondary]" data-main-image-wrapper>
@@ -51,7 +51,7 @@
   </div>
 
   {%- comment -%} Product Info {%- endcomment -%}
-  <div class="quick-view-product__info flex flex-col p-5 md:p-6 overflow-visible md:overflow-y-auto md:h-full overscroll-contain">
+  <div class="quick-view-product__info flex flex-col p-5 md:p-6 overflow-visible md:overflow-y-auto md:h-full overscroll-contain" data-lenis-prevent>
     {% if product.vendor != blank %}
       <p class="text-xs text-[--color-text-secondary] uppercase tracking-wider mb-1">
         {{ product.vendor }}
@@ -136,7 +136,7 @@
                 name="quantity"
                 value="1"
                 min="1"
-                class="w-full h-full text-center text-base font-semibold bg-transparent border-none text-[--color-text] focus:outline-none"
+                class="w-full h-full text-center text-base font-semibold bg-transparent !border-0 text-[--color-text] focus:outline-none"
                 data-qty-input
               >
             </div>
@@ -168,10 +168,6 @@
           </button>
         </div>
 
-        {%- comment -%} View Full Product Link {%- endcomment -%}
-        <a href="{{ product.url }}" class="block text-center text-xs text-[--color-text-secondary] hover:text-[--color-primary] underline">
-          {{ 'products.product.view_product' | t }}
-        </a>
       </div>
     {% endform %}
 

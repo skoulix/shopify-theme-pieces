@@ -28,8 +28,9 @@
 
     {%- comment -%} Modal Body {%- endcomment -%}
     <div
-      class="flex-1 min-h-0 overflow-hidden max-md:overflow-y-auto max-md:overflow-x-hidden max-md:overscroll-contain max-md:[-webkit-overflow-scrolling:touch]"
+      class="flex-1 min-h-0 h-full overflow-y-auto overflow-x-hidden overscroll-contain [-webkit-overflow-scrolling:touch]"
       data-quick-view-body
+      data-lenis-prevent
     >
       {%- comment -%} Skeleton Loading State {%- endcomment -%}
       <div class="grid grid-cols-1 md:grid-cols-2 h-full p-6 md:p-0 gap-6" data-quick-view-skeleton>

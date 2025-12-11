@@ -65,12 +65,24 @@
     -moz-appearance: textfield;
   }
 
-  /* Select dropdown arrow */
+  /* Select dropdown styling */
   select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem;
+    border-radius: var(--input-radius);
+    background-color: transparent;
     background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
     background-position: right 0.5rem center;
     background-repeat: no-repeat;
     background-size: 1.5em 1.5em;
+  }
+
+  /* Hide arrow on selects that use custom icons */
+  select.no-arrow {
+    background-image: none;
+    padding-right: 0;
   }
 }
 
@@ -93,6 +105,37 @@
   /* Visually hidden (for screen readers) */
   .visually-hidden {
     @apply sr-only;
+  }
+
+  /* ==========================================================================
+     Form Input System
+     ========================================================================== */
+
+  /* Base input styles */
+  .input {
+    display: block;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius);
+    color: var(--color-text);
+    font-size: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .input:hover {
+    border-color: var(--color-text-secondary);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--color-text);
+  }
+
+  /* Select-specific input styling (adds padding for arrow) */
+  select.input {
+    padding-right: 2.5rem;
+    cursor: pointer;
   }
 
   /* ==========================================================================
@@ -333,14 +376,16 @@
 
 /* Scroll locking for modals, drawers, and page transitions */
 html.scroll-locked {
-  overflow: hidden !important;
+  overflow: hidden;
 }
 
 html.scroll-locked body {
-  overflow: hidden !important;
+  overflow: hidden;
   position: fixed;
   width: 100%;
-  height: 100%;
+  left: 0;
+  right: 0;
+  /* height is NOT set to 100% to allow fixed children to scroll internally */
 }
 
 /* Image reveal animation states */
@@ -431,6 +476,11 @@ html.animations-disabled .page-header-subtitle-line {
   background: rgba(0, 0, 0, 0.5);
   backdrop-filter: blur(4px);
   -webkit-backdrop-filter: blur(4px);
+}
+
+/* Quick view modal section wrapper - ensure full height for AJAX-loaded content */
+[id^="shopify-section-quick-view"] {
+  display: contents;
 }
 
 /* ==========================================================================
