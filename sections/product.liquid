@@ -128,7 +128,7 @@
   <div class="product-gallery{% if section.settings.image_fit != 'cover' %} fit-{{ section.settings.image_fit }}{% endif %}">
     <div class="product-gallery-main" data-gallery-main>
       {% for image in product.images %}
-        <div class="product-gallery-image{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}">
+        <div class="product-gallery-image{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}" data-image-id="{{ image.id }}">
           {%- if forloop.first -%}
             {{ image | image_url: width: 1800 | image_tag:
               class: '',
@@ -166,7 +166,7 @@
 
       <div class="product-thumbnails" data-thumbnails>
         {% for image in product.images %}
-          <button class="product-thumbnail{% if forloop.first %} is-active{% endif %}" data-thumbnail="{{ forloop.index0 }}" aria-label="{{ 'accessibility.view_image' | t: index: forloop.index, total: product.images.size }}">
+          <button class="product-thumbnail{% if forloop.first %} is-active{% endif %}" data-thumbnail="{{ forloop.index0 }}" data-image-id="{{ image.id }}" aria-label="{{ 'accessibility.view_image' | t: index: forloop.index, total: product.images.size }}">
             {{ image | image_url: width: 150 | image_tag: alt: image.alt | default: product.title }}
           </button>
         {% endfor %}
@@ -386,12 +386,28 @@
   const priceEl = section.querySelector('[data-product-price]');
   const compareEl = section.querySelector('[data-compare-price]');
   const addButton = section.querySelector('[data-add-to-cart]');
+  const galleryImages = section.querySelectorAll('[data-gallery-image]');
+  const thumbnails = section.querySelectorAll('[data-thumbnail]');
+  const counterCurrent = section.querySelector('[data-counter-current]');
 
   function formatMoney(cents) {
     const amount = (cents / 100).toFixed(2);
     return moneyFormat.replace(/\{\{\s*amount\s*\}\}/, amount)
                       .replace(/\{\{\s*amount_no_decimals\s*\}\}/, Math.round(cents / 100))
                       .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/, amount.replace('.', ','));
+  }
+
+  // Show image by index (used by both thumbnails and variant switching)
+  function showImageByIndex(index) {
+    galleryImages.forEach((img, i) => {
+      img.classList.toggle('is-active', i === index);
+    });
+    thumbnails.forEach((thumb, i) => {
+      thumb.classList.toggle('is-active', i === index);
+    });
+    if (counterCurrent) {
+      counterCurrent.textContent = String(index + 1).padStart(2, '0');
+    }
   }
 
   function updateVariant(variant) {
@@ -432,6 +448,19 @@
     const url = new URL(window.location);
     url.searchParams.set('variant', variant.id);
     window.history.replaceState({}, '', url);
+
+    // Update image if variant has a featured image
+    if (variant.featured_image && galleryImages.length > 0) {
+      const variantImageId = variant.featured_image.id;
+      // Find the gallery image with matching image ID
+      const matchingImage = Array.from(galleryImages).find(img =>
+        parseInt(img.dataset.imageId) === variantImageId
+      );
+      if (matchingImage) {
+        const index = parseInt(matchingImage.dataset.galleryImage);
+        showImageByIndex(index);
+      }
+    }
 
     // Dispatch event for other components (e.g., sticky bar)
     document.dispatchEvent(new CustomEvent('variant:change', {
@@ -569,22 +598,11 @@
     quantityInput.addEventListener('change', animateQuantityChange);
   }
 
-  // Image gallery
-  const galleryImages = section.querySelectorAll('[data-gallery-image]');
-  const thumbnails = section.querySelectorAll('[data-thumbnail]');
-  const counterCurrent = section.querySelector('[data-counter-current]');
+  // Image gallery - uses showImageByIndex defined above
   let currentImageIndex = 0;
 
   function showImage(index) {
-    galleryImages.forEach((img, i) => {
-      img.classList.toggle('is-active', i === index);
-    });
-    thumbnails.forEach((thumb, i) => {
-      thumb.classList.toggle('is-active', i === index);
-    });
-    if (counterCurrent) {
-      counterCurrent.textContent = String(index + 1).padStart(2, '0');
-    }
+    showImageByIndex(index);
     currentImageIndex = index;
   }
 
