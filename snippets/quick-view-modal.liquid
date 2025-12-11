@@ -4,16 +4,6 @@
   Modern bottom-right positioning with skeleton loading state
 {%- endcomment -%}
 
-<style>
-  /* Lock body scroll when modal is open - uses reusable .scroll-lock class from app.css */
-  body.quick-view-open {
-    overflow: hidden !important;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-  }
-</style>
-
 <div
   class="quick-view-modal group fixed inset-0 z-[9999] opacity-0 invisible pointer-events-none [&.is-open]:opacity-100 [&.is-open]:visible [&.is-open]:pointer-events-auto"
   data-quick-view-modal
@@ -86,13 +76,13 @@
 
   function lockScroll() {
     scrollPosition = window.scrollY;
-    document.body.classList.add('quick-view-open');
+    document.documentElement.classList.add('scroll-locked');
     document.body.style.top = `-${scrollPosition}px`;
     if (window.lenis) window.lenis.stop();
   }
 
   function unlockScroll() {
-    document.body.classList.remove('quick-view-open');
+    document.documentElement.classList.remove('scroll-locked');
     document.body.style.top = '';
     window.scrollTo(0, scrollPosition);
     if (window.lenis) window.lenis.start();

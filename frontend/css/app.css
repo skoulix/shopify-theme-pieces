@@ -331,13 +331,16 @@
    Animation Styles - Centralized reveal animations
    ========================================================================== */
 
-/* Scroll locking for page transitions */
+/* Scroll locking for modals, drawers, and page transitions */
 html.scroll-locked {
   overflow: hidden !important;
 }
 
 html.scroll-locked body {
   overflow: hidden !important;
+  position: fixed;
+  width: 100%;
+  height: 100%;
 }
 
 /* Image reveal animation states */
