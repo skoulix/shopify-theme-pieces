@@ -11,6 +11,14 @@
   {% render 'mega-menu', link: link, block: block, position: forloop.index0 %}
 {%- endcomment -%}
 
+{%- liquid
+  # Default full_width to true if not explicitly set to false
+  assign mega_menu_full_width = true
+  if block.settings.full_width == false
+    assign mega_menu_full_width = false
+  endif
+-%}
+
 <div class="mega-menu-wrapper relative" data-mega-menu data-mega-menu-position="{{ position }}">
   {%- comment -%} Trigger button {%- endcomment -%}
   <button
@@ -25,7 +33,7 @@
 
   {%- comment -%} Mega menu panel {%- endcomment -%}
   <div class="mega-menu-panel" data-mega-menu-panel>
-    <div class="mega-menu-panel__inner page-container">
+    <div class="mega-menu-panel__inner {% if mega_menu_full_width %}page-full{% else %}page-container{% endif %}">
       <div class="mega-menu-grid">
         {%- comment -%} Navigation columns {%- endcomment -%}
         <div class="mega-menu-nav">
@@ -142,11 +150,12 @@
 <style>
   /* Mega menu panel - full width dropdown */
   .mega-menu-panel {
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-10px);
-    width: 100vw;
+    position: fixed;
+    top: var(--header-height, 65px);
+    left: 0;
+    right: 0;
+    transform: translateY(-10px);
+    width: 100%;
     background: var(--color-background);
     border-bottom: 1px solid var(--color-border);
     box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
@@ -161,11 +170,11 @@
     opacity: 1;
     visibility: visible;
     pointer-events: auto;
-    transform: translateX(-50%) translateY(0);
+    transform: translateY(0);
   }
 
   .mega-menu-panel__inner {
-    padding: 2rem 0;
+    padding: 2rem var(--page-padding);
   }
 
   .mega-menu-grid {

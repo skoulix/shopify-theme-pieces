@@ -1,0 +1,40 @@
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
+<div class="{{ container_class }}">
+  {%- for block in section.blocks -%}
+    <div data-intro data-intro-delay="{{ forloop.index0 | times: 0.1 }}">
+      {% render block %}
+    </div>
+  {%- endfor -%}
+</div>
+
+{% schema %}
+{
+  "name": "Apps",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Apps"
+    }
+  ]
+}
+{% endschema %}
