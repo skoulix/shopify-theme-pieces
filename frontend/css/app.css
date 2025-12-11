@@ -488,14 +488,7 @@ html.animations-disabled .page-header-subtitle-line {
    Uses GSAP for animations when available, CSS fallback otherwise
    ========================================================================== */
 
-.mobile-nav {
-  position: fixed;
-  inset: 0;
-  z-index: 100;
-  pointer-events: none;
-  visibility: hidden;
-}
-
+/* Mobile Nav - State handling (Tailwind handles base layout) */
 .mobile-nav.is-open {
   pointer-events: auto;
   visibility: visible;
@@ -503,75 +496,14 @@ html.animations-disabled .page-header-subtitle-line {
 
 /* Backdrop - uses reusable .drawer-backdrop class */
 
-/* Drawer Panel - Expands from top, hidden by default */
+/* Drawer Panel - clip-path animation for reveal */
 .mobile-nav__drawer {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: var(--color-background);
-  display: flex;
-  flex-direction: column;
   clip-path: inset(0 0 100% 0);
   will-change: clip-path;
 }
 
-/* Header */
-.mobile-nav__header {
-  display: flex;
-  align-items: center;
-  justify-content: flex-end;
-  padding: 1.25rem 1.5rem;
-}
-
-.mobile-nav__close {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 48px;
-  height: 48px;
-  margin: -12px;
-  background: transparent;
-  border: none;
-  color: var(--color-text);
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
-
-.mobile-nav__close:hover {
-  opacity: 0.6;
-}
-
-.mobile-nav__close i {
-  font-size: 1.5rem;
-}
-
-/* Main Content Area */
-.mobile-nav__content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  padding: 2rem 1.5rem;
-  overflow-y: auto;
-}
-
-/* Navigation List */
-.mobile-nav__list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-}
-
-.mobile-nav__item {
-  overflow: hidden;
-}
-
-/* Large Typography Links - Uses theme heading font weight */
+/* Large Typography Links - Uses theme heading font and responsive sizing */
 .mobile-nav__link {
-  display: block;
-  position: relative;
   padding: 0.75rem 0;
   font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
   font-size: clamp(2rem, 8vw, 3.5rem);
@@ -580,7 +512,6 @@ html.animations-disabled .page-header-subtitle-line {
   line-height: 1.1;
   letter-spacing: -0.02em;
   color: var(--color-text);
-  text-decoration: none;
   transition: color 0.3s ease;
 }
 
@@ -590,12 +521,6 @@ html.animations-disabled .page-header-subtitle-line {
 
 .mobile-nav__link.is-active {
   color: var(--color-primary);
-}
-
-/* Link Text */
-.mobile-nav__link-text {
-  display: inline-block;
-  overflow: hidden;
 }
 
 /* Split chars for reveal animation */
@@ -621,161 +546,93 @@ html.animations-disabled .page-header-subtitle-line {
   transform-origin: left;
 }
 
-
-/* Footer */
-.mobile-nav__footer {
-  padding: 1.5rem;
-  border-top: 1px solid var(--color-border);
-}
-
-.mobile-nav__footer-links {
-  display: flex;
-  gap: 1.5rem;
-  flex-wrap: wrap;
-}
-
-.mobile-nav__footer-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.mobile-nav__footer-link:hover {
-  color: var(--color-text);
-}
-
-.mobile-nav__footer-link i {
-  font-size: 1.125rem;
-}
-
-/* Hide on desktop */
-@media (min-width: 1024px) {
-  .mobile-nav {
-    display: none;
-  }
-}
-
 /* Desktop nav active state (for JS-toggled is-active class) */
 [data-nav-link].is-active::after {
   width: 100% !important;
 }
 
-/* Mobile submenu - Parent container */
-.mobile-nav__parent {
-  position: relative;
-}
-
-/* Parent link with toggle */
-.mobile-nav__link--parent {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  background: none;
-  border: none;
-  cursor: pointer;
-  text-align: left;
-}
-
-/* Plus/minus toggle icon */
+/* Plus/minus toggle icon - rotation animation */
 .mobile-nav__toggle-icon {
   font-size: clamp(1.5rem, 5vw, 1.75rem);
   transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  flex-shrink: 0;
 }
 
 .mobile-nav__link--parent[aria-expanded="true"] .mobile-nav__toggle-icon {
   transform: rotate(45deg);
 }
 
-/* Submenu panel - collapsed by default */
+/* Submenu panel - grid animation for smooth expand/collapse */
 .mobile-nav__submenu {
-  display: grid;
   grid-template-rows: 0fr;
   transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-  overflow: hidden;
 }
 
 .mobile-nav__submenu.is-open {
   grid-template-rows: 1fr;
 }
 
-.mobile-nav__submenu-inner {
-  overflow: hidden;
-}
-
-/* View all link */
-.mobile-nav__submenu-all {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0.75rem 0;
-  padding-left: 1rem;
-  margin-top: 0.5rem;
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--color-primary);
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.mobile-nav__submenu-all i {
-  font-size: 0.875rem;
-  transition: transform 0.3s ease;
-}
-
-.mobile-nav__submenu-all:hover i {
-  transform: translateX(4px);
-}
-
-/* Child links */
+/* Child links - responsive font sizing */
 .mobile-nav__submenu-link {
-  display: block;
-  position: relative;
   padding: 0.625rem 0;
-  padding-left: 1rem;
   font-size: clamp(1rem, 4vw, 1.25rem);
-  font-weight: 500;
-  color: var(--color-text-secondary);
-  text-decoration: none;
-  transition: color 0.3s ease, transform 0.3s ease;
 }
 
-.mobile-nav__submenu-link:hover,
-.mobile-nav__submenu-link.is-active {
-  color: var(--color-text);
-  transform: translateX(4px);
-}
 
-.mobile-nav__submenu-link-text {
-  display: inline-block;
-}
+/* ==========================================================================
+   Mobile Nav - Sliding Panels Style
+   Modern multi-level navigation with sliding panel transitions
+   ========================================================================== */
 
-/* Animated underline for child links */
-.mobile-nav__submenu-link-line {
+/* Individual Panel - slide transitions */
+.mobile-nav--slide .mobile-nav__panel {
   position: absolute;
-  bottom: 0.375rem;
-  left: 1rem;
-  width: calc(100% - 1rem);
-  height: 1px;
-  background: currentColor;
-  transform: scaleX(0);
-  transform-origin: right;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
 }
 
-.mobile-nav__submenu-link:hover .mobile-nav__submenu-link-line {
-  transform: scaleX(1);
-  transform-origin: left;
+.mobile-nav--slide .mobile-nav__panel--main {
+  position: relative;
+  transform: translateX(0);
+}
+
+.mobile-nav--slide .mobile-nav__panel.is-active {
+  transform: translateX(0);
+}
+
+/* When navigating deeper, slide main panel left */
+.mobile-nav--slide .mobile-nav__panel--main.is-hidden,
+.mobile-nav--slide .mobile-nav__panel.is-hidden {
+  transform: translateX(-30%);
+}
+
+/* Panel title - uses theme heading font */
+.mobile-nav__panel-title {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: var(--font-heading-weight, 500);
+  font-style: var(--font-heading-style, normal);
+  letter-spacing: -0.02em;
+}
+
+/* Slide style links - smaller for better hierarchy */
+.mobile-nav--slide .mobile-nav__link {
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
+}
+
+/* Level 2 and 3 panels have regular-sized text */
+.mobile-nav--slide .mobile-nav__panel[data-panel-level="2"] .mobile-nav__link:not(.mobile-nav__link--view-all),
+.mobile-nav--slide .mobile-nav__panel[data-panel-level="3"] .mobile-nav__link:not(.mobile-nav__link--view-all) {
+  font-size: clamp(1.125rem, 4vw, 1.5rem);
+  font-family: inherit;
+  font-weight: 500;
 }
 
 /* ==========================================================================

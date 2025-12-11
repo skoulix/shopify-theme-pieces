@@ -464,147 +464,13 @@
     </div>
   </nav>
 
-  {%- comment -%} Mobile Menu - Full Screen Drawer with Reveal Effects {%- endcomment -%}
-  <div id="mobile-menu" class="mobile-nav" role="dialog" aria-modal="true" inert>
-    {%- comment -%} Backdrop {%- endcomment -%}
-    <div class="mobile-nav__backdrop drawer-backdrop" data-mobile-nav-close></div>
-
-    {%- comment -%} Drawer Panel {%- endcomment -%}
-    <div class="mobile-nav__drawer">
-      {%- comment -%} Header {%- endcomment -%}
-      <div class="mobile-nav__header">
-        <button type="button" class="mobile-nav__close" data-mobile-nav-close>
-          <span class="sr-only">{{ 'accessibility.close_menu' | t }}</span>
-          <i class="ph ph-x"></i>
-        </button>
-      </div>
-
-      {%- comment -%} Main Navigation {%- endcomment -%}
-      <nav class="mobile-nav__content">
-        <ul class="mobile-nav__list">
-          {% for link in section.settings.menu.links %}
-            {%- liquid
-              assign is_active = false
-              if link.url == request.path
-                assign is_active = true
-              elsif link.url != '/' and request.path contains link.url
-                assign is_active = true
-              endif
-              assign has_children = false
-              if link.links.size > 0
-                assign has_children = true
-              endif
-            -%}
-            <li class="mobile-nav__item" style="--item-index: {{ forloop.index0 }}">
-              {% if has_children %}
-                {%- comment -%} Parent with submenu {%- endcomment -%}
-                <div class="mobile-nav__parent" data-mobile-submenu>
-                  <button
-                    type="button"
-                    class="mobile-nav__link mobile-nav__link--parent font-heading{% if is_active %} is-active{% endif %}"
-                    data-mobile-submenu-toggle
-                    aria-expanded="false"
-                  >
-                    <span class="mobile-nav__link-text" data-mobile-nav-link-text>{{ link.title }}</span>
-                    <i class="ph ph-plus mobile-nav__toggle-icon"></i>
-                    <span class="mobile-nav__link-line"></span>
-                  </button>
-
-                  {%- comment -%} Submenu {%- endcomment -%}
-                  <div class="mobile-nav__submenu" data-mobile-submenu-panel>
-                    <div class="mobile-nav__submenu-inner">
-                      {%- comment -%} View all link if parent has URL {%- endcomment -%}
-                      {% if link.url != '#' and link.url != '' %}
-                        <a
-                          href="{{ link.url }}"
-                          class="mobile-nav__submenu-all"
-                          data-mobile-nav-close
-                        >
-                          <span>View All {{ link.title }}</span>
-                          <i class="ph ph-arrow-right"></i>
-                        </a>
-                      {% endif %}
-
-                      {%- comment -%} Child links {%- endcomment -%}
-                      {% for child in link.links %}
-                        {%- liquid
-                          assign child_active = false
-                          if child.url == request.path
-                            assign child_active = true
-                          endif
-                        -%}
-                        <a
-                          href="{{ child.url }}"
-                          class="mobile-nav__submenu-link{% if child_active %} is-active{% endif %}"
-                          data-mobile-nav-close
-                          style="--child-index: {{ forloop.index0 }}"
-                          {% if child_active %}aria-current="page"{% endif %}
-                        >
-                          <span class="mobile-nav__submenu-link-text">{{ child.title }}</span>
-                          <span class="mobile-nav__submenu-link-line"></span>
-                        </a>
-                      {% endfor %}
-                    </div>
-                  </div>
-                </div>
-              {% else %}
-                <a
-                  href="{{ link.url }}"
-                  class="mobile-nav__link font-heading{% if is_active %} is-active{% endif %}"
-                  data-nav-link
-                  data-mobile-nav-close
-                  {% if is_active %}aria-current="page"{% endif %}
-                >
-                  <span class="mobile-nav__link-text" data-mobile-nav-link-text>{{ link.title }}</span>
-                  <span class="mobile-nav__link-line"></span>
-                </a>
-              {% endif %}
-            </li>
-          {% endfor %}
-        </ul>
-      </nav>
-
-      {%- comment -%} Footer {%- endcomment -%}
-      <div class="mobile-nav__footer">
-        <div class="mobile-nav__footer-links">
-          {% if shop.customer_accounts_enabled %}
-            <a href="{{ routes.account_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
-              <i class="ph ph-user"></i>
-              <span>{{ 'accessibility.account' | t }}</span>
-            </a>
-          {% endif %}
-          {% if section.settings.show_search %}
-            <a href="{{ routes.search_url }}" class="mobile-nav__footer-link" data-mobile-nav-close>
-              <i class="ph ph-magnifying-glass"></i>
-              <span>{{ 'accessibility.search' | t }}</span>
-            </a>
-          {% endif %}
-          {% if section.settings.show_cart %}
-            {% if settings.cart_type == 'drawer' %}
-              <button
-                type="button"
-                class="mobile-nav__footer-link"
-                data-mobile-nav-close
-                data-cart-drawer-toggle
-              >
-                <i class="ph ph-bag"></i>
-                <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
-              </button>
-            {% else %}
-              <a
-                href="{{ routes.cart_url }}"
-                class="mobile-nav__footer-link"
-                data-mobile-nav-close
-              >
-                <i class="ph ph-bag"></i>
-                <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
-              </a>
-            {% endif %}
-          {% endif %}
-        </div>
-      </div>
-    </div>
-  </div>
+  {%- comment -%} Mobile Menu Drawer {%- endcomment -%}
+  {% render 'mobile-menu-drawer',
+    menu: section.settings.menu,
+    style: section.settings.mobile_menu_style,
+    show_search: section.settings.show_search,
+    show_cart: section.settings.show_cart
+  %}
 </header>
 </div><!-- /.header-wrapper -->
 
@@ -1376,6 +1242,114 @@
   });
 
   /**
+   * Mobile Sliding Panels Navigation
+   * Multi-level navigation with sliding panel transitions and back buttons
+   */
+  const mobileMenuStyle = mobileNav?.dataset.mobileMenuStyle;
+
+  if (mobileMenuStyle === 'slide' && mobileNav) {
+    const panelsContainer = mobileNav.querySelector('[data-mobile-panels]');
+    let panelHistory = ['main']; // Track navigation history for back button
+
+    /**
+     * Navigate to a specific panel
+     */
+    function navigateToPanel(panelId) {
+      if (!panelsContainer) return;
+
+      const currentPanel = panelsContainer.querySelector('.mobile-nav__panel.is-active');
+      const targetPanel = panelsContainer.querySelector(`[data-panel="${panelId}"]`);
+
+      if (!targetPanel || currentPanel === targetPanel) return;
+
+      // Add to history if going deeper
+      if (!panelHistory.includes(panelId)) {
+        panelHistory.push(panelId);
+      }
+
+      // Hide current panel (slide left)
+      if (currentPanel) {
+        currentPanel.classList.remove('is-active');
+        currentPanel.classList.add('is-hidden');
+      }
+
+      // Show target panel (slide in from right)
+      targetPanel.classList.remove('is-hidden');
+      targetPanel.classList.add('is-active');
+    }
+
+    /**
+     * Navigate back to previous panel
+     */
+    function navigateBack() {
+      if (panelHistory.length <= 1) return;
+
+      const currentPanelId = panelHistory.pop();
+      const previousPanelId = panelHistory[panelHistory.length - 1];
+
+      const currentPanel = panelsContainer.querySelector(`[data-panel="${currentPanelId}"]`);
+      const previousPanel = panelsContainer.querySelector(`[data-panel="${previousPanelId}"]`);
+
+      if (!previousPanel) return;
+
+      // Hide current panel (slide out to right)
+      if (currentPanel) {
+        currentPanel.classList.remove('is-active');
+        // Don't add is-hidden, let it slide back off-screen via CSS
+      }
+
+      // Show previous panel (slide back from left)
+      previousPanel.classList.remove('is-hidden');
+      previousPanel.classList.add('is-active');
+    }
+
+    /**
+     * Reset panels to initial state
+     */
+    function resetPanels() {
+      if (!panelsContainer) return;
+
+      panelHistory = ['main'];
+
+      // Reset all panels
+      panelsContainer.querySelectorAll('.mobile-nav__panel').forEach(panel => {
+        panel.classList.remove('is-active', 'is-hidden');
+      });
+
+      // Activate main panel
+      const mainPanel = panelsContainer.querySelector('[data-panel="main"]');
+      if (mainPanel) {
+        mainPanel.classList.add('is-active');
+      }
+    }
+
+    // Handle panel trigger clicks (navigate deeper)
+    panelsContainer?.addEventListener('click', (e) => {
+      const trigger = e.target.closest('[data-panel-trigger]');
+      if (trigger) {
+        e.preventDefault();
+        const targetPanelId = trigger.dataset.panelTrigger;
+        navigateToPanel(targetPanelId);
+      }
+    });
+
+    // Handle back button clicks
+    panelsContainer?.addEventListener('click', (e) => {
+      const backBtn = e.target.closest('[data-panel-back]');
+      if (backBtn) {
+        e.preventDefault();
+        navigateBack();
+      }
+    });
+
+    // Reset panels when menu closes
+    document.addEventListener('menu:close', resetPanels);
+
+    // Also reset when opening menu (in case it was left in a nested state)
+    document.addEventListener('menu:open', resetPanels);
+  }
+
+  /**
    * Announcement Bar - Slide rotation, dismiss, and countdown
    */
   const announcementBar = document.querySelector('[data-announcement-bar]');
@@ -1524,6 +1498,21 @@
       "id": "show_cart",
       "default": true,
       "label": "Show cart icon"
+    },
+    {
+      "type": "header",
+      "content": "Mobile menu"
+    },
+    {
+      "type": "select",
+      "id": "mobile_menu_style",
+      "label": "Mobile menu style",
+      "default": "accordion",
+      "options": [
+        { "value": "accordion", "label": "Accordion (expand in place)" },
+        { "value": "slide", "label": "Sliding panels" }
+      ],
+      "info": "Sliding panels work better for menus with 3+ levels"
     },
     {
       "type": "header",
