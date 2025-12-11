@@ -7,73 +7,156 @@ Reduces font size from ~147KB to ~15KB.
 import subprocess
 import re
 import os
+import sys
+
+# Add user's Python bin to PATH for pyftsubset
+USER_PYTHON_BIN = os.path.expanduser("~/Library/Python/3.13/bin")
+os.environ["PATH"] = USER_PYTHON_BIN + ":" + os.environ.get("PATH", "")
 
 # Icons used in the theme
 USED_ICONS = [
+    # === EXISTING ICONS (53) ===
+    # Arrows
     "arrow-counter-clockwise",
     "arrow-left",
-    "bell-ringing",
     "arrow-right",
     "arrow-up",
     "arrows-counter-clockwise",
     "arrows-out",
-    "article",
-    "bag",
-    "calendar",
+    # Carets
     "caret-down",
     "caret-left",
     "caret-right",
+    # Shopping
+    "bag",
+    "gift",
+    "package",
+    "percent",
+    "storefront",
+    "tag",
+    "truck",
+    "wallet",
+    # User
+    "user",
+    "sign-out",
+    "key",
+    "lock-simple",
+    # UI
     "check",
     "check-circle",
-    "clock",
     "copy",
     "eye",
-    "facebook-logo",
+    "funnel",
+    "list",
+    "magnifying-glass",
+    "minus",
+    "plus",
+    "squares-four",
+    "spinner",
+    "trash",
+    "x",
+    # Media
+    "image",
+    "play",
+    "video-camera",
+    # Content
+    "article",
     "file-text",
     "folder",
-    "funnel",
-    "gift",
-    "headset",
-    "house",
-    "image",
+    # Status
+    "warning",
+    "warning-circle",
+    "bell-ringing",
+    # Time
+    "calendar",
+    "clock",
+    # Social (existing)
+    "facebook-logo",
     "instagram-logo",
-    "key",
+    "linkedin-logo",
+    "pinterest-logo",
+    "tiktok-logo",
+    "x-logo",
+    "youtube-logo",
+    # Communication
+    "headset",
+    "paper-plane-tilt",
+    # Misc
     "fire",
     "heart",
+    "house",
     "leaf",
     "lightning",
     "link",
-    "linkedin-logo",
-    "list",
-    "lock-simple",
-    "magnifying-glass",
-    "minus",
-    "package",
-    "paper-plane-tilt",
-    "percent",
     "ruler",
-    "pinterest-logo",
-    "play",
-    "plus",
     "shield-check",
-    "sign-out",
     "sparkle",
-    "spinner",
-    "squares-four",
     "star",
-    "storefront",
-    "tag",
-    "tiktok-logo",
-    "trash",
-    "truck",
-    "user",
-    "video-camera",
-    "wallet",
-    "warning",
-    "warning-circle",
-    "x",
-    "x-logo",
-    "youtube-logo",
+
+    # === NEW ICONS (50) ===
+    # Navigation
+    "globe",
+    "map-pin",
+    "compass",
+    "navigation-arrow",
+    # Shopping (new)
+    "shopping-cart",
+    "credit-card",
+    "bank",
+    "receipt",
+    "barcode",
+    "qr-code",
+    "coin",
+    "money",
+    # Communication (new)
+    "envelope",
+    "phone",
+    "chat",
+    "chat-dots",
+    "whatsapp-logo",
+    # Content (new)
+    "quotes",
+    # Media (new)
+    "camera",
+    "music-note",
+    "pause",
+    "stop",
+    "microphone",
+    # Actions
+    "download",
+    "upload",
+    "share",
+    "bookmark",
+    "flag",
+    "bell",
+    "pencil",
+    # Status (new)
+    "info",
+    "question",
+    "hourglass",
+    "circle",
+    "prohibit",
+    # Fashion/Products
+    "t-shirt",
+    "dress",
+    "sneaker",
+    "handbag",
+    "watch",
+    "diamond",
+    # UI (new)
+    "sliders",
+    "gear",
+    "dots-three",
+    "dots-three-vertical",
+    "equals",
+    "sidebar",
+    # Misc (new)
+    "sun",
+    "moon",
+    "star-half",
+    "certificate",
+    "crown",
+    "globe-simple",
 ]
 
 # Get directory paths
