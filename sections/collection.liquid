@@ -69,7 +69,7 @@
 
     {% if section.settings.show_description and collection.description != blank %}
       {%- assign desc_text = collection.description | strip_html -%}
-      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ desc_text | escape }}">
+      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]"{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ desc_text | escape }}"{% endif %}>
         {{ desc_text }}
       </div>
     {% endif %}
@@ -78,12 +78,13 @@
   {% paginate collection.products by section.settings.products_per_page %}
 
     {%- comment -%} Filters and Sorting {%- endcomment -%}
-    {% if enable_filtering or enable_sorting %}
+    {% if enable_filtering or enable_sorting or section.settings.enable_layout_toggle %}
       <div class="{{ container_class }}">
         {% render 'facets',
           results: collection,
           enable_filtering: enable_filtering,
           enable_sorting: enable_sorting,
+          enable_layout_toggle: section.settings.enable_layout_toggle,
           section_id: section.id
         %}
       </div>
@@ -917,6 +918,13 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "enable_description_shuffle",
+      "label": "Enable description shuffle effect",
+      "default": true,
+      "info": "Animate description with text scramble effect on page load"
+    },
+    {
       "type": "select",
       "id": "layout_style",
       "label": "Layout style",
@@ -1017,6 +1025,13 @@
       "label": "Enable sorting",
       "default": true,
       "info": "Allow customers to sort products"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_layout_toggle",
+      "label": "Enable layout toggle",
+      "default": true,
+      "info": "Allow customers to switch between grid and list views"
     }
   ]
 }

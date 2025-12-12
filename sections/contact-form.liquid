@@ -9,10 +9,28 @@
     assign container_class = 'page-container'
   endif
 
-  assign heading = section.settings.heading | default: 'Contact'
+  assign heading = section.settings.title | default: 'Contact'
+
+  case section.settings.alignment
+    when 'center'
+      assign text_align = 'text-center'
+      assign form_align = 'mx-auto'
+    when 'right'
+      assign text_align = 'text-right'
+      assign form_align = 'ml-auto'
+    else
+      assign text_align = 'text-left'
+      assign form_align = ''
+  endcase
 -%}
 
 <style>
+  .contact-section-{{ section.id }} {
+    --section-bg: {{ section.settings.background_color }};
+    --section-text: {{ section.settings.text_color }};
+    background-color: var(--section-bg);
+    color: var(--section-text);
+  }
   .contact-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
   @media (min-width: 1024px) { .contact-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .contact-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
@@ -20,31 +38,39 @@
   .contact-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
   .contact-wrapper.is-loading [data-contact-title] { opacity: 0; }
   html.animations-disabled .contact-wrapper.is-loading [data-contact-title] { opacity: 1; }
-  .contact-wrapper.is-loading [data-contact-subheading] { opacity: 0; }
+  .contact-wrapper.is-loading [data-contact-label] { opacity: 0; transform: translateY(10px); }
+  .contact-wrapper.is-loading [data-contact-description] { opacity: 0; }
   .contact-wrapper.is-loading .contact-form-group { opacity: 0; transform: translateY(20px); }
   .contact-wrapper.is-loading .contact-form-submit { opacity: 0; transform: translateY(20px); }
-  html.animations-disabled .contact-wrapper.is-loading [data-contact-subheading],
+  html.animations-disabled .contact-wrapper.is-loading [data-contact-label],
+  html.animations-disabled .contact-wrapper.is-loading [data-contact-description],
   html.animations-disabled .contact-wrapper.is-loading .contact-form-group,
   html.animations-disabled .contact-wrapper.is-loading .contact-form-submit { opacity: 1; transform: none; }
   .contact-form-input { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
   .contact-form-input:focus { box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 79, 70, 229), 0.1); }
 </style>
 
-<section class="contact-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-contact-wrapper>
-  <header class="mb-12 lg:mb-16 {{ container_class }}">
-    <h1 class="contact-header-title font-bold text-[--color-text] font-heading" data-contact-title>
-      {{ heading }}
-    </h1>
+<section class="contact-section-{{ section.id }} contact-wrapper is-loading py-[--page-vertical-padding]" data-contact-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }} {{ text_align }}">
+    {% if section.settings.label != blank %}
+      <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-contact-label>{{ section.settings.label }}</span>
+    {% endif %}
 
-    {% if section.settings.subheading != blank %}
-      <p class="mt-8 max-w-[420px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-contact-subheading data-original-text="{{ section.settings.subheading | escape }}">
-        {{ section.settings.subheading }}
+    {% if heading != blank %}
+      <h1 class="contact-header-title font-bold font-heading" data-contact-title>
+        {{ heading }}
+      </h1>
+    {% endif %}
+
+    {% if section.settings.description != blank %}
+      <p class="mt-8 max-w-[420px] text-xs uppercase tracking-[0.05em] leading-relaxed opacity-70 {{ form_align }}" data-contact-description{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% endif %}>
+        {{ section.settings.description }}
       </p>
     {% endif %}
   </header>
 
   <div class="{{ container_class }}">
-    <div class="contact-form max-w-2xl">
+    <div class="contact-form max-w-2xl {{ form_align }}">
       {% form 'contact', id: 'ContactForm' %}
         {% if form.posted_successfully? %}
           <div class="mb-8 rounded-[--card-radius] bg-green-50 p-4">
@@ -143,8 +169,9 @@
   }
 
   function animateIntro() {
+    const label = wrapper.querySelector('[data-contact-label]');
     const title = wrapper.querySelector('[data-contact-title]');
-    const subheading = wrapper.querySelector('[data-contact-subheading]');
+    const description = wrapper.querySelector('[data-contact-description]');
     const formGroups = wrapper.querySelectorAll('.contact-form-group');
     const submitBtn = wrapper.querySelector('.contact-form-submit');
 
@@ -168,6 +195,16 @@
 
     const tl = gsap.timeline();
 
+    // Animate label
+    if (label) {
+      tl.to(label, {
+        y: 0,
+        opacity: 1,
+        duration: 0.6,
+        ease: 'power2.out'
+      }, 0);
+    }
+
     // Split title into lines and animate
     if (title) {
       const split = new SplitText(title, { type: 'lines', linesClass: 'contact-header-title-line' });
@@ -190,42 +227,53 @@
       }, 0);
     }
 
-    // Subheading with shuffle text effect
-    if (subheading) {
-      const originalText = subheading.dataset.originalText || subheading.textContent.trim();
-      const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    // Description animation - with optional shuffle text effect
+    if (description) {
+      const shouldShuffle = description.hasAttribute('data-shuffle-text');
 
-      // Lock height before animation
-      const initialHeight = subheading.offsetHeight;
-      subheading.style.height = initialHeight + 'px';
+      if (shouldShuffle) {
+        const originalText = description.dataset.originalText || description.textContent.trim();
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
 
-      // Start scrambled
-      subheading.textContent = originalText.split('').map(char =>
-        char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
-      ).join('');
+        // Lock height before animation
+        const initialHeight = description.offsetHeight;
+        description.style.height = initialHeight + 'px';
 
-      tl.to(subheading, {
-        opacity: 1,
-        duration: 0.4,
-        ease: 'power2.out'
-      }, 0.5);
+        // Start scrambled
+        description.textContent = originalText.split('').map(char =>
+          char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+        ).join('');
 
-      tl.to({}, {
-        duration: 0.8,
-        onUpdate: function() {
-          const progress = this.progress();
-          const revealedCount = Math.floor(progress * originalText.length);
-          subheading.textContent = originalText.split('').map((char, i) => {
-            if (char === ' ') return ' ';
-            if (i < revealedCount) return char;
-            return chars[Math.floor(Math.random() * chars.length)];
-          }).join('');
-        },
-        onComplete: () => {
-          subheading.textContent = originalText;
-          subheading.style.height = '';
-        }
-      }, 0.6);
+        tl.to(description, {
+          opacity: 1,
+          duration: 0.4,
+          ease: 'power2.out'
+        }, 0.5);
+
+        tl.to({}, {
+          duration: 0.8,
+          onUpdate: function() {
+            const progress = this.progress();
+            const revealedCount = Math.floor(progress * originalText.length);
+            description.textContent = originalText.split('').map((char, i) => {
+              if (char === ' ') return ' ';
+              if (i < revealedCount) return char;
+              return chars[Math.floor(Math.random() * chars.length)];
+            }).join('');
+          },
+          onComplete: () => {
+            description.textContent = originalText;
+            description.style.height = '';
+          }
+        }, 0.6);
+      } else {
+        // Simple fade in without shuffle
+        tl.to(description, {
+          opacity: 1,
+          duration: 0.6,
+          ease: 'power2.out'
+        }, 0.5);
+      }
     }
 
     // Form groups stagger in
@@ -274,21 +322,60 @@
   "settings": [
     {
       "type": "text",
-      "id": "heading",
-      "label": "Heading",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
       "default": "Contact"
     },
     {
       "type": "textarea",
-      "id": "subheading",
-      "label": "Subheading",
+      "id": "description",
+      "label": "Description",
       "default": "Have a question or want to work together? Drop us a message and we'll get back to you as soon as possible."
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_description_shuffle",
+      "label": "Enable description shuffle effect",
+      "default": true,
+      "info": "Animate description with text scramble effect on page load"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "checkbox",
       "id": "full_width",
       "default": false,
       "label": "Full width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     }
   ],
   "presets": [

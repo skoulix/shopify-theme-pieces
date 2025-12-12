@@ -5,6 +5,7 @@
   - results: {Object} Collection or Search results object
   - enable_filtering: {Boolean} Enable filter functionality
   - enable_sorting: {Boolean} Enable sort functionality
+  - enable_layout_toggle: {Boolean} Enable grid/list view toggle
   - section_id: {String} Section ID for form targeting
 {%- endcomment -%}
 
@@ -59,26 +60,28 @@
       </div>
 
       {%- comment -%} View Toggle {%- endcomment -%}
-      <div class="facets-view-toggle hidden md:flex items-center border border-[--color-border] rounded-[--input-radius] overflow-hidden">
-        <button
-          type="button"
-          class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors is-active"
-          data-view-toggle="grid"
-          aria-label="{{ 'accessibility.grid_view' | t }}"
-          aria-pressed="true"
-        >
-          <i class="ph ph-squares-four text-base"></i>
-        </button>
-        <button
-          type="button"
-          class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors"
-          data-view-toggle="list"
-          aria-label="{{ 'accessibility.list_view' | t }}"
-          aria-pressed="false"
-        >
-          <i class="ph ph-list text-base"></i>
-        </button>
-      </div>
+      {% if enable_layout_toggle %}
+        <div class="facets-view-toggle hidden md:flex items-center border border-[--color-border] rounded-[--input-radius] overflow-hidden">
+          <button
+            type="button"
+            class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors is-active"
+            data-view-toggle="grid"
+            aria-label="{{ 'accessibility.grid_view' | t }}"
+            aria-pressed="true"
+          >
+            <i class="ph ph-squares-four text-base"></i>
+          </button>
+          <button
+            type="button"
+            class="facets-view-btn w-10 h-10 flex items-center justify-center transition-colors"
+            data-view-toggle="list"
+            aria-label="{{ 'accessibility.list_view' | t }}"
+            aria-pressed="false"
+          >
+            <i class="ph ph-list text-base"></i>
+          </button>
+        </div>
+      {% endif %}
     </div>
   </div>
 
