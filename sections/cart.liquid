@@ -119,6 +119,11 @@
                             {% elsif has_discount %}
                               <p class="text-sm text-[--color-text-secondary] line-through">{{ item.original_line_price | money }}</p>
                             {% endif %}
+                            {%- if item.unit_price_measurement -%}
+                              <p class="text-xs text-[--color-text-secondary] mt-1">
+                                {{ item.unit_price | money }}/{{ item.unit_price_measurement.reference_value }}{{ item.unit_price_measurement.reference_unit }}
+                              </p>
+                            {%- endif -%}
                           </div>
                         </div>
                       </div>

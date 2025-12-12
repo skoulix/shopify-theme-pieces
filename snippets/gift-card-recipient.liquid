@@ -1,0 +1,137 @@
+{%- comment -%}
+  Gift Card Recipient Form
+  Shows recipient fields when adding a gift card product to cart
+  Required for Shopify Theme Store submission
+
+  Usage: {% render 'gift-card-recipient', product: product, form: form %}
+{%- endcomment -%}
+
+{%- if product.gift_card? -%}
+  <div class="gift-card-recipient mt-6" data-gift-card-recipient>
+    <div class="flex items-center gap-3 mb-4">
+      <input
+        type="checkbox"
+        id="gift-card-recipient-checkbox-{{ section.id }}"
+        name="properties[__shopify_send_gift_card_to_recipient]"
+        class="w-5 h-5 accent-[--color-primary] cursor-pointer"
+        data-gift-card-recipient-checkbox
+      >
+      <label for="gift-card-recipient-checkbox-{{ section.id }}" class="text-sm font-medium cursor-pointer">
+        {{ 'gift_card.recipient.checkbox_label' | t }}
+      </label>
+    </div>
+
+    <div class="gift-card-recipient__fields space-y-4 hidden" data-gift-card-recipient-fields>
+      <p class="text-sm text-[--color-text-secondary]">
+        {{ 'gift_card.recipient.description' | t }}
+      </p>
+
+      <div class="gift-card-recipient__field">
+        <label for="gift-card-recipient-email-{{ section.id }}" class="block text-sm font-medium mb-2">
+          {{ 'gift_card.recipient.email_label' | t }} <span class="text-red-500">*</span>
+        </label>
+        <input
+          type="email"
+          id="gift-card-recipient-email-{{ section.id }}"
+          name="properties[Recipient email]"
+          class="w-full px-4 py-3 bg-transparent border border-[--color-border] rounded-[--input-radius] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+          placeholder="{{ 'gift_card.recipient.email_placeholder' | t }}"
+          data-gift-card-recipient-email
+        >
+      </div>
+
+      <div class="gift-card-recipient__field">
+        <label for="gift-card-recipient-name-{{ section.id }}" class="block text-sm font-medium mb-2">
+          {{ 'gift_card.recipient.name_label' | t }}
+        </label>
+        <input
+          type="text"
+          id="gift-card-recipient-name-{{ section.id }}"
+          name="properties[Recipient name]"
+          class="w-full px-4 py-3 bg-transparent border border-[--color-border] rounded-[--input-radius] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+          placeholder="{{ 'gift_card.recipient.name_placeholder' | t }}"
+          data-gift-card-recipient-name
+        >
+      </div>
+
+      <div class="gift-card-recipient__field">
+        <label for="gift-card-recipient-message-{{ section.id }}" class="block text-sm font-medium mb-2">
+          {{ 'gift_card.recipient.message_label' | t }}
+        </label>
+        <textarea
+          id="gift-card-recipient-message-{{ section.id }}"
+          name="properties[Message]"
+          rows="3"
+          maxlength="200"
+          class="w-full px-4 py-3 bg-transparent border border-[--color-border] rounded-[--input-radius] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors resize-none"
+          placeholder="{{ 'gift_card.recipient.message_placeholder' | t }}"
+          data-gift-card-recipient-message
+        ></textarea>
+        <p class="text-xs text-[--color-text-secondary] mt-1">{{ 'gift_card.recipient.max_characters' | t: max: 200 }}</p>
+      </div>
+
+      <div class="gift-card-recipient__field">
+        <label for="gift-card-recipient-send-on-{{ section.id }}" class="block text-sm font-medium mb-2">
+          {{ 'gift_card.recipient.send_on_label' | t }}
+        </label>
+        <input
+          type="date"
+          id="gift-card-recipient-send-on-{{ section.id }}"
+          name="properties[Send on]"
+          class="w-full px-4 py-3 bg-transparent border border-[--color-border] rounded-[--input-radius] text-[--color-text] focus:outline-none focus:border-[--color-primary] transition-colors"
+          data-gift-card-recipient-send-on
+        >
+        <p class="text-xs text-[--color-text-secondary] mt-1">{{ 'gift_card.recipient.send_on_info' | t }}</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+  (function() {
+    const container = document.querySelector('[data-gift-card-recipient]');
+    if (!container) return;
+
+    const checkbox = container.querySelector('[data-gift-card-recipient-checkbox]');
+    const fields = container.querySelector('[data-gift-card-recipient-fields]');
+    const emailInput = container.querySelector('[data-gift-card-recipient-email]');
+    const form = container.closest('form');
+
+    checkbox.addEventListener('change', function() {
+      if (this.checked) {
+        fields.classList.remove('hidden');
+        emailInput.required = true;
+      } else {
+        fields.classList.add('hidden');
+        emailInput.required = false;
+        // Clear all fields when unchecked
+        container.querySelectorAll('input:not([type="checkbox"]), textarea').forEach(input => {
+          input.value = '';
+        });
+      }
+    });
+
+    // Set minimum date to today
+    const sendOnInput = container.querySelector('[data-gift-card-recipient-send-on]');
+    if (sendOnInput) {
+      const today = new Date().toISOString().split('T')[0];
+      sendOnInput.min = today;
+    }
+
+    // Validation
+    if (form) {
+      form.addEventListener('submit', function(e) {
+        if (checkbox.checked && !emailInput.value.trim()) {
+          e.preventDefault();
+          emailInput.focus();
+          emailInput.classList.add('border-red-500');
+          return false;
+        }
+      });
+
+      emailInput.addEventListener('input', function() {
+        this.classList.remove('border-red-500');
+      });
+    }
+  })();
+  </script>
+{%- endif -%}

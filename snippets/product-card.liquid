@@ -54,8 +54,11 @@
         </div>
       {% endif %}
       {% if product.featured_image %}
+        {%- assign focal_point = product.featured_image.presentation.focal_point | default: '50% 50%' -%}
+        {%- assign focal_point_style = 'object-position: ' | append: focal_point -%}
         {{ product.featured_image | image_url: width: 1200 | image_tag:
           class: 'w-full h-full object-cover transition-transform duration-500 group-hover:scale-105',
+          style: focal_point_style,
           loading: 'lazy',
           decoding: 'async',
           sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
@@ -64,8 +67,11 @@
         }}
         {%- comment -%} Secondary image on hover {%- endcomment -%}
         {% if product.images.size > 1 %}
+          {%- assign secondary_focal_point = product.images[1].presentation.focal_point | default: '50% 50%' -%}
+          {%- assign secondary_focal_point_style = 'object-position: ' | append: secondary_focal_point -%}
           {{ product.images[1] | image_url: width: 1200 | image_tag:
             class: 'absolute inset-0 w-full h-full object-cover opacity-0 transition-opacity duration-500 group-hover:opacity-100',
+            style: secondary_focal_point_style,
             loading: 'lazy',
             decoding: 'async',
             sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
@@ -116,6 +122,12 @@
         {% else %}
           <span class="overflow-hidden inline-block"><span class="inline-block">{{ product.price | money }}</span></span>
         {% endif %}
+        {%- if product.selected_or_first_available_variant.unit_price_measurement -%}
+          <div class="unit-price text-xs opacity-70 mt-1">
+            <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
+            {{ product.selected_or_first_available_variant.unit_price | money }}/{{ product.selected_or_first_available_variant.unit_price_measurement.reference_value }}{{ product.selected_or_first_available_variant.unit_price_measurement.reference_unit }}
+          </div>
+        {%- endif -%}
       </div>
     </div>
   </a>

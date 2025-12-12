@@ -60,6 +60,13 @@
                   <p class="text-xs text-[--color-text-secondary] m-0">{{ item.variant.title }}</p>
                 {% endunless %}
 
+                {%- comment -%} Selling Plan - subscription info {%- endcomment -%}
+                {% if item.selling_plan_allocation %}
+                  <p class="text-xs text-[--color-primary] m-0">
+                    {{ item.selling_plan_allocation.selling_plan.name }}
+                  </p>
+                {% endif %}
+
                 <div class="text-sm font-medium mt-1">
                   {%- liquid
                     assign has_compare_at = false
@@ -81,6 +88,14 @@
                     {{ item.final_line_price | money }}
                   </span>
                 </div>
+
+                {%- comment -%} Unit Price {%- endcomment -%}
+                {%- if item.unit_price_measurement -%}
+                  <div class="text-xs text-[--color-text-secondary]">
+                    <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
+                    {{ item.unit_price | money }}/{{ item.unit_price_measurement.reference_value }}{{ item.unit_price_measurement.reference_unit }}
+                  </div>
+                {%- endif -%}
 
                 <div class="flex items-center gap-3 mt-auto pt-2">
                   <div class="inline-flex items-center rounded-[--input-radius] border border-[--color-border] overflow-hidden" data-quantity-wrapper>

@@ -1,0 +1,54 @@
+{%- comment -%}
+  Pickup Availability Section
+  This section is fetched via AJAX to get pickup availability for a variant
+{%- endcomment -%}
+
+{%- assign pick_up_availabilities = product.selected_or_first_available_variant.store_availabilities | where: 'pick_up_enabled', true -%}
+
+<pickup-availability
+  class="block"
+  {% if pick_up_availabilities.size > 0 %}available{% endif %}
+>
+  {%- if pick_up_availabilities.size > 0 -%}
+    <div class="pickup-availability-list space-y-4">
+      {%- for availability in pick_up_availabilities -%}
+        <div class="pickup-availability-item p-4 border border-[--color-border] rounded-[--card-radius]">
+          <div class="flex items-start gap-3">
+            <div class="flex-shrink-0 mt-0.5">
+              {%- if availability.available -%}
+                <i class="ph ph-check-circle text-xl text-green-600"></i>
+              {%- else -%}
+                <i class="ph ph-x-circle text-xl text-red-600"></i>
+              {%- endif -%}
+            </div>
+            <div class="flex-1">
+              <p class="font-medium text-sm">
+                {%- if availability.available -%}
+                  {{ 'products.pickup_availability.pick_up_available' | t }}, {{ availability.pick_up_time }}
+                {%- else -%}
+                  {{ 'products.pickup_availability.pick_up_unavailable' | t }}
+                {%- endif -%}
+              </p>
+              <p class="text-sm font-semibold mt-1">{{ availability.location.name }}</p>
+              <address class="text-sm text-[--color-text-secondary] mt-1 not-italic">
+                {{ availability.location.address.address1 }}<br>
+                {%- if availability.location.address.address2 != blank -%}
+                  {{ availability.location.address.address2 }}<br>
+                {%- endif -%}
+                {{ availability.location.address.city }}, {{ availability.location.address.province_code }} {{ availability.location.address.zip }}
+              </address>
+            </div>
+          </div>
+        </div>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+</pickup-availability>
+
+{% schema %}
+{
+  "name": "Pickup availability",
+  "class": "pickup-availability-section",
+  "settings": []
+}
+{% endschema %}

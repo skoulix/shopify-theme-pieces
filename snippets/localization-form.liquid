@@ -1,0 +1,192 @@
+{%- comment -%}
+  Localization Form - Country and Language Selector
+  Required for Shopify Theme Store submission
+  Supports multi-currency and multi-language stores
+{%- endcomment -%}
+
+{%- liquid
+  assign show_country = show_country | default: true
+  assign show_language = show_language | default: true
+-%}
+
+<div class="localization-form flex flex-wrap items-center gap-4" style="color: inherit;">
+  {%- if show_country and localization.available_countries.size > 1 -%}
+    <div class="localization-form__country relative">
+      {%- form 'localization', id: 'country-form', class: 'localization-form__form' -%}
+        <div class="relative">
+          <button
+            type="button"
+            class="localization-form__button flex items-center gap-2 text-sm hover:opacity-70 transition-opacity"
+            style="color: inherit;"
+            aria-expanded="false"
+            aria-controls="country-list"
+            data-localization-trigger="country"
+          >
+            <span class="localization-form__currency">{{ localization.country.currency.iso_code }}</span>
+            <span class="localization-form__country-name">{{ localization.country.name }}</span>
+            <i class="ph ph-caret-down text-xs transition-transform duration-200" data-caret></i>
+          </button>
+
+          <div
+            id="country-list"
+            class="localization-form__dropdown absolute bottom-full left-0 mb-2 min-w-[200px] max-h-[300px] overflow-y-auto bg-[--color-background] text-[--color-text] border border-[--color-border] rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
+            data-localization-panel="country"
+          >
+            <ul class="py-2" role="listbox" aria-label="{{ 'localization.country_label' | t }}">
+              {%- for country in localization.available_countries -%}
+                <li>
+                  <button
+                    type="button"
+                    class="w-full px-4 py-2 text-left text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors flex items-center justify-between gap-4{% if country.iso_code == localization.country.iso_code %} font-semibold{% endif %}"
+                    data-country-code="{{ country.iso_code }}"
+                    role="option"
+                    aria-selected="{% if country.iso_code == localization.country.iso_code %}true{% else %}false{% endif %}"
+                  >
+                    <span>{{ country.name }}</span>
+                    <span class="text-[--color-text-secondary]">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
+                  </button>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <input type="hidden" name="country_code" value="{{ localization.country.iso_code }}" data-country-input>
+        </div>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+
+  {%- if show_language and localization.available_languages.size > 1 -%}
+    <div class="localization-form__language relative">
+      {%- form 'localization', id: 'language-form', class: 'localization-form__form' -%}
+        <div class="relative">
+          <button
+            type="button"
+            class="localization-form__button flex items-center gap-2 text-sm hover:opacity-70 transition-opacity"
+            style="color: inherit;"
+            aria-expanded="false"
+            aria-controls="language-list"
+            data-localization-trigger="language"
+          >
+            <span class="localization-form__language-name">{{ localization.language.endonym_name | capitalize }}</span>
+            <i class="ph ph-caret-down text-xs transition-transform duration-200" data-caret></i>
+          </button>
+
+          <div
+            id="language-list"
+            class="localization-form__dropdown absolute bottom-full left-0 mb-2 min-w-[160px] max-h-[300px] overflow-y-auto bg-[--color-background] text-[--color-text] border border-[--color-border] rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
+            data-localization-panel="language"
+          >
+            <ul class="py-2" role="listbox" aria-label="{{ 'localization.language_label' | t }}">
+              {%- for language in localization.available_languages -%}
+                <li>
+                  <button
+                    type="button"
+                    class="w-full px-4 py-2 text-left text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors{% if language.iso_code == localization.language.iso_code %} font-semibold{% endif %}"
+                    data-language-code="{{ language.iso_code }}"
+                    hreflang="{{ language.iso_code }}"
+                    role="option"
+                    aria-selected="{% if language.iso_code == localization.language.iso_code %}true{% else %}false{% endif %}"
+                  >
+                    {{ language.endonym_name | capitalize }}
+                  </button>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+
+          <input type="hidden" name="locale_code" value="{{ localization.language.iso_code }}" data-language-input>
+        </div>
+      {%- endform -%}
+    </div>
+  {%- endif -%}
+</div>
+
+<script>
+(function() {
+  const localizationForms = document.querySelectorAll('.localization-form');
+  if (!localizationForms.length) return;
+
+  localizationForms.forEach(form => {
+    if (form.dataset.initialized) return;
+    form.dataset.initialized = 'true';
+
+    // Country selector
+    const countryTrigger = form.querySelector('[data-localization-trigger="country"]');
+    const countryPanel = form.querySelector('[data-localization-panel="country"]');
+    const countryInput = form.querySelector('[data-country-input]');
+    const countryForm = form.querySelector('#country-form');
+
+    // Language selector
+    const languageTrigger = form.querySelector('[data-localization-trigger="language"]');
+    const languagePanel = form.querySelector('[data-localization-panel="language"]');
+    const languageInput = form.querySelector('[data-language-input]');
+    const languageForm = form.querySelector('#language-form');
+
+    function openPanel(trigger, panel) {
+      trigger.setAttribute('aria-expanded', 'true');
+      panel.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+      panel.classList.add('opacity-100', 'visible', 'translate-y-0');
+      const caret = trigger.querySelector('[data-caret]');
+      if (caret) caret.style.transform = 'rotate(180deg)';
+    }
+
+    function closePanel(trigger, panel) {
+      trigger.setAttribute('aria-expanded', 'false');
+      panel.classList.add('opacity-0', 'invisible', 'translate-y-2');
+      panel.classList.remove('opacity-100', 'visible', 'translate-y-0');
+      const caret = trigger.querySelector('[data-caret]');
+      if (caret) caret.style.transform = '';
+    }
+
+    function closeAllPanels() {
+      if (countryTrigger && countryPanel) closePanel(countryTrigger, countryPanel);
+      if (languageTrigger && languagePanel) closePanel(languageTrigger, languagePanel);
+    }
+
+    // Country toggle
+    if (countryTrigger && countryPanel) {
+      countryTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = countryTrigger.getAttribute('aria-expanded') === 'true';
+        closeAllPanels();
+        if (!isOpen) openPanel(countryTrigger, countryPanel);
+      });
+
+      // Country selection
+      countryPanel.querySelectorAll('[data-country-code]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          countryInput.value = btn.dataset.countryCode;
+          countryForm.submit();
+        });
+      });
+    }
+
+    // Language toggle
+    if (languageTrigger && languagePanel) {
+      languageTrigger.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const isOpen = languageTrigger.getAttribute('aria-expanded') === 'true';
+        closeAllPanels();
+        if (!isOpen) openPanel(languageTrigger, languagePanel);
+      });
+
+      // Language selection
+      languagePanel.querySelectorAll('[data-language-code]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          languageInput.value = btn.dataset.languageCode;
+          languageForm.submit();
+        });
+      });
+    }
+
+    // Close on outside click
+    document.addEventListener('click', closeAllPanels);
+
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') closeAllPanels();
+    });
+  });
+})();
+</script>

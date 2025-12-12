@@ -1,4 +1,8 @@
 {
+  "localization": {
+    "country_label": "Pays/région",
+    "language_label": "Langue"
+  },
   "newsletter": {
     "label": "E-mail",
     "button_label": "S'abonner",
@@ -235,6 +239,14 @@
       "success_message": "Vous serez le premier informé de son retour.",
       "error_title": "Une erreur s'est produite",
       "error_message": "Veuillez réessayer plus tard ou nous contacter pour obtenir de l'aide."
+    },
+    "pickup_availability": {
+      "pickup_available": "Retrait disponible",
+      "pickup_options": "Options de retrait",
+      "pick_up_available": "Retrait disponible",
+      "pick_up_unavailable": "Retrait non disponible",
+      "view_store_info": "Voir les informations du magasin",
+      "unavailable": "Aucun point de retrait disponible"
     }
   },
   "customers": {
@@ -364,7 +376,20 @@
     "use_at_checkout": "Utilisez ce code lors du paiement pour utiliser votre carte cadeau",
     "copy_code": "Copier le code",
     "copied": "Copié !",
-    "print_hint": "Imprimez cette page ou enregistrez une capture d'écran pour vos dossiers"
+    "print_hint": "Imprimez cette page ou enregistrez une capture d'écran pour vos dossiers",
+    "recipient": {
+      "checkbox_label": "Envoyer en cadeau",
+      "description": "Le destinataire recevra un e-mail avec le code de la carte cadeau et votre message.",
+      "email_label": "E-mail du destinataire",
+      "email_placeholder": "Entrez l'e-mail du destinataire",
+      "name_label": "Nom du destinataire (facultatif)",
+      "name_placeholder": "Entrez le nom du destinataire",
+      "message_label": "Message (facultatif)",
+      "message_placeholder": "Écrivez un message personnel...",
+      "max_characters": "{{ max }} caractères max",
+      "send_on_label": "Envoyer le (facultatif)",
+      "send_on_info": "Laissez vide pour envoyer immédiatement"
+    }
   },
   "password": {
     "title": "Ouverture prochaine",
@@ -381,6 +406,9 @@
     "title": "Recherche",
     "placeholder": "Rechercher...",
     "submit": "Rechercher",
+    "clear": "Effacer",
+    "loading": "Chargement...",
+    "view_all": "Voir tous les résultats pour",
     "no_results_html": "Aucun résultat trouvé pour « {{ terms }} »",
     "results_for_html": "{{ count }} résultats pour « {{ terms }} »",
     "no_results_description": "Vérifiez l'orthographe ou essayez d'autres mots-clés",

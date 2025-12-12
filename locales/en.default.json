@@ -1,4 +1,8 @@
 {
+  "localization": {
+    "country_label": "Country/region",
+    "language_label": "Language"
+  },
   "newsletter": {
     "label": "Email",
     "button_label": "Subscribe",
@@ -235,6 +239,14 @@
       "success_message": "You'll be the first to know when it's back.",
       "error_title": "Something went wrong",
       "error_message": "Please try again later or contact us for assistance."
+    },
+    "pickup_availability": {
+      "pickup_available": "Pickup available",
+      "pickup_options": "Pickup options",
+      "pick_up_available": "Pickup available",
+      "pick_up_unavailable": "Pickup not available",
+      "view_store_info": "View store information",
+      "unavailable": "No pickup locations available"
     }
   },
   "customers": {
@@ -364,7 +376,20 @@
     "use_at_checkout": "Use this code at checkout to redeem your gift card",
     "copy_code": "Copy Code",
     "copied": "Copied!",
-    "print_hint": "Print this page or save a screenshot for your records"
+    "print_hint": "Print this page or save a screenshot for your records",
+    "recipient": {
+      "checkbox_label": "Send as a gift",
+      "description": "The recipient will receive an email with the gift card code and your message.",
+      "email_label": "Recipient email",
+      "email_placeholder": "Enter recipient's email",
+      "name_label": "Recipient name (optional)",
+      "name_placeholder": "Enter recipient's name",
+      "message_label": "Message (optional)",
+      "message_placeholder": "Write a personal message...",
+      "max_characters": "{{ max }} characters max",
+      "send_on_label": "Send on (optional)",
+      "send_on_info": "Leave blank to send immediately"
+    }
   },
   "password": {
     "title": "Opening Soon",
@@ -381,6 +406,9 @@
     "title": "Search",
     "placeholder": "Search...",
     "submit": "Search",
+    "clear": "Clear",
+    "loading": "Loading...",
+    "view_all": "View all results for",
     "no_results_html": "No results found for \"{{ terms }}\"",
     "results_for_html": "{{ count }} results for \"{{ terms }}\"",
     "no_results_description": "Try checking your spelling or using different keywords",

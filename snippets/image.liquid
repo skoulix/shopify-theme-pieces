@@ -23,12 +23,20 @@
   assign sizes = sizes | default: '(max-width: 768px) 100vw, 50vw'
   assign widths = widths | default: '400, 600, 800, 1200'
   assign link_label = link_label | default: alt
+
+  comment
+    Focal point support - gets the focal point from image presentation settings
+    Format is "X% Y%" which maps directly to CSS object-position
+  endcomment
+  assign focal_point = image.presentation.focal_point | default: '50% 50%'
+  assign focal_point_style = 'object-position: ' | append: focal_point
 -%}
 
 {%- if url -%}
   <a href="{{ url }}" class="block {{ class }}"{% if link_label != blank %} aria-label="{{ link_label }}"{% endif %}>
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
       class: 'w-full h-auto object-cover',
+      style: focal_point_style,
       loading: loading,
       sizes: sizes,
       widths: widths,
@@ -39,6 +47,7 @@
   <div class="{{ class }}">
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
       class: 'w-full h-auto object-cover',
+      style: focal_point_style,
       loading: loading,
       sizes: sizes,
       widths: widths,

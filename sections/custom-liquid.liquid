@@ -1,0 +1,46 @@
+{%- comment -%}
+  Custom Liquid Section
+  Allows merchants to add custom Liquid code anywhere in their theme
+  Required for Shopify Theme Store submission
+{%- endcomment -%}
+
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
+<div class="custom-liquid-section py-[--section-vertical-padding]">
+  <div class="{{ container_class }}">
+    {{ section.settings.liquid }}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Custom Liquid",
+  "tag": "section",
+  "class": "section-custom-liquid",
+  "settings": [
+    {
+      "type": "liquid",
+      "id": "liquid",
+      "label": "Liquid",
+      "info": "Add custom Liquid code. [Learn more](https://shopify.dev/docs/api/liquid)"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "Custom Liquid"
+    }
+  ]
+}
+{% endschema %}

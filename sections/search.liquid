@@ -63,26 +63,10 @@
     {% endif %}
   </header>
 
-  {%- comment -%} Search Form {%- endcomment -%}
+  {%- comment -%} Search Form with Predictive Search {%- endcomment -%}
   <div class="{{ container_class }}">
     <div class="search-form-wrapper max-w-2xl">
-      <form action="{{ routes.search_url }}" method="get" role="search" class="search-input-container">
-        <input type="hidden" name="type" value="product,article,page">
-        <label for="Search-input" class="sr-only">{{ 'search.placeholder' | t }}</label>
-        <input
-          type="search"
-          id="Search-input"
-          name="q"
-          value="{{ search.terms | escape }}"
-          placeholder="{{ 'search.placeholder' | t }}"
-          class="search-input"
-          autocomplete="off"
-          data-search-input
-        >
-        <button type="submit" class="search-submit" aria-label="{{ 'search.submit' | t }}">
-          <i class="ph ph-magnifying-glass text-xl"></i>
-        </button>
-      </form>
+      {%- render 'predictive-search' -%}
 
       {%- comment -%} Search Type Filters - Only show when there are results {%- endcomment -%}
       {% if search.performed and search.results_count > 0 %}

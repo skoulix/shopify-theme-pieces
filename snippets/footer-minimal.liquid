@@ -112,6 +112,18 @@
       {% when 'spacer' %}
         <div class="footer-block" style="height: {{ block.settings.height }}px;" {{ block.shopify_attributes }}></div>
 
+      {% when 'localization' %}
+        <div class="footer-block flex justify-center" {{ block.shopify_attributes }}>
+          {%- render 'localization-form', show_country: block.settings.show_country, show_language: block.settings.show_language -%}
+        </div>
+
+      {% when 'follow_on_shop' %}
+        <div class="footer-block flex justify-center" {{ block.shopify_attributes }}>
+          {%- if shop.features.follow_on_shop? -%}
+            {{ shop | login_button: action: 'follow' }}
+          {%- endif -%}
+        </div>
+
     {% endcase %}
   {% endfor %}
 </div>

@@ -200,7 +200,7 @@
       "id": "text_color",
       "default": "#000000",
       "label": "Text color"
-    },
+    }
   ],
   "blocks": [
     {
@@ -339,6 +339,38 @@
           "unit": "px",
           "label": "Height",
           "default": 40
+        }
+      ]
+    },
+    {
+      "type": "localization",
+      "name": "Country/Language selector",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_country",
+          "label": "Show country selector",
+          "default": true,
+          "info": "Allows customers to change their currency"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_language",
+          "label": "Show language selector",
+          "default": true,
+          "info": "Allows customers to change their language"
+        }
+      ]
+    },
+    {
+      "type": "follow_on_shop",
+      "name": "Follow on Shop",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Allow customers to follow your shop on the Shop app. [Learn more](https://help.shopify.com/manual/online-store/themes/customizing-themes/follow-on-shop)"
         }
       ]
     }

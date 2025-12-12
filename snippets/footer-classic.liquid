@@ -171,6 +171,18 @@
           <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
           <i class="ph ph-arrow-up"></i>
         </button>
+
+      {%- when 'localization' -%}
+        <div {{ block.shopify_attributes }}>
+          {%- render 'localization-form', show_country: block.settings.show_country, show_language: block.settings.show_language -%}
+        </div>
+
+      {%- when 'follow_on_shop' -%}
+        <div {{ block.shopify_attributes }}>
+          {%- if shop.features.follow_on_shop? -%}
+            {{ shop | login_button: action: 'follow' }}
+          {%- endif -%}
+        </div>
     {%- endcase -%}
   {%- endfor -%}
 </div>

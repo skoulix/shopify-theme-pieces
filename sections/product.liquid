@@ -204,6 +204,12 @@
                 <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
               {% endif %}
               <span data-product-price>{{ current_variant.price | money }}</span>
+              {%- if current_variant.unit_price_measurement -%}
+                <div class="unit-price text-sm text-[--color-text-secondary] mt-1" data-unit-price>
+                  <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
+                  <span data-unit-price-value>{{ current_variant.unit_price | money }}</span>/<span data-unit-price-unit>{{ current_variant.unit_price_measurement.reference_value }}{{ current_variant.unit_price_measurement.reference_unit }}</span>
+                </div>
+              {%- endif -%}
             </div>
 
           {%- when 'description' -%}
@@ -261,6 +267,9 @@
                   <input type="hidden" name="id" value="{{ current_variant.id }}">
                 {% endunless %}
 
+                {%- comment -%} Gift Card Recipient - Required for Theme Store {%- endcomment -%}
+                {%- render 'gift-card-recipient', product: product, form: form, section: section -%}
+
                 <button type="submit" class="btn btn--primary btn--full product-add-btn" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %}>
                   <span class="product-add-btn-text">
                     {% if current_variant.available %}
@@ -277,7 +286,15 @@
                     {{ form | payment_button }}
                   </div>
                 {% endif %}
+
+                {%- comment -%} Shop Pay Installments - Required for Theme Store {%- endcomment -%}
+                {{ form | payment_terms }}
               {% endform %}
+            </div>
+
+          {%- when 'pickup_availability' -%}
+            <div data-intro {{ block.shopify_attributes }}>
+              {%- render 'pickup-availability', product: product -%}
             </div>
 
           {%- when 'text' -%}
@@ -298,17 +315,20 @@
             </details>
 
           {%- when 'size_chart' -%}
-            {%- comment -%} Size chart link and modal {%- endcomment -%}
+            {%- comment -%} Size chart link and modal - excluded from gift cards {%- endcomment -%}
             {%- liquid
               assign has_size_option = false
-              for option in product.options
-                assign option_downcase = option | downcase
-                if option_downcase contains 'size' or option_downcase contains 'taille'
-                  assign has_size_option = true
-                  break
-                endif
-              endfor
+              unless product.gift_card?
+                for option in product.options
+                  assign option_downcase = option | downcase
+                  if option_downcase contains 'size' or option_downcase contains 'taille'
+                    assign has_size_option = true
+                    break
+                  endif
+                endfor
+              endunless
             -%}
+            {% unless product.gift_card? %}
             {% if has_size_option or block.settings.show_always %}
               {%- liquid
                 assign link_text = block.settings.link_text
@@ -355,6 +375,7 @@
                 })();
               </script>
             {% endif %}
+            {% endunless %}
 
           {%- when 'back_in_stock' -%}
             {%- comment -%} Back in stock notification form {%- endcomment -%}
@@ -1080,6 +1101,12 @@
           "default": true
         }
       ]
+    },
+    {
+      "type": "pickup_availability",
+      "name": "Pickup availability",
+      "limit": 1,
+      "settings": []
     },
     {
       "type": "text",

@@ -197,6 +197,11 @@
                     <br>
                   {% endif %}
                   {{ line_item.final_line_price | money }}
+                  {%- if line_item.unit_price_measurement -%}
+                    <p class="text-xs text-[--color-text-secondary] mt-1">
+                      {{ line_item.unit_price | money }}/{{ line_item.unit_price_measurement.reference_value }}{{ line_item.unit_price_measurement.reference_unit }}
+                    </p>
+                  {%- endif -%}
                 </td>
               </tr>
             {% endfor %}
