@@ -491,10 +491,13 @@ class PredictiveSearch extends HTMLElement {
     const pages = resources.pages || [];
 
     if (products.length === 0 && articles.length === 0 && pages.length === 0) {
-      const noResultsText = this.dataset.noResultsText.replace('__SEARCH_TERM__', this.input.value);
+      if (!this.input.value.trim()) {
+        this.close();
+        return;
+      }
       this.content.innerHTML = `
         <div class="p-6 text-center text-[--color-text-secondary]">
-          <p class="text-sm">${noResultsText}</p>
+          <p class="text-sm">${this.dataset.noResultsText}</p>
         </div>
       `;
     } else {

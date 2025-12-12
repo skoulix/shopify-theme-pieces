@@ -4,7 +4,7 @@
 {%- endcomment -%}
 
 <style>
-  /* Search drawer specific styles for wider results */
+  /* Search drawer specific styles for results */
   #search-drawer .predictive-search__results {
     position: relative;
     top: auto;
@@ -14,11 +14,14 @@
     max-height: 60vh;
     overflow-y: auto;
     box-shadow: none;
+    opacity: 0;
+    transform: translateY(-10px);
+    transition: opacity 0.25s ease-out, transform 0.25s ease-out;
   }
 
-  /* Ensure results are visible when shown */
   #search-drawer .predictive-search__results:not(.hidden) {
-    display: block;
+    opacity: 1;
+    transform: translateY(0);
   }
 </style>
 

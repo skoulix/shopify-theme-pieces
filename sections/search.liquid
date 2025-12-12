@@ -54,7 +54,7 @@
           <span class="inline-block" data-subtitle-text>
             {% if search.results_count > 0 %}
               {{ 'search.results_for_html' | t: count: search.results_count, terms: search.terms }}
-            {% else %}
+            {% elsif search.terms != blank %}
               {{ 'search.no_results_html' | t: terms: search.terms }}
             {% endif %}
           </span>
