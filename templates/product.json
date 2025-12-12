@@ -64,6 +64,14 @@
             "content": "",
             "show_always": true
           }
+        },
+        "complementary_products_eKVGxd": {
+          "type": "complementary_products",
+          "settings": {
+            "title": "",
+            "products_to_show": 2,
+            "show_add_all": true
+          }
         }
       },
       "block_order": [
@@ -75,12 +83,26 @@
         "quantity_selector",
         "buy_buttons",
         "back_in_stock_rzrTB9",
-        "size_chart_xUw7Wm"
+        "size_chart_xUw7Wm",
+        "complementary_products_eKVGxd"
       ],
       "settings": {
         "full_width": true,
         "image_fit": "cover",
         "show_sticky_bar": true
+      }
+    },
+    "complementary_products_V3nMwX": {
+      "type": "complementary-products",
+      "name": "Complementary Products",
+      "settings": {
+        "full_width": false,
+        "title": "Pairs well with",
+        "description": "",
+        "products_to_show": 3,
+        "columns": 3,
+        "background_color": "#ffffff",
+        "text_color": "#000000"
       }
     },
     "features_grid": {
@@ -352,6 +374,7 @@
   },
   "order": [
     "main",
+    "complementary_products_V3nMwX",
     "features_grid",
     "text_reveal",
     "before_after_xTLtcx",

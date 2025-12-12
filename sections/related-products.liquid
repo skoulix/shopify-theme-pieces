@@ -355,6 +355,11 @@
             loading.style.display = 'none';
             track.style.display = 'flex';
 
+            // Fix: Make dynamically loaded [data-intro] elements visible immediately
+            track.querySelectorAll('[data-intro]').forEach(el => {
+              el.classList.add('intro-visible');
+            });
+
             updateSlidesPerView();
             updateCarousel();
 

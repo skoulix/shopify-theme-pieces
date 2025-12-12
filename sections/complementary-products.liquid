@@ -173,7 +173,7 @@
   data-complementary-products
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
-  data-url="{{ routes.product_recommendations_url }}?intent=complementary&limit={{ section.settings.products_to_show }}"
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&intent=complementary&limit={{ section.settings.products_to_show }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
@@ -258,32 +258,34 @@
 
   const productId = section.dataset.productId;
   const baseUrl = section.dataset.url;
-  const sectionId = section.dataset.sectionId;
 
   const grid = section.querySelector('[data-complementary-grid]');
   const loading = section.querySelector('[data-complementary-loading]');
 
   function loadComplementary() {
-    const url = `${baseUrl}&product_id=${productId}&section_id=${sectionId}`;
-    console.log('[Complementary] Fetching:', url);
+    // Fetch the section itself with recommendations populated
+    const url = `${baseUrl}&product_id=${productId}`;
 
     fetch(url)
       .then(response => response.text())
       .then(html => {
-        console.log('[Complementary] Response length:', html.length);
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
-        const newGrid = doc.querySelector('[data-complementary-grid]');
 
-        console.log('[Complementary] Found grid:', !!newGrid, 'children:', newGrid?.children?.length || 0);
+        // Find the grid in the fetched section (which now has recommendations populated)
+        const newGrid = doc.querySelector('[data-complementary-grid]');
 
         if (newGrid && newGrid.children.length > 0) {
           grid.innerHTML = newGrid.innerHTML;
           loading.style.display = 'none';
           grid.style.display = '';
+
+          // Fix: Make dynamically loaded [data-intro] elements visible immediately
+          grid.querySelectorAll('[data-intro]').forEach(el => {
+            el.classList.add('intro-visible');
+          });
         } else {
           // No complementary products, hide the entire section
-          console.log('[Complementary] Hiding section - no products found');
           section.style.display = 'none';
         }
       })

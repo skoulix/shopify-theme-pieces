@@ -531,6 +531,7 @@
               </style>
 
               {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                {%- comment -%} Actual products - rendered after section fetch {%- endcomment -%}
                 <h3 class="complementary-block__title">{{ block_title }}</h3>
                 <div class="complementary-block__list" data-complementary-products>
                   {%- for product in recommendations.products -%}
@@ -563,27 +564,8 @@
                     </div>
                   {%- endfor -%}
                 </div>
-                {%- liquid
-                  assign all_single_variant = true
-                  for product in recommendations.products
-                    if product.variants.size > 1
-                      assign all_single_variant = false
-                      break
-                    endif
-                  endfor
-                -%}
-                {% if block.settings.show_add_all and all_single_variant %}
-                  <button
-                    type="button"
-                    class="complementary-block__add-all"
-                    data-complementary-add-all
-                  >
-                    <i class="ph ph-plus"></i>
-                    <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
-                  </button>
-                {% endif %}
               {%- else -%}
-                {%- comment -%} Loading skeleton - shown before fetch completes {%- endcomment -%}
+                {%- comment -%} Loading skeleton - shown until JS fetches products {%- endcomment -%}
                 <h3 class="complementary-block__title">{{ block_title }}</h3>
                 <div class="complementary-block__list" data-complementary-loading>
                   {% for i in (1..block.settings.products_to_show) %}
@@ -1185,13 +1167,7 @@ if (!customElements.get('complementary-products')) {
     }
 
     connectedCallback() {
-      // If recommendations already rendered (performed), just set up handlers
-      if (this.querySelector('[data-complementary-products]')) {
-        this.setupHandlers();
-        return;
-      }
-
-      // Otherwise, fetch via section rendering
+      // Always fetch via AJAX section - use IntersectionObserver for lazy loading
       const observer = new IntersectionObserver((entries, obs) => {
         if (!entries[0].isIntersecting) return;
         obs.unobserve(this);
@@ -1204,31 +1180,55 @@ if (!customElements.get('complementary-products')) {
     async loadRecommendations() {
       const productId = this.dataset.productId;
       const baseUrl = this.dataset.url;
+      const title = this.dataset.title;
+      const showAddAll = this.dataset.showAddAll === 'true';
 
       try {
-        // Use section rendering - re-fetch the product section with recommendations
+        // Fetch the product section itself - recommendations will be populated
         const url = `${baseUrl}&product_id=${productId}`;
-        console.log('[ComplementaryBlock] Fetching:', url);
 
         const response = await fetch(url);
         const html = await response.text();
-        console.log('[ComplementaryBlock] Response length:', html.length);
 
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
 
-        // Like Dawn: find the complementary-products element in the fetched section
+        // Find the complementary-products element in the fetched section
+        // It will now have recommendations populated
         const newElement = doc.querySelector('complementary-products');
-        console.log('[ComplementaryBlock] Found element:', !!newElement);
-        console.log('[ComplementaryBlock] Has products:', !!newElement?.querySelector('[data-complementary-products]'));
+        const productsList = newElement?.querySelector('[data-complementary-products]');
 
-        if (newElement && newElement.querySelector('[data-complementary-products]')) {
-          // Replace our content with the fetched content (which has recommendations populated)
-          this.innerHTML = newElement.innerHTML;
+        if (productsList && productsList.children.length > 0) {
+          // Check if all products have single variant for "Add all" button
+          const items = productsList.querySelectorAll('.complementary-block__item');
+          const allSingleVariant = Array.from(items).every(item =>
+            item.querySelector('[data-quick-add]') !== null
+          );
+
+          // Build the block HTML
+          let blockHtml = `<h3 class="complementary-block__title">${title}</h3>`;
+          blockHtml += `<div class="complementary-block__list" data-complementary-products>${productsList.innerHTML}</div>`;
+
+          // Add "Add all" button if enabled and all products have single variant
+          if (showAddAll && allSingleVariant) {
+            blockHtml += `
+              <button type="button" class="complementary-block__add-all" data-complementary-add-all>
+                <i class="ph ph-plus"></i>
+                <span data-add-all-text>${this.i18n.addAll}</span>
+              </button>
+            `;
+          }
+
+          this.innerHTML = blockHtml;
+
+          // Fix: Make dynamically loaded [data-intro] elements visible immediately
+          this.querySelectorAll('[data-intro]').forEach(el => {
+            el.classList.add('intro-visible');
+          });
+
           this.setupHandlers();
         } else {
           // No complementary products found, hide this element
-          console.log('[ComplementaryBlock] Hiding - no products');
           this.style.display = 'none';
         }
       } catch (error) {
