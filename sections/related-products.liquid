@@ -6,205 +6,36 @@
 {%- liquid
   if section.settings.full_width
     assign container_class = 'page-full'
-    assign content_class = ''
   else
     assign container_class = 'page-container'
-    assign content_class = 'mx-auto'
   endif
 -%}
 
 <style>
   .related-products-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
-    padding: var(--section-vertical-padding) 0;
+    --section-bg: {{ section.settings.background_color }};
+    --section-text: {{ section.settings.text_color }};
+    background-color: var(--section-bg);
+    color: var(--section-text);
   }
-
-  .related-products-{{ section.id }} .related-products__title {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-    letter-spacing: -0.03em;
-    line-height: 0.95;
+  .related-products-{{ section.id }} .nav-btn:hover:not(:disabled) {
+    background-color: var(--section-text);
+    color: var(--section-bg);
+    border-color: var(--section-text);
   }
-
-  @media (min-width: 1024px) {
-    .related-products-{{ section.id }} .related-products__title {
-      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
-    }
+  .related-products-{{ section.id }} .skeleton-bg {
+    background-color: var(--section-text);
+    opacity: 0.1;
   }
-
-  .related-products-{{ section.id }} .related-products__carousel {
-    display: flex;
-    gap: 1.5rem;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-    align-items: stretch;
-  }
-
-  .related-products-{{ section.id }} .related-products__slide {
-    flex: 0 0 calc(100% - 2rem);
-    min-width: 0;
-    display: flex;
-  }
-
-  .related-products-{{ section.id }} .related-products__slide .product-card {
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-  }
-
-  .related-products-{{ section.id }} .related-products__slide .product-card-content {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  @media (min-width: 640px) {
-    .related-products-{{ section.id }} .related-products__slide {
-      flex: 0 0 calc(50% - 0.75rem);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .related-products-{{ section.id }} .related-products__slide {
-      flex: 0 0 calc(33.333% - 1rem);
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .related-products-{{ section.id }} .related-products__slide {
-      flex: 0 0 calc(25% - 1.125rem);
-    }
-  }
-
-  .related-products-{{ section.id }} .related-products__nav-btn {
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 1px solid {{ section.settings.text_color }}30;
-    border-radius: 50%;
-    background: transparent;
-    color: {{ section.settings.text_color }};
-    cursor: pointer;
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .related-products-{{ section.id }} .related-products__nav-btn:hover:not(:disabled) {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
-  }
-
-  .related-products-{{ section.id }} .related-products__nav-btn:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .related-products-{{ section.id }} .related-products__nav-btn i {
-    font-size: 1.25rem;
-  }
-
-  /* Product card overrides for this section */
-  .related-products-{{ section.id }} .product-card {
-    background: {{ section.settings.background_color }};
-  }
-
-  .related-products-{{ section.id }} .product-card-content {
-    background: transparent;
-  }
-
-  /* Product card hover effects */
-  .related-products-{{ section.id }} .product-card-image img {
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .related-products-{{ section.id }} .product-card:hover .product-card-image img {
-    transform: scale(1.05);
-  }
-
-  .related-products-{{ section.id }} .product-card-title {
-    transition: opacity 0.3s ease;
-  }
-
-  .related-products-{{ section.id }} .product-card:hover .product-card-title {
-    opacity: 0.7;
-  }
-
-  /* Progress bar */
-  .related-products-{{ section.id }} .related-products__progress {
-    height: 2px;
-    background: {{ section.settings.text_color }}15;
-    border-radius: 1px;
-    overflow: hidden;
-  }
-
-  .related-products-{{ section.id }} .related-products__progress-bar {
-    height: 100%;
-    background: {{ section.settings.text_color }};
-    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .related-products-{{ section.id }} .related-products__loading {
-    display: flex;
-    gap: 1.5rem;
-  }
-
-  .related-products-{{ section.id }} .related-products__skeleton {
-    flex: 0 0 calc(100% - 2rem);
-    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  @media (min-width: 640px) {
-    .related-products-{{ section.id }} .related-products__skeleton {
-      flex: 0 0 calc(50% - 0.75rem);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .related-products-{{ section.id }} .related-products__skeleton {
-      flex: 0 0 calc(33.333% - 1rem);
-    }
-  }
-
-  @media (min-width: 1280px) {
-    .related-products-{{ section.id }} .related-products__skeleton {
-      flex: 0 0 calc(25% - 1.125rem);
-    }
-  }
-
-  .related-products-{{ section.id }} .related-products__skeleton-image {
-    aspect-ratio: 3/4;
-    background: {{ section.settings.text_color }}10;
-  }
-
-  .related-products-{{ section.id }} .related-products__skeleton-text {
-    height: 1rem;
-    margin-top: 1rem;
-    background: {{ section.settings.text_color }}10;
-    width: 70%;
-  }
-
-  .related-products-{{ section.id }} .related-products__skeleton-price {
-    height: 0.875rem;
-    margin-top: 0.5rem;
-    background: {{ section.settings.text_color }}10;
-    width: 40%;
-  }
-
-  @keyframes pulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
-  }
-
   /* Title line reveal animation */
   .related-products-title-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
-
   /* Hide title initially to prevent FOUC before SplitText animation */
   [data-related-products-title] { opacity: 0; }
   html.animations-disabled [data-related-products-title] { opacity: 1; }
 </style>
 
 <section
-  class="related-products-{{ section.id }} overflow-hidden"
+  class="related-products-{{ section.id }} py-[--section-vertical-padding] overflow-hidden"
   data-related-products
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -212,7 +43,7 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    <div class="{% if section.settings.header_alignment == 'center' %}text-center mb-12 lg:mb-16{% elsif section.settings.header_alignment == 'right' %}text-right mb-12 lg:mb-16{% else %}flex items-end justify-between gap-6 mb-12 lg:mb-16{% endif %} max-w-none {{ content_class }}">
+    <div class="{% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% else %}flex items-end justify-between gap-6{% endif %} mb-12 lg:mb-16">
       <div>
         {% if section.settings.label != blank %}
           <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4">
@@ -221,7 +52,7 @@
         {% endif %}
 
         {% if section.settings.title != blank %}
-          <h2 class="related-products__title font-bold font-heading" data-related-products-title>
+          <h2 class="text-3xl md:text-4xl lg:text-5xl font-bold font-heading tracking-tight leading-none" data-related-products-title>
             {{ section.settings.title }}
           </h2>
         {% endif %}
@@ -231,43 +62,43 @@
       <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
         <button
           type="button"
-          class="related-products__nav-btn"
+          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
           data-carousel-prev
           aria-label="{{ 'accessibility.previous_products' | t }}"
           disabled
         >
-          <i class="ph ph-arrow-left"></i>
+          <i class="ph ph-arrow-left text-xl"></i>
         </button>
         <button
           type="button"
-          class="related-products__nav-btn"
+          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
           data-carousel-next
           aria-label="{{ 'accessibility.next_products' | t }}"
         >
-          <i class="ph ph-arrow-right"></i>
+          <i class="ph ph-arrow-right text-xl"></i>
         </button>
       </div>
     </div>
 
     {%- comment -%} Carousel Container {%- endcomment -%}
-    <div class="relative max-w-none {{ content_class }}">
+    <div class="relative">
       <div class="overflow-hidden" data-carousel-viewport>
         {%- comment -%} Loading State {%- endcomment -%}
-        <div class="related-products__loading" data-carousel-loading>
+        <div class="flex gap-6" data-carousel-loading>
           {% for i in (1..4) %}
-            <div class="related-products__skeleton">
-              <div class="related-products__skeleton-image"></div>
-              <div class="related-products__skeleton-text"></div>
-              <div class="related-products__skeleton-price"></div>
+            <div class="shrink-0 w-[calc(100%-2rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.125rem)] animate-pulse">
+              <div class="aspect-[3/4] rounded-lg skeleton-bg"></div>
+              <div class="h-4 mt-4 rounded skeleton-bg w-3/4"></div>
+              <div class="h-3.5 mt-2 rounded skeleton-bg w-2/5"></div>
             </div>
           {% endfor %}
         </div>
 
         {%- comment -%} Products will be loaded here via JS {%- endcomment -%}
-        <div class="related-products__carousel p-1.5" data-carousel-track style="display: none;">
+        <div class="flex gap-6 p-1.5 transition-transform duration-500 ease-out items-stretch" data-carousel-track style="display: none;">
           {% if recommendations.performed and recommendations.products_count > 0 %}
             {% for recommendation in recommendations.products %}
-              <div class="related-products__slide">
+              <div class="shrink-0 w-[calc(100%-2rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.125rem)] min-w-0 flex [&_.product-card]:flex [&_.product-card]:flex-col [&_.product-card]:w-full [&_.product-card-content]:flex-1 [&_.product-card-content]:flex [&_.product-card-content]:flex-col [&_.product-card-image_img]:transition-transform [&_.product-card-image_img]:duration-500 [&:hover_.product-card-image_img]:scale-105 [&_.product-card-title]:transition-opacity [&_.product-card-title]:duration-300 [&:hover_.product-card-title]:opacity-70">
                 {% render 'product-card',
                   product: recommendation,
                   index: forloop.index0,
@@ -282,8 +113,8 @@
       </div>
 
       {%- comment -%} Progress Bar {%- endcomment -%}
-      <div class="related-products__progress mt-8" data-carousel-progress>
-        <div class="related-products__progress-bar" data-carousel-progress-bar style="width: 0%"></div>
+      <div class="h-0.5 bg-current/15 rounded-sm overflow-hidden mt-8" data-carousel-progress>
+        <div class="h-full bg-current transition-[width] duration-400 ease-out" data-carousel-progress-bar style="width: 0%"></div>
       </div>
     </div>
   </div>
@@ -546,10 +377,15 @@
       "default": "Related Products"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
+      "label": "Header alignment",
       "default": "left",
-      "label": "Header alignment"
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "range",

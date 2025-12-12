@@ -1,8 +1,7 @@
 {%- comment -%}
   Complementary Products Section
   Shows products that are frequently bought together (cross-sell)
-  Uses Shopify's complementary product recommendations
-  Uses Dawn's product-recommendations custom element pattern
+  Uses Shopify's Product Recommendations API with section rendering
 {%- endcomment -%}
 
 {%- liquid
@@ -11,318 +10,222 @@
   else
     assign container_class = 'page-container'
   endif
+
+  case section.settings.columns
+    when 2
+      assign grid_cols = 'sm:grid-cols-2'
+    when 3
+      assign grid_cols = 'sm:grid-cols-2 lg:grid-cols-3'
+    when 4
+      assign grid_cols = 'sm:grid-cols-2 lg:grid-cols-4'
+  endcase
+
+  case section.settings.alignment
+    when 'left'
+      assign text_align = 'text-left'
+    when 'center'
+      assign text_align = 'text-center'
+    when 'right'
+      assign text_align = 'text-right'
+  endcase
 -%}
 
 <style>
-  .complementary-products-{{ section.id }} {
-    --color-background: {{ section.settings.background_color }};
-    --color-text: {{ section.settings.text_color }};
-    --color-border: {{ section.settings.text_color }}30;
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
-    padding: var(--section-vertical-padding) 0;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-products__title {
-    font-size: calc(clamp(1.5rem, 3vw, 2rem) * var(--heading-font-scale, 1));
-    letter-spacing: -0.02em;
-    line-height: 1.1;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-products__grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 1rem;
-  }
-
-  @media (min-width: 640px) {
-    .complementary-products-{{ section.id }} .complementary-products__grid {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .complementary-products-{{ section.id }} .complementary-products__grid {
-      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    }
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border: 1px solid {{ section.settings.text_color }}15;
-    border-radius: var(--card-radius);
-    transition: border-color 0.3s ease;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product:hover {
-    border-color: {{ section.settings.text_color }}30;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__image {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    border-radius: calc(var(--card-radius) * 0.5);
-    overflow: hidden;
-    background: {{ section.settings.text_color }}05;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__info {
-    flex: 1;
-    min-width: 0;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    color: {{ section.settings.text_color }};
-    margin: 0;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__price {
-    font-size: 0.875rem;
-    color: {{ section.settings.text_color }};
-    opacity: 0.7;
-    margin-top: 0.25rem;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-product__add {
-    margin-top: 0.5rem;
-  }
-
-  .complementary-products-{{ section.id }} .complementary-products__loading {
-    display: grid;
-    grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    gap: 1rem;
-  }
-
-  @media (max-width: 1023px) {
-    .complementary-products-{{ section.id }} .complementary-products__loading {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
-  @media (max-width: 639px) {
-    .complementary-products-{{ section.id }} .complementary-products__loading {
-      grid-template-columns: 1fr;
-    }
-  }
-
-  .complementary-products-{{ section.id }} .complementary-products__skeleton {
-    display: flex;
-    gap: 1rem;
-    padding: 1rem;
-    border: 1px solid {{ section.settings.text_color }}10;
-    border-radius: var(--card-radius);
-    animation: complementaryPulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
-  }
-
-  .complementary-products-{{ section.id }} .skeleton-image {
-    width: 80px;
-    height: 80px;
-    flex-shrink: 0;
-    background: {{ section.settings.text_color }}10;
-    border-radius: calc(var(--card-radius) * 0.5);
-  }
-
-  .complementary-products-{{ section.id }} .skeleton-content {
-    flex: 1;
-  }
-
-  .complementary-products-{{ section.id }} .skeleton-title {
-    height: 1rem;
-    width: 80%;
-    background: {{ section.settings.text_color }}10;
-    border-radius: 0.25rem;
-  }
-
-  .complementary-products-{{ section.id }} .skeleton-price {
-    height: 0.875rem;
-    width: 40%;
-    margin-top: 0.5rem;
-    background: {{ section.settings.text_color }}10;
-    border-radius: 0.25rem;
-  }
-
-  @keyframes complementaryPulse {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.5; }
+  .complementary-section-{{ section.id }} {
+    --section-bg: {{ section.settings.background_color }};
+    --section-text: {{ section.settings.text_color }};
+    background-color: var(--section-bg);
+    color: var(--section-text);
   }
 </style>
 
-<section class="complementary-products-{{ section.id }}" data-complementary-section>
-  <product-recommendations
-    class="block"
-    data-url="{{ routes.product_recommendations_url }}?intent=complementary&limit={{ section.settings.products_to_show }}"
-    data-section-id="{{ section.id }}"
-    data-product-id="{{ product.id }}"
-  >
-    {%- if recommendations.performed and recommendations.products_count > 0 -%}
-      <div class="{{ container_class }}">
-        {%- comment -%} Header {%- endcomment -%}
-        {% if section.settings.title != blank %}
-          <div class="mb-6">
-            <h2 class="complementary-products__title font-bold font-heading">
-              {{ section.settings.title }}
-            </h2>
-            {% if section.settings.description != blank %}
-              <p class="text-sm opacity-70 mt-2">{{ section.settings.description }}</p>
-            {% endif %}
-          </div>
+<section
+  class="complementary-section-{{ section.id }} py-[--section-vertical-padding]"
+  data-complementary-section
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-url="{{ routes.product_recommendations_url }}?intent=complementary&limit={{ section.settings.products_to_show }}"
+>
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
+      <div class="mb-6 {{ text_align }}">
+        {% if section.settings.label != blank %}
+          <p class="label mb-2">{{ section.settings.label }}</p>
         {% endif %}
-
-        {%- comment -%} Products Grid {%- endcomment -%}
-        <div class="complementary-products__grid" data-complementary-grid>
-          {% for recommendation in recommendations.products %}
-            <div class="complementary-product">
-              <a href="{{ recommendation.url }}" class="complementary-product__image">
-                {% if recommendation.featured_image %}
-                  {{ recommendation.featured_image | image_url: width: 200 | image_tag:
-                    loading: 'lazy',
-                    alt: recommendation.title
-                  }}
-                {% endif %}
-              </a>
-              <div class="complementary-product__info">
-                <a href="{{ recommendation.url }}" class="complementary-product__title hover:opacity-70 transition-opacity">
-                  {{ recommendation.title }}
-                </a>
-                <p class="complementary-product__price">
-                  {% if recommendation.compare_at_price > recommendation.price %}
-                    <span class="line-through opacity-60 mr-2">{{ recommendation.compare_at_price | money }}</span>
-                  {% endif %}
-                  {{ recommendation.price | money }}
-                </p>
-                {% if recommendation.available %}
-                  <div class="complementary-product__add">
-                    {% if recommendation.variants.size == 1 %}
-                      <button
-                        type="button"
-                        class="btn btn--secondary btn--sm"
-                        data-quick-add="{{ recommendation.variants.first.id }}"
-                      >
-                        <i class="ph ph-plus"></i>
-                        <span>{{ 'products.product.add_to_cart' | t }}</span>
-                      </button>
-                    {% else %}
-                      <a href="{{ recommendation.url }}" class="btn btn--secondary btn--sm">
-                        <i class="ph ph-eye"></i>
-                        <span>{{ 'products.product.select_options' | t }}</span>
-                      </a>
-                    {% endif %}
-                  </div>
-                {% endif %}
-              </div>
-            </div>
-          {% endfor %}
-        </div>
-      </div>
-    {%- endif -%}
-  </product-recommendations>
-
-  {%- comment -%} Loading skeleton - outside product-recommendations, hidden when products load {%- endcomment -%}
-  <div class="{{ container_class }}" data-complementary-loading>
-    {% if section.settings.title != blank %}
-      <div class="mb-6">
-        <h2 class="complementary-products__title font-bold font-heading">
-          {{ section.settings.title }}
-        </h2>
+        {% if section.settings.title != blank %}
+          <h2 class="text-2xl md:text-3xl font-bold font-heading tracking-tight leading-tight">
+            {{ section.settings.title }}
+          </h2>
+        {% endif %}
         {% if section.settings.description != blank %}
-          <p class="text-sm opacity-70 mt-2">{{ section.settings.description }}</p>
+          <p class="text-sm opacity-70 mt-2 max-w-2xl {% if section.settings.alignment == 'center' %}mx-auto{% elsif section.settings.alignment == 'right' %}ml-auto{% endif %}">{{ section.settings.description }}</p>
         {% endif %}
       </div>
     {% endif %}
-    <div class="complementary-products__loading">
+
+    {%- comment -%} Loading State {%- endcomment -%}
+    <div class="grid grid-cols-1 {{ grid_cols }} gap-4" data-complementary-loading>
       {% for i in (1..section.settings.products_to_show) %}
-        <div class="complementary-products__skeleton">
-          <div class="skeleton-image"></div>
-          <div class="skeleton-content">
-            <div class="skeleton-title"></div>
-            <div class="skeleton-price"></div>
+        <div class="flex gap-4 p-4 border border-current/10 rounded-lg animate-pulse">
+          <div class="shrink-0 w-20 h-20 rounded bg-current/10"></div>
+          <div class="flex-1">
+            <div class="h-4 w-3/4 bg-current/10 rounded"></div>
+            <div class="h-3 w-1/2 bg-current/10 rounded mt-2"></div>
           </div>
         </div>
       {% endfor %}
     </div>
+
+    {%- comment -%} Products Grid - rendered via JS fetch {%- endcomment -%}
+    <div class="grid grid-cols-1 {{ grid_cols }} gap-4 hidden" data-complementary-grid>
+      {% if recommendations.performed and recommendations.products_count > 0 %}
+        {% for recommendation in recommendations.products %}
+          <div class="flex gap-4 p-4 border border-current/10 rounded-lg hover:border-current/30 transition-colors">
+            <a href="{{ recommendation.url }}" class="shrink-0 w-20 h-20 rounded overflow-hidden bg-current/5">
+              {% if recommendation.featured_image %}
+                {{ recommendation.featured_image | image_url: width: 200 | image_tag:
+                  loading: 'lazy',
+                  alt: recommendation.title,
+                  class: 'w-full h-full object-cover'
+                }}
+              {% endif %}
+            </a>
+            <div class="flex-1 min-w-0 flex flex-col justify-center">
+              <a href="{{ recommendation.url }}" class="text-sm font-semibold no-underline hover:opacity-70 transition-opacity">
+                {{ recommendation.title }}
+              </a>
+              <p class="text-sm opacity-70 mt-1">
+                {% if recommendation.compare_at_price > recommendation.price %}
+                  <span class="line-through opacity-60 mr-2">{{ recommendation.compare_at_price | money }}</span>
+                {% endif %}
+                {{ recommendation.price | money }}
+              </p>
+              {% if recommendation.available %}
+                <div class="mt-2">
+                  {% if recommendation.variants.size == 1 %}
+                    <button
+                      type="button"
+                      class="btn btn--secondary btn--sm"
+                      data-quick-add="{{ recommendation.variants.first.id }}"
+                    >
+                      <i class="ph ph-plus"></i>
+                      <span>{{ 'products.product.add_to_cart' | t }}</span>
+                    </button>
+                  {% else %}
+                    <a href="{{ recommendation.url }}" class="btn btn--secondary btn--sm">
+                      <i class="ph ph-eye"></i>
+                      <span>{{ 'products.product.select_options' | t }}</span>
+                    </a>
+                  {% endif %}
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        {% endfor %}
+      {% endif %}
+    </div>
   </div>
 </section>
 
-{%- comment -%}
-  Define product-recommendations custom element if not already defined
-  Uses same pattern as Dawn theme
-{%- endcomment -%}
 <script>
-if (!customElements.get('product-recommendations')) {
-  class ProductRecommendations extends HTMLElement {
-    observer = undefined;
+(function() {
+  const section = document.querySelector('[data-complementary-section][data-section-id="{{ section.id }}"]');
+  if (!section) return;
 
-    constructor() {
-      super();
-    }
+  const productId = section.dataset.productId;
+  const baseUrl = section.dataset.url;
+  const sectionId = section.dataset.sectionId;
 
-    connectedCallback() {
-      this.initializeRecommendations(this.dataset.productId);
-    }
+  const grid = section.querySelector('[data-complementary-grid]');
+  const loading = section.querySelector('[data-complementary-loading]');
 
-    initializeRecommendations(productId) {
-      this.observer?.unobserve(this);
-      this.observer = new IntersectionObserver(
-        (entries, observer) => {
-          if (!entries[0].isIntersecting) return;
-          observer.unobserve(this);
-          this.loadRecommendations(productId);
-        },
-        { rootMargin: '0px 0px 400px 0px' }
-      );
-      this.observer.observe(this);
-    }
+  function loadRecommendations() {
+    const url = `${baseUrl}&product_id=${productId}&section_id=${sectionId}`;
 
-    loadRecommendations(productId) {
-      const section = this.closest('[data-complementary-section]');
-      const loading = section?.querySelector('[data-complementary-loading]');
+    fetch(url)
+      .then(response => response.text())
+      .then(html => {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+        const newGrid = doc.querySelector('[data-complementary-grid]');
 
-      fetch(`${this.dataset.url}&product_id=${productId}&section_id=${this.dataset.sectionId}`)
-        .then((response) => response.text())
-        .then((text) => {
-          const html = document.createElement('div');
-          html.innerHTML = text;
-          const recommendations = html.querySelector('product-recommendations');
-          const hasProducts = html.querySelector('[data-complementary-grid]');
+        if (newGrid && newGrid.children.length > 0) {
+          grid.innerHTML = newGrid.innerHTML;
+          loading.classList.add('hidden');
+          grid.classList.remove('hidden');
 
-          if (recommendations && hasProducts) {
-            this.innerHTML = recommendations.innerHTML;
-
-            // Fix: Make dynamically loaded [data-intro] elements visible immediately
-            this.querySelectorAll('[data-intro]').forEach(el => {
-              el.classList.add('intro-visible');
+          // Setup quick add handlers
+          grid.querySelectorAll('[data-quick-add]').forEach(btn => {
+            btn.addEventListener('click', (e) => {
+              e.preventDefault();
+              addToCart(btn.dataset.quickAdd, btn);
             });
+          });
+        } else {
+          // No recommendations, hide the entire section
+          section.style.display = 'none';
+        }
+      })
+      .catch(error => {
+        console.error('Error loading complementary products:', error);
+        section.style.display = 'none';
+      });
+  }
 
-            // Hide loading skeleton
-            if (loading) loading.style.display = 'none';
-          } else {
-            // No recommendations, hide the entire section
-            if (section) section.style.display = 'none';
-          }
-        })
-        .catch((e) => {
-          console.error(e);
-          if (section) section.style.display = 'none';
-        });
+  async function addToCart(variantId, button) {
+    const originalHtml = button.innerHTML;
+    button.disabled = true;
+    button.innerHTML = '<i class="ph ph-spinner animate-spin"></i>';
+
+    try {
+      const response = await fetch('/cart/add.js', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ items: [{ id: variantId, quantity: 1 }] })
+      });
+
+      if (!response.ok) throw new Error('Failed to add to cart');
+
+      const cartResponse = await fetch('/cart.js');
+      const cart = await cartResponse.json();
+      document.querySelectorAll('[data-cart-count]').forEach(el => {
+        el.textContent = cart.item_count;
+      });
+
+      const cartType = window.themeSettings?.cartType || 'drawer';
+      if (cartType === 'drawer') {
+        if (window.refreshCartDrawer) await window.refreshCartDrawer();
+        document.dispatchEvent(new CustomEvent('cart:open'));
+      }
+
+      button.innerHTML = '<i class="ph ph-check"></i> <span>{{ 'products.product.added' | t | default: 'Added' }}</span>';
+      setTimeout(() => {
+        button.innerHTML = originalHtml;
+        button.disabled = false;
+      }, 1500);
+    } catch (error) {
+      console.error('Add to cart error:', error);
+      button.innerHTML = '<i class="ph ph-x"></i>';
+      setTimeout(() => {
+        button.innerHTML = originalHtml;
+        button.disabled = false;
+      }, 1500);
     }
   }
 
-  customElements.define('product-recommendations', ProductRecommendations);
-}
+  // Initialize with Intersection Observer for lazy loading
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        loadRecommendations();
+        observer.unobserve(section);
+      }
+    });
+  }, { rootMargin: '400px' });
+
+  observer.observe(section);
+})();
 </script>
 
 {% schema %}
@@ -343,6 +246,15 @@ if (!customElements.get('product-recommendations')) {
     },
     {
       "type": "header",
+      "content": "Label"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "header",
       "content": "Content"
     },
     {
@@ -352,9 +264,20 @@ if (!customElements.get('product-recommendations')) {
       "default": "Pairs well with"
     },
     {
-      "type": "text",
+      "type": "textarea",
       "id": "description",
       "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "alignment",
+      "label": "Text alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "range",
