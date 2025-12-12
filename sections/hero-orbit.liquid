@@ -14,6 +14,23 @@
     color: {{ section.settings.text_color }};
   }
 
+  .hero-orbit-bg-{{ section.id }} {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+  }
+
+  .hero-orbit-bg-{{ section.id }} img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: {{ section.settings.background_image_position }};
+    {% if section.settings.background_image_blur > 0 %}
+    filter: blur({{ section.settings.background_image_blur }}px);
+    transform: scale(1.1);
+    {% endif %}
+  }
+
   .hero-orbit-scene-{{ section.id }} {
     position: absolute;
     inset: 0;
@@ -189,6 +206,17 @@
   data-hero-orbit="{{ section.id }}"
   data-animation-style="{{ section.settings.animation_style }}"
 >
+  {% if section.settings.background_image != blank %}
+    <div class="hero-orbit-bg-{{ section.id }}">
+      {{ section.settings.background_image | image_url: width: 2000 | image_tag:
+        loading: 'eager',
+        fetchpriority: 'high',
+        sizes: '100vw',
+        widths: '600, 1000, 1400, 1800, 2000'
+      }}
+    </div>
+  {% endif %}
+
   <div class="hero-orbit-scene-{{ section.id }}" data-orbit-scene>
     <div class="hero-orbit-container-{{ section.id }}" data-orbit-container>
       <div class="hero-orbit-group-{{ section.id }}" data-orbit-group>
@@ -703,10 +731,43 @@
       "content": "Colors"
     },
     {
+      "type": "image_picker",
+      "id": "background_image",
+      "label": "Background image"
+    },
+    {
+      "type": "select",
+      "id": "background_image_position",
+      "label": "Background image position",
+      "options": [
+        { "value": "top left", "label": "Top left" },
+        { "value": "top center", "label": "Top center" },
+        { "value": "top right", "label": "Top right" },
+        { "value": "center left", "label": "Center left" },
+        { "value": "center center", "label": "Center" },
+        { "value": "center right", "label": "Center right" },
+        { "value": "bottom left", "label": "Bottom left" },
+        { "value": "bottom center", "label": "Bottom center" },
+        { "value": "bottom right", "label": "Bottom right" }
+      ],
+      "default": "center center"
+    },
+    {
+      "type": "range",
+      "id": "background_image_blur",
+      "min": 0,
+      "max": 20,
+      "step": 1,
+      "default": 0,
+      "unit": "px",
+      "label": "Background image blur"
+    },
+    {
       "type": "color",
       "id": "background_color",
       "default": "#0a0a0a",
-      "label": "Background color"
+      "label": "Background color",
+      "info": "Used when no background image is set"
     },
     {
       "type": "color",
