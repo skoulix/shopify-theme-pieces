@@ -215,7 +215,7 @@
     <div class="{% if section.settings.header_alignment == 'center' %}text-center mb-12 lg:mb-16{% elsif section.settings.header_alignment == 'right' %}text-right mb-12 lg:mb-16{% else %}flex items-end justify-between gap-6 mb-12 lg:mb-16{% endif %} max-w-none {{ content_class }}">
       <div>
         {% if section.settings.label != blank %}
-          <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
+          <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4">
             {{ section.settings.label }}
           </span>
         {% endif %}
@@ -228,7 +228,7 @@
       </div>
 
       {%- comment -%} Navigation {%- endcomment -%}
-      <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-intro data-carousel-nav>
+      <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
         <button
           type="button"
           class="related-products__nav-btn"
@@ -250,7 +250,7 @@
     </div>
 
     {%- comment -%} Carousel Container {%- endcomment -%}
-    <div class="relative max-w-none {{ content_class }}" data-intro>
+    <div class="relative max-w-none {{ content_class }}">
       <div class="overflow-hidden" data-carousel-viewport>
         {%- comment -%} Loading State {%- endcomment -%}
         <div class="related-products__loading" data-carousel-loading>

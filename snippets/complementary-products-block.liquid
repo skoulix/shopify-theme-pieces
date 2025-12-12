@@ -1,0 +1,69 @@
+{%- comment -%}
+  Complementary Products Block Snippet
+  Fetched via section rendering for the product block
+
+  Required variables:
+  - product: The current product
+  - block: The block settings
+{%- endcomment -%}
+
+{%- liquid
+  assign block_title = block.settings.title
+  if block_title == blank
+    assign block_title = 'products.complementary.title' | t
+  endif
+-%}
+
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <h3 class="complementary-block__title">{{ block_title }}</h3>
+  <div class="complementary-block__list" data-complementary-products>
+    {%- for product in recommendations.products -%}
+      <div class="complementary-block__item" data-variant-id="{{ product.first_available_variant.id }}">
+        <a href="{{ product.url }}" class="complementary-block__image">
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', alt: product.title }}
+          {% endif %}
+        </a>
+        <div class="complementary-block__info">
+          <a href="{{ product.url }}" class="complementary-block__name">{{ product.title }}</a>
+          <div class="complementary-block__price">
+            {% if product.compare_at_price > product.price %}
+              <span style="text-decoration: line-through; opacity: 0.6; margin-right: 0.25rem;">{{ product.compare_at_price | money }}</span>
+            {% endif %}
+            {{ product.price | money }}
+          </div>
+        </div>
+        {% if product.available %}
+          {% if product.variants.size == 1 %}
+            <button type="button" class="complementary-block__add-btn" data-quick-add="{{ product.first_available_variant.id }}" aria-label="{{ 'products.product.add_to_cart' | t }}">
+              <i class="ph ph-plus"></i>
+            </button>
+          {% else %}
+            <a href="{{ product.url }}" class="complementary-block__add-btn" aria-label="{{ 'products.product.select_options' | t }}">
+              <i class="ph ph-eye"></i>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    {%- endfor -%}
+  </div>
+  {%- liquid
+    assign all_single_variant = true
+    for product in recommendations.products
+      if product.variants.size > 1
+        assign all_single_variant = false
+        break
+      endif
+    endfor
+  -%}
+  {% if block.settings.show_add_all and all_single_variant %}
+    <button
+      type="button"
+      class="complementary-block__add-all"
+      data-complementary-add-all
+    >
+      <i class="ph ph-plus"></i>
+      <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
+    </button>
+  {% endif %}
+{%- endif -%}

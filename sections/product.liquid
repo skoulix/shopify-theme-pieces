@@ -383,6 +383,222 @@
               {% render 'back-in-stock-form', product: product, variant: current_variant %}
             </div>
 
+          {%- when 'complementary_products' -%}
+            {%- comment -%} Complementary Products Block - Horizontal Layout {%- endcomment -%}
+            {%- liquid
+              assign block_title = block.settings.title
+              if block_title == blank
+                assign block_title = 'products.complementary.title' | t
+              endif
+            -%}
+            <complementary-products
+              class="complementary-block mt-6"
+              data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&intent=complementary&limit={{ block.settings.products_to_show }}"
+              data-product-id="{{ product.id }}"
+              data-show-add-all="{{ block.settings.show_add_all }}"
+              data-title="{{ block_title | escape }}"
+              {{ block.shopify_attributes }}
+            >
+              <style>
+                .complementary-block { display: block; }
+                .complementary-block:empty { display: none; }
+                .complementary-block__title {
+                  font-size: 0.65rem;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 0.15em;
+                  color: var(--color-text-secondary);
+                  margin-bottom: 0.75rem;
+                }
+                .complementary-block__list { display: flex; flex-direction: column; gap: 0.75rem; }
+                .complementary-block__item {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  padding: 0.5rem;
+                  border: 1px solid var(--color-border);
+                  border-radius: var(--card-radius);
+                  transition: border-color 0.2s ease;
+                }
+                .complementary-block__item:hover { border-color: var(--color-text); }
+                .complementary-block__image {
+                  width: 48px;
+                  height: 48px;
+                  flex-shrink: 0;
+                  border-radius: calc(var(--card-radius) * 0.5);
+                  overflow: hidden;
+                  background: var(--color-background-secondary);
+                }
+                .complementary-block__image img { width: 100%; height: 100%; object-fit: cover; }
+                .complementary-block__info { flex: 1; min-width: 0; }
+                .complementary-block__name {
+                  font-size: 0.8125rem;
+                  font-weight: 500;
+                  color: var(--color-text);
+                  white-space: nowrap;
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  text-decoration: none;
+                }
+                .complementary-block__name:hover { text-decoration: underline; }
+                .complementary-block__price {
+                  font-size: 0.75rem;
+                  color: var(--color-text-secondary);
+                  margin-top: 0.125rem;
+                }
+                .complementary-block__add-btn {
+                  flex-shrink: 0;
+                  display: inline-flex;
+                  align-items: center;
+                  justify-content: center;
+                  width: 2rem;
+                  height: 2rem;
+                  background: transparent;
+                  border: 1px solid var(--color-border);
+                  border-radius: 50%;
+                  color: var(--color-text);
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                }
+                .complementary-block__add-btn:hover {
+                  background: var(--color-text);
+                  color: var(--color-background);
+                  border-color: var(--color-text);
+                }
+                .complementary-block__add-all {
+                  margin-top: 0.75rem;
+                  display: flex;
+                  align-items: center;
+                  justify-content: center;
+                  gap: 0.5rem;
+                  width: 100%;
+                  padding: 0.625rem 1rem;
+                  font-size: 0.6875rem;
+                  font-weight: 600;
+                  text-transform: uppercase;
+                  letter-spacing: 0.1em;
+                  background: transparent;
+                  border: 1px solid var(--color-border);
+                  border-radius: var(--button-radius);
+                  color: var(--color-text);
+                  cursor: pointer;
+                  transition: all 0.2s ease;
+                }
+                .complementary-block__add-all:hover {
+                  background: var(--color-text);
+                  color: var(--color-background);
+                  border-color: var(--color-text);
+                }
+                .complementary-block__add-all:disabled {
+                  opacity: 0.5;
+                  cursor: not-allowed;
+                }
+                .complementary-block__skeleton {
+                  display: flex;
+                  align-items: center;
+                  gap: 0.75rem;
+                  padding: 0.5rem;
+                  animation: complementaryPulse 1.5s ease-in-out infinite;
+                }
+                .complementary-block__skeleton-image {
+                  width: 48px;
+                  height: 48px;
+                  background: var(--color-border);
+                  border-radius: calc(var(--card-radius) * 0.5);
+                }
+                .complementary-block__skeleton-text {
+                  flex: 1;
+                  display: flex;
+                  flex-direction: column;
+                  gap: 0.25rem;
+                }
+                .complementary-block__skeleton-title {
+                  height: 0.75rem;
+                  width: 70%;
+                  background: var(--color-border);
+                  border-radius: 0.25rem;
+                }
+                .complementary-block__skeleton-price {
+                  height: 0.625rem;
+                  width: 40%;
+                  background: var(--color-border);
+                  border-radius: 0.25rem;
+                }
+                @keyframes complementaryPulse {
+                  0%, 100% { opacity: 1; }
+                  50% { opacity: 0.5; }
+                }
+              </style>
+
+              {%- if recommendations.performed and recommendations.products_count > 0 -%}
+                <h3 class="complementary-block__title">{{ block_title }}</h3>
+                <div class="complementary-block__list" data-complementary-products>
+                  {%- for product in recommendations.products -%}
+                    <div class="complementary-block__item" data-variant-id="{{ product.first_available_variant.id }}">
+                      <a href="{{ product.url }}" class="complementary-block__image">
+                        {% if product.featured_image %}
+                          {{ product.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', alt: product.title }}
+                        {% endif %}
+                      </a>
+                      <div class="complementary-block__info">
+                        <a href="{{ product.url }}" class="complementary-block__name">{{ product.title }}</a>
+                        <div class="complementary-block__price">
+                          {% if product.compare_at_price > product.price %}
+                            <span style="text-decoration: line-through; opacity: 0.6; margin-right: 0.25rem;">{{ product.compare_at_price | money }}</span>
+                          {% endif %}
+                          {{ product.price | money }}
+                        </div>
+                      </div>
+                      {% if product.available %}
+                        {% if product.variants.size == 1 %}
+                          <button type="button" class="complementary-block__add-btn" data-quick-add="{{ product.first_available_variant.id }}" aria-label="{{ 'products.product.add_to_cart' | t }}">
+                            <i class="ph ph-plus"></i>
+                          </button>
+                        {% else %}
+                          <a href="{{ product.url }}" class="complementary-block__add-btn" aria-label="{{ 'products.product.select_options' | t }}">
+                            <i class="ph ph-eye"></i>
+                          </a>
+                        {% endif %}
+                      {% endif %}
+                    </div>
+                  {%- endfor -%}
+                </div>
+                {%- liquid
+                  assign all_single_variant = true
+                  for product in recommendations.products
+                    if product.variants.size > 1
+                      assign all_single_variant = false
+                      break
+                    endif
+                  endfor
+                -%}
+                {% if block.settings.show_add_all and all_single_variant %}
+                  <button
+                    type="button"
+                    class="complementary-block__add-all"
+                    data-complementary-add-all
+                  >
+                    <i class="ph ph-plus"></i>
+                    <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
+                  </button>
+                {% endif %}
+              {%- else -%}
+                {%- comment -%} Loading skeleton - shown before fetch completes {%- endcomment -%}
+                <h3 class="complementary-block__title">{{ block_title }}</h3>
+                <div class="complementary-block__list" data-complementary-loading>
+                  {% for i in (1..block.settings.products_to_show) %}
+                    <div class="complementary-block__skeleton">
+                      <div class="complementary-block__skeleton-image"></div>
+                      <div class="complementary-block__skeleton-text">
+                        <div class="complementary-block__skeleton-title"></div>
+                        <div class="complementary-block__skeleton-price"></div>
+                      </div>
+                    </div>
+                  {% endfor %}
+                </div>
+              {%- endif -%}
+            </complementary-products>
+
         {%- endcase -%}
       {%- endfor -%}
     </div>
@@ -952,6 +1168,190 @@
 })();
 </script>
 
+<script>
+/**
+ * Complementary Products Custom Element - Like Dawn's product-recommendations
+ */
+if (!customElements.get('complementary-products')) {
+  class ComplementaryProducts extends HTMLElement {
+    constructor() {
+      super();
+      this.i18n = {
+        addAll: {{ 'products.complementary.add_all' | t | json }},
+        adding: {{ 'products.complementary.adding' | t | json }},
+        added: {{ 'products.complementary.added' | t | json }},
+        error: {{ 'products.complementary.error' | t | json }}
+      };
+    }
+
+    connectedCallback() {
+      // If recommendations already rendered (performed), just set up handlers
+      if (this.querySelector('[data-complementary-products]')) {
+        this.setupHandlers();
+        return;
+      }
+
+      // Otherwise, fetch via section rendering
+      const observer = new IntersectionObserver((entries, obs) => {
+        if (!entries[0].isIntersecting) return;
+        obs.unobserve(this);
+        this.loadRecommendations();
+      }, { rootMargin: '200px' });
+
+      observer.observe(this);
+    }
+
+    async loadRecommendations() {
+      const productId = this.dataset.productId;
+      const baseUrl = this.dataset.url;
+
+      try {
+        // Use section rendering - re-fetch the product section with recommendations
+        const url = `${baseUrl}&product_id=${productId}`;
+        console.log('[ComplementaryBlock] Fetching:', url);
+
+        const response = await fetch(url);
+        const html = await response.text();
+        console.log('[ComplementaryBlock] Response length:', html.length);
+
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(html, 'text/html');
+
+        // Like Dawn: find the complementary-products element in the fetched section
+        const newElement = doc.querySelector('complementary-products');
+        console.log('[ComplementaryBlock] Found element:', !!newElement);
+        console.log('[ComplementaryBlock] Has products:', !!newElement?.querySelector('[data-complementary-products]'));
+
+        if (newElement && newElement.querySelector('[data-complementary-products]')) {
+          // Replace our content with the fetched content (which has recommendations populated)
+          this.innerHTML = newElement.innerHTML;
+          this.setupHandlers();
+        } else {
+          // No complementary products found, hide this element
+          console.log('[ComplementaryBlock] Hiding - no products');
+          this.style.display = 'none';
+        }
+      } catch (error) {
+        console.error('[ComplementaryBlock] Error:', error);
+        this.style.display = 'none';
+      }
+    }
+
+    setupHandlers() {
+      // Quick add buttons
+      this.querySelectorAll('[data-quick-add]').forEach(btn => {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          this.addToCart([{ id: btn.dataset.quickAdd, quantity: 1 }], btn);
+        });
+      });
+
+      // Add all button
+      const addAllBtn = this.querySelector('[data-complementary-add-all]');
+      if (addAllBtn) {
+        addAllBtn.addEventListener('click', () => this.addAll(addAllBtn));
+      }
+    }
+
+    async addToCart(items, button) {
+      const originalHtml = button.innerHTML;
+      button.disabled = true;
+      button.innerHTML = '<i class="ph ph-spinner animate-spin"></i>';
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+
+        if (!response.ok) throw new Error('Failed to add to cart');
+
+        // Update cart count
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+        });
+
+        // Trigger cart drawer
+        const cartType = window.themeSettings?.cartType || 'drawer';
+        if (cartType === 'drawer') {
+          if (window.refreshCartDrawer) await window.refreshCartDrawer();
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        }
+
+        button.innerHTML = '<i class="ph ph-check"></i>';
+        setTimeout(() => {
+          button.innerHTML = originalHtml;
+          button.disabled = false;
+        }, 1500);
+      } catch (error) {
+        console.error('Add to cart error:', error);
+        button.innerHTML = '<i class="ph ph-x"></i>';
+        setTimeout(() => {
+          button.innerHTML = originalHtml;
+          button.disabled = false;
+        }, 1500);
+      }
+    }
+
+    async addAll(button) {
+      const items = Array.from(this.querySelectorAll('[data-quick-add]')).map(btn => ({
+        id: btn.dataset.quickAdd,
+        quantity: 1
+      }));
+
+      if (items.length === 0) return;
+
+      const textEl = button.querySelector('[data-add-all-text]');
+      const originalText = textEl?.textContent;
+      button.disabled = true;
+      if (textEl) textEl.textContent = this.i18n.adding;
+
+      try {
+        const response = await fetch('/cart/add.js', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ items })
+        });
+
+        if (!response.ok) throw new Error('Failed to add to cart');
+
+        // Update cart count
+        const cartResponse = await fetch('/cart.js');
+        const cart = await cartResponse.json();
+        document.querySelectorAll('[data-cart-count]').forEach(el => {
+          el.textContent = cart.item_count;
+        });
+
+        // Trigger cart drawer
+        const cartType = window.themeSettings?.cartType || 'drawer';
+        if (cartType === 'drawer') {
+          if (window.refreshCartDrawer) await window.refreshCartDrawer();
+          document.dispatchEvent(new CustomEvent('cart:open'));
+        }
+
+        if (textEl) textEl.textContent = this.i18n.added;
+        setTimeout(() => {
+          if (textEl) textEl.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      } catch (error) {
+        console.error('Add all to cart error:', error);
+        if (textEl) textEl.textContent = this.i18n.error;
+        setTimeout(() => {
+          if (textEl) textEl.textContent = originalText;
+          button.disabled = false;
+        }, 2000);
+      }
+    }
+  }
+
+  customElements.define('complementary-products', ComplementaryProducts);
+}
+</script>
+
 {% schema %}
 {
   "name": "Product",
@@ -1181,6 +1581,39 @@
       "name": "Back in stock",
       "limit": 1,
       "settings": []
+    },
+    {
+      "type": "complementary_products",
+      "name": "Complementary products",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Shows products frequently bought together. To set up complementary products, use the Search & Discovery app."
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "info": "Leave blank to use default translation"
+        },
+        {
+          "type": "range",
+          "id": "products_to_show",
+          "min": 1,
+          "max": 4,
+          "step": 1,
+          "default": 2,
+          "label": "Products to show"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_add_all",
+          "label": "Show add all button",
+          "default": true,
+          "info": "Only shows when all products have a single variant"
+        }
+      ]
     }
   ],
   "disabled_on": {

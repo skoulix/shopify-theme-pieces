@@ -205,7 +205,7 @@
     <div class="complementary-products__grid" data-complementary-grid style="display: none;">
       {% if recommendations.performed and recommendations.products_count > 0 %}
         {% for recommendation in recommendations.products %}
-          <div class="complementary-product" data-intro>
+          <div class="complementary-product">
             <a href="{{ recommendation.url }}" class="complementary-product__image">
               {% if recommendation.featured_image %}
                 {{ recommendation.featured_image | image_url: width: 200 | image_tag:
@@ -265,25 +265,30 @@
 
   function loadComplementary() {
     const url = `${baseUrl}&product_id=${productId}&section_id=${sectionId}`;
+    console.log('[Complementary] Fetching:', url);
 
     fetch(url)
       .then(response => response.text())
       .then(html => {
+        console.log('[Complementary] Response length:', html.length);
         const parser = new DOMParser();
         const doc = parser.parseFromString(html, 'text/html');
         const newGrid = doc.querySelector('[data-complementary-grid]');
 
+        console.log('[Complementary] Found grid:', !!newGrid, 'children:', newGrid?.children?.length || 0);
+
         if (newGrid && newGrid.children.length > 0) {
           grid.innerHTML = newGrid.innerHTML;
           loading.style.display = 'none';
-          grid.style.display = 'grid';
+          grid.style.display = '';
         } else {
           // No complementary products, hide the entire section
+          console.log('[Complementary] Hiding section - no products found');
           section.style.display = 'none';
         }
       })
       .catch(error => {
-        console.error('Error loading complementary products:', error);
+        console.error('[Complementary] Error:', error);
         section.style.display = 'none';
       });
   }
@@ -304,7 +309,7 @@
 
 {% schema %}
 {
-  "name": "Complementary products",
+  "name": "Complementary Products",
   "tag": "section",
   "class": "complementary-products-section",
   "settings": [
@@ -370,7 +375,7 @@
   ],
   "presets": [
     {
-      "name": "Complementary products",
+      "name": "Complementary Products",
       "category": "Products"
     }
   ],

@@ -1,0 +1,52 @@
+{%- comment -%}
+  Complementary Products AJAX Section
+  This section is used for fetching complementary products via section rendering
+  It's not meant to be added directly to templates - only fetched via JS
+{%- endcomment -%}
+
+{%- if recommendations.performed and recommendations.products_count > 0 -%}
+  <div data-complementary-ajax-content>
+    {%- for product in recommendations.products -%}
+      <div class="complementary-block__item" data-variant-id="{{ product.first_available_variant.id }}">
+        <a href="{{ product.url }}" class="complementary-block__image">
+          {% if product.featured_image %}
+            {{ product.featured_image | image_url: width: 100 | image_tag: loading: 'lazy', alt: product.title }}
+          {% endif %}
+        </a>
+        <div class="complementary-block__info">
+          <a href="{{ product.url }}" class="complementary-block__name">{{ product.title }}</a>
+          <div class="complementary-block__price">
+            {% if product.compare_at_price > product.price %}
+              <span style="text-decoration: line-through; opacity: 0.6; margin-right: 0.25rem;">{{ product.compare_at_price | money }}</span>
+            {% endif %}
+            {{ product.price | money }}
+          </div>
+        </div>
+        {% if product.available %}
+          {% if product.variants.size == 1 %}
+            <button type="button" class="complementary-block__add-btn" data-quick-add="{{ product.first_available_variant.id }}" aria-label="{{ 'products.product.add_to_cart' | t }}">
+              <i class="ph ph-plus"></i>
+            </button>
+          {% else %}
+            <a href="{{ product.url }}" class="complementary-block__add-btn" aria-label="{{ 'products.product.select_options' | t }}">
+              <i class="ph ph-eye"></i>
+            </a>
+          {% endif %}
+        {% endif %}
+      </div>
+    {%- endfor -%}
+  </div>
+  <script type="application/json" data-complementary-meta>
+    {
+      "count": {{ recommendations.products_count }},
+      "allSingleVariant": {% assign all_single = true %}{% for product in recommendations.products %}{% if product.variants.size > 1 %}{% assign all_single = false %}{% break %}{% endif %}{% endfor %}{{ all_single }}
+    }
+  </script>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Complementary AJAX",
+  "settings": []
+}
+{% endschema %}
