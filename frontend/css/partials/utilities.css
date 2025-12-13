@@ -2,6 +2,71 @@
    Utilities Layer - Custom utilities
    ========================================================================== */
 
+/* ==========================================================================
+   Section Header Components - Reusable title, label, description patterns
+   Used across: hero, countdown, collections, shoppable-videos, hotspots,
+   floating-images, stacking-cards, rolling-numbers, FAQ, testimonials, etc.
+   ========================================================================== */
+
+/* Section Title - Large responsive heading with font scale support */
+.section-title {
+  font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  line-height: 1;
+}
+
+/* Larger variant for hero sections */
+.section-title--hero {
+  font-size: calc(clamp(2.5rem, 10vw, 5rem) * var(--heading-font-scale, 1));
+  letter-spacing: -0.04em;
+  line-height: 0.9;
+}
+
+@media (min-width: 1024px) {
+  .section-title {
+    font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+  }
+
+  .section-title--hero {
+    font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1));
+  }
+}
+
+/* Title line offsets for SplitText animations */
+.section-title-line:nth-child(2) {
+  margin-left: clamp(0.5rem, 4vw, 2rem);
+}
+
+.section-title-line:nth-child(3) {
+  margin-left: clamp(1rem, 8vw, 4rem);
+}
+
+/* Section Label - Small uppercase eyebrow text */
+.section-label {
+  display: inline-block;
+  font-size: 0.65rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  opacity: 0.5;
+}
+
+/* Section Description - Paragraph text below title */
+.section-description {
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  line-height: 1.7;
+  opacity: 0.7;
+  max-width: 42rem;
+}
+
+/* Centered variant */
+.section-description--centered {
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
 @layer utilities {
   /* Note: text-balance and text-pretty are now native in Tailwind v3.4+
      These are kept for backwards compatibility with older Tailwind versions */

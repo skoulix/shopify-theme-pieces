@@ -94,25 +94,9 @@
     margin-bottom: 4rem;
   }
 
-  .countdown-title-{{ section.id }} {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-  }
-
-  .countdown-title-line:nth-child(2) {
-    margin-left: clamp(0.5rem, 4vw, 2rem);
-  }
-
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-countdown-title] { opacity: 0; }
-  html.animations-disabled [data-countdown-title] { opacity: 1; }
-
-  .countdown-subtitle-{{ section.id }} {
-    margin-top: 1rem;
-    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-    opacity: 0.7;
+  /* Title uses global .section-title, subtitle uses .section-description from utilities.css */
+  /* Title hidden state handled by global [data-section-title] in animations.css */
+  .countdown-header-{{ section.id }} .section-description {
     max-width: 600px;
     {% if section.settings.content_alignment == 'center' %}
     margin-left: auto;

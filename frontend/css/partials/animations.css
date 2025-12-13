@@ -2,6 +2,27 @@
    Animation Styles - Centralized reveal animations
    ========================================================================== */
 
+/* ==========================================================================
+   Title Reveal Animation - Hidden by default for SplitText animations
+   Usage: Add [data-section-title] to title elements that will be animated
+   The JS will animate them in, this CSS hides them initially
+   ========================================================================== */
+
+[data-section-title] {
+  opacity: 0;
+}
+
+/* Show immediately when animations are disabled */
+html.animations-disabled [data-section-title] {
+  opacity: 1;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-section-title] {
+    opacity: 1;
+  }
+}
+
 /* Scroll locking for modals, drawers, and page transitions */
 html.scroll-locked {
   overflow: hidden;

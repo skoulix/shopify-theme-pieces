@@ -28,40 +28,9 @@
     }
   }
 
-  .floating-images-label-{{ section.id }} {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+  /* Label, title, description use global .section-* classes from utilities.css */
+  .floating-images-{{ section.id }} .section-label {
     margin-bottom: 1.5rem;
-  }
-
-  .floating-images-label-{{ section.id }}.intro-visible {
-    opacity: 0.5;
-  }
-
-  .floating-images-title-{{ section.id }} {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1.1;
-    color: {{ text_color }};
-  }
-
-  .floating-images-title-line:nth-child(2) {
-    margin-left: clamp(0.5rem, 4vw, 2rem);
-  }
-
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-floating-images-title] { opacity: 0; }
-  html.animations-disabled [data-floating-images-title] { opacity: 1; }
-
-  .floating-images-description-{{ section.id }} {
-    font-size: 1rem;
-    opacity: 0.7;
-    max-width: 42rem;
-    margin-top: 1.5rem;
   }
 
   .floating-images-{{ section.id }} .btn {
@@ -120,19 +89,9 @@
   .floating-images-{{ section.id }} .parallax-image:nth-child(11) { transition: transform 0.13s ease-out; }
   .floating-images-{{ section.id }} .parallax-image:nth-child(12) { transition: transform 0.17s ease-out; }
 
-  /* Animation states */
+  /* Animation states - title hidden state handled by global [data-section-title] in animations.css */
   html.animations-disabled .floating-images-{{ section.id }} [data-intro] {
     opacity: 0.7;
-    transform: none;
-  }
-
-  html.animations-disabled .floating-images-{{ section.id }} .floating-images-title-{{ section.id }} {
-    opacity: 1;
-    transform: none;
-  }
-
-  html.animations-disabled .floating-images-{{ section.id }} .floating-images-label-{{ section.id }} {
-    opacity: 0.5;
     transform: none;
   }
 
@@ -200,19 +159,19 @@
   <div class="sticky top-0 h-screen flex items-center justify-center z-10">
     <div class="text-center px-4 max-w-4xl mx-auto">
       {% if section.settings.label != blank %}
-        <span class="floating-images-label-{{ section.id }}" data-floating-images-label>
+        <span class="section-label" data-intro>
           {{ section.settings.label }}
         </span>
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="floating-images-title-{{ section.id }} font-heading mb-6" data-floating-images-title>
+        <h2 class="section-title font-heading mb-6" data-section-title>
           {{ section.settings.title }}
         </h2>
       {% endif %}
 
       {% if section.settings.description != blank %}
-        <p class="floating-images-description-{{ section.id }} mx-auto" data-intro>
+        <p class="section-description mx-auto" data-intro>
           {{ section.settings.description }}
         </p>
       {% endif %}
@@ -307,31 +266,13 @@
 
     if (!shouldAnimate || !gsap || !ScrollTrigger) return;
 
-    const title = section.querySelector('[data-floating-images-title]');
-    const label = section.querySelector('[data-floating-images-label]');
+    const title = section.querySelector('[data-section-title]');
     const introElements = section.querySelectorAll('[data-intro]');
     const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
 
-    // Animate label
-    if (label) {
-      gsap.set(label, { opacity: 0, y: 20 });
-      gsap.to(label, {
-        opacity: 0.5,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: section,
-          start: scrollStart,
-          once: true
-        },
-        onComplete: function() { label.classList.add('intro-visible'); }
-      });
-    }
-
     // Animate title with SplitText line reveal
     if (title && SplitText) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'floating-images-title-line' });
+      const split = new SplitText(title, { type: 'lines', linesClass: 'section-title-line' });
 
       split.lines.forEach(function(line) {
         const lineWrapper = document.createElement('div');

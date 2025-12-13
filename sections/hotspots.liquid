@@ -30,39 +30,12 @@
     text-align: {{ section.settings.header_alignment }};
   }
 
-  .hotspots-label-{{ section.id }} {
-    display: inline-block;
-    font-size: 0.65rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.2em;
+  /* Label, title, description use global .section-* classes from utilities.css */
+  .hotspots-header-{{ section.id }} .section-label {
     margin-bottom: 1.5rem;
   }
 
-  .hotspots-label-{{ section.id }}.intro-visible {
-    opacity: 0.5;
-  }
-
-  .hotspots-title-{{ section.id }} {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    line-height: 1;
-  }
-
-  .hotspots-title-line:nth-child(2) {
-    margin-left: clamp(0.5rem, 4vw, 2rem);
-  }
-
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-hotspots-title] { opacity: 0; }
-  html.animations-disabled [data-hotspots-title] { opacity: 1; }
-
-  .hotspots-description-{{ section.id }} {
-    font-size: 1rem;
-    opacity: 0.7;
-    max-width: 42rem;
-    margin-top: 1.5rem;
+  .hotspots-header-{{ section.id }} .section-description {
     {% if section.settings.header_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;
@@ -234,19 +207,9 @@
     }
   }
 
-  /* Animation states */
+  /* Animation states - title hidden state handled by global [data-section-title] in animations.css */
   html.animations-disabled .hotspots-{{ section.id }} [data-intro] {
     opacity: 0.7;
-    transform: none;
-  }
-
-  html.animations-disabled .hotspots-{{ section.id }} .hotspots-title-{{ section.id }} {
-    opacity: 1;
-    transform: none;
-  }
-
-  html.animations-disabled .hotspots-{{ section.id }} .hotspots-label-{{ section.id }} {
-    opacity: 0.5;
     transform: none;
   }
 </style>
@@ -260,15 +223,15 @@
     {% if section.settings.title != blank or section.settings.label != blank %}
       <header class="hotspots-header-{{ section.id }}">
         {% if section.settings.label != blank %}
-          <span class="hotspots-label-{{ section.id }}" data-hotspots-label>{{ section.settings.label }}</span>
+          <span class="section-label" data-intro>{{ section.settings.label }}</span>
         {% endif %}
         {% if section.settings.title != blank %}
-          <h2 class="hotspots-title-{{ section.id }} font-heading" data-hotspots-title>
+          <h2 class="section-title font-heading" data-section-title>
             {{ section.settings.title }}
           </h2>
         {% endif %}
         {% if section.settings.description != blank %}
-          <p class="hotspots-description-{{ section.id }}" data-intro>
+          <p class="section-description mt-6" data-intro>
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -614,30 +577,12 @@
     if (!shouldAnimate || !gsap || !ScrollTrigger) return;
 
     const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
-    const title = section.querySelector('[data-hotspots-title]');
-    const label = section.querySelector('[data-hotspots-label]');
+    const title = section.querySelector('[data-section-title]');
     const introElements = section.querySelectorAll('[data-intro]');
-
-    // Animate label
-    if (label) {
-      gsap.set(label, { opacity: 0, y: 20 });
-      gsap.to(label, {
-        opacity: 0.5,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: section,
-          start: scrollStart,
-          once: true
-        },
-        onComplete: function() { label.classList.add('intro-visible'); }
-      });
-    }
 
     // Animate title with SplitText line reveal
     if (title && SplitText) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'hotspots-title-line' });
+      const split = new SplitText(title, { type: 'lines', linesClass: 'section-title-line' });
 
       split.lines.forEach(function(line) {
         const lineWrapper = document.createElement('div');
