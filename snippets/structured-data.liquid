@@ -246,3 +246,55 @@
 }
 </script>
 {%- endif -%}
+
+{%- comment -%} LocalBusiness Schema (optional) - Rendered if store has physical location info {%- endcomment -%}
+{%- if settings.enable_local_business_schema -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "LocalBusiness",
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  {%- if settings.logo -%}
+  "logo": {{ settings.logo | image_url: width: 600 | json }},
+  "image": {{ settings.logo | image_url: width: 600 | json }},
+  {%- endif -%}
+  {%- if settings.business_phone -%}
+  "telephone": {{ settings.business_phone | json }},
+  {%- endif -%}
+  {%- if settings.business_email -%}
+  "email": {{ settings.business_email | json }},
+  {%- endif -%}
+  {%- if settings.business_address or settings.business_city or settings.business_country -%}
+  "address": {
+    "@type": "PostalAddress"
+    {%- if settings.business_address -%}
+    ,"streetAddress": {{ settings.business_address | json }}
+    {%- endif -%}
+    {%- if settings.business_city -%}
+    ,"addressLocality": {{ settings.business_city | json }}
+    {%- endif -%}
+    {%- if settings.business_state -%}
+    ,"addressRegion": {{ settings.business_state | json }}
+    {%- endif -%}
+    {%- if settings.business_zip -%}
+    ,"postalCode": {{ settings.business_zip | json }}
+    {%- endif -%}
+    {%- if settings.business_country -%}
+    ,"addressCountry": {{ settings.business_country | json }}
+    {%- endif -%}
+  },
+  {%- endif -%}
+  {%- if settings.business_hours -%}
+  "openingHours": {{ settings.business_hours | json }},
+  {%- endif -%}
+  "priceRange": "{{ settings.business_price_range | default: '$$' }}"
+}
+</script>
+{%- endif -%}
+
+{%- comment -%}
+  FAQ Schema - Inject via section/block metafield or page content
+  Use this render call in sections with FAQ blocks:
+  {% render 'structured-data-faq', faqs: section.blocks %}
+{%- endcomment -%}

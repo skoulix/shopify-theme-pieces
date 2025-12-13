@@ -13,6 +13,7 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * SwupManager - Page transition management
  * Handles SPA-like page transitions with GSAP animations
+ * Supports View Transition API for enhanced native transitions
  */
 class SwupManager {
   constructor() {
@@ -21,6 +22,18 @@ class SwupManager {
     this.pageTransitionDuration = 0.6;
     this.skipAnimation = false; // Flag to skip default animations for custom transitions
     this.transitionStyle = window.themeSettings?.pageTransitionStyle || 'slide';
+    // Check for View Transition API support
+    this.supportsViewTransitions = typeof document.startViewTransition === 'function';
+  }
+
+  /**
+   * Check if View Transitions should be used
+   * @returns {boolean}
+   */
+  shouldUseViewTransitions() {
+    return this.supportsViewTransitions &&
+           window.themeSettings?.enableViewTransitions !== false &&
+           !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   init() {
@@ -29,6 +42,11 @@ class SwupManager {
     // Disable Swup in Shopify theme customizer - it conflicts with editor navigation
     if (window.Shopify && window.Shopify.designMode) {
       return null;
+    }
+
+    // Inject View Transition CSS if supported
+    if (this.shouldUseViewTransitions()) {
+      this.injectViewTransitionStyles();
     }
 
     // Animation options for the JS plugin
@@ -153,6 +171,11 @@ class SwupManager {
   async animateOut() {
     // Skip if custom animation is handling it
     if (this.skipAnimation) {
+      return Promise.resolve();
+    }
+
+    // If using View Transitions, the browser handles the animation
+    if (this.shouldUseViewTransitions() && this._viewTransitionActive) {
       return Promise.resolve();
     }
 
@@ -417,6 +440,123 @@ class SwupManager {
   clearAllCache() {
     if (this.swup && this.swup.cache) {
       this.swup.cache.clear();
+    }
+  }
+
+  /**
+   * Inject View Transition API CSS styles
+   * These styles enable smooth cross-fade transitions using native browser APIs
+   */
+  injectViewTransitionStyles() {
+    if (document.getElementById('view-transition-styles')) return;
+
+    const style = document.createElement('style');
+    style.id = 'view-transition-styles';
+    style.textContent = `
+      /* View Transition API styles */
+      @view-transition {
+        navigation: auto;
+      }
+
+      /* Root transition - fade */
+      ::view-transition-old(root) {
+        animation: 0.3s ease-out both fade-out;
+      }
+
+      ::view-transition-new(root) {
+        animation: 0.3s ease-out both fade-in;
+      }
+
+      /* Product card transitions - morph effect */
+      .product-card {
+        view-transition-name: var(--view-transition-name);
+      }
+
+      ::view-transition-old(product-card),
+      ::view-transition-new(product-card) {
+        animation-duration: 0.4s;
+      }
+
+      /* Header stays in place during transition */
+      [data-header-wrapper] {
+        view-transition-name: header;
+      }
+
+      ::view-transition-old(header),
+      ::view-transition-new(header) {
+        animation: none;
+        mix-blend-mode: normal;
+      }
+
+      /* Animation keyframes */
+      @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+      }
+
+      @keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+      }
+
+      @keyframes slide-in {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes slide-out {
+        from {
+          opacity: 1;
+          transform: translateY(0);
+        }
+        to {
+          opacity: 0;
+          transform: translateY(-20px);
+        }
+      }
+
+      /* Respect reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+          animation: none !important;
+        }
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
+  /**
+   * Start a View Transition for page navigation
+   * @param {Function} updateCallback - Function that updates the DOM
+   * @returns {ViewTransition|null}
+   */
+  async startViewTransition(updateCallback) {
+    if (!this.shouldUseViewTransitions()) {
+      await updateCallback();
+      return null;
+    }
+
+    this._viewTransitionActive = true;
+
+    try {
+      const transition = document.startViewTransition(async () => {
+        await updateCallback();
+      });
+
+      await transition.finished;
+    } catch (e) {
+      // Fallback if View Transition fails
+      await updateCallback();
+    } finally {
+      this._viewTransitionActive = false;
     }
   }
 

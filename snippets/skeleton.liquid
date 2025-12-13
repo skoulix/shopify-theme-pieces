@@ -1,0 +1,327 @@
+{%- comment -%}
+  Loading Skeleton Components
+  Provides skeleton loading states for various UI elements
+
+  Parameters:
+  - type: 'text', 'image', 'card', 'product-card', 'avatar', 'button', 'input'
+  - width: Width (CSS value) - default varies by type
+  - height: Height (CSS value) - default varies by type
+  - lines: Number of text lines (for type='text')
+  - class: Additional CSS classes
+  - animated: Enable pulse animation (default: true)
+
+  Usage:
+  {% render 'skeleton', type: 'product-card' %}
+  {% render 'skeleton', type: 'text', lines: 3 %}
+  {% render 'skeleton', type: 'image', width: '100%', height: '200px' %}
+{%- endcomment -%}
+
+{%- liquid
+  assign type = type | default: 'text'
+  assign animated = animated | default: true
+  assign animation_class = ''
+  if animated
+    assign animation_class = 'skeleton--animated'
+  endif
+-%}
+
+{%- case type -%}
+  {%- when 'text' -%}
+    {%- assign lines = lines | default: 1 -%}
+    <div class="skeleton-text {{ animation_class }} {{ class }}">
+      {%- for i in (1..lines) -%}
+        <div
+          class="skeleton skeleton-text__line"
+          {% if forloop.last and lines > 1 %}style="width: 60%;"{% endif %}
+        ></div>
+      {%- endfor -%}
+    </div>
+
+  {%- when 'image' -%}
+    <div
+      class="skeleton skeleton-image {{ animation_class }} {{ class }}"
+      {% if width or height %}style="{% if width %}width: {{ width }};{% endif %}{% if height %}height: {{ height }};{% endif %}"{% endif %}
+    >
+      <i class="ph ph-image text-3xl opacity-30" aria-hidden="true"></i>
+    </div>
+
+  {%- when 'avatar' -%}
+    {%- assign size = size | default: '48px' -%}
+    <div
+      class="skeleton skeleton-avatar {{ animation_class }} {{ class }}"
+      style="width: {{ size }}; height: {{ size }};"
+    ></div>
+
+  {%- when 'button' -%}
+    <div
+      class="skeleton skeleton-button {{ animation_class }} {{ class }}"
+      {% if width %}style="width: {{ width }};"{% endif %}
+    ></div>
+
+  {%- when 'input' -%}
+    <div
+      class="skeleton skeleton-input {{ animation_class }} {{ class }}"
+      {% if width %}style="width: {{ width }};"{% endif %}
+    ></div>
+
+  {%- when 'card' -%}
+    <div class="skeleton-card {{ animation_class }} {{ class }}">
+      <div class="skeleton skeleton-card__image"></div>
+      <div class="skeleton-card__content">
+        <div class="skeleton skeleton-card__title"></div>
+        <div class="skeleton skeleton-card__text"></div>
+        <div class="skeleton skeleton-card__text" style="width: 70%;"></div>
+      </div>
+    </div>
+
+  {%- when 'product-card' -%}
+    <div class="skeleton-product-card {{ animation_class }} {{ class }}">
+      <div class="skeleton skeleton-product-card__image"></div>
+      <div class="skeleton-product-card__content">
+        <div class="skeleton skeleton-product-card__vendor"></div>
+        <div class="skeleton skeleton-product-card__title"></div>
+        <div class="skeleton skeleton-product-card__price"></div>
+      </div>
+    </div>
+
+  {%- when 'product-grid' -%}
+    {%- assign columns = columns | default: 4 -%}
+    {%- assign items = items | default: 8 -%}
+    <div class="skeleton-product-grid {{ animation_class }}" style="--skeleton-columns: {{ columns }};">
+      {%- for i in (1..items) -%}
+        {% render 'skeleton', type: 'product-card', animated: false %}
+      {%- endfor -%}
+    </div>
+
+  {%- when 'list-item' -%}
+    <div class="skeleton-list-item {{ animation_class }} {{ class }}">
+      <div class="skeleton skeleton-list-item__image"></div>
+      <div class="skeleton-list-item__content">
+        <div class="skeleton skeleton-list-item__title"></div>
+        <div class="skeleton skeleton-list-item__text"></div>
+      </div>
+    </div>
+
+  {%- else -%}
+    {%- comment -%} Generic skeleton {%- endcomment -%}
+    <div
+      class="skeleton {{ animation_class }} {{ class }}"
+      {% if width or height %}style="{% if width %}width: {{ width }};{% endif %}{% if height %}height: {{ height }};{% endif %}"{% endif %}
+    ></div>
+{%- endcase -%}
+
+<style>
+  /* Base skeleton */
+  .skeleton {
+    background: var(--color-skeleton, var(--color-background-secondary));
+    border-radius: var(--skeleton-radius, 4px);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Pulse animation */
+  .skeleton--animated .skeleton,
+  .skeleton.skeleton--animated {
+    animation: skeleton-pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+
+  /* Shimmer animation (alternative) */
+  .skeleton--shimmer .skeleton::after,
+  .skeleton.skeleton--shimmer::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.3) 50%,
+      transparent 100%
+    );
+    animation: skeleton-shimmer 1.5s ease-in-out infinite;
+  }
+
+  @keyframes skeleton-shimmer {
+    0% {
+      transform: translateX(-100%);
+    }
+    100% {
+      transform: translateX(100%);
+    }
+  }
+
+  /* Text skeleton */
+  .skeleton-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeleton-text__line {
+    height: 1rem;
+    width: 100%;
+  }
+
+  /* Image skeleton */
+  .skeleton-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 200px;
+    aspect-ratio: 1/1;
+    border-radius: var(--card-radius, 8px);
+    color: var(--color-text-secondary);
+  }
+
+  /* Avatar skeleton */
+  .skeleton-avatar {
+    border-radius: 50%;
+    flex-shrink: 0;
+  }
+
+  /* Button skeleton */
+  .skeleton-button {
+    height: 2.75rem;
+    min-width: 8rem;
+    border-radius: var(--button-radius, 4px);
+  }
+
+  /* Input skeleton */
+  .skeleton-input {
+    height: 3rem;
+    width: 100%;
+    border-radius: var(--input-radius, 4px);
+  }
+
+  /* Card skeleton */
+  .skeleton-card {
+    border-radius: var(--card-radius, 8px);
+    overflow: hidden;
+  }
+
+  .skeleton-card__image {
+    aspect-ratio: 16/9;
+    border-radius: 0;
+  }
+
+  .skeleton-card__content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeleton-card__title {
+    height: 1.25rem;
+    width: 70%;
+  }
+
+  .skeleton-card__text {
+    height: 0.875rem;
+    width: 100%;
+  }
+
+  /* Product card skeleton */
+  .skeleton-product-card {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--card-radius, 8px);
+    overflow: hidden;
+  }
+
+  .skeleton-product-card__image {
+    aspect-ratio: 3/4;
+    border-radius: 0;
+  }
+
+  .skeleton-product-card__content {
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .skeleton-product-card__vendor {
+    height: 0.625rem;
+    width: 30%;
+  }
+
+  .skeleton-product-card__title {
+    height: 0.875rem;
+    width: 80%;
+  }
+
+  .skeleton-product-card__price {
+    height: 0.875rem;
+    width: 25%;
+    margin-top: 0.25rem;
+  }
+
+  /* Product grid skeleton */
+  .skeleton-product-grid {
+    display: grid;
+    grid-template-columns: repeat(var(--skeleton-columns, 4), 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 1024px) {
+    .skeleton-product-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .skeleton-product-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  /* List item skeleton */
+  .skeleton-list-item {
+    display: flex;
+    gap: 1rem;
+    padding: 1rem;
+  }
+
+  .skeleton-list-item__image {
+    width: 4rem;
+    height: 4rem;
+    flex-shrink: 0;
+  }
+
+  .skeleton-list-item__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    justify-content: center;
+  }
+
+  .skeleton-list-item__title {
+    height: 1rem;
+    width: 60%;
+  }
+
+  .skeleton-list-item__text {
+    height: 0.75rem;
+    width: 40%;
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .skeleton--animated .skeleton,
+    .skeleton.skeleton--animated,
+    .skeleton--shimmer .skeleton::after,
+    .skeleton.skeleton--shimmer::after {
+      animation: none;
+    }
+  }
+</style>

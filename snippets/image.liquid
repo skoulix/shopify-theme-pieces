@@ -1,19 +1,27 @@
 {%- comment -%}
-  Image Snippet - Skeleton + Tailwind
+  Image Snippet - Responsive images with skeleton loading
 
   @param {image} image - The image to render
   @param {string} [url] - Optional link URL
   @param {string} [link_label] - Accessible label for the link (for image-only links)
-  @param {string} [class] - Additional CSS classes
+  @param {string} [class] - Additional CSS classes for the wrapper
+  @param {string} [image_class] - Additional CSS classes for the img element
   @param {number} [width] - Max width for srcset
   @param {number} [height] - Max height (for aspect ratio)
   @param {string} [crop] - Crop position
   @param {string} [loading] - Loading strategy (lazy/eager)
   @param {string} [alt] - Alt text override
+  @param {string} [sizes] - Responsive sizes attribute
+  @param {string} [widths] - Comma-separated widths for srcset
+  @param {string} [aspect_ratio] - CSS aspect ratio (e.g., '1/1', '3/4', '16/9')
+  @param {boolean} [skeleton] - Show skeleton placeholder while loading (default: false)
+  @param {boolean} [reveal] - Add reveal animation on load (default: false)
+  @param {string} [placeholder_color] - Background color for placeholder
 
   @example
   {% render 'image', image: product.featured_image %}
   {% render 'image', image: product.featured_image, url: product.url, link_label: product.title, class: 'rounded-lg' %}
+  {% render 'image', image: collection.image, aspect_ratio: '16/9', skeleton: true %}
 {%- endcomment -%}
 
 {%- liquid
@@ -23,6 +31,7 @@
   assign sizes = sizes | default: '(max-width: 768px) 100vw, 50vw'
   assign widths = widths | default: '400, 600, 800, 1200'
   assign link_label = link_label | default: alt
+  assign image_class = image_class | default: ''
 
   comment
     Focal point support - gets the focal point from image presentation settings
@@ -30,30 +39,80 @@
   endcomment
   assign focal_point = image.presentation.focal_point | default: '50% 50%'
   assign focal_point_style = 'object-position: ' | append: focal_point
+
+  comment
+    Build aspect ratio style if provided
+  endcomment
+  assign wrapper_style = ''
+  if aspect_ratio
+    assign wrapper_style = 'aspect-ratio: ' | append: aspect_ratio | append: ';'
+  endif
+  if placeholder_color
+    assign wrapper_style = wrapper_style | append: ' background-color: ' | append: placeholder_color | append: ';'
+  endif
+
+  comment
+    Build image classes
+  endcomment
+  assign img_classes = 'w-full h-auto object-cover'
+  if aspect_ratio
+    assign img_classes = 'w-full h-full object-cover'
+  endif
+  if reveal
+    assign img_classes = img_classes | append: ' opacity-0 transition-opacity duration-500'
+  endif
+  if image_class != ''
+    assign img_classes = img_classes | append: ' ' | append: image_class
+  endif
+
+  comment
+    Build wrapper classes
+  endcomment
+  assign wrapper_classes = class | default: ''
+  if skeleton
+    assign wrapper_classes = wrapper_classes | append: ' relative overflow-hidden'
+  endif
+  if aspect_ratio
+    assign wrapper_classes = wrapper_classes | append: ' overflow-hidden'
+  endif
 -%}
 
-{%- if url -%}
-  <a href="{{ url }}" class="block {{ class }}"{% if link_label != blank %} aria-label="{{ link_label }}"{% endif %}>
+{%- capture image_tag -%}
+  {%- if image != blank -%}
     {{ image | image_url: width: width, height: height, crop: crop | image_tag:
-      class: 'w-full h-auto object-cover',
+      class: img_classes,
       style: focal_point_style,
       loading: loading,
       decoding: 'async',
+      fetchpriority: fetchpriority,
       sizes: sizes,
       widths: widths,
-      alt: alt
+      alt: alt,
+      onload: reveal | ternary: "this.style.opacity='1'", nil
     }}
+  {%- else -%}
+    {%- comment -%} Placeholder for missing images {%- endcomment -%}
+    <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary] text-[--color-text-secondary]" {% if aspect_ratio %}style="aspect-ratio: {{ aspect_ratio }};"{% endif %}>
+      <i class="ph ph-image-square text-4xl opacity-30" aria-hidden="true"></i>
+      <span class="sr-only">{{ 'accessibility.no_image' | t | default: 'No image available' }}</span>
+    </div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- capture skeleton_html -%}
+  {%- if skeleton and image != blank -%}
+    <div class="image-skeleton absolute inset-0 bg-[--color-background-secondary] animate-pulse" aria-hidden="true"></div>
+  {%- endif -%}
+{%- endcapture -%}
+
+{%- if url -%}
+  <a href="{{ url }}" class="block {{ wrapper_classes }}"{% if wrapper_style != '' %} style="{{ wrapper_style }}"{% endif %}{% if link_label != blank %} aria-label="{{ link_label }}"{% endif %}>
+    {{ skeleton_html }}
+    {{ image_tag }}
   </a>
 {%- else -%}
-  <div class="{{ class }}">
-    {{ image | image_url: width: width, height: height, crop: crop | image_tag:
-      class: 'w-full h-auto object-cover',
-      style: focal_point_style,
-      loading: loading,
-      decoding: 'async',
-      sizes: sizes,
-      widths: widths,
-      alt: alt
-    }}
+  <div class="{{ wrapper_classes }}"{% if wrapper_style != '' %} style="{{ wrapper_style }}"{% endif %}>
+    {{ skeleton_html }}
+    {{ image_tag }}
   </div>
 {%- endif -%}

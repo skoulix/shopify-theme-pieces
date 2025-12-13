@@ -1,0 +1,50 @@
+{%- comment -%}
+  FAQ Schema Structured Data
+  Generates FAQPage schema markup for FAQ sections
+
+  Usage:
+  {% render 'structured-data-faq', faqs: section.blocks %}
+
+  Expects blocks with:
+  - block.settings.question (string)
+  - block.settings.answer (richtext/html)
+
+  Or an array of objects with question/answer properties
+{%- endcomment -%}
+
+{%- if faqs.size > 0 -%}
+  {%- assign has_valid_faqs = false -%}
+  {%- for faq in faqs -%}
+    {%- assign question = faq.settings.question | default: faq.question -%}
+    {%- assign answer = faq.settings.answer | default: faq.answer -%}
+    {%- if question != blank and answer != blank -%}
+      {%- assign has_valid_faqs = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- if has_valid_faqs -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {%- for faq in faqs -%}
+      {%- assign question = faq.settings.question | default: faq.question -%}
+      {%- assign answer = faq.settings.answer | default: faq.answer -%}
+      {%- if question != blank and answer != blank -%}
+    {
+      "@type": "Question",
+      "name": {{ question | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ answer | strip_html | json }}
+      }
+    }{%- unless forloop.last -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  ]
+}
+</script>
+  {%- endif -%}
+{%- endif -%}

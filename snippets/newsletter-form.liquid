@@ -1,0 +1,133 @@
+{%- comment -%}
+  Reusable Newsletter Form Component
+  Handles form submission, success/error states, and accessibility
+
+  Parameters:
+  - form_id: Unique ID for the form (required for accessibility)
+  - layout: 'inline' (default), 'stacked', or 'minimal'
+  - input_bg: Background color for input (default: transparent)
+  - input_border: Border color for input
+  - button_style: 'primary', 'secondary', or 'outline' (default: primary)
+  - button_text: Button text (default: 'Subscribe')
+  - placeholder: Placeholder text (default: 'Enter your email')
+  - show_privacy: Show privacy link (default: false)
+  - privacy_text: Privacy text
+  - privacy_link: Privacy link URL
+  - privacy_link_text: Privacy link text
+  - class: Additional classes for the form wrapper
+{%- endcomment -%}
+
+{%- liquid
+  assign form_id = form_id | default: 'newsletter'
+  assign layout = layout | default: 'inline'
+  assign button_style = button_style | default: 'primary'
+  assign button_text = button_text | default: 'newsletter.button_label' | t | default: 'Subscribe'
+  assign placeholder = placeholder | default: 'newsletter.label' | t | default: 'Enter your email'
+-%}
+
+{% form 'customer', id: form_id, class: class %}
+  <input type="hidden" name="contact[tags]" value="newsletter">
+
+  {%- case layout -%}
+    {%- when 'inline' -%}
+      <div class="newsletter-form newsletter-form--inline flex flex-col sm:flex-row gap-3">
+        <div class="flex-1">
+          <label for="{{ form_id }}-email" class="sr-only">{{ 'newsletter.label' | t | default: 'Email address' }}</label>
+          <input
+            id="{{ form_id }}-email"
+            type="email"
+            name="contact[email]"
+            required
+            placeholder="{{ placeholder }}"
+            autocomplete="email"
+            aria-describedby="{{ form_id }}-status"
+            class="newsletter-form__input w-full h-12 px-4 rounded-[--input-radius] bg-[--color-background] border border-[--color-border] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+            {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn--{{ button_style }} h-12 px-6 whitespace-nowrap"
+        >
+          <span data-button-text>{{ button_text }}</span>
+          <span data-loading-text class="hidden">
+            <i class="ph ph-spinner-gap animate-spin" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+
+    {%- when 'stacked' -%}
+      <div class="newsletter-form newsletter-form--stacked flex flex-col gap-3">
+        <div>
+          <label for="{{ form_id }}-email" class="sr-only">{{ 'newsletter.label' | t | default: 'Email address' }}</label>
+          <input
+            id="{{ form_id }}-email"
+            type="email"
+            name="contact[email]"
+            required
+            placeholder="{{ placeholder }}"
+            autocomplete="email"
+            aria-describedby="{{ form_id }}-status"
+            class="newsletter-form__input w-full h-12 px-4 rounded-[--input-radius] bg-[--color-background] border border-[--color-border] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+            {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
+          >
+        </div>
+        <button
+          type="submit"
+          class="btn btn--{{ button_style }} w-full h-12"
+        >
+          <span data-button-text>{{ button_text }}</span>
+          <span data-loading-text class="hidden">
+            <i class="ph ph-spinner-gap animate-spin" aria-hidden="true"></i>
+          </span>
+        </button>
+      </div>
+
+    {%- when 'minimal' -%}
+      <div class="newsletter-form newsletter-form--minimal flex gap-0">
+        <label for="{{ form_id }}-email" class="sr-only">{{ 'newsletter.label' | t | default: 'Email address' }}</label>
+        <input
+          id="{{ form_id }}-email"
+          type="email"
+          name="contact[email]"
+          required
+          placeholder="{{ placeholder }}"
+          autocomplete="email"
+          aria-describedby="{{ form_id }}-status"
+          class="newsletter-form__input flex-1 min-w-0 h-10 px-4 rounded-l-[--input-radius] border border-r-0 border-[--color-border] bg-transparent text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+          {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
+        >
+        <button
+          type="submit"
+          class="h-10 px-4 rounded-r-[--input-radius] border border-[--color-border] bg-transparent text-[--color-text] hover:bg-[--color-text] hover:text-[--color-background] transition-colors"
+          aria-label="{{ button_text }}"
+        >
+          <i class="ph ph-arrow-right text-lg" aria-hidden="true"></i>
+        </button>
+      </div>
+  {%- endcase -%}
+
+  {%- comment -%} Status Messages {%- endcomment -%}
+  <div id="{{ form_id }}-status" class="newsletter-form__status mt-3" aria-live="polite">
+    {% if form.posted_successfully? %}
+      <p class="text-sm text-green-600 dark:text-green-400 flex items-center gap-2">
+        <i class="ph ph-check-circle" aria-hidden="true"></i>
+        {{ 'newsletter.success' | t | default: 'Thanks for subscribing!' }}
+      </p>
+    {% endif %}
+    {% if form.errors %}
+      <p class="text-sm text-red-600 dark:text-red-400 flex items-center gap-2">
+        <i class="ph ph-warning-circle" aria-hidden="true"></i>
+        {{ form.errors.messages['email'] | default: 'Please enter a valid email address.' }}
+      </p>
+    {% endif %}
+  </div>
+
+  {%- comment -%} Privacy Link {%- endcomment -%}
+  {% if show_privacy and privacy_link != blank %}
+    <p class="newsletter-form__privacy mt-3 text-xs text-[--color-text-secondary]">
+      {{ privacy_text }}
+      <a href="{{ privacy_link }}" class="underline hover:no-underline">{{ privacy_link_text }}</a>
+    </p>
+  {% endif %}
+{% endform %}
