@@ -117,7 +117,7 @@ class TweenManager {
         // Handled specially
         duration: 1.2,
         ease: 'power4.out',
-        stagger: 0.1
+        stagger: 0.05
       },
       'clip-right': {
         initial: { clipPath: 'inset(0 100% 0 0)' },
@@ -170,7 +170,7 @@ class TweenManager {
    */
   initSplitText(element, timeline, position) {
     const duration = parseFloat(element.dataset.tweenDuration) || 1.2;
-    const stagger = parseFloat(element.dataset.tweenStagger) || 0.1;
+    const stagger = parseFloat(element.dataset.tweenStagger) || 0.05;
     const ease = element.dataset.tweenEase || 'power4.out';
 
     // Create SplitText instance
@@ -240,7 +240,7 @@ class TweenManager {
     if (tweenElements.length === 0) return;
 
     const scrollStart = groupElement.dataset.tweenStart || this.getScrollStart();
-    const baseStagger = parseFloat(groupElement.dataset.tweenStagger) || 0.15;
+    const baseStagger = parseFloat(groupElement.dataset.tweenStagger) || 0.08;
 
     // Create timeline with ScrollTrigger
     const tl = gsap.timeline({
