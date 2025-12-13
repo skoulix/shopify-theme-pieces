@@ -400,6 +400,8 @@
     // Check if animations should run
     const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     // Title animation
     if (shouldAnimate && title && SplitText) {
       const split = new SplitText(title, { type: 'lines', linesClass: 'hscroll-title-line' });
@@ -422,7 +424,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });
@@ -439,7 +441,7 @@
           ease: 'power3.out',
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: scrollStart,
             once: true
           }
         });
@@ -455,7 +457,7 @@
           ease: 'power3.out',
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: scrollStart,
             once: true
           }
         });

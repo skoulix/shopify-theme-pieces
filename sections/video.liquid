@@ -372,6 +372,8 @@
     const container = section.querySelector('[data-video-container]');
     const title = section.querySelector('[data-video-title]');
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     // Animate container with clip-path swipe (initial state set in CSS)
     if (container) {
       gsap.to(container, {
@@ -380,7 +382,7 @@
         ease: 'expo.inOut',
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });
@@ -408,7 +410,7 @@
         delay: 0.3,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

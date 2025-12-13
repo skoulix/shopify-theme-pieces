@@ -151,6 +151,7 @@
 
       const image = section.querySelector('[data-iwt-image]');
       const title = section.querySelector('[data-iwt-title]');
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
 
       // Animate image with clip-path swipe (initial state set in CSS)
       if (image) {
@@ -160,7 +161,7 @@
           ease: 'expo.inOut',
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: scrollStart,
             once: true
           }
         });
@@ -189,7 +190,7 @@
           stagger: 0.1,
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: scrollStart,
             once: true
           }
         });

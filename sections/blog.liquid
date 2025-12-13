@@ -185,6 +185,7 @@
     const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
     const subtitleText = wrapper.querySelector('[data-subtitle-text]');
     const blogItems = wrapper.querySelectorAll('[data-blog-item]');
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 85%') : 'top 85%';
 
     const tl = gsap.timeline();
 
@@ -244,7 +245,7 @@
         delay: index * 0.1,
         scrollTrigger: {
           trigger: item,
-          start: 'top 85%',
+          start: scrollStart,
           once: true
         }
       });

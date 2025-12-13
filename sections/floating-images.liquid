@@ -309,6 +309,7 @@
     const title = section.querySelector('[data-floating-images-title]');
     const label = section.querySelector('[data-floating-images-label]');
     const introElements = section.querySelectorAll('[data-intro]');
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
 
     // Animate label
     if (label) {
@@ -320,7 +321,7 @@
         ease: 'power2.out',
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         },
         onComplete: function() { label.classList.add('intro-visible'); }
@@ -349,7 +350,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });
@@ -367,7 +368,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

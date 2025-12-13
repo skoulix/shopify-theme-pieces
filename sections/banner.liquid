@@ -228,6 +228,7 @@
 
     if (!shouldAnimate || !gsap || !ScrollTrigger) return;
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 85%') : 'top 85%';
     const introElements = section.querySelectorAll('[data-intro]');
     if (introElements.length === 0) return;
 
@@ -241,7 +242,7 @@
       stagger: 0.1,
       scrollTrigger: {
         trigger: section,
-        start: 'top 85%',
+        start: scrollStart,
         once: true
       }
     });

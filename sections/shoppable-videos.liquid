@@ -565,6 +565,8 @@
     const title = section.querySelector('[data-shoppable-videos-title]');
     const label = section.querySelector('.shoppable-videos-label-{{ section.id }}');
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     if (shouldAnimate && title && gsap && SplitText && ScrollTrigger) {
       const split = new SplitText(title, { type: 'lines', linesClass: 'shoppable-videos-title-line' });
 
@@ -586,7 +588,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });
@@ -602,7 +604,7 @@
         ease: 'power2.out',
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         },
         onComplete: function() {

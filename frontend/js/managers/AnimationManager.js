@@ -16,6 +16,23 @@ class AnimationManager {
   }
 
   /**
+   * Get ScrollTrigger start value based on theme animation trigger offset
+   * @param {string} defaultStart - Default start value if offset is 'none'
+   * @returns {string} - ScrollTrigger start value
+   */
+  getScrollTriggerStart(defaultStart = 'top 85%') {
+    const offset = window.themeSettings?.animationTriggerOffset || 'md';
+    // Map offset to viewport percentage (higher % = triggers earlier)
+    const startValues = {
+      none: defaultStart,           // Use default (usually 'top 85%')
+      sm: 'top 95%',                // Trigger when top hits 95% down viewport
+      md: 'top bottom+=150',        // Trigger 150px before element enters
+      lg: 'top bottom+=300',        // Trigger 300px before element enters
+    };
+    return startValues[offset] || startValues.md;
+  }
+
+  /**
    * Initialize scroll-triggered reveal animations
    * Call this after page load and after Swup content replace
    */
@@ -24,12 +41,13 @@ class AnimationManager {
     this.killScrollTriggers();
 
     const reveals = document.querySelectorAll('[data-reveal]');
+    const defaultStart = this.getScrollTriggerStart();
 
     reveals.forEach((el) => {
       const type = el.dataset.reveal || 'fade-up';
       const delay = parseFloat(el.dataset.revealDelay) || 0;
       const duration = parseFloat(el.dataset.revealDuration) || 0.8;
-      const start = el.dataset.revealStart || 'top 85%';
+      const start = el.dataset.revealStart || defaultStart;
 
       // Set initial state
       const initialState = this.getInitialState(type);
@@ -83,11 +101,12 @@ class AnimationManager {
    */
   initStaggerAnimations() {
     const staggerContainers = document.querySelectorAll('[data-stagger]');
+    const defaultStart = this.getScrollTriggerStart();
 
     staggerContainers.forEach((container) => {
       const children = container.children;
       const staggerDelay = parseFloat(container.dataset.stagger) || 0.1;
-      const start = container.dataset.staggerStart || 'top 85%';
+      const start = container.dataset.staggerStart || defaultStart;
 
       // Set initial state
       gsap.set(children, { opacity: 0, y: 20 });
@@ -140,6 +159,7 @@ class AnimationManager {
    */
   initImageReveals() {
     const imageContainers = document.querySelectorAll('[data-image-reveal]');
+    const defaultStart = this.getScrollTriggerStart();
 
     imageContainers.forEach((container) => {
       const img = container.querySelector('img');
@@ -149,7 +169,7 @@ class AnimationManager {
 
       const trigger = ScrollTrigger.create({
         trigger: container,
-        start: 'top 85%',
+        start: defaultStart,
         once: true,
         onEnter: () => {
           gsap.to(img, {
@@ -163,6 +183,22 @@ class AnimationManager {
 
       this.scrollTriggers.push(trigger);
     });
+  }
+
+  /**
+   * Get rootMargin based on theme setting for animation trigger offset
+   * Positive bottom margin = trigger earlier (before element enters viewport)
+   * @returns {string} - CSS rootMargin value
+   */
+  getAnimationRootMargin() {
+    const offset = window.themeSettings?.animationTriggerOffset || 'md';
+    const margins = {
+      none: '0px 0px 0px 0px',      // Trigger when element enters viewport
+      sm: '0px 0px 50px 0px',       // Trigger 50px before entering
+      md: '0px 0px 150px 0px',      // Trigger 150px before entering (recommended)
+      lg: '0px 0px 300px 0px',      // Trigger 300px before entering
+    };
+    return margins[offset] || margins.md;
   }
 
   /**
@@ -216,6 +252,9 @@ class AnimationManager {
       setTimeout(processQueue, staggerDelay);
     };
 
+    // Get rootMargin from theme settings
+    const rootMargin = this.getAnimationRootMargin();
+
     // Create Intersection Observer
     this.introObserver = new IntersectionObserver(
       (entries) => {
@@ -238,17 +277,19 @@ class AnimationManager {
       },
       {
         root: null,
-        rootMargin: '0px 0px -10% 0px', // Trigger slightly before element is fully visible
-        threshold: 0.1,
+        rootMargin: rootMargin,
+        threshold: 0.01, // Trigger as soon as any part is visible within the margin
       }
     );
 
-    // Helper to check if element is already in viewport
+    // Helper to check if element is already in viewport (accounting for rootMargin)
     const isInViewport = (el) => {
       const rect = el.getBoundingClientRect();
       const windowHeight = window.innerHeight || document.documentElement.clientHeight;
-      // Check if element is at least 10% visible (matches observer threshold)
-      return rect.top < windowHeight * 0.9 && rect.bottom > 0;
+      // Parse bottom margin from rootMargin (e.g., "0px 0px 150px 0px" -> 150)
+      const bottomMargin = parseInt(rootMargin.split(' ')[2]) || 0;
+      // Element is "in viewport" if it's within the extended trigger zone
+      return rect.top < windowHeight + bottomMargin && rect.bottom > 0;
     };
 
     // Observe all intro elements
@@ -335,6 +376,7 @@ class AnimationManager {
    */
   initSplitTextAnimations() {
     const elements = document.querySelectorAll('[data-split-text]:not([data-split-initialized])');
+    const defaultStart = this.getScrollTriggerStart();
 
     elements.forEach((el) => {
       const lineClass = el.dataset.splitLineClass || 'split-line';
@@ -350,7 +392,7 @@ class AnimationManager {
         // Use ScrollTrigger for scroll-based animation
         const trigger = ScrollTrigger.create({
           trigger: el,
-          start: 'top 85%',
+          start: defaultStart,
           once: true,
           onEnter: () => {
             this.splitTextReveal(el, { duration, stagger, delay, lineClass });

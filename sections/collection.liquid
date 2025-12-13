@@ -526,6 +526,7 @@
       }
 
       const cols = getColumnCount();
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 85%') : 'top 85%';
 
       if (layoutStyle === 'metro') {
         // Metro: Set initial clip-path and create ScrollTrigger per item
@@ -569,7 +570,7 @@
         outOfViewItems.forEach(({ item, index }) => {
           ScrollTrigger.create({
             trigger: item,
-            start: 'top 85%',
+            start: scrollStart,
             once: true,
             onEnter: () => {
               const colIndex = index % cols;
@@ -633,7 +634,7 @@
         outOfViewItems.forEach(({ item, index }) => {
           ScrollTrigger.create({
             trigger: item,
-            start: 'top 85%',
+            start: scrollStart,
             once: true,
             onEnter: () => {
               const colIndex = index % cols;

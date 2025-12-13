@@ -120,6 +120,7 @@
 
       const title = section.querySelector('[data-fc-title]');
       const cards = section.querySelectorAll('[data-product-card]');
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 85%') : 'top 85%';
 
       // Animate title with SplitText line reveal
       if (title) {
@@ -144,7 +145,7 @@
           stagger: 0.1,
           scrollTrigger: {
             trigger: section,
-            start: 'top 85%',
+            start: scrollStart,
             once: true
           }
         });
@@ -165,7 +166,7 @@
           delay: delay,
           scrollTrigger: {
             trigger: card,
-            start: 'top 85%',
+            start: scrollStart,
             once: true
           }
         });

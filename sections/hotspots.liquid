@@ -610,6 +610,7 @@
 
     if (!shouldAnimate || !gsap || !ScrollTrigger) return;
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
     const title = section.querySelector('[data-hotspots-title]');
     const label = section.querySelector('[data-hotspots-label]');
     const introElements = section.querySelectorAll('[data-intro]');
@@ -624,7 +625,7 @@
         ease: 'power2.out',
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         },
         onComplete: function() { label.classList.add('intro-visible'); }
@@ -653,7 +654,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });
@@ -671,7 +672,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

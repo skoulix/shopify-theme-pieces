@@ -393,6 +393,8 @@
     const title = section.querySelector('[data-stacking-title]');
     const totalCards = cards.length;
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     // Title animation with SplitText
     if (title && SplitText) {
       const split = new SplitText(title, { type: 'lines', linesClass: 'stacking-cards-title-line' });
@@ -415,7 +417,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

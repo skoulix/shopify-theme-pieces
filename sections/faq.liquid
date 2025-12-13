@@ -236,6 +236,8 @@
     gsap.set(split.lines, { yPercent: 120 });
     title.style.opacity = 1;
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     gsap.to(split.lines, {
       yPercent: 0,
       duration: 1.2,
@@ -243,7 +245,7 @@
       stagger: 0.1,
       scrollTrigger: {
         trigger: section,
-        start: 'top 70%',
+        start: scrollStart,
         once: true
       }
     });

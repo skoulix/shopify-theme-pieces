@@ -56,6 +56,7 @@
       window.themeSettings = {
         enableSmoothScroll: {{ settings.enable_smooth_scroll }},
         enableAnimations: {{ settings.enable_animations }},
+        animationTriggerOffset: '{{ settings.animation_trigger_offset | default: "md" }}',
         enablePageTransitions: {{ settings.enable_page_transitions }},
         pageTransitionStyle: '{{ settings.page_transition_style | default: "slide" }}',
         cartType: '{{ settings.cart_type | default: "drawer" }}',
@@ -66,6 +67,23 @@
       window.shouldAnimate = function() {
         return window.themeSettings.enableAnimations !== false &&
                !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      };
+
+      /**
+       * Get ScrollTrigger start value based on theme animation trigger offset
+       * Use this in section scripts for consistent animation timing
+       * @param {string} defaultStart - Default start value (e.g., 'top 70%')
+       * @returns {string} - Adjusted ScrollTrigger start value
+       */
+      window.getScrollStart = function(defaultStart) {
+        var offset = window.themeSettings.animationTriggerOffset || 'md';
+        var startValues = {
+          none: defaultStart || 'top 85%',
+          sm: 'top 95%',
+          md: 'top bottom+=150',
+          lg: 'top bottom+=300'
+        };
+        return startValues[offset] || startValues.md;
       };
 
       // Registry for swup event listeners to prevent duplicates

@@ -304,6 +304,7 @@
       const title = section.querySelector('[data-related-products-title]');
       if (!title) return;
 
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
       const split = new SplitText(title, { type: 'lines', linesClass: 'related-products-title-line' });
 
       split.lines.forEach(line => {
@@ -324,7 +325,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

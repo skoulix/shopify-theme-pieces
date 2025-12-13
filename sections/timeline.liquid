@@ -332,6 +332,8 @@
     const wrapper = section.querySelector('[data-timeline-wrapper]');
     const title = section.querySelector('[data-timeline-title]');
 
+    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
     // Title animation
     if (shouldAnimate && title && SplitText) {
       const split = new SplitText(title, { type: 'lines', linesClass: 'timeline-title-line' });
@@ -354,7 +356,7 @@
         stagger: 0.1,
         scrollTrigger: {
           trigger: section,
-          start: 'top 70%',
+          start: scrollStart,
           once: true
         }
       });

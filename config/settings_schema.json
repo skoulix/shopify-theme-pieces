@@ -255,6 +255,19 @@
         "default": true,
         "label": "Enable animations",
         "info": "Enables scroll-triggered reveals, layout transitions, and other motion effects throughout the theme."
+      },
+      {
+        "type": "select",
+        "id": "animation_trigger_offset",
+        "label": "Animation trigger timing",
+        "default": "md",
+        "options": [
+          { "value": "none", "label": "When element enters viewport" },
+          { "value": "sm", "label": "Slightly early" },
+          { "value": "md", "label": "Early (recommended)" },
+          { "value": "lg", "label": "Very early" }
+        ],
+        "info": "Controls when scroll animations start. Earlier triggers make animations feel more responsive."
       }
     ]
   },

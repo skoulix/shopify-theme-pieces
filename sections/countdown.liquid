@@ -896,6 +896,7 @@
           return;
         }
 
+        const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
         const split = new SplitText(title, { type: 'lines', linesClass: 'countdown-title-line' });
 
         split.lines.forEach(line => {
@@ -916,7 +917,7 @@
           stagger: 0.1,
           scrollTrigger: {
             trigger: section,
-            start: 'top 70%',
+            start: scrollStart,
             once: true
           }
         });
