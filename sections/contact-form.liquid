@@ -66,7 +66,7 @@
   </header>
 
   <div class="{{ container_class }}">
-    <div class="contact-form max-w-2xl {{ form_align }}">
+    <div class="contact-form max-w-2xl {{ form_align }}" data-tween data-tween-type="fade-up">
       {% form 'contact', id: 'ContactForm' %}
         {% if form.posted_successfully? %}
           <div class="mb-8 rounded-[--card-radius] bg-green-50 p-4">
@@ -89,7 +89,7 @@
         {% endif %}
 
         <div class="grid gap-6 sm:grid-cols-2">
-          <div class="contact-form-group" data-tween data-tween-type="fade-up">
+          <div class="contact-form-group">
             <label for="ContactForm-name" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.name' | t }}</label>
             <input
               type="text"
@@ -101,7 +101,7 @@
             >
           </div>
 
-          <div class="contact-form-group" data-tween data-tween-type="fade-up">
+          <div class="contact-form-group">
             <label for="ContactForm-email" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.email' | t }} *</label>
             <input
               type="email"
@@ -114,7 +114,7 @@
             >
           </div>
 
-          <div class="contact-form-group sm:col-span-2" data-intro>
+          <div class="contact-form-group sm:col-span-2">
             <label for="ContactForm-phone" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.phone' | t }}</label>
             <input
               type="tel"
@@ -126,7 +126,7 @@
             >
           </div>
 
-          <div class="contact-form-group sm:col-span-2" data-intro>
+          <div class="contact-form-group sm:col-span-2">
             <label for="ContactForm-body" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.message' | t }}</label>
             <textarea
               id="ContactForm-body"
@@ -137,7 +137,7 @@
           </div>
         </div>
 
-        <div class="contact-form-submit mt-8" data-tween data-tween-type="fade-up">
+        <div class="contact-form-submit mt-8">
           <button type="submit" class="btn btn--primary">
             <span>{{ 'contact.form.submit' | t }}</span>
             <i class="ph ph-arrow-right"></i>

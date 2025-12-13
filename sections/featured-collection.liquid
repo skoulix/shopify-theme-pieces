@@ -69,8 +69,8 @@
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or collection.title != blank or section.settings.show_view_all %}
-      <div class="fc-header-{{ section.id }}" data-tween-group="fc-header-{{ section.id }}">
-        <div class="fc-header-content-{{ section.id }}">
+      <div class="fc-header-{{ section.id }}">
+        <div class="fc-header-content-{{ section.id }}" data-tween-group="fc-header-{{ section.id }}">
           {% if section.settings.label != blank %}
             <span class="section-label" data-tween data-tween-type="fade-up">
               {{ section.settings.label }}
@@ -93,7 +93,7 @@
         </div>
 
         {% if section.settings.show_view_all and collection %}
-          <a href="{{ collection.url }}" class="fc-view-all-{{ section.id }} section-link inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] hover:opacity-100 transition-opacity duration-300" data-tween data-tween-type="fade-up">
+          <a href="{{ collection.url }}" class="fc-view-all-{{ section.id }} section-link inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] hover:opacity-100 transition-opacity duration-300">
             <span>{{ section.settings.view_all_text }}</span>
             <span class="sr-only">{{ collection.title }}</span>
             <i class="ph ph-arrow-right" aria-hidden="true"></i>

@@ -17,18 +17,14 @@
   .page-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
   @media (min-width: 1024px) { .page-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .page-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
-  .page-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
-  .page-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
-  .page-header-title.text-center .page-header-title-line:nth-child(2),
-  .page-header-title.text-center .page-header-title-line:nth-child(3) { margin-left: 0; }
-  .page-header-title.text-right .page-header-title-line:nth-child(2),
-  .page-header-title.text-right .page-header-title-line:nth-child(3) { margin-left: 0; margin-right: clamp(1.5rem, 10vw, 8rem); }
-  .page-header-title.text-right .page-header-title-line:nth-child(3) { margin-right: clamp(3rem, 18vw, 14rem); }
-  /* Hide title and content while loading to prevent FOUC before animation */
-  .page-wrapper.is-loading [data-page-title] { opacity: 0; }
-  .page-wrapper.is-loading [data-page-content] { opacity: 0; transform: translateY(30px); }
-  html.animations-disabled .page-wrapper.is-loading [data-page-title],
-  html.animations-disabled .page-wrapper.is-loading [data-page-content] { opacity: 1; transform: none; }
+  /* Title line stagger (managed by TweenManager) */
+  .page-header-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
+  .page-header-title .tween-split-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
+  .page-header-title.text-center .tween-split-line:nth-child(2),
+  .page-header-title.text-center .tween-split-line:nth-child(3) { margin-left: 0; }
+  .page-header-title.text-right .tween-split-line:nth-child(2),
+  .page-header-title.text-right .tween-split-line:nth-child(3) { margin-left: 0; margin-right: clamp(1.5rem, 10vw, 8rem); }
+  .page-header-title.text-right .tween-split-line:nth-child(3) { margin-right: clamp(3rem, 18vw, 14rem); }
 </style>
 
 <section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>

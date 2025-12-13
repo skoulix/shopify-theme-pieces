@@ -273,6 +273,9 @@ class TweenManager {
       // Skip if inside a group
       if (el.closest('[data-tween-group]')) return;
 
+      // Skip if element is not connected to DOM or has no dimensions
+      if (!el.isConnected || !el.offsetParent) return;
+
       const type = el.dataset.tweenType || 'fade-up';
       const delay = parseFloat(el.dataset.tweenDelay) || 0;
       const config = this.getAnimationConfig(type);
@@ -292,7 +295,9 @@ class TweenManager {
           }
         });
         this.initSplitText(el, tl, delay);
-        this.scrollTriggers.push(tl.scrollTrigger);
+        if (tl.scrollTrigger) {
+          this.scrollTriggers.push(tl.scrollTrigger);
+        }
       } else {
         // Set initial state
         gsap.set(el, config.initial);
@@ -312,7 +317,9 @@ class TweenManager {
           }
         });
 
-        this.scrollTriggers.push(trigger);
+        if (trigger) {
+          this.scrollTriggers.push(trigger);
+        }
       }
     });
   }

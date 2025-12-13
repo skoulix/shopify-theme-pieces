@@ -206,11 +206,11 @@
     inset: 0;
     display: flex;
     flex-direction: column;
-    align-items: {{ section.settings.content_alignment }};
+    align-items: {% if section.settings.content_alignment == 'left' %}flex-start{% elsif section.settings.content_alignment == 'right' %}flex-end{% else %}center{% endif %};
     justify-content: {{ section.settings.content_position }};
     padding: clamp(2rem, 5vw, 4rem);
     color: {{ section.settings.text_color }};
-    text-align: {% if section.settings.content_alignment == 'flex-start' %}left{% elsif section.settings.content_alignment == 'flex-end' %}right{% else %}center{% endif %};
+    text-align: {{ section.settings.content_alignment }};
     pointer-events: none;
     z-index: 2;
   }
@@ -442,13 +442,8 @@
       "label": "Content vertical position"
     },
     {
-      "type": "select",
+      "type": "text_alignment",
       "id": "content_alignment",
-      "options": [
-        { "value": "flex-start", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "flex-end", "label": "Right" }
-      ],
       "default": "center",
       "label": "Content alignment"
     },
