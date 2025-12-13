@@ -89,27 +89,32 @@
     transform: rotate(45deg);
   }
 
+  /* Smooth slide animation using grid */
   .faq-section-{{ section.id }} .faq-answer {
-    padding-bottom: 1.5rem;
-    padding-right: 3rem;
+    display: grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-section-{{ section.id }} .faq-item[open] .faq-answer {
+    grid-template-rows: 1fr;
+  }
+
+  /* When closing, animate back to 0fr while still open */
+  .faq-section-{{ section.id }} .faq-item.is-closing .faq-answer {
+    grid-template-rows: 0fr;
+  }
+
+  .faq-section-{{ section.id }} .faq-answer-inner {
+    overflow: hidden;
   }
 
   .faq-section-{{ section.id }} .faq-answer-text {
     font-size: clamp(0.875rem, 1.5vw, 1rem);
     line-height: 1.7;
     opacity: 0.75;
-  }
-
-  /* Animation for answer content */
-  .faq-section-{{ section.id }} .faq-answer-inner {
-    opacity: 0;
-    transform: translateY(-10px);
-    transition: opacity 0.3s ease, transform 0.3s ease;
-  }
-
-  .faq-section-{{ section.id }} .faq-item[open] .faq-answer-inner {
-    opacity: 1;
-    transform: translateY(0);
+    padding-bottom: 1.5rem;
+    padding-right: 3rem;
   }
 
   /* Title line reveal animation */
@@ -193,77 +198,120 @@
   </div>
 </section>
 
-<script>
+<script data-swup-reload-script>
 (function() {
-  const section = document.querySelector('[data-faq-section="{{ section.id }}"]');
-  if (!section || section.dataset.faqAnimInitialized) return;
-  section.dataset.faqAnimInitialized = 'true';
+  const SECTION_ID = '{{ section.id }}';
 
-  // If animations disabled, skip
-  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+  function initFaqSection() {
+    const section = document.querySelector('[data-faq-section="' + SECTION_ID + '"]');
+    if (!section) return;
 
-  function initAnimation() {
-    let gsap = window.gsap;
-    if (!gsap && window.pieces && window.pieces.gsap) {
-      gsap = window.pieces.gsap;
-    }
+    // Skip if already initialized (check on the actual DOM element)
+    if (section.dataset.faqInitialized === 'true') return;
+    section.dataset.faqInitialized = 'true';
 
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
+    // Accordion smooth close animation
+    // The <details> element closes instantly by default, so we need to
+    // intercept the close and wait for the CSS transition to complete
+    const faqItems = section.querySelectorAll('.faq-item');
+    faqItems.forEach(details => {
+      const summary = details.querySelector('summary');
+      const answer = details.querySelector('.faq-answer');
 
-    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+      summary.addEventListener('click', (e) => {
+        e.preventDefault();
 
-    if (!gsap || !SplitText || !ScrollTrigger) {
-      setTimeout(initAnimation, 50);
-      return;
-    }
-
-    const title = section.querySelector('[data-faq-title]');
-    if (!title) return;
-
-    const split = new SplitText(title, { type: 'lines', linesClass: 'faq-title-line' });
-
-    split.lines.forEach(line => {
-      const lineWrapper = document.createElement('div');
-      lineWrapper.style.overflow = 'hidden';
-      lineWrapper.style.display = 'block';
-      line.parentNode.insertBefore(lineWrapper, line);
-      lineWrapper.appendChild(line);
-    });
-
-    gsap.set(split.lines, { yPercent: 120 });
-
-    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
-
-    gsap.to(split.lines, {
-      yPercent: 0,
-      duration: 1.2,
-      ease: 'power4.out',
-      stagger: 0.1,
-      scrollTrigger: {
-        trigger: section,
-        start: scrollStart,
-        once: true,
-        onEnter: () => {
-          title.style.opacity = 1;
+        // If closing (currently open)
+        if (details.open && !details.classList.contains('is-closing')) {
+          // Add closing class to trigger the transition
+          details.classList.add('is-closing');
+          // Wait for the transition to complete before actually closing
+          answer.addEventListener('transitionend', function handler(event) {
+            if (event.propertyName === 'grid-template-rows') {
+              details.open = false;
+              details.classList.remove('is-closing');
+              answer.removeEventListener('transitionend', handler);
+            }
+          });
+        } else if (!details.open) {
+          // Opening: set open attribute, CSS will animate from 0fr to 1fr
+          // Force a reflow before opening to ensure transition fires
+          void answer.offsetHeight;
+          details.open = true;
         }
+      });
+    });
+
+    // Title animation (skip if animations disabled)
+    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+    function initTitleAnimation() {
+      let gsap = window.gsap;
+      if (!gsap && window.pieces && window.pieces.gsap) {
+        gsap = window.pieces.gsap;
       }
-    });
+
+      let SplitText = window.SplitText;
+      if (!SplitText && window.pieces && window.pieces.SplitText) {
+        SplitText = window.pieces.SplitText;
+      }
+
+      const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+      if (!gsap || !SplitText || !ScrollTrigger) {
+        setTimeout(initTitleAnimation, 50);
+        return;
+      }
+
+      const title = section.querySelector('[data-faq-title]');
+      if (!title || title.dataset.splitInitialized) return;
+      title.dataset.splitInitialized = 'true';
+
+      const split = new SplitText(title, { type: 'lines', linesClass: 'faq-title-line' });
+
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
+
+      gsap.set(split.lines, { yPercent: 120 });
+
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
+      gsap.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: section,
+          start: scrollStart,
+          once: true,
+          onEnter: () => {
+            title.style.opacity = 1;
+          }
+        }
+      });
+    }
+
+    requestAnimationFrame(initTitleAnimation);
   }
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAnimation);
-  } else {
-    requestAnimationFrame(initAnimation);
-  }
+  // Initialize on page load
+  initFaqSection();
 
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('faq_animation', () => {
-      requestAnimationFrame(initAnimation);
-    });
-  }
+  // Also listen for Swup content replacement (fallback if script doesn't re-execute)
+  // Use a unique handler that checks if section exists before initializing
+  window.addEventListener('swup:contentReplaced', function faqSwupHandler() {
+    // Re-query the section since DOM was replaced
+    const section = document.querySelector('[data-faq-section="' + SECTION_ID + '"]');
+    if (section && section.dataset.faqInitialized !== 'true') {
+      initFaqSection();
+    }
+  });
 })();
 </script>
 
