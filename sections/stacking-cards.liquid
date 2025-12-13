@@ -241,23 +241,23 @@
     <div class="stacking-cards-overlay-{{ section.id }}" style="background-color: {{ section.settings.background_overlay_color | color_modify: 'alpha', overlay_opacity }};"></div>
   {% endif %}
 
-  {%- comment -%} Header {%- endcomment -%}
+  {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
   {% if section.settings.label != blank or section.settings.title != blank %}
-    <div class="{{ container_class }} stacking-cards-header-{{ section.id }}">
+    <div class="{{ container_class }} stacking-cards-header-{{ section.id }}" data-tween-group="stacking-cards-header-{{ section.id }}">
       {% if section.settings.label != blank %}
-        <span class="section-label" data-intro>
+        <span class="section-label" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
         </span>
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="section-title font-heading" data-section-title>
+        <h2 class="section-title font-heading" data-tween data-tween-type="split-text">
           {{ section.settings.title }}
         </h2>
       {% endif %}
 
       {% if section.settings.description != blank %}
-        <p class="section-description mt-6" data-intro>
+        <p class="section-description mt-6" data-tween data-tween-type="fade-up">
           {{ section.settings.description }}
         </p>
       {% endif %}
@@ -342,16 +342,7 @@
   section.dataset.stackingInitialized = 'true';
 
   function initAnimation() {
-    let gsap = window.gsap;
-    if (!gsap && window.pieces && window.pieces.gsap) {
-      gsap = window.pieces.gsap;
-    }
-
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
-
+    const gsap = window.gsap || (window.pieces && window.pieces.gsap);
     const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
 
     if (!gsap || !ScrollTrigger) {
@@ -361,40 +352,9 @@
 
     const cards = section.querySelectorAll('[data-stacking-card]');
     const wrapper = section.querySelector('.stacking-cards-wrapper-{{ section.id }}');
-    const title = section.querySelector('[data-section-title]');
     const totalCards = cards.length;
 
-    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
-
-    // Title animation with SplitText
-    if (title && SplitText) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'section-title-line' });
-
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
-
-      gsap.set(split.lines, { yPercent: 120 });
-
-      gsap.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: section,
-          start: scrollStart,
-          once: true,
-          onEnter: () => {
-            title.style.opacity = 1;
-          }
-        }
-      });
-    }
+    // Title animations handled by global TweenManager via data-tween attributes
 
     // Card stacking animation
     cards.forEach((card, i) => {
@@ -489,10 +449,15 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "default": "center",
-      "label": "Header alignment"
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

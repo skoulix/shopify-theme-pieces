@@ -131,7 +131,7 @@
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
       <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}">
         {% if section.settings.label != blank %}
-          <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
+          <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
           </span>
         {% endif %}
@@ -143,7 +143,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-intro>
+          <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -155,7 +155,7 @@
       <div class="faq-list">
         {% for block in section.blocks %}
           {% if block.type == 'faq_item' %}
-            <details class="faq-item" data-intro {{ block.shopify_attributes }}>
+            <details class="faq-item" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               <summary class="faq-question">
                 <span class="faq-question-text">{{ block.settings.question }}</span>
                 <span class="faq-icon">
@@ -374,10 +374,15 @@
       "default": "Find answers to common questions about our products and services."
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "default": "left",
-      "label": "Header alignment"
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

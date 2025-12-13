@@ -283,10 +283,9 @@
             contentContainer.appendChild(clone);
           });
 
-          // Reinitialize intro animations for new [data-intro] elements
-          // This lets them animate in with fade-from-bottom effect
-          if (window.pieces && window.pieces.animationManager) {
-            window.pieces.animationManager.initIntroAnimations();
+          // Reinitialize tween animations for new [data-tween] elements
+          if (window.pieces && window.pieces.tween) {
+            window.pieces.tween.reinit();
           }
 
           // Update the pagination

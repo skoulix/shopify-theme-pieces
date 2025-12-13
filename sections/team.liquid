@@ -256,7 +256,7 @@
     {%- comment -%} Team Grid {%- endcomment -%}
     <div class="team-grid-{{ section.id }}">
       {% for block in section.blocks %}
-        <div class="team-member-{{ section.id }}" data-intro {{ block.shopify_attributes }}>
+        <div class="team-member-{{ section.id }}" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
           <div class="team-member-image-{{ section.id }}">
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 800 | image_tag:

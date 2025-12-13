@@ -45,7 +45,7 @@
           {%- endif -%}
           <article
             class="blog-item bg-[--color-background-secondary] rounded-[--card-radius] overflow-hidden border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]{% if is_featured %} blog-item--featured col-span-full lg:grid lg:grid-cols-2 lg:gap-16 lg:items-stretch{% endif %}"
-            data-intro
+            data-tween data-tween-type="fade-up"
             data-blog-item="{{ forloop.index0 }}"
             data-article-url="{{ article.url }}"
           >

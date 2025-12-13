@@ -6,9 +6,9 @@
   endif
 -%}
 
-<div class="{{ container_class }}">
+<div class="{{ container_class }}" data-tween-group="apps-{{ section.id }}">
   {%- for block in section.blocks -%}
-    <div data-intro data-intro-delay="{{ forloop.index0 | times: 0.1 }}">
+    <div data-tween data-tween-type="fade-up">
       {% render block %}
     </div>
   {%- endfor -%}

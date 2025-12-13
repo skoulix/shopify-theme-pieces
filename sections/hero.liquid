@@ -9,34 +9,30 @@
 <style>
   .hero-section { height: 100dvh; max-height: 100dvh; min-height: 600px; }
   @supports not (height: 100dvh) { .hero-section { height: 100vh; max-height: 100vh; } }
-  .hero-section.is-loading .hero-content { opacity: 0; }
-  html.animations-disabled .hero-section.is-loading .hero-content { opacity: 1; }
   .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 200.0 }}) 50%, transparent 100%); z-index: 1; }
   .hero-content { padding-bottom: clamp(3rem, 10vh, 8rem); }
   .hero-title { font-size: calc(clamp(2.5rem, 12vw, 5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.04em; line-height: 0.85; }
   @media (min-width: 1024px) { .hero-title { font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .hero-title { font-size: calc(clamp(5rem, 8vw, 9rem) * var(--heading-font-scale, 1)); } }
-  .hero-title-line:nth-child(2) { margin-left: clamp(1rem, 8vw, 5rem); }
-  .hero-title-line:nth-child(3) { margin-left: clamp(2rem, 12vw, 8rem); }
   .hero-subtitle { font-size: clamp(0.75rem, 1.5vw, 1rem); }
   .hero-cta { color: {{ section.settings.text_color }}; background-color: transparent; border: var(--button-border-width) solid {{ section.settings.text_color }}; box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %}; }
   .hero-cta::before { content: ''; position: absolute; inset: 0; background: {{ section.settings.text_color }}; transform: scaleX(0); transform-origin: right; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
   .hero-cta:hover::before { transform: scaleX(1); transform-origin: left; }
   .hero-cta:hover, .hero-cta:hover span, .hero-cta:hover i { color: {{ section.settings.background_color }}; }
 
-  /* Initial clip-path state for swipe animation */
+  /* Initial clip-path state for media swipe animation */
   [data-hero-section="{{ section.id }}"] [data-hero-media] {
     clip-path: inset(0 0 100% 0);
   }
 
-  /* When animations disabled, show everything immediately */
+  /* When animations disabled, show media immediately */
   html.animations-disabled [data-hero-section="{{ section.id }}"] [data-hero-media] {
     clip-path: none;
   }
 </style>
 
 <section
-  class="hero-section is-loading relative flex items-end overflow-hidden bg-[--color-background]"
+  class="hero-section relative flex items-end overflow-hidden bg-[--color-background]"
   data-hero-section="{{ section.id }}"
 >
   <div class="hero-media absolute inset-0 z-0" data-hero-media>
@@ -79,21 +75,22 @@
         assign subtitle_align = ''
     endcase
   -%}
-  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" style="color: {{ section.settings.text_color }};">
+  {%- comment -%} Hero content - uses global data-tween system for animations {%- endcomment -%}
+  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" style="color: {{ section.settings.text_color }};" data-tween-group="hero-content-{{ section.id }}">
     {% if section.settings.title != blank %}
-      <h1 class="hero-title font-bold font-heading {{ title_align }}" data-hero-title>
+      <h1 class="hero-title font-bold font-heading {{ title_align }}" data-tween data-tween-type="split-text">
         {{ section.settings.title }}
       </h1>
     {% endif %}
 
     {% if section.settings.subtitle != blank %}
-      <p class="hero-subtitle mt-8 max-w-[480px] uppercase tracking-widest leading-relaxed opacity-80 {{ subtitle_align }}" data-hero-subtitle>
+      <p class="hero-subtitle mt-8 max-w-[480px] uppercase tracking-widest leading-relaxed opacity-80 {{ subtitle_align }}" data-tween data-tween-type="fade-up">
         {{ section.settings.subtitle }}
       </p>
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}" class="hero-cta section-link mt-12 inline-flex items-center gap-4 py-4 px-8 text-xs font-semibold tracking-[0.15em] border-none rounded-[--button-radius] cursor-pointer relative overflow-hidden" data-hero-cta>
+      <a href="{{ section.settings.button_link }}" class="hero-cta section-link mt-12 inline-flex items-center gap-4 py-4 px-8 text-xs font-semibold tracking-[0.15em] border-none rounded-[--button-radius] cursor-pointer relative overflow-hidden" data-tween data-tween-type="fade-up">
         <span class="relative z-[1] transition-colors duration-400">{{ section.settings.button_text }}</span>
         <i class="ph ph-arrow-right text-[1.25em] relative z-[1] transition-colors duration-400"></i>
       </a>
@@ -101,7 +98,7 @@
   </div>
 
   {% if section.settings.show_scroll_indicator %}
-    <div class="absolute bottom-8 right-[--page-padding] flex flex-col items-center gap-2 opacity-60 z-10" style="color: {{ section.settings.text_color }};" data-hero-scroll>
+    <div class="absolute bottom-8 right-[--page-padding] flex flex-col items-center gap-2 z-10" style="color: {{ section.settings.text_color }};" data-tween data-tween-type="fade-up">
       <span class="text-[0.65rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl]">{{ 'accessibility.scroll_down' | t }}</span>
       <div class="hero-scroll-line w-px h-[60px] bg-current origin-top"></div>
     </div>
@@ -114,112 +111,34 @@
     if (!section || section.dataset.heroAnimInitialized) return;
     section.dataset.heroAnimInitialized = 'true';
 
-    // If animations disabled, just show content immediately
+    // If animations disabled, media is shown via CSS
     if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      section.classList.remove('is-loading');
       return;
     }
 
-    // Wait for GSAP and SplitText
-    function initAnimation() {
-      if (typeof gsap === 'undefined') {
-        if (window.pieces && window.pieces.gsap) {
-          window.gsap = window.pieces.gsap;
-        } else {
-          requestAnimationFrame(initAnimation);
-          return;
-        }
-      }
-
-      // Get SplitText from pieces or window
-      let SplitText = window.SplitText;
-      if (!SplitText && window.pieces && window.pieces.SplitText) {
-        SplitText = window.pieces.SplitText;
-      }
-
-      if (!SplitText) {
-        requestAnimationFrame(initAnimation);
+    // Wait for GSAP
+    function initMediaAnimation() {
+      const gsap = window.gsap || (window.pieces && window.pieces.gsap);
+      if (!gsap) {
+        requestAnimationFrame(initMediaAnimation);
         return;
       }
 
-      // Mark section as ready for animations
-      section.dataset.heroAnimReady = 'true';
-      section.classList.remove('is-loading');
-
       const media = section.querySelector('[data-hero-media]');
-      const title = section.querySelector('[data-hero-title]');
-      const subtitle = section.querySelector('[data-hero-subtitle]');
-      const cta = section.querySelector('[data-hero-cta]');
-      const scroll = section.querySelector('[data-hero-scroll]');
-
-      const tl = gsap.timeline();
 
       // Animate media with clip-path swipe (initial state set in CSS)
+      // Content animations are handled by global TweenManager via data-tween attributes
       if (media) {
-        tl.to(media, {
+        gsap.to(media, {
           clipPath: 'inset(0 0 0% 0)',
           duration: 1.6,
           ease: 'expo.inOut'
-        }, 0);
-      }
-
-      // Animate title with SplitText line reveal
-      if (title) {
-        const split = new SplitText(title, { type: 'lines', linesClass: 'hero-title-line' });
-
-        // Wrap each line in an overflow-hidden container for the reveal effect
-        split.lines.forEach(line => {
-          const lineWrapper = document.createElement('div');
-          lineWrapper.style.overflow = 'hidden';
-          lineWrapper.style.display = 'block';
-          line.parentNode.insertBefore(lineWrapper, line);
-          lineWrapper.appendChild(line);
         });
-
-        gsap.set(split.lines, { yPercent: 120 });
-        tl.to(split.lines, {
-          yPercent: 0,
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.1
-        }, 0.6);
-      }
-
-      // Animate subtitle with fade up (delayed after title starts)
-      if (subtitle) {
-        gsap.set(subtitle, { opacity: 0, y: 30 });
-        tl.to(subtitle, {
-          opacity: 0.8,
-          y: 0,
-          duration: 1,
-          ease: 'power3.out'
-        }, 1.1);
-      }
-
-      // Animate CTA with fade up (delayed after subtitle)
-      if (cta) {
-        gsap.set(cta, { opacity: 0, y: 20 });
-        tl.to(cta, {
-          opacity: 1,
-          y: 0,
-          duration: 0.8,
-          ease: 'power3.out'
-        }, 1.4);
-      }
-
-      // Animate scroll indicator (last element)
-      if (scroll) {
-        gsap.set(scroll, { opacity: 0 });
-        tl.to(scroll, {
-          opacity: 0.6,
-          duration: 0.8,
-          ease: 'power2.out'
-        }, 1.7);
       }
     }
 
     // Start animation after a short delay to ensure DOM is ready
-    requestAnimationFrame(initAnimation);
+    requestAnimationFrame(initMediaAnimation);
   })();
 </script>
 

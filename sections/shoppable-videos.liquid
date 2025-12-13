@@ -37,7 +37,6 @@
   }
 
   /* Label, title, description use global .section-* classes from utilities.css */
-  /* Title hidden state handled by global [data-section-title] in animations.css */
   .shoppable-videos-header-{{ section.id }} .section-label {
     margin-bottom: 1.5rem;
   }
@@ -343,12 +342,6 @@
     transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
   }
 
-  /* Animation states */
-  html.animations-disabled .shoppable-videos-{{ section.id }} [data-intro] {
-    opacity: 1;
-    transform: none;
-  }
-
 </style>
 
 <section
@@ -356,23 +349,23 @@
   data-shoppable-videos="{{ section.id }}"
 >
   <div class="{{ container_class }}">
-    {%- comment -%} Header {%- endcomment -%}
+    {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
-      <div class="shoppable-videos-header-{{ section.id }}">
+      <div class="shoppable-videos-header-{{ section.id }}" data-tween-group="shoppable-videos-header-{{ section.id }}">
         {% if section.settings.label != blank %}
-          <span class="section-label" data-intro>
+          <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
           </span>
         {% endif %}
 
         {% if section.settings.title != blank %}
-          <h2 class="section-title font-heading" data-section-title>
+          <h2 class="section-title font-heading" data-tween data-tween-type="split-text">
             {{ section.settings.title }}
           </h2>
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description mt-6" data-intro>
+          <p class="section-description mt-6" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -380,7 +373,7 @@
     {% endif %}
 
     <!-- Videos Carousel -->
-    <div class="shoppable-videos-slider-{{ section.id }}" data-shoppable-videos-slider data-intro>
+    <div class="shoppable-videos-slider-{{ section.id }}" data-shoppable-videos-slider data-tween data-tween-type="fade-up">
       <div class="shoppable-videos-track-{{ section.id }}" data-shoppable-videos-track>
         {% for block in section.blocks %}
           {% if block.type == 'video' %}
@@ -463,7 +456,7 @@
 
     <!-- Navigation Buttons -->
     {% if section.blocks.size > 1 %}
-      <div class="shoppable-videos-nav-{{ section.id }}" data-intro>
+      <div class="shoppable-videos-nav-{{ section.id }}" data-tween data-tween-type="fade-up">
         <button type="button" class="shoppable-videos-nav-btn-{{ section.id }}" data-shoppable-videos-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
           <i class="ph ph-arrow-left"></i>
         </button>
@@ -511,56 +504,7 @@
   if (!section || section.dataset.shoppableInitialized) return;
   section.dataset.shoppableInitialized = 'true';
 
-  // Title/Label animations - called after GSAP loads
-  function initAnimations() {
-    let gsap = window.gsap;
-    if (!gsap && window.pieces && window.pieces.gsap) {
-      gsap = window.pieces.gsap;
-    }
-
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
-
-    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
-
-    // Title animation
-    const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
-    const title = section.querySelector('[data-section-title]');
-
-    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
-
-    if (shouldAnimate && title && gsap && SplitText && ScrollTrigger) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'section-title-line' });
-
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
-
-      gsap.set(split.lines, { yPercent: 120 });
-
-      gsap.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1,
-        scrollTrigger: {
-          trigger: section,
-          start: scrollStart,
-          once: true,
-          onEnter: () => {
-            title.style.opacity = 1;
-          }
-        }
-      });
-    }
-
-  }
+  // Header animations handled by global TweenManager via data-tween attributes
 
   // GSAP-powered infinite carousel
   const slider = section.querySelector('[data-shoppable-videos-slider]');
@@ -999,18 +943,6 @@
     return new Intl.NumberFormat('{{ request.locale.iso_code | default: "en-US" }}', { style: 'currency', currency: '{{ cart.currency.iso_code | default: "USD" }}' }).format(cents / 100);
   }
 
-  // Initialize animations after DOM/GSAP ready
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAnimations);
-  } else {
-    requestAnimationFrame(initAnimations);
-  }
-
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('shoppable-videos-animation', function() {
-      requestAnimationFrame(initAnimations);
-    });
-  }
 })();
 </script>
 
@@ -1042,10 +974,15 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "default": "left",
-      "label": "Header alignment"
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

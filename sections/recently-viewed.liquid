@@ -347,9 +347,9 @@
         nav.style.display = 'flex';
       }
 
-      // Trigger intro animations
-      if (window.pieces?.animationManager) {
-        window.pieces.animationManager.initIntroAnimations();
+      // Trigger tween animations for new elements
+      if (window.pieces?.tween) {
+        window.pieces.tween.reinit();
       }
     }
 

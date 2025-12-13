@@ -31,10 +31,6 @@
     letter-spacing: 0.2em;
   }
 
-  .logo-marquee-label-{{ section.id }}.intro-visible {
-    opacity: 0.5;
-  }
-
   .logo-marquee-track-wrapper-{{ section.id }} {
     position: relative;
     overflow: hidden;
@@ -142,10 +138,6 @@
     gap: 1rem;
   }
 
-  html.animations-disabled .logo-marquee-label-{{ section.id }} {
-    opacity: 0.5;
-    transform: none;
-  }
 </style>
 
 <section
@@ -157,7 +149,7 @@
   <div class="{{ container_class }}">
     {% if section.settings.label != blank %}
       <div class="logo-marquee-header-{{ section.id }}">
-        <span class="logo-marquee-label-{{ section.id }}" data-intro>
+        <span class="logo-marquee-label-{{ section.id }}" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
         </span>
       </div>
@@ -335,10 +327,15 @@
       "label": "Label"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "default": "center",
-      "label": "Header alignment"
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

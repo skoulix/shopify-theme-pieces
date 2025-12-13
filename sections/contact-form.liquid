@@ -89,7 +89,7 @@
         {% endif %}
 
         <div class="grid gap-6 sm:grid-cols-2">
-          <div class="contact-form-group" data-intro>
+          <div class="contact-form-group" data-tween data-tween-type="fade-up">
             <label for="ContactForm-name" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.name' | t }}</label>
             <input
               type="text"
@@ -101,7 +101,7 @@
             >
           </div>
 
-          <div class="contact-form-group" data-intro>
+          <div class="contact-form-group" data-tween data-tween-type="fade-up">
             <label for="ContactForm-email" class="block text-xs font-semibold uppercase tracking-[0.1em] text-[--color-text-secondary] mb-2">{{ 'contact.form.email' | t }} *</label>
             <input
               type="email"
@@ -137,7 +137,7 @@
           </div>
         </div>
 
-        <div class="contact-form-submit mt-8" data-intro>
+        <div class="contact-form-submit mt-8" data-tween data-tween-type="fade-up">
           <button type="submit" class="btn btn--primary">
             <span>{{ 'contact.form.submit' | t }}</span>
             <i class="ph ph-arrow-right"></i>

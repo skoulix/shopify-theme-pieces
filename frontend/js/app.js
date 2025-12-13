@@ -19,7 +19,6 @@ import '../css/app.css';
 // Import managers
 import { lenisManager } from './managers/LenisManager.js';
 import { swupManager } from './managers/SwupManager.js';
-import { animationManager } from './managers/AnimationManager.js';
 import { tweenManager } from './managers/TweenManager.js';
 import { cartState } from './managers/CartState.js';
 import { cartDrawerManager } from './managers/CartDrawerManager.js';
@@ -41,9 +40,6 @@ window.Lenis = Lenis;
 function initAnimations() {
   // Initialize global tween system (handles data-tween, data-tween-type, data-tween-group)
   tweenManager.init();
-
-  // Keep data-intro animations for backward compatibility (uses IntersectionObserver)
-  animationManager.initIntroAnimations();
 }
 
 /**
@@ -196,7 +192,6 @@ function handleContentReplaced() {
       // Only run animations if enabled
       if (typeof window.shouldAnimate === 'function' && window.shouldAnimate()) {
         tweenManager.reinit();
-        animationManager.refresh();
         initAnimations();
         ScrollTrigger.refresh();
       }
@@ -340,7 +335,6 @@ function init() {
   window.pieces = {
     lenis: lenisManager,
     swup: swupManager,
-    animation: animationManager,
     tween: tweenManager,
     cartState: cartState,
     cartDrawer: cartDrawerManager,
@@ -370,20 +364,17 @@ if (window.Shopify && window.Shopify.designMode) {
   document.addEventListener('shopify:section:load', () => {
     if (typeof window.shouldAnimate === 'function' && window.shouldAnimate()) {
       tweenManager.reinit();
-      animationManager.refresh();
       initAnimations();
     }
   });
 
   document.addEventListener('shopify:section:unload', () => {
     tweenManager.destroy();
-    animationManager.destroy();
   });
 
   document.addEventListener('shopify:section:reorder', () => {
     if (typeof window.shouldAnimate === 'function' && window.shouldAnimate()) {
       tweenManager.refresh();
-      animationManager.refresh();
     }
   });
 }
