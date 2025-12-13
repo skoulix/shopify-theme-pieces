@@ -1,0 +1,216 @@
+/* ==========================================================================
+   Button System - Primary & Secondary with Fill Hover Effect
+   ========================================================================== */
+
+@layer components {
+  /* Base button styles */
+  .btn {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 1.25rem 2rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    line-height: 1;
+    border-radius: var(--button-radius);
+    box-shadow: var(--button-shadow);
+    cursor: pointer;
+    overflow: hidden;
+    transition: color 0.4s ease;
+    text-decoration: none;
+  }
+
+  .btn span,
+  .btn > * {
+    position: relative;
+    z-index: 1;
+  }
+
+  .btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    transform: scaleX(0);
+    transform-origin: right;
+    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+    z-index: 0;
+  }
+
+  .btn:hover::before {
+    transform: scaleX(1);
+    transform-origin: left;
+  }
+
+  /* Primary Button - Dark background, light text → Light fill, dark text */
+  .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+    border: var(--button-border-width) solid var(--color-primary);
+  }
+
+  .btn--primary span,
+  .btn--primary i,
+  .btn--primary > * {
+    transition: color 0.3s ease 0.1s;
+  }
+
+  .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+
+  .btn--primary:hover,
+  .btn--primary:hover span,
+  .btn--primary:hover i,
+  .btn--primary:hover > * {
+    color: var(--color-primary);
+  }
+
+  .btn--primary:not(:hover) span,
+  .btn--primary:not(:hover) i,
+  .btn--primary:not(:hover) > * {
+    transition-delay: 0s;
+  }
+
+  /* Secondary Button - Light background with border, dark text → Dark fill, light text */
+  .btn--secondary {
+    color: var(--color-text);
+    background: transparent;
+    border: var(--button-border-width) solid var(--color-border);
+  }
+
+  .btn--secondary span,
+  .btn--secondary i,
+  .btn--secondary * {
+    transition: color 0.3s ease 0.1s;
+  }
+
+  .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .btn--secondary:hover,
+  .btn--secondary:hover span,
+  .btn--secondary:hover i,
+  .btn--secondary:hover * {
+    color: var(--color-background);
+  }
+
+  .btn--secondary:not(:hover) span,
+  .btn--secondary:not(:hover) i,
+  .btn--secondary:not(:hover) * {
+    transition-delay: 0s;
+  }
+
+  /* Full width modifier */
+  .btn--full {
+    width: 100%;
+  }
+
+  /* Small button modifier */
+  .btn--sm {
+    padding: 0.625rem 1rem;
+    font-size: 0.6875rem;
+  }
+
+  /* Large button modifier */
+  .btn--lg {
+    padding: 1.5rem 2.5rem;
+    font-size: 0.875rem;
+  }
+
+  /* Disabled state */
+  .btn:disabled,
+  .btn[disabled],
+  .btn.disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  .btn--primary:disabled,
+  .btn--primary[disabled],
+  .btn--primary.disabled {
+    background: var(--color-text-secondary);
+    border-color: var(--color-text-secondary);
+    color: var(--color-background);
+  }
+
+  /* ==========================================================================
+     Text Hover Reveal Effect
+     Usage: Add .text-hover-reveal to parent, wrap text in <span data-hover="Text">Text</span>
+     ========================================================================== */
+
+  .text-hover-reveal {
+    overflow: hidden;
+  }
+
+  .text-hover-reveal span {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .text-hover-reveal span::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 0;
+    top: 100%;
+  }
+
+  .text-hover-reveal:hover span {
+    transform: translateY(-100%);
+  }
+
+  /* Link variant - for standalone link CTAs */
+  .link-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .link-cta:hover {
+    opacity: 0.7;
+  }
+
+  .link-cta i {
+    transition: transform 0.3s ease;
+  }
+
+  .link-cta:hover i {
+    transform: translateX(4px);
+  }
+
+  /* Link CTA with text hover reveal */
+  .link-cta--reveal {
+    overflow: hidden;
+  }
+
+  .link-cta--reveal .link-cta-text {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .link-cta--reveal .link-cta-text::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 0;
+    top: 100%;
+  }
+
+  .link-cta--reveal:hover .link-cta-text {
+    transform: translateY(-100%);
+  }
+
+  .link-cta--reveal:hover i {
+    transform: translateX(4px);
+  }
+}

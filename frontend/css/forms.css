@@ -1,0 +1,32 @@
+/* ==========================================================================
+   Form Input System
+   ========================================================================== */
+
+@layer components {
+  /* Base input styles */
+  .input {
+    display: block;
+    padding: 0.75rem 1rem;
+    background-color: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius);
+    color: var(--color-text);
+    font-size: inherit;
+    transition: border-color 0.2s ease;
+  }
+
+  .input:hover {
+    border-color: var(--color-text-secondary);
+  }
+
+  .input:focus {
+    outline: none;
+    border-color: var(--color-text);
+  }
+
+  /* Select-specific input styling (adds padding for arrow) */
+  select.input {
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+}

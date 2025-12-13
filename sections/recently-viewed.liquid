@@ -112,7 +112,7 @@
 
       {%- comment -%} Progress Bar {%- endcomment -%}
       <div class="h-0.5 bg-current/15 rounded-sm overflow-hidden mt-8" data-carousel-progress>
-        <div class="h-full bg-current transition-[width] duration-400 ease-out" data-carousel-progress-bar style="width: 0%"></div>
+        <div class="h-full w-0 bg-current transition-[width] duration-400 ease-out" data-carousel-progress-bar></div>
       </div>
     </div>
   </div>
@@ -238,8 +238,7 @@
         return `
         <div class="shrink-0 w-[calc(100%-2rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.125rem)] min-w-0 flex" data-intro>
           <article
-            class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full w-full"
-            style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);"
+            class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full w-full border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]"
           >
             <div class="product-card-image relative overflow-hidden ${imageRatioClass}">
               <a href="${escapeHtml(product.url)}" class="block w-full h-full" aria-label="${escapeHtml(product.title)}">

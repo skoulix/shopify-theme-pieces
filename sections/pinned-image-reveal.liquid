@@ -126,7 +126,7 @@
         {%- if block.type == 'slide' -%}
           <div class="mobile-block mb-8" data-index="{{ forloop.index0 }}" {{ block.shopify_attributes }}>
             {%- if block.settings.image != blank -%}
-              <div class="mobile-image-wrapper w-full h-[360px] overflow-hidden mb-4" style="border-radius: var(--card-border-radius);">
+              <div class="mobile-image-wrapper w-full h-[360px] overflow-hidden mb-4 rounded-[--card-border-radius]">
                 <img
                   class="mobile-parallax-img block w-full h-[130%] object-cover"
                   src="{{ block.settings.image | image_url: width: 1200 }}"

@@ -1,0 +1,78 @@
+/* ==========================================================================
+   Base Layer - Minimal resets and defaults
+   ========================================================================== */
+
+@layer base {
+  /* Use theme fonts */
+  body {
+    font-family: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  }
+
+  /* Smooth scrolling - only when enabled and Lenis is not active */
+  html.smooth-scroll-enabled:not(.lenis) {
+    scroll-behavior: smooth;
+  }
+
+  /* Lenis smooth scroll overrides */
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  /* Remove default summary marker */
+  summary {
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* Focus visible for accessibility */
+  :focus-visible {
+    @apply outline-2 outline-offset-2 outline-indigo-600;
+  }
+
+  /* Hide number input spinners globally */
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  input[type="number"] {
+    -moz-appearance: textfield;
+  }
+
+  /* Select dropdown styling */
+  select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+    padding-right: 2.5rem;
+    border-radius: var(--input-radius);
+    background-color: transparent;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3E%3Cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M6 8l4 4 4-4'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+  }
+
+  /* Hide arrow on selects that use custom icons */
+  select.no-arrow {
+    background-image: none;
+    padding-right: 0;
+  }
+}

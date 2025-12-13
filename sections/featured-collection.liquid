@@ -63,7 +63,7 @@
         {%- comment -%} Placeholder cards when no collection selected {%- endcomment -%}
         {% for i in (1..products_to_show) %}
           {%- assign placeholder_index = forloop.index | modulo: 6 | plus: 1 -%}
-          <div class="product-card flex flex-col cursor-pointer rounded-[--card-radius] overflow-hidden h-full" style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);" data-product-card="{{ forloop.index0 }}">
+          <div class="product-card flex flex-col cursor-pointer rounded-[--card-radius] overflow-hidden h-full border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]" data-product-card="{{ forloop.index0 }}">
             <div class="product-card-image relative overflow-hidden aspect-[3/4]">
               {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full object-cover' }}
             </div>

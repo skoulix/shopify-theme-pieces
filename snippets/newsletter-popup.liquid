@@ -116,8 +116,7 @@
     <div class="flex-1 p-8 {% if layout == 'side_image' and image %}sm:p-10{% endif %}">
       {%- comment -%} Close button {%- endcomment -%}
       <button
-        class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer opacity-60 hover:opacity-100 transition-opacity z-10"
-        style="color: var(--popup-text);"
+        class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer opacity-60 hover:opacity-100 transition-opacity z-10 text-[--popup-text]"
         data-newsletter-popup-close
         aria-label="{{ 'accessibility.close' | t }}"
       >
@@ -156,8 +155,7 @@
 
         <div class="mt-4 text-center">
           <button
-            class="bg-transparent border-none text-[13px] opacity-50 cursor-pointer underline hover:opacity-80 transition-opacity"
-            style="color: var(--popup-text);"
+            class="bg-transparent border-none text-[13px] opacity-50 cursor-pointer underline hover:opacity-80 transition-opacity text-[--popup-text]"
             data-newsletter-popup-close
           >
             {{ 'general.newsletter.no_thanks' | t }}

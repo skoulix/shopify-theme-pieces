@@ -97,8 +97,7 @@
               name="contact[name]"
               autocomplete="name"
               value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
-              style="border-width: var(--input-border-width);"
+              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border-[length:var(--input-border-width)] border-solid border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
             >
           </div>
 
@@ -111,8 +110,7 @@
               autocomplete="email"
               required
               value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
-              style="border-width: var(--input-border-width);"
+              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border-[length:var(--input-border-width)] border-solid border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
             >
           </div>
 
@@ -124,8 +122,7 @@
               name="contact[phone]"
               autocomplete="tel"
               value="{% if form.phone %}{{ form.phone }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
-              style="border-width: var(--input-border-width);"
+              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border-[length:var(--input-border-width)] border-solid border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm"
             >
           </div>
 
@@ -135,8 +132,7 @@
               id="ContactForm-body"
               name="contact[body]"
               rows="5"
-              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm resize-none"
-              style="border-width: var(--input-border-width);"
+              class="contact-form-input block w-full py-3 px-4 text-[--color-text] bg-[--color-background] border-[length:var(--input-border-width)] border-solid border-[--color-border] rounded-[--input-radius] placeholder:text-[--color-text-secondary] focus:border-[--color-primary] focus:outline-none text-sm resize-none"
             >{{ form.body }}</textarea>
           </div>
         </div>

@@ -212,9 +212,9 @@
             {% endif %}
             {% case block.type %}
               {% when 'address' %}
-                <p style="white-space: pre-line;">{{ block.settings.address }}</p>
+                <p class="whitespace-pre-line">{{ block.settings.address }}</p>
               {% when 'hours' %}
-                <p style="white-space: pre-line;">{{ block.settings.hours }}</p>
+                <p class="whitespace-pre-line">{{ block.settings.hours }}</p>
               {% when 'contact' %}
                 {% if block.settings.phone != blank %}
                   <p><a href="tel:{{ block.settings.phone | remove: ' ' | remove: '-' | remove: '(' | remove: ')' }}">{{ block.settings.phone }}</a></p>

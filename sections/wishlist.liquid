@@ -233,7 +233,7 @@
     let html = `
       <div class="wishlist-grid">
         ${products.map(product => `
-          <article class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full" style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);">
+          <article class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]">
             <button
               type="button"
               class="absolute top-3 right-3 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-[--color-sale] text-white shadow-md transition-all duration-300 hover:scale-110"

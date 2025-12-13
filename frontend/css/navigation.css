@@ -1,0 +1,315 @@
+/* ==========================================================================
+   Mobile Navigation Drawer - Full Screen with Large Typography & Reveal Effects
+   Uses GSAP for animations when available, CSS fallback otherwise
+   ========================================================================== */
+
+/* Mobile Nav - State handling (Tailwind handles base layout) */
+.mobile-nav.is-open {
+  pointer-events: auto;
+  visibility: visible;
+}
+
+/* Drawer Panel - clip-path animation for reveal */
+.mobile-nav__drawer {
+  clip-path: inset(0 0 100% 0);
+  will-change: clip-path;
+}
+
+/* Large Typography Links - Uses theme heading font and responsive sizing */
+.mobile-nav__link {
+  padding: 0.75rem 0;
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(2rem, 8vw, 3.5rem);
+  font-weight: var(--font-heading-weight, 500);
+  font-style: var(--font-heading-style, normal);
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: var(--color-text);
+  transition: color 0.3s ease;
+}
+
+.mobile-nav__link:hover {
+  color: var(--color-primary);
+}
+
+.mobile-nav__link.is-active {
+  color: var(--color-primary);
+}
+
+/* Split chars for reveal animation */
+.mobile-nav-char {
+  display: inline-block;
+}
+
+/* Animated underline on hover */
+.mobile-nav__link-line {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav__link:hover .mobile-nav__link-line {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Desktop nav active state (for JS-toggled is-active class) */
+[data-nav-link].is-active::after {
+  width: 100% !important;
+}
+
+/* Plus/minus toggle icon - rotation animation */
+.mobile-nav__toggle-icon {
+  font-size: clamp(1.5rem, 5vw, 1.75rem);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav__link--parent[aria-expanded="true"] .mobile-nav__toggle-icon {
+  transform: rotate(45deg);
+}
+
+/* Submenu panel - grid animation for smooth expand/collapse */
+.mobile-nav__submenu {
+  grid-template-rows: 0fr;
+  transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.mobile-nav__submenu.is-open {
+  grid-template-rows: 1fr;
+}
+
+/* Child links - responsive font sizing */
+.mobile-nav__submenu-link {
+  padding: 0.625rem 0;
+  font-size: clamp(1rem, 4vw, 1.25rem);
+}
+
+
+/* ==========================================================================
+   Mobile Nav - Sliding Panels Style
+   Modern multi-level navigation with sliding panel transitions
+   ========================================================================== */
+
+/* Individual Panel - slide transitions */
+.mobile-nav--slide .mobile-nav__panel {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  background: var(--color-background);
+  transform: translateX(100%);
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  will-change: transform;
+}
+
+.mobile-nav--slide .mobile-nav__panel--main {
+  position: relative;
+  transform: translateX(0);
+}
+
+.mobile-nav--slide .mobile-nav__panel.is-active {
+  transform: translateX(0);
+}
+
+/* When navigating deeper, slide main panel left */
+.mobile-nav--slide .mobile-nav__panel--main.is-hidden,
+.mobile-nav--slide .mobile-nav__panel.is-hidden {
+  transform: translateX(-30%);
+}
+
+/* Panel title - uses theme heading font */
+.mobile-nav__panel-title {
+  font-family: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+  font-size: clamp(1.5rem, 6vw, 2rem);
+  font-weight: var(--font-heading-weight, 500);
+  font-style: var(--font-heading-style, normal);
+  letter-spacing: -0.02em;
+}
+
+/* Slide style links - smaller for better hierarchy */
+.mobile-nav--slide .mobile-nav__link {
+  font-size: clamp(1.5rem, 6vw, 2.5rem);
+}
+
+/* Level 2 and 3 panels have regular-sized text */
+.mobile-nav--slide .mobile-nav__panel[data-panel-level="2"] .mobile-nav__link:not(.mobile-nav__link--view-all),
+.mobile-nav--slide .mobile-nav__panel[data-panel-level="3"] .mobile-nav__link:not(.mobile-nav__link--view-all) {
+  font-size: clamp(1.125rem, 4vw, 1.5rem);
+  font-family: inherit;
+  font-weight: 500;
+}
+
+/* ==========================================================================
+   Desktop Dropdown Navigation
+   Creative reveal animation with staggered content
+   ========================================================================== */
+
+.dropdown-wrapper {
+  position: relative;
+}
+
+/* Dropdown panel - positioned relative to its trigger */
+.dropdown-panel {
+  position: absolute;
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  min-width: 240px;
+  padding-top: 0.75rem;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  z-index: 50;
+}
+
+.dropdown-wrapper.is-open .dropdown-panel {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Inner panel with background */
+.dropdown-panel__inner {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--card-radius, 8) * 1px);
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
+  padding: 1.5rem;
+  overflow: hidden;
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-wrapper.is-open .dropdown-panel__inner {
+  clip-path: inset(0 0 0% 0);
+}
+
+/* Featured "View all" link */
+.dropdown-featured {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem;
+  margin: -0.5rem -0.5rem 1rem;
+  background: var(--color-background-secondary, #f5f5f5);
+  border-radius: calc(var(--card-radius, 8) * 0.5px);
+  text-decoration: none;
+  color: var(--color-text);
+  transition: background-color 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 0.4s ease, transform 0.4s ease, background-color 0.3s ease;
+}
+
+.dropdown-wrapper.is-open .dropdown-featured {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: 0.15s;
+}
+
+.dropdown-featured:hover {
+  background: var(--color-border);
+}
+
+.dropdown-featured__label {
+  font-size: 0.625rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.25rem;
+}
+
+.dropdown-featured__title {
+  font-size: 1.125rem;
+  font-weight: 600;
+}
+
+.dropdown-featured__arrow {
+  position: absolute;
+  right: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 1rem;
+  opacity: 0;
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.dropdown-featured:hover .dropdown-featured__arrow {
+  opacity: 1;
+  transform: translateY(-50%) translateX(4px);
+}
+
+/* Dropdown links container */
+.dropdown-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Individual dropdown link */
+.dropdown-link {
+  position: relative;
+  display: block;
+  padding: 0.5rem 0;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.3s ease, transform 0.3s ease, color 0.2s ease;
+}
+
+.dropdown-wrapper.is-open .dropdown-link {
+  opacity: 1;
+  transform: translateY(0);
+  transition-delay: calc(0.2s + (var(--item-index, 0) * 0.05s));
+}
+
+.dropdown-link:hover {
+  color: var(--color-primary);
+}
+
+.dropdown-link__text {
+  position: relative;
+  z-index: 1;
+}
+
+/* Animated underline */
+.dropdown-link__line {
+  position: absolute;
+  bottom: 0.25rem;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.dropdown-link:hover .dropdown-link__line {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+/* Transparent header dropdown overrides */
+.header-group.is-transparent:not(.is-scrolled) .dropdown-panel__inner {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.header-group.is-transparent:not(.is-scrolled) .dropdown-link,
+.header-group.is-transparent:not(.is-scrolled) .dropdown-featured {
+  color: var(--color-text);
+}
