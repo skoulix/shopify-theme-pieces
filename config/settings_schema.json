@@ -362,11 +362,16 @@
     "name": "Product card",
     "settings": [
       {
-        "type": "checkbox",
-        "id": "enable_quick_view",
-        "default": true,
-        "label": "Enable quick view",
-        "info": "Shows a quick view button on product cards"
+        "type": "select",
+        "id": "product_card_image_ratio",
+        "label": "Image aspect ratio",
+        "default": "portrait",
+        "options": [
+          { "value": "portrait", "label": "Portrait (3:4)" },
+          { "value": "square", "label": "Square (1:1)" },
+          { "value": "landscape", "label": "Landscape (4:3)" },
+          { "value": "adapt", "label": "Adapt to image" }
+        ]
       },
       {
         "type": "checkbox",
@@ -374,6 +379,46 @@
         "default": true,
         "label": "Show second image on hover",
         "info": "Displays an alternate product image when hovering over the card"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "default": false,
+        "label": "Show vendor",
+        "info": "Displays the product vendor/brand name"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_quick_view",
+        "default": true,
+        "label": "Enable quick view",
+        "info": "Shows a quick view button on product cards"
+      },
+      {
+        "type": "header",
+        "content": "Badges"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sale_badge",
+        "default": true,
+        "label": "Show sale badge"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sold_out_badge",
+        "default": true,
+        "label": "Show sold out badge"
+      },
+      {
+        "type": "select",
+        "id": "sale_badge_style",
+        "label": "Sale badge style",
+        "default": "percentage",
+        "options": [
+          { "value": "percentage", "label": "Percentage (e.g. -20%)" },
+          { "value": "text", "label": "Text (Sale)" }
+        ]
       }
     ]
   },

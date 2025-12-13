@@ -15,8 +15,12 @@
 
 {%- liquid
   assign index = index | default: 0
-  assign show_vendor = show_vendor | default: false
   assign show_quick_add = show_quick_add | default: true
+
+  # Use global settings for vendor display (can be overridden by parameter)
+  if show_vendor == nil
+    assign show_vendor = settings.show_vendor
+  endif
 
   if collection
     assign product_url = product.url | within: collection
@@ -29,6 +33,18 @@
   if product.variants.size > 1
     assign has_variants = true
   endif
+
+  # Image aspect ratio
+  case settings.product_card_image_ratio
+    when 'portrait'
+      assign image_ratio_class = 'aspect-[3/4]'
+    when 'square'
+      assign image_ratio_class = 'aspect-square'
+    when 'landscape'
+      assign image_ratio_class = 'aspect-[4/3]'
+    when 'adapt'
+      assign image_ratio_class = ''
+  endcase
 -%}
 
 <div
@@ -39,7 +55,7 @@
   data-intro
 >
   <a href="{{ product_url }}" class="flex flex-col flex-1 cursor-pointer">
-    <div class="product-card-image relative overflow-hidden aspect-[3/4]">
+    <div class="product-card-image relative overflow-hidden {{ image_ratio_class }}">
       {%- comment -%} Quick View Button - Hover overlay on image {%- endcomment -%}
       {% if show_quick_add and product.available and settings.enable_quick_view %}
         <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
@@ -87,16 +103,22 @@
 
       {%- comment -%} Badges {%- endcomment -%}
       <div class="absolute top-3 left-3 flex flex-col gap-2">
-        {% if product.compare_at_price > product.price %}
-          {%- assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+        {% if product.compare_at_price > product.price and settings.show_sale_badge %}
           <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-sale] text-white rounded">
-            -{{ save_percent }}%
+            {% if settings.sale_badge_style == 'percentage' %}
+              {%- assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
+              -{{ save_percent }}%
+            {% else %}
+              {{ 'products.product.on_sale' | t }}
+            {% endif %}
           </span>
         {% endif %}
         {% unless product.available %}
-          <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-text] text-[--color-background] rounded">
-            {{ 'products.product.sold_out' | t }}
-          </span>
+          {% if settings.show_sold_out_badge %}
+            <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-text] text-[--color-background] rounded">
+              {{ 'products.product.sold_out' | t }}
+            </span>
+          {% endif %}
         {% endunless %}
       </div>
     </div>
