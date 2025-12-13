@@ -1440,26 +1440,22 @@ html.animations-disabled [data-intro] {
 }
 
 .collection-wrapper[data-view="list"] .product-card {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-}
-
-.collection-wrapper[data-view="list"] .product-card > a {
   display: grid;
-  grid-template-columns: 100px 1fr;
+  grid-template-columns: 80px 1fr auto;
   gap: 1rem;
   align-items: center;
-  flex: 1;
-  min-width: 0;
+  flex-direction: row;
 }
 
 .collection-wrapper[data-view="list"] .product-card-image {
+  width: 80px;
+  height: auto;
   aspect-ratio: 1;
+  flex-shrink: 0;
 }
 
 .collection-wrapper[data-view="list"] .product-card-image img {
-  object-fit: contain;
+  object-fit: cover;
 }
 
 /* Secondary image needs background in list view to cover primary when images have different dimensions */
@@ -1467,9 +1463,30 @@ html.animations-disabled [data-intro] {
   background-color: var(--color-background);
 }
 
+/* Hide action buttons in list view - they overlap awkwardly */
+.collection-wrapper[data-view="list"] .product-card-actions {
+  display: none;
+}
+
 .collection-wrapper[data-view="list"] .product-card-content {
-  padding: 0;
+  padding: 0.75rem 0;
   background: transparent;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+/* Ensure vendor, title, price are on separate rows */
+.collection-wrapper[data-view="list"] .product-card-vendor {
+  margin: 0;
+}
+
+.collection-wrapper[data-view="list"] .product-card-title {
+  margin: 0;
+}
+
+.collection-wrapper[data-view="list"] .product-card-price {
+  margin: 0;
 }
 
 .collection-wrapper[data-view="list"] .product-card-quick-add {
@@ -1483,9 +1500,13 @@ html.animations-disabled [data-intro] {
 }
 
 @media (min-width: 768px) {
-  .collection-wrapper[data-view="list"] .product-card > a {
-    grid-template-columns: 140px 1fr;
+  .collection-wrapper[data-view="list"] .product-card {
+    grid-template-columns: 100px 1fr auto;
     gap: 1.5rem;
+  }
+
+  .collection-wrapper[data-view="list"] .product-card-image {
+    width: 100px;
   }
 }
 

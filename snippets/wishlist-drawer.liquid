@@ -309,7 +309,7 @@
     });
 
     // Update wishlist buttons
-    const productIds = products.map(p => p.id);
+    const productIds = products.map(p => String(p.id));
     document.querySelectorAll('[data-wishlist-toggle]').forEach(btn => {
       const productId = btn.dataset.wishlistToggle;
       const isInWishlist = productIds.includes(productId);
@@ -372,7 +372,7 @@
   }
 
   function removeProduct(productId) {
-    const products = getProducts().filter(p => p.id !== productId);
+    const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
     updateUI();
     document.dispatchEvent(new CustomEvent('wishlist:removed', { detail: { productId } }));
@@ -454,7 +454,7 @@
     };
 
     const products = getProducts();
-    const exists = products.some(p => p.id === product.id);
+    const exists = products.some(p => String(p.id) === String(product.id));
 
     if (exists) {
       removeProduct(product.id);

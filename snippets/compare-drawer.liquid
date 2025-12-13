@@ -221,7 +221,7 @@
 
 {%- comment -%} Floating Button {%- endcomment -%}
 <button type="button" class="compare-floating-btn" data-compare-floating-btn aria-label="{{ 'products.compare.view_compare' | t | default: 'View compare' }}" aria-expanded="false" aria-controls="compare-drawer">
-  <i class="ph ph-equals text-lg" aria-hidden="true"></i>
+  <i class="ph ph-scales text-lg" aria-hidden="true"></i>
   <span>{{ 'products.compare.compare' | t | default: 'Compare' }}</span>
   <span class="compare-floating-btn__count" data-compare-count aria-label="{{ 'products.compare.items_count' | t | default: 'items' }}">0</span>
 </button>
@@ -414,7 +414,7 @@
   }
 
   function removeProduct(productId) {
-    const products = getProducts().filter(p => p.id !== productId);
+    const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
     updateUI();
     document.dispatchEvent(new CustomEvent('compare:removed', { detail: { productId } }));
@@ -427,7 +427,7 @@
   }
 
   function updateCompareButtons(products) {
-    const productIds = products.map(p => p.id);
+    const productIds = products.map(p => String(p.id));
     document.querySelectorAll('[data-compare-toggle]').forEach(btn => {
       const productId = btn.dataset.compareToggle;
       const isInCompare = productIds.includes(productId);
@@ -476,21 +476,22 @@
       }
     });
 
-    // Handle drawer toggle buttons (like facets toolbar)
-    document.addEventListener('click', (e) => {
-      const toggleBtn = e.target.closest('[data-compare-drawer-toggle]');
-      if (!toggleBtn) return;
-      e.preventDefault();
-      if (drawer.classList.contains('is-open')) {
-        closeDrawer();
-      } else {
-        openDrawer();
-      }
-    });
-
     closeBtn?.addEventListener('click', closeDrawer);
     clearBtn?.addEventListener('click', clearProducts);
   }
+
+  // Handle drawer toggle buttons (like facets toolbar) - outside hasDrawer check
+  // so it works even if floating button isn't rendered
+  document.addEventListener('click', (e) => {
+    const toggleBtn = e.target.closest('[data-compare-drawer-toggle]');
+    if (!toggleBtn) return;
+    e.preventDefault();
+    if (drawer && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    } else {
+      openDrawer();
+    }
+  });
 
   // Listen for compare events from product cards
   document.addEventListener('compare:toggle', (e) => {
@@ -498,7 +499,7 @@
     if (!product) return;
 
     const products = getProducts();
-    const exists = products.some(p => p.id === product.id);
+    const exists = products.some(p => String(p.id) === String(product.id));
 
     if (exists) {
       removeProduct(product.id);
