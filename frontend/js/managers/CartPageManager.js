@@ -143,7 +143,7 @@ class CartPageManager {
 
     if (container) {
       container.outerHTML = `
-        <div class="cart-empty ${containerClass} pb-[--page-vertical-padding]" style="opacity: 1;">
+        <div class="${containerClass} pb-[--page-vertical-padding]">
           <h2 class="text-2xl md:text-3xl font-semibold text-[--color-text] font-heading">${emptyTitle}</h2>
           <p class="mt-4 text-[--color-text-secondary] max-w-sm">${emptyDescription}</p>
 

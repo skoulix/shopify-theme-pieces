@@ -125,20 +125,11 @@
   width: 3rem;
   height: 1px;
   background: var(--color-text-secondary);
-  transform: scaleX(0);
-  transform-origin: left;
+  /* Initial scaleX(0) handled by TweenManager for animated pages */
+  /* For non-animated contexts, line shows by default */
 }
 
-/* Show line immediately when animations are disabled */
-html.animations-disabled .page-header-subtitle-line {
-  transform: scaleX(1);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .page-header-subtitle-line {
-    transform: scaleX(1);
-  }
-}
+/* Line visibility handled by TweenManager - no CSS overrides needed */
 
 /* ==========================================================================
    Drawer/Modal Backdrop - Reusable backdrop for drawers and modals

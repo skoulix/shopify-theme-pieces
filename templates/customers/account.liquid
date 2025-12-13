@@ -12,10 +12,6 @@
     color: var(--color-text);
   }
 
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-customer-title] { opacity: 0; }
-  html.animations-disabled [data-customer-title] { opacity: 1; }
-
   .customer-nav__link {
     display: flex;
     align-items: center;
@@ -91,18 +87,18 @@
 
 <div class="page-container py-[--page-vertical-padding]">
   {%- comment -%} Header {%- endcomment -%}
-  <header class="mb-12">
-    <h1 class="customer-page__title font-heading mb-3" data-customer-title>
+  <header class="mb-12" data-tween-group="customer-account" data-tween-start="top bottom">
+    <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.account.title' | t }}
     </h1>
-    <p class="text-[--color-text-secondary]" data-intro>
+    <p class="text-[--color-text-secondary]" data-tween data-tween-type="fade-up">
       {{ 'customers.account.welcome' | t: name: customer.first_name }}
     </p>
   </header>
 
-  <div class="grid lg:grid-cols-3 gap-8 lg:gap-12">
+  <div class="grid lg:grid-cols-3 gap-8 lg:gap-12" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
     {%- comment -%} Sidebar {%- endcomment -%}
-    <aside class="lg:col-span-1" data-intro>
+    <aside class="lg:col-span-1">
       <div class="lg:sticky lg:top-12">
       <nav class="space-y-1">
         <a href="{{ routes.account_url }}" class="customer-nav__link customer-nav__link--active" data-no-swup>
@@ -134,13 +130,13 @@
 
     {%- comment -%} Order History {%- endcomment -%}
     <main class="lg:col-span-2">
-      <h2 class="text-xl font-semibold font-heading mb-6" data-intro>{{ 'customers.orders.title' | t }}</h2>
+      <h2 class="text-xl font-semibold font-heading mb-6">{{ 'customers.orders.title' | t }}</h2>
 
       {% paginate customer.orders by 10 %}
         {% if customer.orders.size > 0 %}
           <div class="space-y-4">
             {% for order in customer.orders %}
-              <div class="customer-order-card" data-intro>
+              <div class="customer-order-card">
                 {%- comment -%} Order Header {%- endcomment -%}
                 <div class="customer-order-card__header">
                   <div>
@@ -229,7 +225,7 @@
             </nav>
           {% endif %}
         {% else %}
-          <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg" data-intro>
+          <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg">
             <i class="ph ph-package text-4xl text-[--color-text-secondary] mb-4"></i>
             <p class="text-[--color-text-secondary] mb-6">{{ 'customers.orders.none' | t }}</p>
             <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
@@ -241,60 +237,3 @@
     </main>
   </div>
 </div>
-
-<script>
-  // SplitText title animation
-  (function() {
-    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      document.querySelectorAll('[data-customer-title]').forEach(el => el.style.opacity = 1);
-      return;
-    }
-
-    function initAnimation() {
-      let gsap = window.gsap || (window.pieces && window.pieces.gsap);
-      let SplitText = window.SplitText || (window.pieces && window.pieces.SplitText);
-      let ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
-
-      if (!gsap || !SplitText || !ScrollTrigger) {
-        setTimeout(initAnimation, 50);
-        return;
-      }
-
-      document.querySelectorAll('[data-customer-title]').forEach(title => {
-        if (title.dataset.splitInitialized) return;
-        title.dataset.splitInitialized = 'true';
-
-        const split = new SplitText(title, { type: 'lines', linesClass: 'customer-title-line' });
-
-        split.lines.forEach(line => {
-          const wrapper = document.createElement('div');
-          wrapper.style.overflow = 'hidden';
-          wrapper.style.display = 'block';
-          line.parentNode.insertBefore(wrapper, line);
-          wrapper.appendChild(line);
-        });
-
-        gsap.set(split.lines, { yPercent: 120 });
-        title.style.opacity = 1;
-
-        gsap.to(split.lines, {
-          yPercent: 0,
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: title,
-            start: 'top 85%',
-            once: true
-          }
-        });
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAnimation);
-    } else {
-      requestAnimationFrame(initAnimation);
-    }
-  })();
-</script>

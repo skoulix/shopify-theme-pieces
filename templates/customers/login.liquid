@@ -12,10 +12,6 @@
     color: var(--color-text);
   }
 
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-customer-title] { opacity: 0; }
-  html.animations-disabled [data-customer-title] { opacity: 1; }
-
   .customer-form__input {
     width: 100%;
     padding: 1rem;
@@ -94,69 +90,69 @@
 <div class="page-container py-[--page-vertical-padding]">
   <div class="max-w-md mx-auto">
     {%- comment -%} Login Form {%- endcomment -%}
-    <div id="customer-login" class="{% if show_recover_form %}hidden{% endif %} text-center">
-      <h1 class="customer-page__title font-heading mb-3" data-customer-title>
+    <div id="customer-login" class="{% if show_recover_form %}hidden{% endif %} text-center" data-tween-group="customer-login" data-tween-start="top bottom">
+      <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
         {{ 'customers.login.title' | t }}
       </h1>
-      <p class="text-[--color-text-secondary] mb-10" data-intro>
+      <p class="text-[--color-text-secondary] mb-10" data-tween data-tween-type="fade-up">
         {{ 'customers.login.subtitle' | t }}
       </p>
 
-      {% form 'customer_login', class: 'space-y-6' %}
-        {% if form.errors %}
-          <div class="customer-form__alert customer-form__alert--error" role="alert" data-intro>
-            <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
-            <span>{{ form.errors | default_errors }}</span>
+      <div data-tween data-tween-type="fade-up">
+        {% form 'customer_login', class: 'space-y-6' %}
+          {% if form.errors %}
+            <div class="customer-form__alert customer-form__alert--error" role="alert">
+              <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
+              <span>{{ form.errors | default_errors }}</span>
+            </div>
+          {% endif %}
+
+          <div>
+            <label for="customer-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
+            <input
+              type="email"
+              id="customer-email"
+              name="customer[email]"
+              autocomplete="email"
+              autocapitalize="off"
+              autocorrect="off"
+              required
+              placeholder="{{ 'customers.login.email' | t }}"
+              class="customer-form__input"
+              {% if form.errors contains 'form' %}autofocus{% endif %}
+            >
           </div>
-        {% endif %}
 
-        <div data-intro>
-          <label for="customer-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
-          <input
-            type="email"
-            id="customer-email"
-            name="customer[email]"
-            autocomplete="email"
-            autocapitalize="off"
-            autocorrect="off"
-            required
-            placeholder="{{ 'customers.login.email' | t }}"
-            class="customer-form__input"
-            {% if form.errors contains 'form' %}autofocus{% endif %}
-          >
+          <div>
+            <label for="customer-password" class="sr-only">{{ 'customers.login.password' | t }}</label>
+            <input
+              type="password"
+              id="customer-password"
+              name="customer[password]"
+              autocomplete="current-password"
+              required
+              placeholder="{{ 'customers.login.password' | t }}"
+              class="customer-form__input"
+            >
+          </div>
+
+          <div>
+            <button type="submit" class="btn btn--primary w-full">
+              <span>{{ 'customers.login.sign_in' | t }}</span>
+            </button>
+          </div>
+
+          <p class="text-sm text-center">
+            <a href="#recover" class="text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-toggle-recover>
+              {{ 'customers.login.forgot_password' | t }}
+            </a>
+          </p>
+        {% endform %}
+
+        <div class="customer-form__divider text-center">
+          <span>{{ 'customers.login.new_customer' | t }}</span>
         </div>
 
-        <div data-intro>
-          <label for="customer-password" class="sr-only">{{ 'customers.login.password' | t }}</label>
-          <input
-            type="password"
-            id="customer-password"
-            name="customer[password]"
-            autocomplete="current-password"
-            required
-            placeholder="{{ 'customers.login.password' | t }}"
-            class="customer-form__input"
-          >
-        </div>
-
-        <div data-intro>
-          <button type="submit" class="btn btn--primary w-full">
-            <span>{{ 'customers.login.sign_in' | t }}</span>
-          </button>
-        </div>
-
-        <p class="text-sm text-center" data-intro>
-          <a href="#recover" class="text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-toggle-recover>
-            {{ 'customers.login.forgot_password' | t }}
-          </a>
-        </p>
-      {% endform %}
-
-      <div class="customer-form__divider text-center" data-intro>
-        <span>{{ 'customers.login.new_customer' | t }}</span>
-      </div>
-
-      <div data-intro>
         <a href="{{ routes.account_register_url }}" class="btn btn--secondary w-full" data-no-swup>
           <span>{{ 'customers.login.create_account' | t }}</span>
         </a>
@@ -164,114 +160,64 @@
     </div>
 
     {%- comment -%} Password Recovery Form {%- endcomment -%}
-    <div id="recover-password" class="{% unless show_recover_form %}hidden{% endunless %} text-center" data-recover-form>
-      <h1 class="customer-page__title font-heading mb-3" data-customer-title>
+    <div id="recover-password" class="{% unless show_recover_form %}hidden{% endunless %} text-center" data-recover-form data-tween-group="customer-recover" data-tween-start="top bottom">
+      <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
         {{ 'customers.recover_password.title' | t }}
       </h1>
-      <p class="text-[--color-text-secondary] mb-10" data-intro>
+      <p class="text-[--color-text-secondary] mb-10" data-tween data-tween-type="fade-up">
         {{ 'customers.recover_password.subtext' | t }}
       </p>
 
-      {% form 'recover_customer_password', class: 'space-y-6' %}
-        {% if form.posted_successfully? %}
-          <div class="customer-form__alert customer-form__alert--success" role="status" data-intro>
-            <i class="ph ph-check-circle text-xl flex-shrink-0"></i>
-            <span>{{ 'customers.recover_password.success' | t }}</span>
+      <div data-tween data-tween-type="fade-up">
+        {% form 'recover_customer_password', class: 'space-y-6' %}
+          {% if form.posted_successfully? %}
+            <div class="customer-form__alert customer-form__alert--success" role="status">
+              <i class="ph ph-check-circle text-xl flex-shrink-0"></i>
+              <span>{{ 'customers.recover_password.success' | t }}</span>
+            </div>
+          {% endif %}
+
+          {% if form.errors %}
+            <div class="customer-form__alert customer-form__alert--error" role="alert">
+              <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
+              <span>{{ form.errors | default_errors }}</span>
+            </div>
+          {% endif %}
+
+          <div>
+            <label for="recover-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
+            <input
+              type="email"
+              id="recover-email"
+              name="email"
+              autocomplete="email"
+              autocapitalize="off"
+              autocorrect="off"
+              required
+              placeholder="{{ 'customers.login.email' | t }}"
+              class="customer-form__input"
+            >
           </div>
-        {% endif %}
 
-        {% if form.errors %}
-          <div class="customer-form__alert customer-form__alert--error" role="alert" data-intro>
-            <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
-            <span>{{ form.errors | default_errors }}</span>
+          <div>
+            <button type="submit" class="btn btn--primary w-full">
+              <span>{{ 'customers.recover_password.submit' | t }}</span>
+            </button>
           </div>
-        {% endif %}
 
-        <div data-intro>
-          <label for="recover-email" class="sr-only">{{ 'customers.login.email' | t }}</label>
-          <input
-            type="email"
-            id="recover-email"
-            name="email"
-            autocomplete="email"
-            autocapitalize="off"
-            autocorrect="off"
-            required
-            placeholder="{{ 'customers.login.email' | t }}"
-            class="customer-form__input"
-          >
-        </div>
-
-        <div data-intro>
-          <button type="submit" class="btn btn--primary w-full">
-            <span>{{ 'customers.recover_password.submit' | t }}</span>
-          </button>
-        </div>
-
-        <p class="text-sm text-center" data-intro>
-          <a href="#login" class="text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-toggle-recover>
-            {{ 'customers.recover_password.cancel' | t }}
-          </a>
-        </p>
-      {% endform %}
+          <p class="text-sm text-center">
+            <a href="#login" class="text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-toggle-recover>
+              {{ 'customers.recover_password.cancel' | t }}
+            </a>
+          </p>
+        {% endform %}
+      </div>
     </div>
   </div>
 </div>
 
 <script>
   (function() {
-    const animationsDisabled = typeof window.shouldAnimate === 'function' && !window.shouldAnimate();
-
-    // Make titles visible immediately if animations disabled
-    if (animationsDisabled) {
-      document.querySelectorAll('[data-customer-title]').forEach(el => el.style.opacity = 1);
-    }
-
-    function animateTitle(title, replay) {
-      if (animationsDisabled) return;
-
-      let gsap = window.gsap || (window.pieces && window.pieces.gsap);
-      let SplitText = window.SplitText || (window.pieces && window.pieces.SplitText);
-
-      if (!gsap || !SplitText) {
-        setTimeout(() => animateTitle(title, replay), 50);
-        return;
-      }
-
-      // If already split, just replay animation
-      if (title.dataset.splitAnimated && replay) {
-        const lines = title.querySelectorAll('.customer-title-line');
-        gsap.fromTo(lines,
-          { yPercent: 120 },
-          { yPercent: 0, duration: 1.2, ease: 'power4.out', stagger: 0.1 }
-        );
-        return;
-      }
-
-      if (title.dataset.splitAnimated) return;
-      title.dataset.splitAnimated = 'true';
-
-      const split = new SplitText(title, { type: 'lines', linesClass: 'customer-title-line' });
-
-      split.lines.forEach(line => {
-        const wrapper = document.createElement('div');
-        wrapper.style.overflow = 'hidden';
-        wrapper.style.display = 'block';
-        line.parentNode.insertBefore(wrapper, line);
-        wrapper.appendChild(line);
-      });
-
-      gsap.set(split.lines, { yPercent: 120 });
-      title.style.opacity = 1;
-
-      gsap.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      });
-    }
-
     function init() {
       const loginForm = document.getElementById('customer-login');
       const recoverForm = document.getElementById('recover-password');
@@ -279,39 +225,23 @@
 
       if (!loginForm || !recoverForm) return;
 
-      const loginTitle = loginForm.querySelector('[data-customer-title]');
-      const recoverTitle = recoverForm.querySelector('[data-customer-title]');
-
       function showForm(formType) {
         if (formType === 'recover') {
           loginForm.classList.add('hidden');
           recoverForm.classList.remove('hidden');
-          animateTitle(recoverTitle, true);
         } else {
           loginForm.classList.remove('hidden');
           recoverForm.classList.add('hidden');
-          animateTitle(loginTitle, true);
         }
       }
 
-      // Check which form should be visible on load
-      // Priority: server-side state (form errors/success) > URL hash > default (login)
-      const recoverFormVisible = !recoverForm.classList.contains('hidden');
-
-      if (recoverFormVisible) {
-        // Recover form is already visible (server set it due to errors/success)
-        animateTitle(recoverTitle, false);
-      } else if (window.location.hash === '#recover') {
-        // URL hash indicates recover form
+      // Check URL hash on load
+      if (window.location.hash === '#recover' && recoverForm.classList.contains('hidden')) {
         loginForm.classList.add('hidden');
         recoverForm.classList.remove('hidden');
-        animateTitle(recoverTitle, false);
-      } else {
-        // Default: show login form
-        animateTitle(loginTitle, false);
       }
 
-      // Handle hash changes (browser back/forward, external navigation)
+      // Handle hash changes (browser back/forward)
       window.addEventListener('hashchange', function() {
         if (window.location.hash === '#recover') {
           showForm('recover');

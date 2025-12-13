@@ -13,8 +13,7 @@
   .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 8vw, 6rem); }
   .blog-item--featured .blog-item-title { font-size: clamp(1.5rem, 3vw, 2.5rem); line-height: 1.1; letter-spacing: -0.02em; font-weight: 700; }
   .blog-item-author::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--color-text-secondary); margin-right: 0.5rem; vertical-align: middle; }
-  .blog-item-image { clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .blog-item-image { clip-path: none; }
+  /* blog-item-image animation handled by TweenManager */
 </style>
 
 <section class="blog-wrapper py-[--page-vertical-padding]" data-blog-wrapper>
@@ -25,9 +24,9 @@
       </h1>
 
       {% if section.settings.show_article_count %}
-        <p class="page-header-subtitle mt-6" data-tween data-tween-type="fade-up">
-          <span class="page-header-subtitle-line"></span>
-          <span>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span>
+        <p class="page-header-subtitle mt-6">
+          <span class="page-header-subtitle-line" data-subtitle-line></span>
+          <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ blog.articles_count }} {{ blog.articles_count | pluralize: 'Article', 'Articles' }}</span></span>
         </p>
       {% endif %}
     </div>
@@ -47,7 +46,7 @@
             data-blog-item="{{ forloop.index0 }}"
             data-article-url="{{ article.url }}"
           >
-            <a href="{{ article.url }}" class="blog-item-image block aspect-[16/10] overflow-hidden{% if is_featured %} aspect-[16/9] lg:aspect-auto lg:h-full{% endif %}" aria-label="{{ article.title }}">
+            <a href="{{ article.url }}" class="blog-item-image block aspect-[16/10] overflow-hidden{% if is_featured %} aspect-[16/9] lg:aspect-auto lg:h-full{% endif %}" aria-label="{{ article.title }}" data-tween data-tween-type="clip-right">
               {% if article.image %}
                 {{ article.image | image_url: width: 1200 | image_tag:
                   class: 'w-full h-full object-cover transition-transform duration-700 ease-out hover:scale-105',
@@ -140,65 +139,43 @@
 
 <script>
 (function() {
-  // Blog item image animations only - header handled by TweenManager
-  function initBlogImageAnimations(forceReinit = false) {
-    const wrapper = document.querySelector('[data-blog-wrapper]');
-    if (!wrapper) return;
-    if (!forceReinit && wrapper.dataset.blogImagesInitialized) return;
+  if (document.documentElement.classList.contains('animations-disabled')) return;
 
-    // If animations disabled, show images immediately
-    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      wrapper.dataset.blogImagesInitialized = 'true';
+  const wrapper = document.querySelector('[data-blog-wrapper]');
+  if (!wrapper) return;
+
+  const initAnimation = () => {
+    if (typeof gsap === 'undefined') {
+      requestAnimationFrame(initAnimation);
       return;
     }
 
-    const gsap = window.gsap || (window.pieces && window.pieces.gsap);
-    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    const tl = gsap.timeline();
 
-    if (!gsap || !ScrollTrigger) {
-      setTimeout(() => initBlogImageAnimations(forceReinit), 50);
-      return;
+    // Subtitle line draw animation
+    const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
+    if (subtitleLine) {
+      gsap.set(subtitleLine, { scaleX: 0, transformOrigin: 'left center' });
+      tl.to(subtitleLine, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
     }
 
-    wrapper.dataset.blogImagesInitialized = 'true';
+    // Subtitle text reveal
+    const subtitleText = wrapper.querySelector('[data-subtitle-text]');
+    if (subtitleText) {
+      gsap.set(subtitleText, { yPercent: 120 });
+      tl.to(subtitleText, {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power4.out'
+      }, 0.6);
+    }
+  };
 
-    const blogItems = wrapper.querySelectorAll('[data-blog-item]');
-    const scrollStart = window.getScrollStart ? window.getScrollStart('top 85%') : 'top 85%';
-
-    // Animate blog item images with clip-path swipe
-    blogItems.forEach((item, index) => {
-      const image = item.querySelector('.blog-item-image');
-      if (!image) return;
-
-      gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
-
-      gsap.to(image, {
-        clipPath: 'inset(0 0% 0 0)',
-        duration: 1.6,
-        ease: 'expo.inOut',
-        delay: index * 0.1,
-        scrollTrigger: {
-          trigger: item,
-          start: scrollStart,
-          once: true
-        }
-      });
-    });
-  }
-
-  // Initialize
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => initBlogImageAnimations(false));
-  } else {
-    initBlogImageAnimations(false);
-  }
-
-  // Reinitialize after Swup
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('blog-images', () => {
-      requestAnimationFrame(() => initBlogImageAnimations(true));
-    });
-  }
+  initAnimation();
 })();
 </script>
 

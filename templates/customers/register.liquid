@@ -12,10 +12,6 @@
     color: var(--color-text);
   }
 
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-customer-title] { opacity: 0; }
-  html.animations-disabled [data-customer-title] { opacity: 1; }
-
   .customer-form__input {
     width: 100%;
     padding: 1rem;
@@ -79,90 +75,90 @@
 </style>
 
 <div class="page-container py-[--page-vertical-padding]">
-  <div class="max-w-md mx-auto text-center">
-    <h1 class="customer-page__title font-heading mb-3" data-customer-title>
+  <div class="max-w-md mx-auto text-center" data-tween-group="customer-register" data-tween-start="top bottom">
+    <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.register.title' | t }}
     </h1>
-    <p class="text-[--color-text-secondary] mb-10" data-intro>
+    <p class="text-[--color-text-secondary] mb-10" data-tween data-tween-type="fade-up">
       {{ 'customers.register.subtitle' | t }}
     </p>
 
-    {% form 'create_customer', class: 'space-y-6 text-left' %}
-      {% if form.errors %}
-        <div class="customer-form__alert customer-form__alert--error" role="alert" data-intro>
-          <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
-          <span>{{ form.errors | default_errors }}</span>
-        </div>
-      {% endif %}
+    <div data-tween data-tween-type="fade-up">
+      {% form 'create_customer', class: 'space-y-6 text-left' %}
+        {% if form.errors %}
+          <div class="customer-form__alert customer-form__alert--error" role="alert">
+            <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
+            <span>{{ form.errors | default_errors }}</span>
+          </div>
+        {% endif %}
 
-      <div class="grid grid-cols-2 gap-6" data-intro>
+        <div class="grid grid-cols-2 gap-6">
+          <div>
+            <label for="first-name" class="sr-only">{{ 'customers.register.first_name' | t }}</label>
+            <input
+              type="text"
+              id="first-name"
+              name="customer[first_name]"
+              autocomplete="given-name"
+              required
+              placeholder="{{ 'customers.register.first_name' | t }}"
+              class="customer-form__input"
+            >
+          </div>
+
+          <div>
+            <label for="last-name" class="sr-only">{{ 'customers.register.last_name' | t }}</label>
+            <input
+              type="text"
+              id="last-name"
+              name="customer[last_name]"
+              autocomplete="family-name"
+              required
+              placeholder="{{ 'customers.register.last_name' | t }}"
+              class="customer-form__input"
+            >
+          </div>
+        </div>
+
         <div>
-          <label for="first-name" class="sr-only">{{ 'customers.register.first_name' | t }}</label>
+          <label for="register-email" class="sr-only">{{ 'customers.register.email' | t }}</label>
           <input
-            type="text"
-            id="first-name"
-            name="customer[first_name]"
-            autocomplete="given-name"
+            type="email"
+            id="register-email"
+            name="customer[email]"
+            autocomplete="email"
+            autocapitalize="off"
+            autocorrect="off"
             required
-            placeholder="{{ 'customers.register.first_name' | t }}"
+            placeholder="{{ 'customers.register.email' | t }}"
             class="customer-form__input"
           >
         </div>
 
         <div>
-          <label for="last-name" class="sr-only">{{ 'customers.register.last_name' | t }}</label>
+          <label for="register-password" class="sr-only">{{ 'customers.register.password' | t }}</label>
           <input
-            type="text"
-            id="last-name"
-            name="customer[last_name]"
-            autocomplete="family-name"
+            type="password"
+            id="register-password"
+            name="customer[password]"
+            autocomplete="new-password"
             required
-            placeholder="{{ 'customers.register.last_name' | t }}"
+            placeholder="{{ 'customers.register.password' | t }}"
             class="customer-form__input"
           >
         </div>
+
+        <div>
+          <button type="submit" class="btn btn--primary w-full">
+            <span>{{ 'customers.register.submit' | t }}</span>
+          </button>
+        </div>
+      {% endform %}
+
+      <div class="customer-form__divider text-center">
+        <span>{{ 'customers.register.have_account' | t }}</span>
       </div>
 
-      <div data-intro>
-        <label for="register-email" class="sr-only">{{ 'customers.register.email' | t }}</label>
-        <input
-          type="email"
-          id="register-email"
-          name="customer[email]"
-          autocomplete="email"
-          autocapitalize="off"
-          autocorrect="off"
-          required
-          placeholder="{{ 'customers.register.email' | t }}"
-          class="customer-form__input"
-        >
-      </div>
-
-      <div data-intro>
-        <label for="register-password" class="sr-only">{{ 'customers.register.password' | t }}</label>
-        <input
-          type="password"
-          id="register-password"
-          name="customer[password]"
-          autocomplete="new-password"
-          required
-          placeholder="{{ 'customers.register.password' | t }}"
-          class="customer-form__input"
-        >
-      </div>
-
-      <div data-intro>
-        <button type="submit" class="btn btn--primary w-full">
-          <span>{{ 'customers.register.submit' | t }}</span>
-        </button>
-      </div>
-    {% endform %}
-
-    <div class="customer-form__divider text-center" data-intro>
-      <span>{{ 'customers.register.have_account' | t }}</span>
-    </div>
-
-    <div data-intro>
       <a href="{{ routes.account_login_url }}" class="btn btn--secondary w-full" data-no-swup>
         <span>{{ 'customers.login.sign_in' | t }}</span>
       </a>
@@ -170,59 +166,3 @@
   </div>
 </div>
 
-<script>
-  // SplitText title animation
-  (function() {
-    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      document.querySelectorAll('[data-customer-title]').forEach(el => el.style.opacity = 1);
-      return;
-    }
-
-    function initAnimation() {
-      let gsap = window.gsap || (window.pieces && window.pieces.gsap);
-      let SplitText = window.SplitText || (window.pieces && window.pieces.SplitText);
-      let ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
-
-      if (!gsap || !SplitText || !ScrollTrigger) {
-        setTimeout(initAnimation, 50);
-        return;
-      }
-
-      document.querySelectorAll('[data-customer-title]').forEach(title => {
-        if (title.dataset.splitInitialized) return;
-        title.dataset.splitInitialized = 'true';
-
-        const split = new SplitText(title, { type: 'lines', linesClass: 'customer-title-line' });
-
-        split.lines.forEach(line => {
-          const wrapper = document.createElement('div');
-          wrapper.style.overflow = 'hidden';
-          wrapper.style.display = 'block';
-          line.parentNode.insertBefore(wrapper, line);
-          wrapper.appendChild(line);
-        });
-
-        gsap.set(split.lines, { yPercent: 120 });
-        title.style.opacity = 1;
-
-        gsap.to(split.lines, {
-          yPercent: 0,
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: title,
-            start: 'top 85%',
-            once: true
-          }
-        });
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAnimation);
-    } else {
-      requestAnimationFrame(initAnimation);
-    }
-  })();
-</script>

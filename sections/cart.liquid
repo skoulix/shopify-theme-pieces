@@ -40,9 +40,9 @@
       {{ 'cart.title' | t }}
     </h1>
 
-    <p class="page-header-subtitle mt-6" data-tween data-tween-type="fade-up">
-      <span class="page-header-subtitle-line"></span>
-      <span>{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }}</span>
+    <p class="page-header-subtitle mt-6">
+      <span class="page-header-subtitle-line" data-subtitle-line></span>
+      <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }}</span></span>
     </p>
   </header>
 
@@ -286,6 +286,49 @@
 </div>
 
 {%- comment -%} Cart page functionality is now handled by CartPageManager in the bundled JS {%- endcomment -%}
+
+<script>
+(function() {
+  if (document.documentElement.classList.contains('animations-disabled')) return;
+
+  const wrapper = document.querySelector('[data-cart-wrapper]');
+  if (!wrapper) return;
+
+  // Wait for GSAP
+  const initAnimation = () => {
+    if (typeof gsap === 'undefined') {
+      requestAnimationFrame(initAnimation);
+      return;
+    }
+
+    const tl = gsap.timeline();
+
+    // Subtitle line draw animation
+    const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
+    if (subtitleLine) {
+      gsap.set(subtitleLine, { scaleX: 0, transformOrigin: 'left center' });
+      tl.to(subtitleLine, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
+    }
+
+    // Subtitle text reveal
+    const subtitleText = wrapper.querySelector('[data-subtitle-text]');
+    if (subtitleText) {
+      gsap.set(subtitleText, { yPercent: 120 });
+      tl.to(subtitleText, {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power4.out'
+      }, 0.6);
+    }
+  };
+
+  initAnimation();
+})();
+</script>
 
 {% schema %}
 {

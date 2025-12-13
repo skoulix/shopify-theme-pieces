@@ -122,8 +122,8 @@ class TweenManager {
       'clip-right': {
         initial: { clipPath: 'inset(0 100% 0 0)' },
         animate: { clipPath: 'inset(0 0% 0 0)' },
-        duration: 1.2,
-        ease: 'power3.out'
+        duration: 1.6,
+        ease: 'expo.inOut'
       },
       'clip-up': {
         initial: { clipPath: 'inset(100% 0 0 0)' },
@@ -148,6 +148,18 @@ class TweenManager {
         animate: { opacity: 1, scale: 1 },
         duration: 0.8,
         ease: 'back.out(1.7)'
+      },
+      'scale-x': {
+        initial: { scaleX: 0, transformOrigin: 'left center' },
+        animate: { scaleX: 1 },
+        duration: 0.8,
+        ease: 'power3.out'
+      },
+      'text-reveal': {
+        initial: { yPercent: 120 },
+        animate: { yPercent: 0 },
+        duration: 0.8,
+        ease: 'power4.out'
       }
     };
     return configs[type] || configs['fade-up'];
@@ -306,8 +318,20 @@ class TweenManager {
         // Set initial state
         gsap.set(el, config.initial);
 
-        // Create scroll-triggered animation
-        try {
+        // Check if element is already in viewport (e.g., on page reload while scrolled)
+        const rect = el.getBoundingClientRect();
+        const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+
+        if (isInViewport) {
+          // Element already visible - animate immediately without ScrollTrigger
+          gsap.to(el, {
+            ...config.animate,
+            duration,
+            ease,
+            delay
+          });
+        } else {
+          // Create scroll-triggered animation
           const trigger = ScrollTrigger.create({
             trigger: el,
             start,
@@ -325,9 +349,6 @@ class TweenManager {
           if (trigger) {
             this.scrollTriggers.push(trigger);
           }
-        } catch (err) {
-          // Element may have been removed or is in an invalid state
-          console.warn('TweenManager: Could not create ScrollTrigger for element', el, err);
         }
       }
     });

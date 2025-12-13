@@ -15,8 +15,7 @@
   .tween-split-line:nth-child(3) { margin-left: clamp(2rem, 10vw, 6rem); }
   .article-hero-category::before { content: ''; display: inline-block; width: 2rem; height: 1px; background: var(--color-text-secondary); }
   .article-hero-date::before, .article-hero-reading-time::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--color-text-secondary); }
-  .article-image { clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .article-image { clip-path: none; }
+  /* article-image animation handled by TweenManager */
 </style>
 
 <article class="article-wrapper py-[--page-vertical-padding]" data-article-wrapper>
@@ -61,7 +60,7 @@
   </header>
 
   {% if article.image %}
-    <div class="article-image relative mx-auto mb-16 overflow-hidden {{ container_class }}">
+    <div class="article-image relative mx-auto mb-16 overflow-hidden {{ container_class }}" data-tween data-tween-type="clip-right" data-tween-start="top bottom">
       {{ article.image | image_url: width: 1600 | image_tag:
         class: 'w-full h-auto block',
         loading: 'eager',
@@ -198,38 +197,6 @@
 
 <script>
 (function() {
-  // Article image animation only - header handled by TweenManager
-  function initArticleImageAnimation() {
-    const wrapper = document.querySelector('[data-article-wrapper]');
-    if (!wrapper) return;
-    if (wrapper.dataset.articleImageInitialized) return;
-
-    // If animations disabled, show image immediately
-    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      wrapper.dataset.articleImageInitialized = 'true';
-      return;
-    }
-
-    const gsap = window.gsap || (window.pieces && window.pieces.gsap);
-    if (!gsap) {
-      setTimeout(initArticleImageAnimation, 50);
-      return;
-    }
-
-    wrapper.dataset.articleImageInitialized = 'true';
-
-    const image = wrapper.querySelector('.article-image');
-    if (image) {
-      gsap.set(image, { clipPath: 'inset(0 100% 0 0)' });
-      gsap.to(image, {
-        clipPath: 'inset(0 0% 0 0)',
-        duration: 1.6,
-        ease: 'expo.inOut',
-        delay: 0.2
-      });
-    }
-  }
-
   // Copy link functionality
   function initCopyLink() {
     const copyButtons = document.querySelectorAll('[data-copy-link]');
@@ -252,16 +219,10 @@
     });
   }
 
-  // Initialize
-  function init() {
-    initArticleImageAnimation();
-    initCopyLink();
-  }
-
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', init);
+    document.addEventListener('DOMContentLoaded', initCopyLink);
   } else {
-    requestAnimationFrame(init);
+    initCopyLink();
   }
 })();
 </script>

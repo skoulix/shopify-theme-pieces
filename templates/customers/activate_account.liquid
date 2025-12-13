@@ -12,10 +12,6 @@
     color: var(--color-text);
   }
 
-  /* Hide title initially to prevent FOUC before SplitText animation */
-  [data-customer-title] { opacity: 0; }
-  html.animations-disabled [data-customer-title] { opacity: 1; }
-
   .customer-form__input {
     width: 100%;
     padding: 1rem;
@@ -64,114 +60,59 @@
 </style>
 
 <div class="page-container py-[--page-vertical-padding]">
-  <div class="max-w-md mx-auto text-center">
-    <h1 class="customer-page__title font-heading mb-3" data-customer-title>
+  <div class="max-w-md mx-auto text-center" data-tween-group="customer-activate" data-tween-start="top bottom">
+    <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.activate_account.title' | t }}
     </h1>
-    <p class="text-[--color-text-secondary] mb-10" data-intro>
+    <p class="text-[--color-text-secondary] mb-10" data-tween data-tween-type="fade-up">
       {{ 'customers.activate_account.subtext' | t }}
     </p>
 
-    {% form 'activate_customer_password', class: 'space-y-6 text-left' %}
-      {% if form.errors %}
-        <div class="customer-form__alert customer-form__alert--error" role="alert" data-intro>
-          <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
-          <span>{{ form.errors | default_errors }}</span>
+    <div data-tween data-tween-type="fade-up">
+      {% form 'activate_customer_password', class: 'space-y-6 text-left' %}
+        {% if form.errors %}
+          <div class="customer-form__alert customer-form__alert--error" role="alert">
+            <i class="ph ph-warning-circle text-xl flex-shrink-0"></i>
+            <span>{{ form.errors | default_errors }}</span>
+          </div>
+        {% endif %}
+
+        <div>
+          <label for="activate-password" class="customer-form__label">{{ 'customers.activate_account.password' | t }}</label>
+          <input
+            type="password"
+            id="activate-password"
+            name="customer[password]"
+            autocomplete="new-password"
+            required
+            class="customer-form__input"
+          >
         </div>
-      {% endif %}
 
-      <div data-intro>
-        <label for="activate-password" class="customer-form__label">{{ 'customers.activate_account.password' | t }}</label>
-        <input
-          type="password"
-          id="activate-password"
-          name="customer[password]"
-          autocomplete="new-password"
-          required
-          class="customer-form__input"
-        >
-      </div>
+        <div>
+          <label for="activate-password-confirm" class="customer-form__label">{{ 'customers.activate_account.password_confirm' | t }}</label>
+          <input
+            type="password"
+            id="activate-password-confirm"
+            name="customer[password_confirmation]"
+            autocomplete="new-password"
+            required
+            class="customer-form__input"
+          >
+        </div>
 
-      <div data-intro>
-        <label for="activate-password-confirm" class="customer-form__label">{{ 'customers.activate_account.password_confirm' | t }}</label>
-        <input
-          type="password"
-          id="activate-password-confirm"
-          name="customer[password_confirmation]"
-          autocomplete="new-password"
-          required
-          class="customer-form__input"
-        >
-      </div>
+        <div>
+          <button type="submit" class="btn btn--primary w-full">
+            <span>{{ 'customers.activate_account.submit' | t }}</span>
+          </button>
+        </div>
 
-      <div data-intro>
-        <button type="submit" class="btn btn--primary w-full">
-          <span>{{ 'customers.activate_account.submit' | t }}</span>
-        </button>
-      </div>
-
-      <p class="text-center" data-intro>
-        <a href="{{ routes.account_login_url }}" class="text-sm text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-no-swup>
-          {{ 'customers.activate_account.cancel' | t }}
-        </a>
-      </p>
-    {% endform %}
+        <p class="text-center">
+          <a href="{{ routes.account_login_url }}" class="text-sm text-[--color-text-secondary] hover:text-[--color-text] transition-colors underline underline-offset-4" data-no-swup>
+            {{ 'customers.activate_account.cancel' | t }}
+          </a>
+        </p>
+      {% endform %}
+    </div>
   </div>
 </div>
-
-<script>
-  // SplitText title animation
-  (function() {
-    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-      document.querySelectorAll('[data-customer-title]').forEach(el => el.style.opacity = 1);
-      return;
-    }
-
-    function initAnimation() {
-      let gsap = window.gsap || (window.pieces && window.pieces.gsap);
-      let SplitText = window.SplitText || (window.pieces && window.pieces.SplitText);
-      let ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
-
-      if (!gsap || !SplitText || !ScrollTrigger) {
-        setTimeout(initAnimation, 50);
-        return;
-      }
-
-      document.querySelectorAll('[data-customer-title]').forEach(title => {
-        if (title.dataset.splitInitialized) return;
-        title.dataset.splitInitialized = 'true';
-
-        const split = new SplitText(title, { type: 'lines', linesClass: 'customer-title-line' });
-
-        split.lines.forEach(line => {
-          const wrapper = document.createElement('div');
-          wrapper.style.overflow = 'hidden';
-          wrapper.style.display = 'block';
-          line.parentNode.insertBefore(wrapper, line);
-          wrapper.appendChild(line);
-        });
-
-        gsap.set(split.lines, { yPercent: 120 });
-        title.style.opacity = 1;
-
-        gsap.to(split.lines, {
-          yPercent: 0,
-          duration: 1.2,
-          ease: 'power4.out',
-          stagger: 0.1,
-          scrollTrigger: {
-            trigger: title,
-            start: 'top 85%',
-            once: true
-          }
-        });
-      });
-    }
-
-    if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', initAnimation);
-    } else {
-      requestAnimationFrame(initAnimation);
-    }
-  })();
-</script>

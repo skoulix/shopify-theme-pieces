@@ -178,7 +178,7 @@
       {% else %}
         <div class="collection-grid grid gap-8 {{ container_class }}" data-collection-content>
           {% for product in collection.products %}
-            {% render 'product-card', product: product, collection: collection, index: forloop.index0 %}
+            {% render 'product-card', product: product, collection: collection, index: forloop.index0, animate_image: true %}
             {% unless forloop.last %}
               <hr class="collection-grid__divider hidden border-[--color-border]">
             {% endunless %}

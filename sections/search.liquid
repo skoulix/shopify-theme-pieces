@@ -34,15 +34,15 @@
     </h1>
 
     {% if search.performed %}
-      <p class="page-header-subtitle mt-6" data-tween data-tween-type="fade-up">
-        <span class="page-header-subtitle-line"></span>
-        <span>
+      <p class="page-header-subtitle mt-6">
+        <span class="page-header-subtitle-line" data-subtitle-line></span>
+        <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>
           {% if search.results_count > 0 %}
             {{ 'search.results_for_html' | t: count: search.results_count, terms: search.terms }}
           {% elsif search.terms != blank %}
             {{ 'search.no_results_html' | t: terms: search.terms }}
           {% endif %}
-        </span>
+        </span></span>
       </p>
     {% endif %}
   </header>
@@ -276,6 +276,45 @@
   if (searchInput && !searchInput.value) {
     setTimeout(() => searchInput.focus(), 500);
   }
+
+  // Subtitle animation
+  if (document.documentElement.classList.contains('animations-disabled')) return;
+
+  const wrapper = document.querySelector('[data-search-wrapper]');
+  if (!wrapper) return;
+
+  const initAnimation = () => {
+    if (typeof gsap === 'undefined') {
+      requestAnimationFrame(initAnimation);
+      return;
+    }
+
+    const tl = gsap.timeline();
+
+    // Subtitle line draw animation
+    const subtitleLine = wrapper.querySelector('[data-subtitle-line]');
+    if (subtitleLine) {
+      gsap.set(subtitleLine, { scaleX: 0, transformOrigin: 'left center' });
+      tl.to(subtitleLine, {
+        scaleX: 1,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, 0.4);
+    }
+
+    // Subtitle text reveal
+    const subtitleText = wrapper.querySelector('[data-subtitle-text]');
+    if (subtitleText) {
+      gsap.set(subtitleText, { yPercent: 120 });
+      tl.to(subtitleText, {
+        yPercent: 0,
+        duration: 0.8,
+        ease: 'power4.out'
+      }, 0.6);
+    }
+  };
+
+  initAnimation();
 })();
 </script>
 
