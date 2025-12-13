@@ -1463,7 +1463,7 @@ html.animations-disabled [data-intro] {
   background-color: var(--color-background);
 }
 
-/* Hide action buttons in list view - they overlap awkwardly */
+/* Hide hover action buttons in list view - they overlap awkwardly */
 .collection-wrapper[data-view="list"] .product-card-actions {
   display: none;
 }
@@ -1493,10 +1493,20 @@ html.animations-disabled [data-intro] {
   padding: 0 1rem;
   background: transparent;
   flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .collection-wrapper[data-view="list"] .product-card-quick-add .btn {
   width: auto;
+}
+
+/* Show action buttons in list view */
+.collection-wrapper[data-view="list"] .product-card-actions-list {
+  display: block;
 }
 
 @media (min-width: 768px) {

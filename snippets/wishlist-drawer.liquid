@@ -493,5 +493,8 @@
 
   // Also update after transition completes (for cached pages)
   window.addEventListener('swup:transitionEnd', updateUI);
+
+  // Update after facet filtering replaces product grid
+  document.addEventListener('facets:updated', updateUI);
 })();
 </script>

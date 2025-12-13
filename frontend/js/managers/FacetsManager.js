@@ -387,6 +387,9 @@ class FacetFiltersForm extends HTMLElement {
           // Re-trigger item animations
           this.animateNewItems(currentContent);
         }
+
+        // Dispatch event for wishlist/compare buttons to update their state
+        document.dispatchEvent(new CustomEvent('facets:updated'));
       });
     }
   }

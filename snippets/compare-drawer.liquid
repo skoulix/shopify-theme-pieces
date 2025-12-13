@@ -45,25 +45,6 @@
     gap: 1rem;
     align-items: center;
   }
-  .compare-drawer__clear {
-    font-size: 0.65rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    color: var(--color-text-secondary);
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0.5rem;
-    transition: color 0.2s ease;
-  }
-  .compare-drawer__clear:hover { color: var(--color-text); }
-  .compare-drawer__clear.text-hover-reveal {
-    overflow: hidden;
-    transition: none;
-  }
-  .compare-drawer__clear.text-hover-reveal:hover {
-    color: var(--color-text-secondary);
-  }
   .compare-drawer__close {
     width: 2rem;
     height: 2rem;
@@ -242,8 +223,9 @@
         <span class="compare-drawer__count" aria-live="polite">(<span data-compare-drawer-count>0</span>/4)</span>
       </h3>
       <div class="compare-drawer__actions">
-        <button type="button" class="compare-drawer__clear text-hover-reveal" data-compare-clear>
-          <span data-hover="{{ 'products.compare.clear_all' | t | default: 'Clear all' }}">{{ 'products.compare.clear_all' | t | default: 'Clear all' }}</span>
+        {%- assign clear_text = 'products.compare.clear_all' | t | default: 'Clear all' -%}
+        <button type="button" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-[--color-text] opacity-70 hover:opacity-100 transition-opacity duration-300 bg-transparent border-none cursor-pointer p-0" data-compare-clear>
+          <span data-hover="{{ clear_text }}">{{ clear_text }}</span>
         </button>
         <button type="button" class="compare-drawer__close" data-compare-drawer-close aria-label="{{ 'accessibility.close' | t }}">
           <i class="ph ph-x text-lg"></i>
@@ -561,5 +543,8 @@
 
   // Also update after transition completes (for cached pages)
   window.addEventListener('swup:transitionEnd', updateUI);
+
+  // Update after facet filtering replaces product grid
+  document.addEventListener('facets:updated', updateUI);
 })();
 </script>
