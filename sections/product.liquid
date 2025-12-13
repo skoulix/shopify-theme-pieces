@@ -299,7 +299,7 @@
 
           {%- when 'vendor' -%}
             {% if product.vendor != blank %}
-              <div class="product-vendor overflow-hidden" data-intro {{ block.shopify_attributes }}>
+              <div class="product-vendor overflow-hidden" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 <span class="inline-block">{{ product.vendor }}</span>
               </div>
             {% endif %}
@@ -315,7 +315,7 @@
             </h1>
 
           {%- when 'price' -%}
-            <div class="product-price-display mt-6" data-intro data-price-display {{ block.shopify_attributes }}>
+            <div class="product-price-display mt-6" data-tween data-tween-type="fade-up" data-price-display {{ block.shopify_attributes }}>
               {% if current_variant.compare_at_price > current_variant.price %}
                 <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
               {% endif %}
@@ -329,7 +329,7 @@
             </div>
 
           {%- when 'inventory_countdown' -%}
-            <div class="mt-4" data-intro data-inventory-block {{ block.shopify_attributes }}>
+            <div class="mt-4" data-tween data-tween-type="fade-up" data-inventory-block {{ block.shopify_attributes }}>
               {% render 'inventory-countdown',
                 variant: current_variant,
                 threshold: block.settings.threshold,
@@ -342,14 +342,14 @@
           {%- when 'description' -%}
             {% if product.description != blank %}
               {%- assign desc_text = product.description | strip_html | truncate: block.settings.truncate_length -%}
-              <div class="product-description" data-intro {{ block.shopify_attributes }}>
+              <div class="product-description" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 {{ desc_text }}
               </div>
             {% endif %}
 
           {%- when 'variant_picker' -%}
             {% if product.variants.size > 1 %}
-              <div class="mt-8" data-intro>
+              <div class="mt-8" data-tween data-tween-type="fade-up">
                 {% render 'product-variant-picker',
                   product: product,
                   block: block,
@@ -360,7 +360,7 @@
             {% endif %}
 
           {%- when 'quantity_selector' -%}
-            <div class="product-form-group mt-8" data-intro {{ block.shopify_attributes }}>
+            <div class="product-form-group mt-8" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               <label class="product-form-label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'products.product.quantity' | t }}{% endif %}</label>
               <div class="product-quantity" data-quantity-wrapper>
                 <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">
@@ -376,7 +376,7 @@
             </div>
 
           {%- when 'buy_buttons' -%}
-            <div class="product-form" data-intro data-product-form {{ block.shopify_attributes }}>
+            <div class="product-form" data-tween data-tween-type="fade-up" data-product-form {{ block.shopify_attributes }}>
               {% form 'product', product, id: product_form_id %}
                 {%- comment -%} Hidden variant input if no variant picker block {%- endcomment -%}
                 {% unless product.has_only_default_variant %}
@@ -420,17 +420,17 @@
             </div>
 
           {%- when 'pickup_availability' -%}
-            <div data-intro {{ block.shopify_attributes }}>
+            <div data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               {%- render 'pickup-availability', product: product -%}
             </div>
 
           {%- when 'text' -%}
-            <div class="product-custom-text mt-4 text-sm text-[--color-text-secondary]" data-intro {{ block.shopify_attributes }}>
+            <div class="product-custom-text mt-4 text-sm text-[--color-text-secondary]" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               {{ block.settings.text }}
             </div>
 
           {%- when 'collapsible_tab' -%}
-            <details class="product-accordion border-t border-[--color-border] group first-of-type:mt-4" data-intro {{ block.shopify_attributes }}>
+            <details class="product-accordion border-t border-[--color-border] group first-of-type:mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               <summary class="flex items-center justify-between py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
                 <span class="text-sm font-medium">{{ block.settings.heading }}</span>
                 <i class="ph ph-plus text-sm group-open:hidden"></i>
@@ -467,7 +467,7 @@
                   assign drawer_heading = 'products.size_chart.title' | t
                 endif
               -%}
-              <div class="size-chart-trigger mt-4" data-intro {{ block.shopify_attributes }}>
+              <div class="size-chart-trigger mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 <button
                   type="button"
                   class="inline-flex items-center gap-2 text-sm text-[--color-text-secondary] hover:text-[--color-primary] transition-colors"
@@ -506,7 +506,7 @@
 
           {%- when 'back_in_stock' -%}
             {%- comment -%} Back in stock notification form {%- endcomment -%}
-            <div data-intro {{ block.shopify_attributes }}>
+            <div data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               {% render 'back-in-stock-form', product: product, variant: current_variant %}
             </div>
 
@@ -528,9 +528,9 @@
               style="display: none;"
               {{ block.shopify_attributes }}
             >
-              <h3 class="text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-intro>{{ block_title }}</h3>
+              <h3 class="text-[0.65rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</h3>
               {%- comment -%} Skeleton Loading State {%- endcomment -%}
-              <div class="flex flex-col gap-3" data-complementary-loading data-intro>
+              <div class="flex flex-col gap-3" data-complementary-loading data-tween data-tween-type="fade-up">
                 {% for i in (1..block.settings.products_to_show) %}
                   <div class="flex items-center gap-3 p-2 border border-[--color-border] rounded-lg animate-pulse">
                     <div class="shrink-0 w-12 h-12 rounded bg-[--color-text] opacity-10"></div>
@@ -543,10 +543,10 @@
                 {% endfor %}
               </div>
               {%- comment -%} Products List {%- endcomment -%}
-              <div class="flex flex-col gap-3" data-complementary-list data-intro style="display: none;">
+              <div class="flex flex-col gap-3" data-complementary-list data-tween data-tween-type="fade-up" style="display: none;">
               </div>
               {%- if block.settings.show_add_all -%}
-                <button type="button" class="btn btn--secondary btn--sm w-full mt-3 hidden" data-complementary-add-all data-intro>
+                <button type="button" class="btn btn--secondary btn--sm w-full mt-3 hidden" data-complementary-add-all data-tween data-tween-type="fade-up">
                   <i class="ph ph-plus"></i>
                   <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
                 </button>
@@ -558,7 +558,7 @@
               {%- capture wishlist_product_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              <div class="mt-4" data-intro {{ block.shopify_attributes }}>
+              <div class="mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 {%- assign wb_icon_size = 'text-base' -%}
                 {%- assign wb_btn_class = 'btn btn--secondary btn--sm' -%}
                 {%- if block.settings.style == 'icon_only' -%}
@@ -588,7 +588,7 @@
               {%- capture compare_product_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              <div class="mt-4" data-intro {{ block.shopify_attributes }}>
+              <div class="mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 {%- assign cb_icon_size = 'text-base' -%}
                 {%- assign cb_btn_class = 'btn btn--secondary btn--sm' -%}
                 {%- if block.settings.style == 'icon_only' -%}
@@ -633,7 +633,7 @@
               {%- elsif wc_display_style == 'text_only' -%}
                 {%- assign wc_show_icon = false -%}
               {%- endif -%}
-              <div class="mt-4 flex justify-start gap-3" data-intro {{ block.shopify_attributes }}>
+              <div class="mt-4 flex justify-start gap-3" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 {%- if settings.enable_wishlist -%}
                   <button
                     type="button"
@@ -670,7 +670,7 @@
             {%- capture social_compare_json -%}
               {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
             {%- endcapture -%}
-            <div class="mt-4 flex flex-wrap items-center gap-3" data-intro {{ block.shopify_attributes }}>
+            <div class="mt-4 flex flex-wrap items-center gap-3" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
               {%- if settings.enable_wishlist -%}
                 <button
                   type="button"
@@ -1528,11 +1528,11 @@
   // Show block with skeleton loaders immediately
   block.style.display = '';
 
-  // Trigger intro animations after browser paint
+  // Trigger tween animations after browser paint
   requestAnimationFrame(() => {
-    block.querySelectorAll('[data-intro]').forEach(el => {
-      el.classList.add('intro-visible');
-    });
+    if (window.pieces?.tween) {
+      window.pieces.tween.reinit();
+    }
   });
 
   // Load products

@@ -200,25 +200,25 @@
         <div class="slideshow__content relative z-[1] h-full flex flex-col p-8 page-container {{ content_justify }} {{ content_items }}" style="color: {{ text_color }};">
           <div class="max-w-[42rem] text-{{ text_alignment }}">
             {% if block.settings.subheading != blank %}
-              <p class="slideshow__subheading text-sm uppercase tracking-wider mb-4 opacity-80" data-intro>
+              <p class="slideshow__subheading text-sm uppercase tracking-wider mb-4 opacity-80" data-tween data-tween-type="fade-up">
                 {{ block.settings.subheading }}
               </p>
             {% endif %}
 
             {% if block.settings.heading != blank %}
-              <h2 class="slideshow__heading text-4xl sm:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight" data-intro>
+              <h2 class="slideshow__heading text-4xl sm:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight" data-tween data-tween-type="fade-up">
                 {{ block.settings.heading }}
               </h2>
             {% endif %}
 
             {% if block.settings.text != blank %}
-              <p class="slideshow__text text-lg opacity-90 mb-8 max-w-lg {% if text_alignment == 'center' %}mx-auto{% elsif text_alignment == 'right' %}ml-auto{% endif %}" data-intro>
+              <p class="slideshow__text text-lg opacity-90 mb-8 max-w-lg {% if text_alignment == 'center' %}mx-auto{% elsif text_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
                 {{ block.settings.text }}
               </p>
             {% endif %}
 
             {% if block.settings.button_label != blank %}
-              <div class="slideshow__cta" data-intro>
+              <div class="slideshow__cta" data-tween data-tween-type="fade-up">
                 <a
                   href="{{ block.settings.button_link }}"
                   class="btn slideshow__btn{% if block.settings.button_style == 'solid' %} slideshow__btn--solid{% endif %}"

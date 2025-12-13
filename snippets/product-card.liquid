@@ -59,7 +59,7 @@
   class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]"
   data-product-card="{{ index }}"
   data-product-id="{{ product.id }}"
-  {% unless animate_image %}data-intro{% endunless %}
+  {% unless animate_image %}data-tween data-tween-type="fade-up"{% endunless %}
 >
   {%- comment -%} Image area with link {%- endcomment -%}
   <div class="product-card-image relative overflow-hidden {{ image_ratio_class }}"{% if animate_image %} data-tween data-tween-type="clip-right"{% endif %}>
