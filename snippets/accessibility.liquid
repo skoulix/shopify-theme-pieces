@@ -15,23 +15,10 @@
      Focus Styles - WCAG 2.1 AA Compliant
   ======================================== */
 
-  /* Default focus outline - high contrast */
-  :focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
-  }
-
-  /* Remove default outline for mouse users */
-  :focus:not(:focus-visible) {
-    outline: none;
-  }
-
-  /* Button focus states */
+  /* Button focus states - enhanced with box-shadow */
   .btn:focus-visible,
   button:focus-visible,
   [role="button"]:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
     box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 0, 0, 0), 0.2);
   }
 
@@ -39,21 +26,27 @@
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline: 2px solid var(--color-primary);
     outline-offset: -1px;
     border-color: var(--color-primary);
   }
 
   /* Link focus states */
   a:focus-visible {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 2px;
     border-radius: 2px;
   }
 
-  /* Card/interactive element focus */
-  .product-card:focus-within,
-  [data-intro]:focus-within {
+  /* Card/interactive element focus - only show on keyboard navigation */
+  .product-card:focus-within:has(:focus-visible),
+  [data-intro]:focus-within:has(:focus-visible) {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  /* Ensure no outline on mouse click for elements that might not support :focus-visible well */
+  *:focus {
+    outline: none;
+  }
+  *:focus-visible {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }

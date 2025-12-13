@@ -64,6 +64,12 @@
             "content": "",
             "show_always": true
           }
+        },
+        "wc_buttons_ixjamz": {
+          "type": "wc_buttons",
+          "settings": {
+            "display_style": "icon_only"
+          }
         }
       },
       "block_order": [
@@ -75,11 +81,14 @@
         "quantity_selector",
         "buy_buttons",
         "back_in_stock_rzrTB9",
-        "size_chart_xUw7Wm"
+        "size_chart_xUw7Wm",
+        "wc_buttons_ixjamz"
       ],
       "settings": {
         "full_width": true,
         "image_fit": "cover",
+        "video_loop": false,
+        "video_autoplay": false,
         "show_sticky_bar": true
       }
     },
@@ -362,7 +371,6 @@
         "title": "Related Products",
         "header_alignment": "left",
         "products_to_show": 8,
-        "show_vendor": false,
         "background_color": "#ffffff",
         "text_color": "#000000"
       }
