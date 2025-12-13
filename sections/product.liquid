@@ -926,32 +926,32 @@
       }
     });
 
-    // Image reveal - dramatic clip-path
+    // Image reveal and title reveal together - both start at 0
     if (galleryMain) {
       tl.to(galleryMain, {
         clipPath: 'inset(0 0% 0 0)',
-        duration: 1.6,
-        ease: 'expo.inOut'
+        duration: 1.2,
+        ease: 'power3.out'
       }, 0);
     }
 
-    // Title reveal - staggered from bottom (only title has split effect)
+    // Title reveal - starts at same time as image
     if (titleLines.length) {
       tl.to(titleLines, {
         yPercent: 0,
         duration: 1.2,
         ease: 'power4.out',
         stagger: 0.1
-      }, 0.3);
+      }, 0);
     }
 
-    // Thumbnails and counter
+    // Thumbnails and counter - appear after main animations
     if (thumbnails) {
       tl.to(thumbnails, {
         opacity: 1,
         duration: 0.6,
         ease: 'power3.out'
-      }, 1);
+      }, 0.8);
     }
 
     if (counter) {
@@ -959,7 +959,7 @@
         opacity: 1,
         duration: 0.6,
         ease: 'power3.out'
-      }, 1);
+      }, 0.8);
     }
   }
 
