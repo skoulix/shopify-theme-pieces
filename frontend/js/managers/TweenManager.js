@@ -273,8 +273,12 @@ class TweenManager {
       // Skip if inside a group
       if (el.closest('[data-tween-group]')) return;
 
-      // Skip if element is not connected to DOM or has no dimensions
-      if (!el.isConnected || !el.offsetParent) return;
+      // Skip if element is not connected to DOM or hidden
+      if (!el.isConnected) return;
+
+      // Skip elements that are hidden or have no layout (except fixed/sticky elements)
+      const style = window.getComputedStyle(el);
+      if (style.display === 'none' || style.visibility === 'hidden') return;
 
       const type = el.dataset.tweenType || 'fade-up';
       const delay = parseFloat(el.dataset.tweenDelay) || 0;
@@ -303,22 +307,27 @@ class TweenManager {
         gsap.set(el, config.initial);
 
         // Create scroll-triggered animation
-        const trigger = ScrollTrigger.create({
-          trigger: el,
-          start,
-          once: true,
-          onEnter: () => {
-            gsap.to(el, {
-              ...config.animate,
-              duration,
-              ease,
-              delay
-            });
-          }
-        });
+        try {
+          const trigger = ScrollTrigger.create({
+            trigger: el,
+            start,
+            once: true,
+            onEnter: () => {
+              gsap.to(el, {
+                ...config.animate,
+                duration,
+                ease,
+                delay
+              });
+            }
+          });
 
-        if (trigger) {
-          this.scrollTriggers.push(trigger);
+          if (trigger) {
+            this.scrollTriggers.push(trigger);
+          }
+        } catch (err) {
+          // Element may have been removed or is in an invalid state
+          console.warn('TweenManager: Could not create ScrollTrigger for element', el, err);
         }
       }
     });

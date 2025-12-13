@@ -13,51 +13,35 @@
 <style>
   .search-page-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
   @media (min-width: 1024px) { .search-page-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
-  .search-page-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
-  .search-wrapper.is-loading .search-result-image { clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .search-result-image,
-  html.animations-disabled .search-wrapper.is-loading .search-result-image { clip-path: none; }
-  .search-form-wrapper { opacity: 0; transform: translateY(20px); }
-  html.animations-disabled .search-form-wrapper { opacity: 1; transform: none; }
-  .search-wrapper.is-ready .search-form-wrapper { opacity: 1; transform: translateY(0); }
+  /* Title line stagger (managed by TweenManager) */
+  .search-page-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
   .search-input-container { position: relative; }
   .search-input { width: 100%; padding: 1.25rem 1.5rem; padding-right: 4rem; font-size: 1rem; background: transparent; border: 1px solid var(--color-border); color: var(--color-text); transition: border-color 0.2s; }
   .search-input:focus { outline: none; border-color: var(--color-primary); }
   .search-input::placeholder { color: var(--color-text-secondary); }
   .search-submit { position: absolute; right: 0; top: 0; height: 100%; padding: 0 1.5rem; background: transparent; border: none; color: var(--color-text); cursor: pointer; transition: color 0.2s; }
   .search-submit:hover { color: var(--color-primary); }
-  .search-result { opacity: 0; transform: translateY(30px); }
-  .search-result-image { clip-path: inset(0 100% 0 0); aspect-ratio: 1; overflow: hidden; background: var(--color-background-secondary); }
-  .search-wrapper.is-ready .search-result { opacity: 1; transform: translateY(0); }
-  .search-wrapper.is-ready .search-result-image { clip-path: inset(0 0% 0 0); }
+  .search-result-image { aspect-ratio: 1; overflow: hidden; background: var(--color-background-secondary); }
   .search-grid { display: grid; grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); gap: 2rem; }
   @media (min-width: 640px) { .search-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1024px) { .search-grid { grid-template-columns: repeat(4, 1fr); } }
-  .search-no-results, .search-initial { opacity: 0; }
-  .search-wrapper.is-ready .search-no-results, .search-wrapper.is-ready .search-initial { opacity: 1; }
-  .search-filters { opacity: 0; transform: translateY(20px); }
-  .search-wrapper.is-ready .search-filters { opacity: 1; transform: translateY(0); }
 </style>
 
-<div class="search-wrapper is-loading min-h-screen py-[--page-vertical-padding]" data-search-wrapper>
-  <header class="mb-12 lg:mb-16 {{ container_class }}">
-    <h1 class="search-page-title font-bold text-[--color-text] font-heading">
-      <span class="search-page-title-line block overflow-hidden">
-        <span class="inline-block">{{ 'search.title' | t }}</span>
-      </span>
+<div class="min-h-screen py-[--page-vertical-padding]" data-search-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }}" data-tween-group="search-header" data-tween-start="top bottom">
+    <h1 class="search-page-title font-bold text-[--color-text] font-heading" data-tween data-tween-type="split-text">
+      {{ 'search.title' | t }}
     </h1>
 
     {% if search.performed %}
-      <p class="page-header-subtitle mt-6">
-        <span class="page-header-subtitle-line" data-subtitle-line></span>
-        <span class="overflow-hidden">
-          <span class="inline-block" data-subtitle-text>
-            {% if search.results_count > 0 %}
-              {{ 'search.results_for_html' | t: count: search.results_count, terms: search.terms }}
-            {% elsif search.terms != blank %}
-              {{ 'search.no_results_html' | t: terms: search.terms }}
-            {% endif %}
-          </span>
+      <p class="page-header-subtitle mt-6" data-tween data-tween-type="fade-up">
+        <span class="page-header-subtitle-line"></span>
+        <span>
+          {% if search.results_count > 0 %}
+            {{ 'search.results_for_html' | t: count: search.results_count, terms: search.terms }}
+          {% elsif search.terms != blank %}
+            {{ 'search.no_results_html' | t: terms: search.terms }}
+          {% endif %}
         </span>
       </p>
     {% endif %}
@@ -65,7 +49,7 @@
 
   {%- comment -%} Search Form - Simple form without predictive search (use drawer for that) {%- endcomment -%}
   <div class="{{ container_class }} relative z-10">
-    <div class="search-form-wrapper max-w-2xl">
+    <div class="max-w-2xl" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
       <form action="{{ routes.search_url }}" method="get" role="search" class="search-input-container">
         <input type="hidden" name="type" value="product,article,page">
         <input type="hidden" name="options[prefix]" value="last">

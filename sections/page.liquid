@@ -27,98 +27,19 @@
   .page-header-title.text-right .tween-split-line:nth-child(3) { margin-right: clamp(3rem, 18vw, 14rem); }
 </style>
 
-<section class="page-wrapper is-loading bg-[--color-background] py-[--page-vertical-padding]" data-page-wrapper>
-  <header class="mb-12 lg:mb-16 page-container {{ header_align_class }}">
-    <h1 class="page-header-title font-bold text-[--color-text] font-heading {{ header_align_class }}" data-page-title>
+<section class="bg-[--color-background] py-[--page-vertical-padding]">
+  <header class="mb-12 lg:mb-16 page-container {{ header_align_class }}" data-tween-group="page-header" data-tween-start="top bottom">
+    <h1 class="page-header-title font-bold text-[--color-text] font-heading {{ header_align_class }}" data-tween data-tween-type="split-text">
       {{ page.title }}
     </h1>
   </header>
 
-  <div class="page-container" data-page-content>
+  <div class="page-container" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
     <div class="prose max-w-none text-[--color-text]">
       {{ page.content }}
     </div>
   </div>
 </section>
-
-<script>
-(function() {
-  const wrapper = document.querySelector('[data-page-wrapper]');
-  if (!wrapper || wrapper.dataset.pageInitialized) return;
-  wrapper.dataset.pageInitialized = 'true';
-
-  // If animations disabled, just show content
-  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-    wrapper.classList.remove('is-loading');
-    return;
-  }
-
-  function initAnimation() {
-    const title = wrapper.querySelector('[data-page-title]');
-    const content = wrapper.querySelector('[data-page-content]');
-
-    // Get GSAP and SplitText from pieces or window
-    let gsap = window.gsap;
-    if (!gsap && window.pieces && window.pieces.gsap) {
-      gsap = window.pieces.gsap;
-    }
-
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
-
-    if (!gsap || !SplitText) {
-      requestAnimationFrame(initAnimation);
-      return;
-    }
-
-    wrapper.classList.remove('is-loading');
-
-    const tl = gsap.timeline();
-
-    // Split title into lines
-    if (title) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'page-header-title-line' });
-
-      // Wrap each line in an overflow-hidden container for the reveal effect
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
-
-      // Set initial state and animate
-      gsap.set(split.lines, { yPercent: 120 });
-      tl.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      }, 0);
-    }
-
-    // Animate content fade up
-    if (content) {
-      tl.to(content, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power3.out'
-      }, 0.4);
-    }
-  }
-
-  // Run on load
-  if (document.readyState === 'complete') {
-    initAnimation();
-  } else {
-    window.addEventListener('load', initAnimation);
-  }
-})();
-</script>
 
 {% schema %}
 {

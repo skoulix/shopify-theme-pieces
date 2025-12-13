@@ -34,26 +34,21 @@
   .contact-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
   @media (min-width: 1024px) { .contact-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .contact-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
-  .contact-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
-  .contact-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
-  .contact-wrapper.is-loading [data-contact-title] { opacity: 0; }
-  html.animations-disabled .contact-wrapper.is-loading [data-contact-title] { opacity: 1; }
-  .contact-wrapper.is-loading [data-contact-label] { opacity: 0; transform: translateY(10px); }
-  .contact-wrapper.is-loading [data-contact-description] { opacity: 0; }
-  html.animations-disabled .contact-wrapper.is-loading [data-contact-label] { opacity: 1; transform: none; }
-  html.animations-disabled .contact-wrapper.is-loading [data-contact-description] { opacity: 1; }
+  /* Title line stagger (managed by TweenManager) */
+  .contact-header-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
+  .contact-header-title .tween-split-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
   .contact-form-input { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
   .contact-form-input:focus { box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 79, 70, 229), 0.1); }
 </style>
 
-<section class="contact-section-{{ section.id }} contact-wrapper is-loading py-[--page-vertical-padding]" data-contact-wrapper>
-  <header class="mb-12 lg:mb-16 {{ container_class }} {{ text_align }}">
+<section class="contact-section-{{ section.id }} py-[--page-vertical-padding]" data-contact-wrapper>
+  <header class="mb-12 lg:mb-16 {{ container_class }} {{ text_align }}" data-tween-group="contact-header-{{ section.id }}" data-tween-start="top bottom">
     {% if section.settings.label != blank %}
-      <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-contact-label>{{ section.settings.label }}</span>
+      <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
     {% endif %}
 
     {% if heading != blank %}
-      <h1 class="contact-header-title font-bold font-heading" data-contact-title>
+      <h1 class="contact-header-title font-bold font-heading" data-tween data-tween-type="split-text">
         {{ heading }}
       </h1>
     {% endif %}
@@ -148,152 +143,82 @@
   </div>
 </section>
 
+{% if section.settings.enable_description_shuffle %}
 <script>
 (function() {
   const wrapper = document.querySelector('[data-contact-wrapper]');
-  if (!wrapper || wrapper.dataset.contactInitialized) return;
-  wrapper.dataset.contactInitialized = 'true';
+  if (!wrapper || wrapper.dataset.shuffleInitialized) return;
+  wrapper.dataset.shuffleInitialized = 'true';
 
-  // If animations disabled, just show content
-  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
-    wrapper.classList.remove('is-loading');
-    return;
-  }
+  // If animations disabled, skip shuffle
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
 
-  function animateIntro() {
-    const label = wrapper.querySelector('[data-contact-label]');
-    const title = wrapper.querySelector('[data-contact-title]');
-    const description = wrapper.querySelector('[data-contact-description]');
+  function initShuffle() {
+    const description = wrapper.querySelector('[data-contact-description][data-shuffle-text]');
+    if (!description) return;
 
-    // Get GSAP and SplitText from pieces or window
     let gsap = window.gsap;
     if (!gsap && window.pieces && window.pieces.gsap) {
       gsap = window.pieces.gsap;
     }
 
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
-
-    if (!gsap || !SplitText) {
-      requestAnimationFrame(animateIntro);
+    if (!gsap) {
+      requestAnimationFrame(initShuffle);
       return;
     }
 
-    wrapper.classList.remove('is-loading');
+    const originalText = description.dataset.originalText || description.textContent.trim();
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
 
-    const tl = gsap.timeline();
+    // Lock height before animation
+    const initialHeight = description.offsetHeight;
+    description.style.height = initialHeight + 'px';
 
-    // Animate label
-    if (label) {
-      tl.to(label, {
-        y: 0,
-        opacity: 1,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, 0);
-    }
+    // Start with scrambled text
+    description.textContent = originalText.split('').map(char =>
+      char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
+    ).join('');
+    gsap.set(description, { opacity: 0 });
 
-    // Split title into lines and animate
-    if (title) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'contact-header-title-line' });
+    const tl = gsap.timeline({ delay: 0.6 });
 
-      // Wrap each line in an overflow-hidden container for the reveal effect
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
+    // Fade in
+    tl.to(description, {
+      opacity: 1,
+      duration: 0.4,
+      ease: 'power2.out'
+    }, 0);
 
-      gsap.set(split.lines, { yPercent: 120 });
-      tl.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      }, 0);
-    }
-
-    // Description animation - matches collection page shuffle effect
-    if (description) {
-      const shouldShuffle = description.hasAttribute('data-shuffle-text');
-
-      if (shouldShuffle) {
-        // Use data attribute for original text (survives Swup navigation)
-        const originalText = description.dataset.originalText || description.textContent.trim();
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%&*';
-
-        // Lock height before animation to prevent layout shifts
-        const initialHeight = description.offsetHeight;
-        description.style.height = initialHeight + 'px';
-
-        // Start with scrambled text and hidden
-        description.textContent = originalText.split('').map(char =>
-          char === ' ' ? ' ' : chars[Math.floor(Math.random() * chars.length)]
-        ).join('');
-        gsap.set(description, { opacity: 0 });
-
-        // Fade in
-        tl.to(description, {
-          opacity: 1,
-          duration: 0.4,
-          ease: 'power2.out'
-        }, 0.6);
-
-        // Shuffle animation - characters reveal left to right with scrambling
-        const shuffleObj = { progress: 0 };
-        tl.to(shuffleObj, {
-          progress: 1,
-          duration: 1.8,
-          ease: 'none',
-          onUpdate: () => {
-            const progress = shuffleObj.progress;
-            const revealedCount = Math.floor(progress * originalText.length);
-
-            description.textContent = originalText.split('').map((char, i) => {
-              if (char === ' ') return ' ';
-              if (i < revealedCount) return char;
-              // Keep scrambling unrevealed characters
-              return chars[Math.floor(Math.random() * chars.length)];
-            }).join('');
-          },
-          onComplete: () => {
-            description.textContent = originalText;
-            // Remove fixed height after animation completes
-            description.style.height = '';
-          }
-        }, 0.6);
-      } else {
-        // Simple fade in without shuffle
-        tl.to(description, {
-          opacity: 1,
-          duration: 0.6,
-          ease: 'power2.out'
-        }, 0.5);
+    // Shuffle animation
+    const shuffleObj = { progress: 0 };
+    tl.to(shuffleObj, {
+      progress: 1,
+      duration: 1.8,
+      ease: 'none',
+      onUpdate: () => {
+        const progress = shuffleObj.progress;
+        const revealedCount = Math.floor(progress * originalText.length);
+        description.textContent = originalText.split('').map((char, i) => {
+          if (char === ' ') return ' ';
+          if (i < revealedCount) return char;
+          return chars[Math.floor(Math.random() * chars.length)];
+        }).join('');
+      },
+      onComplete: () => {
+        description.textContent = originalText;
+        description.style.height = '';
       }
-    }
+    }, 0);
   }
 
   if (document.readyState === 'complete') {
-    animateIntro();
+    initShuffle();
   } else {
-    window.addEventListener('load', animateIntro);
-  }
-
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('contact_form_animation', () => {
-      const newWrapper = document.querySelector('[data-contact-wrapper]');
-      if (newWrapper && !newWrapper.dataset.contactInitialized) {
-        newWrapper.dataset.contactInitialized = 'true';
-        animateIntro();
-      }
-    });
+    window.addEventListener('load', initShuffle);
   }
 })();
 </script>
+{% endif %}
 
 {% schema %}
 {
