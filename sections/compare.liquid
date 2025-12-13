@@ -1,5 +1,5 @@
 {%- comment -%}
-  Compare Products Page Template
+  Compare Products Section
   Shows a side-by-side comparison of products stored in localStorage
 {%- endcomment -%}
 
@@ -151,7 +151,7 @@
 
 <div class="compare-page page-container" data-compare-page>
   <header class="compare-page__header">
-    <h1 class="compare-page__title font-heading">{{ page.title | default: 'Compare Products' }}</h1>
+    <h1 class="compare-page__title font-heading">{{ section.settings.title | default: page.title | default: 'Compare Products' }}</h1>
     <p class="compare-page__subtitle" data-compare-page-count>0 {{ 'products.compare.products' | t | default: 'products' }}</p>
   </header>
 
@@ -186,7 +186,6 @@
   }
 
   function formatMoney(cents) {
-    // Handle string input - remove any non-numeric chars except decimal
     if (typeof cents === 'string') {
       cents = cents.replace(/[^\d.-]/g, '');
       if (cents.includes('.')) {
@@ -220,10 +219,9 @@
   }
 
   function removeProduct(productId) {
-    const products = getProducts().filter(p => p.id !== productId);
+    const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
     render();
-    // Update drawer if open
     document.dispatchEvent(new CustomEvent('compare:removed', { detail: { productId } }));
   }
 
@@ -250,8 +248,6 @@
       `;
       return;
     }
-
-    const columns = products.length + 1; // +1 for header column
 
     let html = `
       <div class="compare-table">
@@ -361,3 +357,24 @@
   document.addEventListener('compare:cleared', render);
 })();
 </script>
+
+{% schema %}
+{
+  "name": "Compare Products",
+  "tag": "section",
+  "class": "section-compare",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Compare Products"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Compare Products"
+    }
+  ]
+}
+{% endschema %}

@@ -1,5 +1,5 @@
 {%- comment -%}
-  Wishlist Page Template
+  Wishlist Section
   Shows all saved favorite products from localStorage
 {%- endcomment -%}
 
@@ -69,7 +69,7 @@
 
 <div class="wishlist-page page-container" data-wishlist-page>
   <header class="wishlist-page__header">
-    <h1 class="wishlist-page__title font-heading">{{ page.title | default: 'Wishlist' }}</h1>
+    <h1 class="wishlist-page__title font-heading">{{ section.settings.title | default: page.title | default: 'Wishlist' }}</h1>
     <p class="wishlist-page__subtitle" data-wishlist-page-count>0 {{ 'products.wishlist.products' | t | default: 'saved items' }}</p>
   </header>
 
@@ -104,22 +104,30 @@
   }
 
   function formatMoney(cents) {
-    if (typeof cents === 'string') cents = cents.replace('.', '');
-    cents = parseInt(cents, 10) || 0;
+    if (typeof cents === 'string') {
+      cents = cents.replace(/[^\d.-]/g, '');
+      if (cents.includes('.')) {
+        cents = Math.round(parseFloat(cents) * 100);
+      } else {
+        cents = parseInt(cents, 10);
+      }
+    }
+    cents = cents || 0;
+
     const moneyFormat = window.themeSettings?.moneyFormat || '${{amount}}';
     const value = cents / 100;
-    const amount = value.toFixed(2);
     const amountNoDecimals = Math.floor(value);
-    const amountWithComma = amount.replace('.', ',');
+    const amountFormatted = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const amountWithComma = value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
     const amountNoDecimalsWithComma = amountNoDecimals.toLocaleString('de-DE');
-    const amountWithApostrophe = amount.replace(/\B(?=(\d{3})+(?!\d))/g, "'");
+    const amountWithApostrophe = value.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
 
     return moneyFormat
-      .replace('{{amount_with_comma_separator}}', amountWithComma)
-      .replace('{{amount_no_decimals_with_comma_separator}}', amountNoDecimalsWithComma)
-      .replace('{{amount_with_apostrophe_separator}}', amountWithApostrophe)
-      .replace('{{amount_no_decimals}}', amountNoDecimals.toString())
-      .replace('{{amount}}', amount);
+      .replace(/\{\{\s*amount_with_comma_separator\s*\}\}/g, amountWithComma)
+      .replace(/\{\{\s*amount_no_decimals_with_comma_separator\s*\}\}/g, amountNoDecimalsWithComma)
+      .replace(/\{\{\s*amount_with_apostrophe_separator\s*\}\}/g, amountWithApostrophe)
+      .replace(/\{\{\s*amount_no_decimals\s*\}\}/g, amountNoDecimals.toLocaleString('en-US'))
+      .replace(/\{\{\s*amount\s*\}\}/g, amountFormatted);
   }
 
   function escapeHtml(str) {
@@ -129,7 +137,7 @@
   }
 
   function removeProduct(productId) {
-    const products = getProducts().filter(p => p.id !== productId);
+    const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
     render();
     document.dispatchEvent(new CustomEvent('wishlist:removed', { detail: { productId } }));
@@ -140,7 +148,7 @@
 
     // Update count
     if (countEl) {
-      countEl.textContent = `${products.length} saved items`;
+      countEl.textContent = `${products.length} {{ 'products.wishlist.products' | t | default: 'saved items' }}`;
     }
 
     if (products.length === 0) {
@@ -221,10 +229,10 @@
       <div class="wishlist-page__actions">
         <button type="button" class="btn btn--secondary" data-clear-wishlist>
           <i class="ph ph-trash"></i>
-          <span>{{ 'products.compare.clear_all' | t | default: 'Clear All' }}</span>
+          <span>{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}</span>
         </button>
         <a href="/collections/all" class="btn btn--primary">
-          <span>{{ 'products.compare.continue_shopping' | t | default: 'Continue Shopping' }}</span>
+          <span>{{ 'products.wishlist.continue_shopping' | t | default: 'Continue Shopping' }}</span>
         </a>
       </div>
     `;
@@ -267,3 +275,24 @@
   document.addEventListener('wishlist:cleared', render);
 })();
 </script>
+
+{% schema %}
+{
+  "name": "Wishlist",
+  "tag": "section",
+  "class": "section-wishlist",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "Wishlist"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Wishlist"
+    }
+  ]
+}
+{% endschema %}
