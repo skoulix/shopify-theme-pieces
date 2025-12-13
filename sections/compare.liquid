@@ -156,18 +156,18 @@
   .compare-section-{{ section.id }} .compare-table__value--unavailable {
     color: var(--color-error, #ef4444);
   }
-  /* Reset buttons to use global styles - override section color inheritance */
+  /* Reset buttons to use section colors for proper contrast */
   .compare-section-{{ section.id }} .btn--secondary {
-    color: var(--color-text);
-    border-color: var(--color-border);
+    color: {{ section.settings.text_color }};
+    border-color: {{ section.settings.text_color }}40;
   }
   .compare-section-{{ section.id }} .btn--secondary::before {
-    background: var(--color-text);
+    background: {{ section.settings.text_color }};
   }
   .compare-section-{{ section.id }} .btn--secondary:hover,
   .compare-section-{{ section.id }} .btn--secondary:hover span,
   .compare-section-{{ section.id }} .btn--secondary:hover i {
-    color: var(--color-background);
+    color: {{ section.settings.background_color }};
   }
   .compare-section-{{ section.id }} .btn--primary {
     color: var(--color-primary-contrast);
@@ -369,8 +369,8 @@
             ${products.map(p => `
               <div class="compare-table__cell">
                 ${p.available
-                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--secondary btn--sm">{{ 'products.product.view_product' | t | default: 'View Product' }}</a>`
-                  : `<button type="button" class="btn btn--secondary btn--sm" disabled>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</button>`
+                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--secondary btn--sm"><span>{{ 'products.product.view_product' | t | default: 'View Product' }}</span></a>`
+                  : `<button type="button" class="btn btn--secondary btn--sm" disabled><span>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</span></button>`
                 }
               </div>
             `).join('')}

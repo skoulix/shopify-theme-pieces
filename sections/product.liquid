@@ -541,7 +541,7 @@
               {%- endcapture -%}
               <div class="mt-4" data-intro {{ block.shopify_attributes }}>
                 {%- assign wb_icon_size = 'text-base' -%}
-                {%- assign wb_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+                {%- assign wb_btn_class = 'btn btn--secondary btn--sm' -%}
                 {%- if block.settings.style == 'icon_only' -%}
                   {%- assign wb_icon_size = 'text-xl' -%}
                   {%- assign wb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] hover:border-[--color-text]' -%}
@@ -571,7 +571,7 @@
               {%- endcapture -%}
               <div class="mt-4" data-intro {{ block.shopify_attributes }}>
                 {%- assign cb_icon_size = 'text-base' -%}
-                {%- assign cb_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+                {%- assign cb_btn_class = 'btn btn--secondary btn--sm' -%}
                 {%- if block.settings.style == 'icon_only' -%}
                   {%- assign cb_icon_size = 'text-xl' -%}
                   {%- assign cb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] hover:border-[--color-text]' -%}
@@ -606,7 +606,7 @@
               {%- assign wc_show_icon = true -%}
               {%- assign wc_show_text = true -%}
               {%- assign wc_icon_size = 'text-base' -%}
-              {%- assign wc_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+              {%- assign wc_btn_class = 'btn btn--secondary btn--sm' -%}
               {%- if wc_display_style == 'icon_only' -%}
                 {%- assign wc_show_text = false -%}
                 {%- assign wc_icon_size = 'text-xl' -%}
