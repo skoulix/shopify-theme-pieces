@@ -231,23 +231,23 @@
   data-features-grid-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
-    {%- comment -%} Header {%- endcomment -%}
+    {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="features-grid-header-{{ section.id }}" data-section-header>
+      <div class="features-grid-header-{{ section.id }}" data-tween-group="features-grid-header-{{ section.id }}">
         {% if section.settings.label != blank %}
-          <span class="section-label" data-section-intro>
+          <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
           </span>
         {% endif %}
 
         {% if section.settings.title != blank %}
-          <h2 class="section-title font-heading" data-section-title>
+          <h2 class="section-title font-heading" data-tween data-tween-type="split-text">
             {{ section.settings.title }}
           </h2>
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description" data-section-intro>
+          <p class="section-description" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -255,7 +255,7 @@
     {% endif %}
 
     {%- comment -%} Features Grid {%- endcomment -%}
-    <div class="features-grid-container-{{ section.id }} {{ section.settings.layout }}-layout" data-section-intro>
+    <div class="features-grid-container-{{ section.id }} {{ section.settings.layout }}-layout" data-tween data-tween-type="fade-up">
       {% for block in section.blocks %}
         <div
           class="feature-item-{{ section.id }}{% if section.settings.layout == 'bento' and forloop.first %} is-large{% endif %}"
@@ -295,118 +295,6 @@
   </div>
 </section>
 
-<script>
-(function() {
-  const section = document.querySelector('[data-features-grid-section="{{ section.id }}"]');
-  if (!section || section.dataset.featuresInitialized) return;
-  section.dataset.featuresInitialized = 'true';
-
-  // Skip if animations disabled
-  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
-
-  function initAnimation() {
-    let gsap = window.gsap;
-    if (!gsap && window.pieces && window.pieces.gsap) {
-      gsap = window.pieces.gsap;
-    }
-
-    let SplitText = window.SplitText;
-    if (!SplitText && window.pieces && window.pieces.SplitText) {
-      SplitText = window.pieces.SplitText;
-    }
-
-    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
-
-    if (!gsap || !SplitText || !ScrollTrigger) {
-      setTimeout(initAnimation, 50);
-      return;
-    }
-
-    const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
-
-    // Get header elements
-    const label = section.querySelector('[data-section-header] .section-label');
-    const title = section.querySelector('[data-section-title]');
-    const description = section.querySelector('[data-section-header] .section-description');
-    const grid = section.querySelector('.features-grid-container-{{ section.id }}');
-
-    // Create timeline for sequenced animations
-    const tl = gsap.timeline({
-      scrollTrigger: {
-        trigger: section,
-        start: scrollStart,
-        once: true
-      }
-    });
-
-    // 1. Label fade-in from bottom
-    if (label) {
-      tl.to(label, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, 0);
-    }
-
-    // 2. Title split text reveal
-    if (title) {
-      const split = new SplitText(title, { type: 'lines', linesClass: 'section-title-line' });
-
-      split.lines.forEach(line => {
-        const lineWrapper = document.createElement('div');
-        lineWrapper.style.overflow = 'hidden';
-        lineWrapper.style.display = 'block';
-        line.parentNode.insertBefore(lineWrapper, line);
-        lineWrapper.appendChild(line);
-      });
-
-      gsap.set(split.lines, { yPercent: 120 });
-
-      tl.add(() => { title.style.opacity = 1; }, label ? 0.2 : 0);
-      tl.to(split.lines, {
-        yPercent: 0,
-        duration: 1.2,
-        ease: 'power4.out',
-        stagger: 0.1
-      }, label ? 0.2 : 0);
-    }
-
-    // 3. Description fade-in from bottom
-    if (description) {
-      tl.to(description, {
-        opacity: 1,
-        y: 0,
-        duration: 0.6,
-        ease: 'power2.out'
-      }, label ? 0.5 : 0.3);
-    }
-
-    // 4. Grid fade-in from bottom
-    if (grid) {
-      tl.to(grid, {
-        opacity: 1,
-        y: 0,
-        duration: 0.8,
-        ease: 'power2.out'
-      }, label ? 0.7 : 0.5);
-    }
-  }
-
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', initAnimation);
-  } else {
-    requestAnimationFrame(initAnimation);
-  }
-
-  if (window.onSwupContentReplaced) {
-    window.onSwupContentReplaced('features_grid_animation', () => {
-      requestAnimationFrame(initAnimation);
-    });
-  }
-})();
-</script>
-
 {% schema %}
 {
   "name": "Features Grid",
@@ -436,10 +324,15 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "default": "center",
-      "label": "Header alignment"
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

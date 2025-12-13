@@ -19,8 +19,7 @@
   .iwt-container { gap: clamp(2rem, 5vw, 4rem); }
   {% if section.settings.container_background_color != blank %}[data-iwt-section="{{ section.id }}"] .iwt-container { background-color: {{ section.settings.container_background_color }}; }{% endif %}
   .iwt-image { aspect-ratio: {{ section.settings.image_ratio }}; }
-  /* Title uses global .section-title from utilities.css, hidden state from [data-section-title] in animations.css */
-  /* Title line offset uses global .section-title-line:nth-child(2) */
+  /* Title uses global .section-title from utilities.css */
   .iwt-section .section-title { color: {{ section.settings.text_color }}; }
   .iwt-section .section-label { color: {{ section.settings.text_color }}; }
   .iwt-section .section-description { color: {{ section.settings.text_color }}; }
@@ -32,16 +31,6 @@
   .iwt-stats { gap: clamp(2rem, 4vw, 4rem); border-top-color: {{ section.settings.text_color }}20; }
   .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; color: {{ section.settings.text_color }}; }
   .iwt-stat-label { color: {{ section.settings.text_color }}; }
-
-  /* Initial clip-path state for swipe animation */
-  [data-iwt-section="{{ section.id }}"] [data-iwt-image] {
-    clip-path: inset(0 100% 0 0);
-  }
-
-  /* When animations disabled, show image immediately */
-  html.animations-disabled [data-iwt-section="{{ section.id }}"] [data-iwt-image] {
-    clip-path: none;
-  }
 </style>
 
 <section
