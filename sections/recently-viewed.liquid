@@ -200,22 +200,21 @@
       return String(str).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/'/g, '&#39;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
     }
 
-    function buildProductDataAttr(product) {
-      // Build the data-product-data attribute value matching the format expected by wishlist/compare handlers
-      // Format: id||handle||title||url||image||price||compareAtPrice||vendor||available
-      const parts = [
-        product.id,
-        product.handle,
-        product.title,
-        product.url,
-        product.image || '',
-        product.price,
-        product.compareAtPrice || 0,
-        product.vendor || '',
-        product.available !== false
-      ];
-      // Each part is JSON stringified, then the whole thing is escaped for HTML attribute
-      return escapeAttr(parts.map(p => JSON.stringify(p)).join('||'));
+    function buildProductJsonAttr(product) {
+      // Build the data-product-json attribute value as a JSON object
+      const data = {
+        id: product.id,
+        handle: product.handle,
+        title: product.title,
+        url: product.url,
+        image: product.image || '',
+        price: product.price,
+        compareAtPrice: product.compareAtPrice || 0,
+        vendor: product.vendor || '',
+        available: product.available !== false
+      };
+      // Escape for use in single-quoted HTML attribute
+      return JSON.stringify(data).replace(/'/g, '&#39;');
     }
 
     function renderProducts(products) {
@@ -291,7 +290,7 @@
                       type="button"
                       class="product-card-wishlist w-10 h-10 flex items-center justify-center rounded-full bg-[--color-background] text-[--color-text] shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] [&.is-active]:bg-[--color-sale] [&.is-active]:text-white"
                       data-wishlist-toggle="${product.id}"
-                      data-product-data="${buildProductDataAttr(product)}"
+                      data-product-json='${buildProductJsonAttr(product)}'
                       aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: ${escapeHtml(product.title)}"
                       aria-pressed="false"
                     >
@@ -303,7 +302,7 @@
                       type="button"
                       class="product-card-compare w-10 h-10 flex items-center justify-center rounded-full bg-[--color-background] text-[--color-text] shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
                       data-compare-toggle="${product.id}"
-                      data-product-data="${buildProductDataAttr(product)}"
+                      data-product-json='${buildProductJsonAttr(product)}'
                       aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: ${escapeHtml(product.title)}"
                       aria-pressed="false"
                     >

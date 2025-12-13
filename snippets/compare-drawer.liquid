@@ -529,27 +529,16 @@
     e.preventDefault();
     e.stopPropagation();
 
-    const productDataStr = btn.dataset.productData;
-    if (!productDataStr) return;
+    const productJson = btn.dataset.productJson;
+    if (!productJson) return;
 
-    // Parse the product data (format: id||handle||title||url||image||price||compareAtPrice||vendor||available)
-    const parts = productDataStr.split('||');
-    if (parts.length < 5) return;
-
-    const product = {
-      id: JSON.parse(parts[0]),
-      handle: JSON.parse(parts[1]),
-      title: JSON.parse(parts[2]),
-      url: JSON.parse(parts[3]),
-      image: JSON.parse(parts[4]),
-      price: parts[5] ? JSON.parse(parts[5]) : 0,
-      compareAtPrice: parts[6] ? JSON.parse(parts[6]) : 0,
-      vendor: parts[7] ? JSON.parse(parts[7]) : '',
-      available: parts[8] ? JSON.parse(parts[8]) : true
-    };
-
-    // Dispatch the toggle event
-    document.dispatchEvent(new CustomEvent('compare:toggle', { detail: { product } }));
+    try {
+      const product = JSON.parse(productJson);
+      // Dispatch the toggle event
+      document.dispatchEvent(new CustomEvent('compare:toggle', { detail: { product } }));
+    } catch (err) {
+      console.error('Compare: Failed to parse product data', err);
+    }
   });
 
   // Initialize

@@ -142,11 +142,14 @@
         {% endif %}
         {%- comment -%} Wishlist Button {%- endcomment -%}
         {% if settings.enable_wishlist %}
+          {%- capture wishlist_product_json -%}
+            {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
+          {%- endcapture -%}
           <button
             type="button"
             class="product-card-wishlist w-10 h-10 flex items-center justify-center rounded-full bg-[--color-background] text-[--color-text] shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] [&.is-active]:bg-[--color-sale] [&.is-active]:text-white"
             data-wishlist-toggle="{{ product.id }}"
-            data-product-data="{{ product.id | json }}||{{ product.handle | json }}||{{ product.title | json }}||{{ product.url | json }}||{{ product.featured_image | image_url: width: 800 | json }}||{{ product.price | json }}||{{ product.compare_at_price | default: 0 | json }}||{{ product.vendor | json }}||{{ product.available | json }}"
+            data-product-json='{{ wishlist_product_json | strip_newlines }}'
             aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}"
             aria-pressed="false"
           >
@@ -155,11 +158,14 @@
         {% endif %}
         {%- comment -%} Compare Button {%- endcomment -%}
         {% if settings.enable_compare %}
+          {%- capture compare_product_json -%}
+            {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
+          {%- endcapture -%}
           <button
             type="button"
             class="product-card-compare w-10 h-10 flex items-center justify-center rounded-full bg-[--color-background] text-[--color-text] shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
             data-compare-toggle="{{ product.id }}"
-            data-product-data="{{ product.id | json }}||{{ product.handle | json }}||{{ product.title | json }}||{{ product.url | json }}||{{ product.featured_image | image_url: width: 800 | json }}||{{ product.price | json }}||{{ product.compare_at_price | default: 0 | json }}||{{ product.vendor | json }}||{{ product.available | json }}"
+            data-product-json='{{ compare_product_json | strip_newlines }}'
             aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}"
             aria-pressed="false"
           >

@@ -59,20 +59,6 @@
         <span>{{ results.products_count }} {{ results.products_count | pluralize: 'product', 'products' }}</span>
       </div>
 
-      {%- comment -%} Compare Button {%- endcomment -%}
-      {% if settings.enable_compare %}
-        <button
-          type="button"
-          class="facets-compare-btn btn btn--secondary btn--sm hidden"
-          data-compare-drawer-toggle
-          aria-label="{{ 'products.compare.open_drawer' | t | default: 'Open compare drawer' }}"
-        >
-          <i class="ph ph-scales" aria-hidden="true"></i>
-          <span>{{ 'products.compare.compare' | t | default: 'Compare' }}</span>
-          <span class="facets-compare-count inline-flex items-center justify-center min-w-[1.25rem] h-5 px-1 text-xs font-semibold bg-[--color-text] text-[--color-background] rounded-full" data-compare-count>0</span>
-        </button>
-      {% endif %}
-
       {%- comment -%} View Toggle {%- endcomment -%}
       {% if enable_layout_toggle %}
         <div class="facets-view-toggle hidden md:flex items-center border border-[--color-border] rounded-[--input-radius] overflow-hidden">

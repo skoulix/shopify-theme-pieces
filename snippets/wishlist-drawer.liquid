@@ -435,34 +435,25 @@
     e.preventDefault();
     e.stopPropagation();
 
-    const productDataStr = btn.dataset.productData;
-    if (!productDataStr) return;
+    const productJson = btn.dataset.productJson;
+    if (!productJson) return;
 
-    const parts = productDataStr.split('||');
-    if (parts.length < 5) return;
+    try {
+      const product = JSON.parse(productJson);
 
-    const product = {
-      id: JSON.parse(parts[0]),
-      handle: JSON.parse(parts[1]),
-      title: JSON.parse(parts[2]),
-      url: JSON.parse(parts[3]),
-      image: JSON.parse(parts[4]),
-      price: parts[5] ? JSON.parse(parts[5]) : 0,
-      compareAtPrice: parts[6] ? JSON.parse(parts[6]) : 0,
-      vendor: parts[7] ? JSON.parse(parts[7]) : '',
-      available: parts[8] ? JSON.parse(parts[8]) : true
-    };
+      const products = getProducts();
+      const exists = products.some(p => String(p.id) === String(product.id));
 
-    const products = getProducts();
-    const exists = products.some(p => String(p.id) === String(product.id));
-
-    if (exists) {
-      removeProduct(product.id);
-    } else {
-      products.unshift({ ...product, addedAt: Date.now() });
-      saveProducts(products);
-      updateUI();
-      document.dispatchEvent(new CustomEvent('wishlist:added', { detail: { product } }));
+      if (exists) {
+        removeProduct(product.id);
+      } else {
+        products.unshift({ ...product, addedAt: Date.now() });
+        saveProducts(products);
+        updateUI();
+        document.dispatchEvent(new CustomEvent('wishlist:added', { detail: { product } }));
+      }
+    } catch (err) {
+      console.error('Wishlist: Failed to parse product data', err);
     }
   });
 
