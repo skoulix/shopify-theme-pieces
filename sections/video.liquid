@@ -249,7 +249,7 @@
 
 <section class="video-section-{{ section.id }}" data-video-section="{{ section.id }}">
   <div class="{{ container_class }}">
-    <div class="video-container-{{ section.id }}" data-tween data-tween-type="clip-right">
+    <div class="video-container-{{ section.id }}">
       {% if section.settings.video != blank %}
         {{ section.settings.video | video_tag:
           autoplay: true,

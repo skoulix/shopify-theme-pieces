@@ -100,8 +100,7 @@
                   product: recommendation,
                   index: forloop.index0,
                   show_quick_add: false,
-                  lazy_load: true,
-                  animate_image: true
+                  lazy_load: true
                 %}
               </div>
             {% endfor %}
@@ -180,6 +179,11 @@
             track.innerHTML = newTrack.innerHTML;
             totalSlides = track.children.length;
 
+            // Mark product cards as visible (they have data-intro which sets opacity:0)
+            track.querySelectorAll('[data-intro]').forEach(item => {
+              item.classList.add('intro-visible');
+            });
+
             loading.style.display = 'none';
             track.style.display = 'flex';
 
@@ -190,18 +194,6 @@
             if (totalSlides <= slidesPerView) {
               nav.style.display = 'none';
             }
-
-            // Trigger tween animations for new elements
-            // Need to wait for TweenManager to be available on initial page load
-            function triggerTweenReinit() {
-              if (window.pieces?.tween) {
-                window.pieces.tween.reinit();
-              } else {
-                // TweenManager not ready yet, wait and retry
-                requestAnimationFrame(triggerTweenReinit);
-              }
-            }
-            triggerTweenReinit();
           } else {
             // No recommendations, hide the entire section
             section.style.display = 'none';
