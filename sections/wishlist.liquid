@@ -3,63 +3,104 @@
   Shows all saved favorite products from localStorage
 {%- endcomment -%}
 
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
 <style>
-  .wishlist-page {
+  .wishlist-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: var(--section-vertical-padding) 0;
     min-height: 60vh;
-    padding: var(--page-vertical-padding) var(--page-padding);
   }
-  .wishlist-page__header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .wishlist-page__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
+  .wishlist-section-{{ section.id }} .wishlist-title {
+    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
     letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 1rem;
+    line-height: 0.95;
   }
-  .wishlist-page__subtitle {
+  @media (min-width: 1024px) {
+    .wishlist-section-{{ section.id }} .wishlist-title {
+      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  /* Title line reveal animation */
+  .wishlist-title-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
+
+  /* Hide title initially to prevent FOUC before SplitText animation */
+  [data-wishlist-title] { opacity: 0; }
+  html.animations-disabled [data-wishlist-title] { opacity: 1; }
+  .wishlist-section-{{ section.id }} .wishlist-count {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--color-text-secondary);
+    opacity: 0.6;
   }
-  .wishlist-page__empty {
+  .wishlist-section-{{ section.id }} .wishlist-empty {
     text-align: center;
     padding: 4rem 0;
   }
-  .wishlist-page__empty-icon {
+  .wishlist-section-{{ section.id }} .wishlist-empty__icon {
     font-size: 4rem;
-    color: var(--color-text-secondary);
     opacity: 0.3;
     margin-bottom: 1.5rem;
   }
-  .wishlist-page__empty-title {
+  .wishlist-section-{{ section.id }} .wishlist-empty__title {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
   }
-  .wishlist-page__empty-text {
-    color: var(--color-text-secondary);
+  .wishlist-section-{{ section.id }} .wishlist-empty__text {
+    opacity: 0.7;
     margin-bottom: 1.5rem;
   }
-  .wishlist-page__grid {
+  .wishlist-section-{{ section.id }} .wishlist-grid {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 1.5rem;
   }
   @media (min-width: 768px) {
-    .wishlist-page__grid {
+    .wishlist-section-{{ section.id }} .wishlist-grid {
       grid-template-columns: repeat(3, 1fr);
     }
   }
   @media (min-width: 1024px) {
-    .wishlist-page__grid {
+    .wishlist-section-{{ section.id }} .wishlist-grid {
       grid-template-columns: repeat(4, 1fr);
     }
   }
-  .wishlist-page__actions {
+  /* Reset buttons to use global styles - override section color inheritance */
+  .wishlist-section-{{ section.id }} .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+  .wishlist-section-{{ section.id }} .btn--secondary::before {
+    background: var(--color-text);
+  }
+  .wishlist-section-{{ section.id }} .btn--secondary:hover,
+  .wishlist-section-{{ section.id }} .btn--secondary:hover span,
+  .wishlist-section-{{ section.id }} .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+  .wishlist-section-{{ section.id }} .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .wishlist-section-{{ section.id }} .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+  .wishlist-section-{{ section.id }} .btn--primary:hover,
+  .wishlist-section-{{ section.id }} .btn--primary:hover span,
+  .wishlist-section-{{ section.id }} .btn--primary:hover i {
+    color: var(--color-primary);
+  }
+  .wishlist-section-{{ section.id }} .wishlist-actions {
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -67,16 +108,35 @@
   }
 </style>
 
-<div class="wishlist-page page-container" data-wishlist-section id="wishlist-section-{{ section.id }}">
-  <header class="wishlist-page__header">
-    <h1 class="wishlist-page__title font-heading">{{ section.settings.title | default: page.title | default: 'Wishlist' }}</h1>
-    <p class="wishlist-page__subtitle" data-wishlist-section-count>0 {{ 'products.wishlist.products' | t | default: 'saved items' }}</p>
-  </header>
+<section class="wishlist-section-{{ section.id }}" data-wishlist-section id="wishlist-section-{{ section.id }}">
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}">
+      {% if section.settings.label != blank %}
+        <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
+          {{ section.settings.label }}
+        </span>
+      {% endif %}
 
-  <div data-wishlist-section-content>
+      {% if section.settings.title != blank %}
+        <h2 class="wishlist-title font-bold font-heading" data-wishlist-title>
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <p class="wishlist-count mt-4" data-wishlist-section-count data-intro>0 {{ 'products.wishlist.products' | t | default: 'saved items' }}</p>
+
+      {% if section.settings.description != blank %}
+        <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-intro>
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+    </div>
+
     {%- comment -%} Content rendered via JS {%- endcomment -%}
+    <div data-wishlist-section-content data-intro></div>
   </div>
-</div>
+</section>
 
 <script>
 (function() {
@@ -141,30 +201,27 @@
   function removeProduct(productId) {
     const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
-    // Render first for immediate feedback
     isRendering = true;
     render();
     isRendering = false;
-    // Then dispatch event for other components (drawer, header count, etc.)
     document.dispatchEvent(new CustomEvent('wishlist:removed', { detail: { productId } }));
   }
 
   function render() {
     const products = getProducts();
 
-    // Update count
     if (countEl) {
       countEl.textContent = `${products.length} {{ 'products.wishlist.products' | t | default: 'saved items' }}`;
     }
 
     if (products.length === 0) {
       content.innerHTML = `
-        <div class="wishlist-page__empty">
-          <div class="wishlist-page__empty-icon">
+        <div class="wishlist-empty">
+          <div class="wishlist-empty__icon">
             <i class="ph ph-heart"></i>
           </div>
-          <h2 class="wishlist-page__empty-title">{{ 'products.wishlist.empty_title' | t | default: 'Your wishlist is empty' }}</h2>
-          <p class="wishlist-page__empty-text">{{ 'products.wishlist.empty_text' | t | default: 'Save your favorite products by clicking the heart icon on product cards.' }}</p>
+          <h2 class="wishlist-empty__title">{{ 'products.wishlist.empty_title' | t | default: 'Your wishlist is empty' }}</h2>
+          <p class="wishlist-empty__text">{{ 'products.wishlist.empty_text' | t | default: 'Save your favorite products by clicking the heart icon on product cards.' }}</p>
           <a href="/collections/all" class="btn btn--primary">
             <span>{{ 'products.wishlist.browse_products' | t | default: 'Browse Products' }}</span>
           </a>
@@ -174,9 +231,9 @@
     }
 
     let html = `
-      <div class="wishlist-page__grid">
+      <div class="wishlist-grid">
         ${products.map(product => `
-          <article class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full" style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);" data-intro>
+          <article class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full" style="border: var(--card-border-width) solid var(--color-border); box-shadow: var(--card-shadow);">
             <button
               type="button"
               class="absolute top-3 right-3 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-[--color-sale] text-white shadow-md transition-all duration-300 hover:scale-110"
@@ -232,7 +289,7 @@
         `).join('')}
       </div>
 
-      <div class="wishlist-page__actions">
+      <div class="wishlist-actions">
         <button type="button" class="btn btn--secondary" data-clear-wishlist>
           <i class="ph ph-trash"></i>
           <span>{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}</span>
@@ -245,7 +302,6 @@
 
     content.innerHTML = html;
 
-    // Add event listeners
     content.querySelectorAll('[data-remove-wishlist-page]').forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.preventDefault();
@@ -259,30 +315,109 @@
       render();
       document.dispatchEvent(new CustomEvent('wishlist:cleared'));
     });
-
-    // Trigger intro animations
-    if (window.pieces?.animationManager) {
-      window.pieces.animationManager.initIntroAnimations();
-    }
   }
 
-  // Initial render
   render();
 
-  // Listen for changes
   window.addEventListener('storage', (e) => {
     if (e.key === STORAGE_KEY) {
       render();
     }
   });
 
-  // Listen for external wishlist changes (from drawer, other tabs, etc.)
   function handleExternalChange() {
     if (!isRendering) render();
   }
   document.addEventListener('wishlist:added', handleExternalChange);
   document.addEventListener('wishlist:removed', handleExternalChange);
   document.addEventListener('wishlist:cleared', handleExternalChange);
+})();
+
+// Title SplitText animation
+(function() {
+  function initTitleAnimation() {
+    const section = document.getElementById('wishlist-section-{{ section.id }}');
+    if (!section || section.dataset.wishlistAnimInitialized) return;
+    section.dataset.wishlistAnimInitialized = 'true';
+
+    // If animations disabled, show title immediately
+    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
+      const title = section.querySelector('[data-wishlist-title]');
+      if (title) title.style.opacity = '1';
+      return;
+    }
+
+    function initAnimation() {
+      let gsap = window.gsap;
+      if (!gsap && window.pieces && window.pieces.gsap) {
+        gsap = window.pieces.gsap;
+      }
+
+      let SplitText = window.SplitText;
+      if (!SplitText && window.pieces && window.pieces.SplitText) {
+        SplitText = window.pieces.SplitText;
+      }
+
+      const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+      if (!gsap || !SplitText || !ScrollTrigger) {
+        setTimeout(initAnimation, 50);
+        return;
+      }
+
+      const title = section.querySelector('[data-wishlist-title]');
+      if (!title) return;
+
+      const split = new SplitText(title, { type: 'lines', linesClass: 'wishlist-title-line' });
+
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
+
+      gsap.set(split.lines, { yPercent: 120 });
+
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
+      gsap.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: section,
+          start: scrollStart,
+          once: true,
+          onEnter: () => {
+            title.style.opacity = '1';
+          }
+        }
+      });
+    }
+
+    if (document.readyState === 'complete') {
+      initAnimation();
+    } else {
+      window.addEventListener('load', initAnimation);
+    }
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTitleAnimation);
+  } else {
+    requestAnimationFrame(initTitleAnimation);
+  }
+
+  // Re-init on Swup navigation
+  if (window.onSwupContentReplaced) {
+    window.onSwupContentReplaced('wishlist_title_anim_{{ section.id }}', () => {
+      requestAnimationFrame(initTitleAnimation);
+    });
+  }
 })();
 </script>
 
@@ -293,15 +428,64 @@
   "class": "section-wishlist",
   "settings": [
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Saved"
+    },
+    {
       "type": "text",
       "id": "title",
       "label": "Title",
       "default": "Wishlist"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     }
   ],
   "presets": [
     {
-      "name": "Wishlist"
+      "name": "Wishlist",
+      "category": "Products"
     }
   ]
 }

@@ -1,118 +1,134 @@
 {%- comment -%}
-  Compare Products Section
+  Compare Section
   Shows a side-by-side comparison of products stored in localStorage
 {%- endcomment -%}
 
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+-%}
+
 <style>
-  .compare-page {
+  .compare-section-{{ section.id }} {
+    background-color: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    padding: var(--section-vertical-padding) 0;
     min-height: 60vh;
-    padding: var(--page-vertical-padding) var(--page-padding);
   }
-  .compare-page__header {
-    text-align: center;
-    margin-bottom: 3rem;
-  }
-  .compare-page__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
+  .compare-section-{{ section.id }} .compare-title {
+    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
     letter-spacing: -0.03em;
-    line-height: 1;
-    margin-bottom: 1rem;
+    line-height: 0.95;
   }
-  .compare-page__subtitle {
+  @media (min-width: 1024px) {
+    .compare-section-{{ section.id }} .compare-title {
+      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  /* Title line reveal animation */
+  .compare-title-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
+
+  /* Hide title initially to prevent FOUC before SplitText animation */
+  [data-compare-title] { opacity: 0; }
+  html.animations-disabled [data-compare-title] { opacity: 1; }
+  .compare-section-{{ section.id }} .compare-count {
     font-size: 0.75rem;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--color-text-secondary);
+    opacity: 0.6;
   }
-  .compare-page__empty {
+  .compare-section-{{ section.id }} .compare-empty {
     text-align: center;
     padding: 4rem 0;
   }
-  .compare-page__empty-icon {
+  .compare-section-{{ section.id }} .compare-empty__icon {
     font-size: 4rem;
-    color: var(--color-text-secondary);
     opacity: 0.3;
     margin-bottom: 1.5rem;
   }
-  .compare-page__empty-title {
+  .compare-section-{{ section.id }} .compare-empty__title {
     font-size: 1.25rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
   }
-  .compare-page__empty-text {
-    color: var(--color-text-secondary);
+  .compare-section-{{ section.id }} .compare-empty__text {
+    opacity: 0.7;
     margin-bottom: 1.5rem;
   }
-
-  .compare-table {
+  .compare-section-{{ section.id }} .compare-table {
     width: 100%;
     overflow-x: auto;
     margin-bottom: 2rem;
   }
-  .compare-table__inner {
+  .compare-section-{{ section.id }} .compare-table__inner {
     display: grid;
     min-width: 600px;
   }
-  .compare-table__row {
+  .compare-section-{{ section.id }} .compare-table__row {
     display: contents;
   }
-  .compare-table__header-cell {
+  .compare-section-{{ section.id }} .compare-table__header-cell {
     padding: 1rem;
-    background: var(--color-background-secondary);
-    border-bottom: 1px solid var(--color-border);
+    background: {{ section.settings.background_color }};
+    border-bottom: 1px solid {{ section.settings.text_color }}15;
     font-size: 0.65rem;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.15em;
-    color: var(--color-text-secondary);
+    opacity: 0.6;
     position: sticky;
     left: 0;
+    z-index: 1;
+    vertical-align: middle;
   }
-  .compare-table__cell {
+  .compare-section-{{ section.id }} .compare-table__cell {
     padding: 1rem;
-    border-bottom: 1px solid var(--color-border);
+    border-bottom: 1px solid {{ section.settings.text_color }}15;
     text-align: center;
   }
-  .compare-table__product-image {
+  .compare-section-{{ section.id }} .compare-table__product-image {
     width: 100%;
     max-width: 200px;
     aspect-ratio: 3/4;
     margin: 0 auto 1rem;
     border-radius: var(--card-radius);
     overflow: hidden;
-    background: var(--color-background-secondary);
+    background: {{ section.settings.background_color | color_mix: section.settings.text_color, 5 }};
   }
-  .compare-table__product-image img {
+  .compare-section-{{ section.id }} .compare-table__product-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
   }
-  .compare-table__product-title {
+  .compare-section-{{ section.id }} .compare-table__product-title {
     font-size: 1rem;
     font-weight: 600;
     margin-bottom: 0.5rem;
   }
-  .compare-table__product-title a {
+  .compare-section-{{ section.id }} .compare-table__product-title a {
     color: inherit;
     text-decoration: none;
   }
-  .compare-table__product-title a:hover {
+  .compare-section-{{ section.id }} .compare-table__product-title a:hover {
     text-decoration: underline;
   }
-  .compare-table__product-price {
+  .compare-section-{{ section.id }} .compare-table__product-price {
     font-size: 1rem;
     margin-bottom: 1rem;
   }
-  .compare-table__product-price .compare-price {
+  .compare-section-{{ section.id }} .compare-table__product-price .compare-price {
     text-decoration: line-through;
     opacity: 0.6;
     margin-right: 0.5rem;
   }
-  .compare-table__product-price .sale-price {
+  .compare-section-{{ section.id }} .compare-table__product-price .sale-price {
     color: var(--color-sale);
   }
-  .compare-table__remove {
+  .compare-section-{{ section.id }} .compare-table__remove {
     display: inline-flex;
     align-items: center;
     gap: 0.25rem;
@@ -120,28 +136,53 @@
     font-size: 0.65rem;
     text-transform: uppercase;
     letter-spacing: 0.1em;
-    color: var(--color-text-secondary);
+    opacity: 0.7;
     background: none;
-    border: 1px solid var(--color-border);
+    border: 1px solid {{ section.settings.text_color }}30;
     border-radius: 100px;
     cursor: pointer;
     transition: all 0.2s ease;
   }
-  .compare-table__remove:hover {
-    border-color: var(--color-text);
-    color: var(--color-text);
+  .compare-section-{{ section.id }} .compare-table__remove:hover {
+    border-color: {{ section.settings.text_color }};
+    opacity: 1;
   }
-  .compare-table__value {
+  .compare-section-{{ section.id }} .compare-table__value {
     font-size: 0.875rem;
   }
-  .compare-table__value--available {
+  .compare-section-{{ section.id }} .compare-table__value--available {
     color: var(--color-success, #22c55e);
   }
-  .compare-table__value--unavailable {
+  .compare-section-{{ section.id }} .compare-table__value--unavailable {
     color: var(--color-error, #ef4444);
   }
-
-  .compare-page__actions {
+  /* Reset buttons to use global styles - override section color inheritance */
+  .compare-section-{{ section.id }} .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+  .compare-section-{{ section.id }} .btn--secondary::before {
+    background: var(--color-text);
+  }
+  .compare-section-{{ section.id }} .btn--secondary:hover,
+  .compare-section-{{ section.id }} .btn--secondary:hover span,
+  .compare-section-{{ section.id }} .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+  .compare-section-{{ section.id }} .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+  .compare-section-{{ section.id }} .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+  .compare-section-{{ section.id }} .btn--primary:hover,
+  .compare-section-{{ section.id }} .btn--primary:hover span,
+  .compare-section-{{ section.id }} .btn--primary:hover i {
+    color: var(--color-primary);
+  }
+  .compare-section-{{ section.id }} .compare-actions {
     display: flex;
     justify-content: center;
     gap: 1rem;
@@ -149,26 +190,45 @@
   }
 </style>
 
-<div class="compare-page page-container" data-compare-page>
-  <header class="compare-page__header">
-    <h1 class="compare-page__title font-heading">{{ section.settings.title | default: page.title | default: 'Compare Products' }}</h1>
-    <p class="compare-page__subtitle" data-compare-page-count>0 {{ 'products.compare.products' | t | default: 'products' }}</p>
-  </header>
+<section class="compare-section-{{ section.id }}" data-compare-section id="compare-section-{{ section.id }}">
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}">
+      {% if section.settings.label != blank %}
+        <span class="inline-block text-[0.65rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-intro>
+          {{ section.settings.label }}
+        </span>
+      {% endif %}
 
-  <div data-compare-page-content>
+      {% if section.settings.title != blank %}
+        <h2 class="compare-title font-bold font-heading" data-compare-title>
+          {{ section.settings.title }}
+        </h2>
+      {% endif %}
+
+      <p class="compare-count mt-4" data-compare-section-count data-intro>0 {{ 'products.compare.products' | t | default: 'products' }}</p>
+
+      {% if section.settings.description != blank %}
+        <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-intro>
+          {{ section.settings.description }}
+        </p>
+      {% endif %}
+    </div>
+
     {%- comment -%} Content rendered via JS {%- endcomment -%}
+    <div data-compare-section-content data-intro></div>
   </div>
-</div>
+</section>
 
 <script>
 (function() {
   const STORAGE_KEY = 'pieces_compare_products';
 
-  const page = document.querySelector('[data-compare-page]');
-  const content = document.querySelector('[data-compare-page-content]');
-  const countEl = document.querySelector('[data-compare-page-count]');
+  const section = document.getElementById('compare-section-{{ section.id }}');
+  const content = section?.querySelector('[data-compare-section-content]');
+  const countEl = section?.querySelector('[data-compare-section-count]');
 
-  if (!page || !content) return;
+  if (!section || !content) return;
 
   function getProducts() {
     try {
@@ -218,29 +278,32 @@
     return div.innerHTML;
   }
 
+  let isRendering = false;
+
   function removeProduct(productId) {
     const products = getProducts().filter(p => String(p.id) !== String(productId));
     saveProducts(products);
+    isRendering = true;
     render();
+    isRendering = false;
     document.dispatchEvent(new CustomEvent('compare:removed', { detail: { productId } }));
   }
 
   function render() {
     const products = getProducts();
 
-    // Update count
     if (countEl) {
       countEl.textContent = `${products.length} {{ 'products.compare.products' | t | default: 'products' }}`;
     }
 
     if (products.length === 0) {
       content.innerHTML = `
-        <div class="compare-page__empty">
-          <div class="compare-page__empty-icon">
+        <div class="compare-empty">
+          <div class="compare-empty__icon">
             <i class="ph ph-scales"></i>
           </div>
-          <h2 class="compare-page__empty-title">{{ 'products.compare.empty_title' | t | default: 'No products to compare' }}</h2>
-          <p class="compare-page__empty-text">{{ 'products.compare.empty_text' | t | default: 'Add products to compare by clicking the compare icon on product cards.' }}</p>
+          <h2 class="compare-empty__title">{{ 'products.compare.empty_title' | t | default: 'No products to compare' }}</h2>
+          <p class="compare-empty__text">{{ 'products.compare.empty_text' | t | default: 'Add products to compare by clicking the compare icon on product cards.' }}</p>
           <a href="/collections/all" class="btn btn--primary">
             <span>{{ 'products.compare.browse_products' | t | default: 'Browse Products' }}</span>
           </a>
@@ -306,8 +369,8 @@
             ${products.map(p => `
               <div class="compare-table__cell">
                 ${p.available
-                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--primary">{{ 'products.product.view_product' | t | default: 'View Product' }}</a>`
-                  : `<button type="button" class="btn btn--secondary" disabled>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</button>`
+                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--secondary btn--sm">{{ 'products.product.view_product' | t | default: 'View Product' }}</a>`
+                  : `<button type="button" class="btn btn--secondary btn--sm" disabled>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</button>`
                 }
               </div>
             `).join('')}
@@ -315,7 +378,7 @@
         </div>
       </div>
 
-      <div class="compare-page__actions">
+      <div class="compare-actions">
         <button type="button" class="btn btn--secondary" data-clear-compare>
           <i class="ph ph-trash"></i>
           <span>{{ 'products.compare.clear_all' | t | default: 'Clear All' }}</span>
@@ -328,7 +391,6 @@
 
     content.innerHTML = html;
 
-    // Add event listeners
     content.querySelectorAll('[data-remove-compare]').forEach(btn => {
       btn.addEventListener('click', () => {
         removeProduct(btn.dataset.removeCompare);
@@ -342,38 +404,175 @@
     });
   }
 
-  // Initial render
   render();
 
-  // Listen for changes
   window.addEventListener('storage', (e) => {
     if (e.key === STORAGE_KEY) {
       render();
     }
   });
 
-  document.addEventListener('compare:added', render);
-  document.addEventListener('compare:removed', render);
-  document.addEventListener('compare:cleared', render);
+  function handleExternalChange() {
+    if (!isRendering) render();
+  }
+  document.addEventListener('compare:added', handleExternalChange);
+  document.addEventListener('compare:removed', handleExternalChange);
+  document.addEventListener('compare:cleared', handleExternalChange);
+})();
+
+// Title SplitText animation
+(function() {
+  function initTitleAnimation() {
+    const section = document.getElementById('compare-section-{{ section.id }}');
+    if (!section || section.dataset.compareAnimInitialized) return;
+    section.dataset.compareAnimInitialized = 'true';
+
+    // If animations disabled, show title immediately
+    if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
+      const title = section.querySelector('[data-compare-title]');
+      if (title) title.style.opacity = '1';
+      return;
+    }
+
+    function initAnimation() {
+      let gsap = window.gsap;
+      if (!gsap && window.pieces && window.pieces.gsap) {
+        gsap = window.pieces.gsap;
+      }
+
+      let SplitText = window.SplitText;
+      if (!SplitText && window.pieces && window.pieces.SplitText) {
+        SplitText = window.pieces.SplitText;
+      }
+
+      const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+
+      if (!gsap || !SplitText || !ScrollTrigger) {
+        setTimeout(initAnimation, 50);
+        return;
+      }
+
+      const title = section.querySelector('[data-compare-title]');
+      if (!title) return;
+
+      const split = new SplitText(title, { type: 'lines', linesClass: 'compare-title-line' });
+
+      split.lines.forEach(line => {
+        const lineWrapper = document.createElement('div');
+        lineWrapper.style.overflow = 'hidden';
+        lineWrapper.style.display = 'block';
+        line.parentNode.insertBefore(lineWrapper, line);
+        lineWrapper.appendChild(line);
+      });
+
+      gsap.set(split.lines, { yPercent: 120 });
+
+      const scrollStart = window.getScrollStart ? window.getScrollStart('top 70%') : 'top 70%';
+
+      gsap.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.1,
+        scrollTrigger: {
+          trigger: section,
+          start: scrollStart,
+          once: true,
+          onEnter: () => {
+            title.style.opacity = '1';
+          }
+        }
+      });
+    }
+
+    if (document.readyState === 'complete') {
+      initAnimation();
+    } else {
+      window.addEventListener('load', initAnimation);
+    }
+  }
+
+  // Initialize on page load
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initTitleAnimation);
+  } else {
+    requestAnimationFrame(initTitleAnimation);
+  }
+
+  // Re-init on Swup navigation
+  if (window.onSwupContentReplaced) {
+    window.onSwupContentReplaced('compare_title_anim_{{ section.id }}', () => {
+      requestAnimationFrame(initTitleAnimation);
+    });
+  }
 })();
 </script>
 
 {% schema %}
 {
-  "name": "Compare Products",
+  "name": "Product Comparison",
   "tag": "section",
   "class": "section-compare",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label",
+      "default": "Compare"
+    },
     {
       "type": "text",
       "id": "title",
       "label": "Title",
       "default": "Compare Products"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     }
   ],
   "presets": [
     {
-      "name": "Compare Products"
+      "name": "Product Comparison",
+      "category": "Products"
     }
   ]
 }
