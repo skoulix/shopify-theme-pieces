@@ -536,20 +536,37 @@
     }
   });
 
+  /**
+   * Check if we're on the compare page and close drawer if so
+   */
+  function checkComparePageAndCloseDrawer() {
+    const isComparePage = window.location.pathname.includes('/pages/compare');
+    if (isComparePage && drawer && drawer.classList.contains('is-open')) {
+      closeDrawer();
+    }
+  }
+
   // Initialize
   updateUI();
+  checkComparePageAndCloseDrawer();
 
   // Re-init on Swup navigation - listen to both events for reliability
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('compare_drawer', () => {
       // Use requestAnimationFrame to ensure DOM is fully updated
-      requestAnimationFrame(updateUI);
+      requestAnimationFrame(() => {
+        updateUI();
+        checkComparePageAndCloseDrawer();
+      });
     });
   }
 
   // Also update after transition completes (for cached pages)
   window.addEventListener('swup:transitionEnd', () => {
-    requestAnimationFrame(updateUI);
+    requestAnimationFrame(() => {
+      updateUI();
+      checkComparePageAndCloseDrawer();
+    });
   });
 
   // Update after facet filtering replaces product grid

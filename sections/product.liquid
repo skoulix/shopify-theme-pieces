@@ -582,7 +582,7 @@
               </div>
             {%- endif -%}
 
-          {%- when 'wishlist_compare_buttons' -%}
+          {%- when 'wc_buttons' -%}
             {%- if settings.enable_wishlist or settings.enable_compare -%}
               {%- capture wc_wishlist_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
@@ -1876,7 +1876,7 @@
       ]
     },
     {
-      "type": "wishlist_compare_buttons",
+      "type": "wc_buttons",
       "name": "Wishlist & Compare buttons",
       "limit": 1,
       "settings": [
