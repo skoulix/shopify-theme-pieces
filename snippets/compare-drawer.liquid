@@ -167,7 +167,7 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 998;
+    z-index: 99;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -215,7 +215,7 @@
 </button>
 
 {%- comment -%} Drawer {%- endcomment -%}
-<div id="compare-drawer" class="compare-drawer" data-compare-drawer aria-hidden="true" role="region" aria-labelledby="compare-drawer-title">
+<div id="compare-drawer" class="compare-drawer" data-compare-drawer aria-hidden="true" inert role="region" aria-labelledby="compare-drawer-title">
   <div class="compare-drawer__inner">
     <div class="compare-drawer__header">
       <h3 id="compare-drawer-title" class="compare-drawer__title">
@@ -246,8 +246,12 @@
   </div>
 </div>
 
-<script>
+<script data-swup-ignore-script>
 (function() {
+  // Prevent double initialization if script runs again
+  if (window._compareDrawerInitialized) return;
+  window._compareDrawerInitialized = true;
+
   const STORAGE_KEY = 'pieces_compare_products';
   const MAX_PRODUCTS = 4;
 
@@ -429,6 +433,7 @@
     if (!hasDrawer) return;
     drawer.classList.add('is-open');
     drawer.setAttribute('aria-hidden', 'false');
+    drawer.removeAttribute('inert');
     floatingBtn.setAttribute('aria-expanded', 'true');
     document.body.style.paddingBottom = drawer.offsetHeight + 'px';
 
@@ -443,6 +448,7 @@
     if (!hasDrawer) return;
     drawer.classList.remove('is-open');
     drawer.setAttribute('aria-hidden', 'true');
+    drawer.setAttribute('inert', '');
     floatingBtn.setAttribute('aria-expanded', 'false');
     document.body.style.paddingBottom = '';
   }
@@ -542,7 +548,9 @@
   }
 
   // Also update after transition completes (for cached pages)
-  window.addEventListener('swup:transitionEnd', updateUI);
+  window.addEventListener('swup:transitionEnd', () => {
+    requestAnimationFrame(updateUI);
+  });
 
   // Update after facet filtering replaces product grid
   document.addEventListener('facets:updated', updateUI);

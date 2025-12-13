@@ -233,8 +233,12 @@
   </footer>
 </aside>
 
-<script>
+<script data-swup-ignore-script>
 (function() {
+  // Prevent double initialization if script runs again
+  if (window._wishlistDrawerInitialized) return;
+  window._wishlistDrawerInitialized = true;
+
   const STORAGE_KEY = 'pieces_wishlist';
 
   const overlay = document.querySelector('[data-wishlist-overlay]');
@@ -492,7 +496,9 @@
   }
 
   // Also update after transition completes (for cached pages)
-  window.addEventListener('swup:transitionEnd', updateUI);
+  window.addEventListener('swup:transitionEnd', () => {
+    requestAnimationFrame(updateUI);
+  });
 
   // Update after facet filtering replaces product grid
   document.addEventListener('facets:updated', updateUI);

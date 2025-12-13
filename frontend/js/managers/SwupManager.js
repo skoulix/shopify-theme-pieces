@@ -44,6 +44,16 @@ class SwupManager {
       return null;
     }
 
+    // Add global error handler to suppress Shopify protection script errors
+    // These occur when SwupScriptsPlugin re-executes Shopify-injected scripts
+    // that try to reassign read-only properties (like 'protect')
+    window.addEventListener('error', (event) => {
+      if (event.message && event.message.includes("Cannot assign to read only property 'protect'")) {
+        event.preventDefault();
+        return true;
+      }
+    });
+
     // Inject View Transition CSS if supported
     if (this.shouldUseViewTransitions()) {
       this.injectViewTransitionStyles();
