@@ -540,16 +540,22 @@
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
               <div class="mt-4" data-intro {{ block.shopify_attributes }}>
+                {%- assign wb_icon_size = 'text-base' -%}
+                {%- assign wb_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+                {%- if block.settings.style == 'icon_only' -%}
+                  {%- assign wb_icon_size = 'text-xl' -%}
+                  {%- assign wb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] hover:border-[--color-text]' -%}
+                {%- endif -%}
                 <button
                   type="button"
-                  class="product-wishlist-btn inline-flex items-center gap-2 px-4 py-2.5 border border-[--color-border] rounded-[--button-radius] text-sm transition-all duration-300 hover:border-[--color-text] [&.is-active]:bg-[--color-sale] [&.is-active]:text-white [&.is-active]:border-[--color-sale]"
+                  class="product-wishlist-btn {{ wb_btn_class }} [&.is-active]:bg-[--color-sale] [&.is-active]:text-white [&.is-active]:border-[--color-sale]"
                   data-wishlist-toggle="{{ product.id }}"
                   data-product-json='{{ wishlist_product_json | strip_newlines }}'
                   aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
                   aria-pressed="false"
                 >
                   {%- if block.settings.style != 'text_only' -%}
-                    <i class="ph ph-heart text-lg" aria-hidden="true"></i>
+                    <i class="ph ph-heart {{ wb_icon_size }}" aria-hidden="true"></i>
                   {%- endif -%}
                   {%- if block.settings.style != 'icon_only' -%}
                     <span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>
@@ -564,16 +570,22 @@
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
               <div class="mt-4" data-intro {{ block.shopify_attributes }}>
+                {%- assign cb_icon_size = 'text-base' -%}
+                {%- assign cb_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+                {%- if block.settings.style == 'icon_only' -%}
+                  {%- assign cb_icon_size = 'text-xl' -%}
+                  {%- assign cb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] hover:border-[--color-text]' -%}
+                {%- endif -%}
                 <button
                   type="button"
-                  class="product-compare-btn inline-flex items-center gap-2 px-4 py-2.5 border border-[--color-border] rounded-[--button-radius] text-sm transition-all duration-300 hover:border-[--color-text] [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
+                  class="product-compare-btn {{ cb_btn_class }} [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
                   data-compare-toggle="{{ product.id }}"
                   data-product-json='{{ compare_product_json | strip_newlines }}'
                   aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
                   aria-pressed="false"
                 >
                   {%- if block.settings.style != 'text_only' -%}
-                    <i class="ph ph-scales text-lg" aria-hidden="true"></i>
+                    <i class="ph ph-scales {{ cb_icon_size }}" aria-hidden="true"></i>
                   {%- endif -%}
                   {%- if block.settings.style != 'icon_only' -%}
                     <span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>
@@ -590,31 +602,43 @@
               {%- capture wc_compare_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              <div class="mt-4 flex w-full gap-3" data-intro {{ block.shopify_attributes }}>
+              {%- assign wc_display_style = block.settings.display_style | default: 'icon_text' -%}
+              {%- assign wc_show_icon = true -%}
+              {%- assign wc_show_text = true -%}
+              {%- assign wc_icon_size = 'text-base' -%}
+              {%- assign wc_btn_class = 'btn btn--secondary !py-2.5 !px-4 !text-xs' -%}
+              {%- if wc_display_style == 'icon_only' -%}
+                {%- assign wc_show_text = false -%}
+                {%- assign wc_icon_size = 'text-xl' -%}
+                {%- assign wc_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-[--color-border] text-[--color-text] transition-all duration-300 hover:bg-[--color-text] hover:text-[--color-background] hover:border-[--color-text]' -%}
+              {%- elsif wc_display_style == 'text_only' -%}
+                {%- assign wc_show_icon = false -%}
+              {%- endif -%}
+              <div class="mt-4 flex justify-start gap-3" data-intro {{ block.shopify_attributes }}>
                 {%- if settings.enable_wishlist -%}
                   <button
                     type="button"
-                    class="btn btn--secondary btn--sm flex-1 product-wishlist-btn [&.is-active]:bg-[--color-sale] [&.is-active]:text-white [&.is-active]:border-[--color-sale]"
+                    class="{{ wc_btn_class }} product-wishlist-btn [&.is-active]:bg-[--color-sale] [&.is-active]:text-white [&.is-active]:border-[--color-sale]"
                     data-wishlist-toggle="{{ product.id }}"
                     data-product-json='{{ wc_wishlist_json | strip_newlines }}'
                     aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
                     aria-pressed="false"
                   >
-                    <i class="ph ph-heart" aria-hidden="true"></i>
-                    <span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>
+                    {%- if wc_show_icon -%}<i class="ph ph-heart {{ wc_icon_size }}" aria-hidden="true"></i>{%- endif -%}
+                    {%- if wc_show_text -%}<span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>{%- endif -%}
                   </button>
                 {%- endif -%}
                 {%- if settings.enable_compare -%}
                   <button
                     type="button"
-                    class="btn btn--secondary btn--sm flex-1 product-compare-btn [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
+                    class="{{ wc_btn_class }} product-compare-btn [&.is-active]:bg-[--color-text] [&.is-active]:text-[--color-background]"
                     data-compare-toggle="{{ product.id }}"
                     data-product-json='{{ wc_compare_json | strip_newlines }}'
                     aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
                     aria-pressed="false"
                   >
-                    <i class="ph ph-scales" aria-hidden="true"></i>
-                    <span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>
+                    {%- if wc_show_icon -%}<i class="ph ph-scales {{ wc_icon_size }}" aria-hidden="true"></i>{%- endif -%}
+                    {%- if wc_show_text -%}<span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>{%- endif -%}
                   </button>
                 {%- endif -%}
               </div>
@@ -1877,12 +1901,23 @@
     },
     {
       "type": "wc_buttons",
-      "name": "Wishlist & Compare buttons",
+      "name": "Wishlist & Compare",
       "limit": 1,
       "settings": [
         {
           "type": "paragraph",
           "content": "Shows wishlist and compare buttons side by side in a 50/50 layout. Individual buttons will only show if enabled in theme settings."
+        },
+        {
+          "type": "select",
+          "id": "display_style",
+          "label": "Display style",
+          "default": "icon_text",
+          "options": [
+            { "value": "icon_only", "label": "Icon only" },
+            { "value": "icon_text", "label": "Icon with text" },
+            { "value": "text_only", "label": "Text only" }
+          ]
         }
       ]
     },
