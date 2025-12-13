@@ -84,7 +84,34 @@
     "thumbnail": "Miniature du produit {{ index }}",
     "pagination": "Pagination",
     "discount": "Réductions",
-    "view_media": "Voir le média {{ index }} sur {{ total }}"
+    "view_media": "Voir le média {{ index }} sur {{ total }}",
+    "quick_view": "Aperçu rapide",
+    "quick_view_product": "Aperçu rapide {{ title }}",
+    "wishlist": "Liste de souhaits",
+    "compare": "Comparer les produits",
+    "close_wishlist": "Fermer la liste de souhaits",
+    "close_compare": "Fermer le comparateur",
+    "added_to_wishlist": "Ajouté à la liste de souhaits",
+    "removed_from_wishlist": "Retiré de la liste de souhaits",
+    "added_to_compare": "Ajouté au comparateur",
+    "removed_from_compare": "Retiré du comparateur",
+    "cart_updated": "Panier mis à jour",
+    "items_in_cart": "{{ count }} articles dans le panier",
+    "no_image": "Aucune image disponible",
+    "modal": "Dialogue"
+  },
+  "errors": {
+    "network": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
+    "server": "Une erreur s'est produite. Veuillez réessayer plus tard.",
+    "cart_add": "Impossible d'ajouter l'article au panier. Veuillez réessayer.",
+    "cart_update": "Impossible de mettre à jour le panier. Veuillez réessayer.",
+    "cart_remove": "Impossible de supprimer l'article. Veuillez réessayer.",
+    "form_submit": "Impossible d'envoyer le formulaire. Veuillez réessayer.",
+    "validation": "Veuillez vérifier vos informations et réessayer.",
+    "unauthorized": "Veuillez vous connecter pour continuer.",
+    "not_found": "L'article demandé n'a pas été trouvé.",
+    "out_of_stock": "Cet article est actuellement en rupture de stock.",
+    "generic": "Une erreur s'est produite. Veuillez réessayer."
   },
   "social": {
     "instagram": "Instagram",
@@ -211,6 +238,7 @@
     "product": {
       "add_to_cart": "Ajouter au panier",
       "sold_out": "Épuisé",
+      "in_stock": "En stock",
       "on_sale": "Promo",
       "unavailable": "Non disponible",
       "quantity": "Quantité",
@@ -220,6 +248,7 @@
       "quick_add": "Ajout rapide",
       "select_options": "Choisir les options",
       "view_product": "Voir le produit",
+      "share": "Partager",
       "media": {
         "reset_3d_model": "Réinitialiser la vue du modèle 3D",
         "view_in_ar": "Voir dans votre espace"
@@ -280,7 +309,8 @@
       "browse_products": "Parcourir les produits",
       "continue_shopping": "Continuer les achats",
       "open_drawer": "Ouvrir le comparateur",
-      "price": "Prix"
+      "price": "Prix",
+      "items_count": "articles"
     },
     "wishlist": {
       "title": "Liste de souhaits",

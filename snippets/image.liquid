@@ -79,17 +79,30 @@
 
 {%- capture image_tag -%}
   {%- if image != blank -%}
-    {{ image | image_url: width: width, height: height, crop: crop | image_tag:
-      class: img_classes,
-      style: focal_point_style,
-      loading: loading,
-      decoding: 'async',
-      fetchpriority: fetchpriority,
-      sizes: sizes,
-      widths: widths,
-      alt: alt,
-      onload: reveal | ternary: "this.style.opacity='1'", nil
-    }}
+    {%- if reveal -%}
+      {{ image | image_url: width: width, height: height, crop: crop | image_tag:
+        class: img_classes,
+        style: focal_point_style,
+        loading: loading,
+        decoding: 'async',
+        fetchpriority: fetchpriority,
+        sizes: sizes,
+        widths: widths,
+        alt: alt,
+        onload: "this.style.opacity='1'"
+      }}
+    {%- else -%}
+      {{ image | image_url: width: width, height: height, crop: crop | image_tag:
+        class: img_classes,
+        style: focal_point_style,
+        loading: loading,
+        decoding: 'async',
+        fetchpriority: fetchpriority,
+        sizes: sizes,
+        widths: widths,
+        alt: alt
+      }}
+    {%- endif -%}
   {%- else -%}
     {%- comment -%} Placeholder for missing images {%- endcomment -%}
     <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary] text-[--color-text-secondary]" {% if aspect_ratio %}style="aspect-ratio: {{ aspect_ratio }};"{% endif %}>

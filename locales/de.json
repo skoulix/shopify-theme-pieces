@@ -84,7 +84,34 @@
     "thumbnail": "Produktminiatur {{ index }}",
     "pagination": "Seitennummerierung",
     "discount": "Rabatte",
-    "view_media": "Medium {{ index }} von {{ total }} ansehen"
+    "view_media": "Medium {{ index }} von {{ total }} ansehen",
+    "quick_view": "Schnellansicht",
+    "quick_view_product": "Schnellansicht {{ title }}",
+    "wishlist": "Wunschliste",
+    "compare": "Produkte vergleichen",
+    "close_wishlist": "Wunschliste schließen",
+    "close_compare": "Vergleich schließen",
+    "added_to_wishlist": "Zur Wunschliste hinzugefügt",
+    "removed_from_wishlist": "Von Wunschliste entfernt",
+    "added_to_compare": "Zum Vergleich hinzugefügt",
+    "removed_from_compare": "Vom Vergleich entfernt",
+    "cart_updated": "Warenkorb aktualisiert",
+    "items_in_cart": "{{ count }} Artikel im Warenkorb",
+    "no_image": "Kein Bild verfügbar",
+    "modal": "Dialog"
+  },
+  "errors": {
+    "network": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
+    "server": "Etwas ist schief gelaufen. Bitte versuchen Sie es später erneut.",
+    "cart_add": "Artikel konnte nicht zum Warenkorb hinzugefügt werden. Bitte versuchen Sie es erneut.",
+    "cart_update": "Warenkorb konnte nicht aktualisiert werden. Bitte versuchen Sie es erneut.",
+    "cart_remove": "Artikel konnte nicht entfernt werden. Bitte versuchen Sie es erneut.",
+    "form_submit": "Formular konnte nicht gesendet werden. Bitte versuchen Sie es erneut.",
+    "validation": "Bitte überprüfen Sie Ihre Eingabe und versuchen Sie es erneut.",
+    "unauthorized": "Bitte melden Sie sich an, um fortzufahren.",
+    "not_found": "Der angeforderte Artikel wurde nicht gefunden.",
+    "out_of_stock": "Dieser Artikel ist derzeit nicht auf Lager.",
+    "generic": "Ein Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
   },
   "social": {
     "instagram": "Instagram",
@@ -211,6 +238,7 @@
     "product": {
       "add_to_cart": "In den Warenkorb",
       "sold_out": "Ausverkauft",
+      "in_stock": "Auf Lager",
       "on_sale": "Sale",
       "unavailable": "Nicht verfügbar",
       "quantity": "Menge",
@@ -220,6 +248,7 @@
       "quick_add": "Schnell hinzufügen",
       "select_options": "Optionen wählen",
       "view_product": "Produkt anzeigen",
+      "share": "Teilen",
       "media": {
         "reset_3d_model": "3D-Modellansicht zurücksetzen",
         "view_in_ar": "In Ihrem Raum ansehen"
@@ -280,7 +309,8 @@
       "browse_products": "Produkte durchstöbern",
       "continue_shopping": "Weiter einkaufen",
       "open_drawer": "Vergleichsleiste öffnen",
-      "price": "Preis"
+      "price": "Preis",
+      "items_count": "Artikel"
     },
     "wishlist": {
       "title": "Wunschliste",

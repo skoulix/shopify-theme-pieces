@@ -84,7 +84,34 @@
     "thumbnail": "商品サムネイル{{ index }}",
     "pagination": "ページネーション",
     "discount": "割引",
-    "view_media": "メディア{{ index }}/{{ total }}を表示"
+    "view_media": "メディア{{ index }}/{{ total }}を表示",
+    "quick_view": "クイックビュー",
+    "quick_view_product": "{{ title }}のクイックビュー",
+    "wishlist": "お気に入り",
+    "compare": "商品を比較",
+    "close_wishlist": "お気に入りを閉じる",
+    "close_compare": "比較を閉じる",
+    "added_to_wishlist": "お気に入りに追加しました",
+    "removed_from_wishlist": "お気に入りから削除しました",
+    "added_to_compare": "比較に追加しました",
+    "removed_from_compare": "比較から削除しました",
+    "cart_updated": "カートを更新しました",
+    "items_in_cart": "カートに{{ count }}点",
+    "no_image": "画像がありません",
+    "modal": "ダイアログ"
+  },
+  "errors": {
+    "network": "ネットワークエラー。接続を確認してもう一度お試しください。",
+    "server": "エラーが発生しました。後でもう一度お試しください。",
+    "cart_add": "カートに追加できませんでした。もう一度お試しください。",
+    "cart_update": "カートを更新できませんでした。もう一度お試しください。",
+    "cart_remove": "商品を削除できませんでした。もう一度お試しください。",
+    "form_submit": "フォームを送信できませんでした。もう一度お試しください。",
+    "validation": "入力内容を確認してもう一度お試しください。",
+    "unauthorized": "続行するにはログインしてください。",
+    "not_found": "リクエストされた商品が見つかりませんでした。",
+    "out_of_stock": "この商品は現在在庫切れです。",
+    "generic": "エラーが発生しました。もう一度お試しください。"
   },
   "social": {
     "instagram": "Instagram",
@@ -211,6 +238,7 @@
     "product": {
       "add_to_cart": "カートに追加",
       "sold_out": "売り切れ",
+      "in_stock": "在庫あり",
       "on_sale": "セール",
       "unavailable": "在庫なし",
       "quantity": "数量",
@@ -220,6 +248,7 @@
       "quick_add": "クイック追加",
       "select_options": "オプションを選択",
       "view_product": "商品を見る",
+      "share": "シェア",
       "media": {
         "reset_3d_model": "3Dモデル表示をリセット",
         "view_in_ar": "ARで見る"
@@ -280,7 +309,8 @@
       "browse_products": "商品を見る",
       "continue_shopping": "買い物を続ける",
       "open_drawer": "比較を開く",
-      "price": "価格"
+      "price": "価格",
+      "items_count": "点"
     },
     "wishlist": {
       "title": "お気に入り",

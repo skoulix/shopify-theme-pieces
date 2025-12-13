@@ -84,7 +84,34 @@
     "thumbnail": "Miniatura do produto {{ index }}",
     "pagination": "Paginação",
     "discount": "Descontos",
-    "view_media": "Ver mídia {{ index }} de {{ total }}"
+    "view_media": "Ver mídia {{ index }} de {{ total }}",
+    "quick_view": "Visualização rápida",
+    "quick_view_product": "Visualização rápida {{ title }}",
+    "wishlist": "Lista de desejos",
+    "compare": "Comparar produtos",
+    "close_wishlist": "Fechar lista de desejos",
+    "close_compare": "Fechar comparação",
+    "added_to_wishlist": "Adicionado à lista de desejos",
+    "removed_from_wishlist": "Removido da lista de desejos",
+    "added_to_compare": "Adicionado à comparação",
+    "removed_from_compare": "Removido da comparação",
+    "cart_updated": "Carrinho atualizado",
+    "items_in_cart": "{{ count }} itens no carrinho",
+    "no_image": "Nenhuma imagem disponível",
+    "modal": "Caixa de diálogo"
+  },
+  "errors": {
+    "network": "Erro de rede. Verifique sua conexão e tente novamente.",
+    "server": "Algo deu errado. Tente novamente mais tarde.",
+    "cart_add": "Não foi possível adicionar o item ao carrinho. Tente novamente.",
+    "cart_update": "Não foi possível atualizar o carrinho. Tente novamente.",
+    "cart_remove": "Não foi possível remover o item. Tente novamente.",
+    "form_submit": "Não foi possível enviar o formulário. Tente novamente.",
+    "validation": "Verifique suas informações e tente novamente.",
+    "unauthorized": "Faça login para continuar.",
+    "not_found": "O item solicitado não foi encontrado.",
+    "out_of_stock": "Este item está atualmente esgotado.",
+    "generic": "Ocorreu um erro. Tente novamente."
   },
   "social": {
     "instagram": "Instagram",
@@ -211,6 +238,7 @@
     "product": {
       "add_to_cart": "Adicionar ao carrinho",
       "sold_out": "Esgotado",
+      "in_stock": "Em estoque",
       "on_sale": "Promoção",
       "unavailable": "Indisponível",
       "quantity": "Quantidade",
@@ -220,6 +248,7 @@
       "quick_add": "Adição rápida",
       "select_options": "Selecionar opções",
       "view_product": "Ver produto",
+      "share": "Compartilhar",
       "media": {
         "reset_3d_model": "Redefinir visualização do modelo 3D",
         "view_in_ar": "Ver no seu espaço"
@@ -280,7 +309,8 @@
       "browse_products": "Ver produtos",
       "continue_shopping": "Continuar comprando",
       "open_drawer": "Abrir comparação",
-      "price": "Preço"
+      "price": "Preço",
+      "items_count": "itens"
     },
     "wishlist": {
       "title": "Lista de desejos",
