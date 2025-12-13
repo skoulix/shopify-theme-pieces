@@ -16,6 +16,7 @@
   assign overlay_alpha = overlay_opacity | divided_by: 100.0
   assign transition_effect = section.settings.transition_effect
   assign progress_type = section.settings.progress_type
+  assign pause_on_hover = section.settings.pause_on_hover
 -%}
 
 <style>
@@ -41,6 +42,9 @@
   /* Navigation dots with circular timer */
   #slideshow-{{ section.id }} .slideshow__dot.is-active {
     background: white;
+  }
+  #slideshow-{{ section.id }} .slideshow__dot-timer {
+    transition: opacity 0.3s ease;
   }
   #slideshow-{{ section.id }} .slideshow__dot.is-active + .slideshow__dot-timer {
     opacity: 1 !important;
@@ -629,10 +633,12 @@
         startAutoplay();
       }
 
+      {% if pause_on_hover %}
       container.addEventListener('mouseenter', () => { isPaused = true; stopAutoplay(); });
       container.addEventListener('mouseleave', resumeAutoplay);
       container.addEventListener('focusin', () => { isPaused = true; stopAutoplay(); });
       container.addEventListener('focusout', resumeAutoplay);
+      {% endif %}
 
       {% if parallax %}
       // Parallax effect
@@ -743,6 +749,12 @@
       "id": "autoplay",
       "default": true,
       "label": "Enable autoplay"
+    },
+    {
+      "type": "checkbox",
+      "id": "pause_on_hover",
+      "default": true,
+      "label": "Pause on hover"
     },
     {
       "type": "range",

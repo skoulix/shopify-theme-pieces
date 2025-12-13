@@ -41,7 +41,7 @@
   <a href="{{ product_url }}" class="flex flex-col flex-1 cursor-pointer">
     <div class="product-card-image relative overflow-hidden aspect-[3/4]">
       {%- comment -%} Quick View Button - Hover overlay on image {%- endcomment -%}
-      {% if show_quick_add and product.available %}
+      {% if show_quick_add and product.available and settings.enable_quick_view %}
         <div class="absolute inset-0 z-10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300 pointer-events-none">
           <button
             type="button"
@@ -66,7 +66,7 @@
           alt: product.title
         }}
         {%- comment -%} Secondary image on hover {%- endcomment -%}
-        {% if product.images.size > 1 %}
+        {% if product.images.size > 1 and settings.show_secondary_image %}
           {%- assign secondary_focal_point = product.images[1].presentation.focal_point | default: '50% 50%' -%}
           {%- assign secondary_focal_point_style = 'object-position: ' | append: secondary_focal_point -%}
           {{ product.images[1] | image_url: width: 1200 | image_tag:

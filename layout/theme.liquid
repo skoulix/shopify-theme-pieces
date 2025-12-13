@@ -131,7 +131,9 @@
     {% render 'newsletter-popup' %}
 
     {%- comment -%} Quick View Modal {%- endcomment -%}
-    {% render 'quick-view-modal' %}
+    {% if settings.enable_quick_view %}
+      {% render 'quick-view-modal' %}
+    {% endif %}
 
     {%- comment -%} Size Chart Drawer - shell rendered here, content populated by product section {%- endcomment -%}
     {% render 'size-chart-drawer' %}
