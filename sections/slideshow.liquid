@@ -15,6 +15,7 @@
   assign overlay_opacity = section.settings.overlay_opacity
   assign overlay_alpha = overlay_opacity | divided_by: 100.0
   assign transition_effect = section.settings.transition_effect
+  assign progress_type = section.settings.progress_type
 -%}
 
 <style>
@@ -37,8 +38,26 @@
     z-index: 1;
   }
 
-  /* Navigation */
-  #slideshow-{{ section.id }} .slideshow__dot.is-active { background: white; transform: scale(1.25); }
+  /* Navigation dots with circular timer */
+  #slideshow-{{ section.id }} .slideshow__dot.is-active {
+    background: white;
+  }
+  #slideshow-{{ section.id }} .slideshow__dot.is-active + .slideshow__dot-timer {
+    opacity: 1 !important;
+  }
+  #slideshow-{{ section.id }} .slideshow__dot-timer .timer-progress {
+    transform: rotate(-90deg);
+    transform-origin: 14px 14px;
+    stroke-dasharray: 75.4;
+    stroke-dashoffset: 75.4;
+  }
+  #slideshow-{{ section.id }} .slideshow__dot-timer .timer-progress.is-animating {
+    animation: dot-timer-{{ section.id }} {{ autoplay_speed }}s linear forwards;
+  }
+  @keyframes dot-timer-{{ section.id }} {
+    from { stroke-dashoffset: 75.4; }
+    to { stroke-dashoffset: 0; }
+  }
   #slideshow-{{ section.id }} .slideshow__progress.is-animating {
     animation: slideshow-progress-{{ section.id }} {{ autoplay_speed }}s linear forwards;
   }
@@ -230,20 +249,30 @@
 
     {%- comment -%} Navigation Dots {%- endcomment -%}
     {% if show_dots and section.blocks.size > 1 %}
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex gap-2">
+      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-5">
         {% for block in section.blocks %}
-          <button
-            type="button"
-            class="slideshow__dot w-2 h-2 rounded-full bg-white/40 border-0 cursor-pointer transition-all duration-300 hover:bg-white/80{% if forloop.first %} is-active{% endif %}"
-            data-slideshow-dot="{{ forloop.index0 }}"
-            aria-label="{{ 'accessibility.go_to_slide' | t: index: forloop.index }}"
-          ></button>
+          <div class="slideshow__dot-wrapper relative">
+            <button
+              type="button"
+              class="slideshow__dot block rounded-full bg-white/40 border-0 cursor-pointer transition-all duration-300 hover:bg-white/80 w-[10px] h-[10px]{% if forloop.first %} is-active{% endif %}"
+              data-slideshow-dot="{{ forloop.index0 }}"
+              aria-label="{{ 'accessibility.go_to_slide' | t: index: forloop.index }}"
+            ></button>
+{% if autoplay and progress_type == 'dots' %}
+            <div class="slideshow__dot-timer" style="position:absolute;top:-9px;left:-9px;width:28px;height:28px;pointer-events:none;opacity:0;">
+              <svg width="28" height="28" viewBox="0 0 28 28" style="display:block;">
+                <circle cx="14" cy="14" r="12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
+                <circle class="timer-progress" cx="14" cy="14" r="12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" data-dot-progress/>
+              </svg>
+            </div>
+            {% endif %}
+          </div>
         {% endfor %}
       </div>
     {% endif %}
 
     {%- comment -%} Progress Bar {%- endcomment -%}
-    {% if autoplay and section.blocks.size > 1 %}
+    {% if autoplay and section.blocks.size > 1 and progress_type == 'bar' %}
       <div class="slideshow__progress absolute bottom-0 left-0 h-[3px] bg-white/60 z-10 w-0" data-slideshow-progress></div>
     {% endif %}
   </div>
@@ -323,12 +352,22 @@
           exit: (slide) => gsap.to(slide, { opacity: 0, duration: 0.8, ease: 'power2.inOut' })
         },
         slide: {
-          duration: 0.9,
+          duration: 1.2,
           enter: (slide, dir) => {
+            const media = slide.querySelector('.slideshow__media');
+            // Slide enters from 100%
             gsap.set(slide, { xPercent: dir === 'next' ? 100 : -100, opacity: 1, visibility: 'visible' });
-            return gsap.to(slide, { xPercent: 0, duration: 0.9, ease: 'power3.inOut' });
+            // Media is scaled up and offset in opposite direction - creates parallax as it settles
+            gsap.set(media, { scale: 1.2, xPercent: dir === 'next' ? -20 : 20 });
+            gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
+            return gsap.to(slide, { xPercent: 0, duration: 1.2, ease: 'power3.inOut' });
           },
-          exit: (slide, dir) => gsap.to(slide, { xPercent: dir === 'next' ? -100 : 100, duration: 0.9, ease: 'power3.inOut' })
+          exit: (slide, dir) => {
+            const media = slide.querySelector('.slideshow__media');
+            // Media moves slower than slide, creating depth
+            gsap.to(media, { xPercent: dir === 'next' ? 20 : -20, scale: 1.1, duration: 1.2, ease: 'power2.inOut' });
+            return gsap.to(slide, { xPercent: dir === 'next' ? -100 : 100, duration: 1.2, ease: 'power3.inOut' });
+          }
         },
         'zoom-in': {
           duration: 1.4,
@@ -364,19 +403,30 @@
             return gsap.to(slide, { opacity: 0, duration: 0.6, ease: 'power2.in' });
           }
         },
-        reveal: {
+        swipe: {
           duration: 1.2,
           enter: (slide, dir) => {
-            gsap.set(slide, { clipPath: dir === 'next' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)', opacity: 1, visibility: 'visible' });
+            const media = slide.querySelector('.slideshow__media');
+            // Next: reveal from right (clip left side), Prev: reveal from left (clip right side)
+            gsap.set(slide, { clipPath: dir === 'next' ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)', opacity: 1, visibility: 'visible' });
+            // Media parallax - offset in opposite direction and scale up
+            gsap.set(media, { scale: 1.15, xPercent: dir === 'next' ? 15 : -15 });
+            gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
             return gsap.to(slide, { clipPath: 'inset(0 0% 0 0%)', duration: 1.2, ease: 'power4.inOut' });
           },
-          exit: (slide, dir) => gsap.to(slide, {
-            clipPath: dir === 'next' ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)',
-            duration: 1.2,
-            ease: 'power4.inOut'
-          })
+          exit: (slide, dir) => {
+            const media = slide.querySelector('.slideshow__media');
+            gsap.to(media, { xPercent: dir === 'next' ? -15 : 15, scale: 1.1, duration: 1.2, ease: 'power2.inOut' });
+            return gsap.to(slide, {
+              clipPath: dir === 'next' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)',
+              duration: 1.2,
+              ease: 'power4.inOut'
+            });
+          }
         }
       };
+      // Alias for backwards compatibility
+      transitions.reveal = transitions.swipe;
 
       function animateContent(slide, show = true) {
         const subheading = slide.querySelector('.slideshow__subheading');
@@ -427,7 +477,7 @@
         const prevIndex = currentSlide;
         const prevSlide = slides[prevIndex];
         const nextSlide = slides[index];
-        const trans = transitions[transition];
+        const trans = transitions[transition] || transitions.fade;
 
         // Animate out content first
         animateContent(prevSlide, false);
@@ -460,8 +510,20 @@
           isAnimating = false;
         }, trans.duration * 1000);
 
-        // Update dots
-        dots.forEach((dot, i) => dot.classList.toggle('is-active', i === index));
+        // Update dots and their timers
+        dots.forEach((dot, i) => {
+          dot.classList.toggle('is-active', i === index);
+          // Find timer via parent wrapper
+          const wrapper = dot.closest('.slideshow__dot-wrapper');
+          const dotProgress = wrapper?.querySelector('[data-dot-progress]');
+          if (dotProgress) {
+            dotProgress.classList.remove('is-animating');
+            if (i === index && autoplayEnabled) {
+              void dotProgress.getBoundingClientRect(); // Force reflow
+              dotProgress.classList.add('is-animating');
+            }
+          }
+        });
         currentSlide = index;
 
         // Reset progress bar
@@ -469,6 +531,12 @@
           progress.classList.remove('is-animating');
           void progress.offsetWidth;
           progress.classList.add('is-animating');
+        }
+
+        // Always reset autoplay interval to sync with timer animation
+        if (autoplayEnabled && !isPaused) {
+          if (autoplayInterval) clearInterval(autoplayInterval);
+          autoplayInterval = setInterval(nextSlide, autoplaySpeed);
         }
       }
 
@@ -520,23 +588,51 @@
         if (progress) progress.classList.add('is-animating');
       }
 
+      function getActiveDotProgress() {
+        const activeDot = dots[currentSlide];
+        if (!activeDot) return null;
+        // Use parentElement to find the wrapper, then query within it
+        const wrapper = activeDot.closest('.slideshow__dot-wrapper');
+        if (wrapper) {
+          return wrapper.querySelector('[data-dot-progress]');
+        }
+        return null;
+      }
+
       function stopAutoplay() {
+        if (!autoplayInterval) return; // Don't pause if not running
+        clearInterval(autoplayInterval);
+        autoplayInterval = null;
+        if (progress) progress.classList.remove('is-animating');
+        // Pause dot timer
+        const activeDotProgress = getActiveDotProgress();
+        if (activeDotProgress) activeDotProgress.style.animationPlayState = 'paused';
+      }
+
+      function resetAutoplay() {
+        // Clear the interval without pausing dot timer (showSlide handles dot timer)
         if (autoplayInterval) {
           clearInterval(autoplayInterval);
           autoplayInterval = null;
         }
-        if (progress) progress.classList.remove('is-animating');
+        // Restart interval
+        if (!isPaused && autoplayEnabled) {
+          autoplayInterval = setInterval(nextSlide, autoplaySpeed);
+        }
       }
 
-      function resetAutoplay() {
-        stopAutoplay();
+      function resumeAutoplay() {
+        isPaused = false;
+        // Resume dot timer
+        const activeDotProgress = getActiveDotProgress();
+        if (activeDotProgress) activeDotProgress.style.animationPlayState = 'running';
         startAutoplay();
       }
 
       container.addEventListener('mouseenter', () => { isPaused = true; stopAutoplay(); });
-      container.addEventListener('mouseleave', () => { isPaused = false; startAutoplay(); });
+      container.addEventListener('mouseleave', resumeAutoplay);
       container.addEventListener('focusin', () => { isPaused = true; stopAutoplay(); });
-      container.addEventListener('focusout', () => { isPaused = false; startAutoplay(); });
+      container.addEventListener('focusout', resumeAutoplay);
 
       {% if parallax %}
       // Parallax effect
@@ -566,6 +662,14 @@
       if (firstSlide) {
         // Animate in immediately (content is already hidden by CSS)
         animateContent(firstSlide, true);
+      }
+
+      // Initialize first dot timer animation BEFORE starting autoplay
+      if (autoplayEnabled) {
+        const firstDotProgress = container.querySelector('.slideshow__dot-wrapper [data-dot-progress]');
+        if (firstDotProgress) {
+          firstDotProgress.classList.add('is-animating');
+        }
       }
 
       startAutoplay();
@@ -624,10 +728,10 @@
       "default": "fade",
       "options": [
         { "value": "fade", "label": "Fade" },
-        { "value": "slide", "label": "Slide" },
         { "value": "zoom-in", "label": "Zoom in" },
         { "value": "zoom-out", "label": "Zoom out" },
-        { "value": "reveal", "label": "Reveal" }
+        { "value": "slide", "label": "Slide" },
+        { "value": "swipe", "label": "Swipe" }
       ]
     },
     {
@@ -649,6 +753,18 @@
       "default": 5,
       "unit": "s",
       "label": "Autoplay speed"
+    },
+    {
+      "type": "select",
+      "id": "progress_type",
+      "label": "Progress indicator",
+      "default": "dots",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "dots", "label": "Circular dot timer" },
+        { "value": "bar", "label": "Progress bar" }
+      ],
+      "info": "Visual indicator for autoplay progress"
     },
     {
       "type": "header",
