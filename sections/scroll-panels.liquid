@@ -251,6 +251,8 @@
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 2000 | image_tag:
                 loading: 'eager',
+                fetchpriority: 'high',
+                decoding: 'async',
                 class: 'scroll-panel-img',
                 sizes: '100vw',
                 alt: block.settings.image.alt | default: block.settings.title | default: section.settings.heading

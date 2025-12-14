@@ -63,6 +63,7 @@
               <div class="trust-badge__icon trust-badge__icon--custom">
                 {{ block.settings.custom_icon | image_url: width: 80 | image_tag:
                   loading: 'lazy',
+          decoding: 'async',
                   alt: block.settings.title
                 }}
               </div>

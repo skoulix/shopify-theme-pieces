@@ -31,6 +31,25 @@ LiquidTag:
 ValidJson:
   enabled: true
 
+# Image optimization checks
+ImgLazyLoading:
+  enabled: true
+
+ImgWidthAndHeight:
+  enabled: true
+
+# Accessibility checks
+RequiredLayoutThemeObject:
+  enabled: true
+
+# SEO checks
+RequiredMetaTags:
+  enabled: true
+
+# Performance
+ParserBlockingJavaScript:
+  enabled: true
+
 # Keep disabled - we use external CDNs intentionally (Leaflet, etc.)
 RemoteAsset:
   enabled: false

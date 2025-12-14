@@ -12,6 +12,8 @@
   inert
   aria-label="{{ 'cart.title' | t }}"
 >
+  {%- comment -%} Live region for screen reader announcements {%- endcomment -%}
+  <div class="sr-only" aria-live="polite" aria-atomic="true" data-cart-status></div>
   {%- comment -%} Backdrop {%- endcomment -%}
   <div class="drawer-backdrop" data-cart-drawer-close></div>
 

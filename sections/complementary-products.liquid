@@ -105,6 +105,7 @@
               {% if recommendation.featured_image %}
                 {{ recommendation.featured_image | image_url: width: 200 | image_tag:
                   loading: 'lazy',
+          decoding: 'async',
                   alt: recommendation.title,
                   class: 'w-full h-full object-cover'
                 }}

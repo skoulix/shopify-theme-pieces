@@ -58,8 +58,11 @@
       document.documentElement.classList.replace('no-js', 'js');
       if (Shopify.designMode) document.documentElement.classList.add('shopify-design-mode');
 
+      // Consolidated theme namespace to avoid global pollution
+      window.Pieces = window.Pieces || {};
+
       // Theme settings - defined early so section scripts can access them
-      window.themeSettings = {
+      window.Pieces.settings = {
         enableSmoothScroll: {{ settings.enable_smooth_scroll }},
         enableAnimations: {{ settings.enable_animations }},
         animationTriggerOffset: '{{ settings.animation_trigger_offset | default: "md" }}',
@@ -69,6 +72,9 @@
         cartType: '{{ settings.cart_type | default: "drawer" }}',
         moneyFormat: {{ shop.money_format | json }},
       };
+
+      // Backwards compatibility - keep window.themeSettings for existing code
+      window.themeSettings = window.Pieces.settings;
 
       // Global animation check - returns true if animations should run
       window.shouldAnimate = function() {
@@ -255,44 +261,90 @@
     {% endif %}
 
     <script>
-      window.shopUrl = '{{ request.origin }}';
+      // Consolidated into Pieces namespace
+      window.Pieces.shop = {
+        url: '{{ request.origin }}',
+        currency: '{{ shop.currency }}',
+        moneyFormat: {{ shop.money_format | json }},
+      };
+
+      window.Pieces.routes = {
+        root: '{{ routes.root_url }}',
+        cart: '{{ routes.cart_url }}',
+        cartAdd: '{{ routes.cart_add_url }}',
+        cartChange: '{{ routes.cart_change_url }}',
+        cartUpdate: '{{ routes.cart_update_url }}',
+        predictiveSearch: '{{ routes.predictive_search_url }}',
+        allProducts: '{{ routes.all_products_collection_url }}',
+      };
+
+      window.Pieces.strings = {
+        cart: {
+          empty: `{{ 'cart.empty' | t }}`,
+          emptyDescription: `{{ 'cart.empty_description' | t }}`,
+          startShopping: `{{ 'cart.start_shopping' | t }}`,
+          addNote: `{{ 'cart.add_note' | t }}`,
+          notePlaceholder: `{{ 'cart.note_placeholder' | t }}`,
+          subtotal: `{{ 'cart.subtotal' | t }}`,
+          taxesNote: `{{ 'cart.taxes_shipping_note' | t }}`,
+          viewCart: `{{ 'cart.view_cart' | t }}`,
+          checkout: `{{ 'cart.checkout' | t }}`,
+          remove: `{{ 'cart.remove' | t }}`,
+          removeItem: `{{ 'cart.remove_item' | t }}`,
+          error: `{{ 'sections.cart.cart_error' | t }}`,
+          quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+        },
+        product: {
+          addToCart: `{{ 'products.product.add_to_cart' | t }}`,
+          soldOut: `{{ 'products.product.sold_out' | t }}`,
+          unavailable: `{{ 'products.product.unavailable' | t }}`,
+        },
+        accessibility: {
+          decreaseQuantity: `{{ 'accessibility.decrease_quantity' | t }}`,
+          increaseQuantity: `{{ 'accessibility.increase_quantity' | t }}`,
+          quantity: `{{ 'accessibility.quantity' | t }}`,
+        },
+        general: {
+          backHome: `{{ '404.back_home' | t }}`,
+        },
+      };
+
+      // Backwards compatibility aliases
+      window.shopUrl = window.Pieces.shop.url;
       window.routes = {
-        cart_add_url: '{{ routes.cart_add_url }}',
-        cart_change_url: '{{ routes.cart_change_url }}',
-        cart_update_url: '{{ routes.cart_update_url }}',
-        cart_url: '{{ routes.cart_url }}',
-        predictive_search_url: '{{ routes.predictive_search_url }}',
-        allProductsCollectionUrl: '{{ routes.all_products_collection_url }}',
+        cart_add_url: window.Pieces.routes.cartAdd,
+        cart_change_url: window.Pieces.routes.cartChange,
+        cart_update_url: window.Pieces.routes.cartUpdate,
+        cart_url: window.Pieces.routes.cart,
+        predictive_search_url: window.Pieces.routes.predictiveSearch,
+        allProductsCollectionUrl: window.Pieces.routes.allProducts,
+        rootUrl: window.Pieces.routes.root,
       };
-
       window.themeStrings = {
-        cartEmpty: `{{ 'cart.empty' | t }}`,
-        cartEmptyDescription: `{{ 'cart.empty_description' | t }}`,
-        cartStartShopping: `{{ 'cart.start_shopping' | t }}`,
-        cartAddNote: `{{ 'cart.add_note' | t }}`,
-        cartNotePlaceholder: `{{ 'cart.note_placeholder' | t }}`,
-        cartSubtotal: `{{ 'cart.subtotal' | t }}`,
-        cartTaxesNote: `{{ 'cart.taxes_shipping_note' | t }}`,
-        cartViewCart: `{{ 'cart.view_cart' | t }}`,
-        cartCheckout: `{{ 'cart.checkout' | t }}`,
-        cartRemove: `{{ 'cart.remove' | t }}`,
-        backHome: `{{ '404.back_home' | t }}`,
-        decreaseQuantity: `{{ 'accessibility.decrease_quantity' | t }}`,
-        increaseQuantity: `{{ 'accessibility.increase_quantity' | t }}`,
-        quantity: `{{ 'accessibility.quantity' | t }}`,
-        removeItem: `{{ 'cart.remove_item' | t }}`,
+        cartEmpty: window.Pieces.strings.cart.empty,
+        cartEmptyDescription: window.Pieces.strings.cart.emptyDescription,
+        cartStartShopping: window.Pieces.strings.cart.startShopping,
+        cartAddNote: window.Pieces.strings.cart.addNote,
+        cartNotePlaceholder: window.Pieces.strings.cart.notePlaceholder,
+        cartSubtotal: window.Pieces.strings.cart.subtotal,
+        cartTaxesNote: window.Pieces.strings.cart.taxesNote,
+        cartViewCart: window.Pieces.strings.cart.viewCart,
+        cartCheckout: window.Pieces.strings.cart.checkout,
+        cartRemove: window.Pieces.strings.cart.remove,
+        backHome: window.Pieces.strings.general.backHome,
+        decreaseQuantity: window.Pieces.strings.accessibility.decreaseQuantity,
+        increaseQuantity: window.Pieces.strings.accessibility.increaseQuantity,
+        quantity: window.Pieces.strings.accessibility.quantity,
+        removeItem: window.Pieces.strings.cart.removeItem,
       };
-      window.routes.rootUrl = '{{ routes.root_url }}';
-
       window.cartStrings = {
-        error: `{{ 'sections.cart.cart_error' | t }}`,
-        quantityError: `{{ 'sections.cart.cart_quantity_error_html' | t: quantity: '[quantity]' }}`,
+        error: window.Pieces.strings.cart.error,
+        quantityError: window.Pieces.strings.cart.quantityError,
       };
-
       window.variantStrings = {
-        addToCart: `{{ 'products.product.add_to_cart' | t }}`,
-        soldOut: `{{ 'products.product.sold_out' | t }}`,
-        unavailable: `{{ 'products.product.unavailable' | t }}`,
+        addToCart: window.Pieces.strings.product.addToCart,
+        soldOut: window.Pieces.strings.product.soldOut,
+        unavailable: window.Pieces.strings.product.unavailable,
       };
     </script>
   </body>

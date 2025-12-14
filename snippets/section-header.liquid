@@ -1,0 +1,77 @@
+{%- comment -%}
+  Section Header Snippet
+  Reusable header component for sections with label, title, and description
+
+  @param {string} label - Small label text above the title
+  @param {string} title - Main section title
+  @param {string} description - Optional description text
+  @param {string} alignment - Text alignment: 'left', 'center', or 'right' (default: 'left')
+  @param {boolean} animate - Enable tween animations (default: true)
+  @param {string} class - Additional CSS classes for the wrapper
+  @param {string} title_class - Additional CSS classes for the title
+  @param {string} section_id - Section ID for animation grouping
+
+  @example
+  {% render 'section-header',
+    label: section.settings.label,
+    title: section.settings.title,
+    description: section.settings.description,
+    alignment: section.settings.header_alignment,
+    section_id: section.id
+  %}
+{%- endcomment -%}
+
+{%- liquid
+  assign alignment = alignment | default: 'left'
+  assign animate = animate | default: true
+  assign wrapper_class = class | default: ''
+  assign title_class = title_class | default: ''
+
+  case alignment
+    when 'center'
+      assign text_align_class = 'text-center'
+      assign description_class = 'mx-auto'
+    when 'right'
+      assign text_align_class = 'text-right'
+      assign description_class = 'ml-auto'
+    else
+      assign text_align_class = 'text-left'
+      assign description_class = ''
+  endcase
+-%}
+
+{%- if label != blank or title != blank or description != blank -%}
+  <div
+    class="section-header mb-8 md:mb-12 {{ text_align_class }} {{ wrapper_class }}"
+    {%- if animate and section_id -%}
+      data-tween-group="section-header-{{ section_id }}"
+    {%- endif -%}
+  >
+    {%- if label != blank -%}
+      <span
+        class="section-label mb-4 block"
+        {%- if animate -%}data-tween data-tween-type="fade-up"{%- endif -%}
+      >
+        {{- label -}}
+      </span>
+    {%- endif -%}
+
+    {%- if title != blank -%}
+      <h2
+        class="section-title font-heading {{ title_class }}"
+        {%- if animate -%}data-tween data-tween-type="split-text"{%- endif -%}
+      >
+        {{- title -}}
+      </h2>
+    {%- endif -%}
+
+    {%- if description != blank -%}
+      <p
+        class="section-description mt-4 max-w-2xl {{ description_class }}"
+        {%- if animate -%}data-tween data-tween-type="fade-up"{%- endif -%}
+      >
+        {{- description -}}
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

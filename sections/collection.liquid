@@ -149,6 +149,7 @@
                   {{ product.featured_image | image_url: width: 1200 | image_tag:
                     class: 'metro-item-image w-full h-full object-cover',
                     loading: 'lazy',
+          decoding: 'async',
                     sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
                     widths: '400, 600, 800, 1200',
                     alt: product.featured_image.alt | default: product.title

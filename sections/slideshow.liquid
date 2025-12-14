@@ -185,6 +185,7 @@
               width="1920"
               height="{{ img_height }}"
               loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+              fetchpriority="{% if forloop.first %}high{% else %}low{% endif %}"
               decoding="async"
               {% if parallax %}data-parallax-media{% endif %}
             >

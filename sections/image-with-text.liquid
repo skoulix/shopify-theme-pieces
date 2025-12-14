@@ -52,6 +52,7 @@
           {{ section.settings.image | image_url: width: 1200 | image_tag:
             class: 'w-full h-full object-cover',
             loading: 'lazy',
+          decoding: 'async',
             sizes: '(max-width: 1024px) 100vw, 50vw',
             widths: '600, 800, 1000, 1200',
             alt: section.settings.image.alt | default: section.settings.title

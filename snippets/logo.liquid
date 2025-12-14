@@ -39,7 +39,8 @@
     class: logo_class,
     style: logo_style,
     alt: shop.name,
-    loading: logo_loading
+    loading: logo_loading,
+    decoding: 'async'
   }}
 {%- else -%}
   <span class="text-xl font-bold text-[--color-text]">{{ shop.name }}</span>

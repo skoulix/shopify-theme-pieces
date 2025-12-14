@@ -171,6 +171,7 @@
 
             {{ block.settings.logo | image_url: height: 200 | image_tag:
               loading: 'lazy',
+          decoding: 'async',
               alt: block.settings.logo.alt | default: section.settings.label
             }}
 

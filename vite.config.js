@@ -40,7 +40,7 @@ export default defineConfig({
       },
     },
     minify: 'esbuild',
-    sourcemap: true,
+    sourcemap: false,
     // Tree shake unused code
     target: 'es2020',
     // Increase chunk size warning limit

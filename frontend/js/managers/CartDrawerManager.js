@@ -61,6 +61,18 @@ class CartDrawerManager {
   }
 
   /**
+   * Announce status updates to screen readers
+   */
+  announce(message) {
+    const statusEl = this.drawer?.querySelector('[data-cart-status]');
+    if (statusEl) {
+      statusEl.textContent = message;
+      // Clear after announcement to allow repeated messages
+      setTimeout(() => { statusEl.textContent = ''; }, 1000);
+    }
+  }
+
+  /**
    * Bind event listeners
    */
   bindEvents() {
@@ -157,6 +169,8 @@ class CartDrawerManager {
       e.preventDefault();
       const line = parseInt(minusBtn?.dataset.line || plusBtn?.dataset.line || removeBtn?.dataset.line);
       const input = this.drawer.querySelector(`[data-quantity-input][data-line="${line}"]`);
+      const itemEl = this.drawer.querySelector(`[data-line-index="${line}"]`);
+      const itemTitle = itemEl?.querySelector('a')?.textContent?.trim() || 'Item';
       let quantity = parseInt(input?.value || 0);
 
       if (minusBtn && quantity > 0) quantity--;
@@ -164,6 +178,13 @@ class CartDrawerManager {
       if (removeBtn) quantity = 0;
 
       await cartState.updateLine(line, quantity);
+
+      // Announce change to screen readers
+      if (removeBtn || quantity === 0) {
+        this.announce(`${itemTitle} removed from cart`);
+      } else {
+        this.announce(`${itemTitle} quantity updated to ${quantity}`);
+      }
     }
   }
 

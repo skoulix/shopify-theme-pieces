@@ -265,6 +265,7 @@
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 800 | image_tag:
                 loading: 'lazy',
+          decoding: 'async',
                 sizes: '(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw',
                 widths: '300, 400, 500, 600, 800',
                 alt: block.settings.image.alt | default: block.settings.name | default: section.settings.title

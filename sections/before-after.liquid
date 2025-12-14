@@ -202,6 +202,7 @@
         {{ section.settings.image_after | image_url: width: 2000 | image_tag:
           class: image_class,
           loading: 'lazy',
+          decoding: 'async',
           sizes: '(max-width: 1000px) 100vw, 1000px',
           widths: '600, 800, 1000, 1200, 1600, 2000',
           alt: section.settings.after_label
@@ -216,6 +217,7 @@
           {{ section.settings.image_before | image_url: width: 2000 | image_tag:
             class: image_class,
             loading: 'lazy',
+          decoding: 'async',
             sizes: '(max-width: 1000px) 100vw, 1000px',
             widths: '600, 800, 1000, 1200, 1600, 2000',
             alt: section.settings.before_label

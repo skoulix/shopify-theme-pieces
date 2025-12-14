@@ -263,6 +263,7 @@
               <div class="timeline-item-image-{{ section.id }}">
                 {{ block.settings.image | image_url: width: 600 | image_tag:
                   loading: 'lazy',
+          decoding: 'async',
                   sizes: '300px',
                   widths: '300, 600',
                   alt: block.settings.image.alt | default: block.settings.title | default: section.settings.title

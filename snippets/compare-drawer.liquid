@@ -273,6 +273,8 @@
 
 {%- comment -%} Drawer {%- endcomment -%}
 <div id="compare-drawer" class="compare-drawer" data-compare-drawer aria-hidden="true" inert role="region" aria-labelledby="compare-drawer-title">
+  {%- comment -%} Live region for screen reader announcements {%- endcomment -%}
+  <div class="sr-only" aria-live="polite" aria-atomic="true" data-compare-status></div>
   <div class="compare-drawer__inner">
     <div class="compare-drawer__header">
       <h3 id="compare-drawer-title" class="compare-drawer__title">
@@ -464,16 +466,33 @@
   }
 
   function removeProduct(productId) {
-    const products = getProducts().filter(p => String(p.id) !== String(productId));
-    saveProducts(products);
+    const products = getProducts();
+    const removedProduct = products.find(p => String(p.id) === String(productId));
+    const filteredProducts = products.filter(p => String(p.id) !== String(productId));
+    saveProducts(filteredProducts);
     updateUI();
     document.dispatchEvent(new CustomEvent('compare:removed', { detail: { productId } }));
+    if (removedProduct) {
+      announce(`${removedProduct.title} removed from comparison`);
+    }
   }
 
   function clearProducts() {
     saveProducts([]);
     updateUI();
     document.dispatchEvent(new CustomEvent('compare:cleared'));
+    announce('All products cleared from comparison');
+  }
+
+  /**
+   * Announce status updates to screen readers
+   */
+  function announce(message) {
+    const statusEl = drawer?.querySelector('[data-compare-status]');
+    if (statusEl) {
+      statusEl.textContent = message;
+      setTimeout(() => { statusEl.textContent = ''; }, 1000);
+    }
   }
 
   function updateCompareButtons(products) {
@@ -563,6 +582,9 @@
       saveProducts(products);
       updateUI();
       document.dispatchEvent(new CustomEvent('compare:added', { detail: { product } }));
+      announce(`${product.title} added to comparison`);
+    } else {
+      announce('Maximum 4 products can be compared');
     }
   });
 
