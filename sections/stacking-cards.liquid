@@ -232,6 +232,7 @@
     <div class="stacking-cards-bg-{{ section.id }}">
       {{ section.settings.background_image | image_url: width: 2000 | image_tag:
         loading: 'eager',
+        decoding: 'async',
         sizes: '100vw',
         widths: '800, 1200, 1600, 2000',
         alt: section.settings.background_image.alt | default: ''

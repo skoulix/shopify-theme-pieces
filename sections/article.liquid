@@ -64,6 +64,7 @@
       {{ article.image | image_url: width: 1600 | image_tag:
         class: 'w-full h-auto block',
         loading: 'eager',
+        decoding: 'async',
         sizes: '100vw',
         widths: '600, 900, 1200, 1600',
         alt: article.image.alt | default: article.title

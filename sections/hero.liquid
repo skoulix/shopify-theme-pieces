@@ -52,6 +52,7 @@
       {{ section.settings.image | image_url: width: 2400 | image_tag:
         class: 'w-full h-full object-cover',
         loading: 'eager',
+        decoding: 'async',
         fetchpriority: 'high',
         sizes: '100vw',
         widths: '800, 1200, 1600, 2000, 2400',

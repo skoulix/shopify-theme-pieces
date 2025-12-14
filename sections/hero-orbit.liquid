@@ -214,6 +214,7 @@
     <div class="hero-orbit-bg-{{ section.id }}">
       {{ section.settings.background_image | image_url: width: 2000 | image_tag:
         loading: 'eager',
+        decoding: 'async',
         fetchpriority: 'high',
         sizes: '100vw',
         widths: '600, 1000, 1400, 1800, 2000'

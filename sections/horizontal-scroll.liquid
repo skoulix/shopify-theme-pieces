@@ -293,6 +293,7 @@
                 {{ block.settings.image | image_url: width: 1600 | image_tag:
                   class: '',
                   loading: 'lazy',
+                  decoding: 'async',
                   sizes: '80vw',
                   widths: '800, 1000, 1200, 1400, 1600',
                   alt: block.settings.image.alt | default: block.settings.title | default: section.settings.heading
