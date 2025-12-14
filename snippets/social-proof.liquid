@@ -75,6 +75,11 @@
       color: var(--color-text-secondary);
     }
 
+    .social-proof__item i {
+      font-size: 1rem;
+      line-height: 1;
+    }
+
     .social-proof__text strong {
       color: var(--color-text);
       font-weight: 600;
@@ -85,6 +90,13 @@
       height: 8px;
       border-radius: 50%;
       background-color: #22c55e;
+      flex-shrink: 0;
+    }
+
+    /* Wrapper to match icon size for alignment */
+    .social-proof__item--viewers .social-proof__dot {
+      margin-left: 4px;
+      margin-right: 4px;
     }
 
     .social-proof__dot--pulse {
