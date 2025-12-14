@@ -13,9 +13,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .rolling-numbers-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -124,7 +128,7 @@
       transform: translateY(-50%);
       width: 1px;
       height: 60%;
-      background: {{ section.settings.text_color }};
+      background: {{ text_color }};
       opacity: 0.2;
     }
   }
@@ -300,13 +304,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#0a0a0a",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     },
     {

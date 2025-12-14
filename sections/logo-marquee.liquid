@@ -12,9 +12,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .logo-marquee-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: calc(var(--section-vertical-padding) * 0.6) 0;
     overflow: hidden;
   }
@@ -55,12 +59,12 @@
 
   .logo-marquee-track-wrapper-{{ section.id }}::before {
     left: {% if section.settings.full_width %}0{% else %}clamp(1rem, 3vw, 2rem){% endif %};
-    background: linear-gradient(to right, {{ section.settings.background_color }}, transparent);
+    background: linear-gradient(to right, {{ bg_color }}, transparent);
   }
 
   .logo-marquee-track-wrapper-{{ section.id }}::after {
     right: {% if section.settings.full_width %}0{% else %}clamp(1rem, 3vw, 2rem){% endif %};
-    background: linear-gradient(to left, {{ section.settings.background_color }}, transparent);
+    background: linear-gradient(to left, {{ bg_color }}, transparent);
   }
 
   .logo-marquee-track-{{ section.id }} {
@@ -97,7 +101,7 @@
     max-height: 100%;
     width: auto;
     max-width: {{ section.settings.logo_max_width }}px;
-    fill: {{ section.settings.text_color }};
+    fill: {{ text_color }};
     opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
     transition: opacity 0.3s ease;
   }
@@ -113,7 +117,7 @@
     justify-content: center;
     width: {{ section.settings.logo_max_width }}px;
     height: 100%;
-    background: {{ section.settings.text_color }}08;
+    background: {{ text_color }}08;
     border-radius: 8px;
     opacity: 0.5;
   }
@@ -422,13 +426,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
+      ,
       "label": "Text color"
     }
   ],

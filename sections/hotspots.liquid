@@ -19,6 +19,10 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .hotspots-{{ section.id }} {
     padding: var(--section-vertical-padding) 0;
     background-color: {{ background_color }};
@@ -624,13 +628,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     }
   ],
   "blocks": [

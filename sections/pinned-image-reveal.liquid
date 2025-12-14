@@ -4,6 +4,10 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   #shopify-section-{{ section.id }} {
     background-color: {{ background_color }};
   }
@@ -413,13 +417,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     }
   ],
   "blocks": [
@@ -480,7 +484,7 @@
           "type": "color",
           "id": "background_color",
           "label": "Background color",
-          "default": "#ffffff",
+          ,
           "info": "Background color when this slide is active"
         }
       ]

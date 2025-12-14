@@ -16,9 +16,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .testimonials-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
     overflow: hidden;
   }
@@ -190,8 +194,8 @@
     height: 48px;
     border-radius: 50%;
     background: transparent;
-    border: 1px solid {{ section.settings.text_color }}30;
-    color: {{ section.settings.text_color }};
+    border: 1px solid {{ text_color }}30;
+    color: {{ text_color }};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -200,8 +204,8 @@
   }
 
   .testimonials-nav-btn-{{ section.id }}:hover {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
+    background: {{ text_color }};
+    color: {{ bg_color }};
   }
 
   .testimonials-nav-btn-{{ section.id }}:disabled {
@@ -211,7 +215,7 @@
 
   .testimonials-nav-btn-{{ section.id }}:disabled:hover {
     background: transparent;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   .testimonials-dots-{{ section.id }} {
@@ -223,7 +227,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: {{ section.settings.text_color }}30;
+    background: {{ text_color }}30;
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -231,7 +235,7 @@
   }
 
   .testimonials-dot-{{ section.id }}.is-active {
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     transform: scale(1.25);
   }
 
@@ -537,13 +541,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
+      ,
       "label": "Text color"
     },
     {

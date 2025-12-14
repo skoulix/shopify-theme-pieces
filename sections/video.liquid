@@ -11,8 +11,12 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .video-section-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
+    background-color: {{ bg_color }};
     {% unless section.settings.remove_padding %}
     padding: var(--section-vertical-padding) 0;
     {% endunless %}
@@ -209,7 +213,7 @@
     align-items: {% if section.settings.content_alignment == 'left' %}flex-start{% elsif section.settings.content_alignment == 'right' %}flex-end{% else %}center{% endif %};
     justify-content: {{ section.settings.content_position }};
     padding: clamp(2rem, 5vw, 4rem);
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     text-align: {{ section.settings.content_alignment }};
     pointer-events: none;
     z-index: 2;
@@ -222,27 +226,27 @@
 
   /* Title and description use global .section-* classes from utilities.css */
   .video-content-{{ section.id }} .section-title {
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   .video-content-{{ section.id }} .section-description {
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     opacity: 0.9;
   }
 
   .video-content-{{ section.id }} .btn--secondary {
-    color: {{ section.settings.text_color }};
-    border-color: {{ section.settings.text_color }};
+    color: {{ text_color }};
+    border-color: {{ text_color }};
   }
 
   .video-content-{{ section.id }} .btn--secondary::before {
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
   }
 
   .video-content-{{ section.id }} .btn--secondary:hover,
   .video-content-{{ section.id }} .btn--secondary:hover span,
   .video-content-{{ section.id }} .btn--secondary:hover i {
-    color: {{ section.settings.background_color }};
+    color: {{ bg_color }};
   }
 
 </style>
@@ -470,13 +474,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#000000",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     }
   ],

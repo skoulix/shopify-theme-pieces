@@ -22,9 +22,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .complementary-section-{{ section.id }} {
-    --section-bg: {{ section.settings.background_color }};
-    --section-text: {{ section.settings.text_color }};
+    --section-bg: {{ bg_color }};
+    --section-text: {{ text_color }};
     --card-bg: {{ section.settings.card_background_color }};
     --card-text: {{ section.settings.card_text_color }};
     background-color: var(--section-bg);
@@ -358,13 +362,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     },
     {
       "type": "color",

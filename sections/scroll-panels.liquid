@@ -12,10 +12,14 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .scroll-panels-{{ section.id }} {
     position: relative;
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
   }
 
   .scroll-panels-wrapper-{{ section.id }} {
@@ -123,11 +127,11 @@
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     background: transparent;
-    border: var(--button-border-width) solid {{ section.settings.text_color }};
+    border: var(--button-border-width) solid {{ text_color }};
     border-radius: var(--button-radius, 4px);
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     overflow: hidden;
     transition: color 0.4s ease;
   }
@@ -136,7 +140,7 @@
     content: '';
     position: absolute;
     inset: 0;
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -150,7 +154,7 @@
   }
 
   .scroll-panel-button-{{ section.id }} .btn:hover {
-    color: {{ section.settings.background_color }};
+    color: {{ bg_color }};
   }
 
   .scroll-panel-button-{{ section.id }} .btn span,
@@ -172,7 +176,7 @@
   .scroll-panel-placeholder-{{ section.id }} i {
     font-size: 5rem;
     opacity: 0.15;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   /* Progress indicator */
@@ -199,7 +203,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     opacity: 0.3;
     transition: opacity 0.3s ease, transform 0.3s ease;
     cursor: pointer;
@@ -494,13 +498,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#000000",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     }
   ],

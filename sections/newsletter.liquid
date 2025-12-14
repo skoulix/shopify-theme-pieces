@@ -4,6 +4,11 @@
   Animations handled by global TweenManager via data-tween attributes in snippets
 {%- endcomment -%}
 
+{%- liquid
+  assign bg_color = section.settings.background_color | default: 'transparent'
+  assign text_color = section.settings.text_color | default: 'inherit'
+-%}
+
 <section class="newsletter-section">
   {% case section.settings.design %}
     {% when 'side-by-side' %}
@@ -11,8 +16,8 @@
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: section.settings.background_color,
-        text_color: section.settings.text_color,
+        background_color: bg_color,
+        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -23,8 +28,8 @@
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: section.settings.background_color,
-        text_color: section.settings.text_color,
+        background_color: bg_color,
+        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -35,9 +40,9 @@
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: section.settings.background_color,
+        background_color: bg_color,
         card_color: section.settings.card_color,
-        text_color: section.settings.text_color,
+        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -112,13 +117,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
+      ,
       "label": "Text color"
     },
     {

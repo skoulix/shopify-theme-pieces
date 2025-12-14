@@ -12,9 +12,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .wishlist-section-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
     min-height: 60vh;
   }
@@ -416,13 +420,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     }
   ],
   "presets": [

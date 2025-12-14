@@ -4,6 +4,10 @@
 {%- endcomment -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   /* ==========================================================================
      Marquee Section - Custom CSS for animation, clamp(), and Liquid values
      ========================================================================== */
@@ -11,7 +15,7 @@
   /* Section padding - requires clamp() and Liquid color */
   .marquee-section {
     padding: clamp(1.5rem, 3vh, 3rem) 0;
-    background-color: {{ section.settings.background_color }};
+    background-color: {{ bg_color }};
   }
 
   /* Animation - requires Liquid dynamic speed and @keyframes */
@@ -44,7 +48,7 @@
     font-size: clamp(1.5rem, 6vw, 3rem);
     line-height: 1;
     letter-spacing: -0.03em;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   @media (min-width: 1024px) {
@@ -62,20 +66,20 @@
   /* Outline text - requires -webkit-text-stroke with Liquid color */
   .marquee-text.outline {
     color: transparent;
-    -webkit-text-stroke: 1px {{ section.settings.text_color }};
+    -webkit-text-stroke: 1px {{ text_color }};
   }
 
   /* Separator - requires clamp() and Liquid color */
   .marquee-separator {
     width: clamp(6px, 1vw, 12px);
     height: clamp(6px, 1vw, 12px);
-    background-color: {{ section.settings.text_color }};
+    background-color: {{ text_color }};
   }
 
   /* Icon - requires clamp() and Liquid color */
   .marquee-icon {
     font-size: clamp(1.25rem, 3vw, 2rem);
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   @media (min-width: 1536px) {
@@ -155,13 +159,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#000000",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     }
   ],

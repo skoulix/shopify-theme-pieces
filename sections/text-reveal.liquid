@@ -12,9 +12,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .text-reveal-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: calc(var(--section-vertical-padding) * 1.5) 0;
     overflow: hidden;
     text-align: {{ section.settings.header_alignment }};
@@ -414,13 +418,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
+      ,
       "label": "Text color"
     },
     {

@@ -15,13 +15,17 @@
 -%}
 
 {%- style -%}
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   #{{ section_id }} {
     --badge-color: {{ section.settings.badge_color }};
     --badge-icon-color: {{ section.settings.icon_color }};
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
   }
 
   @media (min-width: 768px) {
@@ -158,14 +162,12 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background color",
-      "default": "#f9fafb"
+      "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "label": "Text color",
-      "default": "#111827"
+      "label": "Text color"
     },
     {
       "type": "color",

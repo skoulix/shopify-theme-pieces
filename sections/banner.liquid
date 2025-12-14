@@ -20,6 +20,10 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .banner-{{ section.id }} {
     padding: var(--section-vertical-padding) 0;
   }
@@ -253,13 +257,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#f5f5f5"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     },
     {
       "type": "color",

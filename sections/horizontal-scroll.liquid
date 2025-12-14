@@ -8,9 +8,13 @@
 {%- endcomment -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .hscroll-section-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
   }
 
   /* Blurred background layer */
@@ -42,10 +46,10 @@
     inset: 0;
     background: linear-gradient(
       to right,
-      {{ section.settings.background_color }} 0%,
+      {{ bg_color }} 0%,
       transparent 30%,
       transparent 70%,
-      {{ section.settings.background_color }} 100%
+      {{ bg_color }} 100%
     );
     z-index: 1;
   }
@@ -203,7 +207,7 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 10;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   .hscroll-section-{{ section.id }}.is-active .hscroll-counter-{{ section.id }} {
@@ -215,7 +219,7 @@
     bottom: 0;
     left: 0;
     height: 3px;
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     width: 0%;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -488,13 +492,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#000000",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     }
   ],

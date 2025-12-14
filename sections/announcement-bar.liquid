@@ -15,7 +15,11 @@
   -%}
 
   <style>
-    #announcement-bar-{{ section.id }} {
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
+  #announcement-bar-{{ section.id }} {
       --bar-bg: {{ bar_bg }};
       --bar-text: {{ bar_text }};
       --bar-height: {{ bar_height }}px;
@@ -315,13 +319,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#111827"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "range",

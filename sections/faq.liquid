@@ -12,9 +12,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .faq-section-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -31,11 +35,11 @@
   }
 
   .faq-section-{{ section.id }} .faq-item {
-    border-bottom: 1px solid {{ section.settings.text_color }}15;
+    border-bottom: 1px solid {{ text_color }}15;
   }
 
   .faq-section-{{ section.id }} .faq-item:first-child {
-    border-top: 1px solid {{ section.settings.text_color }}15;
+    border-top: 1px solid {{ text_color }}15;
   }
 
   .faq-section-{{ section.id }} .faq-question {
@@ -70,7 +74,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid {{ section.settings.text_color }}30;
+    border: 1px solid {{ text_color }}30;
     border-radius: 50%;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
   }
@@ -81,8 +85,8 @@
   }
 
   .faq-section-{{ section.id }} .faq-item[open] .faq-icon {
-    background-color: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
+    background-color: {{ text_color }};
+    color: {{ bg_color }};
   }
 
   .faq-section-{{ section.id }} .faq-item[open] .faq-icon i {
@@ -327,13 +331,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     }
   ],
   "blocks": [

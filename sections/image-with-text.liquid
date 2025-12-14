@@ -13,23 +13,31 @@
 -%}
 
 <style>
-  #shopify-section-{{ section.id }} { background-color: {{ section.settings.background_color }}; }
-  [data-iwt-section="{{ section.id }}"] { {% if section.settings.remove_padding %}padding: 0 0 calc(var(--section-vertical-padding) * 0.5) 0;{% else %}padding: var(--section-vertical-padding) 0;{% endif %} color: {{ section.settings.text_color }}; }
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
+  #shopify-section-{{ section.id }} { background-color: {{ bg_color }}; }
+  [data-iwt-section="{{ section.id }}"] { {% if section.settings.remove_padding %}padding: 0 0 calc(var(--section-vertical-padding) * 0.5) 0;{% else %}padding: var(--section-vertical-padding) 0;{% endif %} color: {{ text_color }}; }
   @media (min-width: 1024px) { [data-iwt-section="{{ section.id }}"] { {% if section.settings.remove_padding %}padding: 0;{% endif %} } [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container { direction: rtl; } [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container > * { direction: ltr; } }
   .iwt-container { gap: clamp(2rem, 5vw, 4rem); }
   {% if section.settings.container_background_color != blank %}[data-iwt-section="{{ section.id }}"] .iwt-container { background-color: {{ section.settings.container_background_color }}; }{% endif %}
   .iwt-image { aspect-ratio: {{ section.settings.image_ratio }}; }
+  {% if section.settings.text_color != blank %}
   [data-iwt-section="{{ section.id }}"] .section-title,
   [data-iwt-section="{{ section.id }}"] .section-label,
   [data-iwt-section="{{ section.id }}"] .section-description,
-  [data-iwt-section="{{ section.id }}"] .iwt-cta { color: {{ section.settings.text_color }}; }
+  [data-iwt-section="{{ section.id }}"] .iwt-cta { color: {{ text_color }}; }
+  [data-iwt-section="{{ section.id }}"] .iwt-stats { border-top-color: {{ text_color }}20; }
+  [data-iwt-section="{{ section.id }}"] .iwt-stat-number { color: {{ text_color }}; }
+  [data-iwt-section="{{ section.id }}"] .iwt-stat-label { color: {{ text_color }}; }
+  {% endif %}
   .iwt-cta-text-wrapper { overflow: hidden; display: inline-block; }
   .iwt-cta .iwt-cta-text { display: inline-block; position: relative; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   .iwt-cta .iwt-cta-text::after { content: attr(data-hover); position: absolute; left: 0; top: 100%; white-space: nowrap; }
   .iwt-cta:hover .iwt-cta-text { transform: translateY(-100%); }
-  [data-iwt-section="{{ section.id }}"] .iwt-stats { gap: clamp(2rem, 4vw, 4rem); border-top-color: {{ section.settings.text_color }}20; }
-  [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; color: {{ section.settings.text_color }}; }
-  [data-iwt-section="{{ section.id }}"] .iwt-stat-label { color: {{ section.settings.text_color }}; }
+  [data-iwt-section="{{ section.id }}"] .iwt-stats { gap: clamp(2rem, 4vw, 4rem); }
+  [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; }
 </style>
 
 <section
@@ -193,7 +201,6 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
       "label": "Section background color"
     },
     {
@@ -204,7 +211,6 @@
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
       "label": "Text color"
     }
   ],

@@ -20,9 +20,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .countdown-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
   }
 
   .countdown-{{ section.id }}.is-expired {
@@ -37,15 +41,15 @@
   .countdown-{{ section.id }} {
     padding: var(--section-vertical-padding) 0;
     {% if section.settings.button_style == 'solid' %}
-    --btn-color: {{ section.settings.background_color }};
-    --btn-bg: {{ section.settings.text_color }};
-    --btn-hover-color: {{ section.settings.text_color }};
-    --btn-hover-bg: {{ section.settings.background_color }};
+    --btn-color: {{ bg_color }};
+    --btn-bg: {{ text_color }};
+    --btn-hover-color: {{ text_color }};
+    --btn-hover-bg: {{ bg_color }};
     {% else %}
-    --btn-color: {{ section.settings.text_color }};
+    --btn-color: {{ text_color }};
     --btn-bg: transparent;
-    --btn-hover-color: {{ section.settings.background_color }};
-    --btn-hover-bg: {{ section.settings.text_color }};
+    --btn-hover-color: {{ bg_color }};
+    --btn-hover-bg: {{ text_color }};
     {% endif %}
   }
 
@@ -133,8 +137,8 @@
     text-transform: uppercase;
     color: var(--btn-color);
     background: var(--btn-bg);
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }};
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
+    border: var(--button-border-width, 1px) solid {{ text_color }};
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     overflow: hidden;
     transition: color 0.4s ease;
@@ -197,21 +201,21 @@
     padding: 0.875rem 1rem;
     font-size: 0.875rem;
     background: transparent;
-    border: 1px solid {{ section.settings.text_color }}40;
+    border: 1px solid {{ text_color }}40;
     border-radius: var(--input-radius, 4px);
-    color: {{ section.settings.text_color }};
-    caret-color: {{ section.settings.text_color }};
+    color: {{ text_color }};
+    caret-color: {{ text_color }};
     transition: border-color 0.2s ease;
   }
 
   .countdown-form-{{ section.id }} input[type="email"]::placeholder {
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     opacity: 0.5;
   }
 
   .countdown-form-{{ section.id }} input[type="email"]:focus {
     outline: none;
-    border-color: {{ section.settings.text_color }};
+    border-color: {{ text_color }};
   }
 
   button.countdown-form-btn-{{ section.id }} {
@@ -227,14 +231,14 @@
     text-transform: uppercase;
     white-space: nowrap;
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.background_color }} !important;
-    background-color: {{ section.settings.text_color }} !important;
+    color: {{ bg_color }} !important;
+    background-color: {{ text_color }} !important;
     {% else %}
-    color: {{ section.settings.text_color }} !important;
+    color: {{ text_color }} !important;
     background-color: transparent !important;
     {% endif %}
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }} !important;
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
+    border: var(--button-border-width, 1px) solid {{ text_color }} !important;
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     cursor: pointer;
     overflow: hidden;
@@ -246,9 +250,9 @@
     position: absolute;
     inset: 0;
     {% if section.settings.button_style == 'solid' %}
-    background: {{ section.settings.background_color }};
+    background: {{ bg_color }};
     {% else %}
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     {% endif %}
     transform: scaleX(0);
     transform-origin: right;
@@ -264,9 +268,9 @@
 
   button.countdown-form-btn-{{ section.id }}:hover {
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.text_color }} !important;
+    color: {{ text_color }} !important;
     {% else %}
-    color: {{ section.settings.background_color }} !important;
+    color: {{ bg_color }} !important;
     {% endif %}
   }
 
@@ -335,15 +339,15 @@
   .countdown-{{ section.id }} {
     padding: clamp(2rem, 4vw, 3rem) 0;
     {% if section.settings.button_style == 'solid' %}
-    --btn-color: {{ section.settings.background_color }};
-    --btn-bg: {{ section.settings.text_color }};
-    --btn-hover-color: {{ section.settings.text_color }};
-    --btn-hover-bg: {{ section.settings.background_color }};
+    --btn-color: {{ bg_color }};
+    --btn-bg: {{ text_color }};
+    --btn-hover-color: {{ text_color }};
+    --btn-hover-bg: {{ bg_color }};
     {% else %}
-    --btn-color: {{ section.settings.text_color }};
+    --btn-color: {{ text_color }};
     --btn-bg: transparent;
-    --btn-hover-color: {{ section.settings.background_color }};
-    --btn-hover-bg: {{ section.settings.text_color }};
+    --btn-hover-color: {{ bg_color }};
+    --btn-hover-bg: {{ text_color }};
     {% endif %}
   }
 
@@ -448,8 +452,8 @@
     text-transform: uppercase;
     color: var(--btn-color);
     background: var(--btn-bg);
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }};
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
+    border: var(--button-border-width, 1px) solid {{ text_color }};
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     overflow: hidden;
     transition: color 0.4s ease;
@@ -507,21 +511,21 @@
     padding: 0.625rem 0.875rem;
     font-size: 0.8rem;
     background: transparent;
-    border: 1px solid {{ section.settings.text_color }}40;
+    border: 1px solid {{ text_color }}40;
     border-radius: var(--input-radius, 4px);
-    color: {{ section.settings.text_color }};
-    caret-color: {{ section.settings.text_color }};
+    color: {{ text_color }};
+    caret-color: {{ text_color }};
     transition: border-color 0.2s ease;
   }
 
   .countdown-form-{{ section.id }} input[type="email"]::placeholder {
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     opacity: 0.5;
   }
 
   .countdown-form-{{ section.id }} input[type="email"]:focus {
     outline: none;
-    border-color: {{ section.settings.text_color }};
+    border-color: {{ text_color }};
   }
 
   button.countdown-form-btn-{{ section.id }} {
@@ -537,14 +541,14 @@
     text-transform: uppercase;
     white-space: nowrap;
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.background_color }} !important;
-    background-color: {{ section.settings.text_color }} !important;
+    color: {{ bg_color }} !important;
+    background-color: {{ text_color }} !important;
     {% else %}
-    color: {{ section.settings.text_color }} !important;
+    color: {{ text_color }} !important;
     background-color: transparent !important;
     {% endif %}
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }} !important;
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
+    border: var(--button-border-width, 1px) solid {{ text_color }} !important;
+    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     cursor: pointer;
     overflow: hidden;
@@ -556,9 +560,9 @@
     position: absolute;
     inset: 0;
     {% if section.settings.button_style == 'solid' %}
-    background: {{ section.settings.background_color }};
+    background: {{ bg_color }};
     {% else %}
-    background: {{ section.settings.text_color }};
+    background: {{ text_color }};
     {% endif %}
     transform: scaleX(0);
     transform-origin: right;
@@ -574,9 +578,9 @@
 
   button.countdown-form-btn-{{ section.id }}:hover {
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.text_color }} !important;
+    color: {{ text_color }} !important;
     {% else %}
-    color: {{ section.settings.background_color }} !important;
+    color: {{ bg_color }} !important;
     {% endif %}
   }
 
@@ -660,7 +664,7 @@
     letter-spacing: 0.1em;
     text-decoration: underline;
     text-underline-offset: 2px;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
     opacity: 0.9;
     transition: opacity 0.2s ease;
   }
@@ -1122,13 +1126,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#0a0a0a",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
+      ,
       "label": "Text color"
     },
     {

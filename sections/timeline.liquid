@@ -11,9 +11,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .timeline-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -40,7 +44,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: {{ section.settings.text_color }}15;
+    background: {{ text_color }}15;
   }
 
   @media (min-width: 768px) {
@@ -93,8 +97,8 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: {{ section.settings.background_color }};
-    border: 3px solid {{ section.settings.text_color }}30;
+    background: {{ bg_color }};
+    border: 3px solid {{ text_color }}30;
     z-index: 2;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -388,13 +392,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "default": "#ffffff",
+      ,
       "label": "Background color"
     },
     {
       "type": "color",
       "id": "text_color",
-      "default": "#000000",
+      ,
       "label": "Text color"
     },
     {

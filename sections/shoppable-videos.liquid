@@ -23,9 +23,13 @@
 -%}
 
 <style>
+  {%- liquid
+    assign bg_color = section.settings.background_color | default: 'transparent'
+    assign text_color = section.settings.text_color | default: 'inherit'
+  -%}
   .shoppable-videos-{{ section.id }} {
-    background-color: {{ section.settings.background_color }};
-    color: {{ section.settings.text_color }};
+    background-color: {{ bg_color }};
+    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
     overflow: hidden;
   }
@@ -71,7 +75,7 @@
       {% when 'lg' %}
       box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
       {% when 'hard' %}
-      box-shadow: 4px 4px 0 0 {{ section.settings.text_color }}15;
+      box-shadow: 4px 4px 0 0 {{ text_color }}15;
     {% endcase %}
   }
 
@@ -150,8 +154,8 @@
     height: 48px;
     border-radius: 50%;
     background: transparent;
-    border: 1px solid {{ section.settings.text_color }}30;
-    color: {{ section.settings.text_color }};
+    border: 1px solid {{ text_color }}30;
+    color: {{ text_color }};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -160,8 +164,8 @@
   }
 
   .shoppable-videos-nav-btn-{{ section.id }}:hover {
-    background: {{ section.settings.text_color }};
-    color: {{ section.settings.background_color }};
+    background: {{ text_color }};
+    color: {{ bg_color }};
   }
 
   .shoppable-videos-nav-btn-{{ section.id }}:disabled {
@@ -171,7 +175,7 @@
 
   .shoppable-videos-nav-btn-{{ section.id }}:disabled:hover {
     background: transparent;
-    color: {{ section.settings.text_color }};
+    color: {{ text_color }};
   }
 
   /* Lightbox styles */
@@ -388,7 +392,7 @@
             -%}
             <div class="shoppable-video-slide-{{ section.id }}" data-video-slide {{ block.shopify_attributes }}>
                 <div class="shoppable-video-card-{{ section.id }} relative w-full overflow-hidden {% if has_video %}cursor-pointer{% else %}cursor-default{% endif %}"
-                     style="background-color: {{ section.settings.text_color }}08;"
+                     style="background-color: {{ text_color }}08;"
                      {% if has_video %}
                        data-video-url="{{ video_hosted.sources[1].url | default: video_hosted.sources[0].url }}"
                      {% endif %}
@@ -416,8 +420,8 @@
                       preload: 'metadata'
                     }}
                   {% else %}
-                    <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0" style="background: {{ section.settings.text_color }}08;">
-                      <i class="ph ph-video-camera text-6xl" style="color: {{ section.settings.text_color }}20;"></i>
+                    <div class="absolute inset-0 w-full h-full flex items-center justify-center z-0" style="background: {{ text_color }}08;">
+                      <i class="ph ph-video-camera text-6xl" style="color: {{ text_color }}20;"></i>
                     </div>
                   {% endif %}
 
@@ -1091,13 +1095,13 @@
       "type": "color",
       "id": "background_color",
       "label": "Background color",
-      "default": "#ffffff"
+      
     },
     {
       "type": "color",
       "id": "text_color",
       "label": "Text color",
-      "default": "#000000"
+      
     }
   ],
   "blocks": [
