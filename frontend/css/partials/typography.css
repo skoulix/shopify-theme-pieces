@@ -131,6 +131,99 @@
 }
 
 /* ==========================================================================
+   Form Label - Input/field labels
+   Used in: contact-form, product variant pickers, filters
+   ========================================================================== */
+
+.form-label {
+  display: block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.75rem;
+}
+
+/* ==========================================================================
+   Card Title - Product cards, blog cards, collection cards
+   ========================================================================== */
+
+.card-title {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.025em;
+  color: var(--color-text);
+  font-family: var(--heading-font-family);
+}
+
+@media (min-width: 768px) {
+  .card-title {
+    font-size: 0.875rem;
+  }
+}
+
+/* ==========================================================================
+   Card Meta - Vendor, category, date, counts
+   ========================================================================== */
+
+.card-meta {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   Quote Text - Testimonials, blockquotes
+   ========================================================================== */
+
+.quote-text {
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  line-height: 1.5;
+  font-style: italic;
+}
+
+/* ==========================================================================
+   FAQ Question - Accordion question text
+   ========================================================================== */
+
+.faq-question {
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+/* ==========================================================================
+   Badge - Sale tags, labels, status indicators
+   ========================================================================== */
+
+.badge {
+  display: inline-block;
+  padding: 0.25rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  border-radius: var(--badge-radius, 0.25rem);
+}
+
+.badge--sale {
+  background-color: var(--color-sale);
+  color: white;
+}
+
+.badge--soldout {
+  background-color: var(--color-text);
+  color: var(--color-background);
+}
+
+.badge--new {
+  background-color: var(--color-primary);
+  color: white;
+}
+
+/* ==========================================================================
    Text Utilities
    ========================================================================== */
 
