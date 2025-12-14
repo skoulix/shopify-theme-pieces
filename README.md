@@ -381,18 +381,46 @@ npm run theme:check    # Lint theme
 
 ```
 pieces/
-├── assets/              # Compiled JS/CSS, fonts, images
-├── config/              # Theme settings schema
+├── assets/                  # Compiled JS/CSS, fonts, images
+├── blocks/                  # Theme blocks
+├── config/                  # Theme settings schema
 ├── frontend/
-│   ├── css/            # Source CSS (Tailwind)
+│   ├── css/
+│   │   ├── app.css         # CSS entry point
+│   │   └── partials/       # CSS modules
+│   │       ├── animations.css
+│   │       ├── base.css
+│   │       ├── buttons.css
+│   │       ├── cart.css
+│   │       ├── forms.css
+│   │       ├── navigation.css
+│   │       ├── typography.css
+│   │       └── utilities.css
 │   └── js/
-│       ├── app.js      # Entry point
-│       └── managers/   # Feature modules
-├── layout/             # Theme layouts
-├── locales/            # Translation files
-├── sections/           # Liquid sections
-├── snippets/           # Reusable partials
-├── templates/          # Page templates
+│       ├── app.js          # JS entry point
+│       ├── managers/       # Feature modules
+│       │   ├── CartDrawerManager.js
+│       │   ├── CartPageManager.js
+│       │   ├── CartState.js
+│       │   ├── CompareManager.js
+│       │   ├── FacetsManager.js
+│       │   ├── LenisManager.js
+│       │   ├── RecentlyViewedManager.js
+│       │   ├── SwupManager.js
+│       │   ├── TweenManager.js
+│       │   └── WishlistManager.js
+│       └── utils/          # Utility functions
+│           ├── dom.js
+│           ├── storage.js
+│           └── toast.js
+├── layout/                  # Theme layouts
+├── locales/                 # Translation files (16 languages)
+├── scripts/                 # Build/utility scripts
+├── sections/                # Liquid sections (53)
+├── snippets/                # Reusable partials
+├── templates/               # Page templates
+├── tailwind.config.js       # Tailwind configuration
+├── vite.config.js           # Vite build configuration
 └── package.json
 ```
 
