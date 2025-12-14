@@ -9,7 +9,7 @@
     bottom: 0;
     left: 0;
     right: 0;
-    z-index: 999;
+    z-index: 90;
     background: var(--color-background);
     border-top: 1px solid var(--color-border);
     transform: translateY(100%);
@@ -190,7 +190,7 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    z-index: 99;
+    z-index: 89;
     display: flex;
     align-items: center;
     gap: 0.75rem;
@@ -206,12 +206,46 @@
     letter-spacing: 0.1em;
     box-shadow: 0 4px 20px rgba(0,0,0,0.2);
     transform: translateY(calc(100% + 4rem));
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, bottom 0.4s ease;
     opacity: 0;
   }
   .compare-floating-btn.is-visible {
     transform: translateY(0);
     opacity: 1;
+  }
+
+  /* Move floating button up when sticky product bar is visible */
+  .compare-floating-btn.is-above-sticky-bar {
+    bottom: 6rem;
+  }
+
+  @media (max-width: 767px) {
+    .compare-floating-btn {
+      right: 1rem;
+      bottom: 1.5rem;
+      padding: 0.75rem 1rem;
+      font-size: 0;
+      gap: 0;
+    }
+    .compare-floating-btn i {
+      font-size: 1.25rem;
+    }
+    .compare-floating-btn span:not(.compare-floating-btn__count) {
+      display: none;
+    }
+    .compare-floating-btn__count {
+      position: absolute;
+      top: -0.25rem;
+      right: -0.25rem;
+      width: 1.25rem;
+      height: 1.25rem;
+      font-size: 0.625rem;
+    }
+
+    /* Move floating button up when sticky product bar is visible on mobile */
+    .compare-floating-btn.is-above-sticky-bar {
+      bottom: 5.5rem;
+    }
   }
   .compare-floating-btn:hover {
     box-shadow: 0 6px 24px rgba(0,0,0,0.25);
@@ -581,9 +615,37 @@
     }
   }
 
+  /**
+   * Adjust floating button position based on sticky product bar visibility
+   */
+  function adjustFloatingBtnPosition() {
+    if (!floatingBtn) return;
+    const stickyBar = document.querySelector('.sticky-product-bar.is-visible');
+    if (stickyBar) {
+      floatingBtn.classList.add('is-above-sticky-bar');
+    } else {
+      floatingBtn.classList.remove('is-above-sticky-bar');
+    }
+  }
+
+  // Watch for sticky bar visibility changes via MutationObserver
+  const stickyBarObserver = new MutationObserver(() => {
+    adjustFloatingBtnPosition();
+  });
+
+  // Observe sticky bar class changes
+  function observeStickyBar() {
+    const stickyBar = document.querySelector('.sticky-product-bar');
+    if (stickyBar) {
+      stickyBarObserver.observe(stickyBar, { attributes: true, attributeFilter: ['class'] });
+    }
+  }
+
   // Initialize
   updateUI();
   checkComparePageAndCloseDrawer();
+  adjustFloatingBtnPosition();
+  observeStickyBar();
 
   // Re-init on Swup navigation - listen to both events for reliability
   if (window.onSwupContentReplaced) {
@@ -592,6 +654,8 @@
       requestAnimationFrame(() => {
         updateUI();
         checkComparePageAndCloseDrawer();
+        adjustFloatingBtnPosition();
+        observeStickyBar();
       });
     });
   }

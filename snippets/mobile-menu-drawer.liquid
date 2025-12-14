@@ -23,7 +23,7 @@
   assign mobile_menu_style = style | default: 'accordion'
 -%}
 
-<div id="mobile-menu" class="mobile-nav mobile-nav--{{ mobile_menu_style }} fixed inset-0 z-[100] pointer-events-none invisible lg:hidden" role="dialog" aria-modal="true" inert data-mobile-menu-style="{{ mobile_menu_style }}">
+<div id="mobile-menu" class="mobile-nav mobile-nav--{{ mobile_menu_style }} fixed inset-0 pointer-events-none invisible lg:hidden" style="z-index: 100;" role="dialog" aria-modal="true" inert data-mobile-menu-style="{{ mobile_menu_style }}">
   {%- comment -%} Backdrop {%- endcomment -%}
   <div class="mobile-nav__backdrop drawer-backdrop" data-mobile-nav-close></div>
 

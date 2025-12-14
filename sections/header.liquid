@@ -28,6 +28,12 @@
     z-index: 40;
   }
 
+  /* When mobile menu is open, raise z-index above all fixed elements */
+  body.mobile-menu-open .header-wrapper,
+  body.mobile-menu-open #shopify-section-header {
+    z-index: 110;
+  }
+
   /* Fixed header with hide/reveal uses position: fixed */
   .header-wrapper.is-sticky {
     position: fixed;
@@ -739,6 +745,7 @@
     mobileNav.classList.add('is-open');
     mobileNav.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
+    document.body.classList.add('mobile-menu-open');
     document.dispatchEvent(new CustomEvent('menu:open'));
 
     if (window.gsap) {
@@ -816,6 +823,7 @@
           mobileNav.classList.remove('is-open');
           mobileNav.setAttribute('inert', '');
           document.body.style.overflow = '';
+          document.body.classList.remove('mobile-menu-open');
           isAnimating = false;
         }
       })
@@ -826,6 +834,7 @@
       mobileNav.classList.remove('is-open');
       mobileNav.setAttribute('inert', '');
       document.body.style.overflow = '';
+      document.body.classList.remove('mobile-menu-open');
       isAnimating = false;
     }
   }

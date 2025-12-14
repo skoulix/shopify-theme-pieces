@@ -97,7 +97,12 @@
      ========================================================================== */
   .header-group {
     position: relative;
-    z-index: 40;
+    z-index: 50;
+  }
+
+  /* When mobile menu is open, raise header z-index above all fixed elements */
+  body.mobile-menu-open .header-group {
+    z-index: 110;
   }
 
   .header-group.is-sticky {
