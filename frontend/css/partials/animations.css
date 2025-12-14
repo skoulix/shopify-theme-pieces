@@ -23,6 +23,32 @@ html.animations-disabled [data-section-title] {
   }
 }
 
+/* ==========================================================================
+   Shopify Policy Pages - Initial hidden state for intro animations
+   These pages have no template access, so we target by class name
+   ========================================================================== */
+
+.shopify-policy__title,
+.shopify-policy__body {
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+/* Show immediately when animations are disabled */
+html.animations-disabled .shopify-policy__title,
+html.animations-disabled .shopify-policy__body {
+  opacity: 1;
+  transform: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .shopify-policy__title,
+  .shopify-policy__body {
+    opacity: 1;
+    transform: none;
+  }
+}
+
 /* Scroll locking for modals, drawers, and page transitions */
 html.scroll-locked {
   overflow: hidden;

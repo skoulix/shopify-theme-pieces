@@ -387,8 +387,72 @@ class TweenManager {
       // Initialize standalone tweens
       this.initStandaloneTweens();
 
+      // Initialize Shopify policy pages (no template access)
+      this.initPolicyPages();
+
       this.initialized = true;
     });
+  }
+
+  /**
+   * Initialize animations for Shopify policy pages
+   * These pages use Shopify's built-in templates with no customization
+   */
+  initPolicyPages() {
+    const policyContainer = document.querySelector('.shopify-policy__container');
+    if (!policyContainer) return;
+
+    const title = policyContainer.querySelector('.shopify-policy__title');
+    const body = policyContainer.querySelector('.shopify-policy__body');
+
+    if (!title && !body) return;
+
+    // Create staggered animation timeline
+    const tl = gsap.timeline({ delay: 0.1 });
+
+    // Title uses SplitText for line-by-line reveal (like other page titles)
+    if (title) {
+      // Create SplitText instance
+      const split = new SplitText(title, {
+        type: 'lines',
+        linesClass: 'tween-split-line'
+      });
+
+      // Wrap each line for overflow hidden
+      split.lines.forEach(line => {
+        const wrapper = document.createElement('div');
+        wrapper.style.overflow = 'hidden';
+        wrapper.style.display = 'block';
+        line.parentNode.insertBefore(wrapper, line);
+        wrapper.appendChild(line);
+      });
+
+      // Set initial state - lines hidden below
+      gsap.set(split.lines, { yPercent: 120 });
+
+      // Make title visible, then animate lines
+      tl.add(() => { title.style.opacity = '1'; title.style.transform = 'none'; }, 0);
+      tl.to(split.lines, {
+        yPercent: 0,
+        duration: 1.2,
+        ease: 'power4.out',
+        stagger: 0.05
+      }, 0);
+
+      // Store for cleanup
+      this.splitInstances.push(split);
+    }
+
+    // Body uses simple fade-up
+    if (body) {
+      gsap.set(body, { opacity: 0, y: 30 });
+      tl.to(body, {
+        opacity: 1,
+        y: 0,
+        duration: 0.8,
+        ease: 'power3.out'
+      }, title ? 0.3 : 0);
+    }
   }
 
   /**
