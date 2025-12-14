@@ -4,64 +4,65 @@
 {%- endcomment -%}
 
 <style>
-  .wishlist-drawer {
+  .wishlist-drawer-container {
     position: fixed;
+    inset: 0;
+    z-index: 100;
+    pointer-events: none;
+    visibility: hidden;
+    transition: visibility 0s linear 0.4s;
+  }
+  .wishlist-drawer-container.is-open {
+    pointer-events: auto;
+    visibility: visible;
+    transition-delay: 0s;
+  }
+  .wishlist-drawer {
+    position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
     width: 100%;
     max-width: 420px;
-    z-index: 1000;
     background: var(--color-background);
-    box-shadow: -4px 0 20px rgba(0,0,0,0.1);
+    box-shadow: -4px 0 24px rgba(0,0,0,0.15);
+    border-left: 1px solid var(--color-border);
     transform: translateX(100%);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
     display: flex;
     flex-direction: column;
   }
-  .wishlist-drawer.is-open { transform: translateX(0); }
-  .wishlist-drawer__overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.5);
-    z-index: 999;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s ease, visibility 0.3s ease;
-  }
-  .wishlist-drawer__overlay.is-visible {
-    opacity: 1;
-    visibility: visible;
-  }
+  .wishlist-drawer-container.is-open .wishlist-drawer { transform: translateX(0); }
   .wishlist-drawer__header {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    padding: 1.5rem;
+    padding: 1.25rem 1.5rem;
     border-bottom: 1px solid var(--color-border);
   }
   .wishlist-drawer__title {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
+    font-size: 1.25rem;
+    font-weight: var(--font-heading-weight);
+    font-family: var(--font-heading);
     color: var(--color-text);
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: 0.5rem;
+    margin: 0;
   }
   .wishlist-drawer__count {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 1.5rem;
-    height: 1.5rem;
-    padding: 0 0.4rem;
+    min-width: 1.25rem;
+    height: 1.25rem;
+    padding: 0 0.35rem;
     background: var(--color-text);
     color: var(--color-background);
     border-radius: 100px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    font-size: 0.65rem;
+    font-weight: 600;
+    font-family: var(--font-body);
   }
   .wishlist-drawer__close {
     width: 2.5rem;
@@ -166,37 +167,11 @@
     gap: 0.5rem;
     margin-top: 0.75rem;
   }
-  .wishlist-drawer__product-btn {
+  .wishlist-drawer__product-actions .btn {
     flex: 1;
-    padding: 0.5rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    text-align: center;
-    border-radius: calc(var(--button-radius) / 2);
-    cursor: pointer;
-    transition: all 0.2s ease;
   }
-  .wishlist-drawer__add-btn {
-    background: var(--color-text);
-    color: var(--color-background);
-    border: none;
-  }
-  .wishlist-drawer__add-btn:hover {
-    opacity: 0.8;
-  }
-  .wishlist-drawer__add-btn:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-  }
-  .wishlist-drawer__remove-btn {
-    background: transparent;
-    color: var(--color-text-secondary);
-    border: 1px solid var(--color-border);
-  }
-  .wishlist-drawer__remove-btn:hover {
-    border-color: var(--color-text);
-    color: var(--color-text);
+  .wishlist-drawer__product-actions .btn--icon-only {
+    flex: 0 0 auto;
   }
   .wishlist-drawer__footer {
     padding: 1.5rem;
@@ -204,33 +179,35 @@
   }
 </style>
 
-{%- comment -%} Overlay {%- endcomment -%}
-<div class="wishlist-drawer__overlay" data-wishlist-overlay></div>
+{%- comment -%} Drawer Container {%- endcomment -%}
+<div class="wishlist-drawer-container" data-wishlist-container role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title" inert>
+  {%- comment -%} Backdrop {%- endcomment -%}
+  <div class="drawer-backdrop" data-wishlist-close></div>
 
-{%- comment -%} Drawer {%- endcomment -%}
-<div class="wishlist-drawer" data-wishlist-drawer aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title" inert>
-  <header class="wishlist-drawer__header">
-    <h2 id="wishlist-drawer-title" class="wishlist-drawer__title">
-      <i class="ph ph-heart text-lg" aria-hidden="true"></i>
-      {{ 'products.wishlist.title' | t | default: 'Wishlist' }}
-      <span class="wishlist-drawer__count" data-wishlist-drawer-count aria-label="{{ 'products.wishlist.items_count' | t | default: 'items' }}">0</span>
-    </h2>
-    <button type="button" class="wishlist-drawer__close" data-wishlist-close aria-label="{{ 'accessibility.close' | t }}">
-      <i class="ph ph-x text-xl"></i>
-    </button>
-  </header>
+  {%- comment -%} Drawer Panel {%- endcomment -%}
+  <div class="wishlist-drawer" data-wishlist-drawer data-lenis-prevent>
+    <header class="wishlist-drawer__header">
+      <h2 id="wishlist-drawer-title" class="wishlist-drawer__title">
+        {{ 'products.wishlist.title' | t | default: 'Wishlist' }}
+        <span class="wishlist-drawer__count" data-wishlist-drawer-count aria-label="{{ 'products.wishlist.items_count' | t | default: 'items' }}">0</span>
+      </h2>
+      <button type="button" class="wishlist-drawer__close" data-wishlist-close aria-label="{{ 'accessibility.close' | t }}">
+        <i class="ph ph-x text-xl"></i>
+      </button>
+    </header>
 
-  <div class="wishlist-drawer__content">
-    <div class="wishlist-drawer__products" data-wishlist-products>
-      {%- comment -%} Products rendered via JS {%- endcomment -%}
+    <div class="wishlist-drawer__content">
+      <div class="wishlist-drawer__products" data-wishlist-products>
+        {%- comment -%} Products rendered via JS {%- endcomment -%}
+      </div>
     </div>
-  </div>
 
-  <footer class="wishlist-drawer__footer">
-    <a href="/pages/wishlist" class="btn btn--primary w-full" data-wishlist-view-btn>
-      <span>{{ 'products.wishlist.view_all' | t | default: 'View All Saved Items' }}</span>
-    </a>
-  </footer>
+    <footer class="wishlist-drawer__footer">
+      <a href="/pages/wishlist" class="btn btn--primary btn--full" data-wishlist-view-btn>
+        <span>{{ 'products.wishlist.view_all' | t | default: 'View All Saved Items' }}</span>
+      </a>
+    </footer>
+  </div>
 </div>
 
 <script data-swup-ignore-script>
@@ -241,14 +218,13 @@
 
   const STORAGE_KEY = 'pieces_wishlist';
 
-  const overlay = document.querySelector('[data-wishlist-overlay]');
+  const container = document.querySelector('[data-wishlist-container]');
   const drawer = document.querySelector('[data-wishlist-drawer]');
   const productsContainer = drawer?.querySelector('[data-wishlist-products]');
   const countEl = document.querySelector('[data-wishlist-drawer-count]');
-  const closeBtn = document.querySelector('[data-wishlist-close]');
 
   // Allow functionality even if drawer isn't found (click handlers still work)
-  const hasDrawer = !!drawer;
+  const hasDrawer = !!container;
 
   function getProducts() {
     try {
@@ -309,7 +285,6 @@
     // Update header icon count
     document.querySelectorAll('[data-wishlist-count]').forEach(el => {
       el.textContent = count;
-      el.style.display = count > 0 ? '' : 'none';
     });
 
     // Update wishlist buttons
@@ -356,10 +331,10 @@
             ` : formatMoney(product.price)}
           </div>
           <div class="wishlist-drawer__product-actions">
-            <a href="${escapeHtml(product.url)}" class="wishlist-drawer__product-btn wishlist-drawer__add-btn">
-              {{ 'products.wishlist.view' | t | default: 'View' }}
+            <a href="${escapeHtml(product.url)}" class="btn btn--primary btn--xs">
+              <span>{{ 'products.wishlist.view' | t | default: 'View' }}</span>
             </a>
-            <button type="button" class="wishlist-drawer__product-btn wishlist-drawer__remove-btn" data-remove-wishlist="${product.id}">
+            <button type="button" class="btn btn--secondary btn--xs btn--icon-only" data-remove-wishlist="${product.id}" aria-label="{{ 'products.wishlist.remove' | t | default: 'Remove from wishlist' }}">
               <i class="ph ph-trash"></i>
             </button>
           </div>
@@ -388,19 +363,17 @@
   function openDrawer() {
     if (!hasDrawer) return;
     previouslyFocused = document.activeElement;
-    drawer.classList.add('is-open');
-    overlay?.classList.add('is-visible');
-    drawer.setAttribute('aria-hidden', 'false');
-    drawer.removeAttribute('inert');
+    container.classList.add('is-open');
+    container.removeAttribute('inert');
     document.body.style.overflow = 'hidden';
 
     // Create focus trap using global a11y utility
     if (window.a11y?.createFocusTrap) {
-      focusTrap = window.a11y.createFocusTrap(drawer);
+      focusTrap = window.a11y.createFocusTrap(container);
       focusTrap.activate();
     } else {
       // Fallback: focus close button
-      closeBtn?.focus();
+      container.querySelector('[data-wishlist-close]')?.focus();
     }
   }
 
@@ -412,10 +385,8 @@
       focusTrap = null;
     }
 
-    drawer.classList.remove('is-open');
-    overlay?.classList.remove('is-visible');
-    drawer.setAttribute('aria-hidden', 'true');
-    drawer.setAttribute('inert', '');
+    container.classList.remove('is-open');
+    container.setAttribute('inert', '');
     document.body.style.overflow = '';
 
     // Restore focus to trigger element
@@ -427,8 +398,10 @@
 
   // Event listeners (only if drawer exists)
   if (hasDrawer) {
-    closeBtn?.addEventListener('click', closeDrawer);
-    overlay?.addEventListener('click', closeDrawer);
+    // Close on backdrop or close button click
+    container.querySelectorAll('[data-wishlist-close]').forEach(el => {
+      el.addEventListener('click', closeDrawer);
+    });
   }
 
   // Listen for wishlist toggle from product cards
@@ -479,10 +452,21 @@
 
   // Escape key to close
   document.addEventListener('keydown', (e) => {
-    if (hasDrawer && e.key === 'Escape' && drawer.classList.contains('is-open')) {
+    if (hasDrawer && e.key === 'Escape' && container.classList.contains('is-open')) {
       closeDrawer();
     }
   });
+
+  // Close drawer when clicking "View All" link
+  const viewAllBtn = container?.querySelector('[data-wishlist-view-btn]');
+  viewAllBtn?.addEventListener('click', () => {
+    closeDrawer();
+  });
+
+  // Close drawer if on wishlist page
+  if (window.location.pathname.includes('/pages/wishlist')) {
+    closeDrawer();
+  }
 
   // Initialize
   updateUI();
@@ -491,16 +475,33 @@
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('wishlist_drawer', () => {
       // Use requestAnimationFrame to ensure DOM is fully updated
-      requestAnimationFrame(updateUI);
+      requestAnimationFrame(() => {
+        updateUI();
+        // Close drawer if navigated to wishlist page
+        if (window.location.pathname.includes('/pages/wishlist')) {
+          closeDrawer();
+        }
+      });
     });
   }
 
   // Also update after transition completes (for cached pages)
   window.addEventListener('swup:transitionEnd', () => {
-    requestAnimationFrame(updateUI);
+    requestAnimationFrame(() => {
+      updateUI();
+      // Close drawer if navigated to wishlist page
+      if (window.location.pathname.includes('/pages/wishlist')) {
+        closeDrawer();
+      }
+    });
   });
 
   // Update after facet filtering replaces product grid
   document.addEventListener('facets:updated', updateUI);
+
+  // Listen for wishlist changes from other sources (e.g., wishlist page section)
+  document.addEventListener('wishlist:removed', updateUI);
+  document.addEventListener('wishlist:added', updateUI);
+  document.addEventListener('wishlist:cleared', updateUI);
 })();
 </script>

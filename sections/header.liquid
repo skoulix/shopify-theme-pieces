@@ -79,9 +79,11 @@
   .header-wrapper.is-transparent .header-inner > nav > div > div > .mega-menu-wrapper > button,
   .header-wrapper.is-transparent .header-inner > nav button[data-cart-drawer-toggle],
   .header-wrapper.is-transparent .header-inner > nav button[data-search-drawer-toggle],
+  .header-wrapper.is-transparent .header-inner > nav button[data-wishlist-open],
   .header-wrapper.is-transparent .header-inner > nav a[href*="/search"],
   .header-wrapper.is-transparent .header-inner > nav button[data-mobile-nav-open],
-  .header-wrapper.is-transparent .header-inner > nav [data-cart-count] {
+  .header-wrapper.is-transparent .header-inner > nav [data-cart-count],
+  .header-wrapper.is-transparent .header-inner > nav [data-wishlist-count] {
     color: {{ section.settings.transparent_text_color }};
   }
 
@@ -115,8 +117,11 @@
   .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav > div > div > .mega-menu-wrapper > button,
   .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav button[data-cart-drawer-toggle],
   .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav button[data-search-drawer-toggle],
+  .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav button[data-wishlist-open],
+  .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav button[data-mobile-nav-open],
   .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav a[href*="/search"],
-  .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav [data-cart-count] {
+  .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav [data-cart-count],
+  .header-wrapper.is-transparent.has-mega-menu-open .header-inner > nav [data-wishlist-count] {
     color: var(--color-text);
   }
 
@@ -138,8 +143,11 @@
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav > div > div > .mega-menu-wrapper > button,
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav button[data-cart-drawer-toggle],
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav button[data-search-drawer-toggle],
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav button[data-wishlist-open],
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav button[data-mobile-nav-open],
   .header-wrapper.is-transparent.is-scrolled .header-inner > nav a[href*="/search"],
-  .header-wrapper.is-transparent.is-scrolled .header-inner > nav [data-cart-count] {
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav [data-cart-count],
+  .header-wrapper.is-transparent.is-scrolled .header-inner > nav [data-wishlist-count] {
     color: var(--color-text);
   }
 
@@ -466,6 +474,17 @@
             <i class="ph ph-user text-xl"></i>
           </a>
         {% endif %}
+        {% if section.settings.show_wishlist %}
+          <button
+            type="button"
+            class="hidden lg:flex p-2 items-center text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
+            data-wishlist-open
+            aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}"
+          >
+            <i class="ph ph-heart text-xl"></i>
+            <span class="ml-1 text-sm font-medium text-[--color-text]" data-wishlist-count>0</span>
+          </button>
+        {% endif %}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
             <button
@@ -617,6 +636,17 @@
             <span class="sr-only">{{ 'accessibility.account' | t }}</span>
             <i class="ph ph-user text-xl"></i>
           </a>
+        {% endif %}
+        {% if section.settings.show_wishlist %}
+          <button
+            type="button"
+            class="hidden lg:flex p-2 items-center text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
+            data-wishlist-open
+            aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}"
+          >
+            <i class="ph ph-heart text-xl"></i>
+            <span class="ml-1 text-sm font-medium text-[--color-text]" data-wishlist-count>0</span>
+          </button>
         {% endif %}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
@@ -1726,6 +1756,12 @@
         { "value": "page", "label": "Link to search page" }
       ],
       "info": "Drawer shows predictive search results as you type"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_wishlist",
+      "default": false,
+      "label": "Show wishlist icon"
     },
     {
       "type": "checkbox",
