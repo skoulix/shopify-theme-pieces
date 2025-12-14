@@ -163,6 +163,9 @@
     {%- comment -%} Size Chart Drawer - shell rendered here, content populated by product section {%- endcomment -%}
     {% render 'size-chart-drawer' %}
 
+    {%- comment -%} Pickup Availability Drawer {%- endcomment -%}
+    {% render 'pickup-availability-drawer' %}
+
     {%- comment -%} Compare Products Drawer {%- endcomment -%}
     {% if settings.enable_compare %}
       {% render 'compare-drawer' %}

@@ -31,18 +31,35 @@
 .drawer-backdrop {
   position: absolute;
   inset: 0;
-  background: rgba(0, 0, 0, 0);
-  backdrop-filter: blur(0);
-  -webkit-backdrop-filter: blur(0);
-  transition: background 0.3s ease, backdrop-filter 0.3s ease, -webkit-backdrop-filter 0.3s ease;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  opacity: 0;
+  transition: opacity 0.3s ease;
 }
 
 .drawer-backdrop.is-visible,
 .is-open > .drawer-backdrop,
 .is-open .drawer-backdrop {
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
+  opacity: 1;
+}
+
+/* ==========================================================================
+   Generic Drawer - Visibility with delayed hide for close animation
+   ========================================================================== */
+
+.drawer-container {
+  pointer-events: none;
+  visibility: hidden;
+  /* Delay visibility:hidden until after slide-out animation completes */
+  transition: visibility 0s 0.3s;
+}
+
+.drawer-container.is-open {
+  pointer-events: auto;
+  visibility: visible;
+  /* No delay when opening - show immediately */
+  transition: visibility 0s 0s;
 }
 
 /* ==========================================================================

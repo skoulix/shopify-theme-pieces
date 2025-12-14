@@ -1,0 +1,32 @@
+{%- comment -%}
+  Pickup Availability Drawer
+  Global drawer for displaying store pickup information
+  Rendered once in theme.liquid to avoid nesting issues
+{%- endcomment -%}
+
+<div
+  id="pickup-availability-modal"
+  class="pickup-availability-modal drawer-container group fixed inset-0 z-[100] overflow-hidden"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="pickup-modal-title"
+  data-pickup-availability-modal
+>
+  <div class="drawer-backdrop" data-pickup-availability-modal-close></div>
+  <div class="pickup-availability-modal__drawer absolute top-0 right-0 bottom-0 w-full max-w-md h-full bg-[--color-background] flex flex-col transform translate-x-full transition-transform duration-300 shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-[--color-border] group-[.is-open]:translate-x-0">
+    <div class="flex items-center gap-3 px-6 py-5 border-b border-[--color-border]">
+      <h2 id="pickup-modal-title" class="flex-1 text-xl font-[--font-heading-weight] m-0 font-heading">{{ 'products.pickup_availability.pickup_options' | t }}</h2>
+      <button
+        type="button"
+        class="flex items-center justify-center w-10 h-10 -m-2 ml-auto bg-transparent border-none text-[--color-text] cursor-pointer transition-opacity hover:opacity-60"
+        aria-label="{{ 'accessibility.close' | t }}"
+        data-pickup-availability-modal-close
+      >
+        <i class="ph ph-x text-xl"></i>
+      </button>
+    </div>
+    <div class="flex-1 overflow-y-auto p-6" data-pickup-availability-modal-content>
+      {%- comment -%} Content loaded dynamically {%- endcomment -%}
+    </div>
+  </div>
+</div>

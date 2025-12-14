@@ -6,6 +6,8 @@
   Required variables:
   - product: The product object
   - form_id: The ID of the product form (for variant change updates)
+
+  Note: The pickup availability modal/drawer is rendered in theme.liquid
 {%- endcomment -%}
 
 {%- assign current_variant = product.selected_or_first_available_variant -%}
@@ -38,34 +40,6 @@
   </template>
 </pickup-availability>
 
-{%- comment -%} Pickup Availability Modal {%- endcomment -%}
-<div
-  id="pickup-availability-modal"
-  class="pickup-availability-modal fixed inset-0 z-[100] pointer-events-none opacity-0 transition-opacity duration-300"
-  role="dialog"
-  aria-modal="true"
-  aria-labelledby="pickup-modal-title"
-  data-pickup-availability-modal
->
-  <div class="pickup-availability-modal__overlay absolute inset-0 bg-black/50" data-pickup-availability-modal-close></div>
-  <div class="pickup-availability-modal__drawer absolute top-0 right-0 bottom-0 w-full max-w-md bg-[--color-background] shadow-xl transform translate-x-full transition-transform duration-300">
-    <div class="pickup-availability-modal__header flex items-center justify-between p-4 border-b border-[--color-border]">
-      <h2 id="pickup-modal-title" class="text-lg font-semibold">{{ 'products.pickup_availability.pickup_options' | t }}</h2>
-      <button
-        type="button"
-        class="p-2 -m-2 text-[--color-text-secondary] hover:text-[--color-text] transition-colors"
-        aria-label="{{ 'accessibility.close' | t }}"
-        data-pickup-availability-modal-close
-      >
-        <i class="ph ph-x text-xl"></i>
-      </button>
-    </div>
-    <div class="pickup-availability-modal__content p-4 overflow-y-auto" style="max-height: calc(100vh - 140px);" data-pickup-availability-modal-content>
-      {%- comment -%} Content loaded dynamically {%- endcomment -%}
-    </div>
-  </div>
-</div>
-
 <script>
 class PickupAvailability extends HTMLElement {
   constructor() {
@@ -94,10 +68,11 @@ class PickupAvailability extends HTMLElement {
     const content = modal?.querySelector('[data-pickup-availability-modal-content]');
     if (!modal || !content) return;
 
-    // Show modal
-    modal.classList.add('pointer-events-auto', 'opacity-100');
-    modal.querySelector('.pickup-availability-modal__drawer').classList.remove('translate-x-full');
+    // Show modal - use requestAnimationFrame to ensure transition triggers
     document.body.style.overflow = 'hidden';
+    requestAnimationFrame(() => {
+      modal.classList.add('is-open');
+    });
 
     // Fetch pickup availability info
     const variantId = this.dataset.variantId;
@@ -134,9 +109,10 @@ class PickupAvailability extends HTMLElement {
     const modal = document.querySelector('[data-pickup-availability-modal]');
     if (!modal) return;
 
-    modal.classList.remove('pointer-events-auto', 'opacity-100');
-    modal.querySelector('.pickup-availability-modal__drawer').classList.add('translate-x-full');
-    document.body.style.overflow = '';
+    modal.classList.remove('is-open');
+    setTimeout(() => {
+      document.body.style.overflow = '';
+    }, 300);
   }
 
   update(variantId) {
