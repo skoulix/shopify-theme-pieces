@@ -82,8 +82,8 @@
     {%- comment -%} Loading State {%- endcomment -%}
     <div class="grid grid-cols-1 {{ grid_cols }} gap-4" data-complementary-loading data-tween data-tween-type="fade-up">
       {% for i in (1..section.settings.products_to_show) %}
-        <div class="complementary-card flex gap-4 p-4 border border-current/10 rounded-lg animate-pulse">
-          <div class="shrink-0 w-20 h-20 rounded skeleton-bg"></div>
+        <div class="complementary-card flex gap-4 p-4 border border-current/10 rounded-[--card-radius] animate-pulse">
+          <div class="shrink-0 w-20 h-20 rounded-[--card-radius] skeleton-bg"></div>
           <div class="flex-1">
             <div class="h-4 w-3/4 skeleton-bg rounded"></div>
             <div class="h-3 w-1/2 skeleton-bg rounded mt-2"></div>
@@ -96,8 +96,8 @@
     <div class="grid grid-cols-1 {{ grid_cols }} gap-4 hidden" data-complementary-grid data-tween data-tween-type="fade-up">
       {% if recommendations.performed and recommendations.products_count > 0 %}
         {% for recommendation in recommendations.products %}
-          <div class="complementary-card flex gap-4 p-4 border border-current/10 rounded-lg hover:border-current/30 transition-colors">
-            <a href="{{ recommendation.url }}" class="shrink-0 w-20 h-20 rounded overflow-hidden bg-current/5">
+          <div class="complementary-card flex gap-4 p-4 border border-current/10 rounded-[--card-radius] hover:border-current/30 transition-colors">
+            <a href="{{ recommendation.url }}" class="shrink-0 w-20 h-20 rounded-[--card-radius] overflow-hidden bg-current/5">
               {% if recommendation.featured_image %}
                 {{ recommendation.featured_image | image_url: width: 200 | image_tag:
                   loading: 'lazy',
@@ -179,6 +179,12 @@
           loading.classList.add('hidden');
           grid.classList.remove('hidden');
 
+          // Remove tween attributes since content loaded dynamically - animate manually
+          grid.removeAttribute('data-tween');
+          grid.removeAttribute('data-tween-type');
+          grid.style.opacity = '1';
+          grid.style.transform = 'translateY(0)';
+
           // Trigger intro animation
           grid.classList.add('intro-visible');
 
@@ -225,6 +231,9 @@
       document.querySelectorAll('[data-cart-count]').forEach(el => {
         el.textContent = cart.item_count;
       });
+
+      // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
 
       const cartType = window.themeSettings?.cartType || 'drawer';
       if (cartType === 'drawer') {

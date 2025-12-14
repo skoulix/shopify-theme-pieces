@@ -563,6 +563,9 @@
           el.textContent = cart.item_count;
         });
 
+        // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+
         // Check cart type setting
         const cartType = window.themeSettings?.cartType || 'drawer';
 
@@ -637,6 +640,9 @@
         document.querySelectorAll('[data-cart-count]').forEach(function(el) {
           el.textContent = cart.item_count;
         });
+
+        // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
 
         // Check cart type setting
         const cartType = window.themeSettings?.cartType || 'drawer';

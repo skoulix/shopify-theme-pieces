@@ -478,6 +478,9 @@
           el.textContent = cart.item_count;
         });
 
+        // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+
         // Trigger cart behavior
         const cartType = window.themeSettings?.cartType || 'drawer';
 

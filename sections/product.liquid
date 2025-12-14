@@ -1300,6 +1300,9 @@
           el.textContent = cart.item_count;
         });
 
+        // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+
         // Get product info for notification
         const productInfo = {
           title: item.product_title,
@@ -1442,6 +1445,9 @@
       document.querySelectorAll('[data-cart-count]').forEach(el => {
         el.textContent = cart.item_count;
       });
+
+      // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
 
       const cartType = window.themeSettings?.cartType || 'drawer';
       if (cartType === 'drawer') {

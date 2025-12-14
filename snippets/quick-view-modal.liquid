@@ -224,6 +224,9 @@
         const cart = await cartRes.json();
         cartCount.forEach(el => el.textContent = cart.item_count);
 
+        // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+
         // Show success state
         if (btnAdding) btnAdding.classList.add('hidden');
         if (btnAdded) btnAdded.classList.remove('hidden');

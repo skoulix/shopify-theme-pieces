@@ -204,6 +204,9 @@
           const cart = await cartRes.json();
           document.querySelectorAll('[data-cart-count]').forEach(el => el.textContent = cart.item_count);
 
+          // Dispatch cart updated event for reactive components (e.g., free shipping bar)
+          document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+
           // Show success state
           if (addingText) addingText.classList.add('hidden');
           if (addedText) addedText.classList.remove('hidden');

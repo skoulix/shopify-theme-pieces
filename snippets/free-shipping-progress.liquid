@@ -110,9 +110,6 @@
 
   <script>
     (function() {
-      const bars = document.querySelectorAll('[data-free-shipping-bar]');
-      if (!bars.length) return;
-
       const qualifiedText = {{ 'cart.free_shipping.qualified' | t | json }};
       const remainingTemplate = {{ 'cart.free_shipping.remaining_html' | t: remaining: '__AMOUNT__' | json }};
 
@@ -123,6 +120,8 @@
       }
 
       function updateBars(cart) {
+        // Re-query bars each time to catch dynamically added elements
+        const bars = document.querySelectorAll('[data-free-shipping-bar]');
         bars.forEach(bar => {
           const threshold = parseInt(bar.dataset.threshold, 10);
           if (!threshold) return;
@@ -168,7 +167,7 @@
         .then(cart => updateBars(cart))
         .catch(() => {});
 
-      // Listen for cart updates
+      // Listen for cart updates (also dispatched when cart drawer opens)
       document.addEventListener('cart:updated', (e) => {
         if (e.detail?.cart) {
           updateBars(e.detail.cart);

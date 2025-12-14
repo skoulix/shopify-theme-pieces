@@ -224,8 +224,9 @@ class CartDrawerManager {
     // Stop smooth scrolling
     lenisManager.stop();
 
-    // Dispatch event
+    // Dispatch event - include cart data for listeners that need it
     document.dispatchEvent(new CustomEvent('cart:opened'));
+    document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cartState.get() } }));
 
     // Animate in and set up focus trap when complete
     gsap.timeline({

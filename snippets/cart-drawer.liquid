@@ -30,12 +30,10 @@
       </button>
     </div>
 
-    {%- comment -%} Free Shipping Progress {%- endcomment -%}
-    {% if cart.item_count > 0 %}
-      <div class="px-6 pt-4" data-free-shipping-wrapper>
-        {% render 'free-shipping-progress' %}
-      </div>
-    {% endif %}
+    {%- comment -%} Free Shipping Progress - always render, JS handles visibility {%- endcomment -%}
+    <div class="px-6 pt-4">
+      {% render 'free-shipping-progress' %}
+    </div>
 
     {%- comment -%} Cart Contents {%- endcomment -%}
     <div
