@@ -19,13 +19,18 @@
     min-height: 60vh;
   }
   .wishlist-section-{{ section.id }} .wishlist-title {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
+    font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1));
     letter-spacing: -0.03em;
-    line-height: 0.95;
+    line-height: 0.9;
   }
   @media (min-width: 1024px) {
     .wishlist-section-{{ section.id }} .wishlist-title {
-      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1));
+    }
+  }
+  @media (min-width: 1536px) {
+    .wishlist-section-{{ section.id }} .wishlist-title {
+      font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1));
     }
   }
 

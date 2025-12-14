@@ -328,8 +328,8 @@
           data-variant-id="{{ current_variant.id }}"
           {% unless current_variant.available %}disabled{% endunless %}
         >
-          <i class="ph ph-bag"></i>
-          <span class="sticky-product-bar__btn-text">
+          <i class="ph ph-bag" data-sticky-bar-icon></i>
+          <span class="sticky-product-bar__btn-text" data-sticky-bar-text>
             {% if current_variant.available %}
               {{ 'products.product.add_to_cart' | t }}
             {% else %}
@@ -441,6 +441,11 @@
 
   // Add to cart
   if (addBtn) {
+    const btnIcon = addBtn.querySelector('[data-sticky-bar-icon]');
+    const btnText = addBtn.querySelector('[data-sticky-bar-text]');
+    const originalIconClass = btnIcon?.className || '';
+    const originalText = btnText?.textContent || '';
+
     addBtn.addEventListener('click', async () => {
       if (addBtn.disabled) return;
 
@@ -452,8 +457,12 @@
       // Loading state
       stickyBar.classList.add('is-loading');
       addBtn.disabled = true;
-      const originalHTML = addBtn.innerHTML;
-      addBtn.innerHTML = '<i class="ph ph-spinner animate-spin"></i>';
+      if (btnIcon) {
+        btnIcon.className = 'ph ph-spinner animate-spin';
+      }
+      if (btnText) {
+        btnText.textContent = '{{ 'cart.adding' | t }}';
+      }
 
       try {
         const response = await fetch('/cart/add.js', {
@@ -506,19 +515,39 @@
         }
 
         // Success state
-        addBtn.innerHTML = '<i class="ph ph-check"></i>';
+        if (btnIcon) {
+          btnIcon.className = 'ph ph-check';
+        }
+        if (btnText) {
+          btnText.textContent = '{{ 'cart.added' | t }}';
+        }
 
         setTimeout(() => {
-          addBtn.innerHTML = originalHTML;
+          if (btnIcon) {
+            btnIcon.className = originalIconClass;
+          }
+          if (btnText) {
+            btnText.textContent = originalText.trim();
+          }
           addBtn.disabled = false;
         }, 1500);
 
       } catch (error) {
         console.error('Sticky bar add to cart error:', error);
-        addBtn.innerHTML = '<i class="ph ph-x"></i>';
+        if (btnIcon) {
+          btnIcon.className = 'ph ph-x';
+        }
+        if (btnText) {
+          btnText.textContent = '{{ 'cart.error' | t }}';
+        }
 
         setTimeout(() => {
-          addBtn.innerHTML = originalHTML;
+          if (btnIcon) {
+            btnIcon.className = originalIconClass;
+          }
+          if (btnText) {
+            btnText.textContent = originalText.trim();
+          }
           addBtn.disabled = false;
         }, 1500);
       } finally {

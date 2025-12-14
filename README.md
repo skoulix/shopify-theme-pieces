@@ -155,13 +155,14 @@ document.addEventListener('cart:notification', (e) => {
 
 ---
 
-## Sections (44 Total)
+## Sections (53 Total)
 
 ### Hero & Landing
 
 - `hero` - Full-viewport hero with image/video
 - `hero-orbit` - Animated orbiting elements
 - `banner` - Smaller promotional banner
+- `slideshow` - Image/video slideshow carousel
 
 ### Products & Collections
 
@@ -170,6 +171,11 @@ document.addEventListener('cart:notification', (e) => {
 - `collections` - Collection list/grid
 - `featured-collection` - Featured product grid
 - `related-products` - Related products carousel
+- `recently-viewed` - Recently viewed products
+- `complementary-products` - Frequently bought together
+- `quick-view-product` - Quick view modal content
+- `wishlist` - Saved products page
+- `compare` - Product comparison table
 
 ### Interactive
 
@@ -178,6 +184,7 @@ document.addEventListener('cart:notification', (e) => {
 - `before-after` - Image comparison slider
 - `shoppable-videos` - Video with product tags
 - `pinned-image-reveal` - Scrollytelling layout
+- `scroll-panels` - Scroll-driven panel animations
 
 ### Content
 
@@ -187,6 +194,10 @@ document.addEventListener('cart:notification', (e) => {
 - `testimonials` - Customer testimonials
 - `faq` - Accordion FAQ
 - `team` - Team member grid
+- `timeline` - Vertical timeline
+- `features-grid` - Feature cards grid
+- `trust-badges` - Trust/payment badges
+- `floating-images` - Decorative floating images
 
 ### Animation Showcase
 
@@ -201,13 +212,50 @@ document.addEventListener('cart:notification', (e) => {
 - `newsletter` - Email signup forms
 - `contact-form` - Contact form
 - `countdown` - Launch countdown
+- `map` - Store locator map
 
 ### Structure
 
 - `header` - Navigation header
 - `footer` - Site footer
+- `announcement-bar` - Top announcement bar
 - `page` - Generic page template
+- `article` - Blog article template
+- `blog` - Blog listing
+- `cart` - Cart page
+- `search` - Search results
+- `password` - Password page
 - `404` - Not found page
+
+---
+
+## Product Page Blocks
+
+The product section supports the following blocks that can be reordered in the theme customizer:
+
+| Block | Description |
+| ----- | ----------- |
+| **Breadcrumbs** | Navigation breadcrumb trail |
+| **Vendor** | Product vendor/brand name |
+| **Title** | Product title |
+| **Price** | Price with sale/compare pricing |
+| **Inventory countdown** | Low stock warning with progress bar |
+| **Description** | Product description with truncation |
+| **Variant picker** | Buttons or dropdown for variants with color swatches |
+| **Quantity selector** | Quantity input with +/- buttons |
+| **Buy buttons** | Add to cart + dynamic checkout buttons |
+| **Pickup availability** | Store pickup information |
+| **Delivery estimator** | Estimated delivery date display |
+| **Social proof** | Current viewers / recent purchases |
+| **Text** | Custom rich text content |
+| **Collapsible tab** | Accordion-style content sections |
+| **Size chart** | Size guide drawer with customizable content |
+| **Back in stock** | Email notification signup for sold out items |
+| **Complementary products** | Frequently bought together recommendations |
+| **Wishlist button** | Save to wishlist functionality |
+| **Compare button** | Add to comparison list |
+| **Wishlist & Compare** | Combined 50/50 layout for both buttons |
+| **Social actions** | Wishlist, compare, and share buttons in a row |
 
 ---
 
@@ -398,17 +446,20 @@ Translation files located in `/locales/`.
 
 Configurable via Shopify theme customizer:
 
-| Section        | Options                            |
-| -------------- | ---------------------------------- |
-| **Logo**       | Image, sizing, favicon             |
-| **Colors**     | Background, text, primary, borders |
-| **Typography** | Font families, size scaling        |
-| **Layout**     | Page width, padding, smooth scroll |
-| **Buttons**    | Radius, border, shadow             |
-| **Cards**      | Radius, border, shadow             |
-| **Inputs**     | Radius, border width               |
-| **Cart**       | Drawer, page, or notification      |
-| **Social**     | Social media links                 |
+| Section | Options |
+| ------- | ------- |
+| **Logo** | Logo image, desktop/mobile width, favicon |
+| **Colors** | Background, secondary background, text, secondary text, primary accent, primary contrast, border, sale |
+| **Typography** | Body font, heading font, font size scaling, uppercase headings/buttons |
+| **Layout** | Page width, vertical padding, section padding, smooth scrolling, page transitions (slide/fade/curtain), View Transitions API, animations, animation trigger timing |
+| **Buttons** | Corner radius, border width, shadow style |
+| **Inputs** | Corner radius, border width |
+| **Cards** | Corner radius, border width, shadow style |
+| **Product Card** | Image aspect ratio, secondary image on hover, show vendor, quick view, compare, wishlist, sale/sold out badges |
+| **Social Media** | Instagram, Facebook, X (Twitter), TikTok, YouTube, Pinterest links |
+| **SEO & Schema** | Local business schema with address, phone, email, hours, price range |
+| **Cart** | Cart type (drawer/page/notification), free shipping progress bar, delivery estimator, social proof indicators |
+| **Newsletter Popup** | Enable/disable, trigger type (delay/scroll/exit intent), frequency, content, discount code reveal, colors, layout |
 
 ---
 

@@ -19,13 +19,18 @@
     min-height: 60vh;
   }
   .compare-section-{{ section.id }} .compare-title {
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
+    font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1));
     letter-spacing: -0.03em;
-    line-height: 0.95;
+    line-height: 0.9;
   }
   @media (min-width: 1024px) {
     .compare-section-{{ section.id }} .compare-title {
-      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1));
+    }
+  }
+  @media (min-width: 1536px) {
+    .compare-section-{{ section.id }} .compare-title {
+      font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1));
     }
   }
 
@@ -81,18 +86,49 @@
     text-align: center;
   }
   .compare-section-{{ section.id }} .compare-table__product-image {
+    position: relative;
     width: 100%;
     max-width: 200px;
     aspect-ratio: 3/4;
     margin: 0 auto 1rem;
     border-radius: var(--card-radius);
-    overflow: hidden;
+    overflow: visible;
     background: {{ section.settings.background_color | color_mix: section.settings.text_color, 5 }};
   }
   .compare-section-{{ section.id }} .compare-table__product-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
+    border-radius: var(--card-radius);
+  }
+  .compare-section-{{ section.id }} .compare-table__remove-icon {
+    position: absolute;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: {{ section.settings.background_color }};
+    color: {{ section.settings.text_color }};
+    border: none;
+    border-radius: 50%;
+    cursor: pointer;
+    opacity: 0.9;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+    z-index: 1;
+  }
+  .compare-section-{{ section.id }} .compare-table__remove-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
+    background: var(--color-sale);
+    color: #fff;
+  }
+  .compare-section-{{ section.id }} .compare-table__remove-icon i {
+    font-size: 0.875rem;
+    line-height: 1;
   }
   .compare-section-{{ section.id }} .compare-table__product-title {
     font-size: 1rem;
@@ -117,25 +153,6 @@
   }
   .compare-section-{{ section.id }} .compare-table__product-price .sale-price {
     color: var(--color-sale);
-  }
-  .compare-section-{{ section.id }} .compare-table__remove {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.25rem;
-    padding: 0.5rem 1rem;
-    font-size: 0.75rem;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
-    opacity: 0.7;
-    background: none;
-    border: 1px solid {{ section.settings.text_color }}30;
-    border-radius: 100px;
-    cursor: pointer;
-    transition: all 0.2s ease;
-  }
-  .compare-section-{{ section.id }} .compare-table__remove:hover {
-    border-color: {{ section.settings.text_color }};
-    opacity: 1;
   }
   .compare-section-{{ section.id }} .compare-table__value {
     font-size: 0.875rem;
@@ -314,6 +331,9 @@
             ${products.map(p => `
               <div class="compare-table__cell">
                 <div class="compare-table__product-image">
+                  <button type="button" class="compare-table__remove-icon" data-remove-compare="${p.id}" aria-label="{{ 'products.compare.remove' | t | default: 'Remove' }}">
+                    <i class="ph ph-x"></i>
+                  </button>
                   ${p.image ? `<img src="${escapeHtml(p.image)}" alt="${escapeHtml(p.title)}" loading="lazy" decoding="async">` : ''}
                 </div>
                 <h3 class="compare-table__product-title">
@@ -325,10 +345,6 @@
                     <span class="sale-price">${formatMoney(p.price)}</span>
                   ` : formatMoney(p.price)}
                 </div>
-                <button type="button" class="compare-table__remove" data-remove-compare="${p.id}">
-                  <i class="ph ph-x"></i>
-                  {{ 'products.compare.remove' | t | default: 'Remove' }}
-                </button>
               </div>
             `).join('')}
           </div>
