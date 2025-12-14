@@ -4,6 +4,9 @@
   else
     assign container_class = 'page-container'
   endif
+
+  assign text_color = section.settings.text_color | default: 'inherit'
+  assign bg_color = section.settings.background_color | default: 'transparent'
 -%}
 
 <style>
@@ -15,10 +18,10 @@
   @media (min-width: 1024px) { .hero-title { font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .hero-title { font-size: calc(clamp(5rem, 8vw, 9rem) * var(--heading-font-scale, 1)); } }
   .hero-subtitle { font-size: clamp(0.75rem, 1.5vw, 1rem); }
-  .hero-cta { color: {{ section.settings.text_color }}; background-color: transparent; border: var(--button-border-width) solid {{ section.settings.text_color }}; box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %}; }
-  .hero-cta::before { content: ''; position: absolute; inset: 0; background: {{ section.settings.text_color }}; transform: scaleX(0); transform-origin: right; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
+  .hero-cta { color: {{ text_color }}; background-color: transparent; border: var(--button-border-width) solid {{ text_color }}; box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %}; }
+  .hero-cta::before { content: ''; position: absolute; inset: 0; background: {{ text_color }}; transform: scaleX(0); transform-origin: right; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
   .hero-cta:hover::before { transform: scaleX(1); transform-origin: left; }
-  .hero-cta:hover, .hero-cta:hover span, .hero-cta:hover i { color: {{ section.settings.background_color }}; }
+  .hero-cta:hover, .hero-cta:hover span, .hero-cta:hover i { color: {{ bg_color }}; }
 
   /* Initial clip-path state for media swipe animation */
   [data-hero-section="{{ section.id }}"] [data-hero-media] {
@@ -76,7 +79,7 @@
     endcase
   -%}
   {%- comment -%} Hero content - uses global data-tween system for animations with delay after media reveal {%- endcomment -%}
-  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" style="color: {{ section.settings.text_color }};" data-tween-group="hero-content-{{ section.id }}" data-tween-start="top bottom">
+  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" style="color: {{ text_color }};" data-tween-group="hero-content-{{ section.id }}" data-tween-start="top bottom">
     {% if section.settings.title != blank %}
       <h1 class="hero-title font-bold font-heading {{ title_align }}" data-tween data-tween-type="split-text" data-tween-delay="0.8">
         {{ section.settings.title }}
@@ -98,7 +101,7 @@
   </div>
 
   {% if section.settings.show_scroll_indicator %}
-    <div class="absolute bottom-8 right-[--page-padding] flex flex-col items-center gap-2 z-10" style="color: {{ section.settings.text_color }};" data-tween data-tween-type="fade-up" data-tween-delay="1.2" data-tween-start="top bottom">
+    <div class="absolute bottom-8 right-[--page-padding] flex flex-col items-center gap-2 z-10" style="color: {{ text_color }};" data-tween data-tween-type="fade-up" data-tween-delay="1.2" data-tween-start="top bottom">
       <span class="text-[0.75rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl]">{{ 'accessibility.scroll_down' | t }}</span>
       <div class="hero-scroll-line w-px h-[60px] bg-current origin-top"></div>
     </div>
@@ -222,7 +225,6 @@
     {
       "type": "color",
       "id": "text_color",
-      "default": "#ffffff",
       "label": "Text color"
     },
     {

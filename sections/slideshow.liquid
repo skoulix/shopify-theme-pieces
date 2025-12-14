@@ -86,7 +86,7 @@
 
   /* Per-slide button styles */
   {% for block in section.blocks %}
-  {%- assign btn_text_color = block.settings.text_color -%}
+  {%- assign btn_text_color = block.settings.text_color | default: 'inherit' -%}
   {%- assign btn_contrast_color = btn_text_color | color_brightness | round -%}
   {%- if btn_contrast_color > 128 -%}
     {%- assign btn_solid_text = '#000000' -%}
@@ -122,7 +122,7 @@
       {%- liquid
         assign text_position = block.settings.text_position
         assign text_alignment = block.settings.text_alignment
-        assign text_color = block.settings.text_color
+        assign text_color = block.settings.text_color | default: 'inherit'
 
         case text_position
           when 'top_left'
@@ -897,8 +897,7 @@
         {
           "type": "color",
           "id": "text_color",
-          "label": "Text color",
-          "default": "#ffffff"
+          "label": "Text color"
         }
       ]
     }
