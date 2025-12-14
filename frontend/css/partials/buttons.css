@@ -1,34 +1,45 @@
 /* ==========================================================================
-   Button System - Primary & Secondary with Fill Hover Effect
+   Button System
+
+   Variants: primary | secondary | outline | tertiary (ghost)
+   Sizes:    sm | md (default) | lg | icon
+   Modifiers: --full | --rounded | --loading
    ========================================================================== */
 
 @layer components {
-  /* Base button styles */
+  /* ==========================================================================
+     Base Button Styles
+     ========================================================================== */
   .btn {
     position: relative;
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.5rem;
-    padding: 1.25rem 2rem;
+    padding: 1rem 1.75rem;
     font-size: 0.75rem;
     font-weight: 600;
-    letter-spacing: 0.2em;
+    letter-spacing: 0.15em;
     line-height: 1;
     border-radius: var(--button-radius);
     box-shadow: var(--button-shadow);
     cursor: pointer;
     overflow: hidden;
-    transition: color 0.4s ease;
+    transition: color 0.4s ease, border-color 0.3s ease;
     text-decoration: none;
+    white-space: nowrap;
   }
 
+  /* Ensure content sits above the ::before pseudo-element */
   .btn span,
+  .btn i,
+  .btn svg,
   .btn > * {
     position: relative;
     z-index: 1;
   }
 
+  /* Fill hover effect base */
   .btn::before {
     content: '';
     position: absolute;
@@ -44,105 +55,314 @@
     transform-origin: left;
   }
 
-  /* Primary Button - Dark background, light text → Light fill, dark text */
+  /* ==========================================================================
+     Primary Button
+     Solid background with inverted hover
+     ========================================================================== */
   .btn--primary {
     color: var(--color-primary-contrast);
     background: var(--color-primary);
     border: var(--button-border-width) solid var(--color-primary);
   }
 
-  .btn--primary span,
-  .btn--primary i,
-  .btn--primary > * {
-    transition: color 0.3s ease 0.1s;
-  }
-
   .btn--primary::before {
     background: var(--color-primary-contrast);
   }
 
-  .btn--primary:hover,
+  .btn--primary span,
+  .btn--primary i,
+  .btn--primary svg,
+  .btn--primary > * {
+    transition: color 0.3s ease 0.1s;
+  }
+
+  .btn--primary:hover {
+    color: var(--color-primary);
+  }
+
   .btn--primary:hover span,
   .btn--primary:hover i,
+  .btn--primary:hover svg,
   .btn--primary:hover > * {
     color: var(--color-primary);
   }
 
   .btn--primary:not(:hover) span,
   .btn--primary:not(:hover) i,
+  .btn--primary:not(:hover) svg,
   .btn--primary:not(:hover) > * {
     transition-delay: 0s;
   }
 
-  /* Secondary Button - Light background with border, dark text → Dark fill, light text */
+  /* ==========================================================================
+     Secondary Button
+     Transparent with border, fills on hover
+     ========================================================================== */
   .btn--secondary {
     color: var(--color-text);
     background: transparent;
     border: var(--button-border-width) solid var(--color-border);
   }
 
-  .btn--secondary span,
-  .btn--secondary i,
-  .btn--secondary * {
-    transition: color 0.3s ease 0.1s;
-  }
-
   .btn--secondary::before {
     background: var(--color-text);
   }
 
-  .btn--secondary:hover,
+  .btn--secondary span,
+  .btn--secondary i,
+  .btn--secondary svg,
+  .btn--secondary > * {
+    transition: color 0.3s ease 0.1s;
+  }
+
+  .btn--secondary:hover {
+    color: var(--color-background);
+    border-color: var(--color-text);
+  }
+
   .btn--secondary:hover span,
   .btn--secondary:hover i,
-  .btn--secondary:hover * {
+  .btn--secondary:hover svg,
+  .btn--secondary:hover > * {
     color: var(--color-background);
   }
 
   .btn--secondary:not(:hover) span,
   .btn--secondary:not(:hover) i,
-  .btn--secondary:not(:hover) * {
+  .btn--secondary:not(:hover) svg,
+  .btn--secondary:not(:hover) > * {
     transition-delay: 0s;
   }
 
-  /* Full width modifier */
+  /* ==========================================================================
+     Outline Button
+     Primary color border/text, fills with primary on hover
+     ========================================================================== */
+  .btn--outline {
+    color: var(--color-primary);
+    background: transparent;
+    border: var(--button-border-width) solid var(--color-primary);
+  }
+
+  .btn--outline::before {
+    background: var(--color-primary);
+  }
+
+  .btn--outline span,
+  .btn--outline i,
+  .btn--outline svg,
+  .btn--outline > * {
+    transition: color 0.3s ease 0.1s;
+  }
+
+  .btn--outline:hover {
+    color: var(--color-primary-contrast);
+  }
+
+  .btn--outline:hover span,
+  .btn--outline:hover i,
+  .btn--outline:hover svg,
+  .btn--outline:hover > * {
+    color: var(--color-primary-contrast);
+  }
+
+  .btn--outline:not(:hover) span,
+  .btn--outline:not(:hover) i,
+  .btn--outline:not(:hover) svg,
+  .btn--outline:not(:hover) > * {
+    transition-delay: 0s;
+  }
+
+  /* ==========================================================================
+     Tertiary Button (Ghost)
+     Text only, no background or border
+     ========================================================================== */
+  .btn--tertiary {
+    color: var(--color-text);
+    background: transparent;
+    border: var(--button-border-width) solid transparent;
+    box-shadow: none;
+  }
+
+  .btn--tertiary::before {
+    background: var(--color-text);
+    opacity: 0.1;
+  }
+
+  .btn--tertiary:hover {
+    color: var(--color-text);
+  }
+
+  /* ==========================================================================
+     Size Modifiers - Heights match corresponding input sizes
+     ========================================================================== */
+
+  /* Extra Small - 32px height, matches input--xs */
+  .btn--xs {
+    height: 2rem;
+    padding: 0 1rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.1em;
+  }
+
+  /* Small - 38px height, matches input--sm */
+  .btn--sm {
+    height: 2.375rem;
+    padding: 0 1.25rem;
+    font-size: 0.6875rem;
+    letter-spacing: 0.12em;
+  }
+
+  /* Medium/Default - 44px height, matches input default */
+  .btn--md {
+    height: 2.75rem;
+  }
+
+  /* Large - 52px height, matches input--lg */
+  .btn--lg {
+    height: 3.25rem;
+    padding: 0 2.25rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Icon button - square with equal padding */
+  .btn--icon {
+    padding: 0.75rem;
+    aspect-ratio: 1;
+  }
+
+  .btn--icon.btn--sm {
+    padding: 0.5rem;
+  }
+
+  .btn--icon.btn--lg {
+    padding: 1rem;
+  }
+
+  /* ==========================================================================
+     Layout Modifiers
+     ========================================================================== */
+
+  /* Full width */
   .btn--full {
     width: 100%;
   }
 
-  /* Small button modifier */
-  .btn--sm {
-    padding: 0.625rem 1rem;
-    font-size: 0.6875rem;
+  /* Rounded/Pill shape */
+  .btn--rounded {
+    border-radius: 9999px;
   }
 
-  /* Large button modifier */
-  .btn--lg {
-    padding: 1.5rem 2.5rem;
-    font-size: 0.875rem;
-  }
+  /* ==========================================================================
+     States
+     ========================================================================== */
 
-  /* Disabled state */
+  /* Disabled */
   .btn:disabled,
   .btn[disabled],
-  .btn.disabled {
+  .btn.is-disabled {
     opacity: 0.5;
     cursor: not-allowed;
     pointer-events: none;
   }
 
-  .btn--primary:disabled,
-  .btn--primary[disabled],
-  .btn--primary.disabled {
-    background: var(--color-text-secondary);
-    border-color: var(--color-text-secondary);
-    color: var(--color-background);
+  /* Loading - shows spinner, hides text */
+  .btn.is-loading {
+    color: transparent !important;
+    pointer-events: none;
+  }
+
+  .btn.is-loading::after {
+    content: '';
+    position: absolute;
+    width: 1em;
+    height: 1em;
+    border: 2px solid currentColor;
+    border-right-color: transparent;
+    border-radius: 50%;
+    animation: btn-spin 0.6s linear infinite;
+    z-index: 2;
+  }
+
+  .btn--primary.is-loading::after {
+    border-color: var(--color-primary-contrast);
+    border-right-color: transparent;
+  }
+
+  .btn--secondary.is-loading::after,
+  .btn--tertiary.is-loading::after {
+    border-color: var(--color-text);
+    border-right-color: transparent;
+  }
+
+  .btn--outline.is-loading::after {
+    border-color: var(--color-primary);
+    border-right-color: transparent;
+  }
+
+  @keyframes btn-spin {
+    to { transform: rotate(360deg); }
+  }
+
+  /* ==========================================================================
+     Section Color Variants
+     Use within sections that set --section-bg and --section-text
+     ========================================================================== */
+
+  /* Secondary button that respects section colors */
+  .btn--section {
+    color: var(--section-text, var(--color-text));
+    border-color: color-mix(in srgb, var(--section-text, var(--color-text)) 30%, transparent);
+  }
+
+  .btn--section::before {
+    background: var(--section-text, var(--color-text));
+  }
+
+  .btn--section:hover {
+    color: var(--section-bg, var(--color-background));
+    border-color: var(--section-text, var(--color-text));
+  }
+
+  .btn--section:hover span,
+  .btn--section:hover i,
+  .btn--section:hover svg,
+  .btn--section:hover > * {
+    color: var(--section-bg, var(--color-background));
+  }
+
+  /* ==========================================================================
+     Link CTA - Standalone text link with arrow
+     ========================================================================== */
+  .link-cta {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.75rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-decoration: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .link-cta:hover {
+    opacity: 0.7;
+  }
+
+  .link-cta i,
+  .link-cta svg {
+    transition: transform 0.3s ease;
+  }
+
+  .link-cta:hover i,
+  .link-cta:hover svg {
+    transform: translateX(4px);
   }
 
   /* ==========================================================================
      Text Hover Reveal Effect
      Usage: Add .text-hover-reveal to parent, wrap text in <span data-hover="Text">Text</span>
      ========================================================================== */
-
   .text-hover-reveal {
     overflow: hidden;
   }
@@ -162,30 +382,6 @@
 
   .text-hover-reveal:hover span {
     transform: translateY(-100%);
-  }
-
-  /* Link variant - for standalone link CTAs */
-  .link-cta {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-decoration: none;
-    transition: opacity 0.3s ease;
-  }
-
-  .link-cta:hover {
-    opacity: 0.7;
-  }
-
-  .link-cta i {
-    transition: transform 0.3s ease;
-  }
-
-  .link-cta:hover i {
-    transform: translateX(4px);
   }
 
   /* Link CTA with text hover reveal */
@@ -210,7 +406,8 @@
     transform: translateY(-100%);
   }
 
-  .link-cta--reveal:hover i {
+  .link-cta--reveal:hover i,
+  .link-cta--reveal:hover svg {
     transform: translateX(4px);
   }
 }

@@ -123,40 +123,40 @@
       {%- comment -%} Quantity and Add to Cart {%- endcomment -%}
       <div class="mt-auto">
         <div class="flex items-center gap-3 mb-3">
-          <div class="inline-flex items-center rounded-[--input-radius] border border-[--color-border] overflow-hidden" data-qty-wrapper>
+          <div class="inline-flex items-center rounded-[--input-radius] border border-[--color-border] overflow-hidden h-[2.375rem]" data-qty-wrapper>
             <button
               type="button"
-              class="w-11 h-11 flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
+              class="w-9 h-full flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
               data-qty-minus
               aria-label="{{ 'products.product.decrease_quantity' | t }}"
             >
-              <i class="ph ph-minus text-sm"></i>
+              <i class="ph ph-minus text-xs"></i>
             </button>
-            <div class="w-12 h-11 flex items-center justify-center">
+            <div class="w-10 h-full flex items-center justify-center">
               <input
                 type="number"
                 id="quick-view-quantity"
                 name="quantity"
                 value="1"
                 min="1"
-                class="w-full h-full text-center text-base font-semibold bg-transparent !border-0 text-[--color-text] focus:outline-none"
+                class="w-full h-full text-center text-sm font-semibold bg-transparent !border-0 text-[--color-text] focus:outline-none"
                 data-qty-input
               >
             </div>
             <button
               type="button"
-              class="w-11 h-11 flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
+              class="w-9 h-full flex items-center justify-center bg-transparent border-none cursor-pointer text-[--color-text] transition-all duration-300 hover:bg-[--color-primary] hover:text-[--color-primary-contrast] active:scale-95"
               data-qty-plus
               aria-label="{{ 'products.product.increase_quantity' | t }}"
             >
-              <i class="ph ph-plus text-sm"></i>
+              <i class="ph ph-plus text-xs"></i>
             </button>
           </div>
 
           {%- comment -%} Add to Cart Button {%- endcomment -%}
           <button
             type="submit"
-            class="btn btn--primary flex-1 !h-[2.75rem]"
+            class="btn btn--primary btn--sm flex-1"
             {% unless current_variant.available %}disabled{% endunless %}
           >
             <span data-add-text>

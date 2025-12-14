@@ -37,38 +37,20 @@
       --btn-text: {{ btn_text }};
     }
 
-    #newsletter-popup-wrapper .btn-primary {
-      position: relative;
+    /* Override primary button colors with popup theme settings */
+    #newsletter-popup-wrapper .btn--primary {
       background-color: var(--btn-bg);
       color: var(--btn-text);
       border-color: var(--btn-bg);
-      overflow: hidden;
     }
 
-    #newsletter-popup-wrapper .btn-primary::before {
-      content: '';
-      position: absolute;
-      inset: 0;
+    #newsletter-popup-wrapper .btn--primary::before {
       background: var(--btn-text);
-      transform: scaleX(0);
-      transform-origin: right;
-      transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-      z-index: 0;
-      pointer-events: none;
     }
 
-    #newsletter-popup-wrapper .btn-primary:hover::before {
-      transform: scaleX(1);
-      transform-origin: left;
-    }
-
-    #newsletter-popup-wrapper .btn-primary:hover {
+    #newsletter-popup-wrapper .btn--primary:hover,
+    #newsletter-popup-wrapper .btn--primary:hover span {
       color: var(--btn-bg);
-    }
-
-    #newsletter-popup-wrapper .btn-primary span {
-      position: relative;
-      z-index: 1;
     }
 
     {% unless settings.popup_show_mobile %}
@@ -147,7 +129,7 @@
           <input type="hidden" name="contact[tags]" value="newsletter,popup">
           <button
             type="submit"
-            class="btn-primary w-full py-3.5 px-6 text-[13px] font-semibold tracking-wider cursor-pointer"
+            class="btn btn--primary btn--full"
           >
             <span>{{ settings.popup_button_text }}</span>
           </button>

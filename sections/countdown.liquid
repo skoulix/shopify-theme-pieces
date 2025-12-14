@@ -120,9 +120,15 @@
     font-weight: 600;
     letter-spacing: 0.1em;
     text-transform: uppercase;
+    {% if section.settings.button_style == 'solid' %}
+    color: {{ section.settings.background_color }};
+    background: {{ section.settings.text_color }};
+    border: var(--button-border-width) solid {{ section.settings.text_color }};
+    {% else %}
     color: {{ section.settings.text_color }};
     background: transparent;
     border: var(--button-border-width) solid {{ section.settings.text_color }};
+    {% endif %}
     box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     overflow: hidden;
@@ -133,7 +139,11 @@
     content: '';
     position: absolute;
     inset: 0;
+    {% if section.settings.button_style == 'solid' %}
+    background: {{ section.settings.background_color }};
+    {% else %}
     background: {{ section.settings.text_color }};
+    {% endif %}
     transform: scaleX(0);
     transform-origin: right;
     transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
@@ -147,7 +157,11 @@
   }
 
   .countdown-cta-{{ section.id }} .btn:hover {
+    {% if section.settings.button_style == 'solid' %}
+    color: {{ section.settings.text_color }};
+    {% else %}
     color: {{ section.settings.background_color }};
+    {% endif %}
   }
 
   .countdown-cta-{{ section.id }} .btn span,
@@ -1052,6 +1066,17 @@
       "label": "Email placeholder",
       "default": "Enter your email",
       "info": "Placeholder text for email input (email form only)"
+    },
+    {
+      "type": "select",
+      "id": "button_style",
+      "label": "Button style",
+      "options": [
+        { "value": "outline", "label": "Outline" },
+        { "value": "solid", "label": "Solid" }
+      ],
+      "default": "outline",
+      "info": "Not applicable to minimal design"
     },
     {
       "type": "header",

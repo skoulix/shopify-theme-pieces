@@ -30,7 +30,7 @@
 
   {%- case layout -%}
     {%- when 'inline' -%}
-      <div class="newsletter-form newsletter-form--inline flex flex-col sm:flex-row gap-3">
+      <div class="newsletter-form newsletter-form--inline input-group flex-col sm:flex-row">
         <div class="flex-1">
           <label for="{{ form_id }}-email" class="sr-only">{{ 'newsletter.label' | t | default: 'Email address' }}</label>
           <input
@@ -41,13 +41,13 @@
             placeholder="{{ placeholder }}"
             autocomplete="email"
             aria-describedby="{{ form_id }}-status"
-            class="newsletter-form__input w-full h-12 px-4 rounded-[--input-radius] bg-[--color-background] border border-[--color-border] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+            class="input input--full"
             {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
           >
         </div>
         <button
           type="submit"
-          class="btn btn--{{ button_style }} h-12 px-6 whitespace-nowrap"
+          class="btn btn--{{ button_style }}"
         >
           <span data-button-text>{{ button_text }}</span>
           <span data-loading-text class="hidden">
@@ -68,13 +68,13 @@
             placeholder="{{ placeholder }}"
             autocomplete="email"
             aria-describedby="{{ form_id }}-status"
-            class="newsletter-form__input w-full h-12 px-4 rounded-[--input-radius] bg-[--color-background] border border-[--color-border] text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+            class="input input--full"
             {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
           >
         </div>
         <button
           type="submit"
-          class="btn btn--{{ button_style }} w-full h-12"
+          class="btn btn--{{ button_style }} btn--full"
         >
           <span data-button-text>{{ button_text }}</span>
           <span data-loading-text class="hidden">
@@ -94,12 +94,12 @@
           placeholder="{{ placeholder }}"
           autocomplete="email"
           aria-describedby="{{ form_id }}-status"
-          class="newsletter-form__input flex-1 min-w-0 h-10 px-4 rounded-l-[--input-radius] border border-r-0 border-[--color-border] bg-transparent text-[--color-text] placeholder:text-[--color-text-secondary] focus:outline-none focus:border-[--color-primary] transition-colors"
+          class="input input--sm flex-1 min-w-0 rounded-r-none border-r-0"
           {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
         >
         <button
           type="submit"
-          class="h-10 px-4 rounded-r-[--input-radius] border border-[--color-border] bg-transparent text-[--color-text] hover:bg-[--color-text] hover:text-[--color-background] transition-colors"
+          class="btn btn--secondary btn--sm btn--icon rounded-l-none"
           aria-label="{{ button_text }}"
         >
           <i class="ph ph-arrow-right text-lg" aria-hidden="true"></i>

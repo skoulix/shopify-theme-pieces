@@ -215,7 +215,7 @@
         {%- comment -%} Multiple variants - go to product page {%- endcomment -%}
         <a
           href="{{ product_url }}"
-          class="btn btn--secondary w-full !py-2.5 !px-4 !text-xs text-center"
+          class="btn btn--secondary w-full text-center"
           aria-label="{{ 'products.product.select_options' | t }}: {{ product.title }}"
         >
           <span>{{ 'products.product.select_options' | t }}</span>
@@ -224,7 +224,7 @@
         {%- comment -%} Single variant - direct add to cart {%- endcomment -%}
         <button
           type="button"
-          class="btn btn--primary w-full !py-2.5 !px-4 !text-xs"
+          class="btn btn--primary w-full"
           data-quick-add="{{ first_available_variant.id }}"
           aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}"
         >

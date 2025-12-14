@@ -61,11 +61,11 @@
           required
           placeholder="{{ 'customers.register.email' | t }}"
           autocomplete="email"
-          class="min-w-0 flex-auto rounded-md px-3.5 py-2.5 text-sm placeholder:opacity-70 focus:outline-none transition-colors"
-          style="background-color: transparent; color: {{ text_color }}; border: 1px solid {{ text_color }}40; caret-color: {{ text_color }};"
+          class="input input--sm min-w-0 flex-auto placeholder:opacity-70"
+          style="background-color: transparent; color: {{ text_color }}; border-color: {{ text_color }}40; caret-color: {{ text_color }};"
         >
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <button type="submit" class="btn newsletter-btn flex-none !py-2.5 !px-5 !text-xs">
+        <button type="submit" class="btn btn--sm newsletter-btn flex-none">
           <span>{{ button_text | default: 'Subscribe' }}</span>
         </button>
       </div>
