@@ -23,6 +23,7 @@
   .cart-quantity-input { width: 100%; height: 100%; text-align: center; font-size: 1rem; font-weight: 600; background: transparent; border: none !important; border-width: 0 !important; color: var(--color-text); -moz-appearance: textfield; outline: none; }
   .cart-quantity-input::-webkit-outer-spin-button, .cart-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
   .cart-quantity-input:focus { outline: none; border: none !important; }
+  .cart-quantity:focus-within { border-color: var(--color-primary); }
   .cart-quantity.is-changing .cart-quantity-input { animation: cartQuantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
   @keyframes cartQuantityPop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
   .cart-wrapper.is-updating { cursor: wait; }

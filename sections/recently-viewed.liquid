@@ -65,7 +65,7 @@
     <div class="{% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% else %}flex items-end justify-between gap-6{% endif %} mb-12 lg:mb-16">
       <div data-tween-group="recently-viewed-header-{{ section.id }}">
         {% if section.settings.label != blank %}
-          <span class="inline-block text-[0.75rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-tween data-tween-type="fade-up">
+          <span class="section-label mb-4" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
           </span>
         {% endif %}

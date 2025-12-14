@@ -266,6 +266,10 @@
   border: none !important;
 }
 
+.cart-drawer__quantity:focus-within {
+  border-color: var(--color-primary);
+}
+
 .cart-drawer__quantity.is-changing .cart-drawer__quantity-input {
   animation: drawerQuantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
 }

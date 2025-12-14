@@ -109,7 +109,7 @@
     {%- comment -%} Badges - outside the link {%- endcomment -%}
     <div class="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
       {% if product.compare_at_price > product.price and settings.show_sale_badge %}
-        <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-sale] text-white rounded">
+        <span class="badge badge--sale">
           {% if settings.sale_badge_style == 'percentage' %}
             {%- assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round -%}
             -{{ save_percent }}%
@@ -120,7 +120,7 @@
       {% endif %}
       {% unless product.available %}
         {% if settings.show_sold_out_badge %}
-          <span class="inline-block px-2 py-1 text-xs font-semibold bg-[--color-text] text-[--color-background] rounded">
+          <span class="badge badge--soldout">
             {{ 'products.product.sold_out' | t }}
           </span>
         {% endif %}
@@ -180,12 +180,12 @@
   {%- comment -%} Content area with link {%- endcomment -%}
   <a href="{{ product_url }}" class="product-card-content flex-1 p-4 bg-[--color-background] block no-underline"{% if animate_image %} data-tween data-tween-type="fade-up"{% endif %}>
     {% if show_vendor and product.vendor != blank %}
-      <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
+      <p class="product-card-vendor card-meta overflow-hidden">
         <span class="inline-block">{{ product.vendor }}</span>
       </p>
     {% endif %}
 
-    <h3 class="product-card-title mt-2 text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading">
+    <h3 class="product-card-title card-title mt-2">
       {%- assign title_words = product.title | split: ' ' -%}
       {%- for word in title_words -%}
         <span class="overflow-hidden inline-block"><span class="inline-block">{{ word }}</span></span>{% unless forloop.last %} {% endunless %}

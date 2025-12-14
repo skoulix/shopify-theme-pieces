@@ -44,7 +44,7 @@
 <section class="contact-section-{{ section.id }} py-[--page-vertical-padding]" data-contact-wrapper>
   <header class="mb-12 lg:mb-16 {{ container_class }} {{ text_align }}" data-tween-group="contact-header-{{ section.id }}" data-tween-start="top bottom">
     {% if section.settings.label != blank %}
-      <span class="inline-block text-[0.75rem] font-semibold uppercase tracking-[0.2em] opacity-60 mb-4" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
+      <span class="section-label mb-4" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
     {% endif %}
 
     {% if heading != blank %}

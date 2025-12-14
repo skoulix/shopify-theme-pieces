@@ -118,7 +118,7 @@
     {% case layout_style %}
 
       {% when 'metro' %}
-        <div class="collection-metro grid gap-1 {{ container_class }}" data-collection-content>
+        <div class="collection-metro grid gap-1 {{ container_class }}" data-collection-content aria-live="polite" aria-busy="false">
           {% for product in collection.products %}
             {%- liquid
               assign item_class = 'metro-item-normal'
@@ -176,7 +176,7 @@
         </div>
 
       {% else %}
-        <div class="collection-grid grid gap-8 {{ container_class }}" data-collection-content>
+        <div class="collection-grid grid gap-8 {{ container_class }}" data-collection-content aria-live="polite" aria-busy="false">
           {% for product in collection.products %}
             {% render 'product-card', product: product, collection: collection, index: forloop.index0 %}
             {% unless forloop.last %}
@@ -277,6 +277,10 @@
       loadingSpan.classList.add('inline-flex');
       this.disabled = true;
 
+      // Set aria-busy for screen readers
+      const contentContainer = wrapper.querySelector('[data-collection-content]');
+      if (contentContainer) contentContainer.setAttribute('aria-busy', 'true');
+
       try {
         // Fetch the next page
         const response = await fetch(nextUrl);
@@ -335,6 +339,9 @@
           if (window.pieces && window.pieces.lenis) {
             window.pieces.lenis.resize();
           }
+
+          // Clear aria-busy after content loaded
+          if (contentContainer) contentContainer.setAttribute('aria-busy', 'false');
         }
       } catch (error) {
         console.error('Error loading more products:', error);
@@ -343,6 +350,8 @@
         loadingSpan.classList.add('hidden');
         loadingSpan.classList.remove('inline-flex');
         this.disabled = false;
+        // Clear aria-busy on error
+        if (contentContainer) contentContainer.setAttribute('aria-busy', 'false');
       }
     });
   }
