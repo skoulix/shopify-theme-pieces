@@ -93,7 +93,17 @@
   /* Error state */
   .input.is-error,
   .input:invalid:not(:placeholder-shown) {
-    border-color: var(--color-sale, #ef4444);
+    border-color: var(--color-error, #ef4444);
+  }
+
+  /* Success state */
+  .input.is-success {
+    border-color: var(--color-success, #22c55e);
+  }
+
+  /* Warning state */
+  .input.is-warning {
+    border-color: var(--color-warning, #f59e0b);
   }
 
   /* ==========================================================================

@@ -77,6 +77,12 @@
     --color-border: {{ settings.color_border }};
     --color-sale: {{ settings.color_sale }};
 
+    /* Status Colors */
+    --color-success: #22c55e;
+    --color-error: #ef4444;
+    --color-warning: #f59e0b;
+    --color-info: #3b82f6;
+
     /* Layout */
     --page-max-width: {{ settings.page_width }}px;
     --page-padding: 24px;
@@ -149,41 +155,10 @@
     color: var(--color-primary);
   }
 
-  /* Buttons - Base */
+  /* Button uppercase setting - applied to all button variants */
   .btn,
-  .btn-primary,
-  .btn--primary,
-  .btn-secondary,
-  .btn--secondary,
   button[type="submit"] {
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
-  }
-
-  /* Buttons - Primary */
-  .btn-primary,
-  button[type="submit"]:not(.btn-secondary) {
-    background-color: var(--color-primary);
-    color: var(--color-primary-contrast);
-    border: var(--button-border-width) solid var(--color-primary);
-    border-radius: var(--button-radius);
-    box-shadow: var(--button-shadow);
-  }
-
-  .btn-primary:hover,
-  button[type="submit"]:not(.btn-secondary):hover {
-    opacity: 0.9;
-  }
-
-  /* Buttons - Secondary */
-  .btn-secondary {
-    background-color: transparent;
-    color: var(--color-text);
-    border: var(--button-border-width) solid var(--color-border);
-    border-radius: var(--button-radius);
-  }
-
-  .btn-secondary:hover {
-    background-color: var(--color-background-secondary);
   }
 
   /* Section links */

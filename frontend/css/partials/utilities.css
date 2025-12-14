@@ -370,15 +370,15 @@
 }
 
 .toast--success .toast__icon {
-  color: #22c55e;
+  color: var(--color-success, #22c55e);
 }
 
 .toast--error .toast__icon {
-  color: #ef4444;
+  color: var(--color-error, #ef4444);
 }
 
 .toast--info .toast__icon {
-  color: #3b82f6;
+  color: var(--color-info, #3b82f6);
 }
 
 .toast__message {
