@@ -250,7 +250,7 @@
           quickAddBtn.disabled = false;
           if (addingText) addingText.classList.add('hidden');
           if (addText) addText.classList.remove('hidden');
-          console.error('Error adding to cart:', err);
+          toast.error('Could not add to cart. Please try again.');
         }
       });
     </script>

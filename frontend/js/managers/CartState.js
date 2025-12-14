@@ -71,9 +71,7 @@ class CartState {
       }
       return null;
     } catch (error) {
-      if (error.name === 'AbortError') {
-        console.warn('Cart fetch timed out');
-      }
+      // Silently handle timeout/abort errors - cart will retry on next interaction
       return null;
     }
   }
