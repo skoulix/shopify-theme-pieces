@@ -40,10 +40,7 @@
     display: none;
   }
 
-  /* Focus visible for accessibility */
-  :focus-visible {
-    @apply outline-2 outline-offset-2 outline-indigo-600;
-  }
+  /* Focus visible for accessibility - handled in accessibility.liquid snippet */
 
   /* Hide number input spinners globally */
   input[type="number"]::-webkit-outer-spin-button,

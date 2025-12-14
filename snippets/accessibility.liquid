@@ -22,11 +22,11 @@
     box-shadow: 0 0 0 4px rgba(var(--color-primary-rgb, 0, 0, 0), 0.2);
   }
 
-  /* Input focus states */
+  /* Input focus states - use border change instead of outline */
   input:focus-visible,
   select:focus-visible,
   textarea:focus-visible {
-    outline-offset: -1px;
+    outline: none;
     border-color: var(--color-primary);
   }
 
@@ -36,17 +36,18 @@
   }
 
   /* Card/interactive element focus - only show on keyboard navigation */
-  .product-card:focus-within:has(:focus-visible),
-  [data-tween]:focus-within:has(:focus-visible) {
+  /* Only apply to product cards, not general data-tween elements which may contain forms */
+  .product-card:focus-within:has(:focus-visible) {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
 
   /* Ensure no outline on mouse click for elements that might not support :focus-visible well */
-  *:focus {
+  /* Exclude form elements which have their own focus styles */
+  *:focus:not(input):not(textarea):not(select) {
     outline: none;
   }
-  *:focus-visible {
+  *:focus-visible:not(input):not(textarea):not(select) {
     outline: 2px solid var(--color-primary);
     outline-offset: 2px;
   }
