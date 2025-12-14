@@ -214,7 +214,7 @@
     border-color: {{ section.settings.text_color }};
   }
 
-  .countdown-form-btn-{{ section.id }} {
+  button.countdown-form-btn-{{ section.id }} {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -227,13 +227,13 @@
     text-transform: uppercase;
     white-space: nowrap;
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.background_color }};
-    background: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }} !important;
+    background-color: {{ section.settings.text_color }} !important;
     {% else %}
-    color: {{ section.settings.text_color }};
-    background: transparent;
+    color: {{ section.settings.text_color }} !important;
+    background-color: transparent !important;
     {% endif %}
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }};
+    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }} !important;
     box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     cursor: pointer;
@@ -241,7 +241,7 @@
     transition: color 0.4s ease;
   }
 
-  .countdown-form-btn-{{ section.id }}::before {
+  button.countdown-form-btn-{{ section.id }}::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -257,21 +257,21 @@
     pointer-events: none;
   }
 
-  .countdown-form-btn-{{ section.id }}:hover::before {
+  button.countdown-form-btn-{{ section.id }}:hover::before {
     transform: scaleX(1);
     transform-origin: left;
   }
 
-  .countdown-form-btn-{{ section.id }}:hover {
+  button.countdown-form-btn-{{ section.id }}:hover {
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.text_color }};
+    color: {{ section.settings.text_color }} !important;
     {% else %}
-    color: {{ section.settings.background_color }};
+    color: {{ section.settings.background_color }} !important;
     {% endif %}
   }
 
-  .countdown-form-btn-{{ section.id }} span,
-  .countdown-form-btn-{{ section.id }} i {
+  button.countdown-form-btn-{{ section.id }} span,
+  button.countdown-form-btn-{{ section.id }} i {
     position: relative;
     z-index: 1;
   }
@@ -524,7 +524,7 @@
     border-color: {{ section.settings.text_color }};
   }
 
-  .countdown-form-btn-{{ section.id }} {
+  button.countdown-form-btn-{{ section.id }} {
     position: relative;
     display: inline-flex;
     align-items: center;
@@ -537,13 +537,13 @@
     text-transform: uppercase;
     white-space: nowrap;
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.background_color }};
-    background: {{ section.settings.text_color }};
+    color: {{ section.settings.background_color }} !important;
+    background-color: {{ section.settings.text_color }} !important;
     {% else %}
-    color: {{ section.settings.text_color }};
-    background: transparent;
+    color: {{ section.settings.text_color }} !important;
+    background-color: transparent !important;
     {% endif %}
-    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }};
+    border: var(--button-border-width, 1px) solid {{ section.settings.text_color }} !important;
     box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ section.settings.text_color }}{% else %}none{% endcase %};
     border-radius: var(--button-radius, 4px);
     cursor: pointer;
@@ -551,7 +551,7 @@
     transition: color 0.4s ease;
   }
 
-  .countdown-form-btn-{{ section.id }}::before {
+  button.countdown-form-btn-{{ section.id }}::before {
     content: '';
     position: absolute;
     inset: 0;
@@ -567,20 +567,20 @@
     pointer-events: none;
   }
 
-  .countdown-form-btn-{{ section.id }}:hover::before {
+  button.countdown-form-btn-{{ section.id }}:hover::before {
     transform: scaleX(1);
     transform-origin: left;
   }
 
-  .countdown-form-btn-{{ section.id }}:hover {
+  button.countdown-form-btn-{{ section.id }}:hover {
     {% if section.settings.button_style == 'solid' %}
-    color: {{ section.settings.text_color }};
+    color: {{ section.settings.text_color }} !important;
     {% else %}
-    color: {{ section.settings.background_color }};
+    color: {{ section.settings.background_color }} !important;
     {% endif %}
   }
 
-  .countdown-form-btn-{{ section.id }} span {
+  button.countdown-form-btn-{{ section.id }} span {
     position: relative;
     z-index: 1;
   }
