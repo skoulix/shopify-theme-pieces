@@ -541,7 +541,7 @@
               style="display: none;"
               {{ block.shopify_attributes }}
             >
-              <h3 class="text-[0.75rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</h3>
+              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</p>
               {%- comment -%} Skeleton Loading State {%- endcomment -%}
               <div class="flex flex-col gap-3" data-complementary-loading data-tween data-tween-type="fade-up">
                 {% for i in (1..block.settings.products_to_show) %}

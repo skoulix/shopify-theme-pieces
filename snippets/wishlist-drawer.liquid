@@ -208,7 +208,7 @@
 <div class="wishlist-drawer__overlay" data-wishlist-overlay></div>
 
 {%- comment -%} Drawer {%- endcomment -%}
-<aside class="wishlist-drawer" data-wishlist-drawer aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title" inert>
+<div class="wishlist-drawer" data-wishlist-drawer aria-hidden="true" role="dialog" aria-modal="true" aria-labelledby="wishlist-drawer-title" inert>
   <header class="wishlist-drawer__header">
     <h2 id="wishlist-drawer-title" class="wishlist-drawer__title">
       <i class="ph ph-heart text-lg" aria-hidden="true"></i>
@@ -231,7 +231,7 @@
       <span>{{ 'products.wishlist.view_all' | t | default: 'View All Saved Items' }}</span>
     </a>
   </footer>
-</aside>
+</div>
 
 <script data-swup-ignore-script>
 (function() {
