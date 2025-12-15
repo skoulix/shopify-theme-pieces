@@ -1,46 +1,10 @@
 {%- comment -%}
   Newsletter Design 1: Side by Side
   Title on left, form on right (stacks on mobile)
+  Colors inherited from color scheme via CSS variables
 {%- endcomment -%}
 
-<style>
-  .newsletter-side-by-side .newsletter-btn {
-    position: relative;
-    color: {{ text_color }};
-    background: transparent;
-    border: 1px solid {{ text_color }};
-    overflow: hidden;
-    transition: color 0.4s ease;
-  }
-
-  .newsletter-side-by-side .newsletter-btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: {{ text_color }};
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 0;
-    pointer-events: none;
-  }
-
-  .newsletter-side-by-side .newsletter-btn:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
-  }
-
-  .newsletter-side-by-side .newsletter-btn:hover {
-    color: {{ background_color }};
-  }
-
-  .newsletter-side-by-side .newsletter-btn span {
-    position: relative;
-    z-index: 1;
-  }
-</style>
-
-<div class="newsletter-side-by-side py-[--section-vertical-padding]" style="background-color: {{ background_color }}; color: {{ text_color }};" data-tween-group="newsletter-side-by-side">
+<div class="newsletter-side-by-side py-[--section-vertical-padding] bg-[--color-background] text-[--color-text]" data-tween-group="newsletter-side-by-side">
   <div class="page-container grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-8 lg:items-center">
     <div class="lg:col-span-7">
       {% if title != blank %}
@@ -63,11 +27,10 @@
           required
           placeholder="{{ 'customers.register.email' | t }}"
           autocomplete="email"
-          class="input input--sm min-w-0 flex-auto placeholder:opacity-70"
-          style="background-color: transparent; color: {{ text_color }}; border-color: {{ text_color }}40; caret-color: {{ text_color }};"
+          class="input input--sm min-w-0 flex-auto placeholder:opacity-70 bg-transparent text-[--color-text] border-[--color-border]"
         >
         <input type="hidden" name="contact[tags]" value="newsletter">
-        <button type="submit" class="btn btn--sm newsletter-btn flex-none">
+        <button type="submit" class="btn btn--sm btn--secondary flex-none">
           <span>{{ button_text | default: 'Subscribe' }}</span>
         </button>
       </div>

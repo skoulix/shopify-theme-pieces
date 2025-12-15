@@ -25,16 +25,6 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
-  .contact-section-{{ section.id }} {
-    --section-bg: {{ bg_color }};
-    --section-text: {{ text_color }};
-    background-color: var(--section-bg);
-    color: var(--section-text);
-  }
   .contact-header-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
   @media (min-width: 1024px) { .contact-header-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .contact-header-title { font-size: calc(clamp(4.5rem, 6vw, 8rem) * var(--heading-font-scale, 1)); } }
@@ -42,10 +32,10 @@
   .contact-header-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
   .contact-header-title .tween-split-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
   .contact-form-input { transition: border-color 0.3s ease, box-shadow 0.3s ease; }
-  .contact-form-input:focus { box-shadow: 0 0 0 2px rgba(var(--color-primary-rgb, 79, 70, 229), 0.1); }
+  .contact-form-input:focus { box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent); }
 </style>
 
-<section class="contact-section-{{ section.id }} py-[--page-vertical-padding]" data-contact-wrapper>
+<section class="contact-section-{{ section.id }} color-{{ section.settings.color_scheme }} py-[--page-vertical-padding]" data-contact-wrapper>
   <header class="mb-12 lg:mb-16 {{ container_class }} {{ text_align }}" data-tween-group="contact-header-{{ section.id }}" data-tween-start="top bottom">
     {% if section.settings.label != blank %}
       <span class="section-label mb-4" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
@@ -269,16 +259,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [

@@ -50,54 +50,64 @@
     ]
   },
   {
-    "name": "Colors",
+    "name": "Color schemes",
     "settings": [
       {
-        "type": "header",
-        "content": "Base colors"
-      },
-      {
-        "type": "color",
-        "id": "color_background",
-        "label": "Background",
-        "default": "#ffffff"
-      },
-      {
-        "type": "color",
-        "id": "color_background_secondary",
-        "label": "Secondary background",
-        "default": "#f9fafb",
-        "info": "Used for cards, inputs, and alternate sections"
-      },
-      {
-        "type": "color",
-        "id": "color_text",
-        "label": "Text",
-        "default": "#111827"
-      },
-      {
-        "type": "color",
-        "id": "color_text_secondary",
-        "label": "Secondary text",
-        "default": "#6b7280"
-      },
-      {
-        "type": "header",
-        "content": "Accent colors"
-      },
-      {
-        "type": "color",
-        "id": "color_primary",
-        "label": "Primary accent",
-        "default": "#4f46e5",
-        "info": "Used for buttons, links, and highlights"
-      },
-      {
-        "type": "color",
-        "id": "color_primary_contrast",
-        "label": "Primary contrast",
-        "default": "#ffffff",
-        "info": "Text color on primary buttons"
+        "type": "color_scheme_group",
+        "id": "color_schemes",
+        "definition": [
+          {
+            "type": "color",
+            "id": "background",
+            "label": "Background",
+            "default": "#ffffff"
+          },
+          {
+            "type": "color",
+            "id": "text",
+            "label": "Text",
+            "default": "#111827"
+          },
+          {
+            "type": "color",
+            "id": "text_secondary",
+            "label": "Secondary text",
+            "default": "#6b7280"
+          },
+          {
+            "type": "color",
+            "id": "primary",
+            "label": "Primary / Accent",
+            "default": "#4f46e5"
+          },
+          {
+            "type": "color",
+            "id": "primary_contrast",
+            "label": "Primary contrast",
+            "default": "#ffffff",
+            "info": "Text color on primary buttons"
+          },
+          {
+            "type": "color",
+            "id": "border",
+            "label": "Border",
+            "default": "#e5e7eb"
+          }
+        ],
+        "role": {
+          "text": "text",
+          "background": {
+            "solid": "background"
+          },
+          "links": "primary",
+          "icons": "text",
+          "primary_button": "primary",
+          "on_primary_button": "primary_contrast",
+          "primary_button_border": "primary",
+          "secondary_button": "background",
+          "on_secondary_button": "text",
+          "secondary_button_border": "border"
+        }
       },
       {
         "type": "header",
@@ -105,14 +115,8 @@
       },
       {
         "type": "color",
-        "id": "color_border",
-        "label": "Border",
-        "default": "#e5e7eb"
-      },
-      {
-        "type": "color",
         "id": "color_sale",
-        "label": "Sale",
+        "label": "Sale badge",
         "default": "#dc2626"
       }
     ]

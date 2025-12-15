@@ -12,13 +12,38 @@
     "logo": "shopify://shop_images/logoipsum-356.svg",
     "logo_width": 120,
     "logo_width_mobile": 100,
-    "color_background": "#ffffff",
-    "color_background_secondary": "#f9fafb",
-    "color_text": "#111827",
-    "color_text_secondary": "#6b7280",
-    "color_primary": "#4f46e5",
-    "color_primary_contrast": "#ffffff",
-    "color_border": "#e5e7eb",
+    "color_schemes": {
+      "scheme-1": {
+        "settings": {
+          "background": "#ffffff",
+          "text": "#111827",
+          "text_secondary": "#6b7280",
+          "primary": "#4f46e5",
+          "primary_contrast": "#ffffff",
+          "border": "#e5e7eb"
+        }
+      },
+      "scheme-2": {
+        "settings": {
+          "background": "#f9fafb",
+          "text": "#111827",
+          "text_secondary": "#6b7280",
+          "primary": "#4f46e5",
+          "primary_contrast": "#ffffff",
+          "border": "#e5e7eb"
+        }
+      },
+      "scheme-3": {
+        "settings": {
+          "background": "#111827",
+          "text": "#f9fafb",
+          "text_secondary": "#9ca3af",
+          "primary": "#818cf8",
+          "primary_contrast": "#111827",
+          "border": "#374151"
+        }
+      }
+    },
     "color_sale": "#dc2626",
     "type_body_font": "inter_n4",
     "type_header_font": "inter_n6",
@@ -61,13 +86,38 @@
   },
   "presets": {
     "Default": {
-      "color_background": "#ffffff",
-      "color_background_secondary": "#f9fafb",
-      "color_text": "#111827",
-      "color_text_secondary": "#6b7280",
-      "color_primary": "#4f46e5",
-      "color_primary_contrast": "#ffffff",
-      "color_border": "#e5e7eb",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#ffffff",
+            "text": "#111827",
+            "text_secondary": "#6b7280",
+            "primary": "#4f46e5",
+            "primary_contrast": "#ffffff",
+            "border": "#e5e7eb"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#f9fafb",
+            "text": "#111827",
+            "text_secondary": "#6b7280",
+            "primary": "#4f46e5",
+            "primary_contrast": "#ffffff",
+            "border": "#e5e7eb"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#111827",
+            "text": "#f9fafb",
+            "text_secondary": "#9ca3af",
+            "primary": "#818cf8",
+            "primary_contrast": "#111827",
+            "border": "#374151"
+          }
+        }
+      },
       "color_sale": "#dc2626",
       "type_body_font": "inter_n4",
       "type_header_font": "inter_n6",
@@ -87,13 +137,38 @@
       "cart_type": "drawer"
     },
     "Soft": {
-      "color_background": "#faf7f5",
-      "color_background_secondary": "#f5f0ed",
-      "color_text": "#3d3d3d",
-      "color_text_secondary": "#737373",
-      "color_primary": "#e8a4b8",
-      "color_primary_contrast": "#ffffff",
-      "color_border": "#e8e0db",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#faf7f5",
+            "text": "#3d3d3d",
+            "text_secondary": "#737373",
+            "primary": "#e8a4b8",
+            "primary_contrast": "#ffffff",
+            "border": "#e8e0db"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#f5f0ed",
+            "text": "#3d3d3d",
+            "text_secondary": "#737373",
+            "primary": "#e8a4b8",
+            "primary_contrast": "#ffffff",
+            "border": "#e8e0db"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#3d3d3d",
+            "text": "#faf7f5",
+            "text_secondary": "#c0b8b2",
+            "primary": "#e8a4b8",
+            "primary_contrast": "#3d3d3d",
+            "border": "#5a5a5a"
+          }
+        }
+      },
       "color_sale": "#e57373",
       "type_body_font": "nunito_sans_n4",
       "type_header_font": "poppins_n5",
@@ -113,13 +188,38 @@
       "cart_type": "drawer"
     },
     "Luxury": {
-      "color_background": "#0f0f0f",
-      "color_background_secondary": "#1a1a1a",
-      "color_text": "#f5f5f5",
-      "color_text_secondary": "#a0a0a0",
-      "color_primary": "#c9a961",
-      "color_primary_contrast": "#0f0f0f",
-      "color_border": "#2a2a2a",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#0f0f0f",
+            "text": "#f5f5f5",
+            "text_secondary": "#a0a0a0",
+            "primary": "#c9a961",
+            "primary_contrast": "#0f0f0f",
+            "border": "#2a2a2a"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#1a1a1a",
+            "text": "#f5f5f5",
+            "text_secondary": "#a0a0a0",
+            "primary": "#c9a961",
+            "primary_contrast": "#0f0f0f",
+            "border": "#2a2a2a"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#f5f5f5",
+            "text": "#0f0f0f",
+            "text_secondary": "#5a5a5a",
+            "primary": "#c9a961",
+            "primary_contrast": "#0f0f0f",
+            "border": "#d0d0d0"
+          }
+        }
+      },
       "color_sale": "#c9a961",
       "type_body_font": "tenor_sans_n4",
       "type_header_font": "playfair_display_n4",
@@ -139,13 +239,38 @@
       "cart_type": "drawer"
     },
     "Brutalist": {
-      "color_background": "#ffffff",
-      "color_background_secondary": "#f0f0f0",
-      "color_text": "#000000",
-      "color_text_secondary": "#666666",
-      "color_primary": "#0000ff",
-      "color_primary_contrast": "#ffffff",
-      "color_border": "#000000",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#ffffff",
+            "text": "#000000",
+            "text_secondary": "#666666",
+            "primary": "#0000ff",
+            "primary_contrast": "#ffffff",
+            "border": "#000000"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#f0f0f0",
+            "text": "#000000",
+            "text_secondary": "#666666",
+            "primary": "#0000ff",
+            "primary_contrast": "#ffffff",
+            "border": "#000000"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#000000",
+            "text": "#ffffff",
+            "text_secondary": "#aaaaaa",
+            "primary": "#ffff00",
+            "primary_contrast": "#000000",
+            "border": "#ffffff"
+          }
+        }
+      },
       "color_sale": "#ff0000",
       "type_body_font": "ibm_plex_mono_n4",
       "type_header_font": "archivo_black_n4",
@@ -165,13 +290,38 @@
       "cart_type": "notification"
     },
     "Organic": {
-      "color_background": "#f7f4ef",
-      "color_background_secondary": "#ebe6dd",
-      "color_text": "#2c3e2d",
-      "color_text_secondary": "#5a6b5b",
-      "color_primary": "#7c9a6e",
-      "color_primary_contrast": "#ffffff",
-      "color_border": "#d4cfc4",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#f7f4ef",
+            "text": "#2c3e2d",
+            "text_secondary": "#5a6b5b",
+            "primary": "#7c9a6e",
+            "primary_contrast": "#ffffff",
+            "border": "#d4cfc4"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#ebe6dd",
+            "text": "#2c3e2d",
+            "text_secondary": "#5a6b5b",
+            "primary": "#7c9a6e",
+            "primary_contrast": "#ffffff",
+            "border": "#d4cfc4"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#2c3e2d",
+            "text": "#f7f4ef",
+            "text_secondary": "#b8c4b1",
+            "primary": "#a8c99a",
+            "primary_contrast": "#2c3e2d",
+            "border": "#4a5e4b"
+          }
+        }
+      },
       "color_sale": "#a85d32",
       "type_body_font": "source_sans_pro_n4",
       "type_header_font": "libre_baskerville_n4",
@@ -191,13 +341,38 @@
       "cart_type": "drawer"
     },
     "Tech": {
-      "color_background": "#0d1117",
-      "color_background_secondary": "#161b22",
-      "color_text": "#e6edf3",
-      "color_text_secondary": "#8b949e",
-      "color_primary": "#00d9ff",
-      "color_primary_contrast": "#0d1117",
-      "color_border": "#30363d",
+      "color_schemes": {
+        "scheme-1": {
+          "settings": {
+            "background": "#0d1117",
+            "text": "#e6edf3",
+            "text_secondary": "#8b949e",
+            "primary": "#00d9ff",
+            "primary_contrast": "#0d1117",
+            "border": "#30363d"
+          }
+        },
+        "scheme-2": {
+          "settings": {
+            "background": "#161b22",
+            "text": "#e6edf3",
+            "text_secondary": "#8b949e",
+            "primary": "#00d9ff",
+            "primary_contrast": "#0d1117",
+            "border": "#30363d"
+          }
+        },
+        "scheme-3": {
+          "settings": {
+            "background": "#e6edf3",
+            "text": "#0d1117",
+            "text_secondary": "#57606a",
+            "primary": "#0066cc",
+            "primary_contrast": "#ffffff",
+            "border": "#d0d7de"
+          }
+        }
+      },
       "color_sale": "#ff6b6b",
       "type_body_font": "roboto_mono_n4",
       "type_header_font": "space_grotesk_n6",

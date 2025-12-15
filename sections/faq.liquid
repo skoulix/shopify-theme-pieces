@@ -12,13 +12,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .faq-section-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -35,11 +29,11 @@
   }
 
   .faq-section-{{ section.id }} .faq-item {
-    border-bottom: 1px solid {{ text_color }}15;
+    border-bottom: 1px solid var(--color-border);
   }
 
   .faq-section-{{ section.id }} .faq-item:first-child {
-    border-top: 1px solid {{ text_color }}15;
+    border-top: 1px solid var(--color-border);
   }
 
   .faq-section-{{ section.id }} .faq-question {
@@ -74,7 +68,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    border: 1px solid {{ text_color }}30;
+    border: 1px solid var(--color-border);
     border-radius: 50%;
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
   }
@@ -85,8 +79,8 @@
   }
 
   .faq-section-{{ section.id }} .faq-item[open] .faq-icon {
-    background-color: {{ text_color }};
-    color: {{ bg_color }};
+    background-color: var(--color-text);
+    color: var(--color-background);
   }
 
   .faq-section-{{ section.id }} .faq-item[open] .faq-icon i {
@@ -125,7 +119,7 @@
   .tween-split-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
 </style>
 
-<section class="faq-section-{{ section.id }}" data-faq-section="{{ section.id }}">
+<section class="faq-section-{{ section.id }} color-{{ section.settings.color_scheme }}" data-faq-section="{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
@@ -328,16 +322,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

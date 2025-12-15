@@ -1,23 +1,17 @@
 {%- comment -%}
   Newsletter Section - Standalone newsletter signup
   Three design options: side-by-side, stacked, card
+  Colors inherited from color scheme via CSS variables
   Animations handled by global TweenManager via data-tween attributes in snippets
 {%- endcomment -%}
 
-{%- liquid
-  assign bg_color = section.settings.background_color | default: 'transparent'
-  assign text_color = section.settings.text_color | default: 'inherit'
--%}
-
-<section class="newsletter-section">
+<section class="newsletter-section color-{{ section.settings.color_scheme }}">
   {% case section.settings.design %}
     {% when 'side-by-side' %}
       {% render 'newsletter-side-by-side',
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: bg_color,
-        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -28,8 +22,6 @@
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: bg_color,
-        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -40,9 +32,6 @@
         title: section.settings.title,
         text: section.settings.text,
         button_text: section.settings.button_text,
-        background_color: bg_color,
-        card_color: section.settings.card_color,
-        text_color: text_color,
         privacy_text: section.settings.privacy_text,
         privacy_link: section.settings.privacy_link,
         privacy_link_text: section.settings.privacy_link_text
@@ -115,21 +104,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
-    },
-    {
-      "type": "color",
-      "id": "card_color",
-      "default": "#111111",
-      "label": "Card color",
-      "info": "Only used with Card design"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [

@@ -15,13 +15,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .features-grid-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -246,7 +240,7 @@
 </style>
 
 <section
-  class="features-grid-{{ section.id }}"
+  class="features-grid-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-features-grid-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -412,14 +406,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",

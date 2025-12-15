@@ -56,6 +56,25 @@
 -%}
 
 <style>
+  /* ==========================================================================
+     Color Scheme CSS Variables
+     Generates classes for each color scheme that sections can use
+     ========================================================================== */
+
+  {% for scheme in settings.color_schemes -%}
+    {% if forloop.index == 1 -%}
+      :root,
+    {%- endif %}
+    .color-{{ scheme.id }} {
+      --color-background: {{ scheme.settings.background }};
+      --color-text: {{ scheme.settings.text }};
+      --color-text-secondary: {{ scheme.settings.text_secondary }};
+      --color-primary: {{ scheme.settings.primary }};
+      --color-primary-contrast: {{ scheme.settings.primary_contrast }};
+      --color-border: {{ scheme.settings.border }};
+    }
+  {% endfor %}
+
   :root {
     /* Typography */
     --font-body: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
@@ -67,14 +86,7 @@
     --body-font-scale: {{ body_font_scale }};
     --heading-font-scale: {{ heading_font_scale }};
 
-    /* Colors */
-    --color-background: {{ settings.color_background }};
-    --color-background-secondary: {{ settings.color_background_secondary }};
-    --color-text: {{ settings.color_text }};
-    --color-text-secondary: {{ settings.color_text_secondary }};
-    --color-primary: {{ settings.color_primary }};
-    --color-primary-contrast: {{ settings.color_primary_contrast }};
-    --color-border: {{ settings.color_border }};
+    /* Global UI colors (not part of schemes) */
     --color-sale: {{ settings.color_sale }};
 
     /* Status Colors */
@@ -106,6 +118,12 @@
 
     /* Logo */
     --logo-width: {{ settings.logo_width_mobile | default: 80 }}px;
+  }
+
+  /* Color scheme sections apply background and text colors */
+  [class*="color-scheme-"] {
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   @media (min-width: 1024px) {
