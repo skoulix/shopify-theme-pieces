@@ -173,10 +173,14 @@
             track.innerHTML = newTrack.innerHTML;
             totalSlides = track.children.length;
 
-            // Reinitialize tween animations for dynamically loaded product cards
-            if (window.pieces?.tween) {
-              window.pieces.tween.reinit();
-            }
+            // Remove tween attributes from dynamically loaded content
+            // (they cause opacity: 0 issues when loaded after page init)
+            track.querySelectorAll('[data-tween]').forEach(el => {
+              el.removeAttribute('data-tween');
+              el.removeAttribute('data-tween-type');
+              el.style.opacity = '1';
+              el.style.transform = 'none';
+            });
 
             loading.style.display = 'none';
             track.style.display = 'flex';
