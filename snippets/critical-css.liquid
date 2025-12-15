@@ -69,8 +69,8 @@
   .text-2xl { font-size: 1.5rem; line-height: 2rem; }
   .font-bold { font-weight: 700; }
   .font-semibold { font-weight: 600; }
-  .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
-  .duration-300 { transition-duration: 300ms; }
+  .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: var(--duration-fast, 150ms); }
+  .duration-300 { transition-duration: var(--duration-normal, 300ms); }
   .pointer-events-none { pointer-events: none; }
 
   /* Responsive hidden/shown */

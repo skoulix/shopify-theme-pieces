@@ -1,4 +1,5 @@
 import { cartState } from './CartState.js';
+import { DEBOUNCE } from '../utils/constants.js';
 
 /**
  * CartPageManager - Handles cart page functionality
@@ -92,7 +93,7 @@ class CartPageManager {
         clearTimeout(this.noteTimeout);
         this.noteTimeout = setTimeout(() => {
           cartState.updateNote(e.target.value);
-        }, 500);
+        }, DEBOUNCE.cartNote);
       });
     }
   }

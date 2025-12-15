@@ -4,6 +4,7 @@
  */
 
 import { safeLocalStorage } from '../utils/storage.js';
+import { DURATION, DEBOUNCE } from '../utils/constants.js';
 
 // Debounce helper
 function debounce(fn, wait) {
@@ -32,7 +33,7 @@ class FacetFiltersForm extends HTMLElement {
     }
 
     // Bind methods
-    this.boundHandlers.onFormChange = debounce(this.onFormChange.bind(this), 500);
+    this.boundHandlers.onFormChange = debounce(this.onFormChange.bind(this), DEBOUNCE.search);
     this.boundHandlers.onActiveFilterClick = this.onActiveFilterClick.bind(this);
     this.boundHandlers.onKeydown = this.onKeydown.bind(this);
     this.boundHandlers.onPopState = this.onPopState.bind(this);
@@ -289,7 +290,7 @@ class FacetFiltersForm extends HTMLElement {
       if (window.pieces?.lenis) {
         window.pieces.lenis.start();
       }
-    }, 300);
+    }, DURATION.normal);
 
     // Update button state
     const openBtn = this.querySelector('[data-facets-open]');

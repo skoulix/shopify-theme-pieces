@@ -1,6 +1,7 @@
 import { lenisManager } from './LenisManager.js';
 import { cartState } from './CartState.js';
 import { createFocusTrap } from '../utils/dom.js';
+import { DURATION, DEBOUNCE, TIMEOUT } from '../utils/constants.js';
 
 /**
  * CartDrawerManager - Handles cart drawer functionality
@@ -67,7 +68,7 @@ class CartDrawerManager {
     if (statusEl) {
       statusEl.textContent = message;
       // Clear after announcement to allow repeated messages
-      setTimeout(() => { statusEl.textContent = ''; }, 1000);
+      setTimeout(() => { statusEl.textContent = ''; }, TIMEOUT.announcement);
     }
   }
 
@@ -205,7 +206,7 @@ class CartDrawerManager {
     clearTimeout(this.noteTimeout);
     this.noteTimeout = setTimeout(() => {
       cartState.updateNote(e.target.value);
-    }, 500);
+    }, DEBOUNCE.cartNote);
   }
 
   /**
@@ -261,12 +262,12 @@ class CartDrawerManager {
     document.dispatchEvent(new CustomEvent('cart:opened'));
     document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: cartState.get() } }));
 
-    // Wait for CSS transition to complete (300ms)
+    // Wait for CSS transition to complete
     setTimeout(() => {
       this.isAnimating = false;
       // Create focus trap for accessibility
       this.focusTrap = createFocusTrap(this.panel);
-    }, 300);
+    }, DURATION.normal);
   }
 
   /**
@@ -289,7 +290,7 @@ class CartDrawerManager {
     // The drawer-container class delays visibility:hidden until after transition
     this.drawer.classList.remove('is-open');
 
-    // Wait for CSS transition to complete (300ms)
+    // Wait for CSS transition to complete
     setTimeout(() => {
       // Use inert instead of aria-hidden to properly handle focus
       this.drawer.setAttribute('inert', '');
@@ -304,7 +305,7 @@ class CartDrawerManager {
         this.previouslyFocused.focus();
         this.previouslyFocused = null;
       }
-    }, 300);
+    }, DURATION.normal);
   }
 
   /**

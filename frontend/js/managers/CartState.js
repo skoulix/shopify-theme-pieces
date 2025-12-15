@@ -1,4 +1,5 @@
 import { toast } from '../utils/toast.js';
+import { TIMEOUT } from '../utils/constants.js';
 
 /**
  * CartState - Global cart state management
@@ -9,7 +10,7 @@ class CartState {
     this.cart = null;
     this.listeners = new Set();
     this.isUpdating = false;
-    this.requestTimeout = 8000; // 8 second timeout
+    this.requestTimeout = TIMEOUT.cartFetch;
   }
 
   /**

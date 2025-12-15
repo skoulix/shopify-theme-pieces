@@ -3,6 +3,8 @@
  * Provides user-friendly error/success notifications
  */
 
+import { DURATION, TIMEOUT } from './constants.js';
+
 class ToastManager {
   constructor() {
     this.container = null;
@@ -91,7 +93,7 @@ class ToastManager {
     // Remove after animation
     setTimeout(() => {
       toast.remove();
-    }, 300);
+    }, DURATION.normal);
   }
 
   /**
