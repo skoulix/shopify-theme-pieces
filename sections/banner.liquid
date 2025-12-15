@@ -28,9 +28,7 @@
     background-color: var(--color-background);
     color: var(--color-text);
     border-radius: {{ card_radius }}px;
-    {% if card_border_width > 0 %}
-    border: {{ card_border_width }}px solid var(--color-border);
-    {% endif %}
+    border: 1px solid var(--color-border);
     {% if card_shadow != 'none' %}
     box-shadow: {{ card_shadow }};
     {% endif %}
@@ -188,7 +186,7 @@
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "Color scheme",
-      "default": "scheme-1"
+      "default": "scheme-3"
     },
     {
       "type": "header",
