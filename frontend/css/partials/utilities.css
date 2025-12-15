@@ -184,6 +184,12 @@
   gap: 0.5rem;
   grid-column: 2;
   padding-bottom: 0.75rem;
+  padding-right: 0.5rem;
+}
+
+/* Remove right padding when card has no border (mobile) */
+.collection-wrapper[data-view="list"][data-card-no-border] .product-card-list-buttons-mobile {
+  padding-right: 0;
 }
 
 .collection-wrapper[data-view="list"] .product-card-list-actions-mobile {
@@ -217,7 +223,13 @@
     flex-direction: column;
     gap: 0.5rem;
     padding: 0;
+    padding-right: 0.5rem;
     background: transparent;
+  }
+
+  /* Remove right padding when card has no border */
+  .collection-wrapper[data-view="list"][data-card-no-border] .product-card-quick-add {
+    padding-right: 0;
   }
 
   .collection-wrapper[data-view="list"] .product-card-quick-add > a,
@@ -251,6 +263,13 @@
 /* List view dividers when card has no border */
 .collection-wrapper[data-view="list"][data-card-no-border] .collection-grid {
   gap: 0;
+}
+
+/* Add left padding on mobile when card has border so image doesn't touch edges */
+@media (max-width: 767px) {
+  .collection-wrapper[data-view="list"]:not([data-card-no-border]) .product-card {
+    padding-left: 0.5rem;
+  }
 }
 
 .collection-wrapper[data-view="list"][data-card-no-border] .product-card {
