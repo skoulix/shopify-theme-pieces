@@ -63,6 +63,12 @@
             "default": "#ffffff"
           },
           {
+            "type": "color_background",
+            "id": "background_gradient",
+            "label": "Background gradient",
+            "info": "Optional gradient that overrides the background color"
+          },
+          {
             "type": "color",
             "id": "text",
             "label": "Text",
@@ -97,7 +103,8 @@
         "role": {
           "text": "text",
           "background": {
-            "solid": "background"
+            "solid": "background",
+            "gradient": "background_gradient"
           },
           "links": "primary",
           "icons": "text",
