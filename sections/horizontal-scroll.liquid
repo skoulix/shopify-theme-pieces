@@ -8,13 +8,9 @@
 {%- endcomment -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .hscroll-section-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   /* Blurred background layer */
@@ -46,10 +42,10 @@
     inset: 0;
     background: linear-gradient(
       to right,
-      {{ bg_color }} 0%,
+      var(--color-background) 0%,
       transparent 30%,
       transparent 70%,
-      {{ bg_color }} 100%
+      var(--color-background) 100%
     );
     z-index: 1;
   }
@@ -148,13 +144,13 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.02) 100%);
+    background: var(--color-background-secondary);
   }
 
-  .hscroll-placeholder-{{ section.id }} i {
-    font-size: 4rem;
-    opacity: 0.15;
-    color: #ffffff;
+  .hscroll-placeholder-{{ section.id }} svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
   }
 
   .hscroll-item-overlay-{{ section.id }} {
@@ -207,7 +203,7 @@
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 10;
-    color: {{ text_color }};
+    color: var(--color-text);
   }
 
   .hscroll-section-{{ section.id }}.is-active .hscroll-counter-{{ section.id }} {
@@ -219,7 +215,7 @@
     bottom: 0;
     left: 0;
     height: 3px;
-    background: {{ text_color }};
+    background: var(--color-text);
     width: 0%;
     opacity: 0;
     transition: opacity 0.3s ease;
@@ -233,7 +229,7 @@
 </style>
 
 <section
-  class="hscroll-section-{{ section.id }}"
+  class="hscroll-section-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-hscroll-section="{{ section.id }}"
 >
   <div class="hscroll-wrapper-{{ section.id }}">
@@ -300,7 +296,7 @@
                 }}
               {% else %}
                 <div class="hscroll-placeholder-{{ section.id }}">
-                  <i class="ph ph-image"></i>
+                  {{ 'image' | placeholder_svg_tag }}
                 </div>
               {% endif %}
 
@@ -491,14 +487,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
     }
   ],
   "blocks": [

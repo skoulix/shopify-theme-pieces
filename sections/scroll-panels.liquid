@@ -12,14 +12,10 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .scroll-panels-{{ section.id }} {
     position: relative;
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
+    background-color: var(--color-background);
+    color: var(--color-text);
   }
 
   .scroll-panels-wrapper-{{ section.id }} {
@@ -117,50 +113,30 @@
     margin: 0 {% if section.settings.content_alignment == 'center' %}auto{% elsif section.settings.content_alignment == 'right' %}0 0 auto{% else %}0{% endif %} 2rem;
   }
 
-  .scroll-panel-button-{{ section.id }} .btn {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 2rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: {{ text_color }};
-    background: transparent;
-    border: var(--button-border-width) solid {{ text_color }};
-    border-radius: var(--button-radius, 4px);
-    box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %};
-    overflow: hidden;
-    transition: color 0.4s ease;
+  .scroll-panel-button-{{ section.id }} .btn--outline {
+    color: var(--color-text);
+    border-color: var(--color-text);
   }
-
-  .scroll-panel-button-{{ section.id }} .btn::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    background: {{ text_color }};
-    transform: scaleX(0);
-    transform-origin: right;
-    transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
-    z-index: 0;
-    pointer-events: none;
+  .scroll-panel-button-{{ section.id }} .btn--outline::before {
+    background: var(--color-text);
   }
-
-  .scroll-panel-button-{{ section.id }} .btn:hover::before {
-    transform: scaleX(1);
-    transform-origin: left;
+  .scroll-panel-button-{{ section.id }} .btn--outline:hover,
+  .scroll-panel-button-{{ section.id }} .btn--outline:hover span,
+  .scroll-panel-button-{{ section.id }} .btn--outline:hover i {
+    color: var(--color-background);
   }
-
-  .scroll-panel-button-{{ section.id }} .btn:hover {
-    color: {{ bg_color }};
+  .scroll-panel-button-{{ section.id }} .btn--primary {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
   }
-
-  .scroll-panel-button-{{ section.id }} .btn span,
-  .scroll-panel-button-{{ section.id }} .btn i {
-    position: relative;
-    z-index: 1;
+  .scroll-panel-button-{{ section.id }} .btn--primary::before {
+    background: var(--color-background);
+  }
+  .scroll-panel-button-{{ section.id }} .btn--primary:hover,
+  .scroll-panel-button-{{ section.id }} .btn--primary:hover span,
+  .scroll-panel-button-{{ section.id }} .btn--primary:hover i {
+    color: var(--color-text);
   }
 
   /* Placeholder styling */
@@ -176,7 +152,7 @@
   .scroll-panel-placeholder-{{ section.id }} i {
     font-size: 5rem;
     opacity: 0.15;
-    color: {{ text_color }};
+    color: var(--color-text);
   }
 
   /* Progress indicator */
@@ -203,7 +179,7 @@
     width: 12px;
     height: 12px;
     border-radius: 50%;
-    background: {{ text_color }};
+    background: var(--color-text);
     opacity: 0.3;
     transition: opacity 0.3s ease, transform 0.3s ease;
     cursor: pointer;
@@ -237,7 +213,7 @@
   /* Note: This section requires scroll animation to function - no reduced motion fallback */
 </style>
 
-<section class="scroll-panels-{{ section.id }}" data-scroll-panels="{{ section.id }}">
+<section class="scroll-panels-{{ section.id }} color-{{ section.settings.color_scheme }}" data-scroll-panels="{{ section.id }}">
   <div class="scroll-panels-wrapper-{{ section.id }}" data-panels-wrapper>
     <div class="scroll-panels-sticky-{{ section.id }}" data-panels-sticky>
       {% for block in section.blocks %}
@@ -286,7 +262,7 @@
 
             {% if block.settings.button_text != blank and block.settings.button_link != blank %}
               <div class="scroll-panel-button-{{ section.id }}">
-                <a href="{{ block.settings.button_link }}" class="btn">
+                <a href="{{ block.settings.button_link }}" class="btn{% if block.settings.button_style == 'solid' %} btn--primary{% else %} btn--outline{% endif %}{% if block.settings.button_size == 'large' %} btn--lg{% endif %}">
                   <span>{{ block.settings.button_text }}</span>
                   <i class="ph ph-arrow-right"></i>
                 </a>
@@ -498,14 +474,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3"
     }
   ],
   "blocks": [
@@ -539,6 +511,26 @@
           "type": "url",
           "id": "button_link",
           "label": "Button link"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "outline",
+          "options": [
+            { "value": "solid", "label": "Solid" },
+            { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "default",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
+          ]
         }
       ]
     }
