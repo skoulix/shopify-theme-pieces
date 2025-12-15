@@ -26,9 +26,13 @@
     box-shadow: var(--button-shadow);
     cursor: pointer;
     overflow: hidden;
-    transition: color 0.4s ease, border-color 0.3s ease;
+    transition: color 0.4s ease, border-color 0.3s ease, box-shadow 0.3s ease;
     text-decoration: none;
     white-space: nowrap;
+  }
+
+  .btn:hover {
+    box-shadow: var(--button-shadow-hover);
   }
 
   /* Ensure content sits above the ::before pseudo-element */

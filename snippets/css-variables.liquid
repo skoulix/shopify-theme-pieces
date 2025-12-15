@@ -30,12 +30,16 @@
   case settings.button_shadow
     when 'sm'
       assign button_shadow_value = '0 1px 2px 0 rgb(0 0 0 / 0.05)'
+      assign button_shadow_hover_value = '0 1px 2px 0 rgb(0 0 0 / 0.05)'
     when 'md'
       assign button_shadow_value = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
+      assign button_shadow_hover_value = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
     when 'hard'
-      assign button_shadow_value = '4px 4px 0 0 ' | append: settings.color_text
+      assign button_shadow_value = '4px 4px 0 0 var(--color-text)'
+      assign button_shadow_hover_value = '4px 4px 0 0 var(--color-primary)'
     else
       assign button_shadow_value = 'none'
+      assign button_shadow_hover_value = 'none'
   endcase
 
   case settings.card_shadow
@@ -107,6 +111,7 @@
     --button-radius: {{ settings.button_radius }}px;
     --button-border-width: {{ settings.button_border_width }}px;
     --button-shadow: {{ button_shadow_value }};
+    --button-shadow-hover: {{ button_shadow_hover_value }};
 
     /* Cards */
     --card-radius: {{ settings.card_radius }}px;
