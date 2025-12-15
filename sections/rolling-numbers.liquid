@@ -13,13 +13,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .rolling-numbers-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -128,8 +122,7 @@
       transform: translateY(-50%);
       width: 1px;
       height: 60%;
-      background: {{ text_color }};
-      opacity: 0.2;
+      background: var(--color-border);
     }
   }
   {% endif %}
@@ -147,7 +140,7 @@
   }
 </style>
 
-<section class="rolling-numbers-{{ section.id }}" data-rolling-numbers="{{ section.id }}">
+<section class="rolling-numbers-{{ section.id }} color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
   <div class="{{ container_class }}">
     {% if section.settings.title != blank or section.settings.subtitle != blank %}
       <header class="rolling-numbers-header-{{ section.id }}" data-tween-group="rolling-numbers-header-{{ section.id }}">
@@ -302,14 +295,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",

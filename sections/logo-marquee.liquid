@@ -12,13 +12,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .logo-marquee-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: calc(var(--section-vertical-padding) * 0.6) 0;
     overflow: hidden;
   }
@@ -59,12 +53,12 @@
 
   .logo-marquee-track-wrapper-{{ section.id }}::before {
     left: {% if section.settings.full_width %}0{% else %}clamp(1rem, 3vw, 2rem){% endif %};
-    background: linear-gradient(to right, {{ bg_color }}, transparent);
+    background: linear-gradient(to right, var(--color-background), transparent);
   }
 
   .logo-marquee-track-wrapper-{{ section.id }}::after {
     right: {% if section.settings.full_width %}0{% else %}clamp(1rem, 3vw, 2rem){% endif %};
-    background: linear-gradient(to left, {{ bg_color }}, transparent);
+    background: linear-gradient(to left, var(--color-background), transparent);
   }
 
   .logo-marquee-track-{{ section.id }} {
@@ -101,7 +95,7 @@
     max-height: 100%;
     width: auto;
     max-width: {{ section.settings.logo_max_width }}px;
-    fill: {{ text_color }};
+    fill: currentColor;
     opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
     transition: opacity 0.3s ease;
   }
@@ -117,7 +111,7 @@
     justify-content: center;
     width: {{ section.settings.logo_max_width }}px;
     height: 100%;
-    background: {{ text_color }}08;
+    background: var(--color-border);
     border-radius: 8px;
     opacity: 0.5;
   }
@@ -145,7 +139,7 @@
 </style>
 
 <section
-  class="logo-marquee-{{ section.id }}"
+  class="logo-marquee-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-logo-marquee="{{ section.id }}"
   data-direction="{{ section.settings.direction }}"
   data-speed="{{ section.settings.speed }}"
@@ -425,14 +419,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

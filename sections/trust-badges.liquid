@@ -15,17 +15,10 @@
 -%}
 
 {%- style -%}
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   #{{ section_id }} {
-    --badge-color: {{ section.settings.badge_color }};
     --badge-icon-color: {{ section.settings.icon_color }};
     padding-top: {{ section.settings.padding_top }}px;
     padding-bottom: {{ section.settings.padding_bottom }}px;
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
   }
 
   @media (min-width: 768px) {
@@ -36,7 +29,7 @@
   }
 {%- endstyle -%}
 
-<section id="{{ section_id }}" class="trust-badges">
+<section id="{{ section_id }}" class="trust-badges color-{{ section.settings.color_scheme }}">
   <div class="{{ container_class }}">
     {%- if section.settings.title != blank -%}
       <h2 class="section-label text-center mb-8" data-tween data-tween-type="fade-up">
@@ -161,14 +154,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",

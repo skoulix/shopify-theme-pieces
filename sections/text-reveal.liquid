@@ -12,13 +12,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .text-reveal-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: calc(var(--section-vertical-padding) * 1.5) 0;
     overflow: hidden;
     text-align: {{ section.settings.header_alignment }};
@@ -164,7 +158,7 @@
 </style>
 
 <section
-  class="text-reveal-{{ section.id }} relative"
+  class="text-reveal-{{ section.id }} color-{{ section.settings.color_scheme }} relative"
   data-text-reveal-section="{{ section.id }}"
 >
   {% if section.settings.show_background_number %}
@@ -416,14 +410,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",

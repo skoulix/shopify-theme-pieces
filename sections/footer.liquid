@@ -13,10 +13,6 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   {% if section.settings.enable_reveal_effect %}
   .footer-wrapper { position: fixed; bottom: 0; left: 0; right: 0; z-index: 0; }
   .site-content { position: relative; z-index: 1; background-color: var(--color-background); margin-bottom: var(--footer-height, 0px); }
@@ -34,8 +30,7 @@
 
 <div class="footer-wrapper" data-footer-wrapper>
 <footer
-  class="footer-section overflow-hidden"
-  style="--footer-bg: {{ bg_color }}; background-color: {{ bg_color }}; color: {{ text_color }};"
+  class="footer-section overflow-hidden color-{{ section.settings.color_scheme }}"
   data-footer-section
 >
   <div class="{{ container_class }} footer-content-{{ section.id }}" data-footer-content>
@@ -194,14 +189,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

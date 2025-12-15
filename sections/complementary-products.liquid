@@ -22,20 +22,12 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .complementary-section-{{ section.id }} {
-    --section-bg: {{ bg_color }};
-    --section-text: {{ text_color }};
     --card-bg: {{ section.settings.card_background_color }};
     --card-text: {{ section.settings.card_text_color }};
-    background-color: var(--section-bg);
-    color: var(--section-text);
   }
   .complementary-section-{{ section.id }} .skeleton-bg {
-    background-color: var(--section-text);
+    background-color: var(--color-text);
     opacity: 0.1;
   }
   .complementary-section-{{ section.id }} .complementary-card {
@@ -45,7 +37,7 @@
 </style>
 
 <section
-  class="complementary-section-{{ section.id }} py-[--section-vertical-padding]"
+  class="complementary-section-{{ section.id }} color-{{ section.settings.color_scheme }} py-[--section-vertical-padding]"
   data-complementary-section
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -360,16 +352,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",

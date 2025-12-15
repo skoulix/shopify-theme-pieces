@@ -14,8 +14,6 @@
   assign card_border_width = settings.card_border_width | default: 0
   assign card_shadow = settings.card_shadow | default: 'none'
 
-  assign background_color = section.settings.background_color | default: '#ffffff'
-  assign text_color = section.settings.text_color | default: '#000000'
   assign dot_color = section.settings.dot_color | default: '#000000'
   assign dot_text_color = section.settings.dot_text_color | default: '#ffffff'
 
@@ -31,14 +29,8 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .shop-the-look-{{ section.id }} {
     padding: var(--section-vertical-padding) 0;
-    background-color: {{ background_color }};
-    color: {{ text_color }};
   }
 
   .shop-the-look-header-{{ section.id }} {
@@ -169,13 +161,14 @@
   }
 
   .shop-the-look-product-{{ section.id }}:hover {
-    border-color: {{ text_color }}40;
+    border-color: var(--color-text);
+    opacity: 0.9;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
   }
 
   .shop-the-look-product-{{ section.id }}.is-highlighted {
-    background-color: {{ text_color }}05;
-    border-color: {{ text_color }}40;
+    background-color: var(--color-background-secondary, rgba(0,0,0,0.03));
+    border-color: var(--color-border);
   }
 
   .shop-the-look-product-image-{{ section.id }} {
@@ -215,8 +208,7 @@
     margin-top: 2rem;
     padding: 1.5rem;
     border-radius: {{ card_radius }}px;
-    background-color: {{ text_color }}08;
-    color: {{ text_color }};
+    background-color: var(--color-background-secondary, rgba(0,0,0,0.03));
     {% if card_border_width > 0 %}
     border: {{ card_border_width }}px solid var(--color-border);
     {% endif %}
@@ -249,7 +241,7 @@
 </style>
 
 <section
-  class="shop-the-look-{{ section.id }}"
+  class="shop-the-look-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-shop-the-look-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -804,16 +796,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

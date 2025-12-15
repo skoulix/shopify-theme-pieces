@@ -11,13 +11,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .timeline-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
   }
 
@@ -44,7 +38,7 @@
     top: 0;
     bottom: 0;
     width: 2px;
-    background: {{ text_color }}15;
+    background: var(--color-border);
   }
 
   @media (min-width: 768px) {
@@ -97,8 +91,8 @@
     width: 18px;
     height: 18px;
     border-radius: 50%;
-    background: {{ bg_color }};
-    border: 3px solid {{ text_color }}30;
+    background: var(--color-background);
+    border: 3px solid var(--color-border);
     z-index: 2;
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -203,7 +197,7 @@
 </style>
 
 <section
-  class="timeline-{{ section.id }}"
+  class="timeline-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-timeline-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -391,14 +385,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",

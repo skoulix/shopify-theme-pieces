@@ -16,13 +16,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .testimonials-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
     overflow: hidden;
   }
@@ -194,8 +188,8 @@
     height: 48px;
     border-radius: 50%;
     background: transparent;
-    border: 1px solid {{ text_color }}30;
-    color: {{ text_color }};
+    border: 1px solid var(--color-border);
+    color: var(--color-text);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -204,8 +198,8 @@
   }
 
   .testimonials-nav-btn-{{ section.id }}:hover {
-    background: {{ text_color }};
-    color: {{ bg_color }};
+    background: var(--color-text);
+    color: var(--color-background);
   }
 
   .testimonials-nav-btn-{{ section.id }}:disabled {
@@ -215,7 +209,7 @@
 
   .testimonials-nav-btn-{{ section.id }}:disabled:hover {
     background: transparent;
-    color: {{ text_color }};
+    color: var(--color-text);
   }
 
   .testimonials-dots-{{ section.id }} {
@@ -227,7 +221,7 @@
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background: {{ text_color }}30;
+    background: var(--color-border);
     border: none;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -235,7 +229,7 @@
   }
 
   .testimonials-dot-{{ section.id }}.is-active {
-    background: {{ text_color }};
+    background: var(--color-text);
     transform: scale(1.25);
   }
 
@@ -252,7 +246,7 @@
 </style>
 
 <section
-  class="testimonials-{{ section.id }}"
+  class="testimonials-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-testimonials="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -540,14 +534,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     },
     {
       "type": "color",
