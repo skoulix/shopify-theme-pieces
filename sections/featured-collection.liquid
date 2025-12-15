@@ -85,8 +85,8 @@
         </div>
 
         {% if section.settings.show_view_all and collection %}
-          <a href="{{ collection.url }}" class="fc-view-all-{{ section.id }} section-link inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] hover:opacity-100 transition-opacity duration-300">
-            <span>{{ section.settings.view_all_text }}</span>
+          <a href="{{ collection.url }}" class="fc-view-all-{{ section.id }} text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary]">
+            <span data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span>
             <span class="sr-only">{{ collection.title }}</span>
             <i class="ph ph-arrow-right" aria-hidden="true"></i>
           </a>
