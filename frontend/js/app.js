@@ -317,6 +317,12 @@ function init() {
     swupManager.clearCache('/cart');
   });
 
+  // Handle cart:refresh events from inline scripts (shop-the-look, shoppable-videos)
+  // These scripts can't import CartState so they dispatch this event after adding to cart
+  document.addEventListener('cart:refresh', () => {
+    cartState.fetch();
+  });
+
   // Handle anchor link clicks for smooth scroll
   document.addEventListener('click', (e) => {
     const anchor = e.target.closest('a[href^="#"]');

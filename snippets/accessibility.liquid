@@ -438,7 +438,7 @@ window.a11y = window.a11y || (function() {
 
 // Announce cart updates
 document.addEventListener('cart:updated', (e) => {
-  const count = e.detail?.itemCount || 0;
+  const count = e.detail?.cart?.item_count ?? e.detail?.itemCount ?? 0;
   window.a11y.announce(`Cart updated. ${count} ${count === 1 ? 'item' : 'items'} in cart.`);
 });
 
