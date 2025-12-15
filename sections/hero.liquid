@@ -4,24 +4,17 @@
   else
     assign container_class = 'page-container'
   endif
-
-  assign text_color = section.settings.text_color | default: 'inherit'
-  assign bg_color = section.settings.background_color | default: 'var(--color-background)'
 -%}
 
 <style>
-  .hero-section { height: 100dvh; max-height: 100dvh; min-height: 600px; }
-  @supports not (height: 100dvh) { .hero-section { height: 100vh; max-height: 100vh; } }
-  .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 200.0 }}) 50%, transparent 100%); z-index: 1; }
-  .hero-content { padding-bottom: clamp(3rem, 10vh, 8rem); }
-  .hero-title { font-size: calc(clamp(2.5rem, 12vw, 5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.04em; line-height: 0.85; }
-  @media (min-width: 1024px) { .hero-title { font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1)); } }
-  @media (min-width: 1536px) { .hero-title { font-size: calc(clamp(5rem, 8vw, 9rem) * var(--heading-font-scale, 1)); } }
-  .hero-subtitle { font-size: clamp(0.75rem, 1.5vw, 1rem); }
-  .hero-cta { color: {{ text_color }}; background-color: transparent; border: var(--button-border-width) solid {{ text_color }}; box-shadow: {% case settings.button_shadow %}{% when 'sm' %}0 1px 2px 0 rgb(0 0 0 / 0.05){% when 'md' %}0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1){% when 'hard' %}4px 4px 0 0 {{ text_color }}{% else %}none{% endcase %}; }
-  .hero-cta::before { content: ''; position: absolute; inset: 0; background: {{ text_color }}; transform: scaleX(0); transform-origin: right; transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; }
-  .hero-cta:hover::before { transform: scaleX(1); transform-origin: left; }
-  .hero-cta:hover, .hero-cta:hover span, .hero-cta:hover i { color: {{ bg_color }}; }
+  .hero-section-{{ section.id }} { height: 100dvh; max-height: 100dvh; min-height: 600px; }
+  @supports not (height: 100dvh) { .hero-section-{{ section.id }} { height: 100vh; max-height: 100vh; } }
+  .hero-section-{{ section.id }} .hero-media::after { content: ''; position: absolute; inset: 0; background: linear-gradient(to top, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 100.0 }}) 0%, rgba(0,0,0,{{ section.settings.overlay_opacity | divided_by: 200.0 }}) 50%, transparent 100%); z-index: 1; }
+  .hero-section-{{ section.id }} .hero-content { padding-bottom: clamp(3rem, 10vh, 8rem); }
+  .hero-section-{{ section.id }} .hero-title { font-size: calc(clamp(2.5rem, 12vw, 5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.04em; line-height: 0.85; }
+  @media (min-width: 1024px) { .hero-section-{{ section.id }} .hero-title { font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1)); } }
+  @media (min-width: 1536px) { .hero-section-{{ section.id }} .hero-title { font-size: calc(clamp(5rem, 8vw, 9rem) * var(--heading-font-scale, 1)); } }
+  .hero-section-{{ section.id }} .hero-subtitle { font-size: clamp(0.75rem, 1.5vw, 1rem); }
 
   /* Initial clip-path state for media swipe animation */
   [data-hero-section="{{ section.id }}"] [data-hero-media] {
@@ -35,7 +28,7 @@
 </style>
 
 <section
-  class="hero-section relative flex items-end overflow-hidden bg-[--color-background]"
+  class="hero-section-{{ section.id }} color-{{ section.settings.color_scheme }} relative flex items-end overflow-hidden"
   data-hero-section="{{ section.id }}"
 >
   <div class="hero-media absolute inset-0 z-0" data-hero-media>
@@ -83,7 +76,7 @@
     endcase
   -%}
   {%- comment -%} Hero content - uses global data-tween system for animations with delay after media reveal {%- endcomment -%}
-  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" style="color: {{ text_color }};" data-tween-group="hero-content-{{ section.id }}" data-tween-start="top bottom">
+  <div class="hero-content relative z-10 w-full pt-32 flex flex-col {{ align_class }} {{ container_class }}" data-tween-group="hero-content-{{ section.id }}" data-tween-start="top bottom">
     {% if section.settings.title != blank %}
       <h1 class="hero-title font-bold font-heading {{ title_align }}" data-tween data-tween-type="split-text" data-tween-delay="0.8">
         {{ section.settings.title }}
@@ -97,15 +90,15 @@
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}" class="hero-cta section-link mt-8 inline-flex items-center gap-4 py-4 px-8 text-xs font-semibold tracking-[0.15em] border-none rounded-[--button-radius] cursor-pointer relative overflow-hidden" data-tween data-tween-type="fade-up">
-        <span class="relative z-[1] transition-colors duration-400">{{ section.settings.button_text }}</span>
-        <i class="ph ph-arrow-right text-[1.25em] relative z-[1] transition-colors duration-400"></i>
+      <a href="{{ section.settings.button_link }}" class="btn btn--secondary mt-8" data-tween data-tween-type="fade-up">
+        <span>{{ section.settings.button_text }}</span>
+        <i class="ph ph-arrow-right"></i>
       </a>
     {% endif %}
   </div>
 
   {% if section.settings.show_scroll_indicator %}
-    <div class="absolute bottom-8 {{ scroll_position }} flex flex-col items-center gap-2 z-10" style="color: {{ text_color }};" data-tween data-tween-type="fade-up" data-tween-delay="1.2" data-tween-start="top bottom">
+    <div class="absolute bottom-8 {{ scroll_position }} flex flex-col items-center gap-2 z-10" data-tween data-tween-type="fade-up" data-tween-delay="1.2" data-tween-start="top bottom">
       <span class="text-[0.75rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl]">{{ 'accessibility.scroll_down' | t }}</span>
       <div class="hero-scroll-line w-px h-[60px] bg-current origin-top"></div>
     </div>
@@ -218,15 +211,11 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Button hover text color",
-      "info": "Text color when hovering over the button. Should contrast with the text color."
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-3",
+      "info": "Choose a scheme with good contrast for text over images/video"
     },
     {
       "type": "header",

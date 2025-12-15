@@ -648,12 +648,12 @@ The color scheme provides these CSS variables automatically:
 **When to keep individual color settings:**
 
 Some sections legitimately need individual `background_color` and `text_color` settings:
-- Sections with button hover states that swap text/background colors
-- Sections with overlay opacity controls
+- Sections with multiple overlay colors (separate from background)
 - Sections with gradient masks using the background color
-- Full-screen sections with image overlays needing contrast control
+- Sections with per-block or per-panel colors
+- Complex scroll-based sections with layered effects
 
-Examples: hero, video, countdown, banner, floating-images, horizontal-scroll, scroll-panels
+Examples: hero-orbit, video, shoppable-videos, countdown, horizontal-scroll, scroll-panels, stacking-cards, pinned-image-reveal
 
 ### Global Theme Settings to Respect
 
