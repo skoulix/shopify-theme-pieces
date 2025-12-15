@@ -9,13 +9,15 @@
  */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {}
-    },
     "contact_form": {
       "type": "contact-form",
       "settings": {
+        "label": "",
+        "title": "Contact",
+        "description": "Have a question or want to work together? Drop us a message and we'll get back to you as soon as possible.",
+        "enable_description_shuffle": true,
+        "text_alignment": "left",
+        "full_width": false,
         "color_scheme": "scheme-1"
       }
     },
@@ -45,9 +47,27 @@
           }
         }
       },
-      "block_order": ["address", "hours", "contact"],
+      "block_order": [
+        "address",
+        "hours",
+        "contact"
+      ],
       "settings": {
-        "color_scheme": "scheme-1"
+        "label": "Visit Us",
+        "title": "Our Location",
+        "header_alignment": "left",
+        "location_name": "Our Store",
+        "address": "123 Main Street\nNew York, NY 10001",
+        "latitude": "40.7128",
+        "longitude": "-74.0060",
+        "zoom": 14,
+        "show_popup": true,
+        "map_height": 450,
+        "border_radius": 16,
+        "marker_color": "#000000",
+        "grayscale": false,
+        "full_width": false,
+        "color_scheme": "scheme-2"
       }
     },
     "faq": {
@@ -82,20 +102,36 @@
           }
         }
       },
-      "block_order": ["faq_1", "faq_2", "faq_3", "faq_4"],
+      "block_order": [
+        "faq_1",
+        "faq_2",
+        "faq_3",
+        "faq_4"
+      ],
       "settings": {
-        "color_scheme": "scheme-2"
+        "full_width": false,
+        "label": "Support",
+        "title": "Frequently Asked Questions",
+        "description": "Find answers to common questions about our products and services.",
+        "header_alignment": "left",
+        "color_scheme": "scheme-1"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
+        "design": "side-by-side",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
+        "button_text": "Subscribe",
+        "privacy_text": "We care about your data. Read our",
+        "privacy_link": "",
+        "privacy_link_text": "privacy policy",
         "color_scheme": "scheme-2"
       }
     }
   },
   "order": [
-    "hero",
     "contact_form",
     "map",
     "faq",
