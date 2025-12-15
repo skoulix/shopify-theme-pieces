@@ -107,7 +107,7 @@
       {% endif %}
 
       {% if blog.previous_article or blog.next_article %}
-        <nav class="grid grid-cols-2 gap-8 mt-16 pt-16 border-t border-[--color-border]">
+        <nav class="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-8 mt-16 pt-16 border-t border-[--color-border]">
           {% if blog.previous_article %}
             <a href="{{ blog.previous_article.url }}" class="flex flex-col gap-2 no-underline group">
               <span class="text-hover-reveal text-[0.75rem] font-semibold tracking-[0.15em] text-[--color-text-secondary] flex items-center gap-2">
@@ -117,11 +117,11 @@
               <span class="text-base font-semibold text-[--color-text] group-hover:text-[--color-primary] transition-colors">{{ blog.previous_article.title | truncate: 50 }}</span>
             </a>
           {% else %}
-            <div></div>
+            <div class="hidden sm:block"></div>
           {% endif %}
 
           {% if blog.next_article %}
-            <a href="{{ blog.next_article.url }}" class="flex flex-col gap-2 text-right items-end no-underline group">
+            <a href="{{ blog.next_article.url }}" class="flex flex-col gap-2 sm:text-right sm:items-end no-underline group">
               <span class="text-hover-reveal text-[0.75rem] font-semibold tracking-[0.15em] text-[--color-text-secondary] flex items-center gap-2">
                 <span data-hover="{{ 'general.next' | t }}">{{ 'general.next' | t }}</span>
                 <i class="ph ph-arrow-right" aria-hidden="true"></i>

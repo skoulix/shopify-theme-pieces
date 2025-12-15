@@ -1,0 +1,387 @@
+{%- liquid
+  if section.settings.full_width
+    assign container_class = 'page-full'
+  else
+    assign container_class = 'page-container'
+  endif
+
+  assign blog = section.settings.blog
+  assign posts_to_show = section.settings.posts_to_show
+-%}
+
+<style>
+  .fb-{{ section.id }} {
+    padding: var(--section-vertical-padding) 0;
+  }
+
+  .fb-header-{{ section.id }} {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 2rem;
+    margin-bottom: clamp(2rem, 5vh, 4rem);
+  }
+
+  .fb-header-content-{{ section.id }} {
+    text-align: {{ section.settings.header_alignment }};
+    flex: 1;
+  }
+
+  .fb-header-{{ section.id }} .section-label {
+    margin-bottom: 1.5rem;
+  }
+
+  .fb-header-{{ section.id }} .section-description {
+    margin-top: 1.5rem;
+    {% if section.settings.header_alignment == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
+    {% elsif section.settings.header_alignment == 'right' %}
+    margin-left: auto;
+    {% endif %}
+  }
+
+  .fb-view-all-{{ section.id }} {
+    flex-shrink: 0;
+    margin-top: 0.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    .fb-{{ section.id }} .fb-grid {
+      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
+    }
+  }
+
+  .fb-{{ section.id }} .blog-card-title {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.3;
+    letter-spacing: -0.01em;
+  }
+
+  .fb-{{ section.id }} .blog-card--featured .blog-card-title {
+    font-size: clamp(1.25rem, 3vw, 2rem);
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+  }
+
+  .blog-card-cta-text-wrapper {
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .blog-card-cta .blog-card-cta-text {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .blog-card-cta .blog-card-cta-text::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    white-space: nowrap;
+  }
+
+  .blog-card-cta:hover .blog-card-cta-text {
+    transform: translateY(-100%);
+  }
+</style>
+
+<section
+  class="fb-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  data-featured-blog="{{ section.id }}"
+>
+  <div class="{{ container_class }}">
+    {%- comment -%} Header {%- endcomment -%}
+    {% if section.settings.label != blank or section.settings.title != blank or blog.title != blank or section.settings.show_view_all %}
+      <div class="fb-header-{{ section.id }}">
+        <div class="fb-header-content-{{ section.id }}" data-tween-group="fb-header-{{ section.id }}">
+          {% if section.settings.label != blank %}
+            <span class="section-label" data-tween data-tween-type="fade-up">
+              {{ section.settings.label }}
+            </span>
+          {% endif %}
+
+          <h2 class="section-title font-heading" data-tween data-tween-type="split-text">
+            {% if section.settings.title != blank %}
+              {{ section.settings.title }}
+            {% else %}
+              {{ blog.title | default: 'Latest Posts' }}
+            {% endif %}
+          </h2>
+
+          {% if section.settings.description != blank %}
+            <p class="section-description" data-tween data-tween-type="fade-up">
+              {{ section.settings.description }}
+            </p>
+          {% endif %}
+        </div>
+
+        {% if section.settings.show_view_all %}
+          <a href="{{ blog.url | default: routes.blogs_url }}" class="fb-view-all-{{ section.id }} text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary]" data-tween data-tween-type="fade-up">
+            <span data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span>
+            {% if blog %}<span class="sr-only">{{ blog.title }}</span>{% endif %}
+            <i class="ph ph-arrow-right" aria-hidden="true"></i>
+          </a>
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {%- comment -%} Blog Grid {%- endcomment -%}
+    <div class="fb-grid grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">
+      {% if blog != blank %}
+        {% for article in blog.articles limit: posts_to_show %}
+          {%- assign is_featured = false -%}
+          {%- if forloop.first and section.settings.feature_first and posts_to_show > 1 -%}
+            {%- assign is_featured = true -%}
+          {%- endif -%}
+
+          <article
+            class="blog-card group flex flex-col bg-[--color-background-secondary] rounded-[--card-radius] overflow-hidden border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]{% if is_featured %} blog-card--featured col-span-full lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch{% endif %}"
+            data-blog-card="{{ forloop.index0 }}"
+          >
+            <a
+              href="{{ article.url }}"
+              class="block aspect-[16/10] overflow-hidden{% if is_featured %} lg:aspect-auto lg:h-full{% endif %}"
+              aria-label="{{ article.title }}"
+              data-tween
+              data-tween-type="clip-right"
+            >
+              {% if article.image %}
+                {{ article.image | image_url: width: 1200 | image_tag:
+                  class: 'w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105',
+                  loading: 'lazy',
+                  decoding: 'async',
+                  sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+                  widths: '400, 600, 800, 1200',
+                  alt: article.image.alt | default: article.title
+                }}
+              {% else %}
+                <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
+                  <i class="ph ph-article text-5xl text-[--color-text-secondary] opacity-30"></i>
+                </div>
+              {% endif %}
+            </a>
+
+            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween data-tween-type="fade-up">
+              {% if section.settings.show_tags and article.tags.size > 0 %}
+                <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.15em] text-[--color-text-secondary] mb-3">
+                  {{ article.tags.first }}
+                </p>
+              {% endif %}
+
+              <h3 class="blog-card-title font-bold text-[--color-text] font-heading">
+                <a href="{{ article.url }}" class="hover:text-[--color-primary] transition-colors">
+                  {{ article.title }}
+                </a>
+              </h3>
+
+              <div class="mt-2 flex items-center gap-4 text-xs text-[--color-text-secondary]">
+                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                  {{ article.published_at | date: '%b %d, %Y' }}
+                </time>
+                {% if section.settings.show_author %}
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+                    {{ article.author }}
+                  </span>
+                {% endif %}
+              </div>
+
+              {% if section.settings.show_excerpt %}
+                <p class="mt-3 text-sm leading-relaxed text-[--color-text-secondary] line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}">
+                  {{ article.excerpt_or_content | strip_html | truncate: 140 }}
+                </p>
+              {% endif %}
+
+              {% if section.settings.show_read_more %}
+                <a href="{{ article.url }}" class="blog-card-cta inline-flex items-center gap-2 mt-auto pt-4 text-xs font-semibold tracking-widest text-[--color-text] uppercase">
+                  <span class="blog-card-cta-text-wrapper"><span class="blog-card-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
+                  <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                </a>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% else %}
+        {%- comment -%} Placeholder cards when no blog selected {%- endcomment -%}
+        {% for i in (1..posts_to_show) %}
+          {%- assign placeholder_index = forloop.index | modulo: 2 | plus: 1 -%}
+          {%- assign is_featured = false -%}
+          {%- if forloop.first and section.settings.feature_first and posts_to_show > 1 -%}
+            {%- assign is_featured = true -%}
+          {%- endif -%}
+
+          <article class="blog-card group flex flex-col bg-[--color-background-secondary] rounded-[--card-radius] overflow-hidden border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]{% if is_featured %} blog-card--featured col-span-full lg:grid lg:grid-cols-2 lg:gap-0 lg:items-stretch{% endif %}">
+            <div class="aspect-[16/10] overflow-hidden{% if is_featured %} lg:aspect-auto lg:h-full{% endif %}" data-tween data-tween-type="clip-right">
+              {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full object-cover' }}
+            </div>
+            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween data-tween-type="fade-up">
+              {% if section.settings.show_tags %}
+                <p class="text-[0.6875rem] font-semibold uppercase tracking-[0.15em] text-[--color-text-secondary] mb-3">
+                  Category
+                </p>
+              {% endif %}
+              <h3 class="blog-card-title font-bold text-[--color-text] font-heading">
+                {{ 'sections.featured_blog.placeholder_title' | t }} {{ forloop.index }}
+              </h3>
+              <div class="mt-2 flex items-center gap-4 text-xs text-[--color-text-secondary]">
+                <time>{{ 'now' | date: '%b %d, %Y' }}</time>
+                {% if section.settings.show_author %}
+                  <span class="flex items-center gap-1.5">
+                    <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+                    Author
+                  </span>
+                {% endif %}
+              </div>
+              {% if section.settings.show_excerpt %}
+                <p class="mt-3 text-sm leading-relaxed text-[--color-text-secondary] line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}">
+                  {{ 'sections.featured_blog.placeholder_excerpt' | t }}
+                </p>
+              {% endif %}
+              {% if section.settings.show_read_more %}
+                <span class="blog-card-cta inline-flex items-center gap-2 mt-auto pt-4 text-xs font-semibold tracking-widest text-[--color-text] uppercase">
+                  <span class="blog-card-cta-text-wrapper"><span class="blog-card-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
+                  <i class="ph ph-arrow-right" aria-hidden="true"></i>
+                </span>
+              {% endif %}
+            </div>
+          </article>
+        {% endfor %}
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Blog",
+  "tag": "section",
+  "class": "featured-blog-wrapper",
+  "settings": [
+    {
+      "type": "blog",
+      "id": "blog",
+      "label": "Blog"
+    },
+    {
+      "type": "header",
+      "content": "Header"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "label": "Label"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "info": "Leave blank to use blog title"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_alignment",
+      "default": "left",
+      "label": "Header alignment"
+    },
+    {
+      "type": "header",
+      "content": "Posts"
+    },
+    {
+      "type": "range",
+      "id": "posts_to_show",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Posts to show"
+    },
+    {
+      "type": "range",
+      "id": "columns",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns (desktop)"
+    },
+    {
+      "type": "checkbox",
+      "id": "feature_first",
+      "default": true,
+      "label": "Feature first post",
+      "info": "Make the first post larger and span full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_tags",
+      "default": true,
+      "label": "Show category tag"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_excerpt",
+      "default": true,
+      "label": "Show excerpt"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_author",
+      "default": true,
+      "label": "Show author"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_read_more",
+      "default": true,
+      "label": "Show read more link"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_view_all",
+      "default": true,
+      "label": "Show 'View All' link"
+    },
+    {
+      "type": "text",
+      "id": "view_all_text",
+      "default": "View All",
+      "label": "View all text"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Blog",
+      "category": "Blog"
+    }
+  ]
+}
+{% endschema %}
