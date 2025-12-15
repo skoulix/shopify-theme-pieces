@@ -213,6 +213,12 @@
   .stacking-card-{{ section.id }} {
     opacity: 0;
     transform: translateY(100px) scale(0.95);
+    pointer-events: none;
+  }
+
+  /* Active card (set by JS when card becomes visible) */
+  .stacking-card-{{ section.id }}.is-active {
+    pointer-events: auto;
   }
 
   /* Note: This section requires scroll animation to function - no reduced motion fallback */
@@ -341,6 +347,16 @@
     const cards = section.querySelectorAll('[data-stacking-card]');
     const wrapper = section.querySelector('.stacking-cards-wrapper-{{ section.id }}');
     const totalCards = cards.length;
+    let activeCardIndex = -1;
+
+    // Update which card is active (for pointer events)
+    function setActiveCard(index) {
+      if (index === activeCardIndex) return;
+      activeCardIndex = index;
+      cards.forEach((card, i) => {
+        card.classList.toggle('is-active', i === index);
+      });
+    }
 
     // Title animations handled by global TweenManager via data-tween attributes
 
@@ -370,6 +386,11 @@
             y: 100 - (progress * 100),
             scale: 0.95 + (progress * 0.05)
           });
+
+          // Set this card as active when it's mostly visible
+          if (progress > 0.5) {
+            setActiveCard(cardIndex);
+          }
         }
       });
 

@@ -492,26 +492,59 @@
                 </button>
               </div>
 
-              {%- comment -%} Update global size chart drawer content {%- endcomment -%}
+              {%- comment -%} Update global size chart drawer content on open {%- endcomment -%}
+              {%- liquid
+                assign size_chart_page = block.settings.page
+                assign size_chart_content = block.settings.content
+                assign use_page = false
+                assign use_custom = false
+
+                if size_chart_page != blank
+                  assign use_page = true
+                else
+                  # For richtext, strip HTML tags and check if actual text content exists
+                  assign content_text_only = size_chart_content | strip_html | strip
+                  if content_text_only != blank
+                    assign use_custom = true
+                  endif
+                endif
+              -%}
               <script>
                 (function() {
-                  const drawer = document.getElementById('size-chart-drawer');
-                  if (!drawer) return;
+                  const heading = {{ drawer_heading | json }};
+                  {% if use_page %}
+                    const content = {{ size_chart_page.content | json }};
+                  {% elsif use_custom %}
+                    const content = {{ size_chart_content | json }};
+                  {% else %}
+                    const content = null;
+                  {% endif %}
 
-                  const titleEl = drawer.querySelector('[data-size-chart-title]');
-                  const bodyEl = drawer.querySelector('[data-size-chart-body]');
+                  function updateDrawer() {
+                    const drawer = document.getElementById('size-chart-drawer');
+                    if (!drawer) return;
 
-                  if (titleEl) {
-                    titleEl.textContent = {{ drawer_heading | json }};
+                    const titleEl = drawer.querySelector('[data-size-chart-title]');
+                    const bodyEl = drawer.querySelector('[data-size-chart-body]');
+
+                    if (titleEl) {
+                      titleEl.textContent = heading;
+                    }
+
+                    if (bodyEl && content) {
+                      bodyEl.innerHTML = '<div class="prose prose-sm max-w-none">' + content + '</div>';
+                    }
                   }
 
-                  if (bodyEl) {
-                    {% if block.settings.page != blank and block.settings.page.content != blank %}
-                      bodyEl.innerHTML = '<div class="prose prose-sm max-w-none">{{ block.settings.page.content | escape }}</div>';
-                    {% elsif block.settings.content != blank %}
-                      bodyEl.innerHTML = '<div class="prose prose-sm max-w-none">{{ block.settings.content | escape }}</div>';
-                    {% endif %}
-                  }
+                  // Update on click (before drawer opens)
+                  document.addEventListener('click', (e) => {
+                    if (e.target.closest('[data-size-chart-open]')) {
+                      updateDrawer();
+                    }
+                  });
+
+                  // Also update on custom event
+                  document.addEventListener('size-chart:open', updateDrawer);
                 })();
               </script>
             {% endif %}
@@ -545,8 +578,8 @@
               {%- comment -%} Skeleton Loading State {%- endcomment -%}
               <div class="flex flex-col gap-3" data-complementary-loading data-tween data-tween-type="fade-up">
                 {% for i in (1..block.settings.products_to_show) %}
-                  <div class="flex items-center gap-3 p-2 border border-[--color-border] rounded-lg animate-pulse">
-                    <div class="shrink-0 w-12 h-12 rounded bg-[--color-text] opacity-10"></div>
+                  <div class="flex items-center gap-3 p-2 border border-[--color-border] rounded-[--card-radius] animate-pulse">
+                    <div class="shrink-0 w-12 h-12 rounded-[--card-radius] bg-[--color-text] opacity-10"></div>
                     <div class="flex-1">
                       <div class="h-3.5 w-3/4 bg-[--color-text] opacity-10 rounded"></div>
                       <div class="h-3 w-1/3 bg-[--color-text] opacity-10 rounded mt-1.5"></div>
@@ -709,14 +742,89 @@
                 </button>
               {%- endif -%}
               {%- if block.settings.show_share -%}
-                <button
-                  type="button"
-                  class="product-share-btn inline-flex items-center justify-center w-10 h-10 border border-[--color-border] rounded-full text-sm transition-all duration-300 hover:border-[--color-text] hover:bg-[--color-text] hover:text-[--color-background]"
-                  data-share-trigger
-                  aria-label="{{ 'products.product.share' | t | default: 'Share' }}"
-                >
-                  <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
-                </button>
+                {%- liquid
+                  assign share_url = shop.url | append: product.url
+                  assign share_title = product.title | url_encode
+                  assign share_image = product.featured_image | image_url: width: 1200
+                -%}
+                <div class="relative" data-share-wrapper>
+                  <button
+                    type="button"
+                    class="product-share-btn inline-flex items-center justify-center w-10 h-10 border border-[--color-border] rounded-full text-sm transition-all duration-300 hover:border-[--color-text] hover:bg-[--color-text] hover:text-[--color-background]"
+                    data-share-trigger
+                    data-share-url="{{ share_url }}"
+                    data-share-title="{{ product.title | escape }}"
+                    aria-label="{{ 'products.product.share' | t | default: 'Share' }}"
+                    aria-expanded="false"
+                    aria-haspopup="true"
+                  >
+                    <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
+                  </button>
+                </div>
+                {%- comment -%} Share popup rendered outside section via portal {%- endcomment -%}
+                <template data-share-popup-template>
+                  <div
+                    class="share-popup fixed bg-[--color-background] border border-[--color-border] shadow-xl p-4 opacity-0 invisible translate-y-2 transition-all duration-200 z-[9999] min-w-[200px]"
+                    data-share-popup
+                    role="menu"
+                  >
+                    <p class="text-xs font-semibold uppercase tracking-widest text-[--color-text-secondary] mb-3">{{ 'general.share' | t }}</p>
+                    <div class="flex flex-col gap-2">
+                      <a
+                        href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center gap-3 py-2 px-3 text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors duration-200"
+                        role="menuitem"
+                        aria-label="{{ 'accessibility.share_on_facebook' | t }}"
+                      >
+                        <i class="ph ph-facebook-logo text-lg"></i>
+                        <span>Facebook</span>
+                      </a>
+                      <a
+                        href="https://twitter.com/intent/tweet?url={{ share_url }}&text={{ share_title }}"
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center gap-3 py-2 px-3 text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors duration-200"
+                        role="menuitem"
+                        aria-label="{{ 'accessibility.share_on_twitter' | t }}"
+                      >
+                        <i class="ph ph-x-logo text-lg"></i>
+                        <span>X (Twitter)</span>
+                      </a>
+                      <a
+                        href="https://pinterest.com/pin/create/button/?url={{ share_url }}&media={{ share_image }}&description={{ share_title }}"
+                        target="_blank"
+                        rel="noopener"
+                        class="flex items-center gap-3 py-2 px-3 text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors duration-200"
+                        role="menuitem"
+                        aria-label="{{ 'accessibility.share_on_pinterest' | t }}"
+                      >
+                        <i class="ph ph-pinterest-logo text-lg"></i>
+                        <span>Pinterest</span>
+                      </a>
+                      <a
+                        href="mailto:?subject={{ share_title }}&body={{ share_url }}"
+                        class="flex items-center gap-3 py-2 px-3 text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors duration-200"
+                        role="menuitem"
+                        aria-label="{{ 'accessibility.share_via_email' | t }}"
+                      >
+                        <i class="ph ph-envelope text-lg"></i>
+                        <span>Email</span>
+                      </a>
+                      <button
+                        type="button"
+                        class="flex items-center gap-3 py-2 px-3 text-sm text-[--color-text] hover:bg-[--color-background-secondary] transition-colors duration-200 w-full text-left"
+                        data-copy-link="{{ share_url }}"
+                        role="menuitem"
+                        aria-label="{{ 'accessibility.copy_link' | t }}"
+                      >
+                        <i class="ph ph-link text-lg"></i>
+                        <span data-copy-text>{{ 'accessibility.copy_link' | t }}</span>
+                      </button>
+                    </div>
+                  </div>
+                </template>
               {%- endif -%}
             </div>
 
@@ -1058,6 +1166,116 @@
       }
     });
   });
+
+  // Share button functionality (portal approach for z-index)
+  const shareWrapper = section.querySelector('[data-share-wrapper]');
+  const shareTemplate = section.querySelector('[data-share-popup-template]');
+  if (shareWrapper && shareTemplate) {
+    const shareTrigger = shareWrapper.querySelector('[data-share-trigger]');
+    let sharePopup = null;
+    let isOpen = false;
+
+    // Create popup from template and append to body
+    function createPopup() {
+      if (sharePopup) return;
+      const content = shareTemplate.content.cloneNode(true);
+      sharePopup = content.querySelector('[data-share-popup]');
+      document.body.appendChild(sharePopup);
+
+      // Copy link functionality
+      const copyLinkBtn = sharePopup.querySelector('[data-copy-link]');
+      const copyText = sharePopup.querySelector('[data-copy-text]');
+      if (copyLinkBtn) {
+        const originalText = copyText?.textContent;
+        copyLinkBtn.addEventListener('click', async () => {
+          const url = copyLinkBtn.dataset.copyLink;
+          try {
+            await navigator.clipboard.writeText(url);
+            if (copyText) {
+              copyText.textContent = {{ 'accessibility.link_copied' | t | json }};
+              setTimeout(() => {
+                copyText.textContent = originalText;
+              }, 2000);
+            }
+          } catch (err) {
+            console.error('Failed to copy:', err);
+          }
+        });
+      }
+    }
+
+    function positionPopup() {
+      if (!sharePopup) return;
+      const rect = shareTrigger.getBoundingClientRect();
+      const popupWidth = 200;
+      let left = rect.right - popupWidth;
+      // Keep popup in viewport
+      if (left < 10) left = 10;
+      if (left + popupWidth > window.innerWidth - 10) {
+        left = window.innerWidth - popupWidth - 10;
+      }
+      sharePopup.style.top = `${rect.bottom + 8}px`;
+      sharePopup.style.left = `${left}px`;
+    }
+
+    function openPopup() {
+      createPopup();
+      positionPopup();
+      isOpen = true;
+      sharePopup.classList.remove('opacity-0', 'invisible', 'translate-y-2');
+      sharePopup.classList.add('opacity-100', 'visible', 'translate-y-0');
+      shareTrigger.setAttribute('aria-expanded', 'true');
+    }
+
+    function closePopup() {
+      if (!sharePopup) return;
+      isOpen = false;
+      sharePopup.classList.add('opacity-0', 'invisible', 'translate-y-2');
+      sharePopup.classList.remove('opacity-100', 'visible', 'translate-y-0');
+      shareTrigger.setAttribute('aria-expanded', 'false');
+    }
+
+    // Try native share API first (mobile/modern browsers)
+    shareTrigger.addEventListener('click', async () => {
+      if (navigator.share) {
+        try {
+          await navigator.share({
+            title: shareTrigger.dataset.shareTitle || document.title,
+            url: shareTrigger.dataset.shareUrl || window.location.href
+          });
+          return;
+        } catch (err) {
+          // User cancelled or error - fall back to popup
+          if (err.name === 'AbortError') return;
+        }
+      }
+      // Fallback to popup
+      if (isOpen) {
+        closePopup();
+      } else {
+        openPopup();
+      }
+    });
+
+    // Close on click outside
+    document.addEventListener('click', (e) => {
+      if (isOpen && !shareWrapper.contains(e.target) && sharePopup && !sharePopup.contains(e.target)) {
+        closePopup();
+      }
+    });
+
+    // Close on escape
+    document.addEventListener('keydown', (e) => {
+      if (isOpen && e.key === 'Escape') {
+        closePopup();
+        shareTrigger.focus();
+      }
+    });
+
+    // Reposition on scroll/resize
+    window.addEventListener('scroll', () => { if (isOpen) positionPopup(); }, { passive: true });
+    window.addEventListener('resize', () => { if (isOpen) positionPopup(); }, { passive: true });
+  }
 })();
 </script>
 
@@ -1498,7 +1716,8 @@
         if (!hasSingleVariant || !isAvailable) allSingleVariant = false;
 
         const item = document.createElement('div');
-        item.className = 'flex items-center gap-3 p-2 border border-primary/10 rounded-lg hover:border-primary/30 transition-colors';
+        item.className = 'flex items-center gap-3 p-2 border border-primary/10 hover:border-primary/30 transition-colors';
+        item.style.borderRadius = 'var(--card-radius)';
         if (variantId) item.dataset.variantId = variantId;
 
         let actionHtml = '';
@@ -1509,7 +1728,7 @@
         }
 
         item.innerHTML = `
-          <a href="${href}" class="shrink-0 w-12 h-12 rounded overflow-hidden bg-secondary/5">
+          <a href="${href}" class="shrink-0 w-12 h-12 overflow-hidden bg-secondary/5" style="border-radius: var(--card-radius)">
             ${imgSrc ? `<img src="${imgSrc}" alt="${escapeHtml(product.title)}" loading="lazy" decoding="async" width="100" height="100" class="w-full h-full object-cover">` : ''}
           </a>
           <div class="flex-1 min-w-0">
@@ -1528,9 +1747,11 @@
       if (loading) loading.style.display = 'none';
       list.style.display = '';
 
-      // Trigger intro animation after browser paint
+      // Trigger tween animations for the newly visible list
       requestAnimationFrame(() => {
-        list.classList.add('intro-visible');
+        if (window.pieces?.tween) {
+          window.pieces.tween.reinit();
+        }
       });
 
       // Show "Add all" button if applicable

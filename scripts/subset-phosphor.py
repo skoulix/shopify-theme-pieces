@@ -126,6 +126,7 @@ USED_ICONS = [
     "download",
     "upload",
     "share",
+    "share-network",
     "bookmark",
     "flag",
     "bell",
