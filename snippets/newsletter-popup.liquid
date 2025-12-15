@@ -71,7 +71,7 @@
 
     {%- comment -%} Popup {%- endcomment -%}
     <div
-      class="fixed top-1/2 left-1/2 z-[9999] w-[90vw] overflow-hidden overflow-y-auto max-h-[90vh] transition-all duration-300 -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 invisible pointer-events-none [&.is-visible]:scale-100 [&.is-visible]:opacity-100 [&.is-visible]:visible [&.is-visible]:pointer-events-auto {% if layout == 'side_image' and image %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
+      class="fixed top-1/2 left-1/2 z-[9999] w-[90vw] overflow-hidden overflow-y-auto max-h-[90vh] transition-all duration-300 -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 invisible pointer-events-none [&.is-visible]:scale-100 [&.is-visible]:opacity-100 [&.is-visible]:visible [&.is-visible]:pointer-events-auto {% if layout == 'side_image' %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
       style="background-color: var(--popup-bg); color: var(--popup-text); border-radius: {{ settings.card_radius }}px; border: 1px solid color-mix(in srgb, var(--popup-text) 15%, transparent); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);"
       data-newsletter-popup
       role="dialog"
@@ -80,22 +80,28 @@
       aria-describedby="newsletter-popup-description"
     >
     {%- comment -%} Side image {%- endcomment -%}
-    {% if layout == 'side_image' and image %}
+    {% if layout == 'side_image' %}
       <div class="hidden sm:block relative flex-[0_0_45%]">
-        <img
-          src="{{ image | image_url: width: 600 }}"
-          alt=""
-          width="600"
-          height="{{ 600 | divided_by: image.aspect_ratio | round }}"
-          loading="lazy"
-          decoding="async"
-          class="absolute inset-0 w-full h-full object-cover"
-        >
+        {% if image %}
+          <img
+            src="{{ image | image_url: width: 600 }}"
+            alt=""
+            width="600"
+            height="{{ 600 | divided_by: image.aspect_ratio | round }}"
+            loading="lazy"
+            decoding="async"
+            class="absolute inset-0 w-full h-full object-cover"
+          >
+        {% else %}
+          <div class="absolute inset-0 w-full h-full" style="background-color: color-mix(in srgb, var(--popup-text) 5%, transparent);">
+            {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+          </div>
+        {% endif %}
       </div>
     {% endif %}
 
     {%- comment -%} Content {%- endcomment -%}
-    <div class="flex-1 p-8 {% if layout == 'side_image' and image %}sm:p-10{% endif %}">
+    <div class="flex-1 p-8 {% if layout == 'side_image' %}sm:p-10{% endif %}">
       {%- comment -%} Close button {%- endcomment -%}
       <button
         class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer opacity-60 hover:opacity-100 transition-opacity z-10 text-[--popup-text]"
