@@ -15,7 +15,6 @@
         "video": "shopify://files/videos/a-young-man-snow-boarding-2023-11-27-04-54-47-utc.mov",
         "overlay_opacity": 80,
         "title": "Elevate Your Style",
-        "words_per_line": 2,
         "subtitle": "Discover our curated collection of premium products designed for the modern lifestyle.",
         "content_alignment": "left",
         "button_text": "Shop Now",
@@ -90,7 +89,9 @@
       "type": "featured-collection",
       "settings": {
         "collection": "frontpage",
+        "label": "",
         "title": "New Arrivals",
+        "description": "",
         "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
@@ -141,7 +142,9 @@
       "type": "featured-collection",
       "settings": {
         "collection": "hydrogen",
+        "label": "",
         "title": "Best Sellers",
+        "description": "",
         "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
@@ -340,6 +343,20 @@
         "products_to_show": 8,
         "color_scheme": "scheme-1"
       }
+    },
+    "banner_y6k8aw": {
+      "type": "banner",
+      "name": "Banner",
+      "settings": {
+        "heading": "Important Announcement",
+        "text": "<p>This is an important message for your customers.</p>",
+        "button_text": "",
+        "button_link": "",
+        "color_scheme": "scheme-3",
+        "show_close_button": true,
+        "remember_dismissal": true,
+        "full_width": false
+      }
     }
   },
   "order": [
@@ -352,6 +369,7 @@
     "rolling_numbers",
     "logo_marquee",
     "newsletter",
-    "recently_viewed_yUrjhy"
+    "recently_viewed_yUrjhy",
+    "banner_y6k8aw"
   ]
 }
