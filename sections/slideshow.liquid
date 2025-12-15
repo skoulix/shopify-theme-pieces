@@ -41,7 +41,10 @@
 
   /* Navigation dots with circular timer */
   #slideshow-{{ section.id }} .slideshow__dot.is-active {
-    background: white;
+    background: var(--color-text);
+  }
+  #slideshow-{{ section.id }} .slideshow__dots {
+    color: var(--color-text);
   }
   #slideshow-{{ section.id }} .slideshow__dot-timer {
     transition: opacity 0.3s ease;
@@ -74,55 +77,49 @@
     #slideshow-{{ section.id }} .slideshow:hover .slideshow__arrow { opacity: 1; }
   }
 
+  /* Navigation styling - inherits from section color scheme */
+  #slideshow-{{ section.id }} .slideshow__arrow {
+    background: var(--color-background);
+    color: var(--color-text);
+  }
+  #slideshow-{{ section.id }} .slideshow__arrow:hover {
+    background: var(--color-background-secondary);
+  }
+  #slideshow-{{ section.id }} .slideshow__dot {
+    background: color-mix(in srgb, var(--color-text) 40%, transparent);
+  }
+  #slideshow-{{ section.id }} .slideshow__dot:hover {
+    background: color-mix(in srgb, var(--color-text) 80%, transparent);
+  }
+  #slideshow-{{ section.id }} .slideshow__dot.is-active {
+    background: var(--color-text);
+  }
+  #slideshow-{{ section.id }} .slideshow__dots {
+    color: var(--color-text);
+  }
+  #slideshow-{{ section.id }} .slideshow__progress {
+    background: color-mix(in srgb, var(--color-text) 60%, transparent);
+  }
+
   {% if parallax %}
   #slideshow-{{ section.id }} .slideshow__media-wrapper { height: 120%; top: -10%; }
   {% endif %}
 
   /* Initial loading state - hide content until JS animates it */
-  #slideshow-{{ section.id }} .slideshow__subheading,
-  #slideshow-{{ section.id }} .slideshow__heading,
-  #slideshow-{{ section.id }} .slideshow__text,
+  #slideshow-{{ section.id }} .slideshow__label,
+  #slideshow-{{ section.id }} .slideshow__title,
+  #slideshow-{{ section.id }} .slideshow__description,
   #slideshow-{{ section.id }} .slideshow__cta { opacity: 0; }
-
-  /* Per-slide button styles */
-  {% for block in section.blocks %}
-  {%- assign btn_text_color = block.settings.text_color | default: 'inherit' -%}
-  {%- assign btn_contrast_color = btn_text_color | color_brightness | round -%}
-  {%- if btn_contrast_color > 128 -%}
-    {%- assign btn_solid_text = '#000000' -%}
-  {%- else -%}
-    {%- assign btn_solid_text = '#ffffff' -%}
-  {%- endif -%}
-  /* Outline button */
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn {
-    color: {{ btn_text_color }};
-    border: var(--button-border-width, 1px) solid {{ btn_text_color }};
-    background-color: transparent;
-  }
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn::before { background: {{ btn_text_color }}; }
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn:hover,
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn:hover span { color: {{ btn_solid_text }}; }
-  /* Solid button - no border */
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn--solid {
-    background-color: {{ btn_text_color }};
-    color: {{ btn_solid_text }};
-    border: none;
-  }
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn--solid span { color: {{ btn_solid_text }}; }
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn--solid::before { background: {{ btn_solid_text }}; }
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn--solid:hover,
-  #slideshow-{{ section.id }} [data-slide-index="{{ forloop.index0 }}"] .slideshow__btn--solid:hover span { color: {{ btn_text_color }}; }
-  {% endfor %}
 </style>
 
-<section id="slideshow-{{ section.id }}" class="slideshow-section" data-slideshow data-transition="{{ transition_effect }}">
+<section id="slideshow-{{ section.id }}" class="slideshow-section {{ section.blocks.first.settings.color_scheme | prepend: 'color-' }}" data-slideshow data-transition="{{ transition_effect }}">
   <div class="slideshow relative overflow-hidden h-[--slideshow-height] min-h-[400px]" aria-label="{{ 'accessibility.slideshow' | t }}" role="region">
     {%- comment -%} Slides {%- endcomment -%}
     {% for block in section.blocks %}
       {%- liquid
         assign text_position = block.settings.text_position
         assign text_alignment = block.settings.text_alignment
-        assign text_color = block.settings.text_color | default: 'inherit'
+        assign slide_color_scheme = 'color-' | append: block.settings.color_scheme
 
         case text_position
           when 'top_left'
@@ -156,8 +153,9 @@
       -%}
 
       <div
-        class="slideshow__slide absolute inset-0{% if forloop.first %} is-active{% endif %}"
+        class="slideshow__slide {{ slide_color_scheme }} absolute inset-0 bg-[--color-background]{% if forloop.first %} is-active{% endif %}"
         data-slide-index="{{ forloop.index0 }}"
+        data-color-scheme="{{ slide_color_scheme }}"
         {{ block.shopify_attributes }}
       >
         {%- comment -%} Media wrapper with overflow hidden to contain zoom effects {%- endcomment -%}
@@ -190,7 +188,9 @@
               {% if parallax %}data-parallax-media{% endif %}
             >
           {% else %}
-            <div class="slideshow__media absolute inset-0 w-full h-full bg-gradient-to-br from-gray-800 to-gray-900"></div>
+            <div class="slideshow__media absolute inset-0 w-full h-full">
+              {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
+            </div>
           {% endif %}
         </div>
 
@@ -198,31 +198,31 @@
         <div class="slideshow__overlay absolute inset-0 pointer-events-none" style="background-color: {{ overlay_color | color_modify: 'alpha', overlay_alpha }};"></div>
 
         {%- comment -%} Content {%- endcomment -%}
-        <div class="slideshow__content relative z-[1] h-full flex flex-col p-8 page-container {{ content_justify }} {{ content_items }}" style="color: {{ text_color }};">
+        <div class="slideshow__content relative z-[1] h-full flex flex-col p-8 page-container {{ content_justify }} {{ content_items }}">
           <div class="max-w-[42rem] text-{{ text_alignment }}">
-            {% if block.settings.subheading != blank %}
-              <p class="slideshow__subheading text-sm uppercase tracking-wider mb-4 opacity-80" data-tween data-tween-type="fade-up">
-                {{ block.settings.subheading }}
+            {% if block.settings.label != blank %}
+              <p class="slideshow__label text-sm uppercase tracking-wider mb-4 opacity-80">
+                {{ block.settings.label }}
               </p>
             {% endif %}
 
-            {% if block.settings.heading != blank %}
-              <h2 class="slideshow__heading text-4xl sm:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight" data-tween data-tween-type="fade-up">
-                {{ block.settings.heading }}
+            {% if block.settings.title != blank %}
+              <h2 class="slideshow__title text-4xl sm:text-5xl lg:text-6xl font-bold font-heading mb-6 leading-tight">
+                {{ block.settings.title }}
               </h2>
             {% endif %}
 
-            {% if block.settings.text != blank %}
-              <p class="slideshow__text text-lg opacity-90 mb-8 max-w-lg {% if text_alignment == 'center' %}mx-auto{% elsif text_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
-                {{ block.settings.text }}
+            {% if block.settings.description != blank %}
+              <p class="slideshow__description text-lg opacity-90 mb-8 max-w-lg {% if text_alignment == 'center' %}mx-auto{% elsif text_alignment == 'right' %}ml-auto{% endif %}">
+                {{ block.settings.description }}
               </p>
             {% endif %}
 
-            {% if block.settings.button_label != blank %}
-              <div class="slideshow__cta" data-tween data-tween-type="fade-up">
+            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+              <div class="slideshow__cta">
                 <a
                   href="{{ block.settings.button_link }}"
-                  class="btn slideshow__btn{% if block.settings.button_style == 'solid' %} slideshow__btn--solid{% endif %}"
+                  class="btn{% if block.settings.button_style == 'solid' %} btn--primary{% else %} btn--outline{% endif %}{% if block.settings.button_size == 'large' %} btn--lg{% endif %}"
                 >
                   <span>{{ block.settings.button_label }}</span>
                 </a>
@@ -237,7 +237,7 @@
     {% if show_arrows and section.blocks.size > 1 %}
       <button
         type="button"
-        class="slideshow__arrow absolute top-1/2 -translate-y-1/2 left-4 md:left-8 z-10 w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white cursor-pointer transition-all duration-300 hover:bg-white/20"
+        class="slideshow__arrow slideshow__nav absolute top-1/2 -translate-y-1/2 left-4 md:left-8 z-10 w-12 h-12 flex items-center justify-center backdrop-blur-md rounded-full cursor-pointer transition-all duration-300"
         data-slideshow-prev
         aria-label="{{ 'accessibility.previous_slide' | t }}"
       >
@@ -245,7 +245,7 @@
       </button>
       <button
         type="button"
-        class="slideshow__arrow absolute top-1/2 -translate-y-1/2 right-4 md:right-8 z-10 w-12 h-12 flex items-center justify-center bg-white/10 backdrop-blur-md border border-white/20 rounded-full text-white cursor-pointer transition-all duration-300 hover:bg-white/20"
+        class="slideshow__arrow slideshow__nav absolute top-1/2 -translate-y-1/2 right-4 md:right-8 z-10 w-12 h-12 flex items-center justify-center backdrop-blur-md rounded-full cursor-pointer transition-all duration-300"
         data-slideshow-next
         aria-label="{{ 'accessibility.next_slide' | t }}"
       >
@@ -255,20 +255,20 @@
 
     {%- comment -%} Navigation Dots {%- endcomment -%}
     {% if show_dots and section.blocks.size > 1 %}
-      <div class="absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-5">
+      <div class="slideshow__dots slideshow__nav absolute bottom-8 left-1/2 -translate-x-1/2 z-10 flex items-center gap-5">
         {% for block in section.blocks %}
           <div class="slideshow__dot-wrapper relative">
             <button
               type="button"
-              class="slideshow__dot block rounded-full bg-white/40 border-0 cursor-pointer transition-all duration-300 hover:bg-white/80 w-[10px] h-[10px]{% if forloop.first %} is-active{% endif %}"
+              class="slideshow__dot block rounded-full border-0 cursor-pointer transition-all duration-300 w-[10px] h-[10px]{% if forloop.first %} is-active{% endif %}"
               data-slideshow-dot="{{ forloop.index0 }}"
               aria-label="{{ 'accessibility.go_to_slide' | t: index: forloop.index }}"
             ></button>
-{% if autoplay and progress_type == 'dots' %}
+            {% if autoplay and progress_type == 'dots' %}
             <div class="slideshow__dot-timer" style="position:absolute;top:-9px;left:-9px;width:28px;height:28px;pointer-events:none;opacity:0;">
               <svg width="28" height="28" viewBox="0 0 28 28" style="display:block;">
-                <circle cx="14" cy="14" r="12" fill="none" stroke="rgba(255,255,255,0.3)" stroke-width="2"/>
-                <circle class="timer-progress" cx="14" cy="14" r="12" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" data-dot-progress/>
+                <circle cx="14" cy="14" r="12" fill="none" stroke="currentColor" stroke-opacity="0.3" stroke-width="2"/>
+                <circle class="timer-progress" cx="14" cy="14" r="12" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" data-dot-progress/>
               </svg>
             </div>
             {% endif %}
@@ -279,7 +279,7 @@
 
     {%- comment -%} Progress Bar {%- endcomment -%}
     {% if autoplay and section.blocks.size > 1 and progress_type == 'bar' %}
-      <div class="slideshow__progress absolute bottom-0 left-0 h-[3px] bg-white/60 z-10 w-0" data-slideshow-progress></div>
+      <div class="slideshow__progress slideshow__nav absolute bottom-0 left-0 h-[3px] z-10 w-0" data-slideshow-progress></div>
     {% endif %}
   </div>
 </section>
@@ -321,12 +321,12 @@
       const transition = container.dataset.transition || 'fade';
       const totalSlides = slides.length;
 
-      // Split headings for line-by-line animation
-      const headingSplits = new Map();
+      // Split titles for line-by-line animation
+      const titleSplits = new Map();
       slides.forEach(slide => {
-        const heading = slide.querySelector('.slideshow__heading');
-        if (heading) {
-          const split = new SplitText(heading, { type: 'lines', linesClass: 'slideshow__heading-line' });
+        const title = slide.querySelector('.slideshow__title');
+        if (title) {
+          const split = new SplitText(title, { type: 'lines', linesClass: 'slideshow__title-line' });
           // Wrap each line for overflow hidden reveal
           split.lines.forEach(line => {
             const wrapper = document.createElement('div');
@@ -335,11 +335,11 @@
             line.parentNode.insertBefore(wrapper, line);
             wrapper.appendChild(line);
           });
-          // Set lines off-screen BEFORE making heading visible
+          // Set lines off-screen BEFORE making title visible
           gsap.set(split.lines, { yPercent: 120 });
-          // Now make heading visible (lines are already positioned off-screen)
-          heading.style.opacity = 1;
-          headingSplits.set(slide, split);
+          // Now make title visible (lines are already positioned off-screen)
+          title.style.opacity = 1;
+          titleSplits.set(slide, split);
         }
       });
 
@@ -435,31 +435,31 @@
       transitions.reveal = transitions.swipe;
 
       function animateContent(slide, show = true) {
-        const subheading = slide.querySelector('.slideshow__subheading');
-        const text = slide.querySelector('.slideshow__text');
+        const label = slide.querySelector('.slideshow__label');
+        const description = slide.querySelector('.slideshow__description');
         const cta = slide.querySelector('.slideshow__cta');
-        const split = headingSplits.get(slide);
+        const split = titleSplits.get(slide);
 
         if (show) {
           const tl = gsap.timeline();
           let delay = 0.3;
 
-          // Subheading fade up
-          if (subheading) {
-            tl.fromTo(subheading, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay);
+          // Label fade up
+          if (label) {
+            tl.fromTo(label, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay);
             delay += 0.1;
           }
 
-          // Heading line-by-line reveal
+          // Title line-by-line reveal
           if (split && split.lines.length) {
             gsap.set(split.lines, { yPercent: 120 });
             tl.to(split.lines, { yPercent: 0, duration: 1, ease: 'power4.out', stagger: 0.1 }, delay);
             delay += 0.2;
           }
 
-          // Text fade up
-          if (text) {
-            tl.fromTo(text, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay + 0.3);
+          // Description fade up
+          if (description) {
+            tl.fromTo(description, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay + 0.3);
           }
 
           // CTA fade up
@@ -468,11 +468,25 @@
           }
         } else {
           // Animate out - simpler exit
-          const elements = [subheading, text, cta].filter(Boolean);
+          const elements = [label, description, cta].filter(Boolean);
           if (split && split.lines.length) {
             gsap.to(split.lines, { yPercent: -120, duration: 0.4, ease: 'power2.in' });
           }
           gsap.to(elements, { y: -20, opacity: 0, duration: 0.4, ease: 'power2.in' });
+        }
+      }
+
+      // Update section color scheme to match current slide
+      function updateColorScheme(slide) {
+        const newScheme = slide.dataset.colorScheme;
+        if (!newScheme) return;
+
+        // Remove old color scheme classes and add new one
+        const section = container.closest('.slideshow-section');
+        if (section) {
+          // Remove any existing color-* class
+          section.className = section.className.replace(/color-\S+/g, '').trim();
+          section.classList.add(newScheme);
         }
       }
 
@@ -484,6 +498,9 @@
         const prevSlide = slides[prevIndex];
         const nextSlide = slides[index];
         const trans = transitions[transition] || transitions.fade;
+
+        // Update section color scheme to match incoming slide
+        updateColorScheme(nextSlide);
 
         // Animate out content first
         animateContent(prevSlide, false);
@@ -668,15 +685,20 @@
       // Initialize first slide with intro animation
       const firstSlide = slides[0];
       if (firstSlide) {
+        // Set initial color scheme from first slide
+        updateColorScheme(firstSlide);
         // Animate in immediately (content is already hidden by CSS)
         animateContent(firstSlide, true);
       }
 
       // Initialize first dot timer animation BEFORE starting autoplay
       if (autoplayEnabled) {
-        const firstDotProgress = container.querySelector('.slideshow__dot-wrapper [data-dot-progress]');
-        if (firstDotProgress) {
-          firstDotProgress.classList.add('is-animating');
+        const firstDotWrapper = container.querySelector('.slideshow__dot-wrapper');
+        if (firstDotWrapper) {
+          const dotTimer = firstDotWrapper.querySelector('.slideshow__dot-timer');
+          const dotProgress = firstDotWrapper.querySelector('[data-dot-progress]');
+          if (dotTimer) dotTimer.style.opacity = '1';
+          if (dotProgress) dotProgress.classList.add('is-animating');
         }
       }
 
@@ -699,6 +721,12 @@
   "tag": "section",
   "class": "slideshow-section-wrapper",
   "settings": [
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
     {
       "type": "range",
       "id": "section_height",
@@ -833,25 +861,24 @@
         },
         {
           "type": "text",
-          "id": "subheading",
-          "label": "Subheading"
+          "id": "label",
+          "label": "Label"
         },
         {
           "type": "text",
-          "id": "heading",
-          "label": "Heading",
+          "id": "title",
+          "label": "Title",
           "default": "Slide heading"
         },
         {
           "type": "textarea",
-          "id": "text",
-          "label": "Text"
+          "id": "description",
+          "label": "Description"
         },
         {
           "type": "text",
           "id": "button_label",
-          "label": "Button label",
-          "default": "Shop Now"
+          "label": "Button label"
         },
         {
           "type": "url",
@@ -866,6 +893,16 @@
           "options": [
             { "value": "solid", "label": "Solid" },
             { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "large",
+          "options": [
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
           ]
         },
         {
@@ -896,9 +933,10 @@
           "default": "center"
         },
         {
-          "type": "color",
-          "id": "text_color",
-          "label": "Text color"
+          "type": "color_scheme",
+          "id": "color_scheme",
+          "label": "Color scheme",
+          "default": "scheme-3"
         }
       ]
     }
@@ -910,17 +948,15 @@
         {
           "type": "slide",
           "settings": {
-            "heading": "Welcome to our store",
-            "text": "Discover our latest collection of premium products",
-            "button_label": "Shop Now"
+            "title": "Welcome to our store",
+            "description": "Discover our latest collection of premium products"
           }
         },
         {
           "type": "slide",
           "settings": {
-            "heading": "New arrivals",
-            "text": "Check out what's new this season",
-            "button_label": "View Collection"
+            "title": "New arrivals",
+            "description": "Check out what's new this season"
           }
         }
       ]
