@@ -12,23 +12,13 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
-  .recently-viewed-{{ section.id }} {
-    --section-bg: {{ bg_color }};
-    --section-text: {{ text_color }};
-    background-color: var(--section-bg);
-    color: var(--section-text);
-  }
   .recently-viewed-{{ section.id }} .nav-btn:hover:not(:disabled) {
-    background-color: var(--section-text);
-    color: var(--section-bg);
-    border-color: var(--section-text);
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
   }
   .recently-viewed-{{ section.id }} .skeleton-bg {
-    background-color: var(--section-text);
+    background-color: var(--color-text);
     opacity: 0.1;
   }
   /* Title line reveal animation (managed by TweenManager) */
@@ -49,7 +39,7 @@
   endcase
 -%}
 <section
-  class="recently-viewed-{{ section.id }} py-[--section-vertical-padding] overflow-hidden"
+  class="recently-viewed-{{ section.id }} color-{{ section.settings.color_scheme }} py-[--section-vertical-padding] overflow-hidden"
   data-recently-viewed
   data-section-id="{{ section.id }}"
   data-current-product-id="{{ product.id }}"
@@ -508,16 +498,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [

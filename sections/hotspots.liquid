@@ -13,20 +13,11 @@
   assign card_radius = settings.card_radius | default: 8
   assign card_border_width = settings.card_border_width | default: 0
   assign card_shadow = settings.card_shadow | default: 'none'
-
-  assign background_color = section.settings.background_color | default: '#ffffff'
-  assign text_color = section.settings.text_color | default: '#000000'
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .hotspots-{{ section.id }} {
     padding: var(--section-vertical-padding) 0;
-    background-color: {{ background_color }};
-    color: {{ text_color }};
   }
 
   .hotspots-header-{{ section.id }} {
@@ -214,7 +205,7 @@
 </style>
 
 <section
-  class="hotspots-{{ section.id }}"
+  class="hotspots-{{ section.id }} color-{{ section.settings.color_scheme }}"
   data-hotspots-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -625,16 +616,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

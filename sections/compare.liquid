@@ -12,13 +12,7 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .compare-section-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
     padding: var(--section-vertical-padding) 0;
     min-height: 60vh;
   }
@@ -72,8 +66,8 @@
   }
   .compare-section-{{ section.id }} .compare-table__header-cell {
     padding: 1rem;
-    background: {{ bg_color }};
-    border-bottom: 1px solid {{ text_color }}15;
+    background: var(--color-background);
+    border-bottom: 1px solid var(--color-border);
     font-size: 0.75rem;
     font-weight: 600;
     text-transform: uppercase;
@@ -86,7 +80,7 @@
   }
   .compare-section-{{ section.id }} .compare-table__cell {
     padding: 1rem;
-    border-bottom: 1px solid {{ text_color }}15;
+    border-bottom: 1px solid var(--color-border);
     text-align: center;
   }
   .compare-section-{{ section.id }} .compare-table__product-image {
@@ -97,7 +91,7 @@
     margin: 0 auto 1rem;
     border-radius: var(--card-radius);
     overflow: visible;
-    background: {{ section.settings.background_color | color_mix: section.settings.text_color, 5 }};
+    background: var(--color-background-secondary, rgba(0,0,0,0.03));
   }
   .compare-section-{{ section.id }} .compare-table__product-image img {
     width: 100%;
@@ -114,8 +108,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: {{ bg_color }};
-    color: {{ text_color }};
+    background: var(--color-background);
+    color: var(--color-text);
     border: none;
     border-radius: 50%;
     cursor: pointer;
@@ -169,16 +163,16 @@
   }
   /* Reset buttons to use section colors for proper contrast */
   .compare-section-{{ section.id }} .btn--secondary {
-    color: {{ text_color }};
-    border-color: {{ text_color }}40;
+    color: var(--color-text);
+    border-color: var(--color-border);
   }
   .compare-section-{{ section.id }} .btn--secondary::before {
-    background: {{ text_color }};
+    background: var(--color-text);
   }
   .compare-section-{{ section.id }} .btn--secondary:hover,
   .compare-section-{{ section.id }} .btn--secondary:hover span,
   .compare-section-{{ section.id }} .btn--secondary:hover i {
-    color: {{ bg_color }};
+    color: var(--color-background);
   }
   .compare-section-{{ section.id }} .btn--primary {
     color: var(--color-primary-contrast);
@@ -201,7 +195,7 @@
   }
 </style>
 
-<section class="compare-section-{{ section.id }}" data-compare-section id="compare-section-{{ section.id }}">
+<section class="compare-section-{{ section.id }} color-{{ section.settings.color_scheme }}" data-compare-section id="compare-section-{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="compare-header-{{ section.id }}">
@@ -515,16 +509,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [

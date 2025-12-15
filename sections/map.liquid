@@ -19,13 +19,8 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
   .map-section-{{ section.id }} {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
+    /* Colors handled by color scheme */
   }
 
   .map-container-{{ section.id }} {
@@ -42,23 +37,24 @@
 
   /* Leaflet overrides for dark/light theme */
   .map-container-{{ section.id }} .leaflet-control-zoom a {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
-    border-color: {{ text_color }}20;
+    background-color: var(--color-background);
+    color: var(--color-text);
+    border-color: var(--color-border);
   }
 
   .map-container-{{ section.id }} .leaflet-control-zoom a:hover {
-    background-color: {{ text_color }}10;
+    background-color: var(--color-background-secondary, rgba(0,0,0,0.05));
   }
 
   .map-container-{{ section.id }} .leaflet-control-attribution {
-    background-color: {{ bg_color }}cc;
-    color: {{ text_color }}80;
+    background-color: var(--color-background);
+    opacity: 0.9;
+    color: var(--color-text);
     font-size: 10px;
   }
 
   .map-container-{{ section.id }} .leaflet-control-attribution a {
-    color: {{ text_color }};
+    color: var(--color-text);
   }
 
   /* Custom marker popup */
@@ -67,14 +63,14 @@
   }
 
   .map-popup-{{ section.id }} .leaflet-popup-content-wrapper {
-    background-color: {{ bg_color }};
-    color: {{ text_color }};
+    background-color: var(--color-background);
+    color: var(--color-text);
     border-radius: 8px;
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);
   }
 
   .map-popup-{{ section.id }} .leaflet-popup-tip {
-    background-color: {{ bg_color }};
+    background-color: var(--color-background);
   }
 
   .map-popup-{{ section.id }} .leaflet-popup-content {
@@ -145,7 +141,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: {{ bg_color }};
+    background: var(--color-background);
     z-index: 10;
     transition: opacity 0.3s ease;
   }
@@ -158,8 +154,8 @@
   .map-loading-spinner {
     width: 40px;
     height: 40px;
-    border: 3px solid {{ text_color }}20;
-    border-top-color: {{ text_color }};
+    border: 3px solid var(--color-border);
+    border-top-color: var(--color-text);
     border-radius: 50%;
     animation: map-spin 0.8s linear infinite;
   }
@@ -169,7 +165,7 @@
   }
 </style>
 
-<section class="map-section-{{ section.id }} py-16 sm:py-24">
+<section class="map-section-{{ section.id }} color-{{ section.settings.color_scheme }} py-16 sm:py-24">
   {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
   {% if section.settings.label != blank or section.settings.title != blank %}
     <div class="page-container mb-8 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="map-header-{{ section.id }}">
@@ -583,14 +579,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "blocks": [

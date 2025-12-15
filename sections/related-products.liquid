@@ -12,23 +12,13 @@
 -%}
 
 <style>
-  {%- liquid
-    assign bg_color = section.settings.background_color | default: 'transparent'
-    assign text_color = section.settings.text_color | default: 'inherit'
-  -%}
-  .related-products-{{ section.id }} {
-    --section-bg: {{ bg_color }};
-    --section-text: {{ text_color }};
-    background-color: var(--section-bg);
-    color: var(--section-text);
-  }
   .related-products-{{ section.id }} .nav-btn:hover:not(:disabled) {
-    background-color: var(--section-text);
-    color: var(--section-bg);
-    border-color: var(--section-text);
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
   }
   .related-products-{{ section.id }} .skeleton-bg {
-    background-color: var(--section-text);
+    background-color: var(--color-text);
     opacity: 0.1;
   }
   /* Title line reveal animation (managed by TweenManager) */
@@ -36,7 +26,7 @@
 </style>
 
 <section
-  class="related-products-{{ section.id }} py-[--section-vertical-padding] overflow-hidden"
+  class="related-products-{{ section.id }} color-{{ section.settings.color_scheme }} py-[--section-vertical-padding] overflow-hidden"
   data-related-products
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -328,16 +318,10 @@
       "content": "Colors"
     },
     {
-      "type": "color",
-      "id": "background_color",
-      "label": "Background color",
-      
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Text color",
-      
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [
