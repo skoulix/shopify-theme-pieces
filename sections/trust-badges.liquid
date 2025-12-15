@@ -17,24 +17,18 @@
 {%- style -%}
   #{{ section_id }} {
     --badge-icon-color: {{ section.settings.icon_color }};
-    padding-top: {{ section.settings.padding_top }}px;
-    padding-bottom: {{ section.settings.padding_bottom }}px;
-  }
-
-  @media (min-width: 768px) {
-    #{{ section_id }} {
-      padding-top: {{ section.settings.padding_top | times: 1.25 | round }}px;
-      padding-bottom: {{ section.settings.padding_bottom | times: 1.25 | round }}px;
-    }
+    padding: calc(var(--section-vertical-padding) * 0.6) 0;
   }
 {%- endstyle -%}
 
 <section id="{{ section_id }}" class="trust-badges color-{{ section.settings.color_scheme }}">
   <div class="{{ container_class }}">
     {%- if section.settings.title != blank -%}
-      <h2 class="section-label text-center mb-8" data-tween data-tween-type="fade-up">
-        {{ section.settings.title }}
-      </h2>
+      <div class="text-{{ section.settings.header_alignment }} mb-8{% if section.settings.full_width and section.settings.header_alignment != 'center' %} px-[var(--page-padding)]{% endif %}">
+        <h2 class="section-label" data-tween data-tween-type="fade-up">
+          {{ section.settings.title }}
+        </h2>
+      </div>
     {%- endif -%}
 
     {%- if badge_count > 0 -%}
@@ -147,7 +141,13 @@
     {
       "type": "text",
       "id": "title",
-      "label": "Section title"
+      "label": "Title"
+    },
+    {
+      "type": "text_alignment",
+      "id": "header_alignment",
+      "default": "center",
+      "label": "Header alignment"
     },
     {
       "type": "header",
@@ -174,26 +174,6 @@
       "id": "full_width",
       "label": "Full width",
       "default": false
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding top",
-      "default": 40
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "label": "Padding bottom",
-      "default": 40
     }
   ],
   "blocks": [

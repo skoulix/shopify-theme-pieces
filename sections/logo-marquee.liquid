@@ -20,6 +20,9 @@
   .logo-marquee-header-{{ section.id }} {
     text-align: {{ section.settings.header_alignment }};
     margin-bottom: clamp(2rem, 4vh, 3rem);
+    {% if section.settings.full_width and section.settings.header_alignment != 'center' %}
+    padding: 0 var(--page-padding, clamp(1rem, 3vw, 2rem));
+    {% endif %}
   }
 
   .logo-marquee-label-{{ section.id }} {
@@ -328,7 +331,7 @@
     {
       "type": "text_alignment",
       "id": "header_alignment",
-      "default": "left",
+      "default": "center",
       "label": "Header alignment"
     },
     {
