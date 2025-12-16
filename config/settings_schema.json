@@ -197,7 +197,7 @@
         "id": "page_width",
         "min": 1000,
         "max": 1600,
-        "step": 40,
+        "step": 10,
         "default": 1280,
         "unit": "px",
         "label": "Page width"
@@ -205,9 +205,9 @@
       {
         "type": "range",
         "id": "page_vertical_padding",
-        "min": 40,
-        "max": 120,
-        "step": 10,
+        "min": 24,
+        "max": 160,
+        "step": 4,
         "default": 80,
         "unit": "px",
         "label": "Page vertical padding",
@@ -216,9 +216,9 @@
       {
         "type": "range",
         "id": "section_vertical_padding",
-        "min": 40,
-        "max": 120,
-        "step": 10,
+        "min": 24,
+        "max": 160,
+        "step": 4,
         "default": 80,
         "unit": "px",
         "label": "Section vertical padding",
@@ -302,11 +302,12 @@
         "type": "range",
         "id": "button_radius",
         "min": 0,
-        "max": 40,
-        "step": 2,
+        "max": 100,
+        "step": 1,
         "default": 0,
         "unit": "px",
-        "label": "Corner radius"
+        "label": "Corner radius",
+        "info": "Use 100 for pill-shaped buttons"
       },
       {
         "type": "range",
@@ -339,11 +340,12 @@
         "type": "range",
         "id": "input_radius",
         "min": 0,
-        "max": 24,
-        "step": 2,
+        "max": 100,
+        "step": 1,
         "default": 0,
         "unit": "px",
-        "label": "Corner radius"
+        "label": "Corner radius",
+        "info": "Use 100 for pill-shaped inputs"
       },
       {
         "type": "range",
@@ -364,8 +366,8 @@
         "type": "range",
         "id": "card_radius",
         "min": 0,
-        "max": 24,
-        "step": 2,
+        "max": 48,
+        "step": 1,
         "default": 0,
         "unit": "px",
         "label": "Corner radius"
