@@ -696,6 +696,13 @@
   if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
     wrapper.classList.remove('is-loading');
     initLoadMoreNoAnimation();
+
+    // Reinitialize load more when facets are updated (filters applied/cleared)
+    document.addEventListener('facets:updated', () => {
+      requestAnimationFrame(() => {
+        initLoadMoreNoAnimation();
+      });
+    });
     return;
   }
 
@@ -1318,6 +1325,14 @@
 
     // Initialize load more
     initLoadMore();
+
+    // Reinitialize load more when facets are updated (filters applied/cleared)
+    document.addEventListener('facets:updated', () => {
+      // Small delay to ensure DOM is updated
+      requestAnimationFrame(() => {
+        initLoadMore();
+      });
+    });
 
     // Cleanup ScrollTriggers
     function cleanup() {
