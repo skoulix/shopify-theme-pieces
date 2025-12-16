@@ -164,7 +164,7 @@
         <input type="hidden" name="section_id" value="{{ section_id }}">
 
         {%- comment -%} Filters {%- endcomment -%}
-        <div>
+        <div class="facets-drawer__filters">
           {%- for filter in results.filters -%}
             <details
               class="group/filter border-b border-[--color-border]"
@@ -203,11 +203,11 @@
                     {%- endif -%}
 
                     {%- if has_swatches or is_color_filter -%}
-                      {%- comment -%} Swatch Grid for Color Filters {%- endcomment -%}
-                      <ul class="flex flex-wrap gap-3 max-h-64 overflow-y-auto py-1" role="list">
+                      {%- comment -%} Swatch List for Color Filters {%- endcomment -%}
+                      <ul class="space-y-2 max-h-64 overflow-y-auto" role="list">
                         {%- for value in filter.values -%}
-                          <li class="relative">
-                            <label class="facet-swatch group cursor-pointer block" title="{{ value.label }}">
+                          <li>
+                            <label class="flex items-center gap-3 cursor-pointer group {% if value.count == 0 and value.active == false %}opacity-40 cursor-not-allowed{% endif %}">
                               <input
                                 type="checkbox"
                                 name="{{ value.param_name }}"
@@ -217,30 +217,34 @@
                                 {% if value.count == 0 and value.active == false %}disabled{% endif %}
                                 class="sr-only peer"
                               >
-                              {%- comment -%} Swatch circle {%- endcomment -%}
-                              <span
-                                class="facet-swatch__color relative block w-8 h-8 rounded-full border-2 border-transparent ring-1 ring-[--color-border] transition-all peer-checked:ring-2 peer-checked:ring-[--color-text] peer-checked:ring-offset-2 peer-focus-visible:ring-2 peer-focus-visible:ring-[--color-primary] peer-focus-visible:ring-offset-2 group-hover:ring-[--color-text] {% if value.count == 0 and value.active == false %}opacity-30{% endif %}"
-                                style="
-                                  {%- if value.swatch.color -%}
-                                    background-color: rgb({{ value.swatch.color.rgb }});
-                                  {%- elsif value.swatch.image -%}
-                                    background-image: url({{ value.swatch.image | image_url: width: 64 }});
-                                    background-size: cover;
-                                    background-position: center;
-                                  {%- else -%}
-                                    background-color: {{ value.label | downcase }};
-                                  {%- endif -%}
-                                "
-                              ></span>
-                              {%- comment -%} Checkmark for selected state {%- endcomment -%}
-                              <span class="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">
-                                <i class="ph ph-check text-sm drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] {% if value.swatch.color.lightness > 0.6 %}text-black{% else %}text-white{% endif %}" aria-hidden="true"></i>
+                              {%- comment -%} Swatch circle with selection ring {%- endcomment -%}
+                              <span class="facet-swatch__frame relative flex-shrink-0 p-0.5 rounded-full border-2 border-transparent transition-all peer-checked:border-[--color-text] peer-focus-visible:ring-2 peer-focus-visible:ring-[--color-primary] peer-focus-visible:ring-offset-2 group-hover:border-[--color-border]">
+                                <span
+                                  class="facet-swatch__color block w-5 h-5 rounded-full shadow-[inset_0_0_0_1px_rgba(0,0,0,0.1)]"
+                                  style="
+                                    {%- if value.swatch.color -%}
+                                      background-color: rgb({{ value.swatch.color.rgb }});
+                                    {%- elsif value.swatch.image -%}
+                                      background-image: url({{ value.swatch.image | image_url: width: 40 }});
+                                      background-size: cover;
+                                      background-position: center;
+                                    {%- else -%}
+                                      background-color: {{ value.label | downcase }};
+                                    {%- endif -%}
+                                  "
+                                ></span>
+                                {%- comment -%} Checkmark for selected state {%- endcomment -%}
+                                <span class="absolute inset-0 flex items-center justify-center opacity-0 peer-checked:opacity-100 transition-opacity pointer-events-none">
+                                  <i class="ph-bold ph-check text-[10px] drop-shadow-[0_1px_2px_rgba(0,0,0,0.5)] {% if value.swatch.color.lightness > 0.6 %}text-black{% else %}text-white{% endif %}" aria-hidden="true"></i>
+                                </span>
                               </span>
+                              {%- comment -%} Color label {%- endcomment -%}
+                              <span class="flex-1 text-sm group-hover:text-[--color-text] peer-checked:font-medium transition-colors">
+                                {{ value.label }}
+                              </span>
+                              {%- comment -%} Count {%- endcomment -%}
+                              <span class="text-xs text-[--color-text-secondary]">({{ value.count }})</span>
                             </label>
-                            {%- comment -%} Tooltip below {%- endcomment -%}
-                            <span class="facet-swatch__tooltip absolute top-full left-1/2 -translate-x-1/2 mt-1 text-[10px] whitespace-nowrap opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none text-[--color-text-secondary]">
-                              {{ value.label }}
-                            </span>
                           </li>
                         {%- endfor -%}
                       </ul>

@@ -476,7 +476,8 @@ class FacetFiltersForm extends HTMLElement {
 
   updateFilters(doc) {
     const newFilters = doc.querySelector('.facets-drawer__filters');
-    const currentFilters = this.querySelector('.facets-drawer__filters');
+    // Use this.drawer since it was moved to document.body in connectedCallback
+    const currentFilters = this.drawer?.querySelector('.facets-drawer__filters');
 
     if (newFilters && currentFilters) {
       // Preserve open states
