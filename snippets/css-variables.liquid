@@ -138,6 +138,9 @@
     --card-border-width: {{ settings.card_border_width }}px;
     --card-shadow: {{ card_shadow_value }};
 
+    /* Badges - proportional to card radius */
+    --badge-radius: {{ settings.card_radius | times: 0.5 | round }}px;
+
     /* Inputs */
     --input-radius: {{ settings.input_radius }}px;
     --input-radius-textarea: min({{ settings.input_radius }}px, 16px);
