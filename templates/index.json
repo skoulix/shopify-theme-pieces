@@ -13,7 +13,9 @@
       "type": "hero",
       "settings": {
         "overlay_opacity": 40,
+        "label": "",
         "title": "Elevate Your Style",
+        "description": "Discover our curated collection of premium products designed for the modern lifestyle.",
         "content_alignment": "left",
         "button_text": "Shop Now",
         "button_link": "shopify://collections/all",
@@ -99,7 +101,7 @@
         "show_view_all": true,
         "view_all_text": "View All",
         "full_width": false,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2"
       }
     },
     "image_with_text": {
@@ -134,7 +136,7 @@
         "layout": "image_left",
         "full_width": false,
         "remove_padding": false,
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-1"
       }
     },
     "featured_blog_GWjPQG": {
@@ -156,17 +158,82 @@
         "show_view_all": true,
         "view_all_text": "View All",
         "full_width": false,
-        "color_scheme": "scheme-3"
+        "color_scheme": "scheme-2"
       }
     },
-    "recently_viewed": {
-      "type": "recently-viewed",
+    "testimonials_UML8MP": {
+      "type": "testimonials",
+      "blocks": {
+        "testimonial_BF9x6V": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
+            "rating": 5,
+            "author": "Sarah Johnson",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_6aGUB4": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
+            "rating": 5,
+            "author": "Michael Chen",
+            "author_title": "Loyal Customer"
+          }
+        },
+        "testimonial_H7jk47": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
+            "rating": 5,
+            "author": "Emily Davis",
+            "author_title": "Repeat Customer"
+          }
+        },
+        "testimonial_FKV7Ym": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+            "rating": 5,
+            "author": "David Wilson",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_dH4rBy": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+            "rating": 5,
+            "author": "Rachel Thompson",
+            "author_title": "First-time Buyer"
+          }
+        },
+        "testimonial_H4HFVR": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+            "rating": 5,
+            "author": "James Martinez",
+            "author_title": "Repeat Customer"
+          }
+        }
+      },
+      "block_order": [
+        "testimonial_BF9x6V",
+        "testimonial_6aGUB4",
+        "testimonial_H7jk47",
+        "testimonial_FKV7Ym",
+        "testimonial_dH4rBy",
+        "testimonial_H4HFVR"
+      ],
+      "name": "Testimonials",
       "settings": {
-        "full_width": false,
-        "label": "Recently browsed",
-        "title": "Recently Viewed",
+        "label": "Testimonials",
+        "title": "What Our Customers Say",
         "header_alignment": "left",
-        "products_to_show": 8,
+        "show_rating": true,
+        "full_width": false,
         "color_scheme": "scheme-1"
       }
     },
@@ -182,6 +249,23 @@
         "privacy_link_text": "privacy policy",
         "color_scheme": "scheme-2"
       }
+    },
+    "featured_product_ckranb": {
+      "type": "featured-product",
+      "name": "Featured Product",
+      "settings": {
+        "product": "blizzardx-pro-2025-snowboard",
+        "layout": "image_left",
+        "full_width": false,
+        "image_ratio": "1/1",
+        "show_thumbnails": true,
+        "show_vendor": true,
+        "show_description": true,
+        "variant_picker_type": "buttons",
+        "show_quantity": true,
+        "show_view_details": true,
+        "color_scheme": "scheme-1"
+      }
     }
   },
   "order": [
@@ -190,7 +274,8 @@
     "featured_collection",
     "image_with_text",
     "featured_blog_GWjPQG",
-    "recently_viewed",
-    "newsletter"
+    "testimonials_UML8MP",
+    "newsletter",
+    "featured_product_ckranb"
   ]
 }
