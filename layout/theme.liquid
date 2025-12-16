@@ -3,18 +3,20 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-    <meta name="theme-color" content="{{ settings.color_background }}">
+    <meta name="theme-color" content="{{ settings.color_primary }}">
+    <meta name="theme-color" content="{{ settings.color_primary }}" media="(prefers-color-scheme: light)">
+    <meta name="theme-color" content="{{ settings.color_background }}" media="(prefers-color-scheme: dark)">
 
     {%- comment -%} Resource Hints - Establish early connections to required origins {%- endcomment -%}
     <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
     <link rel="preconnect" href="https://fonts.shopifycdn.com" crossorigin>
-    <link rel="dns-prefetch" href="https://productreviews.shopifycdn.com">
     <link rel="dns-prefetch" href="https://shop.app">
 
     <link rel="canonical" href="{{ canonical_url }}">
 
     {% if settings.favicon != blank %}
       <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 32, height: 32 }}">
+      <link rel="apple-touch-icon" href="{{ settings.favicon | image_url: width: 180, height: 180 }}">
     {% endif %}
 
     <title>
@@ -45,9 +47,9 @@
     {%- comment -%} Error handling - Toast notifications, global error handler {%- endcomment -%}
     {% render 'error-handling' %}
 
-    {%- comment -%} Non-critical CSS - Loaded with preload for better performance {%- endcomment -%}
-    {{ 'phosphor-icons.css' | asset_url | stylesheet_tag: preload: true }}
-    {{ 'pieces-app.css' | asset_url | stylesheet_tag: preload: true }}
+    {%- comment -%} Non-critical CSS {%- endcomment -%}
+    {{ 'phosphor-icons.css' | asset_url | stylesheet_tag }}
+    {{ 'pieces-app.css' | asset_url | stylesheet_tag }}
 
     {%- comment -%} Pieces App - Swup, Lenis, GSAP (defer prevents render blocking) {%- endcomment -%}
     <script src="{{ 'pieces-app.js' | asset_url }}" type="module" defer></script>
@@ -127,7 +129,7 @@
     </script>
   </head>
 
-  <body class="antialiased">
+  <body class="antialiased bg-[--color-background] text-[--color-text]">
     <a href="#main" class="skip-link">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

@@ -341,13 +341,10 @@
     case section.settings.header_alignment
       when 'center'
         assign header_align_class = 'text-center'
-        assign title_line_offset = false
       when 'right'
         assign header_align_class = 'text-right'
-        assign title_line_offset = false
       else
         assign header_align_class = 'text-left'
-        assign title_line_offset = true
     endcase
   -%}
 
@@ -1413,15 +1410,15 @@
       "info": "Animate description with text scramble effect on page load"
     },
     {
+      "type": "header",
+      "content": "Layout settings"
+    },
+    {
       "type": "checkbox",
       "id": "enable_bento_pattern",
       "label": "Enable bento layout",
       "default": false,
       "info": "Display products in a modern bento/metro grid with varying sizes (hero, wide, tall items)"
-    },
-    {
-      "type": "header",
-      "content": "Layout settings"
     },
     {
       "type": "range",
