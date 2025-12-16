@@ -129,7 +129,7 @@
   .hero-orbit-title-{{ section.id }} {
     font-size: calc(clamp(3rem, 15vw, 8rem) * var(--heading-font-scale, 1));
     font-weight: 700;
-    letter-spacing: -0.04em;
+    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
     line-height: 0.85;
     margin: 0;
     opacity: 0;

@@ -27,7 +27,7 @@
     <style>
       .gift-card-wrapper { min-height: 100vh; display: flex; align-items: center; justify-content: center; background: var(--color-background); }
       .gift-card-container { width: 100%; max-width: 28rem; padding: 2rem; }
-      .gift-card-balance { font-size: calc(clamp(3rem, 12vw, 5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 1; }
+      .gift-card-balance { font-size: calc(clamp(3rem, 12vw, 5rem) * var(--heading-font-scale, 1)); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); line-height: 1; }
       .gift-card-visual { position: relative; aspect-ratio: 1.6; background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-text) 100%); border-radius: 1rem; overflow: hidden; }
       .gift-card-visual::before { content: ''; position: absolute; inset: 0; background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); }
       .gift-card-visual-content { position: relative; z-index: 1; height: 100%; display: flex; flex-direction: column; justify-content: space-between; padding: 1.5rem; color: white; }

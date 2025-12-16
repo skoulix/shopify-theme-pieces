@@ -57,6 +57,8 @@
 
   assign body_font_scale = settings.body_scale | divided_by: 100.0
   assign heading_font_scale = settings.heading_scale | divided_by: 100.0
+  assign heading_letter_spacing = settings.heading_letter_spacing | divided_by: 1000.0
+  assign body_letter_spacing = settings.body_letter_spacing | divided_by: 1000.0
 -%}
 
 <style>
@@ -91,6 +93,8 @@
     --font-heading-style: {{ settings.type_header_font.style }};
     --body-font-scale: {{ body_font_scale }};
     --heading-font-scale: {{ heading_font_scale }};
+    --heading-letter-spacing: {{ heading_letter_spacing }}em;
+    --body-letter-spacing: {{ body_letter_spacing }}em;
 
     /* Global UI colors (not part of schemes) */
     --color-sale: {{ settings.color_sale }};

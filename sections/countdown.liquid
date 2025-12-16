@@ -77,7 +77,7 @@
     font-weight: 700;
     font-family: var(--font-heading);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     min-width: 2ch;
   }
 

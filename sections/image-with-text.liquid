@@ -22,7 +22,7 @@
   .iwt-cta .iwt-cta-text::after { content: attr(data-hover); position: absolute; left: 0; top: 100%; white-space: nowrap; }
   .iwt-cta:hover .iwt-cta-text { transform: translateY(-100%); }
   [data-iwt-section="{{ section.id }}"] .iwt-stats { gap: clamp(2rem, 4vw, 4rem); border-top-color: var(--color-border); }
-  [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: -0.03em; }
+  [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); }
 </style>
 
 <section

@@ -18,7 +18,7 @@
 
   .faq-section-{{ section.id }} .faq-title {
     font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-    letter-spacing: -0.03em;
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     line-height: 0.95;
   }
 

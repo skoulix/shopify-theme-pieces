@@ -186,6 +186,31 @@
         "id": "buttons_uppercase",
         "default": true,
         "label": "Uppercase buttons"
+      },
+      {
+        "type": "header",
+        "content": "Letter spacing"
+      },
+      {
+        "type": "range",
+        "id": "heading_letter_spacing",
+        "min": -50,
+        "max": 200,
+        "step": 10,
+        "default": 0,
+        "unit": "‰",
+        "label": "Heading letter spacing",
+        "info": "Adjust tracking for heading fonts. Condensed fonts like Bebas Neue often benefit from increased spacing."
+      },
+      {
+        "type": "range",
+        "id": "body_letter_spacing",
+        "min": -20,
+        "max": 50,
+        "step": 5,
+        "default": 0,
+        "unit": "‰",
+        "label": "Body letter spacing"
       }
     ]
   },

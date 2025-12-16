@@ -11,7 +11,7 @@
 -%}
 
 <style>
-  .cart-page-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 0.9; }
+  .cart-page-title { font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); line-height: 0.9; }
   @media (min-width: 1024px) { .cart-page-title { font-size: calc(clamp(3.5rem, 7vw, 6rem) * var(--heading-font-scale, 1)); } }
   /* Title line stagger (managed by TweenManager) */
   .cart-page-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }

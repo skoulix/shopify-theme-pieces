@@ -10,7 +10,7 @@
   @media (min-width: 1024px) { .product-info { padding: 4rem 0 4rem 4rem; } }
   .product-info.is-full-width { padding: 6rem var(--page-padding) 3rem; }
   @media (min-width: 1024px) { .product-info.is-full-width { padding: 4rem 4rem 4rem 4rem; } }
-  .product-title { font-size: calc(clamp(1.75rem, 10cqw, 3rem) * var(--heading-font-scale, 1)); font-weight: 700; letter-spacing: -0.04em; line-height: 0.85; color: var(--color-text); }
+  .product-title { font-size: calc(clamp(1.75rem, 10cqw, 3rem) * var(--heading-font-scale, 1)); font-weight: 700; letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em)); line-height: 0.85; color: var(--color-text); }
   @container (min-width: 400px) { .product-title { font-size: calc(clamp(2rem, 8cqw, 3.5rem) * var(--heading-font-scale, 1)); } }
   @container (min-width: 600px) { .product-title { font-size: calc(clamp(2.5rem, 7cqw, 4.5rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1400px) { .product-title { font-size: calc(clamp(3rem, 3.5vw, 4.5rem) * var(--heading-font-scale, 1)); } }

@@ -42,7 +42,7 @@
   .marquee-text {
     font-size: clamp(1.5rem, 6vw, 3rem);
     line-height: 1;
-    letter-spacing: -0.03em;
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
   }
 
   @media (min-width: 1024px) {

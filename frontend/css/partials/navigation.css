@@ -23,7 +23,7 @@
   font-weight: var(--font-heading-weight, 500);
   font-style: var(--font-heading-style, normal);
   line-height: 1.1;
-  letter-spacing: -0.02em;
+  letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
   color: var(--color-text);
   transition: color 0.3s ease;
 }
@@ -132,7 +132,7 @@
   font-size: clamp(1.5rem, 6vw, 2rem);
   font-weight: var(--font-heading-weight, 500);
   font-style: var(--font-heading-style, normal);
-  letter-spacing: -0.02em;
+  letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
 }
 
 /* Slide style links - smaller for better hierarchy */

@@ -8,7 +8,7 @@
 
 <style>
   .article-progress-bar { transition: width 0.1s ease-out; }
-  .article-hero-title { font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1)); letter-spacing: -0.03em; line-height: 1.05; }
+  .article-hero-title { font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1)); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); line-height: 1.05; }
   @media (min-width: 1024px) { .article-hero-title { font-size: calc(clamp(2.5rem, 4vw, 3.5rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .article-hero-title { font-size: calc(clamp(3rem, 3.5vw, 4rem) * var(--heading-font-scale, 1)); } }
   .tween-split-line:nth-child(2) { margin-left: clamp(1rem, 6vw, 4rem); }
