@@ -25,7 +25,7 @@
 
   .map-container-{{ section.id }} {
     height: {{ section.settings.map_height }}px;
-    border-radius: {{ section.settings.border_radius }}px;
+    border-radius: var(--card-radius);
     overflow: hidden;
     position: relative;
     z-index: 1;
@@ -540,16 +540,6 @@
       "default": 450,
       "unit": "px",
       "label": "Map height"
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "min": 0,
-      "max": 32,
-      "step": 4,
-      "default": 16,
-      "unit": "px",
-      "label": "Border radius"
     },
     {
       "type": "color",
