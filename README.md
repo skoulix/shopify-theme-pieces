@@ -663,15 +663,42 @@ Configurable via Shopify theme customizer:
 
 Five curated design presets available in the theme editor, each targeting specific market niches:
 
-| Preset | Target Niche | Description |
-| ------ | ------------ | ----------- |
-| **Default** | General/versatile | Clean, modern look with indigo primary color and Inter font |
-| **Bold** | T-shirts, graphic tees, statement brands | High contrast black/white with orange accent, Bebas Neue headings, hard shadows, thick borders |
-| **Noir** | Jewelry, high-end accessories | Dark, elegant theme with gold accents and Playfair Display serif headings |
-| **Edge** | Tech, gaming, consumer electronics | Dark futuristic theme with cyan accent, Oswald headings, expanded letter spacing |
-| **Glow** | Cosmetics, skincare, wellness | Soft, warm tones with Cormorant headings, pill-shaped buttons, rounded cards |
+#### Default
+**Best for:** General retail, home goods, lifestyle brands, DTC startups
+- Clean, modern aesthetic with indigo primary color
+- Inter font for universal readability
+- Sharp corners, minimal shadows
+- Works well for brands still defining their visual identity
 
-Each preset configures color schemes, typography (including letter spacing), border radius, and shadow styles for buttons, inputs, and cards. Presets also include unique homepage and about page templates tailored to their target market.
+#### Bold
+**Best for:** Streetwear, graphic tees, sneakers, skate/surf brands, statement apparel
+- High contrast black/white with vibrant orange accent
+- Bebas Neue display headings with IBM Plex Mono body text
+- Hard offset shadows, thick 3px borders
+- Expanded letter spacing for impactful headlines
+
+#### Noir
+**Best for:** Fine jewelry, luxury watches, high-end accessories, premium leather goods
+- Dark, elegant theme with gold accents
+- Playfair Display serif headings, Tenor Sans body
+- Subtle gradient backgrounds, refined 1px borders
+- Generous vertical padding for a luxurious feel
+
+#### Edge
+**Best for:** Gaming peripherals, PC components, consumer electronics, tech accessories
+- Dark futuristic theme with cyan accent
+- Rajdhani geometric headings, IBM Plex Mono body
+- Sharp angular design, expanded letter spacing
+- Optimized for product specs and technical details
+
+#### Glow
+**Best for:** Skincare, cosmetics, wellness products, clean beauty, spa brands
+- Soft, warm cream tones with terracotta accent
+- Cormorant elegant headings, Questrial body
+- Pill-shaped buttons (100px radius), rounded cards
+- Soft shadows for an approachable, organic feel
+
+Each preset configures color schemes, typography (including letter spacing), border radius, and shadow styles for buttons, inputs, and cards.
 
 ---
 
