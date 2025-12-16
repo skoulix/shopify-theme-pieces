@@ -175,6 +175,16 @@
   overflow: hidden;
 }
 
+.product-card-list__title a {
+  color: inherit;
+  text-decoration: none;
+  transition: color 0.2s ease;
+}
+
+.product-card-list__title a:hover {
+  color: var(--color-primary);
+}
+
 .product-card-list__price {
   color: var(--color-text-secondary);
   font-size: 0.875rem;

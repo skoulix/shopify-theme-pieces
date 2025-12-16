@@ -65,12 +65,14 @@
   </a>
 
   {%- comment -%} Content {%- endcomment -%}
-  <a href="{{ product_url }}" class="product-card-list__content">
+  <div class="product-card-list__content">
     {% if show_vendor and product.vendor != blank %}
       <p class="product-card-list__vendor card-meta">{{ product.vendor }}</p>
     {% endif %}
 
-    <h3 class="product-card-list__title card-title">{{ product.title }}</h3>
+    <h3 class="product-card-list__title card-title">
+      <a href="{{ product_url }}">{{ product.title }}</a>
+    </h3>
 
     <div class="product-card-list__price">
       {% if product.compare_at_price > product.price %}
@@ -80,7 +82,7 @@
         <span>{{ product.price | money }}</span>
       {% endif %}
     </div>
-  </a>
+  </div>
 
   {%- comment -%} Mobile buttons {%- endcomment -%}
   {% if product.available %}
