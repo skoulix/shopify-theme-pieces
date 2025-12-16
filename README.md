@@ -182,7 +182,7 @@ Toast notifications automatically:
 
 ---
 
-## Sections (56 Total)
+## Sections (57 Total)
 
 ### Hero & Landing
 
@@ -197,13 +197,13 @@ Toast notifications automatically:
 - `collection` - Collection with filtering
 - `collections` - Collection list/grid
 - `featured-collection` - Featured product grid
+- `featured-product` - Single product showcase with variant picker
 - `related-products` - Related products carousel
 - `recently-viewed` - Recently viewed products
 - `complementary-products` - Frequently bought together
 - `quick-view-product` - Quick view modal content
 - `wishlist` - Saved products page
 - `compare` - Product comparison table
-- `featured-blog` - Featured blog posts grid
 
 ### Interactive
 
@@ -229,6 +229,7 @@ Toast notifications automatically:
 - `trust-badges` - Trust/payment badges
 - `floating-images` - Decorative floating images
 - `custom-liquid` - Custom Liquid code section
+- `featured-blog` - Featured blog posts grid
 
 ### Animation Showcase
 
@@ -254,9 +255,12 @@ Toast notifications automatically:
 - `article` - Blog article template
 - `blog` - Blog listing
 - `cart` - Cart page
+- `cart-drawer` - Slide-out cart drawer
 - `search` - Search results
 - `password` - Password page
 - `404` - Not found page
+- `apps` - Third-party app embeds
+- `pickup-availability` - Store pickup info block
 
 ---
 
@@ -582,7 +586,7 @@ pieces/
 ├── layout/                  # Theme layouts
 ├── locales/                 # Translation files (17 languages)
 ├── scripts/                 # Build/utility scripts
-├── sections/                # Liquid sections (56)
+├── sections/                # Liquid sections (57)
 ├── snippets/                # Reusable partials
 ├── templates/               # Page templates
 ├── tailwind.config.js       # Tailwind configuration
