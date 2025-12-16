@@ -24,24 +24,126 @@
   @media (min-width: 1024px) { .collection-grid { grid-template-columns: repeat(var(--columns-desktop, 3), 1fr); } }
   .collection-wrapper.is-loading .product-card-image { clip-path: inset(0 100% 0 0); }
   html.animations-disabled .collection-wrapper.is-loading .product-card-image { clip-path: none; }
-  .collection-metro { grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); }
-  @media (min-width: 768px) { .collection-metro { grid-template-columns: repeat(var(--columns-tablet, 2), 1fr); } }
-  @media (min-width: 1024px) { .collection-metro { grid-template-columns: repeat(var(--columns-desktop, 4), 1fr); } }
-  .metro-item-image { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-  .metro-item-large { grid-column: span 2; grid-row: span 2; }
-  .metro-item-wide { grid-column: span 2; }
-  .metro-item-tall { grid-row: span 2; }
-  @media (max-width: 767px) { .metro-item-large, .metro-item-wide, .metro-item-tall { grid-column: span 1; grid-row: span 1; } }
-  .metro-item-large .metro-item-inner, .metro-item-wide .metro-item-inner { aspect-ratio: 16/9; }
-  .metro-item-tall .metro-item-inner { aspect-ratio: 3/5; }
-  .metro-item-normal .metro-item-inner { aspect-ratio: 1/1; }
-  @media (max-width: 640px) { .metro-item .metro-item-inner { aspect-ratio: 4/5; } }
-  .metro-item-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); }
-  .metro-item:hover .metro-item-overlay { opacity: 1; }
+  /* Metro Grid - Modern Bento Layout */
+  .collection-metro { grid-template-columns: repeat(2, 1fr); grid-auto-rows: minmax(280px, auto); gap: 0.75rem; }
+  @media (min-width: 768px) { .collection-metro { grid-template-columns: repeat(4, 1fr); grid-auto-rows: minmax(320px, auto); gap: 1rem; } }
+  @media (min-width: 1280px) { .collection-metro { grid-auto-rows: minmax(360px, auto); gap: 1.25rem; } }
+
+  /* Metro Item Sizes - Creative bento pattern */
+  .metro-item--hero { grid-column: span 2; grid-row: span 2; }
+  .metro-item--wide { grid-column: span 2; }
+  .metro-item--tall { grid-row: span 2; }
+  .metro-item--standard { }
+  @media (max-width: 767px) {
+    .metro-item--hero, .metro-item--wide { grid-column: span 2; }
+    .metro-item--tall { grid-row: span 1; }
+    .metro-item--hero { grid-row: span 2; }
+  }
+
+  /* Metro Item Base */
+  .metro-item { position: relative; overflow: hidden; border-radius: var(--card-radius); }
+  .metro-item-inner { position: relative; width: 100%; height: 100%; overflow: hidden; background: var(--color-background-secondary); }
+
+  /* Metro Image */
+  .metro-item-image { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease; }
   .metro-item:hover .metro-item-image { transform: scale(1.05); }
-  .metro-item-content { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-  .metro-item:hover .metro-item-content { transform: translateY(0); opacity: 1; }
-  .metro-item-large .metro-item-title { font-size: 1.5rem; }
+  .metro-item-image--secondary { opacity: 0; }
+  .metro-item:hover .metro-item-image--primary { opacity: 0; }
+  .metro-item:hover .metro-item-image--secondary { opacity: 1; }
+
+  /* Metro Overlay - Gradient that intensifies on hover */
+  .metro-item-overlay {
+    position: absolute; inset: 0; pointer-events: none; z-index: 1;
+    background: linear-gradient(180deg, transparent 0%, transparent 40%, rgba(0,0,0,0.2) 70%, rgba(0,0,0,0.7) 100%);
+    transition: background 0.5s ease;
+  }
+  .metro-item:hover .metro-item-overlay {
+    background: linear-gradient(180deg, transparent 0%, transparent 20%, rgba(0,0,0,0.3) 60%, rgba(0,0,0,0.85) 100%);
+  }
+
+  /* Metro Content - Always visible at bottom */
+  .metro-item-content {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 1.5rem;
+    background: transparent;
+    z-index: 2;
+  }
+  .metro-item--hero .metro-item-content { padding: 2rem; }
+
+  /* Metro Vendor */
+  .metro-item-vendor {
+    font-size: 0.6875rem; font-weight: 600; letter-spacing: 0.15em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7); margin: 0 0 0.375rem;
+  }
+
+  /* Metro Title */
+  .metro-item-title {
+    font-size: 1.125rem; font-weight: 700; line-height: 1.2;
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    color: white; margin: 0;
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .metro-item--hero .metro-item-title { font-size: 1.75rem; -webkit-line-clamp: 3; }
+  .metro-item--wide .metro-item-title { font-size: 1.375rem; }
+
+  /* Metro Price */
+  .metro-item-price {
+    display: flex; align-items: baseline; gap: 0.5rem; flex-wrap: wrap;
+    margin-top: 0.5rem; font-size: 0.9375rem; color: white;
+  }
+  .metro-item-price-compare { text-decoration: line-through; opacity: 0.6; font-size: 0.8125rem; }
+  .metro-item-price-sale { color: var(--color-sale); font-weight: 600; }
+  .metro-item--hero .metro-item-price { font-size: 1.125rem; margin-top: 0.75rem; }
+
+  /* Metro Actions - Hidden extras that appear on hover */
+  .metro-item-actions {
+    display: flex; align-items: center; gap: 0.375rem; margin-top: 0.75rem;
+    opacity: 0;
+    transition: opacity 0.3s ease 0.1s;
+  }
+  .metro-item:hover .metro-item-actions { opacity: 1; }
+
+  .metro-item-action {
+    display: flex; align-items: center; justify-content: center;
+    width: 2.25rem; height: 2.25rem;
+    background: rgba(255,255,255,0.15); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+    border: 1px solid rgba(255,255,255,0.2); border-radius: 50%;
+    color: white; cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  .metro-item-action:hover { background: white; color: var(--color-text); border-color: white; }
+  .metro-item-action.is-active { background: var(--color-sale); border-color: var(--color-sale); }
+
+  .metro-item-cta {
+    display: inline-flex; align-items: center; justify-content: center; gap: 0.375rem;
+    padding: 0.5rem 0.875rem; font-size: 0.6875rem; font-weight: 600;
+    letter-spacing: 0.05em; text-transform: uppercase;
+    background: white; color: var(--color-text);
+    border: none; border-radius: var(--button-radius);
+    cursor: pointer; transition: background 0.2s ease, color 0.2s ease;
+    text-decoration: none;
+    line-height: 1;
+    pointer-events: auto;
+  }
+  .metro-item-cta:hover { background: var(--color-primary); color: var(--color-primary-contrast); }
+  .metro-item-cta--disabled { opacity: 0.5; cursor: not-allowed; pointer-events: none; }
+
+
+  /* Metro Sale Badge - Top left */
+  .metro-item-sale-badge {
+    position: absolute; top: 1rem; left: 1rem; z-index: 2;
+    padding: 0.375rem 0.75rem;
+    font-size: 0.6875rem; font-weight: 700; letter-spacing: 0.05em;
+    background: var(--color-sale); color: white;
+    border-radius: var(--button-radius);
+  }
+  .metro-item--hero .metro-item-sale-badge { top: 1.5rem; left: 1.5rem; padding: 0.5rem 1rem; font-size: 0.75rem; }
+
+  /* Metro Sold Out */
+  .metro-item-soldout .metro-item-image { filter: grayscale(40%); }
+  .metro-item-soldout .metro-item-overlay { background: linear-gradient(180deg, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.6) 100%); }
+
+  /* Loading state */
   .collection-wrapper.is-loading .metro-item-inner { clip-path: inset(0 100% 0 0); }
   html.animations-disabled .collection-wrapper.is-loading .metro-item-inner { clip-path: none; }
   .collection-wrapper.is-transitioning { pointer-events: none; }
@@ -118,18 +220,19 @@
     {% case layout_style %}
 
       {% when 'metro' %}
-        <div class="collection-metro grid gap-1 {{ container_class }}" data-collection-content aria-live="polite" aria-busy="false">
+        <div class="collection-metro grid {{ container_class }}" data-collection-content aria-live="polite" aria-busy="false">
           {% for product in collection.products %}
             {%- liquid
-              assign item_class = 'metro-item-normal'
-              assign mod = forloop.index0 | modulo: 6
+              # Modern bento pattern - varies every 8 items for visual interest
+              assign mod = forloop.index0 | modulo: 8
+              assign item_class = 'metro-item--standard'
 
               if mod == 0
-                assign item_class = 'metro-item-large'
-              elsif mod == 3
-                assign item_class = 'metro-item-wide'
-              elsif mod == 4
-                assign item_class = 'metro-item-tall'
+                assign item_class = 'metro-item--hero'
+              elsif mod == 3 or mod == 6
+                assign item_class = 'metro-item--wide'
+              elsif mod == 5
+                assign item_class = 'metro-item--tall'
               endif
 
               if collection
@@ -137,42 +240,151 @@
               else
                 assign product_url = product.url
               endif
+
+              assign is_on_sale = false
+              if product.compare_at_price > product.price
+                assign is_on_sale = true
+                assign save_percent = product.compare_at_price | minus: product.price | times: 100.0 | divided_by: product.compare_at_price | round
+              endif
+
+              assign first_variant = product.selected_or_first_available_variant
+              assign has_variants = false
+              if product.variants.size > 1
+                assign has_variants = true
+              endif
             -%}
 
-            <a
-              href="{{ product_url }}"
-              class="metro-item block relative overflow-hidden cursor-pointer no-underline text-inherit {{ item_class }}"
+            <div
+              class="metro-item {{ item_class }}{% unless product.available %} metro-item-soldout{% endunless %}"
               data-collection-item="{{ forloop.index0 }}"
+              data-product-id="{{ product.id }}"
             >
-              <div class="metro-item-inner relative overflow-hidden bg-[--color-background-secondary]">
+              <a href="{{ product_url }}" class="metro-item-inner block no-underline">
+                {%- comment -%} Images {%- endcomment -%}
                 {% if product.featured_image %}
-                  {{ product.featured_image | image_url: width: 1200 | image_tag:
-                    class: 'metro-item-image w-full h-full object-cover',
+                  {%- assign focal_point = product.featured_image.presentation.focal_point | default: '50% 50%' -%}
+                  {%- assign focal_style = 'object-position: ' | append: focal_point -%}
+                  {%- assign has_second_image = false -%}
+                  {%- if product.images.size > 1 -%}
+                    {%- assign has_second_image = true -%}
+                    {%- assign second_image = product.images[1] -%}
+                  {%- endif -%}
+
+                  {%- comment -%} Primary Image {%- endcomment -%}
+                  {{ product.featured_image | image_url: width: 1400 | image_tag:
+                    class: 'metro-item-image metro-item-image--primary',
+                    style: focal_style,
                     loading: 'lazy',
-          decoding: 'async',
-                    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
-                    widths: '400, 600, 800, 1200',
+                    decoding: 'async',
+                    sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+                    widths: '400, 600, 800, 1200, 1400',
                     alt: product.featured_image.alt | default: product.title
                   }}
+
+                  {%- comment -%} Secondary Image (hover) {%- endcomment -%}
+                  {% if has_second_image %}
+                    {%- assign focal_point_2 = second_image.presentation.focal_point | default: '50% 50%' -%}
+                    {%- assign focal_style_2 = 'object-position: ' | append: focal_point_2 -%}
+                    {{ second_image | image_url: width: 1400 | image_tag:
+                      class: 'metro-item-image metro-item-image--secondary',
+                      style: focal_style_2,
+                      loading: 'lazy',
+                      decoding: 'async',
+                      sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw',
+                      widths: '400, 600, 800, 1200, 1400',
+                      alt: second_image.alt | default: product.title
+                    }}
+                  {% endif %}
                 {% else %}
-                  <div class="metro-item-image w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
-                    <i class="ph ph-image text-6xl text-[--color-text-secondary] opacity-30"></i>
+                  <div class="metro-item-image flex items-center justify-center">
+                    <i class="ph ph-image text-6xl text-white/20"></i>
                   </div>
                 {% endif %}
 
-                <div class="metro-item-overlay absolute inset-0 opacity-0 transition-opacity duration-500"></div>
+                {%- comment -%} Overlay {%- endcomment -%}
+                <div class="metro-item-overlay"></div>
 
-                <div class="metro-item-content absolute bottom-0 left-0 right-0 p-6 translate-y-5 opacity-0">
-                  <h3 class="metro-item-title text-white font-semibold tracking-[0.05em] font-heading">{{ product.title }}</h3>
-                  <p class="text-white/80 text-sm mt-1">
-                    {% if product.compare_at_price > product.price %}
-                      <span class="line-through opacity-60 mr-2">{{ product.compare_at_price | money }}</span>
+                {%- comment -%} Sale Badge {%- endcomment -%}
+                {% if is_on_sale and settings.show_sale_badge %}
+                  <span class="metro-item-sale-badge">
+                    {% if settings.sale_badge_style == 'percentage' %}
+                      -{{ save_percent }}%
+                    {% else %}
+                      {{ 'products.product.on_sale' | t }}
                     {% endif %}
-                    {{ product.price | money }}
-                  </p>
+                  </span>
+                {% endif %}
+
+                {%- comment -%} Content {%- endcomment -%}
+                <div class="metro-item-content">
+                  {%- comment -%} Vendor {%- endcomment -%}
+                  {% if settings.show_vendor and product.vendor != blank %}
+                    <p class="metro-item-vendor">{{ product.vendor }}</p>
+                  {% endif %}
+
+                  {%- comment -%} Title {%- endcomment -%}
+                  <h3 class="metro-item-title font-heading">{{ product.title }}</h3>
+
+                  {%- comment -%} Price {%- endcomment -%}
+                  <div class="metro-item-price">
+                    {% if is_on_sale %}
+                      <span class="metro-item-price-compare">{{ product.compare_at_price | money }}</span>
+                      <span class="metro-item-price-sale">{{ product.price | money }}</span>
+                    {% else %}
+                      <span>{{ product.price | money }}</span>
+                    {% endif %}
+                  </div>
+
+                  {%- comment -%} Actions on hover {%- endcomment -%}
+                  <div class="metro-item-actions" onclick="event.preventDefault(); event.stopPropagation();">
+                    {%- comment -%} Quick Add / View Options {%- endcomment -%}
+                    {% if product.available %}
+                      {% if has_variants %}
+                        <span class="metro-item-cta">
+                          <i class="ph ph-eye text-sm"></i>
+                          <span>{{ 'products.product.select_options' | t }}</span>
+                        </span>
+                      {% else %}
+                        <button type="button" class="metro-item-cta" data-quick-add="{{ first_variant.id }}">
+                          <i class="ph ph-bag text-sm"></i>
+                          <span>{{ 'products.product.add_to_cart' | t }}</span>
+                        </button>
+                      {% endif %}
+                    {% else %}
+                      <span class="metro-item-cta metro-item-cta--disabled">
+                        {{ 'products.product.sold_out' | t }}
+                      </span>
+                    {% endif %}
+
+                    {%- comment -%} Quick View {%- endcomment -%}
+                    {% if settings.enable_quick_view and product.available %}
+                      <button
+                        type="button"
+                        class="metro-item-action"
+                        data-quick-view-trigger="{{ product.handle }}"
+                        aria-label="{{ 'products.product.quick_view' | t }}"
+                      >
+                        <i class="ph ph-eye text-lg"></i>
+                      </button>
+                    {% endif %}
+
+                    {%- comment -%} Wishlist {%- endcomment -%}
+                    {% if settings.enable_wishlist %}
+                      {%- capture wishlist_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}{%- endcapture -%}
+                      <button
+                        type="button"
+                        class="metro-item-action product-card-wishlist"
+                        data-wishlist-toggle="{{ product.id }}"
+                        data-product-json='{{ wishlist_json | strip_newlines | replace: "'", "&#39;" }}'
+                        aria-label="{{ 'products.wishlist.add_to_wishlist' | t }}"
+                      >
+                        <i class="ph ph-heart text-lg"></i>
+                      </button>
+                    {% endif %}
+                  </div>
                 </div>
-              </div>
-            </a>
+              </a>
+            </div>
           {% endfor %}
         </div>
 
