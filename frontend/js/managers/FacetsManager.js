@@ -119,9 +119,26 @@ class FacetFiltersForm extends HTMLElement {
 
     if (!viewBtns.length || !wrapper) return;
 
+    const gridContent = wrapper.querySelector('[data-collection-content]');
+    const listContent = wrapper.querySelector('[data-collection-list-content]');
+
+    // Helper to switch containers
+    const switchView = (view) => {
+      wrapper.dataset.view = view;
+      if (listContent) {
+        if (view === 'list') {
+          gridContent?.classList.add('hidden');
+          listContent.classList.remove('hidden');
+        } else {
+          gridContent?.classList.remove('hidden');
+          listContent.classList.add('hidden');
+        }
+      }
+    };
+
     // Restore saved view preference
     const savedView = safeLocalStorage('collection-view') || 'grid';
-    wrapper.dataset.view = savedView;
+    switchView(savedView);
     viewBtns.forEach((btn) => {
       const isActive = btn.dataset.viewToggle === savedView;
       btn.classList.toggle('is-active', isActive);
@@ -137,7 +154,8 @@ class FacetFiltersForm extends HTMLElement {
         // Skip if already in this view
         if (view === currentView) return;
 
-        const grid = wrapper.querySelector('[data-collection-content]');
+        const activeContent = view === 'list' ? listContent : gridContent;
+        const inactiveContent = view === 'list' ? gridContent : listContent;
         const shouldAnimate = typeof window.shouldAnimate === 'function' && window.shouldAnimate();
         const gsap = window.gsap || window.pieces?.gsap;
 
@@ -148,45 +166,48 @@ class FacetFiltersForm extends HTMLElement {
           b.setAttribute('aria-pressed', isActive);
         });
 
-        if (shouldAnimate && gsap && grid) {
-          // Capture current height
-          const startHeight = grid.offsetHeight;
+        if (shouldAnimate && gsap && activeContent && inactiveContent) {
+          // Capture current height from active container
+          const startHeight = inactiveContent.offsetHeight;
 
-          // Fade out content
-          gsap.to(grid, {
+          // Fade out current content
+          gsap.to(inactiveContent, {
             opacity: 0,
             duration: 0.2,
             ease: 'power2.in',
             onComplete: () => {
-              // Lock height before layout change
-              grid.style.height = `${startHeight}px`;
-              grid.style.overflow = 'hidden';
+              // Switch containers
+              switchView(view);
 
-              // Change layout (grid opacity handles the transition)
-              wrapper.dataset.view = view;
+              // Set initial state for new content
+              gsap.set(activeContent, { opacity: 0 });
 
-              // Get new height
-              grid.style.height = 'auto';
-              const endHeight = grid.offsetHeight;
-              grid.style.height = `${startHeight}px`;
+              // Animate height wrapper if needed
+              const container = wrapper.querySelector('[data-product-grid-container]');
+              if (container) {
+                container.style.height = `${startHeight}px`;
+                container.style.overflow = 'hidden';
 
-              // Animate height and fade in
-              gsap.to(grid, {
-                height: endHeight,
-                duration: 0.4,
-                ease: 'power3.inOut',
-              });
+                const endHeight = activeContent.offsetHeight;
 
-              gsap.to(grid, {
+                gsap.to(container, {
+                  height: endHeight,
+                  duration: 0.4,
+                  ease: 'power3.inOut',
+                  onComplete: () => {
+                    container.style.height = '';
+                    container.style.overflow = '';
+                  },
+                });
+              }
+
+              // Fade in new content
+              gsap.to(activeContent, {
                 opacity: 1,
                 duration: 0.3,
-                delay: 0.2,
+                delay: 0.15,
                 ease: 'power2.out',
                 onComplete: () => {
-                  // Clean up
-                  grid.style.height = '';
-                  grid.style.overflow = '';
-
                   // Refresh Lenis
                   if (window.pieces?.lenis) {
                     window.pieces.lenis.resize();
@@ -196,8 +217,8 @@ class FacetFiltersForm extends HTMLElement {
             },
           });
         } else {
-          // No animation - just change view
-          wrapper.dataset.view = view;
+          // No animation - just switch view
+          switchView(view);
 
           if (window.pieces?.lenis) {
             window.pieces.lenis.resize();

@@ -106,6 +106,15 @@
   gap: 1rem;
 }
 
+/* Alignment variants for flex subtitle */
+.text-center .page-header-subtitle {
+  justify-content: center;
+}
+
+.text-right .page-header-subtitle {
+  justify-content: flex-end;
+}
+
 .page-header-subtitle-line {
   width: 3rem;
   height: 1px;

@@ -111,142 +111,9 @@
   background: var(--color-text);
 }
 
-/* List view styles */
-.collection-wrapper[data-view="list"] .collection-grid {
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-.collection-wrapper[data-view="list"] .product-card {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 1rem;
-  align-items: start;
-}
-
-.collection-wrapper[data-view="list"] .product-card-image {
-  width: 80px;
-  height: auto;
-  aspect-ratio: 1;
-  flex-shrink: 0;
-  grid-row: 1 / -1;
-  align-self: center;
-}
-
-.collection-wrapper[data-view="list"] .product-card-image img {
-  object-fit: cover;
-}
-
-/* Secondary image needs background in list view to cover primary when images have different dimensions */
-.collection-wrapper[data-view="list"] .product-card-image img:last-of-type:not(:first-of-type) {
-  background-color: var(--color-background);
-}
-
-/* Hide hover action buttons in list view - they overlap awkwardly */
-.collection-wrapper[data-view="list"] .product-card-actions {
-  display: none;
-}
-
-.collection-wrapper[data-view="list"] .product-card-content {
-  padding: 0.75rem 0;
-  background: transparent;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-}
-
-/* Ensure vendor, title, price are on separate rows */
-.collection-wrapper[data-view="list"] .product-card-vendor {
-  margin: 0;
-}
-
-.collection-wrapper[data-view="list"] .product-card-title {
-  margin: 0;
-}
-
-.collection-wrapper[data-view="list"] .product-card-price {
-  margin: 0;
-}
-
-/* Hide mobile list buttons by default (grid view) */
+/* Hide mobile list buttons by default (grid view) - these are in product-card.liquid */
 .product-card-list-buttons-mobile {
   display: none;
-}
-
-/* Mobile list view: 2 columns, hide quick-add section, show inline buttons */
-.collection-wrapper[data-view="list"] .product-card-quick-add {
-  display: none;
-}
-
-.collection-wrapper[data-view="list"] .product-card-list-buttons-mobile {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  grid-column: 2;
-  padding-bottom: 0.75rem;
-  padding-right: 0.5rem;
-}
-
-/* Remove right padding when card has no border (mobile) */
-.collection-wrapper[data-view="list"][data-card-no-border] .product-card-list-buttons-mobile {
-  padding-right: 0;
-}
-
-.collection-wrapper[data-view="list"] .product-card-list-actions-mobile {
-  width: 100%;
-  justify-content: space-between;
-}
-
-.collection-wrapper[data-view="list"] .product-card-list-actions-mobile .btn {
-  flex: 1;
-}
-
-/* Desktop list view: 3 columns with quick-add in 3rd column */
-@media (min-width: 768px) {
-  .collection-wrapper[data-view="list"] .product-card {
-    grid-template-columns: 100px 1fr auto;
-    gap: 1.5rem;
-    align-items: center;
-  }
-
-  .collection-wrapper[data-view="list"] .product-card-image {
-    width: 100px;
-  }
-
-  /* Hide mobile inline buttons, show quick-add section */
-  .collection-wrapper[data-view="list"] .product-card-list-buttons-mobile {
-    display: none;
-  }
-
-  .collection-wrapper[data-view="list"] .product-card-quick-add {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding: 0;
-    padding-right: 0.5rem;
-    background: transparent;
-  }
-
-  /* Remove right padding when card has no border */
-  .collection-wrapper[data-view="list"][data-card-no-border] .product-card-quick-add {
-    padding-right: 0;
-  }
-
-  .collection-wrapper[data-view="list"] .product-card-quick-add > a,
-  .collection-wrapper[data-view="list"] .product-card-quick-add > button {
-    width: auto;
-    min-width: 190px;
-  }
-
-  /* Show action buttons after main button */
-  .collection-wrapper[data-view="list"] .product-card-list-actions {
-    display: flex;
-    justify-content: space-between;
-  }
-
-  .collection-wrapper[data-view="list"] .product-card-list-actions .btn {
-    flex: 1;
-  }
 }
 
 /* Product card when no border AND no shadow */
@@ -260,152 +127,162 @@
   padding-right: 0;
 }
 
-/* List view dividers when card has no border */
-.collection-wrapper[data-view="list"][data-card-no-border] .collection-grid {
-  gap: 0;
-}
-
 /* ==========================================================================
-   Metro List View - Transform metro cards to list layout
+   Product Card List - Unified list view component for grid and metro
    ========================================================================== */
 
-.collection-wrapper[data-view="list"] .collection-metro {
-  grid-template-columns: 1fr;
-  grid-auto-rows: auto;
-  gap: 0;
-}
-
-.collection-wrapper[data-view="list"] .metro-item {
-  border-radius: 0;
-}
-
-/* Reset all metro item sizes in list view */
-.collection-wrapper[data-view="list"] .metro-item--hero,
-.collection-wrapper[data-view="list"] .metro-item--wide,
-.collection-wrapper[data-view="list"] .metro-item--tall,
-.collection-wrapper[data-view="list"] .metro-item--standard {
-  grid-column: span 1;
-  grid-row: span 1;
-}
-
-.collection-wrapper[data-view="list"] .metro-item-inner {
+.product-card-list {
   display: grid;
   grid-template-columns: 80px 1fr;
   gap: 1rem;
-  align-items: center;
-  height: auto;
-  min-height: 0;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-border);
-  background: transparent;
+  align-items: start;
 }
 
-.collection-wrapper[data-view="list"] .metro-item-image {
-  position: relative;
-  inset: auto;
+.product-card-list__image {
   width: 80px;
-  height: 80px;
+  height: auto;
   aspect-ratio: 1;
+  flex-shrink: 0;
+  grid-row: 1 / -1;
+  align-self: center;
   border-radius: var(--card-radius);
-  grid-row: 1;
-  grid-column: 1;
+  overflow: hidden;
+  display: block;
 }
 
-.collection-wrapper[data-view="list"] .metro-item-image--secondary {
-  display: none;
-}
-
-.collection-wrapper[data-view="list"] .metro-item-overlay {
-  display: none;
-}
-
-.collection-wrapper[data-view="list"] .metro-item-sale-badge {
-  position: absolute;
-  top: 0.25rem;
-  left: 0.25rem;
-  padding: 0.25rem 0.5rem;
-  font-size: 0.625rem;
-}
-
-.collection-wrapper[data-view="list"] .metro-item-content {
-  position: relative;
-  bottom: auto;
-  left: auto;
-  right: auto;
-  padding: 0;
-  grid-row: 1;
-  grid-column: 2;
+.product-card-list__content {
+  padding: 0.75rem 0;
   display: flex;
   flex-direction: column;
   gap: 0.25rem;
+  text-decoration: none;
 }
 
-.collection-wrapper[data-view="list"] .metro-item .metro-item-vendor {
+/* Vendor and title use card-meta and card-title classes from typography.css */
+.product-card-list__vendor {
+  margin: 0;
+}
+
+.product-card-list__title {
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.product-card-list__price {
   color: var(--color-text-secondary);
+  font-size: 0.875rem;
+  margin: 0;
 }
 
-.collection-wrapper[data-view="list"] .metro-item .metro-item-title {
-  color: var(--color-text);
-  font-size: 1rem;
-  -webkit-line-clamp: 1;
+.product-card-list__price-compare {
+  text-decoration: line-through;
+  opacity: 0.6;
+  margin-right: 0.5rem;
 }
 
-.collection-wrapper[data-view="list"] .metro-item .metro-item-price {
-  color: var(--color-text);
-  margin-top: 0;
-}
-
-.collection-wrapper[data-view="list"] .metro-item .metro-item-price span {
-  color: var(--color-text);
-}
-
-.collection-wrapper[data-view="list"] .metro-item .metro-item-price-compare {
-  color: var(--color-text-secondary);
-}
-
-.collection-wrapper[data-view="list"] .metro-item .metro-item-price-sale {
+.product-card-list__price-sale {
   color: var(--color-sale);
 }
 
-.collection-wrapper[data-view="list"] .metro-item-actions {
+/* Mobile buttons */
+.product-card-list__buttons-mobile {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  grid-column: 2;
+  padding-bottom: 0.75rem;
+  padding-right: 0.5rem;
+}
+
+.product-card-list__actions-mobile {
+  display: flex;
+  gap: 0.5rem;
+  width: 100%;
+  justify-content: space-between;
+}
+
+.product-card-list__actions-mobile .btn {
+  flex: 1;
+}
+
+/* Desktop buttons - hidden on mobile */
+.product-card-list__buttons-desktop {
   display: none;
 }
 
-/* Disable hover effects in list view */
-.collection-wrapper[data-view="list"] .metro-item:hover .metro-item-image {
-  transform: none;
-}
-
-.collection-wrapper[data-view="list"] .metro-item:hover .metro-item-image--primary {
-  opacity: 1;
-}
-
 @media (min-width: 768px) {
-  .collection-wrapper[data-view="list"] .metro-item-inner {
-    grid-template-columns: 100px 1fr;
+  .product-card-list {
+    grid-template-columns: 100px 1fr auto;
     gap: 1.5rem;
+    align-items: center;
   }
 
-  .collection-wrapper[data-view="list"] .metro-item-image {
+  .product-card-list__image {
     width: 100px;
-    height: 100px;
   }
+
+  /* Hide mobile buttons, show desktop */
+  .product-card-list__buttons-mobile {
+    display: none;
+  }
+
+  .product-card-list__buttons-desktop {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .product-card-list__buttons-desktop > a,
+  .product-card-list__buttons-desktop > button {
+    width: auto;
+    min-width: 190px;
+  }
+
+  .product-card-list__actions-desktop {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  .product-card-list__actions-desktop .btn {
+    flex: 1;
+  }
+}
+
+/* Remove right padding when card has no border */
+[data-card-no-border] .product-card-list__buttons-mobile {
+  padding-right: 0;
+}
+
+[data-card-no-border] .product-card-list__buttons-desktop {
+  padding-right: 0;
+}
+
+/* List view grid - single column with unified card component */
+.collection-list-view {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+[data-card-no-border] .collection-list-view {
+  gap: 0;
+}
+
+[data-card-no-border] .collection-list-view .product-card-list {
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-border);
 }
 
 /* Add left padding on mobile when card has border so image doesn't touch edges */
 @media (max-width: 767px) {
-  .collection-wrapper[data-view="list"]:not([data-card-no-border]) .product-card {
+  .collection-wrapper:not([data-card-no-border]) .collection-list-view .product-card-list {
     padding-left: 0.5rem;
   }
-}
-
-.collection-wrapper[data-view="list"][data-card-no-border] .product-card {
-  padding: 1rem 0;
-}
-
-.collection-wrapper[data-view="list"][data-card-no-border] .collection-grid__divider {
-  display: block !important;
-  margin: 0;
 }
 
 /* ==========================================================================

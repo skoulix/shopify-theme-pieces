@@ -1,0 +1,162 @@
+{%- comment -%}
+  Product Card - List View
+  A unified list view card used by both grid and metro layouts
+
+  Usage:
+    {% render 'product-card-list', product: product, index: forloop.index0, collection: collection %}
+
+  Parameters:
+    - product: Product object (required)
+    - collection: Collection object (optional) - preserves collection context in URL
+    - index: Card index for animation stagger (optional, default: 0)
+{%- endcomment -%}
+
+{%- liquid
+  assign index = index | default: 0
+
+  # Use global settings for vendor display
+  assign show_vendor = settings.show_vendor
+
+  if collection
+    assign product_url = product.url | within: collection
+  else
+    assign product_url = product.url
+  endif
+
+  assign first_available_variant = product.selected_or_first_available_variant
+  assign has_variants = false
+  if product.variants.size > 1
+    assign has_variants = true
+  endif
+
+  # Check if any action buttons are enabled
+  assign show_action_buttons = false
+  if settings.enable_wishlist or settings.enable_compare or settings.enable_quick_view
+    assign show_action_buttons = true
+  endif
+-%}
+
+<div
+  class="product-card-list group"
+  data-product-card="{{ index }}"
+  data-product-id="{{ product.id }}"
+  data-tween
+  data-tween-type="fade-up"
+>
+  {%- comment -%} Image {%- endcomment -%}
+  <a href="{{ product_url }}" class="product-card-list__image" aria-label="{{ product.title }}">
+    {% if product.featured_image %}
+      {%- assign focal_point = product.featured_image.presentation.focal_point | default: '50% 50%' -%}
+      {%- assign focal_point_style = 'object-position: ' | append: focal_point -%}
+      {{ product.featured_image | image_url: width: 400 | image_tag:
+        class: 'w-full h-full object-cover',
+        style: focal_point_style,
+        loading: 'lazy',
+        decoding: 'async',
+        sizes: '100px',
+        widths: '100, 200, 400',
+        alt: product.title
+      }}
+    {% else %}
+      <div class="w-full h-full flex items-center justify-center bg-[--color-background-secondary]">
+        <i class="ph ph-image text-2xl text-[--color-text-secondary] opacity-30" aria-hidden="true"></i>
+      </div>
+    {% endif %}
+  </a>
+
+  {%- comment -%} Content {%- endcomment -%}
+  <a href="{{ product_url }}" class="product-card-list__content">
+    {% if show_vendor and product.vendor != blank %}
+      <p class="product-card-list__vendor card-meta">{{ product.vendor }}</p>
+    {% endif %}
+
+    <h3 class="product-card-list__title card-title">{{ product.title }}</h3>
+
+    <div class="product-card-list__price">
+      {% if product.compare_at_price > product.price %}
+        <span class="product-card-list__price-compare">{{ product.compare_at_price | money }}</span>
+        <span class="product-card-list__price-sale">{{ product.price | money }}</span>
+      {% else %}
+        <span>{{ product.price | money }}</span>
+      {% endif %}
+    </div>
+  </a>
+
+  {%- comment -%} Mobile buttons {%- endcomment -%}
+  {% if product.available %}
+    <div class="product-card-list__buttons-mobile">
+      {% if has_variants %}
+        <a href="{{ product_url }}" class="btn btn--primary btn--sm" aria-label="{{ 'products.product.select_options' | t }}: {{ product.title }}">
+          <span>{{ 'products.product.select_options' | t }}</span>
+        </a>
+      {% else %}
+        <button type="button" class="btn btn--primary btn--sm" data-quick-add="{{ first_available_variant.id }}" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}">
+          <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
+          <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
+          <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
+        </button>
+      {% endif %}
+
+      {% if show_action_buttons %}
+        <div class="product-card-list__actions-mobile">
+          {% if settings.enable_quick_view and product.available %}
+            <button type="button" class="btn btn--secondary btn--sm btn--icon" data-quick-view-trigger="{{ product.handle }}" aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}: {{ product.title }}">
+              <i class="ph ph-eye" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+          {% if settings.enable_wishlist %}
+            {%- capture wishlist_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}{%- endcapture -%}
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-[--color-sale] [&.is-active]:!text-white [&.is-active]:!border-[--color-sale]" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ wishlist_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+              <i class="ph ph-heart" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+          {% if settings.enable_compare %}
+            {%- capture compare_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}{%- endcapture -%}
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-[--color-text] [&.is-active]:!text-[--color-background]" data-compare-toggle="{{ product.id }}" data-product-json='{{ compare_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+              <i class="ph ph-scales" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+
+  {%- comment -%} Desktop buttons (3rd column) {%- endcomment -%}
+  {% if product.available %}
+    <div class="product-card-list__buttons-desktop">
+      {% if has_variants %}
+        <a href="{{ product_url }}" class="btn btn--primary" aria-label="{{ 'products.product.select_options' | t }}: {{ product.title }}">
+          <span>{{ 'products.product.select_options' | t }}</span>
+        </a>
+      {% else %}
+        <button type="button" class="btn btn--primary" data-quick-add="{{ first_available_variant.id }}" aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}">
+          <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
+          <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
+          <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
+        </button>
+      {% endif %}
+
+      {% if show_action_buttons %}
+        <div class="product-card-list__actions-desktop">
+          {% if settings.enable_quick_view and product.available %}
+            <button type="button" class="btn btn--secondary btn--sm btn--icon" data-quick-view-trigger="{{ product.handle }}" aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}: {{ product.title }}">
+              <i class="ph ph-eye" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+          {% if settings.enable_wishlist %}
+            {%- capture wishlist_json_desktop -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}{%- endcapture -%}
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-[--color-sale] [&.is-active]:!text-white [&.is-active]:!border-[--color-sale]" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ wishlist_json_desktop | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+              <i class="ph ph-heart" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+          {% if settings.enable_compare %}
+            {%- capture compare_json_desktop -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}{%- endcapture -%}
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-[--color-text] [&.is-active]:!text-[--color-background]" data-compare-toggle="{{ product.id }}" data-product-json='{{ compare_json_desktop | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+              <i class="ph ph-scales" aria-hidden="true"></i>
+            </button>
+          {% endif %}
+        </div>
+      {% endif %}
+    </div>
+  {% endif %}
+</div>

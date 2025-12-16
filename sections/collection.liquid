@@ -1,5 +1,10 @@
 {%- liquid
-  assign layout_style = section.settings.layout_style
+  # Derive layout style from bento pattern setting
+  if section.settings.enable_bento_pattern
+    assign layout_style = 'metro'
+  else
+    assign layout_style = 'grid'
+  endif
   assign full_width = section.settings.full_width
   assign enable_filtering = section.settings.enable_filtering
   assign enable_sorting = section.settings.enable_sorting
@@ -282,7 +287,7 @@
 
   <header class="mb-12 lg:mb-16 {{ container_class }} {{ header_align_class }}">
     {% if section.settings.show_breadcrumbs %}
-      {% render 'breadcrumbs' %}
+      {% render 'breadcrumbs', alignment: section.settings.header_alignment %}
     {% endif %}
     <h1 class="collection-header-title font-bold text-[--color-text] font-heading" data-collection-title>
       {{ collection.title }}
@@ -299,8 +304,9 @@
       {%- assign desc_text = collection.description | strip_html -%}
       {%- capture desc_align_class -%}
         {%- case section.settings.header_alignment -%}
-          {%- when 'center' -%}mx-auto
-          {%- when 'right' -%}ml-auto
+          {%- when 'center' -%}mx-auto text-center
+          {%- when 'right' -%}ml-auto text-right
+          {%- else -%}text-left
         {%- endcase -%}
       {%- endcapture -%}
       <div class="mt-8 max-w-[380px] text-xs{% if settings.headings_uppercase %} uppercase{% endif %} tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em] {{ desc_align_class }}"{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ desc_text | escape }}"{% endif %}>
@@ -335,28 +341,26 @@
               assign item_class = 'metro-item--standard'
               assign cols = section.settings.columns_desktop
 
-              if section.settings.metro_bento_pattern and cols >= 3
+              # Bento pattern is always enabled in metro mode (since enable_bento_pattern controls metro mode)
+              if cols >= 4
                 # For 4+ columns: full bento with hero (2x2), wide (2x1), tall (1x2)
-                # For 3 columns: simplified pattern with hero and wide only
                 assign mod = forloop.index0 | modulo: 8
-
-                if cols >= 4
-                  if mod == 0
-                    assign item_class = 'metro-item--hero'
-                  elsif mod == 3 or mod == 6
-                    assign item_class = 'metro-item--wide'
-                  elsif mod == 5
-                    assign item_class = 'metro-item--tall'
-                  endif
-                elsif cols == 3
-                  assign mod3 = forloop.index0 | modulo: 6
-                  if mod3 == 0
-                    assign item_class = 'metro-item--hero'
-                  elsif mod3 == 4
-                    assign item_class = 'metro-item--wide'
-                  endif
+                if mod == 0
+                  assign item_class = 'metro-item--hero'
+                elsif mod == 3 or mod == 6
+                  assign item_class = 'metro-item--wide'
+                elsif mod == 5
+                  assign item_class = 'metro-item--tall'
                 endif
-              elsif section.settings.metro_bento_pattern and cols == 2
+              elsif cols == 3
+                # For 3 columns: simplified pattern with hero and wide only
+                assign mod3 = forloop.index0 | modulo: 6
+                if mod3 == 0
+                  assign item_class = 'metro-item--hero'
+                elsif mod3 == 4
+                  assign item_class = 'metro-item--wide'
+                endif
+              elsif cols == 2
                 # For 2 columns: only hero items (full width, 2 rows)
                 assign mod2 = forloop.index0 | modulo: 4
                 if mod2 == 0
@@ -529,6 +533,16 @@
         </div>
 
     {% endcase %}
+
+      {%- comment -%} Unified List View - Used by both grid and metro when in list mode {%- endcomment -%}
+      {% if section.settings.enable_layout_toggle %}
+        <div class="collection-list-view hidden {{ container_class }}" data-collection-list-content aria-live="polite" aria-busy="false">
+          {% for product in collection.products %}
+            {% render 'product-card-list', product: product, collection: collection, index: forloop.index0 %}
+          {% endfor %}
+        </div>
+      {% endif %}
+
     </div>{%- comment -%} End ProductGridContainer {%- endcomment -%}
 
     {% if paginate.pages > 1 %}
@@ -622,7 +636,9 @@
 
       // Set aria-busy for screen readers
       const contentContainer = wrapper.querySelector('[data-collection-content]');
+      const listContainer = wrapper.querySelector('[data-collection-list-content]');
       if (contentContainer) contentContainer.setAttribute('aria-busy', 'true');
+      if (listContainer) listContainer.setAttribute('aria-busy', 'true');
 
       try {
         // Fetch the next page
@@ -634,12 +650,14 @@
         // Get new products from the fetched page
         const newWrapper = doc.querySelector('[data-collection-wrapper]');
         const contentContainer = wrapper.querySelector('[data-collection-content]');
+        const listContainer = wrapper.querySelector('[data-collection-list-content]');
         const newContent = newWrapper?.querySelector('[data-collection-content]');
+        const newListContent = newWrapper?.querySelector('[data-collection-list-content]');
 
         if (newContent && contentContainer) {
           const newItems = newContent.querySelectorAll('[data-collection-item], [data-product-card]');
 
-          // Append new items to the grid
+          // Append new items to the grid/metro container
           newItems.forEach((item) => {
             // Add divider before each item (for list view)
             const divider = document.createElement('hr');
@@ -659,6 +677,24 @@
 
             contentContainer.appendChild(clone);
           });
+
+          // Also append to unified list view container if it exists
+          if (listContainer && newListContent) {
+            const newListItems = newListContent.querySelectorAll('.product-card-list');
+            newListItems.forEach((item) => {
+              const clone = item.cloneNode(true);
+
+              // Remove data-tween attributes - animations disabled
+              clone.removeAttribute('data-tween');
+              clone.removeAttribute('data-tween-type');
+              clone.querySelectorAll('[data-tween]').forEach(el => {
+                el.removeAttribute('data-tween');
+                el.removeAttribute('data-tween-type');
+              });
+
+              listContainer.appendChild(clone);
+            });
+          }
 
           // Update the pagination
           const newPagination = newWrapper.querySelector('[data-pagination-load-more]');
@@ -685,6 +721,7 @@
 
           // Clear aria-busy after content loaded
           if (contentContainer) contentContainer.setAttribute('aria-busy', 'false');
+          if (listContainer) listContainer.setAttribute('aria-busy', 'false');
         }
       } catch (error) {
         console.error('Error loading more products:', error);
@@ -694,7 +731,10 @@
         loadingSpan.classList.remove('inline-flex');
         this.disabled = false;
         // Clear aria-busy on error
+        const contentContainer = wrapper.querySelector('[data-collection-content]');
+        const listContainer = wrapper.querySelector('[data-collection-list-content]');
         if (contentContainer) contentContainer.setAttribute('aria-busy', 'false');
+        if (listContainer) listContainer.setAttribute('aria-busy', 'false');
       }
     });
   }
@@ -1067,13 +1107,15 @@
           // Get new products from the fetched page
           const newWrapper = doc.querySelector('[data-collection-wrapper]');
           const contentContainer = wrapper.querySelector('[data-collection-content]');
+          const listContainer = wrapper.querySelector('[data-collection-list-content]');
           const newContent = newWrapper?.querySelector('[data-collection-content]');
+          const newListContent = newWrapper?.querySelector('[data-collection-list-content]');
 
           if (newContent && contentContainer) {
             const newItems = newContent.querySelectorAll('[data-collection-item], [data-product-card]');
             const cols = getColumnCount();
 
-            // Append new items to the grid
+            // Append new items to the grid/metro container
             newItems.forEach((item, index) => {
               // Add divider before each item (for list view)
               // This creates the <hr> elements that are shown in list view
@@ -1124,6 +1166,24 @@
               });
 
             });
+
+            // Also append to unified list view container if it exists
+            if (listContainer && newListContent) {
+              const newListItems = newListContent.querySelectorAll('.product-card-list');
+              newListItems.forEach((item) => {
+                const clone = item.cloneNode(true);
+
+                // Remove data-tween attributes - we don't animate list items on load more
+                clone.removeAttribute('data-tween');
+                clone.removeAttribute('data-tween-type');
+                clone.querySelectorAll('[data-tween]').forEach(el => {
+                  el.removeAttribute('data-tween');
+                  el.removeAttribute('data-tween-type');
+                });
+
+                listContainer.appendChild(clone);
+              });
+            }
 
             // Update the pagination
             const newPagination = newWrapper.querySelector('[data-pagination-load-more]');
@@ -1264,27 +1324,11 @@
       "info": "Animate description with text scramble effect on page load"
     },
     {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layout style",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "metro",
-          "label": "Metro"
-        }
-      ],
-      "default": "grid"
-    },
-    {
       "type": "checkbox",
-      "id": "metro_bento_pattern",
-      "label": "Enable bento pattern",
-      "default": true,
-      "info": "When enabled, metro items have varying sizes (hero, wide, tall). Disable for uniform grid."
+      "id": "enable_bento_pattern",
+      "label": "Enable bento layout",
+      "default": false,
+      "info": "Display products in a modern bento/metro grid with varying sizes (hero, wide, tall items)"
     },
     {
       "type": "header",
@@ -1298,7 +1342,7 @@
       "step": 1,
       "default": 4,
       "label": "Columns on desktop",
-      "info": "For Metro style, 4 columns recommended"
+      "info": "For bento layout, 4+ columns recommended"
     },
     {
       "type": "range",
