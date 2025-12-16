@@ -381,6 +381,18 @@
         "default": 1,
         "unit": "px",
         "label": "Border width"
+      },
+      {
+        "type": "select",
+        "id": "input_shadow",
+        "label": "Shadow",
+        "default": "none",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "sm", "label": "Small" },
+          { "value": "md", "label": "Medium" },
+          { "value": "hard", "label": "Hard offset" }
+        ]
       }
     ]
   },

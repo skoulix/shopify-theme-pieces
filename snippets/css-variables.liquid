@@ -55,6 +55,21 @@
       assign card_shadow_value = 'none'
   endcase
 
+  case settings.input_shadow
+    when 'sm'
+      assign input_shadow_value = '0 1px 2px 0 rgb(0 0 0 / 0.05)'
+      assign input_shadow_focus_value = '0 1px 2px 0 rgb(0 0 0 / 0.05), 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent)'
+    when 'md'
+      assign input_shadow_value = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1)'
+      assign input_shadow_focus_value = '0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1), 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent)'
+    when 'hard'
+      assign input_shadow_value = '4px 4px 0 0 var(--color-text)'
+      assign input_shadow_focus_value = '4px 4px 0 0 var(--color-primary)'
+    else
+      assign input_shadow_value = 'none'
+      assign input_shadow_focus_value = '0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent)'
+  endcase
+
   assign body_font_scale = settings.body_scale | divided_by: 100.0
   assign heading_font_scale = settings.heading_scale | divided_by: 100.0
   assign heading_letter_spacing = settings.heading_letter_spacing | divided_by: 1000.0
@@ -126,6 +141,8 @@
     /* Inputs */
     --input-radius: {{ settings.input_radius }}px;
     --input-border-width: {{ settings.input_border_width }}px;
+    --input-shadow: {{ input_shadow_value }};
+    --input-shadow-focus: {{ input_shadow_focus_value }};
 
     /* Logo */
     --logo-width: {{ settings.logo_width_mobile | default: 80 }}px;
@@ -230,6 +247,7 @@
     background-color: var(--color-background);
     border: var(--input-border-width) solid var(--color-border);
     border-radius: var(--input-radius);
+    box-shadow: var(--input-shadow);
     color: var(--color-text);
   }
 
@@ -238,7 +256,7 @@
   select:focus {
     border-color: var(--color-primary);
     outline: none;
-    box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent);
+    box-shadow: var(--input-shadow-focus);
   }
 
   /* Sale prices */
