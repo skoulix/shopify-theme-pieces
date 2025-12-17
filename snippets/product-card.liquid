@@ -56,7 +56,8 @@
 -%}
 
 <div
-  class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full border-[length:var(--card-border-width)] border-solid border-[--color-border] shadow-[--card-shadow]"
+  class="product-card group relative flex flex-col no-underline text-inherit rounded-[--card-radius] overflow-hidden h-full border-[length:var(--card-border-width)] border-solid border-[--color-border]"
+  style="box-shadow: var(--card-shadow);"
   data-product-card="{{ index }}"
   data-product-id="{{ product.id }}"
   {% unless animate_image %}data-tween data-tween-type="fade-up"{% endunless %}

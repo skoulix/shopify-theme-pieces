@@ -90,16 +90,16 @@
         <div class="flex items-center gap-4 mt-8">
           <span class="text-xs font-semibold uppercase tracking-widest text-[--color-text-secondary]">{{ 'general.share' | t }}</span>
           <div class="flex gap-3">
-            <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ article.url }}&text={{ article.title | url_encode }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_twitter' | t }}">
+            <a href="https://twitter.com/intent/tweet?url={{ shop.url }}{{ article.url }}&text={{ article.title | url_encode }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] rounded-[--button-radius] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_twitter' | t }}">
               <i class="ph ph-x-logo"></i>
             </a>
-            <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_facebook' | t }}">
+            <a href="https://www.facebook.com/sharer/sharer.php?u={{ shop.url }}{{ article.url }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] rounded-[--button-radius] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_facebook' | t }}">
               <i class="ph ph-facebook-logo"></i>
             </a>
-            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title | url_encode }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_linkedin' | t }}">
+            <a href="https://www.linkedin.com/shareArticle?mini=true&url={{ shop.url }}{{ article.url }}&title={{ article.title | url_encode }}" target="_blank" rel="noopener" class="w-10 h-10 flex items-center justify-center border border-[--color-border] rounded-[--button-radius] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300" aria-label="{{ 'accessibility.share_on_linkedin' | t }}">
               <i class="ph ph-linkedin-logo"></i>
             </a>
-            <button type="button" class="w-10 h-10 flex items-center justify-center border border-[--color-border] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300 cursor-pointer" aria-label="{{ 'accessibility.copy_link' | t }}" data-copy-link="{{ shop.url }}{{ article.url }}">
+            <button type="button" class="w-10 h-10 flex items-center justify-center border border-[--color-border] rounded-[--button-radius] text-[--color-text] hover:bg-[--color-primary] hover:text-[--color-primary-contrast] hover:border-[--color-primary] transition-all duration-300 cursor-pointer" aria-label="{{ 'accessibility.copy_link' | t }}" data-copy-link="{{ shop.url }}{{ article.url }}">
               <i class="ph ph-link"></i>
             </button>
           </div>

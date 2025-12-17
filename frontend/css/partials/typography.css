@@ -30,7 +30,7 @@
   font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
   font-weight: 700;
   letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
-  line-height: 1;
+  line-height: 0.95;
 }
 
 /* Larger variant for hero sections */
@@ -60,13 +60,35 @@
 }
 
 /* ==========================================================================
+   Section Header Spacing - Consistent vertical rhythm
+   Usage: Wrap label, title, description in a container with these classes
+   ========================================================================== */
+
+.section-header {
+  margin-bottom: clamp(2rem, 5vh, 4rem);
+}
+
+.section-header .section-label {
+  margin-bottom: 1rem;
+}
+
+.section-header .section-title {
+  margin-bottom: 0;
+}
+
+.section-header .section-description {
+  margin-top: 1.25rem;
+}
+
+/* ==========================================================================
    Section Label - Small uppercase eyebrow text
    ========================================================================== */
 
 .section-label {
   display: inline-block;
-  font-size: 0.8125rem;
-  letter-spacing: 0.2em;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.15em;
   opacity: 0.6;
 }
 
@@ -155,11 +177,11 @@
    ========================================================================== */
 
 .card-title {
-  font-size: 0.75rem;
+  font-size: 0.8125rem;
   font-weight: 600;
-  letter-spacing: 0.025em;
+  letter-spacing: calc(0.01em + var(--heading-letter-spacing, 0em));
+  line-height: 1.3;
   color: var(--color-text);
-  font-family: var(--heading-font-family);
 }
 
 @media (min-width: 768px) {
