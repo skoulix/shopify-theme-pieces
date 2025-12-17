@@ -16,7 +16,7 @@
   .footer-modern__logo { max-height: 48px; width: auto; }
   .footer-modern__description { margin-top: 1.5rem; font-size: 0.9375rem; line-height: 1.7; }
   .footer-modern__newsletter { margin-top: 2rem; }
-  .footer-modern__newsletter-heading { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1rem; }
+  .footer-modern__newsletter-heading { margin-bottom: 1rem; }
   .footer-modern__newsletter-form { display: flex; gap: 0; }
   .footer-modern__newsletter-input {
     flex: 1;
@@ -92,7 +92,7 @@
     {%- for block in section.blocks -%}
       {%- if block.type == 'newsletter' -%}
         <div class="footer-modern__newsletter" {{ block.shopify_attributes }}>
-          <h3 class="footer-modern__newsletter-heading">{{ block.settings.heading | default: 'Subscribe to our newsletter' }}</h3>
+          <h3 class="footer-modern__newsletter-heading text-label">{{ block.settings.heading | default: 'Subscribe to our newsletter' }}</h3>
           {%- form 'customer', id: 'FooterNewsletterModern' -%}
             <input type="hidden" name="contact[tags]" value="newsletter">
             <div class="footer-modern__newsletter-form">
@@ -174,7 +174,7 @@
           </div>
 
         {%- when 'back_to_top' -%}
-          <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
+          <button type="button" class="back-to-top text-label-sm" data-back-to-top {{ block.shopify_attributes }}>
             <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
             <i class="ph ph-arrow-up"></i>
           </button>

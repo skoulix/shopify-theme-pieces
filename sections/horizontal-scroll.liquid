@@ -170,10 +170,6 @@
   }
 
   .hscroll-item-label-{{ section.id }} {
-    font-size: 0.875rem;
-    font-weight: 600;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
-    letter-spacing: 0.15em;
     opacity: 0.7;
     margin-bottom: 0.75rem;
   }
@@ -197,9 +193,6 @@
     position: fixed;
     bottom: 2rem;
     right: 2rem;
-    font-size: 0.8125rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
     opacity: 0;
     transition: opacity 0.3s ease;
     z-index: 10;
@@ -304,7 +297,7 @@
 
               <div class="hscroll-item-content-{{ section.id }}">
                 {% if block.settings.label != blank %}
-                  <span class="hscroll-item-label-{{ section.id }}">{{ block.settings.label }}</span>
+                  <span class="hscroll-item-label-{{ section.id }} text-label">{{ block.settings.label }}</span>
                 {% endif %}
                 {% if block.settings.title != blank %}
                   <h3 class="hscroll-item-title-{{ section.id }} font-heading">{{ block.settings.title }}</h3>
@@ -324,7 +317,7 @@
     </div>
   </div>
 
-  <div class="hscroll-counter-{{ section.id }}" data-hscroll-counter>
+  <div class="hscroll-counter-{{ section.id }} text-counter" data-hscroll-counter>
     <span data-hscroll-current>1</span> / <span>{{ section.blocks.size }}</span>
   </div>
 

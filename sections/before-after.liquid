@@ -141,10 +141,6 @@
   }
 
   .before-after-label-tag-{{ section.id }} {
-    font-size: 0.875rem;
-    font-weight: 700;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
-    letter-spacing: 0.1em;
     padding: 0.5rem 1rem;
     background: rgba(0, 0, 0, 0.6);
     color: #ffffff;
@@ -236,8 +232,8 @@
       {%- comment -%} Labels {%- endcomment -%}
       {% if section.settings.show_labels %}
         <div class="before-after-labels-{{ section.id }}">
-          <span class="before-after-label-tag-{{ section.id }}">{{ section.settings.before_label }}</span>
-          <span class="before-after-label-tag-{{ section.id }}">{{ section.settings.after_label }}</span>
+          <span class="before-after-label-tag-{{ section.id }} text-label">{{ section.settings.before_label }}</span>
+          <span class="before-after-label-tag-{{ section.id }} text-label">{{ section.settings.after_label }}</span>
         </div>
       {% endif %}
     </div>

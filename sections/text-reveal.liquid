@@ -20,10 +20,6 @@
 
   .text-reveal-label-{{ section.id }} {
     display: inline-block;
-    font-size: 0.875rem;
-    font-weight: 600;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
-    letter-spacing: 0.2em;
     opacity: 0.5;
     margin-bottom: 1.5rem;
   }
@@ -89,10 +85,6 @@
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
   }
 
   .text-reveal-cta-text-wrapper-{{ section.id }} {
@@ -169,7 +161,7 @@
 
   <div class="{{ container_class }} relative z-10">
     {% if section.settings.label != blank %}
-      <p class="text-reveal-label-{{ section.id }}" data-text-reveal-label>
+      <p class="text-reveal-label-{{ section.id }} text-label" data-text-reveal-label>
         {{ section.settings.label }}
       </p>
     {% endif %}
@@ -203,7 +195,7 @@
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}" class="text-reveal-cta-{{ section.id }}" data-text-reveal-cta>
+      <a href="{{ section.settings.button_link }}" class="text-reveal-cta-{{ section.id }} text-link-sm" data-text-reveal-cta>
         <span class="text-reveal-cta-text-wrapper-{{ section.id }}">
           <span class="text-reveal-cta-text-{{ section.id }}" data-hover="{{ section.settings.button_text }}">{{ section.settings.button_text }}</span>
         </span>

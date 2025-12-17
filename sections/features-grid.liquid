@@ -128,9 +128,6 @@
     position: absolute;
     top: 1.5rem;
     right: 1.5rem;
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
     opacity: 0.2;
   }
 
@@ -155,10 +152,6 @@
     align-items: center;
     gap: 0.75rem;
     margin-top: 1.5rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.05em;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
     color: var(--color-primary);
   }
 
@@ -260,7 +253,7 @@
           class="feature-item-{{ section.id }}{% if section.settings.layout == 'bento' and forloop.first %} is-large{% endif %}"
           {{ block.shopify_attributes }}
         >
-          <span class="feature-item-number-{{ section.id }}">
+          <span class="feature-item-number-{{ section.id }} text-label-sm">
             {{ forloop.index | prepend: '00' | slice: -2, 2 }}
           </span>
 
@@ -291,7 +284,7 @@
           {% endif %}
 
           {% if block.settings.link != blank and block.settings.link_text != blank %}
-            <a href="{{ block.settings.link }}" class="feature-item-link-{{ section.id }}">
+            <a href="{{ block.settings.link }}" class="feature-item-link-{{ section.id }} text-link-sm">
               <span class="feature-item-link-text-wrapper-{{ section.id }}">
                 <span class="feature-item-link-text-{{ section.id }}" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
               </span>

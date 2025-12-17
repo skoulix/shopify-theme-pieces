@@ -135,10 +135,6 @@
   }
 
   .team-member-role-{{ section.id }} {
-    font-size: 0.875rem;
-    font-weight: 500;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
-    letter-spacing: 0.1em;
     opacity: 0;
     transform: translateY(10px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
@@ -304,7 +300,7 @@
             {% endif %}
 
             {% if block.settings.role != blank %}
-              <p class="team-member-role-{{ section.id }}">
+              <p class="team-member-role-{{ section.id }} text-label-sm">
                 {{ block.settings.role }}
               </p>
             {% endif %}

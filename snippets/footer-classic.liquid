@@ -17,10 +17,6 @@
   .footer-classic__column { flex-shrink: 0; }
   .footer-classic__newsletter-col { max-width: 320px; flex-shrink: 0; }
   .footer-classic__column-heading {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
     margin-bottom: 1.25rem;
     opacity: 0.6;
   }
@@ -104,7 +100,7 @@
       {%- when 'menu_column' -%}
         <div class="footer-classic__column" {{ block.shopify_attributes }}>
           {%- if block.settings.heading != blank -%}
-            <h3 class="footer-classic__column-heading">{{ block.settings.heading }}</h3>
+            <h3 class="footer-classic__column-heading text-label">{{ block.settings.heading }}</h3>
           {%- endif -%}
           {%- if block.settings.menu != blank -%}
             <ul class="footer-classic__menu">
@@ -128,7 +124,7 @@
 
       {%- when 'newsletter' -%}
         <div class="footer-classic__newsletter-col" {{ block.shopify_attributes }}>
-          <h3 class="footer-classic__column-heading">{{ block.settings.heading | default: 'Newsletter' }}</h3>
+          <h3 class="footer-classic__column-heading text-label">{{ block.settings.heading | default: 'Newsletter' }}</h3>
           {%- if block.settings.description != blank -%}
             <p class="footer-classic__newsletter-text">{{ block.settings.description }}</p>
           {%- endif -%}
@@ -167,7 +163,7 @@
         </div>
 
       {%- when 'back_to_top' -%}
-        <button type="button" class="back-to-top" data-back-to-top {{ block.shopify_attributes }}>
+        <button type="button" class="back-to-top text-label-sm" data-back-to-top {{ block.shopify_attributes }}>
           <span class="back-to-top-text"><span data-hover="{{ 'general.back_to_top' | t }}">{{ 'general.back_to_top' | t }}</span></span>
           <i class="ph ph-arrow-up"></i>
         </button>

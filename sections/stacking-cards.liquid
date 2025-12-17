@@ -152,9 +152,6 @@
   }
 
   .stacking-card-number-{{ section.id }} {
-    font-size: 0.8125rem;
-    font-weight: 700;
-    letter-spacing: 0.1em;
     opacity: 0.4;
     margin-bottom: 1.5rem;
   }
@@ -179,10 +176,6 @@
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
-    font-size: 0.875rem;
-    font-weight: 600;
-    letter-spacing: 0.1em;
-    {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
     color: var(--color-text);
   }
 
@@ -297,7 +290,7 @@
             </div>
 
             <div class="stacking-card-content-{{ section.id }}">
-              <span class="stacking-card-number-{{ section.id }}">
+              <span class="stacking-card-number-{{ section.id }} text-label-sm">
                 {{ forloop.index | prepend: '00' | slice: -2, 2 }}
               </span>
 
@@ -314,7 +307,7 @@
               {% endif %}
 
               {% if block.settings.link != blank and block.settings.link_text != blank %}
-                <a href="{{ block.settings.link }}" class="stacking-card-link-{{ section.id }}">
+                <a href="{{ block.settings.link }}" class="stacking-card-link-{{ section.id }} text-link-sm">
                   <span class="stacking-card-link-text-wrapper-{{ section.id }}">
                     <span class="stacking-card-link-text-{{ section.id }}" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
                   </span>
