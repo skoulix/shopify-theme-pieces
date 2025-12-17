@@ -33,12 +33,9 @@
     color: var(--color-text-secondary);
   }
 
+  /* .customer-form__label uses .text-label-sm utility class */
   .customer-form__label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
     color: var(--color-text-secondary);
     margin-bottom: 0.5rem;
   }
@@ -78,7 +75,7 @@
         {% endif %}
 
         <div>
-          <label for="activate-password" class="customer-form__label">{{ 'customers.activate_account.password' | t }}</label>
+          <label for="activate-password" class="customer-form__label text-label-sm">{{ 'customers.activate_account.password' | t }}</label>
           <input
             type="password"
             id="activate-password"
@@ -90,7 +87,7 @@
         </div>
 
         <div>
-          <label for="activate-password-confirm" class="customer-form__label">{{ 'customers.activate_account.password_confirm' | t }}</label>
+          <label for="activate-password-confirm" class="customer-form__label text-label-sm">{{ 'customers.activate_account.password_confirm' | t }}</label>
           <input
             type="password"
             id="activate-password-confirm"

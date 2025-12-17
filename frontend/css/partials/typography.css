@@ -273,54 +273,12 @@
 }
 
 /* ==========================================================================
-   Typography Utility Classes
-   Reusable text styles for labels, meta, links, and counters
-   ========================================================================== */
-
-/* Primary label - Form labels, section eyebrows, drawer titles */
-.text-label {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.15em;
-}
-
-/* Secondary label - Counters, back-to-top, small UI labels */
-.text-label-sm {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* Meta text - Vendor, category, date, counts */
-.text-meta {
-  font-size: 0.8125rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-  color: var(--color-text-secondary);
-}
-
-/* Small CTA links with arrows */
-.text-link-sm {
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
-}
-
-/* Image counters (01 / 05 style) */
-.text-counter {
-  font-size: 0.8125rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-}
-
-/* ==========================================================================
    Text Utilities
    ========================================================================== */
+
+/* Note: Typography utility classes (.text-label, .text-label-sm, .text-meta,
+   .text-link-sm, .text-counter) are defined in css-variables.liquid to respect
+   the theme's buttons_uppercase setting */
 
 @layer utilities {
   /* Note: text-balance and text-pretty are now native in Tailwind v3.4+

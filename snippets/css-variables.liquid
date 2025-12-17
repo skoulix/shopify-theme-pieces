@@ -236,6 +236,53 @@
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
   }
 
+  /* ==========================================================================
+     Typography Utility Classes
+     Reusable text styles for labels, meta, links, and counters
+     Respects theme uppercase settings
+     ========================================================================== */
+
+  /* Primary label - Form labels, section eyebrows, drawer titles */
+  .text-label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+    letter-spacing: 0.15em;
+  }
+
+  /* Secondary label - Counters, back-to-top, small UI labels */
+  .text-label-sm {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+    letter-spacing: 0.1em;
+  }
+
+  /* Meta text - Vendor, category, date, counts */
+  .text-meta {
+    font-size: 0.8125rem;
+    font-weight: 500;
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+    letter-spacing: 0.1em;
+    color: var(--color-text-secondary);
+  }
+
+  /* Small CTA links with arrows */
+  .text-link-sm {
+    font-size: 0.875rem;
+    font-weight: 600;
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+    letter-spacing: 0.1em;
+  }
+
+  /* Image counters (01 / 05 style) */
+  .text-counter {
+    font-size: 0.8125rem;
+    font-weight: 600;
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+    letter-spacing: 0.2em;
+  }
+
   /* Cards */
   .card {
     background-color: var(--color-background);

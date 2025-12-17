@@ -317,7 +317,7 @@
 
           {%- when 'vendor' -%}
             {% if product.vendor != blank %}
-              <div class="product-vendor text-label overflow-hidden" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
+              <div class="product-vendor text-meta overflow-hidden" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
                 <span class="inline-block">{{ product.vendor }}</span>
               </div>
             {% endif %}
@@ -385,7 +385,7 @@
 
           {%- when 'quantity_selector' -%}
             <div class="product-form-group mt-8" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              <label class="product-form-label text-label">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'products.product.quantity' | t }}{% endif %}</label>
+              <label class="product-form-label text-label-sm">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'products.product.quantity' | t }}{% endif %}</label>
               <div class="product-quantity" data-quantity-wrapper>
                 <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">
                   <i class="ph ph-minus"></i>

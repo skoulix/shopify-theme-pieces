@@ -51,12 +51,9 @@
     box-shadow: 0 0 0 2px color-mix(in srgb, var(--color-primary) 20%, transparent);
   }
 
+  /* .customer-form__label uses .text-label-sm utility class */
   .customer-form__label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.15em;
     color: var(--color-text-secondary);
     margin-bottom: 0.5rem;
   }
@@ -118,54 +115,54 @@
     {% form 'customer_address', customer.new_address, class: 'space-y-6' %}
       <div class="grid sm:grid-cols-2 gap-6">
         <div>
-          <label for="address-first-name" class="customer-form__label">{{ 'customers.addresses.first_name' | t }}</label>
+          <label for="address-first-name" class="customer-form__label text-label-sm">{{ 'customers.addresses.first_name' | t }}</label>
           <input type="text" id="address-first-name" name="address[first_name]" autocomplete="given-name" class="customer-form__input">
         </div>
         <div>
-          <label for="address-last-name" class="customer-form__label">{{ 'customers.addresses.last_name' | t }}</label>
+          <label for="address-last-name" class="customer-form__label text-label-sm">{{ 'customers.addresses.last_name' | t }}</label>
           <input type="text" id="address-last-name" name="address[last_name]" autocomplete="family-name" class="customer-form__input">
         </div>
       </div>
 
       <div>
-        <label for="address-company" class="customer-form__label">{{ 'customers.addresses.company' | t }}</label>
+        <label for="address-company" class="customer-form__label text-label-sm">{{ 'customers.addresses.company' | t }}</label>
         <input type="text" id="address-company" name="address[company]" autocomplete="organization" class="customer-form__input">
       </div>
 
       <div>
-        <label for="address-address1" class="customer-form__label">{{ 'customers.addresses.address1' | t }}</label>
+        <label for="address-address1" class="customer-form__label text-label-sm">{{ 'customers.addresses.address1' | t }}</label>
         <input type="text" id="address-address1" name="address[address1]" autocomplete="address-line1" required class="customer-form__input">
       </div>
 
       <div>
-        <label for="address-address2" class="customer-form__label">{{ 'customers.addresses.address2' | t }}</label>
+        <label for="address-address2" class="customer-form__label text-label-sm">{{ 'customers.addresses.address2' | t }}</label>
         <input type="text" id="address-address2" name="address[address2]" autocomplete="address-line2" class="customer-form__input">
       </div>
 
       <div class="grid sm:grid-cols-2 gap-6">
         <div>
-          <label for="address-city" class="customer-form__label">{{ 'customers.addresses.city' | t }}</label>
+          <label for="address-city" class="customer-form__label text-label-sm">{{ 'customers.addresses.city' | t }}</label>
           <input type="text" id="address-city" name="address[city]" autocomplete="address-level2" required class="customer-form__input">
         </div>
         <div>
-          <label for="address-country" class="customer-form__label">{{ 'customers.addresses.country' | t }}</label>
+          <label for="address-country" class="customer-form__label text-label-sm">{{ 'customers.addresses.country' | t }}</label>
           <select id="address-country" name="address[country]" autocomplete="country" data-default="{{ form.country }}" class="customer-form__select">{{ all_country_option_tags }}</select>
         </div>
       </div>
 
       <div class="grid sm:grid-cols-2 gap-6">
         <div id="address-province-container">
-          <label for="address-province" class="customer-form__label">{{ 'customers.addresses.province' | t }}</label>
+          <label for="address-province" class="customer-form__label text-label-sm">{{ 'customers.addresses.province' | t }}</label>
           <select id="address-province" name="address[province]" autocomplete="address-level1" data-default="{{ form.province }}" class="customer-form__select"></select>
         </div>
         <div>
-          <label for="address-zip" class="customer-form__label">{{ 'customers.addresses.zip' | t }}</label>
+          <label for="address-zip" class="customer-form__label text-label-sm">{{ 'customers.addresses.zip' | t }}</label>
           <input type="text" id="address-zip" name="address[zip]" autocomplete="postal-code" class="customer-form__input">
         </div>
       </div>
 
       <div>
-        <label for="address-phone" class="customer-form__label">{{ 'customers.addresses.phone' | t }}</label>
+        <label for="address-phone" class="customer-form__label text-label-sm">{{ 'customers.addresses.phone' | t }}</label>
         <input type="tel" id="address-phone" name="address[phone]" autocomplete="tel" class="customer-form__input">
       </div>
 
@@ -214,54 +211,54 @@
             {% form 'customer_address', address, class: 'space-y-6' %}
               <div class="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <label for="edit-first-name-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.first_name' | t }}</label>
+                  <label for="edit-first-name-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.first_name' | t }}</label>
                   <input type="text" id="edit-first-name-{{ address.id }}" name="address[first_name]" value="{{ address.first_name }}" autocomplete="given-name" class="customer-form__input">
                 </div>
                 <div>
-                  <label for="edit-last-name-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.last_name' | t }}</label>
+                  <label for="edit-last-name-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.last_name' | t }}</label>
                   <input type="text" id="edit-last-name-{{ address.id }}" name="address[last_name]" value="{{ address.last_name }}" autocomplete="family-name" class="customer-form__input">
                 </div>
               </div>
 
               <div>
-                <label for="edit-company-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.company' | t }}</label>
+                <label for="edit-company-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.company' | t }}</label>
                 <input type="text" id="edit-company-{{ address.id }}" name="address[company]" value="{{ address.company }}" autocomplete="organization" class="customer-form__input">
               </div>
 
               <div>
-                <label for="edit-address1-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.address1' | t }}</label>
+                <label for="edit-address1-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.address1' | t }}</label>
                 <input type="text" id="edit-address1-{{ address.id }}" name="address[address1]" value="{{ address.address1 }}" autocomplete="address-line1" required class="customer-form__input">
               </div>
 
               <div>
-                <label for="edit-address2-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.address2' | t }}</label>
+                <label for="edit-address2-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.address2' | t }}</label>
                 <input type="text" id="edit-address2-{{ address.id }}" name="address[address2]" value="{{ address.address2 }}" autocomplete="address-line2" class="customer-form__input">
               </div>
 
               <div class="grid sm:grid-cols-2 gap-6">
                 <div>
-                  <label for="edit-city-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.city' | t }}</label>
+                  <label for="edit-city-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.city' | t }}</label>
                   <input type="text" id="edit-city-{{ address.id }}" name="address[city]" value="{{ address.city }}" autocomplete="address-level2" required class="customer-form__input">
                 </div>
                 <div>
-                  <label for="edit-country-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.country' | t }}</label>
+                  <label for="edit-country-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.country' | t }}</label>
                   <select id="edit-country-{{ address.id }}" name="address[country]" data-default="{{ address.country }}" autocomplete="country" class="customer-form__select">{{ all_country_option_tags }}</select>
                 </div>
               </div>
 
               <div class="grid sm:grid-cols-2 gap-6">
                 <div id="edit-province-container-{{ address.id }}">
-                  <label for="edit-province-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.province' | t }}</label>
+                  <label for="edit-province-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.province' | t }}</label>
                   <select id="edit-province-{{ address.id }}" name="address[province]" data-default="{{ address.province }}" autocomplete="address-level1" class="customer-form__select"></select>
                 </div>
                 <div>
-                  <label for="edit-zip-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.zip' | t }}</label>
+                  <label for="edit-zip-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.zip' | t }}</label>
                   <input type="text" id="edit-zip-{{ address.id }}" name="address[zip]" value="{{ address.zip }}" autocomplete="postal-code" class="customer-form__input">
                 </div>
               </div>
 
               <div>
-                <label for="edit-phone-{{ address.id }}" class="customer-form__label">{{ 'customers.addresses.phone' | t }}</label>
+                <label for="edit-phone-{{ address.id }}" class="customer-form__label text-label-sm">{{ 'customers.addresses.phone' | t }}</label>
                 <input type="tel" id="edit-phone-{{ address.id }}" name="address[phone]" value="{{ address.phone }}" autocomplete="tel" class="customer-form__input">
               </div>
 
