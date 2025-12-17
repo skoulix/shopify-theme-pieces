@@ -68,7 +68,7 @@
 
             <div class="p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:pr-8 lg:pl-0 lg:justify-center{% endif %}" data-tween data-tween-type="fade-up">
               {% if article.tags.size > 0 %}
-                <p class="blog-item-category text-[0.75rem] font-semibold uppercase tracking-[0.15em] text-[--color-text-secondary] mb-3 overflow-hidden">
+                <p class="blog-item-category text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-[--color-text-secondary] mb-3 overflow-hidden">
                   <span class="inline-block">{{ article.tags.first }}</span>
                 </p>
               {% endif %}
@@ -99,7 +99,7 @@
                 {% endif %}
               </div>
 
-              <a href="{{ article.url }}" class="blog-item-cta inline-flex items-center gap-2 mt-auto pt-4 text-xs font-semibold tracking-widest text-[--color-text] uppercase">
+              <a href="{{ article.url }}" class="blog-item-cta inline-flex items-center gap-2 mt-auto pt-4 text-sm font-semibold tracking-widest text-[--color-text] uppercase">
                 <span class="blog-item-cta-text-wrapper"><span class="blog-item-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
                 <span class="sr-only">: {{ article.title }}</span>
                 <i class="ph ph-arrow-right" aria-hidden="true"></i>

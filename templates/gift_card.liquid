@@ -60,14 +60,14 @@
           <div class="gift-card-visual-content">
             <div class="flex items-start justify-between">
               <div>
-                <p class="text-xs uppercase tracking-wider opacity-70">{{ 'gift_card.card' | t }}</p>
+                <p class="text-sm uppercase tracking-wider opacity-70">{{ 'gift_card.card' | t }}</p>
                 <p class="text-2xl font-bold font-heading mt-1">{{ shop.name }}</p>
               </div>
               <i class="ph ph-gift text-3xl opacity-70"></i>
             </div>
 
             <div>
-              <p class="text-xs uppercase tracking-wider opacity-70 mb-2">Card Number</p>
+              <p class="text-sm uppercase tracking-wider opacity-70 mb-2">Card Number</p>
               <div class="gift-card-code-display">
                 {{ gift_card.code | format_code }}
               </div>
@@ -77,7 +77,7 @@
 
         {%- comment -%} Balance {%- endcomment -%}
         <div class="gift-card-animate text-center mt-8">
-          <p class="text-xs uppercase tracking-wider font-medium text-[--color-text-secondary] mb-2">
+          <p class="text-sm uppercase tracking-wider font-medium text-[--color-text-secondary] mb-2">
             {{ 'gift_card.balance' | t }}
           </p>
           <p class="gift-card-balance font-bold text-[--color-text] font-heading">

@@ -254,23 +254,23 @@
                   </div>
                 `}
                 ${!product.available ? `
-                  <span class="absolute top-3 left-3 px-2 py-1 text-[0.75rem] font-semibold uppercase tracking-wider bg-[--color-background] text-[--color-text-secondary] rounded">
+                  <span class="absolute top-3 left-3 px-2 py-1 text-[0.8125rem] font-semibold uppercase tracking-wider bg-[--color-background] text-[--color-text-secondary] rounded">
                     {{ 'products.product.sold_out' | t }}
                   </span>
                 ` : ''}
                 ${product.compareAtPrice && product.compareAtPrice > product.price ? `
-                  <span class="absolute bottom-3 left-3 px-2 py-1 text-[0.75rem] font-semibold uppercase tracking-wider bg-[--color-sale] text-white rounded">
+                  <span class="absolute bottom-3 left-3 px-2 py-1 text-[0.8125rem] font-semibold uppercase tracking-wider bg-[--color-sale] text-white rounded">
                     {{ 'products.product.on_sale' | t }}
                   </span>
                 ` : ''}
               </div>
               <div class="product-card-content flex-1 p-4 bg-[--color-background]">
                 ${product.vendor ? `
-                  <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
+                  <p class="product-card-vendor text-sm text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
                     <span class="inline-block">${escapeHtml(product.vendor)}</span>
                   </p>
                 ` : ''}
-                <h3 class="product-card-title mt-2 text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading">
+                <h3 class="product-card-title mt-2 text-sm font-semibold tracking-wide text-[--color-text] font-heading">
                   ${escapeHtml(product.title)}
                 </h3>
                 <div class="product-card-price mt-2 text-sm text-[--color-text-secondary]">

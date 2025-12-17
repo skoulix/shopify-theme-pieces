@@ -305,12 +305,12 @@
 
             <a href="${escapeHtml(product.url)}" class="product-card-content flex-1 p-4 bg-[--color-background] block no-underline" data-tween data-tween-type="fade-up">
               ${showVendor && product.vendor ? `
-                <p class="product-card-vendor text-xs text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
+                <p class="product-card-vendor text-sm text-[--color-text-secondary] uppercase tracking-wide overflow-hidden">
                   <span class="inline-block">${escapeHtml(product.vendor)}</span>
                 </p>
               ` : ''}
 
-              <h3 class="product-card-title mt-2 text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading">
+              <h3 class="product-card-title mt-2 text-sm font-semibold tracking-wide text-[--color-text] font-heading">
                 ${escapeHtml(product.title)}
               </h3>
 

@@ -50,7 +50,7 @@
   .collection-card:hover .collection-card-image img { transform: scale(1.05); }
   .collection-card-title { font-size: 0.875rem; font-weight: 600; letter-spacing: 0.05em; margin-top: 1rem; }
   .collection-card-title .overflow-hidden span { display: inline-block; }
-  .collection-card-count { font-size: 0.75rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-top: 0.25rem; }
+  .collection-card-count { font-size: 0.875rem; text-transform: uppercase; letter-spacing: 0.1em; color: var(--color-text-secondary); margin-top: 0.25rem; }
   .collection-card-count .overflow-hidden span { display: inline-block; }
 </style>
 
@@ -79,7 +79,7 @@
     {% endif %}
 
     {% if section.settings.description != blank %}
-      <div class="mt-8 max-w-[380px] text-xs uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ section.settings.description | escape }}">
+      <div class="mt-8 max-w-[380px] text-sm uppercase tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em]" data-shuffle-text data-original-text="{{ section.settings.description | escape }}">
         {{ section.settings.description }}
       </div>
     {% endif %}

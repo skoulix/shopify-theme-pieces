@@ -141,14 +141,14 @@
 
   /* Metro Vendor - Elegant label */
   .metro-item-vendor {
-    font-size: 0.75rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
+    font-size: 0.875rem; font-weight: 500; letter-spacing: 0.15em; text-transform: uppercase;
     color: rgba(255,255,255,0.7); margin: 0 0 0.625rem;
     display: inline-block;
     padding: 0.25rem 0;
     border-bottom: 1px solid rgba(255,255,255,0.2);
   }
   @media (min-width: 768px) {
-    .metro-item-vendor { font-size: 0.8125rem; }
+    .metro-item-vendor { font-size: 0.9375rem; }
   }
 
   /* Metro Title - Bold typography */
@@ -284,18 +284,18 @@
   .metro-item-sale-badge {
     position: absolute; top: 1rem; left: 1rem; z-index: 3;
     padding: 0.5rem 0.875rem;
-    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.03em;
+    font-size: 0.8125rem; font-weight: 700; letter-spacing: 0.03em;
     background: var(--color-sale); color: white;
     border-radius: var(--badge-radius);
     text-transform: uppercase;
   }
   @media (min-width: 768px) {
-    .metro-item-sale-badge { top: 1.25rem; left: 1.25rem; padding: 0.5rem 1rem; font-size: 0.8125rem; }
+    .metro-item-sale-badge { top: 1.25rem; left: 1.25rem; padding: 0.5rem 1rem; font-size: 0.875rem; }
   }
   .metro-item--hero .metro-item-sale-badge {
     top: 1.5rem; left: 1.5rem;
     padding: 0.625rem 1.125rem;
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
   }
   @media (min-width: 768px) {
     .metro-item--hero .metro-item-sale-badge { top: 2rem; left: 2rem; }
@@ -372,7 +372,7 @@
           {%- else -%}text-left
         {%- endcase -%}
       {%- endcapture -%}
-      <div class="mt-8 max-w-[380px] text-xs{% if settings.headings_uppercase %} uppercase{% endif %} tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em] {{ desc_align_class }}"{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ desc_text | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
+      <div class="mt-8 max-w-[380px] text-sm{% if settings.headings_uppercase %} uppercase{% endif %} tracking-[0.05em] leading-relaxed text-[--color-text-secondary] pl-[0.15em] {{ desc_align_class }}"{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ desc_text | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
         {{ desc_text }}
       </div>
     {% endif %}

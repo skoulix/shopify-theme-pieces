@@ -48,7 +48,7 @@
     {% endif %}
 
     {% if section.settings.description != blank %}
-      <p class="mt-8 max-w-[420px] text-xs{% if settings.headings_uppercase %} uppercase{% endif %} tracking-[0.05em] leading-relaxed text-[--color-text-secondary] {{ form_align }}" data-contact-description{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
+      <p class="mt-8 max-w-[420px] text-sm{% if settings.headings_uppercase %} uppercase{% endif %} tracking-[0.05em] leading-relaxed text-[--color-text-secondary] {{ form_align }}" data-contact-description{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
         {{ section.settings.description }}
       </p>
     {% endif %}

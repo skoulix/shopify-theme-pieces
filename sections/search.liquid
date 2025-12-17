@@ -136,7 +136,7 @@
                     {% endif %}
 
                     {%- comment -%} Type Badge {%- endcomment -%}
-                    <span class="absolute top-3 left-3 px-2 py-1 text-[10px] uppercase tracking-wider font-medium bg-[--color-background] text-[--color-text]">
+                    <span class="absolute top-3 left-3 px-2 py-1 text-[11px] uppercase tracking-wider font-medium bg-[--color-background] text-[--color-text]">
                       {% if result.object_type == 'product' %}
                         {{ 'search.type_product' | t }}
                       {% elsif result.object_type == 'article' %}
@@ -149,7 +149,7 @@
 
                   {%- comment -%} Content {%- endcomment -%}
                   <div class="mt-4">
-                    <h3 class="text-xs md:text-sm font-semibold tracking-wide text-[--color-text] font-heading group-hover:text-[--color-primary] transition-colors">
+                    <h3 class="text-sm font-semibold tracking-wide text-[--color-text] font-heading group-hover:text-[--color-primary] transition-colors">
                       {{ result.title }}
                     </h3>
 
@@ -161,13 +161,13 @@
                         {{ result.price | money }}
                       </p>
                     {% elsif result.object_type == 'article' %}
-                      <p class="mt-1 text-xs text-[--color-text-secondary]">
+                      <p class="mt-1 text-sm text-[--color-text-secondary]">
                         {{ result.published_at | date: '%B %d, %Y' }}
                       </p>
                     {% endif %}
 
                     {% if result.content != blank or result.description != blank %}
-                      <p class="mt-2 text-xs text-[--color-text-secondary] line-clamp-2">
+                      <p class="mt-2 text-sm text-[--color-text-secondary] line-clamp-2">
                         {{ result.content | default: result.description | strip_html | truncate: 100 }}
                       </p>
                     {% endif %}

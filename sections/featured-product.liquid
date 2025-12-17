@@ -285,7 +285,7 @@
                         {% if option_disabled %}disabled{% endif %}
                       >
                       <label
-                        class="fp-variant-button inline-flex items-center justify-center px-5 py-3 text-xs font-medium uppercase tracking-wider border border-[--color-border] bg-transparent text-[--color-text] cursor-pointer transition-all duration-200 hover:border-[--color-text]{% if option_disabled %} opacity-50 cursor-not-allowed line-through{% endif %}"
+                        class="fp-variant-button inline-flex items-center justify-center px-5 py-3 text-sm font-medium uppercase tracking-wider border border-[--color-border] bg-transparent text-[--color-text] cursor-pointer transition-all duration-200 hover:border-[--color-text]{% if option_disabled %} opacity-50 cursor-not-allowed line-through{% endif %}"
                         for="fp-{{ section.id }}-{{ option.name | handleize }}-{{ forloop.index }}"
                       >
                         {{ value }}

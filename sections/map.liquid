@@ -105,7 +105,7 @@
   }
 
   .map-info-item h3 {
-    font-size: 0.75rem;
+    font-size: 0.875rem;
     font-weight: 600;
     {% if settings.headings_uppercase %}text-transform: uppercase;{% endif %}
     letter-spacing: 0.2em;
@@ -170,7 +170,7 @@
   {% if section.settings.label != blank or section.settings.title != blank %}
     <div class="page-container mb-8 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="map-header-{{ section.id }}">
       {% if section.settings.label != blank %}
-        <span class="block text-xs font-semibold uppercase tracking-[0.2em] opacity-50 mb-3" data-tween data-tween-type="fade-up">
+        <span class="block text-sm font-semibold uppercase tracking-[0.2em] opacity-50 mb-3" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
         </span>
       {% endif %}

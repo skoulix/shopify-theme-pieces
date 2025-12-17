@@ -34,7 +34,7 @@
   .product-zoom-btn:hover { background: var(--color-text); color: var(--color-background); }
   .product-gallery-image.is-active .product-zoom-btn { opacity: 1; }
   @media (max-width: 1023px) { .product-zoom-btn { width: 40px; height: 40px; bottom: 1rem; right: 1rem; } .product-zoom-btn i { font-size: 1.125rem; } }
-  .product-image-counter { position: absolute; bottom: 2rem; left: 2rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text); mix-blend-mode: difference; z-index: 10; }
+  .product-image-counter { position: absolute; bottom: 2rem; left: 2rem; font-size: 0.8125rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text); mix-blend-mode: difference; z-index: 10; }
   .product-image-counter-current { font-size: 2rem; font-weight: 700; letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em)); }
   .product-thumbnails { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.75rem; z-index: 10; }
   .product-thumbnails.thumbnails-left { right: auto; left: 1.5rem; }
@@ -48,7 +48,7 @@
   @media (min-width: 1024px) { .product-description { max-width: 420px; } }
   .product-form { margin-top: 1.5rem; }
   .product-form-group { margin-bottom: 1.5rem; }
-  .product-form-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .product-form-label { display: block; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
   .product-form-select { width: 100%; padding: 1rem 0; font-size: 0.875rem; background: transparent; border: none; border-bottom: 1px solid var(--color-border); color: var(--color-text); cursor: pointer; appearance: none; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 24 24' stroke='currentColor'%3E%3Cpath stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='M19 9l-7 7-7-7'%3E%3C/path%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 0 center; background-size: 1.25rem; }
   .product-form-select:focus { outline: none; border-color: var(--color-text); }
   .product-quantity { display: inline-flex; align-items: center; background: transparent; border-radius: var(--input-radius); padding: 0; position: relative; overflow: hidden; border: var(--input-border-width) solid var(--color-border); box-shadow: var(--input-shadow); }
@@ -73,7 +73,7 @@
   .shopify-payment-button__button:hover, .shopify-payment-button__button--unbranded:hover, .shopify-payment-button__button:hover *, .shopify-payment-button__button--unbranded:hover * { color: var(--color-primary-contrast) !important; fill: var(--color-primary-contrast) !important; -webkit-text-fill-color: var(--color-primary-contrast) !important; }
   .shopify-payment-button__button:active, .shopify-payment-button__button--unbranded:active { transform: scale(0.98) !important; }
   .shopify-payment-button__button *, .shopify-payment-button__button--unbranded * { position: relative !important; z-index: 1 !important; transition: color 0.4s ease, fill 0.4s ease !important; }
-  .product-vendor { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text-secondary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
+  .product-vendor { font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text-secondary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
   .product-vendor::before { content: ''; width: 2rem; height: 1px; background: var(--color-text-secondary); }
   @media (max-width: 1023px) { .product-thumbnails, .product-thumbnails.thumbnails-left, .product-thumbnails.thumbnails-bottom { position: relative; right: auto; left: auto; top: auto; bottom: auto; transform: none; flex-direction: row; justify-content: center; padding: 0.75rem var(--page-padding); gap: 0.5rem; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; width: 100%; flex-shrink: 0; } .product-thumbnails::-webkit-scrollbar { display: none; } .product-thumbnail, .thumbnails-bottom .product-thumbnail { width: 48px; height: 60px; flex-shrink: 0; } .product-image-counter { bottom: auto; top: 1rem; left: 1rem; } }
   [data-thumbnails], [data-image-counter] { opacity: 0; }
@@ -81,7 +81,7 @@
   /* Variant picker styles */
   .variant-picker__option { margin-bottom: 1.5rem; border: none; padding: 0; }
   .variant-picker__option:last-child { margin-bottom: 0; }
-  .variant-picker__label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
+  .variant-picker__label { display: block; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
   .variant-picker__selected { font-weight: 400; opacity: 0.7; }
 
   /* Swatch styles */
@@ -107,7 +107,7 @@
   /* Button picker styles */
   .variant-picker__input { position: absolute; opacity: 0; width: 0; height: 0; }
   .variant-picker__buttons { display: flex; flex-wrap: wrap; gap: 0.5rem; }
-  .variant-picker__button { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.25rem; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--color-border); background: transparent; color: var(--color-text); cursor: pointer; transition: all 0.2s ease; }
+  .variant-picker__button { display: inline-flex; align-items: center; justify-content: center; padding: 0.75rem 1.25rem; font-size: 0.875rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.1em; border: 1px solid var(--color-border); background: transparent; color: var(--color-text); cursor: pointer; transition: all 0.2s ease; }
   .variant-picker__input:checked + .variant-picker__button { background: var(--color-text); color: var(--color-background); border-color: var(--color-text); }
   .variant-picker__input:hover + .variant-picker__button { border-color: var(--color-text); }
   .variant-picker__button--disabled { opacity: 0.5; cursor: not-allowed; text-decoration: line-through; }
@@ -601,7 +601,7 @@
               style="display: none;"
               {{ block.shopify_attributes }}
             >
-              <p class="text-[0.75rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</p>
+              <p class="text-[0.8125rem] font-semibold uppercase tracking-[0.15em] text-secondary mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</p>
               {%- comment -%} Skeleton Loading State {%- endcomment -%}
               <div class="flex flex-col gap-3" data-complementary-loading data-tween data-tween-type="fade-up">
                 {% for i in (1..block.settings.products_to_show) %}
@@ -795,7 +795,7 @@
                     data-share-popup
                     role="menu"
                   >
-                    <p class="text-xs font-semibold uppercase tracking-widest text-[--color-text-secondary] mb-3">{{ 'general.share' | t }}</p>
+                    <p class="text-sm font-semibold uppercase tracking-widest text-[--color-text-secondary] mb-3">{{ 'general.share' | t }}</p>
                     <div class="flex flex-col gap-2">
                       <a
                         href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
