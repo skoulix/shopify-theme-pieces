@@ -41,13 +41,13 @@
             placeholder="{{ placeholder }}"
             autocomplete="email"
             aria-describedby="{{ form_id }}-status"
-            class="input input--full"
+            class="input input--full lg:input--lg"
             {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
           >
         </div>
         <button
           type="submit"
-          class="btn btn--{{ button_style }}"
+          class="btn btn--{{ button_style }} lg:btn--lg"
         >
           <span data-button-text>{{ button_text }}</span>
           <span data-loading-text class="hidden">
@@ -68,13 +68,13 @@
             placeholder="{{ placeholder }}"
             autocomplete="email"
             aria-describedby="{{ form_id }}-status"
-            class="input input--full"
+            class="input input--full lg:input--lg"
             {% if input_bg %}style="background-color: {{ input_bg }};{% if input_border %} border-color: {{ input_border }};{% endif %}"{% endif %}
           >
         </div>
         <button
           type="submit"
-          class="btn btn--{{ button_style }} btn--full"
+          class="btn btn--{{ button_style }} btn--full lg:btn--lg"
         >
           <span data-button-text>{{ button_text }}</span>
           <span data-loading-text class="hidden">

@@ -441,7 +441,7 @@
 
     // Add empty slots
     for (let i = products.length; i < MAX_PRODUCTS; i++) {
-      html += `<div class="compare-drawer__empty-slot text-label-sm">{{ 'products.compare.add_product' | t | default: 'Add product' }}</div>`;
+      html += `<div class="compare-drawer__empty-slot text-xs tracking-[0.1em]{% if settings.buttons_uppercase %} uppercase{% endif %}">{{ 'products.compare.add_product' | t | default: 'Add product' }}</div>`;
     }
 
     productsContainer.innerHTML = html;
