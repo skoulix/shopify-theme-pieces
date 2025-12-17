@@ -41,7 +41,7 @@
         {%- comment -%} Navigation columns {%- endcomment -%}
         <div class="mega-menu-nav">
           {% if link.url != '#' and link.url != '' %}
-            <a href="{{ link.url }}" class="mega-menu-nav__view-all" data-mega-menu-item>
+            <a href="{{ link.url }}" class="mega-menu-nav__view-all text-label-sm" data-mega-menu-item>
               <span>{{ 'accessibility.explore' | t }} {{ link.title }}</span>
               <i class="ph ph-arrow-right"></i>
             </a>
@@ -85,7 +85,7 @@
             {% if block.settings.featured_collection != blank %}
               {%- comment -%} Featured collection products {%- endcomment -%}
               <div class="mega-menu-featured__collection">
-                <h4 class="mega-menu-featured__heading">
+                <h4 class="mega-menu-featured__heading text-label-sm">
                   {{ block.settings.featured_heading | default: 'Featured' }}
                 </h4>
                 <div class="mega-menu-featured__products">
@@ -205,10 +205,6 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
     color: var(--color-primary);
     margin-bottom: 1.5rem;
     transition: gap 0.3s ease;
@@ -279,10 +275,6 @@
   }
 
   .mega-menu-featured__heading {
-    font-size: 0.75rem;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.1em;
     color: var(--color-text-secondary);
     margin-bottom: 1rem;
   }

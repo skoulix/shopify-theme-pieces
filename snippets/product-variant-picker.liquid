@@ -53,7 +53,7 @@
       {%- if final_picker_type == 'swatch' -%}
         {%- comment -%} Swatch picker - visual color/pattern swatches {%- endcomment -%}
         <fieldset class="variant-picker__option variant-picker__option--swatch">
-          <legend class="variant-picker__label">
+          <legend class="variant-picker__label text-label">
             {{ option.name }}:
             <span class="variant-picker__selected" data-option-selected="{{ option_index }}">
               {{ option.selected_value }}
@@ -95,7 +95,7 @@
       {%- elsif final_picker_type == 'button' -%}
         {%- comment -%} Button/pill picker - text buttons {%- endcomment -%}
         <fieldset class="variant-picker__option variant-picker__option--button">
-          <legend class="variant-picker__label">{{ option.name }}</legend>
+          <legend class="variant-picker__label text-label">{{ option.name }}</legend>
           <div class="variant-picker__buttons">
             {%- for value in option.values -%}
               {%- liquid
@@ -122,7 +122,7 @@
               >
               <label
                 for="{{ input_id }}"
-                class="variant-picker__button{% if option_disabled %} variant-picker__button--disabled{% endif %}"
+                class="variant-picker__button text-label-sm{% if option_disabled %} variant-picker__button--disabled{% endif %}"
               >
                 {{ value }}
                 {% if option_disabled %}
@@ -136,7 +136,7 @@
       {%- else -%}
         {%- comment -%} Dropdown picker (default) - with optional swatch preview {%- endcomment -%}
         <div class="variant-picker__option variant-picker__option--dropdown">
-          <label class="variant-picker__label" for="Option-{{ section_id }}-{{ option_index }}">
+          <label class="variant-picker__label text-label" for="Option-{{ section_id }}-{{ option_index }}">
             {{ option.name }}
           </label>
           <div class="variant-picker__select-wrapper">

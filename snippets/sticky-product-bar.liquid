@@ -106,10 +106,7 @@
   }
 
   .sticky-product-bar__variant {
-    font-size: 0.8125rem;
     color: var(--color-text-secondary);
-    text-transform: uppercase;
-    letter-spacing: 0.05em;
   }
 
   .sticky-product-bar__price {
@@ -302,7 +299,7 @@
         <h3 class="sticky-product-bar__title">{{ product.title }}</h3>
         <div class="sticky-product-bar__meta">
           {% unless product.has_only_default_variant %}
-            <span class="sticky-product-bar__variant" data-sticky-bar-variant>
+            <span class="sticky-product-bar__variant text-label-sm" data-sticky-bar-variant>
               {{ current_variant.title }}
             </span>
           {% endunless %}
