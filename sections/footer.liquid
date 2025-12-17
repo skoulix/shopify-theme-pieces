@@ -79,12 +79,22 @@
 
     _gsap.registerPlugin(_ScrollTrigger);
 
+    // Kill any existing footer ScrollTrigger (may have been killed by SwupManager already)
     if (footerScrollTrigger) {
       footerScrollTrigger.kill();
       footerScrollTrigger = null;
     }
 
+    // Also search for orphaned triggers targeting our content
+    _ScrollTrigger.getAll().forEach(st => {
+      if (st.trigger === siteContent && st.vars?.trigger === siteContent) {
+        st.kill();
+      }
+    });
+
+    // Reset content state before animating
     footerContent.classList.add('has-reveal');
+    _gsap.set(footerContent, { clearProps: 'all' });
     _gsap.set(footerContent, { y: 40, opacity: 0 });
 
     const tween = _gsap.to(footerContent, {
@@ -129,9 +139,12 @@
 
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('footer-reveal', () => {
+      // Double RAF to ensure DOM is fully settled after Swup transition
       requestAnimationFrame(() => {
-        updateFooterHeight();
-        waitForGsapAndFonts(initFooterReveal);
+        requestAnimationFrame(() => {
+          updateFooterHeight();
+          waitForGsapAndFonts(initFooterReveal);
+        });
       });
     });
   }
