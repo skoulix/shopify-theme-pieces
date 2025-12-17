@@ -450,9 +450,11 @@
             </div>
 
           {%- when 'pickup_availability' -%}
-            <div data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              {%- render 'pickup-availability', product: product -%}
-            </div>
+            {% if current_variant.available %}
+              <div data-tween data-tween-type="fade-up" data-pickup-availability {{ block.shopify_attributes }}>
+                {%- render 'pickup-availability', product: product -%}
+              </div>
+            {% endif %}
 
           {%- when 'delivery_estimator' -%}
             {% if current_variant.available %}
@@ -964,16 +966,19 @@
     if (addButton) {
       const dynamicCheckout = section.querySelector('.shopify-payment-button');
       const deliveryEstimator = section.querySelector('[data-delivery-estimator]');
+      const pickupAvailability = section.querySelector('[data-pickup-availability]');
       if (variant.available) {
         addButton.disabled = false;
         addButton.querySelector('.product-add-btn-text').innerHTML = '<i class="ph ph-bag"></i><span>{{ 'products.product.add_to_cart' | t }}</span>';
         if (dynamicCheckout) dynamicCheckout.parentElement.style.display = '';
         if (deliveryEstimator) deliveryEstimator.style.display = '';
+        if (pickupAvailability) pickupAvailability.style.display = '';
       } else {
         addButton.disabled = true;
         addButton.querySelector('.product-add-btn-text').innerHTML = '<span>{{ 'products.product.sold_out' | t }}</span>';
         if (dynamicCheckout) dynamicCheckout.parentElement.style.display = 'none';
         if (deliveryEstimator) deliveryEstimator.style.display = 'none';
+        if (pickupAvailability) pickupAvailability.style.display = 'none';
       }
     }
 
