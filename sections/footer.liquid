@@ -16,7 +16,6 @@
   {% if section.settings.enable_reveal_effect %}
   .footer-wrapper { position: fixed; bottom: 0; left: 0; right: 0; z-index: 0; }
   .site-content { position: relative; z-index: 1; background-color: var(--color-background); margin-bottom: var(--footer-height, 0px); }
-  .footer-content-{{ section.id }}.has-reveal { opacity: 0; transform: translateY(40px); }
   {% endif %}
   .footer-section { padding: var(--section-vertical-padding) 0; }
   .footer-section nav a, .footer-section .footer-classic__menu a { color: inherit; opacity: 0.7; transition: opacity 0.3s ease; }
@@ -56,6 +55,7 @@
 
   {% if section.settings.enable_reveal_effect %}
   let footerScrollTrigger = null;
+  let fallbackScrollHandler = null;
 
   function updateFooterHeight() {
     if (footerWrapper) {
@@ -67,11 +67,79 @@
   updateFooterHeight();
   window.addEventListener('resize', updateFooterHeight);
 
+  // Fallback scroll handler in case ScrollTrigger fails
+  function setupFallbackScroll() {
+    if (fallbackScrollHandler) return; // Already set up
+
+    fallbackScrollHandler = () => {
+      const siteContent = document.querySelector('.site-content');
+      if (!siteContent || !footerContent) return;
+
+      const siteRect = siteContent.getBoundingClientRect();
+      const footerHeight = footerWrapper.offsetHeight;
+      const viewportHeight = window.innerHeight;
+
+      // Calculate how much of the footer area is visible
+      // When site-content bottom enters viewport + footer height zone, start revealing
+      const triggerStart = viewportHeight;
+      const triggerEnd = viewportHeight - footerHeight;
+      const siteBottom = siteRect.bottom;
+
+      if (siteBottom <= triggerEnd) {
+        // Fully scrolled past - show footer completely
+        footerContent.style.opacity = '1';
+        footerContent.style.transform = 'translateY(0)';
+      } else if (siteBottom >= triggerStart) {
+        // Not yet in trigger zone - hide footer
+        footerContent.style.opacity = '0';
+        footerContent.style.transform = 'translateY(40px)';
+      } else {
+        // In the transition zone - interpolate
+        const progress = 1 - (siteBottom - triggerEnd) / footerHeight;
+        const clampedProgress = Math.max(0, Math.min(1, progress));
+        footerContent.style.opacity = clampedProgress.toString();
+        footerContent.style.transform = `translateY(${40 * (1 - clampedProgress)}px)`;
+      }
+    };
+
+    // Use Lenis scroll event if available, otherwise native scroll
+    // Note: window.pieces.lenis is the LenisManager, .lenis is the actual Lenis instance
+    const lenisInstance = window.pieces?.lenis?.lenis;
+    if (lenisInstance && typeof lenisInstance.on === 'function') {
+      lenisInstance.on('scroll', fallbackScrollHandler);
+    } else {
+      window.addEventListener('scroll', fallbackScrollHandler, { passive: true });
+    }
+
+    // Initial call
+    fallbackScrollHandler();
+  }
+
+  function removeFallbackScroll() {
+    if (!fallbackScrollHandler) return;
+
+    const lenisInstance = window.pieces?.lenis?.lenis;
+    if (lenisInstance && typeof lenisInstance.off === 'function') {
+      lenisInstance.off('scroll', fallbackScrollHandler);
+    } else {
+      window.removeEventListener('scroll', fallbackScrollHandler);
+    }
+    fallbackScrollHandler = null;
+  }
+
   function initFooterReveal() {
     const _gsap = window.pieces?.gsap || window.gsap;
     const _ScrollTrigger = window.pieces?.ScrollTrigger || window.ScrollTrigger;
 
-    if (!_gsap || !_ScrollTrigger) return;
+    // Remove any existing fallback handler
+    removeFallbackScroll();
+
+    // If GSAP/ScrollTrigger not available, use fallback
+    if (!_gsap || !_ScrollTrigger) {
+      setupFallbackScroll();
+      return;
+    }
+
     if (!footerContent || !footerWrapper) return;
 
     const siteContent = document.querySelector('.site-content');
@@ -79,22 +147,30 @@
 
     _gsap.registerPlugin(_ScrollTrigger);
 
-    // Kill any existing footer ScrollTrigger (may have been killed by SwupManager already)
+    // Kill any existing footer ScrollTrigger
     if (footerScrollTrigger) {
       footerScrollTrigger.kill();
       footerScrollTrigger = null;
     }
 
-    // Also search for orphaned triggers targeting our content
-    _ScrollTrigger.getAll().forEach(st => {
-      if (st.trigger === siteContent && st.vars?.trigger === siteContent) {
-        st.kill();
-      }
-    });
-
     // Reset content state before animating
-    footerContent.classList.add('has-reveal');
     _gsap.set(footerContent, { clearProps: 'all' });
+
+    // Get footer height for calculations
+    const footerHeight = footerWrapper.offsetHeight;
+
+    // Check if page is scrollable - if content is shorter than viewport,
+    // show footer immediately (no reveal effect needed)
+    const pageHeight = siteContent.offsetHeight;
+    const viewportHeight = window.innerHeight;
+
+    if (pageHeight <= viewportHeight) {
+      // Page is not scrollable, show footer immediately
+      _gsap.set(footerContent, { y: 0, opacity: 1 });
+      return;
+    }
+
+    // Set initial state - fully hidden
     _gsap.set(footerContent, { y: 40, opacity: 0 });
 
     const tween = _gsap.to(footerContent, {
@@ -103,14 +179,42 @@
       ease: 'none',
       scrollTrigger: {
         trigger: siteContent,
-        start: 'bottom bottom',
-        end: () => `bottom+=${footerWrapper.offsetHeight} bottom`,
+        start: () => `bottom-=${footerWrapper.offsetHeight} bottom`,
+        end: 'bottom bottom',
         scrub: true,
-        invalidateOnRefresh: true
+        invalidateOnRefresh: true,
+        onUpdate: (self) => {
+          // Ensure footer becomes fully visible at end
+          if (self.progress >= 0.99) {
+            _gsap.set(footerContent, { y: 0, opacity: 1 });
+          }
+        }
       }
     });
 
     footerScrollTrigger = tween.scrollTrigger;
+
+    // Force a refresh after a brief delay to ensure page layout is complete
+    requestAnimationFrame(() => {
+      _ScrollTrigger.refresh();
+
+      // Safety check: if footer is still hidden after 1 second and we've scrolled,
+      // fall back to manual scroll handler
+      setTimeout(() => {
+        const currentProgress = footerScrollTrigger?.progress ?? 0;
+        const scrollY = window.scrollY || window.pageYOffset;
+        const maxScroll = document.documentElement.scrollHeight - window.innerHeight;
+
+        // If we're scrolled more than 50% but progress is still 0, ScrollTrigger isn't working
+        if (scrollY > maxScroll * 0.5 && currentProgress < 0.1) {
+          if (footerScrollTrigger) {
+            footerScrollTrigger.kill();
+            footerScrollTrigger = null;
+          }
+          setupFallbackScroll();
+        }
+      }, 1000);
+    });
   }
 
   function waitForGsapAndFonts(callback) {
@@ -145,6 +249,31 @@
           updateFooterHeight();
           waitForGsapAndFonts(initFooterReveal);
         });
+      });
+    });
+  }
+
+  // Also reinitialize after Swup transition completes (backup for timing issues)
+  if (!window._footerTransitionEndListener) {
+    window._footerTransitionEndListener = true;
+    window.addEventListener('swup:transitionEnd', () => {
+      // Wait for images to load before calculating page height
+      const images = document.querySelectorAll('.site-content img');
+      const imagePromises = Array.from(images).map(img => {
+        if (img.complete) return Promise.resolve();
+        return new Promise(resolve => {
+          img.addEventListener('load', resolve, { once: true });
+          img.addEventListener('error', resolve, { once: true });
+        });
+      });
+
+      // Initialize after images load (or timeout after 500ms)
+      Promise.race([
+        Promise.all(imagePromises),
+        new Promise(resolve => setTimeout(resolve, 500))
+      ]).then(() => {
+        updateFooterHeight();
+        initFooterReveal();
       });
     });
   }
