@@ -478,6 +478,16 @@
         "info": "Allows customers to compare up to 4 products side by side"
       },
       {
+        "type": "select",
+        "id": "compare_button_position",
+        "default": "bottom-right",
+        "label": "Compare button position",
+        "options": [
+          { "value": "bottom-left", "label": "Bottom left" },
+          { "value": "bottom-right", "label": "Bottom right" }
+        ]
+      },
+      {
         "type": "checkbox",
         "id": "enable_wishlist",
         "default": true,

@@ -181,20 +181,27 @@
   /* Floating compare button */
   .compare-floating-btn {
     position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    bottom: 1.5rem;
+    {% if settings.compare_button_position == 'bottom-left' %}
+    left: 1.5rem;
+    right: auto;
+    {% else %}
+    right: 1.5rem;
+    left: auto;
+    {% endif %}
     z-index: 89;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
-    padding: 1rem 1.5rem;
+    gap: 0.5rem;
+    padding: 0.5rem 0.875rem;
+    font-size: 0.6875rem;
     background: var(--color-text);
     color: var(--color-background);
     border: 1px solid color-mix(in srgb, var(--color-background) 20%, transparent);
     border-radius: var(--button-radius);
     cursor: pointer;
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
-    box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 12px rgba(0,0,0,0.15);
     transform: translateY(calc(100% + 4rem));
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.3s ease, bottom 0.4s ease;
     opacity: 0;
@@ -203,22 +210,29 @@
     transform: translateY(0);
     opacity: 1;
   }
+  .compare-floating-btn i {
+    font-size: 1rem;
+  }
 
   /* Move floating button up when sticky product bar is visible */
   .compare-floating-btn.is-above-sticky-bar {
-    bottom: 6rem;
+    bottom: 6.5rem;
   }
 
   @media (max-width: 767px) {
     .compare-floating-btn {
+      {% if settings.compare_button_position == 'bottom-left' %}
+      left: 1rem;
+      {% else %}
       right: 1rem;
-      bottom: 1.5rem;
-      padding: 0.75rem 1rem;
+      {% endif %}
+      bottom: 1rem;
+      padding: 0.5rem;
       font-size: 0;
       gap: 0;
     }
     .compare-floating-btn i {
-      font-size: 1.25rem;
+      font-size: 1.125rem;
     }
     .compare-floating-btn span:not(.compare-floating-btn__count) {
       display: none;
@@ -226,10 +240,14 @@
     .compare-floating-btn__count {
       position: absolute;
       top: -0.25rem;
+      {% if settings.compare_button_position == 'bottom-left' %}
       right: -0.25rem;
-      width: 1.25rem;
-      height: 1.25rem;
-      font-size: 0.6875rem;
+      {% else %}
+      right: -0.25rem;
+      {% endif %}
+      width: 1.125rem;
+      height: 1.125rem;
+      font-size: 0.625rem;
     }
 
     /* Move floating button up when sticky product bar is visible on mobile */
@@ -238,25 +256,25 @@
     }
   }
   .compare-floating-btn:hover {
-    box-shadow: 0 6px 24px rgba(0,0,0,0.25);
+    box-shadow: 0 4px 16px rgba(0,0,0,0.2);
   }
   .compare-floating-btn__count {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 1.5rem;
-    height: 1.5rem;
+    width: 1.25rem;
+    height: 1.25rem;
     background: var(--color-background);
     color: var(--color-text);
     border-radius: 50%;
-    font-size: 0.75rem;
+    font-size: 0.625rem;
     font-weight: 700;
   }
 </style>
 
 {%- comment -%} Floating Button {%- endcomment -%}
-<button type="button" class="compare-floating-btn text-label-sm" data-compare-floating-btn aria-label="{{ 'products.compare.view_compare' | t | default: 'View compare' }}" aria-expanded="false" aria-controls="compare-drawer">
-  <i class="ph ph-scales text-lg" aria-hidden="true"></i>
+<button type="button" class="compare-floating-btn" data-compare-floating-btn aria-label="{{ 'products.compare.view_compare' | t | default: 'View compare' }}" aria-expanded="false" aria-controls="compare-drawer">
+  <i class="ph ph-scales" aria-hidden="true"></i>
   <span>{{ 'products.compare.compare' | t | default: 'Compare' }}</span>
   <span class="compare-floating-btn__count" data-compare-count aria-label="{{ 'products.compare.items_count' | t | default: 'items' }}">0</span>
 </button>
@@ -273,7 +291,7 @@
       </h3>
       <div class="compare-drawer__actions">
         {%- assign clear_text = 'products.compare.clear_all' | t | default: 'Clear all' -%}
-        <button type="button" class="text-hover-reveal inline-flex items-center gap-2 text-sm font-semibold tracking-[0.1em] text-[--color-text] opacity-70 hover:opacity-100 transition-opacity duration-300 bg-transparent border-none cursor-pointer p-0" data-compare-clear>
+        <button type="button" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-[0.1em] text-[--color-text] opacity-70 hover:opacity-100 transition-opacity duration-300 bg-transparent border-none cursor-pointer p-0" data-compare-clear>
           <span data-hover="{{ clear_text }}">{{ clear_text }}</span>
         </button>
         <button type="button" class="compare-drawer__close" data-compare-drawer-close aria-label="{{ 'accessibility.close' | t }}">
