@@ -4,8 +4,8 @@
   .product-section-wrapper { max-width: var(--page-max-width); margin: 0 auto; padding: 0; }
   @media (min-width: 1024px) { .product-section-wrapper { padding: 0 var(--page-padding); } }
   .product-section-wrapper.is-full-width { max-width: none; padding: 0; }
-  .product-hero { display: grid; grid-template-columns: 1fr; position: relative; }
-  @media (min-width: 1024px) { .product-hero { grid-template-columns: 1.2fr 1fr; } }
+  .product-hero { display: grid; grid-template-columns: 1fr; position: relative; overflow-x: hidden; }
+  @media (min-width: 1024px) { .product-hero { grid-template-columns: 1.2fr 1fr; overflow-x: visible; } }
   .product-info { container-type: inline-size; display: flex; flex-direction: column; justify-content: center; padding: 6rem var(--page-padding) 3rem; }
   @media (min-width: 1024px) { .product-info { padding: 4rem 0 4rem 4rem; } }
   .product-info.is-full-width { padding: 6rem var(--page-padding) 3rem; }
@@ -23,22 +23,29 @@
   @container (min-width: 400px) { .product-price-display { font-size: clamp(1.25rem, 4cqw, 2rem); } }
   .product-price-display .compare-price { font-size: 0.75em; text-decoration: line-through; opacity: 0.6; margin-right: 0.5em; }
   .product-gallery { position: relative; height: 100%; }
-  @media (max-width: 1023px) { .product-gallery { min-height: 50vh; } }
+  @media (max-width: 1023px) { .product-gallery { display: flex; flex-direction: column; min-height: auto; height: auto; width: 100%; max-width: 100%; overflow: hidden; } }
   .product-gallery-main { position: relative; width: 100%; height: 100%; overflow: hidden; clip-path: inset(0 100% 0 0); }
+  @media (max-width: 1023px) { .product-gallery-main { aspect-ratio: 3/4; height: auto; flex-shrink: 0; width: 100%; max-width: 100%; } }
   .product-gallery-image { position: absolute; inset: 0; opacity: 0; transition: opacity 0.6s ease; }
   .product-gallery-image.is-active { opacity: 1; }
   .product-gallery-image img { width: 100%; height: 100%; object-fit: cover; }
+  .product-zoom-btn { position: absolute; bottom: 1.5rem; right: 1.5rem; width: 44px; height: 44px; display: flex; align-items: center; justify-content: center; background: var(--color-background); border: 1px solid var(--color-border); border-radius: var(--button-radius); color: var(--color-text); cursor: pointer; opacity: 0; transition: opacity 0.3s ease, background 0.3s ease, color 0.3s ease; z-index: 10; }
+  .product-zoom-btn i { font-size: 1.25rem; }
+  .product-zoom-btn:hover { background: var(--color-text); color: var(--color-background); }
+  .product-gallery-image.is-active .product-zoom-btn { opacity: 1; }
+  @media (max-width: 1023px) { .product-zoom-btn { width: 40px; height: 40px; bottom: 1rem; right: 1rem; } .product-zoom-btn i { font-size: 1.125rem; } }
   .product-image-counter { position: absolute; bottom: 2rem; left: 2rem; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text); mix-blend-mode: difference; z-index: 10; }
   .product-image-counter-current { font-size: 2rem; font-weight: 700; letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em)); }
   .product-thumbnails { position: absolute; right: 1.5rem; top: 50%; transform: translateY(-50%); display: flex; flex-direction: column; gap: 0.75rem; z-index: 10; }
   .product-thumbnails.thumbnails-left { right: auto; left: 1.5rem; }
   .product-thumbnails.thumbnails-bottom { right: auto; top: auto; bottom: 1.5rem; left: 50%; transform: translateX(-50%); flex-direction: row; }
-  .product-thumbnail { position: relative; width: 50px; height: 65px; overflow: hidden; cursor: pointer; opacity: 0.4; transition: opacity 0.3s ease; border: 2px solid transparent; border-radius: calc(var(--card-radius) * 0.4); }
+  .product-thumbnail { position: relative; width: 50px; height: 65px; overflow: hidden; cursor: pointer; opacity: 0.5; transition: opacity 0.3s ease; border: 2px solid transparent; border-radius: calc(var(--card-radius) * 0.4); }
   .thumbnails-bottom .product-thumbnail { width: 60px; height: 60px; }
   .product-thumbnail:hover, .product-thumbnail.is-active { opacity: 1; }
   .product-thumbnail.is-active { border-color: var(--color-text); }
   .product-thumbnail img { width: 100%; height: 100%; object-fit: cover; }
-  .product-description { font-size: 0.75rem;{% if settings.headings_uppercase %} text-transform: uppercase;{% endif %} letter-spacing: 0.08em; line-height: 1.8; color: var(--color-text-secondary); max-width: 420px; margin-top: 2rem; }
+  .product-description { font-size: 0.75rem;{% if settings.headings_uppercase %} text-transform: uppercase;{% endif %} letter-spacing: 0.08em; line-height: 1.8; color: var(--color-text-secondary); margin-top: 2rem; }
+  @media (min-width: 1024px) { .product-description { max-width: 420px; } }
   .product-form { margin-top: 1.5rem; }
   .product-form-group { margin-bottom: 1.5rem; }
   .product-form-label { display: block; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.15em; color: var(--color-text-secondary); margin-bottom: 0.75rem; }
@@ -68,7 +75,7 @@
   .shopify-payment-button__button *, .shopify-payment-button__button--unbranded * { position: relative !important; z-index: 1 !important; transition: color 0.4s ease, fill 0.4s ease !important; }
   .product-vendor { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: var(--color-text-secondary); margin-bottom: 1.5rem; display: flex; align-items: center; gap: 1rem; }
   .product-vendor::before { content: ''; width: 2rem; height: 1px; background: var(--color-text-secondary); }
-  @media (max-width: 1023px) { .product-thumbnails, .product-thumbnails.thumbnails-left, .product-thumbnails.thumbnails-bottom { position: relative; right: auto; left: auto; top: auto; bottom: auto; transform: none; flex-direction: row; justify-content: center; padding: 1rem; gap: 0.5rem; } .product-thumbnail, .thumbnails-bottom .product-thumbnail { width: 40px; height: 52px; } .product-image-counter { bottom: auto; top: 1rem; left: 1rem; } }
+  @media (max-width: 1023px) { .product-thumbnails, .product-thumbnails.thumbnails-left, .product-thumbnails.thumbnails-bottom { position: relative; right: auto; left: auto; top: auto; bottom: auto; transform: none; flex-direction: row; justify-content: center; padding: 0.75rem var(--page-padding); gap: 0.5rem; overflow-x: auto; overflow-y: hidden; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none; width: 100%; flex-shrink: 0; } .product-thumbnails::-webkit-scrollbar { display: none; } .product-thumbnail, .thumbnails-bottom .product-thumbnail { width: 48px; height: 60px; flex-shrink: 0; } .product-image-counter { bottom: auto; top: 1rem; left: 1rem; } }
   [data-thumbnails], [data-image-counter] { opacity: 0; }
 
   /* Variant picker styles */
@@ -171,6 +178,11 @@
                   widths: '600, 900, 1200, 1800'
                 }}
               {%- endif -%}
+              {% if section.settings.enable_lightbox %}
+                <button type="button" class="product-zoom-btn" data-zoom-btn="{{ forloop.index0 }}" aria-label="{{ 'products.product.zoom' | t | default: 'Zoom image' }}">
+                  <i class="ph ph-magnifying-glass-plus"></i>
+                </button>
+              {% endif %}
             </div>
 
           {%- when 'video' -%}
@@ -900,6 +912,20 @@
           if (poster) poster.classList.remove('is-hidden');
         }
       }
+
+      {% if section.settings.video_autoplay %}
+      // Autoplay video when switching to it
+      if (isActive && media.dataset.mediaType === 'video') {
+        const video = media.querySelector('video');
+        const poster = media.querySelector('[data-video-poster]');
+        if (video) {
+          if (poster) poster.classList.add('is-hidden');
+          video.play().catch(() => {
+            if (poster) poster.classList.remove('is-hidden');
+          });
+        }
+      }
+      {% endif %}
     });
     thumbnails.forEach((thumb, i) => {
       thumb.classList.toggle('is-active', i === index);
@@ -1146,6 +1172,34 @@
     });
   });
 
+  // Video autoplay when visible (IntersectionObserver)
+  {% if section.settings.video_autoplay %}
+  const videoAutoplayObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      const video = entry.target.querySelector('video');
+      const poster = entry.target.querySelector('[data-video-poster]');
+      if (!video) return;
+
+      if (entry.isIntersecting && entry.target.classList.contains('is-active')) {
+        // Video is visible and active - autoplay
+        if (poster) poster.classList.add('is-hidden');
+        video.play().catch(() => {
+          // Autoplay failed (browser policy), show poster
+          if (poster) poster.classList.remove('is-hidden');
+        });
+      } else {
+        // Video is not visible or not active - pause
+        video.pause();
+      }
+    });
+  }, { threshold: 0.5 });
+
+  // Observe all video media items
+  section.querySelectorAll('[data-gallery-image][data-media-type="video"]').forEach(media => {
+    videoAutoplayObserver.observe(media);
+  });
+  {% endif %}
+
   // 3D Model controls
   section.querySelectorAll('[data-model-reset]').forEach(btn => {
     btn.addEventListener('click', () => {
@@ -1275,6 +1329,39 @@
     window.addEventListener('scroll', () => { if (isOpen) positionPopup(); }, { passive: true });
     window.addEventListener('resize', () => { if (isOpen) positionPopup(); }, { passive: true });
   }
+
+  // Initialize lightbox for product gallery
+  {% if section.settings.enable_lightbox %}
+  function setupLightbox() {
+    if (!window.pieces || !window.pieces.lightbox) return false;
+
+    const gallery = section.querySelector('[data-product-gallery]');
+    if (!gallery) return false;
+
+    window.pieces.lightbox.init(gallery);
+
+    // Bind zoom button clicks
+    section.querySelectorAll('[data-zoom-btn]').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        e.stopPropagation();
+        const index = parseInt(btn.dataset.zoomBtn, 10);
+        window.pieces.lightbox.open(index);
+      });
+    });
+
+    return true;
+  }
+
+  if (!setupLightbox()) {
+    // Wait for pieces to be ready
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => setTimeout(setupLightbox, 100));
+    } else {
+      setTimeout(setupLightbox, 100);
+    }
+  }
+  {% endif %}
 })();
 </script>
 
@@ -1872,6 +1959,13 @@
       ]
     },
     {
+      "type": "checkbox",
+      "id": "enable_lightbox",
+      "label": "Enable image lightbox",
+      "default": true,
+      "info": "Click product images to view in fullscreen"
+    },
+    {
       "type": "header",
       "content": "Video"
     },
@@ -1897,7 +1991,7 @@
       "id": "show_sticky_bar",
       "default": true,
       "label": "Show sticky add to cart bar",
-      "info": "Shows a bottom bar when the product form scrolls out of view"
+      "info": "Shows a bottom bar when the product form scrolls out of view. Hides when the footer is visible."
     }
   ],
   "blocks": [

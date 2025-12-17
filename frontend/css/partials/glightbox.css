@@ -1,0 +1,231 @@
+/* ==========================================================================
+   GLightbox - Product Image Lightbox Styles
+   Custom theme styling for GLightbox
+   ========================================================================== */
+
+/* Import base GLightbox styles */
+@import 'glightbox/dist/css/glightbox.min.css';
+
+/* Override GLightbox styles to match theme */
+.glightbox-container {
+  font-family: var(--font-body);
+}
+
+/* Backdrop */
+.goverlay {
+  background: rgba(0, 0, 0, 0.95) !important;
+}
+
+/* Navigation arrows */
+.gnext,
+.gprev {
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--button-radius) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  transition: all 0.3s ease !important;
+}
+
+.gnext:hover,
+.gprev:hover {
+  background: var(--color-text) !important;
+  border-color: var(--color-text) !important;
+}
+
+.gnext i,
+.gprev i,
+.gnext svg,
+.gprev svg {
+  font-size: 1.25rem !important;
+  color: var(--color-text) !important;
+  transition: color 0.3s ease !important;
+}
+
+.gnext:hover i,
+.gprev:hover i,
+.gnext:hover svg,
+.gprev:hover svg {
+  color: var(--color-background) !important;
+}
+
+.gprev {
+  left: 1.5rem !important;
+}
+
+.gnext {
+  right: 1.5rem !important;
+}
+
+/* Close button */
+.gclose {
+  width: 48px !important;
+  height: 48px !important;
+  background: var(--color-background) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: var(--button-radius) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  top: 1.5rem !important;
+  right: 1.5rem !important;
+  transition: all 0.3s ease !important;
+  opacity: 1 !important;
+}
+
+.gclose:hover {
+  background: var(--color-text) !important;
+  border-color: var(--color-text) !important;
+}
+
+.gclose i,
+.gclose svg {
+  font-size: 1.25rem !important;
+  color: var(--color-text) !important;
+  transition: color 0.3s ease !important;
+}
+
+.gclose:hover i,
+.gclose:hover svg {
+  color: var(--color-background) !important;
+}
+
+/* Hide default SVG icons */
+.gnext svg.default,
+.gprev svg.default,
+.gclose svg.default {
+  display: none !important;
+}
+
+/* Slide content */
+.gslide-media {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+}
+
+.gslide-image img {
+  max-width: 90vw !important;
+  max-height: 90vh !important;
+  object-fit: contain !important;
+  border-radius: calc(var(--card-radius) * 0.5) !important;
+}
+
+/* Video container */
+.gvideo-wrapper {
+  max-width: 90vw !important;
+  border-radius: calc(var(--card-radius) * 0.5) !important;
+  overflow: hidden !important;
+}
+
+/* Counter / slide info */
+.gslide-desc {
+  background: transparent !important;
+  padding: 1rem 0 !important;
+}
+
+.gdesc-inner {
+  padding: 0 !important;
+}
+
+.gslide-title {
+  font-family: var(--font-heading) !important;
+  font-size: 1rem !important;
+  font-weight: 600 !important;
+  color: var(--color-background) !important;
+  margin: 0 !important;
+}
+
+/* Loader */
+.gloader {
+  border: 2px solid rgba(255, 255, 255, 0.2) !important;
+  border-top-color: white !important;
+}
+
+/* Counter at bottom */
+.gcounter {
+  position: fixed !important;
+  bottom: 1.5rem !important;
+  left: 50% !important;
+  transform: translateX(-50%) !important;
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.2em !important;
+  text-transform: uppercase !important;
+  color: rgba(255, 255, 255, 0.6) !important;
+  background: rgba(0, 0, 0, 0.5) !important;
+  padding: 0.5rem 1rem !important;
+  border-radius: 100px !important;
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+  .gnext,
+  .gprev,
+  .gclose {
+    width: 40px !important;
+    height: 40px !important;
+  }
+
+  .gprev {
+    left: 1rem !important;
+  }
+
+  .gnext {
+    right: 1rem !important;
+  }
+
+  .gclose {
+    top: 1rem !important;
+    right: 1rem !important;
+  }
+
+  .gnext i,
+  .gprev i,
+  .gclose i,
+  .gnext svg,
+  .gprev svg,
+  .gclose svg {
+    font-size: 1rem !important;
+  }
+}
+
+/* Animation overrides for smoother transitions */
+.glightbox-clean .gslide-media {
+  box-shadow: none !important;
+}
+
+/* Zoom effect on open */
+.glightbox-fade-in {
+  animation: glightboxFadeIn 0.3s ease-out forwards !important;
+}
+
+.glightbox-fade-out {
+  animation: glightboxFadeOut 0.2s ease-in forwards !important;
+}
+
+@keyframes glightboxFadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes glightboxFadeOut {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+}

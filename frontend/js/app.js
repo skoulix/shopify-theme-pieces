@@ -23,6 +23,7 @@ import { tweenManager } from './managers/TweenManager.js';
 import { cartState } from './managers/CartState.js';
 import { cartDrawerManager } from './managers/CartDrawerManager.js';
 import { cartPageManager } from './managers/CartPageManager.js';
+import { productLightbox } from './managers/ProductLightboxManager.js';
 import './managers/FacetsManager.js'; // Self-registering custom element
 
 // Register GSAP plugins
@@ -345,6 +346,7 @@ function init() {
     cartState: cartState,
     cartDrawer: cartDrawerManager,
     cartPage: cartPageManager,
+    lightbox: productLightbox,
     gsap,
     ScrollTrigger,
     Flip,
