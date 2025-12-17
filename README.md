@@ -4,15 +4,15 @@ A high-performance Shopify theme with SPA-like page transitions, smooth scrollin
 
 ## Core Technologies
 
-| Library                                      | Version | Purpose                 |
-| -------------------------------------------- | ------- | ----------------------- |
-| [Swup](https://swup.js.org/)                 | 4.6.1   | SPA page transitions    |
-| [GSAP](https://gsap.com/)                    | 3.12.4  | Professional animations |
-| [Lenis](https://lenis.darkroom.engineering/) | 1.1.1   | Smooth scrolling        |
-| [PhotoSwipe](https://photoswipe.com/)        | 5.4.4   | Lightbox gallery        |
-| [Phosphor Icons](https://phosphoricons.com/) | 2.1.2   | Icon system             |
-| [Tailwind CSS](https://tailwindcss.com/)     | 3.4.0   | Utility-first styling   |
-| [Vite](https://vitejs.dev/)                  | 5.0.10  | Build tooling           |
+| Library                                      | Version | Purpose                           |
+| -------------------------------------------- | ------- | --------------------------------- |
+| [Swup](https://swup.js.org/)                 | 4.6.1   | SPA page transitions              |
+| [GSAP](https://gsap.com/)                    | 3.12.4  | Professional animations           |
+| [Lenis](https://lenis.darkroom.engineering/) | 1.1.1   | Smooth scrolling                  |
+| [GLightbox](https://biati-digital.github.io/glightbox/) | 3.3.1 | Product image/video lightbox |
+| [Phosphor Icons](https://phosphoricons.com/) | 2.1.2   | Icon system                       |
+| [Tailwind CSS](https://tailwindcss.com/)     | 3.4.0   | Utility-first styling             |
+| [Vite](https://vitejs.dev/)                  | 5.0.10  | Build tooling                     |
 
 ---
 
@@ -264,7 +264,34 @@ Toast notifications automatically:
 
 ---
 
-## Product Page Blocks
+## Product Page
+
+### Gallery Features
+
+The product gallery supports multiple media types with advanced features:
+
+| Feature | Description |
+| ------- | ----------- |
+| **Image Lightbox** | Click any image to open in full-screen lightbox with zoom |
+| **Video Support** | Native Shopify videos play inline with optional lightbox view |
+| **External Videos** | YouTube/Vimeo embeds with Plyr player integration |
+| **3D Models** | Shopify AR model viewer (not available in lightbox) |
+| **Thumbnail Positions** | Bottom, left, or right placement options |
+| **Responsive Thumbnails** | Horizontal scroll on mobile with centered alignment |
+| **Zoom Button** | Dedicated zoom icon for quick lightbox access |
+
+### Gallery Settings
+
+| Setting | Options |
+| ------- | ------- |
+| **Enable lightbox** | Toggle image/video lightbox functionality |
+| **Thumbnail position** | Bottom, Left, Right |
+| **Enable video** | Show/hide video media |
+| **Loop videos** | Continuous video playback |
+| **Autoplay when visible** | Auto-start videos when scrolled into view |
+| **Enable sticky bar** | Floating add-to-cart bar on scroll |
+
+### Product Page Blocks
 
 The product section supports the following blocks that can be reordered in the theme customizer:
 
@@ -272,7 +299,7 @@ The product section supports the following blocks that can be reordered in the t
 | ----- | ----------- |
 | **Breadcrumbs** | Navigation breadcrumb trail |
 | **Vendor** | Product vendor/brand name |
-| **Title** | Product title |
+| **Title** | Product title with optional split word lines |
 | **Price** | Price with sale/compare pricing |
 | **Inventory countdown** | Low stock warning with progress bar |
 | **Description** | Product description with truncation |
@@ -408,11 +435,16 @@ window.shouldAnimate(); // Returns boolean
 window.pieces = {
   lenis,
   swup,
-  animation,
+  tween,
   cartState,
+  cartDrawer,
+  cartPage,
+  lightbox,
   gsap,
   ScrollTrigger,
+  Flip,
   SplitText,
+  Lenis,
 };
 
 // Cart drawer controls
@@ -562,6 +594,7 @@ pieces/
 │   │       ├── buttons.css
 │   │       ├── cart.css
 │   │       ├── forms.css
+│   │       ├── glightbox.css
 │   │       ├── navigation.css
 │   │       ├── typography.css
 │   │       └── utilities.css
@@ -574,6 +607,7 @@ pieces/
 │       │   ├── CompareManager.js
 │       │   ├── FacetsManager.js
 │       │   ├── LenisManager.js
+│       │   ├── ProductLightboxManager.js
 │       │   ├── RecentlyViewedManager.js
 │       │   ├── SwupManager.js
 │       │   ├── TweenManager.js
