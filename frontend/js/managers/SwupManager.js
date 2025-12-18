@@ -15,7 +15,6 @@ gsap.registerPlugin(ScrollTrigger);
 /**
  * SwupManager - Page transition management
  * Handles SPA-like page transitions with GSAP animations
- * Supports View Transition API for enhanced native transitions
  */
 class SwupManager {
   constructor() {
@@ -24,18 +23,6 @@ class SwupManager {
     this.pageTransitionDuration = 0.6;
     this.skipAnimation = false; // Flag to skip default animations for custom transitions
     this.transitionStyle = window.themeSettings?.pageTransitionStyle || 'slide';
-    // Check for View Transition API support
-    this.supportsViewTransitions = typeof document.startViewTransition === 'function';
-  }
-
-  /**
-   * Check if View Transitions should be used
-   * @returns {boolean}
-   */
-  shouldUseViewTransitions() {
-    return this.supportsViewTransitions &&
-           window.themeSettings?.enableViewTransitions !== false &&
-           !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
   }
 
   init() {
@@ -55,11 +42,6 @@ class SwupManager {
         return true;
       }
     });
-
-    // Inject View Transition CSS if supported
-    if (this.shouldUseViewTransitions()) {
-      this.injectViewTransitionStyles();
-    }
 
     // Animation options for the JS plugin
     // Fragment visit skipping is handled via hooks.before() after swup init
