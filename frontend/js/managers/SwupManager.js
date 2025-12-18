@@ -5,6 +5,7 @@ import SwupPreloadPlugin from '@swup/preload-plugin';
 import SwupBodyClassPlugin from '@swup/body-class-plugin';
 import SwupScriptsPlugin from '@swup/scripts-plugin';
 import SwupFragmentPlugin from '@swup/fragment-plugin';
+import SwupGtmPlugin from '@swup/gtm-plugin';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { lenisManager } from './LenisManager.js';
@@ -114,6 +115,7 @@ class SwupManager {
           head: false,
           body: true,
         }),
+        new SwupGtmPlugin(),
       ],
     });
 
