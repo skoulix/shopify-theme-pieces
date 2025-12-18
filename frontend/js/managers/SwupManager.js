@@ -165,14 +165,9 @@ class SwupManager {
 
     // After new content is replaced
     this.swup.hooks.on('content:replace', (visit) => {
-      // For fragment visits, only refresh - don't kill all ScrollTriggers
+      // For fragment visits, skip heavy reinitialization
       if (visit.fragmentVisit) {
-        // Dispatch fragment-specific event for partial reinitialization
-        window.dispatchEvent(new CustomEvent('swup:fragmentReplaced', {
-          detail: { containers: visit.fragmentVisit.containers }
-        }));
-
-        // Refresh ScrollTrigger to recalculate positions
+        // Just refresh ScrollTrigger for the new content
         requestAnimationFrame(() => {
           ScrollTrigger.refresh();
         });
@@ -238,16 +233,62 @@ class SwupManager {
       const container = document.querySelector(selector);
       if (!container) return;
 
-      // Simple fade animation on the container itself
-      // Don't interfere with individual data-tween elements - they'll be handled by TweenManager refresh
-      gsap.fromTo(container,
-        { opacity: 0 },
-        {
-          opacity: 1,
-          duration: 0.3,
-          ease: 'power2.out',
-        }
-      );
+      // Find all tween elements inside the container and reset/animate them
+      // These elements have initial states set by TweenManager but won't animate
+      // since we skip full reinitialization for fragment visits
+      const tweenElements = container.querySelectorAll('[data-tween]');
+
+      if (tweenElements.length > 0) {
+        // Animate each tween element based on its type
+        tweenElements.forEach((el, index) => {
+          const tweenType = el.dataset.tweenType || 'fade-up';
+
+          // Handle different tween types
+          if (tweenType === 'clip-right') {
+            gsap.fromTo(el,
+              { clipPath: 'inset(0 100% 0 0)' },
+              {
+                clipPath: 'inset(0 0% 0 0)',
+                duration: 1.2,
+                delay: index * 0.08,
+                ease: 'expo.inOut',
+              }
+            );
+          } else if (tweenType === 'clip-up') {
+            gsap.fromTo(el,
+              { clipPath: 'inset(100% 0 0 0)' },
+              {
+                clipPath: 'inset(0% 0 0 0)',
+                duration: 1.0,
+                delay: index * 0.08,
+                ease: 'power3.out',
+              }
+            );
+          } else {
+            // Default fade-up animation
+            gsap.fromTo(el,
+              { opacity: 0, y: 20 },
+              {
+                opacity: 1,
+                y: 0,
+                duration: 0.4,
+                delay: index * 0.05,
+                ease: 'power2.out',
+              }
+            );
+          }
+        });
+      } else {
+        // No tween elements, just fade the container
+        gsap.fromTo(container,
+          { opacity: 0 },
+          {
+            opacity: 1,
+            duration: 0.3,
+            ease: 'power2.out',
+          }
+        );
+      }
     });
   }
 

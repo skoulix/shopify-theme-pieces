@@ -118,7 +118,7 @@
               <article class="group rounded-[--card-radius] overflow-hidden border-[length:var(--card-border-width)] border-solid border-[--color-border]" style="box-shadow: var(--card-shadow);" data-tween data-tween-type="fade-up">
                 <a href="{{ result.url }}" class="block">
                   {%- comment -%} Image {%- endcomment -%}
-                  <div class="search-result-image relative">
+                  <div class="search-result-image relative" data-tween data-tween-type="clip-right">
                     {% assign featured_image = result.featured_image | default: result.image %}
                     {% if featured_image %}
                       {{ featured_image | image_url: width: 600 | image_tag:
