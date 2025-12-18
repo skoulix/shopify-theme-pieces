@@ -436,10 +436,13 @@ class TweenManager {
       });
 
       // Wrap each line for overflow hidden
+      // Add padding to prevent descender letters (y, g, p, q) from being clipped
       split.lines.forEach(line => {
         const wrapper = document.createElement('div');
         wrapper.style.overflow = 'hidden';
         wrapper.style.display = 'block';
+        wrapper.style.paddingBottom = '0.25em';
+        wrapper.style.marginBottom = '-0.25em';
         line.parentNode.insertBefore(wrapper, line);
         wrapper.appendChild(line);
       });
