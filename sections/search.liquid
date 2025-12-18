@@ -25,6 +25,10 @@
   .search-grid { display: grid; grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); gap: 2rem; }
   @media (min-width: 640px) { .search-grid { grid-template-columns: repeat(2, 1fr); } }
   @media (min-width: 1024px) { .search-grid { grid-template-columns: repeat(4, 1fr); } }
+  /* Remove horizontal padding when card has no border AND no shadow */
+  {% if settings.card_border_width == 0 and settings.card_shadow == 'none' %}
+  .search-result-content { padding-left: 0; padding-right: 0; }
+  {% endif %}
 </style>
 
 <div class="min-h-screen py-[--page-vertical-padding]" data-search-wrapper>
@@ -152,7 +156,7 @@
                   </div>
 
                   {%- comment -%} Content {%- endcomment -%}
-                  <div class="p-4 bg-[--color-background]">
+                  <div class="search-result-content p-4 bg-[--color-background]">
                     <h3 class="card-title text-[--color-text] font-heading group-hover:text-[--color-primary] transition-colors">
                       {{ result.title }}
                     </h3>
