@@ -23,9 +23,9 @@
   .predictive-search__skeleton {
     background: linear-gradient(
       90deg,
-      var(--color-background-secondary) 25%,
-      var(--color-border) 50%,
-      var(--color-background-secondary) 75%
+      color-mix(in srgb, var(--color-text) 8%, transparent) 25%,
+      color-mix(in srgb, var(--color-text) 15%, transparent) 50%,
+      color-mix(in srgb, var(--color-text) 8%, transparent) 75%
     );
     background-size: 200% 100%;
     animation: skeleton-shimmer 1.5s ease-in-out infinite;
@@ -114,6 +114,9 @@
       background: var(--color-background-secondary);
       border-radius: 0.25rem;
       overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .predictive-search__product-image img {
@@ -175,6 +178,9 @@
       border-radius: 0.375rem;
       overflow: hidden;
       background: var(--color-background-secondary);
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .predictive-search__products-grid .predictive-search__product-image img {
@@ -460,7 +466,7 @@ class PredictiveSearch extends HTMLElement {
             return `
               <a href="${url}" class="predictive-search__product-card" role="option">
                 <div class="predictive-search__product-image">
-                  ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" loading="lazy" decoding="async">` : ''}
+                  ${imageUrl ? `<img src="${imageUrl}" alt="${product.title}" loading="lazy" decoding="async">` : '<i class="ph ph-image text-xl text-[--color-text-secondary] opacity-40"></i>'}
                 </div>
                 <div class="predictive-search__product-info">
                   <p class="predictive-search__product-title">${product.title}</p>
@@ -516,7 +522,7 @@ class PredictiveSearch extends HTMLElement {
                   <div class="predictive-search__product-image">
                     ${product.image ? `
                       <img src="${product.image}" alt="${product.title}" loading="lazy" decoding="async">
-                    ` : ''}
+                    ` : '<i class="ph ph-image text-xl text-[--color-text-secondary] opacity-40"></i>'}
                   </div>
                   <div class="predictive-search__product-info">
                     <p class="predictive-search__product-title">${product.title}</p>
