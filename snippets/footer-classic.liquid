@@ -83,7 +83,7 @@
           {%- if block.settings.logo != blank -%}
             {{ block.settings.logo | image_url: width: 300 | image_tag: class: 'footer-classic__logo', loading: 'lazy', decoding: 'async' }}
           {%- else -%}
-            <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
+            <span class="footer-brand block mb-4">{{ shop.name }}</span>
           {%- endif -%}
 
           {%- if block.settings.description != blank -%}

@@ -174,7 +174,7 @@
               {% render 'free-shipping-progress' %}
             </div>
 
-            <h2 class="text-xl font-semibold text-[--color-text] font-heading">{{ 'cart.summary' | t }}</h2>
+            <h2 class="card-title">{{ 'cart.summary' | t }}</h2>
 
             <dl class="mt-6 space-y-4">
               <div class="flex items-center justify-between">
@@ -273,7 +273,7 @@
     </div>
   {% else %}
     <div class="{{ container_class }}" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
-      <h2 class="text-2xl md:text-3xl font-semibold text-[--color-text] font-heading">{{ 'cart.empty' | t }}</h2>
+      <h2 class="section-title">{{ 'cart.empty' | t }}</h2>
       <p class="mt-4 text-[--color-text-secondary] max-w-sm">{{ 'cart.empty_description' | t }}</p>
 
       <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none">

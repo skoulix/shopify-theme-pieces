@@ -286,6 +286,43 @@
 }
 
 /* ==========================================================================
+   Drawer Title - Slide-out drawer headings
+   Used in: cart-drawer, search-drawer, facets drawer
+   ========================================================================== */
+
+.drawer-title {
+  font-family: var(--font-heading);
+  font-size: 1.125rem; /* 18px - text-lg */
+  font-weight: 600;
+  letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
+  line-height: 1.2;
+}
+
+/* ==========================================================================
+   Popup Title - Modal/popup headings
+   Used in: newsletter-popup, quick-view, age-gate
+   ========================================================================== */
+
+.popup-title {
+  font-family: var(--font-heading);
+  font-size: 1.5rem; /* 24px - text-2xl */
+  font-weight: 600;
+  letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+  line-height: 1.15;
+}
+
+/* ==========================================================================
+   Footer Brand - Shop name in footer when no logo
+   ========================================================================== */
+
+.footer-brand {
+  font-family: var(--font-heading);
+  font-size: 1.25rem; /* 20px - text-xl */
+  font-weight: 700;
+  letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
+}
+
+/* ==========================================================================
    Badge - Sale tags, labels, status indicators
    ========================================================================== */
 

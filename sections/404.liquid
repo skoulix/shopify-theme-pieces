@@ -22,7 +22,7 @@
   <div class="{{ container_class }} py-[--page-vertical-padding] w-full relative z-10">
     <div class="max-w-4xl mx-auto text-center" data-tween-group="error-content" data-tween-start="top bottom">
       {%- comment -%} Content {%- endcomment -%}
-      <h1 class="text-3xl md:text-4xl font-semibold text-[--color-text] font-heading" data-tween data-tween-type="split-text">
+      <h1 class="section-title" data-tween data-tween-type="split-text">
         {{ '404.title' | t }}
       </h1>
       <p class="mt-4 text-lg text-[--color-text-secondary] max-w-md mx-auto" data-tween data-tween-type="fade-up">
@@ -31,11 +31,11 @@
 
       {%- comment -%} Actions {%- endcomment -%}
       <div class="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4 w-full max-w-xs sm:max-w-none mx-auto" data-tween data-tween-type="fade-up">
-        <a href="{{ routes.root_url }}" class="btn btn--primary w-full sm:w-auto">
+        <a href="{{ routes.root_url }}" class="btn btn--primary btn--lg w-full sm:w-auto">
           <i class="ph ph-house"></i>
           <span>{{ '404.back_home' | t }}</span>
         </a>
-        <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary w-full sm:w-auto">
+        <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary btn--lg w-full sm:w-auto">
           <i class="ph ph-storefront"></i>
           <span>{{ '404.browse_products' | t }}</span>
         </a>

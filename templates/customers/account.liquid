@@ -117,7 +117,7 @@
 
       {%- comment -%} Account Details Card {%- endcomment -%}
       <div class="customer-account-card mt-8">
-        <h3 class="font-semibold mb-4 text-base font-heading">{{ 'customers.account.details' | t }}</h3>
+        <h3 class="card-title mb-4">{{ 'customers.account.details' | t }}</h3>
         <p class="text-sm text-[--color-text-secondary]">{{ customer.email }}</p>
         {% if customer.default_address %}
           <div class="mt-4 pt-4 border-t border-[--color-border] text-sm text-[--color-text-secondary]">
@@ -130,7 +130,7 @@
 
     {%- comment -%} Order History {%- endcomment -%}
     <main class="lg:col-span-2">
-      <h2 class="text-xl font-semibold font-heading mb-6">{{ 'customers.orders.title' | t }}</h2>
+      <h2 class="drawer-title text-xl mb-6">{{ 'customers.orders.title' | t }}</h2>
 
       {% paginate customer.orders by 10 %}
         {% if customer.orders.size > 0 %}

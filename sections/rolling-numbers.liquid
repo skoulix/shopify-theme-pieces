@@ -142,7 +142,7 @@
     {% if section.settings.title != blank or section.settings.subtitle != blank %}
       <header class="rolling-numbers-header-{{ section.id }}" data-tween-group="rolling-numbers-header-{{ section.id }}">
         {% if section.settings.title != blank %}
-          <h2 class="section-title font-heading" data-tween data-tween-type="split-text">{{ section.settings.title }}</h2>
+          <h2 class="section-title" data-tween data-tween-type="split-text">{{ section.settings.title }}</h2>
         {% endif %}
         {% if section.settings.subtitle != blank %}
           <p class="section-description mt-4" data-tween data-tween-type="fade-up">{{ section.settings.subtitle }}</p>

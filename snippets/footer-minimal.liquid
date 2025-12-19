@@ -19,7 +19,7 @@
           {%- if block.settings.logo != blank -%}
             {{ block.settings.logo | image_url: width: 300 | image_tag: class: 'inline-block max-h-10 w-auto mb-4', loading: 'lazy', decoding: 'async' }}
           {%- else -%}
-            <span class="text-xl font-bold font-heading block mb-4">{{ shop.name }}</span>
+            <span class="footer-brand block mb-4">{{ shop.name }}</span>
           {%- endif -%}
           {%- if block.settings.description != blank -%}
             <p class="text-sm max-w-md mx-auto">{{ block.settings.description }}</p>

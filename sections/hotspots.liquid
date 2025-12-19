@@ -216,7 +216,7 @@
           <span class="section-label" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
         {% endif %}
         {% if section.settings.title != blank %}
-          <h2 class="section-title font-heading" data-tween data-tween-type="split-text">
+          <h2 class="section-title" data-tween data-tween-type="split-text">
             {{ section.settings.title }}
           </h2>
         {% endif %}
@@ -348,7 +348,7 @@
 
               <div class="p-6 pr-14">
                 {% if block.settings.title != blank %}
-                  <h3 id="popover-title-{{ block.id }}" class="font-semibold text-lg md:text-base mb-3 leading-tight font-heading" style="color: {{ title_color }};">
+                  <h3 id="popover-title-{{ block.id }}" class="popup-title text-base mb-3" style="color: {{ title_color }};">
                     {{ block.settings.title }}
                   </h3>
                 {% endif %}
