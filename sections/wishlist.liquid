@@ -17,9 +17,12 @@
     min-height: 60vh;
   }
   .wishlist-section-{{ section.id }} .wishlist-title {
+    font-family: var(--font-heading);
     font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1));
+    font-weight: 700;
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     line-height: 0.9;
+    text-wrap: balance;
   }
   @media (min-width: 1024px) {
     .wishlist-section-{{ section.id }} .wishlist-title {
@@ -112,7 +115,7 @@
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="wishlist-title font-bold font-heading" data-tween data-tween-type="split-text">
+        <h2 class="wishlist-title" data-tween data-tween-type="split-text">
           {{ section.settings.title }}
         </h2>
       {% endif %}
