@@ -158,6 +158,51 @@
     --duration-slow: 500ms;
     --duration-slower: 800ms;
 
+    /* Easing Functions */
+    --ease-out: cubic-bezier(0.4, 0, 0.2, 1);
+    --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-in-out: cubic-bezier(0.4, 0, 0.6, 1);
+
+    /* Transitions - Commonly used combinations */
+    --transition-fast: 0.15s ease;
+    --transition-base: 0.3s ease;
+    --transition-slow: 0.5s var(--ease-out);
+
+    /* Typography Scale */
+    --text-xs: 0.75rem;      /* 12px */
+    --text-sm: 0.875rem;     /* 14px */
+    --text-base: 1rem;       /* 16px */
+    --text-lg: 1.125rem;     /* 18px */
+    --text-xl: 1.25rem;      /* 20px */
+
+    /* Line Heights */
+    --leading-none: 1;
+    --leading-tight: 0.95;
+    --leading-snug: 1.1;
+    --leading-normal: 1.3;
+    --leading-relaxed: 1.5;
+    --leading-loose: 1.7;
+
+    /* Letter Spacing */
+    --tracking-tighter: -0.04em;
+    --tracking-tight: -0.02em;
+    --tracking-normal: 0;
+    --tracking-wide: 0.05em;
+    --tracking-wider: 0.1em;
+    --tracking-widest: 0.15em;
+    --tracking-ultra: 0.2em;
+
+    /* Opacity Scale */
+    --opacity-muted: 0.7;
+    --opacity-secondary: 0.6;
+    --opacity-disabled: 0.5;
+    --opacity-subtle: 0.3;
+
+    /* Max Widths - Text containers */
+    --max-w-prose: 65ch;
+    --max-w-prose-narrow: 45ch;
+    --max-w-prose-wide: 80ch;
+
     /* Z-Index Layers */
     --z-dropdown: 50;
     --z-sticky: 60;
@@ -336,6 +381,24 @@
   /* Border utilities */
   .border-theme {
     border-color: var(--color-border);
+  }
+
+  /* ==========================================================================
+     Focus Ring - Accessible focus indicator
+     Usage: Add .focus-ring to interactive elements
+     ========================================================================== */
+  .focus-ring:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .focus-ring:focus:not(:focus-visible) {
+    outline: none;
+  }
+
+  .focus-ring:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   /* Responsive page and section vertical padding */
