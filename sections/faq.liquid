@@ -114,7 +114,7 @@
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
       <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="faq-header-{{ section.id }}">
         {% if section.settings.label != blank %}
-          <span class="section-label mb-4" data-tween data-tween-type="fade-up">
+          <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
           </span>
         {% endif %}
@@ -126,7 +126,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
+          <p class="section-description max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}

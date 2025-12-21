@@ -28,13 +28,8 @@
     {% endif %}
   }
 
-  /* Label, title, description use global .section-* classes from utilities.css */
-  .text-section-content-{{ section.id }} .section-label {
-    margin-bottom: 1.5rem;
-  }
-
+  /* Label, title, description use global .section-* classes from typography.css */
   .text-section-content-{{ section.id }} .section-description {
-    margin-top: 1.5rem;
     {% if section.settings.content_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;

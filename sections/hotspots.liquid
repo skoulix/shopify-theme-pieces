@@ -25,11 +25,7 @@
     text-align: {{ section.settings.header_alignment }};
   }
 
-  /* Label, title, description use global .section-* classes from utilities.css */
-  .hotspots-header-{{ section.id }} .section-label {
-    margin-bottom: 1.5rem;
-  }
-
+  /* Label, title, description use global .section-* classes from typography.css */
   .hotspots-header-{{ section.id }} .section-description {
     {% if section.settings.header_alignment == 'center' %}
     margin-left: auto;

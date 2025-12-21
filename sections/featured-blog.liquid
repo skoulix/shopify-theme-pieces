@@ -35,12 +35,8 @@
     flex: 1;
   }
 
-  .fb-header-{{ section.id }} .section-label {
-    margin-bottom: 1.5rem;
-  }
-
+  /* Label, title, description use global .section-* classes from typography.css */
   .fb-header-{{ section.id }} .section-description {
-    margin-top: 1.5rem;
     {% if section.settings.header_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;

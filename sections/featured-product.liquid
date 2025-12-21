@@ -175,11 +175,11 @@
       {%- comment -%} Content {%- endcomment -%}
       <div class="max-w-xl lg:mx-auto {{ content_class }}" data-tween-group="fp-content-{{ section.id }}">
         {% if section.settings.show_vendor and product.vendor != blank %}
-          <span class="section-label mb-4" data-tween data-tween-type="fade-up">{{ product.vendor }}</span>
+          <span class="section-label" data-tween data-tween-type="fade-up">{{ product.vendor }}</span>
         {% endif %}
 
         <a href="{{ product.url }}" class="block hover:opacity-70 transition-opacity">
-          <h2 class="section-title mb-4" data-tween data-tween-type="fade-up">
+          <h2 class="section-title" data-tween data-tween-type="fade-up">
             {{ product.title }}
           </h2>
         </a>
@@ -604,10 +604,10 @@
       </div>
 
       <div class="max-w-xl lg:mx-auto {{ content_class }}" data-tween-group="fp-content-{{ section.id }}">
-        <span class="section-label mb-4" data-tween data-tween-type="fade-up">{{ 'onboarding.product_vendor' | t }}</span>
-        <h2 class="section-title mb-4" data-tween data-tween-type="fade-up">{{ 'onboarding.product_title' | t }}</h2>
+        <span class="section-label" data-tween data-tween-type="fade-up">{{ 'onboarding.product_vendor' | t }}</span>
+        <h2 class="section-title" data-tween data-tween-type="fade-up">{{ 'onboarding.product_title' | t }}</h2>
         <div class="text-xl md:text-2xl lg:text-[clamp(1.25rem,3vw,1.75rem)] font-light mb-6" data-tween data-tween-type="fade-up">{{ 9999 | money }}</div>
-        <div class="section-description mb-8" data-tween data-tween-type="fade-up">{{ 'onboarding.product_description' | t }}</div>
+        <div class="section-description" data-tween data-tween-type="fade-up">{{ 'onboarding.product_description' | t }}</div>
         <button type="button" class="inline-flex items-center justify-center gap-2 w-full py-4 px-8 text-sm font-semibold uppercase tracking-[0.15em] text-[--color-primary-contrast] bg-[--color-primary] border-none cursor-pointer transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed" disabled data-tween data-tween-type="fade-up">
           {{ 'products.product.add_to_cart' | t }}
         </button>

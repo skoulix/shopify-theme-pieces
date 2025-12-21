@@ -41,7 +41,7 @@
 .section-title--hero {
   font-size: calc(clamp(2.5rem, 10vw, 5rem) * var(--heading-font-scale, 1));
   letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-  line-height: 0.9;
+  line-height: 0.95;
 }
 
 /* Hero title - primary hero headline */
@@ -50,7 +50,7 @@
   font-size: calc(clamp(2.5rem, 10vw, 5rem) * var(--heading-font-scale, 1));
   font-weight: 700;
   letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-  line-height: 0.9;
+  line-height: 0.95;
   text-wrap: balance;
 }
 
@@ -103,27 +103,34 @@
 
 /* ==========================================================================
    Section Header Spacing - Consistent vertical rhythm
-   Usage: Wrap label, title, description in a container with these classes
+   Usage: Wrap label, title, description, cta in a container with these classes
+
+   Example:
+   <div class="section-header">
+     <span class="section-label">Label</span>
+     <h2 class="section-title">Title</h2>
+     <p class="section-description">Description</p>
+     <a class="section-cta btn btn--primary">Button</a>
+   </div>
    ========================================================================== */
 
 .section-header {
   margin-bottom: clamp(2rem, 5vh, 4rem);
 }
 
-.section-header .section-label {
-  margin-bottom: 1rem;
-}
-
+/* Reset spacing for elements inside .section-header since base classes now include spacing */
 .section-header .section-title {
   margin-bottom: 0;
 }
 
-.section-header .section-description {
-  margin-top: 1.25rem;
+.section-header .section-cta,
+.section-header .btn {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 /* ==========================================================================
    Section Label - Small uppercase eyebrow text
+   Includes default spacing (margin-bottom) for consistent rhythm
    ========================================================================== */
 
 .section-label {
@@ -132,10 +139,12 @@
   font-weight: 500;
   letter-spacing: 0.15em;
   opacity: 0.6;
+  margin-bottom: clamp(1rem, 2vw, 1.5rem);
 }
 
 /* ==========================================================================
    Section Description - Paragraph text below title
+   Includes default spacing (margin-top) for consistent rhythm
    ========================================================================== */
 
 .section-description {
@@ -143,6 +152,7 @@
   line-height: 1.7;
   opacity: 0.7;
   max-width: 42rem;
+  margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
 }
 
 /* Centered variant */
@@ -150,6 +160,15 @@
   margin-left: auto;
   margin-right: auto;
   text-align: center;
+}
+
+/* ==========================================================================
+   Section CTA - Button/link after description
+   Includes default spacing (margin-top) for consistent rhythm
+   ========================================================================== */
+
+.section-cta {
+  margin-top: clamp(1.5rem, 3vw, 2.5rem);
 }
 
 /* ==========================================================================
@@ -369,4 +388,21 @@
   .text-pretty {
     text-wrap: pretty;
   }
+}
+
+/* ==========================================================================
+   Spacing Utilities - Override utilities for special cases
+   NOTE: .section-label, .section-description, .section-cta now have
+   built-in spacing. Use these only when you need to override defaults.
+   ========================================================================== */
+
+/* Remove default spacing when needed */
+.spacing-none {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+/* Spacing for section content below header */
+.spacing-content {
+  margin-top: clamp(2rem, 5vh, 4rem);
 }

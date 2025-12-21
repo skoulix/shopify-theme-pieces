@@ -50,24 +50,24 @@
 
     <div class="max-w-2xl lg:mx-auto {{ content_class }}" data-tween-group="iwt-content-{{ section.id }}">
       {% if section.settings.label != blank %}
-        <span class="section-label mb-6" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
+        <span class="section-label" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="section-title mb-6" data-tween data-tween-type="split-text">
+        <h2 class="section-title" data-tween data-tween-type="split-text">
           {{ section.settings.title }}
         </h2>
       {% endif %}
 
       {% if section.settings.text != blank %}
-        <div class="section-description mb-8" data-tween data-tween-type="fade-up">
+        <div class="section-description" data-tween data-tween-type="fade-up">
           {{ section.settings.text }}
         </div>
       {% endif %}
 
       {% if section.settings.button_text != blank and section.settings.button_link != blank %}
         {% if section.settings.button_type == 'link' %}
-          <a href="{{ section.settings.button_link }}" class="iwt-cta section-link inline-flex items-center gap-3 text-sm font-semibold tracking-[0.1em]" data-tween data-tween-type="fade-up">
+          <a href="{{ section.settings.button_link }}" class="iwt-cta section-cta section-link inline-flex items-center gap-3 text-sm font-semibold tracking-[0.1em]" data-tween data-tween-type="fade-up">
             <span class="iwt-cta-text-wrapper">
               <span class="iwt-cta-text" data-hover="{{ section.settings.button_text }}">{{ section.settings.button_text }}</span>
             </span>
@@ -89,7 +89,7 @@
               endif
             endif
           -%}
-          <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}" data-tween data-tween-type="fade-up">
+          <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} section-cta" data-tween data-tween-type="fade-up">
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>
           </a>

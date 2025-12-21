@@ -180,7 +180,7 @@
     {%- comment -%} Header {%- endcomment -%}
     <div class="mb-12 lg:mb-16 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="compare-header-{{ section.id }}">
       {% if section.settings.label != blank %}
-        <span class="section-label mb-4" data-tween data-tween-type="fade-up">
+        <span class="section-label" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
         </span>
       {% endif %}

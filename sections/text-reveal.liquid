@@ -18,17 +18,11 @@
     text-align: {{ section.settings.header_alignment }};
   }
 
-  .text-reveal-label-{{ section.id }} {
-    display: inline-block;
-    opacity: 0.5;
-    margin-bottom: 1.5rem;
-  }
-
   .text-reveal-heading-{{ section.id }} {
     font-size: calc(clamp(2rem, 8vw, 6rem) * var(--heading-font-scale, 1));
     font-weight: 700;
     letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 1.1;
+    line-height: 0.95;
   }
 
   @media (min-width: 1024px) {
@@ -68,11 +62,7 @@
   }
 
   .text-reveal-subtext-{{ section.id }} {
-    margin-top: 3rem;
     max-width: 50ch;
-    font-size: clamp(0.875rem, 1.5vw, 1.125rem);
-    line-height: 1.8;
-    opacity: 0.7;
     {% if section.settings.header_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;
@@ -82,7 +72,6 @@
   }
 
   .text-reveal-cta-{{ section.id }} {
-    margin-top: 3rem;
     display: inline-flex;
     align-items: center;
     gap: 0.75rem;
@@ -162,7 +151,7 @@
 
   <div class="{{ container_class }} relative z-10">
     {% if section.settings.label != blank %}
-      <p class="text-reveal-label-{{ section.id }} text-label" data-text-reveal-label>
+      <p class="section-label" data-text-reveal-label>
         {{ section.settings.label }}
       </p>
     {% endif %}
@@ -190,14 +179,14 @@
     </h2>
 
     {% if section.settings.subtext != blank %}
-      <p class="text-reveal-subtext-{{ section.id }}" data-text-reveal-subtext>
+      <p class="text-reveal-subtext-{{ section.id }} section-description" data-text-reveal-subtext>
         {{ section.settings.subtext }}
       </p>
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
       {% if section.settings.button_type == 'link' %}
-        <a href="{{ section.settings.button_link }}" class="text-reveal-cta-{{ section.id }} text-link-sm" data-text-reveal-cta>
+        <a href="{{ section.settings.button_link }}" class="text-reveal-cta-{{ section.id }} text-link-sm section-cta" data-text-reveal-cta>
           <span class="text-reveal-cta-text-wrapper-{{ section.id }}">
             <span class="text-reveal-cta-text-{{ section.id }}" data-hover="{{ section.settings.button_text }}">{{ section.settings.button_text }}</span>
           </span>
@@ -219,7 +208,7 @@
             endif
           endif
         -%}
-        <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} mt-8" data-text-reveal-cta>
+        <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} section-cta" data-text-reveal-cta>
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>

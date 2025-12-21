@@ -296,7 +296,7 @@
       {% if section.settings.title != blank or section.settings.description != blank or section.settings.button_text != blank %}
         <div class="video-content-{{ section.id }}" data-tween-group="video-content-{{ section.id }}">
           {% if section.settings.label != blank %}
-            <span class="section-label mb-4" data-tween data-tween-type="fade-up">
+            <span class="section-label" data-tween data-tween-type="fade-up">
               {{ section.settings.label }}
             </span>
           {% endif %}

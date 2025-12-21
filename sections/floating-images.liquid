@@ -24,10 +24,7 @@
     }
   }
 
-  /* Label, title, description use global .section-* classes from utilities.css */
-  .floating-images-{{ section.id }} .section-label {
-    margin-bottom: 1.5rem;
-  }
+  /* Label, title, description use global .section-* classes from typography.css */
 
   /* Button styling - secondary buttons use text/background for visibility */
   .floating-images-{{ section.id }} .btn--secondary {
@@ -145,7 +142,7 @@
       {% endif %}
 
       {% if section.settings.title != blank %}
-        <h2 class="section-title mb-6" data-tween data-tween-type="split-text">
+        <h2 class="section-title" data-tween data-tween-type="split-text">
           {{ section.settings.title }}
         </h2>
       {% endif %}

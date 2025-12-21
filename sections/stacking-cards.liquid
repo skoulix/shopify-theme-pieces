@@ -61,11 +61,7 @@
     text-align: {{ section.settings.header_alignment }};
   }
 
-  /* Label, title, description use global .section-* classes from utilities.css */
-  .stacking-cards-header-{{ section.id }} .section-label {
-    margin-bottom: 1.5rem;
-  }
-
+  /* Label, title, description use global .section-* classes from typography.css */
   .stacking-cards-header-{{ section.id }} .section-description {
     max-width: 50ch;
     {% if section.settings.header_alignment == 'center' %}
