@@ -411,10 +411,37 @@
                     {% endif %}
                     <div class="dropdown-links">
                       {% for child in link.links %}
-                        <a href="{{ child.url }}" class="dropdown-link" data-dropdown-item style="--item-index: {{ forloop.index0 }}">
-                          <span class="dropdown-link__text">{{ child.title }}</span>
-                          <span class="dropdown-link__line"></span>
-                        </a>
+                        {% if child.links.size > 0 %}
+                          {%- comment -%} Child with grandchildren - show flyout submenu {%- endcomment -%}
+                          <div class="dropdown-link-wrapper" data-dropdown-nested>
+                            <button type="button" class="dropdown-link dropdown-link--parent" data-dropdown-nested-trigger style="--item-index: {{ forloop.index0 }}">
+                              <span class="dropdown-link__text">{{ child.title }}</span>
+                              <i class="ph ph-caret-right dropdown-link__arrow"></i>
+                            </button>
+                            <div class="dropdown-submenu" data-dropdown-submenu>
+                              <div class="dropdown-submenu__inner">
+                                {% if child.url != '#' and child.url != '' %}
+                                  <a href="{{ child.url }}" class="dropdown-submenu__header">
+                                    <span class="dropdown-submenu__title">{{ child.title }}</span>
+                                    <i class="ph ph-arrow-right"></i>
+                                  </a>
+                                {% endif %}
+                                <div class="dropdown-submenu__links">
+                                  {% for grandchild in child.links %}
+                                    <a href="{{ grandchild.url }}" class="dropdown-submenu__link" style="--subitem-index: {{ forloop.index0 }}">
+                                      {{ grandchild.title }}
+                                    </a>
+                                  {% endfor %}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        {% else %}
+                          <a href="{{ child.url }}" class="dropdown-link" data-dropdown-item style="--item-index: {{ forloop.index0 }}">
+                            <span class="dropdown-link__text">{{ child.title }}</span>
+                            <span class="dropdown-link__line"></span>
+                          </a>
+                        {% endif %}
                       {% endfor %}
                     </div>
                   </div>
@@ -583,10 +610,37 @@
                   {% endif %}
                   <div class="dropdown-links">
                     {% for child in link.links %}
-                      <a href="{{ child.url }}" class="dropdown-link" data-dropdown-item style="--item-index: {{ forloop.index0 }}">
-                        <span class="dropdown-link__text">{{ child.title }}</span>
-                        <span class="dropdown-link__line"></span>
-                      </a>
+                      {% if child.links.size > 0 %}
+                        {%- comment -%} Child with grandchildren - show flyout submenu {%- endcomment -%}
+                        <div class="dropdown-link-wrapper" data-dropdown-nested>
+                          <button type="button" class="dropdown-link dropdown-link--parent" data-dropdown-nested-trigger style="--item-index: {{ forloop.index0 }}">
+                            <span class="dropdown-link__text">{{ child.title }}</span>
+                            <i class="ph ph-caret-right dropdown-link__arrow"></i>
+                          </button>
+                          <div class="dropdown-submenu" data-dropdown-submenu>
+                            <div class="dropdown-submenu__inner">
+                              {% if child.url != '#' and child.url != '' %}
+                                <a href="{{ child.url }}" class="dropdown-submenu__header">
+                                  <span class="dropdown-submenu__title">{{ child.title }}</span>
+                                  <i class="ph ph-arrow-right"></i>
+                                </a>
+                              {% endif %}
+                              <div class="dropdown-submenu__links">
+                                {% for grandchild in child.links %}
+                                  <a href="{{ grandchild.url }}" class="dropdown-submenu__link" style="--subitem-index: {{ forloop.index0 }}">
+                                    {{ grandchild.title }}
+                                  </a>
+                                {% endfor %}
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      {% else %}
+                        <a href="{{ child.url }}" class="dropdown-link" data-dropdown-item style="--item-index: {{ forloop.index0 }}">
+                          <span class="dropdown-link__text">{{ child.title }}</span>
+                          <span class="dropdown-link__line"></span>
+                        </a>
+                      {% endif %}
                     {% endfor %}
                   </div>
                 </div>
@@ -1303,6 +1357,48 @@
     if (activeDropdown && !activeDropdown.contains(e.target)) {
       closeDropdown(activeDropdown);
     }
+  });
+
+  /**
+   * Nested Dropdown Submenu - Keyboard Navigation
+   * Supports 2-level nested menus with flyout submenus
+   */
+  const nestedTriggers = document.querySelectorAll('[data-dropdown-nested-trigger]');
+
+  nestedTriggers.forEach(trigger => {
+    const wrapper = trigger.closest('[data-dropdown-nested]');
+    const submenu = wrapper.querySelector('[data-dropdown-submenu]');
+
+    // Keyboard support - open on Enter/Space/ArrowRight
+    trigger.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowRight') {
+        e.preventDefault();
+        wrapper.classList.add('is-open');
+        // Focus first link in submenu
+        const firstLink = submenu.querySelector('a');
+        if (firstLink) firstLink.focus();
+      }
+    });
+
+    // Close on ArrowLeft or Escape from within submenu
+    submenu.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowLeft' || e.key === 'Escape') {
+        e.preventDefault();
+        e.stopPropagation();
+        wrapper.classList.remove('is-open');
+        trigger.focus();
+      }
+    });
+
+    // Handle focus leaving the submenu
+    wrapper.addEventListener('focusout', (e) => {
+      // Check if focus moved outside the wrapper
+      setTimeout(() => {
+        if (!wrapper.contains(document.activeElement)) {
+          wrapper.classList.remove('is-open');
+        }
+      }, 0);
+    });
   });
 
   /**

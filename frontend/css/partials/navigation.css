@@ -185,13 +185,15 @@
   border-radius: calc(var(--card-radius, 8) * 1px);
   box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.15);
   padding: 1.5rem;
-  overflow: hidden;
-  clip-path: inset(0 0 100% 0);
-  transition: clip-path 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  opacity: 0;
+  transform: translateY(-8px);
+  transition: opacity 0.3s ease, transform 0.3s ease;
+  /* Note: no overflow:hidden to allow nested flyout submenus */
 }
 
 .dropdown-wrapper.is-open .dropdown-panel__inner {
-  clip-path: inset(0 0 0% 0);
+  opacity: 1;
+  transform: translateY(0);
 }
 
 /* Featured "View all" link */
@@ -303,6 +305,139 @@
   transform-origin: left;
 }
 
+/* ==========================================================================
+   Nested Dropdown Submenu - Flyout for grandchildren (2-level nesting)
+   ========================================================================== */
+
+.dropdown-link-wrapper {
+  position: relative;
+}
+
+/* Parent link with arrow indicator */
+.dropdown-link--parent {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.dropdown-link__arrow {
+  font-size: 0.75rem;
+  opacity: 0.5;
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.dropdown-link-wrapper:hover .dropdown-link__arrow,
+.dropdown-link-wrapper.is-open .dropdown-link__arrow {
+  opacity: 1;
+  transform: translateX(2px);
+}
+
+/* Flyout submenu panel */
+.dropdown-submenu {
+  position: absolute;
+  top: -0.5rem;
+  left: 100%;
+  padding-left: 0.5rem;
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity var(--transition-fast), visibility var(--transition-fast);
+  z-index: 60;
+}
+
+.dropdown-link-wrapper:hover .dropdown-submenu,
+.dropdown-link-wrapper.is-open .dropdown-submenu {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Inner panel with background and border */
+.dropdown-submenu__inner {
+  background: var(--color-background);
+  border: 1px solid var(--color-border);
+  border-radius: calc(var(--card-radius, 8) * 1px);
+  box-shadow: 0 10px 40px -10px rgba(0, 0, 0, 0.15);
+  padding: 1rem;
+  transform: translateX(-8px);
+  transition: transform var(--transition-fast);
+}
+
+.dropdown-link-wrapper:hover .dropdown-submenu__inner,
+.dropdown-link-wrapper.is-open .dropdown-submenu__inner {
+  transform: translateX(0);
+}
+
+/* Submenu header - "View all" style link */
+.dropdown-submenu__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.625rem 0.75rem;
+  margin: -0.25rem -0.25rem 0.5rem;
+  background: var(--color-background-secondary, #f5f5f5);
+  border-radius: calc(var(--card-radius, 8) * 0.5px);
+  text-decoration: none;
+  color: var(--color-text);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  transition: background-color var(--transition-fast);
+}
+
+.dropdown-submenu__header:hover {
+  background: var(--color-border);
+}
+
+.dropdown-submenu__header i {
+  font-size: 0.875rem;
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast);
+}
+
+.dropdown-submenu__header:hover i {
+  opacity: 1;
+  transform: translateX(0);
+}
+
+/* Submenu links container */
+.dropdown-submenu__links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+}
+
+/* Individual submenu link */
+.dropdown-submenu__link {
+  display: block;
+  padding: 0.375rem 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text);
+  text-decoration: none;
+  opacity: 0;
+  transform: translateX(-6px);
+  transition: opacity var(--transition-fast), transform var(--transition-fast), color 0.2s ease;
+}
+
+.dropdown-link-wrapper:hover .dropdown-submenu__link,
+.dropdown-link-wrapper.is-open .dropdown-submenu__link {
+  opacity: 1;
+  transform: translateX(0);
+  transition-delay: calc(0.05s + (var(--subitem-index, 0) * 0.03s));
+}
+
+.dropdown-submenu__link:hover {
+  color: var(--color-primary);
+}
+
 /* Transparent header dropdown overrides */
 .header-group.is-transparent:not(.is-scrolled) .dropdown-panel__inner {
   background: var(--color-background);
@@ -311,5 +446,15 @@
 
 .header-group.is-transparent:not(.is-scrolled) .dropdown-link,
 .header-group.is-transparent:not(.is-scrolled) .dropdown-featured {
+  color: var(--color-text);
+}
+
+.header-group.is-transparent:not(.is-scrolled) .dropdown-submenu__inner {
+  background: var(--color-background);
+  color: var(--color-text);
+}
+
+.header-group.is-transparent:not(.is-scrolled) .dropdown-submenu__link,
+.header-group.is-transparent:not(.is-scrolled) .dropdown-submenu__header {
   color: var(--color-text);
 }
