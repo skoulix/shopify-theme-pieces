@@ -48,11 +48,12 @@
   .btn::before {
     content: '';
     position: absolute;
-    inset: 0;
+    inset: var(--button-border-width, 1px);
     transform: scaleX(0);
     transform-origin: right;
     transition: transform var(--transition-slow);
     z-index: 0;
+    border-radius: calc(var(--button-radius) - var(--button-border-width, 1px));
   }
 
   .btn:hover::before {
