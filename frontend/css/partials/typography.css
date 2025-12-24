@@ -262,7 +262,7 @@
      ========================================================================== */
 
   .card-meta {
-    @apply font-medium uppercase tracking-wider;
+    @apply font-medium tracking-wider;
     font-size: var(--text-md);
     color: var(--color-text-secondary);
   }
@@ -341,7 +341,7 @@
      ========================================================================== */
 
   .badge {
-    @apply inline-block py-1 px-2 text-xs font-semibold uppercase tracking-wide;
+    @apply inline-block py-1 px-2 text-xs font-semibold tracking-wide;
     border-radius: var(--badge-radius, 0.25rem);
   }
 

@@ -367,6 +367,11 @@
     {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
   }
 
+  /* Card meta - uppercase depends on settings */
+  .card-meta {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
   /* Cards */
   .card {
     background-color: var(--color-background);
