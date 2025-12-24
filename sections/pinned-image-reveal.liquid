@@ -1,14 +1,10 @@
 <style>
   #pinned-reveal-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
     background-color: var(--color-background);
     color: var(--color-text);
   }
 
   @media (min-width: 768px) {
-    #pinned-reveal-{{ section.id }} {
-      padding: 0;
-    }
     /* Main grid uses position relative for the pinned child */
     #pinned-reveal-{{ section.id }} .pinned-grid {
       position: relative;
@@ -88,7 +84,7 @@
 
 <section
   id="pinned-reveal-{{ section.id }}"
-  class="pinned-reveal color-{{ section.settings.color_scheme }} relative transition-colors duration-500"
+  class="pinned-reveal section-padding md:py-0 color-{{ section.settings.color_scheme }} relative transition-colors duration-500"
   data-section-id="{{ section.id }}"
 >
   <div class="page-container">

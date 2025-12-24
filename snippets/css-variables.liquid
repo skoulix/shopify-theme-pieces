@@ -123,7 +123,7 @@
     /* Layout */
     --page-max-width: {{ settings.page_width }}px;
     --page-padding: 24px;
-    --page-vertical-padding: {{ settings.page_vertical_padding | times: 0.4 }}px;
+    --page-vertical-padding: {{ settings.page_vertical_padding | default: 80 | times: 0.4 }}px;
     --section-vertical-padding: {{ settings.section_vertical_padding | default: 80 | times: 0.5 }}px;
     --header-height: 65px;
 
@@ -424,21 +424,21 @@
   /* Responsive page and section vertical padding */
   @media (min-width: 768px) {
     :root {
-      --page-vertical-padding: {{ settings.page_vertical_padding | times: 0.6 }}px;
+      --page-vertical-padding: {{ settings.page_vertical_padding | default: 80 | times: 0.6 }}px;
       --section-vertical-padding: {{ settings.section_vertical_padding | default: 80 | times: 0.7 }}px;
     }
   }
 
   @media (min-width: 1024px) {
     :root {
-      --page-vertical-padding: {{ settings.page_vertical_padding | times: 0.8 }}px;
+      --page-vertical-padding: {{ settings.page_vertical_padding | default: 80 | times: 0.8 }}px;
       --section-vertical-padding: {{ settings.section_vertical_padding | default: 80 | times: 0.85 }}px;
     }
   }
 
   @media (min-width: 1280px) {
     :root {
-      --page-vertical-padding: {{ settings.page_vertical_padding }}px;
+      --page-vertical-padding: {{ settings.page_vertical_padding | default: 80 }}px;
       --section-vertical-padding: {{ settings.section_vertical_padding | default: 80 }}px;
     }
   }

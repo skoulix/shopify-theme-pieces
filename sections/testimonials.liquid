@@ -12,7 +12,6 @@
 
 <style>
   .testimonials-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
     overflow: hidden;
   }
 
@@ -225,7 +224,7 @@
 </style>
 
 <section
-  class="testimonials-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="testimonials-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-testimonials="{{ section.id }}"
 >
   <div class="{{ container_class }}">

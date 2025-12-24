@@ -26,7 +26,6 @@
   .shoppable-videos-{{ section.id }} {
     background-color: var(--color-background);
     color: var(--color-text);
-    padding: var(--section-vertical-padding) 0;
     overflow: hidden;
   }
 
@@ -341,7 +340,7 @@
 </style>
 
 <section
-  class="shoppable-videos-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="shoppable-videos-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-shoppable-videos="{{ section.id }}"
 >
   <div class="{{ container_class }}">

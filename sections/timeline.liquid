@@ -11,9 +11,6 @@
 -%}
 
 <style>
-  .timeline-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .timeline-header-{{ section.id }} {
     margin-bottom: clamp(4rem, 8vh, 6rem);
@@ -194,7 +191,7 @@
 </style>
 
 <section
-  class="timeline-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="timeline-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-timeline-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">

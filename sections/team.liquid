@@ -16,9 +16,6 @@
 -%}
 
 <style>
-  .team-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .team-header-{{ section.id }} {
     margin-bottom: clamp(3rem, 6vh, 5rem);
@@ -236,7 +233,7 @@
 </style>
 
 <section
-  class="team-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="team-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-team-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">

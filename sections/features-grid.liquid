@@ -11,9 +11,6 @@
 -%}
 
 <style>
-  .features-grid-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .features-grid-header-{{ section.id }} {
     margin-bottom: clamp(3rem, 6vh, 5rem);
@@ -214,7 +211,7 @@
 </style>
 
 <section
-  class="features-grid-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="features-grid-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-features-grid-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">

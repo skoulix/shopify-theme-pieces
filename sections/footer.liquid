@@ -18,7 +18,6 @@
   .site-content { position: relative; z-index: 1; background-color: var(--color-background); margin-bottom: var(--footer-height, 0px); }
   .footer-content-{{ section.id }}.has-reveal { opacity: 0; transform: translateY(40px); }
   {% endif %}
-  .footer-section { padding: var(--section-vertical-padding) 0; }
   .footer-section nav a, .footer-section .footer-classic__menu a { color: inherit; opacity: 0.7; transition: opacity 0.3s ease; }
   .footer-section nav a:hover, .footer-section .footer-classic__menu a:hover { opacity: 1; }
   .back-to-top { display: inline-flex; align-items: center; gap: 0.5rem; cursor: pointer; background: none; border: none; color: inherit; padding: 0; }
@@ -30,7 +29,7 @@
 
 <div class="footer-wrapper" data-footer-wrapper>
 <footer
-  class="footer-section overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="footer-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}"
   data-footer-section
 >
   <div class="{{ container_class }} footer-content-{{ section.id }}" data-footer-content>

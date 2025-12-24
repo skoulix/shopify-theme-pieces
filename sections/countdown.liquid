@@ -34,9 +34,6 @@
   /* ============================================
      HERO DESIGN - Large dramatic countdown
      ============================================ */
-  .countdown-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .countdown-grid-{{ section.id }} {
     display: grid;
@@ -492,7 +489,7 @@
 {% case design %}
 {% when 'hero' %}
 {%- comment -%} HERO DESIGN {%- endcomment -%}
-<section class="countdown-{{ section.id }} color-{{ section.settings.color_scheme }}" data-countdown="{{ section.id }}" data-target-date="{{ section.settings.target_date }}" data-design="hero">
+<section class="countdown-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" data-countdown="{{ section.id }}" data-target-date="{{ section.settings.target_date }}" data-design="hero">
   <div class="{{ container_class }}">
     {% if section.settings.title != blank or section.settings.subtitle != blank %}
       <header class="countdown-header-{{ section.id }}" data-tween-group="countdown-header-{{ section.id }}">
@@ -577,7 +574,7 @@
 
 {% when 'compact' %}
 {%- comment -%} COMPACT DESIGN {%- endcomment -%}
-<section class="countdown-{{ section.id }} color-{{ section.settings.color_scheme }}" data-countdown="{{ section.id }}" data-target-date="{{ section.settings.target_date }}" data-design="compact">
+<section class="countdown-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" data-countdown="{{ section.id }}" data-target-date="{{ section.settings.target_date }}" data-design="compact">
   <div class="{{ container_class }}">
     <div class="countdown-inner-{{ section.id }}" data-tween-group="countdown-compact-{{ section.id }}">
       {% if section.settings.title != blank or section.settings.subtitle != blank %}

@@ -3,19 +3,18 @@
    A minimal Shopify theme using Tailwind UI patterns
    ========================================================================== */
 
-/* Partials must be imported first */
-@import './partials/base.css';
-@import './partials/typography.css';
-@import './partials/forms.css';
-@import './partials/buttons.css';
-@import './partials/navigation.css';
-@import './partials/cart.css';
-@import './partials/animations.css';
-@import './partials/utilities.css';
-@import './partials/glightbox.css';
-
-/* Disable Tailwind's auto source detection to prevent infinite rebuild loop */
+/* All @imports must come first per CSS spec */
 @import "tailwindcss" source(none);
+@import './partials/base.css' layer(components);
+@import './partials/typography.css' layer(components);
+@import './partials/forms.css' layer(components);
+@import './partials/buttons.css' layer(components);
+@import './partials/navigation.css' layer(components);
+@import './partials/cart.css' layer(components);
+@import './partials/animations.css' layer(components);
+@import './partials/utilities.css' layer(components);
+@import './partials/glightbox.css' layer(components);
+
 @plugin "@tailwindcss/typography";
 
 /* Theme configuration - replaces tailwind.config.js */
@@ -26,12 +25,12 @@
 }
 
 /* Explicitly define source paths (no auto-detection) */
-@source "../layout/**/*.liquid";
-@source "../templates/**/*.liquid";
-@source "../sections/**/*.liquid";
-@source "../snippets/**/*.liquid";
-@source "../blocks/**/*.liquid";
-@source "../frontend/js/**/*.js";
+@source "../../layout/**/*.liquid";
+@source "../../templates/**/*.liquid";
+@source "../../sections/**/*.liquid";
+@source "../../snippets/**/*.liquid";
+@source "../../blocks/**/*.liquid";
+@source "../js/**/*.js";
 
 /* ==========================================================================
    Typography (Prose) Customizations
