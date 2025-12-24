@@ -23,8 +23,8 @@
   }
 
   .btn::before {
-    @apply absolute z-0 inset-px scale-x-0 origin-right
-           rounded-(--button-radius) transition-transform duration-300 content-[''];
+    @apply absolute z-0 inset-0 scale-x-0 origin-right
+           transition-transform duration-300 content-[''];
   }
 
   .btn:hover::before {
@@ -61,7 +61,7 @@
 
   /* Secondary */
   .btn--secondary {
-    @apply text-(--color-text) bg-transparent border border-(--color-border);
+    @apply text-(--color-text) bg-transparent border border-(--color-text);
   }
 
   .btn--secondary::before {
