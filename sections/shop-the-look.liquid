@@ -29,9 +29,6 @@
 -%}
 
 <style>
-  .shop-the-look-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .shop-the-look-header-{{ section.id }} {
     margin-bottom: clamp(3rem, 6vh, 5rem);
@@ -219,7 +216,7 @@
 </style>
 
 <section
-  class="shop-the-look-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="shop-the-look-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-shop-the-look-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">

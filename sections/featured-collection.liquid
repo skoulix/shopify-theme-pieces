@@ -10,9 +10,6 @@
 -%}
 
 <style>
-  .fc-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .fc-header-{{ section.id }} {
     display: flex;
@@ -67,7 +64,7 @@
 </style>
 
 <section
-  class="fc-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="fc-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-featured-collection="{{ section.id }}"
 >
   <div class="{{ container_class }}">

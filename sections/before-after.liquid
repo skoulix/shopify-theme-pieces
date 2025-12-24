@@ -11,12 +11,11 @@
 -%}
 
 <style>
+  {% if section.settings.full_width %}
   .before-after-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-    {% if section.settings.full_width %}
     padding-bottom: 0;
-    {% endif %}
   }
+  {% endif %}
 
   .before-after-header-{{ section.id }} {
     margin-bottom: clamp(3rem, 6vh, 5rem);

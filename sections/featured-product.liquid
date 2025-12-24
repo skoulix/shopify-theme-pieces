@@ -22,9 +22,6 @@
 -%}
 
 <style>
-  [data-fp-section="{{ section.id }}"] {
-    padding: var(--section-vertical-padding) 0;
-  }
   @media (min-width: 1024px) {
     [data-fp-section="{{ section.id }}"][data-layout="image_right"] .fp-container {
       direction: rtl;
@@ -115,7 +112,7 @@
 </style>
 
 <section
-  class="fp-section overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="fp-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}"
   data-fp-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
 >

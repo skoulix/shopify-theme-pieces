@@ -10,9 +10,6 @@
 -%}
 
 <style>
-  .fb-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .fb-header-{{ section.id }} {
     display: flex;
@@ -80,7 +77,7 @@
 </style>
 
 <section
-  class="fb-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="fb-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
   data-featured-blog="{{ section.id }}"
 >
   <div class="{{ container_class }}">

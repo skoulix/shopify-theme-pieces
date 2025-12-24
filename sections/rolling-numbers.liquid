@@ -13,9 +13,6 @@
 -%}
 
 <style>
-  .rolling-numbers-{{ section.id }} {
-    padding: var(--section-vertical-padding) 0;
-  }
 
   .rolling-numbers-grid-{{ section.id }} {
     display: grid;
@@ -137,7 +134,7 @@
   }
 </style>
 
-<section class="rolling-numbers-{{ section.id }} color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
+<section class="rolling-numbers-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
   <div class="{{ container_class }}">
     {% if section.settings.title != blank or section.settings.subtitle != blank %}
       <header class="rolling-numbers-header-{{ section.id }}" data-tween-group="rolling-numbers-header-{{ section.id }}">
