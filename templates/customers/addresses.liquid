@@ -90,7 +90,7 @@
 <div class="page-container page-padding">
   {%- comment -%} Back Link {%- endcomment -%}
   {%- capture back_text -%}{{ 'customers.account.return' | t }}{%- endcapture -%}
-  <a href="{{ routes.account_url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary] mb-8" data-no-swup>
+  <a href="{{ routes.account_url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-(--color-text-secondary) mb-8" data-no-swup>
     <i class="ph ph-arrow-left" aria-hidden="true"></i>
     <span data-hover="{{ back_text }}">{{ back_text }}</span>
   </a>
@@ -193,21 +193,21 @@
             </span>
           {% endif %}
 
-          <address class="not-italic text-sm text-[--color-text-secondary] mb-4">
+          <address class="not-italic text-sm text-(--color-text-secondary) mb-4">
             {{ address | format_address }}
           </address>
 
           <div class="flex gap-4">
-            <button type="button" class="text-sm text-[--color-primary] hover:underline" data-edit-address="{{ address.id }}">
+            <button type="button" class="text-sm text-(--color-primary) hover:underline" data-edit-address="{{ address.id }}">
               {{ 'customers.addresses.edit' | t }}
             </button>
-            <button type="button" class="text-sm text-[--color-sale] hover:underline" data-delete-address="{{ address.id }}" data-confirm="{{ 'customers.addresses.delete_confirm' | t }}">
+            <button type="button" class="text-sm text-(--color-sale) hover:underline" data-delete-address="{{ address.id }}" data-confirm="{{ 'customers.addresses.delete_confirm' | t }}">
               {{ 'customers.addresses.delete' | t }}
             </button>
           </div>
 
           {%- comment -%} Edit Form (Hidden by default) {%- endcomment -%}
-          <div id="edit-address-{{ address.id }}" class="hidden mt-6 pt-6 border-t border-[--color-border]">
+          <div id="edit-address-{{ address.id }}" class="hidden mt-6 pt-6 border-t border-(--color-border)">
             {% form 'customer_address', address, class: 'space-y-6' %}
               <div class="grid sm:grid-cols-2 gap-6">
                 <div>
@@ -281,9 +281,9 @@
       {% endfor %}
     </div>
   {% else %}
-    <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
-      <i class="ph ph-house text-4xl text-[--color-text-secondary] mb-4"></i>
-      <p class="text-[--color-text-secondary]">{{ 'customers.addresses.no_addresses' | t }}</p>
+    <div class="text-center py-12 border border-dashed border-(--color-border) rounded-lg" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
+      <i class="ph ph-house text-4xl text-(--color-text-secondary) mb-4"></i>
+      <p class="text-(--color-text-secondary)">{{ 'customers.addresses.no_addresses' | t }}</p>
     </div>
   {% endif %}
 </div>

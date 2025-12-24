@@ -86,7 +86,7 @@
 <div class="page-container page-padding">
   {%- comment -%} Back Link {%- endcomment -%}
   {%- capture back_text -%}{{ 'customers.account.return' | t }}{%- endcapture -%}
-  <a href="{{ routes.account_url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-[--color-text-secondary] mb-8" data-no-swup>
+  <a href="{{ routes.account_url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold tracking-widest text-(--color-text-secondary) mb-8" data-no-swup>
     <i class="ph ph-arrow-left" aria-hidden="true"></i>
     <span data-hover="{{ back_text }}">{{ back_text }}</span>
   </a>
@@ -96,7 +96,7 @@
     <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.order.title' | t: name: order.name }}
     </h1>
-    <p class="text-[--color-text-secondary]" data-tween data-tween-type="fade-up">
+    <p class="text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
       {{ 'customers.order.date_html' | t: date: order.created_at | date: format: 'date' }}
     </p>
   </header>
@@ -135,7 +135,7 @@
   <div class="grid lg:grid-cols-3 gap-8" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
     {%- comment -%} Order Items {%- endcomment -%}
     <div class="lg:col-span-2">
-      <div class="border border-[--color-border] rounded-lg overflow-hidden">
+      <div class="border border-(--color-border) rounded-lg overflow-hidden">
         <table class="customer-order-table">
           <thead>
             <tr>
@@ -155,14 +155,14 @@
                         alt="{{ line_item.title | escape }}"
                         width="60"
                         height="60"
-                        class="w-15 h-15 object-cover rounded border border-[--color-border]"
+                        class="w-15 h-15 object-cover rounded border border-(--color-border)"
                         loading="lazy"
                       >
                     {% endif %}
                     <div>
                       <p class="font-medium">
                         {% if line_item.url != blank %}
-                          <a href="{{ line_item.url }}" class="hover:text-[--color-primary] transition-colors">
+                          <a href="{{ line_item.url }}" class="hover:text-(--color-primary) transition-colors">
                             {{ line_item.product.title }}
                           </a>
                         {% else %}
@@ -170,15 +170,15 @@
                         {% endif %}
                       </p>
                       {% if line_item.variant.title != 'Default Title' %}
-                        <p class="text-sm text-[--color-text-secondary]">{{ line_item.variant.title }}</p>
+                        <p class="text-sm text-(--color-text-secondary)">{{ line_item.variant.title }}</p>
                       {% endif %}
                       {% if line_item.selling_plan_allocation %}
-                        <p class="text-sm text-[--color-text-secondary]">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
+                        <p class="text-sm text-(--color-text-secondary)">{{ line_item.selling_plan_allocation.selling_plan.name }}</p>
                       {% endif %}
-                      <p class="text-sm text-[--color-text-secondary] sm:hidden">{{ 'customers.order.quantity' | t }}: {{ line_item.quantity }}</p>
+                      <p class="text-sm text-(--color-text-secondary) sm:hidden">{{ 'customers.order.quantity' | t }}: {{ line_item.quantity }}</p>
                       {% if line_item.line_level_discount_allocations.size > 0 %}
                         {% for discount in line_item.line_level_discount_allocations %}
-                          <p class="text-sm text-[--color-sale]">
+                          <p class="text-sm text-(--color-sale)">
                             <i class="ph ph-tag"></i> {{ discount.discount_application.title }} (-{{ discount.amount | money }})
                           </p>
                         {% endfor %}
@@ -189,12 +189,12 @@
                 <td class="text-center hidden sm:table-cell">{{ line_item.quantity }}</td>
                 <td class="text-right">
                   {% if line_item.original_line_price != line_item.final_line_price %}
-                    <s class="text-[--color-text-secondary]">{{ line_item.original_line_price | money }}</s>
+                    <s class="text-(--color-text-secondary)">{{ line_item.original_line_price | money }}</s>
                     <br>
                   {% endif %}
                   {{ line_item.final_line_price | money }}
                   {%- if line_item.unit_price_measurement -%}
-                    <p class="text-xs text-[--color-text-secondary] mt-1">
+                    <p class="text-xs text-(--color-text-secondary) mt-1">
                       {{ line_item.unit_price | money }}/{{ line_item.unit_price_measurement.reference_value }}{{ line_item.unit_price_measurement.reference_unit }}
                     </p>
                   {%- endif -%}
@@ -208,12 +208,12 @@
       {%- comment -%} Fulfillment Info {%- endcomment -%}
       {% for line_item in order.line_items %}
         {% if line_item.fulfillment %}
-          <div class="mt-4 p-4 border border-[--color-border] rounded-lg">
+          <div class="mt-4 p-4 border border-(--color-border) rounded-lg">
             <p class="font-medium mb-2">
               {{ 'customers.order.fulfilled_at_html' | t: date: line_item.fulfillment.created_at | date: format: 'date' }}
             </p>
             {% if line_item.fulfillment.tracking_url %}
-              <a href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-[--color-primary] hover:underline">
+              <a href="{{ line_item.fulfillment.tracking_url }}" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-sm text-(--color-primary) hover:underline">
                 <i class="ph ph-truck"></i>
                 {{ 'customers.order.track_shipment' | t }}
                 {% if line_item.fulfillment.tracking_number %}
@@ -238,7 +238,7 @@
           </div>
 
           {% for discount in order.cart_level_discount_applications %}
-            <div class="flex justify-between text-[--color-sale]">
+            <div class="flex justify-between text-(--color-sale)">
               <dt><i class="ph ph-tag"></i> {{ discount.title }}</dt>
               <dd>-{{ discount.total_allocated_amount | money }}</dd>
             </div>
@@ -258,7 +258,7 @@
             </div>
           {% endfor %}
 
-          <div class="flex justify-between pt-2 border-t border-[--color-border] font-semibold text-base">
+          <div class="flex justify-between pt-2 border-t border-(--color-border) font-semibold text-base">
             <dt>{{ 'customers.order.total' | t }}</dt>
             <dd>{{ order.total_price | money }}</dd>
           </div>
@@ -268,7 +268,7 @@
       {%- comment -%} Shipping Address {%- endcomment -%}
       <div class="customer-order-card">
         <h3 class="customer-order-card__title">{{ 'customers.order.shipping_address' | t }}</h3>
-        <address class="text-sm text-[--color-text-secondary] not-italic">
+        <address class="text-sm text-(--color-text-secondary) not-italic">
           {{ order.shipping_address | format_address }}
         </address>
       </div>
@@ -276,7 +276,7 @@
       {%- comment -%} Billing Address {%- endcomment -%}
       <div class="customer-order-card">
         <h3 class="customer-order-card__title">{{ 'customers.order.billing_address' | t }}</h3>
-        <address class="text-sm text-[--color-text-secondary] not-italic">
+        <address class="text-sm text-(--color-text-secondary) not-italic">
           {{ order.billing_address | format_address }}
         </address>
       </div>

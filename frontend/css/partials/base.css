@@ -22,6 +22,20 @@ h4 { font-size: calc(1.25rem * var(--heading-font-scale, 1)); }
 h5 { font-size: calc(1.125rem * var(--heading-font-scale, 1)); }
 h6 { font-size: calc(1rem * var(--heading-font-scale, 1)); }
 
+/* ==========================================================================
+   Typography Spacing Note
+   Tailwind Preflight removes all margins (margin: 0) on h1-h6, p, ul, ol, etc.
+   This is intentional - use utility classes (mb-4, mt-6) for spacing.
+
+   For rich text content (blogs, pages), use the .prose class from
+   @tailwindcss/typography which provides proper spacing automatically.
+   ========================================================================== */
+
+/* Horizontal rules - minimal styling */
+hr {
+  border-color: var(--color-border);
+}
+
 /* Smooth scrolling - only when enabled and Lenis is not active */
 html.smooth-scroll-enabled:not(.lenis) {
   scroll-behavior: smooth;

@@ -91,7 +91,7 @@
     <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.account.title' | t }}
     </h1>
-    <p class="text-[--color-text-secondary]" data-tween data-tween-type="fade-up">
+    <p class="text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
       {{ 'customers.account.welcome' | t: name: customer.first_name }}
     </p>
   </header>
@@ -118,9 +118,9 @@
       {%- comment -%} Account Details Card {%- endcomment -%}
       <div class="customer-account-card mt-8">
         <h3 class="card-title mb-4">{{ 'customers.account.details' | t }}</h3>
-        <p class="text-sm text-[--color-text-secondary]">{{ customer.email }}</p>
+        <p class="text-sm text-(--color-text-secondary)">{{ customer.email }}</p>
         {% if customer.default_address %}
-          <div class="mt-4 pt-4 border-t border-[--color-border] text-sm text-[--color-text-secondary]">
+          <div class="mt-4 pt-4 border-t border-(--color-border) text-sm text-(--color-text-secondary)">
             {{ customer.default_address | format_address }}
           </div>
         {% endif %}
@@ -140,10 +140,10 @@
                 {%- comment -%} Order Header {%- endcomment -%}
                 <div class="customer-order-card__header">
                   <div>
-                    <a href="{{ order.customer_url }}" class="font-semibold hover:text-[--color-primary] transition-colors">
+                    <a href="{{ order.customer_url }}" class="font-semibold hover:text-(--color-primary) transition-colors">
                       {{ order.name }}
                     </a>
-                    <p class="text-sm text-[--color-text-secondary]">
+                    <p class="text-sm text-(--color-text-secondary)">
                       {{ order.created_at | date: format: 'date' }}
                     </p>
                   </div>
@@ -173,18 +173,18 @@
                           alt="{{ line_item.title | escape }}"
                           width="40"
                           height="40"
-                          class="w-10 h-10 object-cover rounded border border-[--color-border]"
+                          class="w-10 h-10 object-cover rounded border border-(--color-border)"
                           loading="lazy"
                         >
                       {% endif %}
                     {% endfor %}
                     {% if order.line_items.size > 4 %}
-                      <span class="w-10 h-10 flex items-center justify-center rounded border border-[--color-border] text-xs text-[--color-text-secondary]">
+                      <span class="w-10 h-10 flex items-center justify-center rounded border border-(--color-border) text-xs text-(--color-text-secondary)">
                         +{{ order.line_items.size | minus: 4 }}
                       </span>
                     {% endif %}
                   </div>
-                  <a href="{{ order.customer_url }}" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-[--color-primary] hover:underline">
+                  <a href="{{ order.customer_url }}" class="inline-flex items-center gap-1 mt-4 text-sm font-medium text-(--color-primary) hover:underline">
                     {{ 'customers.orders.view_order' | t }}
                     <i class="ph ph-arrow-right"></i>
                   </a>
@@ -196,19 +196,19 @@
           {% if paginate.pages > 1 %}
             <nav class="mt-8 flex justify-center gap-2" aria-label="{{ 'accessibility.pagination' | t }}">
               {% if paginate.previous %}
-                <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors" aria-label="{{ 'accessibility.previous_page' | t }}">
+                <a href="{{ paginate.previous.url }}" class="px-4 py-2 border border-(--color-border) rounded hover:bg-(--color-background-secondary) transition-colors" aria-label="{{ 'accessibility.previous_page' | t }}">
                   <i class="ph ph-caret-left" aria-hidden="true"></i>
                 </a>
               {% endif %}
 
               {% for part in paginate.parts %}
                 {% if part.is_link %}
-                  <a href="{{ part.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors">
+                  <a href="{{ part.url }}" class="px-4 py-2 border border-(--color-border) rounded hover:bg-(--color-background-secondary) transition-colors">
                     {{ part.title }}
                   </a>
                 {% else %}
                   {% if part.title == paginate.current_page %}
-                    <span class="px-4 py-2 border border-[--color-primary] bg-[--color-primary] text-[--color-primary-contrast] rounded">
+                    <span class="px-4 py-2 border border-(--color-primary) bg-(--color-primary) text-(--color-primary-contrast) rounded">
                       {{ part.title }}
                     </span>
                   {% else %}
@@ -218,16 +218,16 @@
               {% endfor %}
 
               {% if paginate.next %}
-                <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-[--color-border] rounded hover:bg-[--color-background-secondary] transition-colors" aria-label="{{ 'accessibility.next_page' | t }}">
+                <a href="{{ paginate.next.url }}" class="px-4 py-2 border border-(--color-border) rounded hover:bg-(--color-background-secondary) transition-colors" aria-label="{{ 'accessibility.next_page' | t }}">
                   <i class="ph ph-caret-right" aria-hidden="true"></i>
                 </a>
               {% endif %}
             </nav>
           {% endif %}
         {% else %}
-          <div class="text-center py-12 border border-dashed border-[--color-border] rounded-lg">
-            <i class="ph ph-package text-4xl text-[--color-text-secondary] mb-4"></i>
-            <p class="text-[--color-text-secondary] mb-6">{{ 'customers.orders.none' | t }}</p>
+          <div class="text-center py-12 border border-dashed border-(--color-border) rounded-lg">
+            <i class="ph ph-package text-4xl text-(--color-text-secondary) mb-4"></i>
+            <p class="text-(--color-text-secondary) mb-6">{{ 'customers.orders.none' | t }}</p>
             <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
               <span>{{ 'customers.account.start_shopping' | t }}</span>
             </a>
