@@ -11,8 +11,8 @@ A high-performance Shopify theme with SPA-like page transitions, smooth scrollin
 | [Lenis](https://lenis.darkroom.engineering/) | 1.1.1   | Smooth scrolling                  |
 | [GLightbox](https://biati-digital.github.io/glightbox/) | 3.3.1 | Product image/video lightbox |
 | [Phosphor Icons](https://phosphoricons.com/) | 2.1.2   | Icon system                       |
-| [Tailwind CSS](https://tailwindcss.com/)     | 3.4.0   | Utility-first styling             |
-| [Vite](https://vitejs.dev/)                  | 5.0.10  | Build tooling                     |
+| [Tailwind CSS](https://tailwindcss.com/)     | 4.1     | Utility-first styling (v4)        |
+| [Vite](https://vitejs.dev/)                  | 7.3     | Build tooling                     |
 
 ---
 
@@ -324,17 +324,59 @@ The product section supports the following blocks that can be reordered in the t
 
 ## Styling
 
-### Tailwind CSS First
+### Tailwind CSS v4
 
-Use Tailwind utilities with CSS variables:
+This theme uses Tailwind CSS v4, which introduces significant syntax changes from v3.
+
+#### Key v4 Syntax Changes
+
+| v3 Syntax | v4 Syntax |
+| --------- | --------- |
+| `bg-[var(--color-background)]` | `bg-(--color-background)` |
+| `text-[var(--color-text)]` | `text-(--color-text)` |
+| `rounded-[var(--card-radius)]` | `rounded-(--card-radius)` |
+| `border-[var(--color-border)]` | `border-(--color-border)` |
+
+CSS variables now use parentheses `()` instead of square brackets `[]`:
 
 ```html
-<div class="bg-[--color-background] text-[--color-text] rounded-[--card-radius]"></div>
+<div class="bg-(--color-background) text-(--color-text) rounded-(--card-radius)"></div>
+```
+
+#### Configuration
+
+Tailwind v4 uses CSS-based configuration instead of `tailwind.config.js`:
+
+```css
+/* frontend/css/app.css */
+@import "tailwindcss" source(none);
+@plugin "@tailwindcss/typography";
+
+@theme {
+  --font-body: var(--font-body), ui-sans-serif, system-ui, sans-serif;
+  --font-heading: var(--font-heading), ui-sans-serif, system-ui, sans-serif;
+}
+
+@source "../../sections/**/*.liquid";
+@source "../../snippets/**/*.liquid";
+/* ... */
+```
+
+#### @layer Components
+
+Custom component classes are defined using `@layer components`:
+
+```css
+@layer components {
+  .btn {
+    @apply relative inline-flex items-center justify-center;
+  }
+}
 ```
 
 ### CSS Variables
 
-Generated from theme settings:
+Generated from theme settings in `snippets/css-variables.liquid`:
 
 ```css
 /* Colors */
@@ -350,8 +392,10 @@ Generated from theme settings:
 /* Typography */
 --font-body
 --font-heading
---body-font-scale
---heading-font-scale
+--font-heading-weight          /* Heading font weight (default: 700) */
+--body-font-scale              /* Body text scale multiplier */
+--heading-font-scale           /* Heading text scale multiplier */
+--heading-letter-spacing       /* Heading letter spacing adjustment */
 
 /* Layout */
 --page-max-width
@@ -362,6 +406,14 @@ Generated from theme settings:
 --button-radius
 --card-radius
 --input-radius
+--badge-radius
+--input-border-width
+
+/* Opacity */
+--opacity-muted
+--opacity-secondary
+--opacity-subtle
+--opacity-disabled
 ```
 
 ### Container Classes
@@ -373,15 +425,28 @@ Generated from theme settings:
 
 ### Typography Classes
 
-Global typography classes defined in `frontend/css/partials/typography.css` for consistent styling:
+Global typography classes defined in `frontend/css/partials/typography.css` for consistent styling. All typography respects theme font scale settings via CSS custom properties.
+
+#### Typography Scaling
+
+All heading classes use `--heading-font-scale` and body text uses `--body-font-scale`:
+
+```css
+.section-title {
+  font-size: calc(clamp(1.5rem, 4vw, 2.25rem) * var(--heading-font-scale, 1));
+  font-weight: var(--font-heading-weight, 700);
+  letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+}
+```
+
+#### Available Classes
 
 | Class | Usage |
 | ----- | ----- |
 | `.page-title` | Large page headers (collection, blog, cart, search) |
 | `.section-title` | Section headings with responsive scaling |
-| `.section-title--hero` | Larger variant for hero sections |
-| `.hero-title` | Primary hero headline |
-| `.section-label` | Small uppercase eyebrow text |
+| `.hero-title` | Primary hero headline (largest) |
+| `.section-label` | Small eyebrow text above titles |
 | `.section-description` | Paragraph text below titles |
 | `.newsletter-title` | Newsletter section headings |
 | `.card-title` | Product/blog/collection card titles |
@@ -389,6 +454,7 @@ Global typography classes defined in `frontend/css/partials/typography.css` for 
 | `.card-price` | Product pricing display |
 | `.blog-card-title` | Blog article card titles |
 | `.blog-card-title--featured` | Larger featured blog titles |
+| `.blog-category` | Category labels on blog cards |
 | `.drawer-title` | Slide-out drawer headings |
 | `.popup-title` | Modal/popup headings |
 | `.footer-brand` | Shop name in footer |
@@ -397,6 +463,11 @@ Global typography classes defined in `frontend/css/partials/typography.css` for 
 | `.faq-question` | FAQ accordion question text |
 | `.stat-number` | Large display numbers |
 | `.badge` | Sale tags, labels (variants: `--sale`, `--soldout`, `--new`) |
+| `.page-header-subtitle` | Subtitle with decorative line |
+
+#### Uppercase Behavior
+
+Label-style classes (`.section-label`, `.form-label`, `.badge`, `.card-meta`, `.blog-category`) conditionally apply `text-transform: uppercase` based on the theme's `buttons_uppercase` setting in `css-variables.liquid`.
 
 ---
 
@@ -651,7 +722,6 @@ pieces/
 ├── sections/                # Liquid sections (57)
 ├── snippets/                # Reusable partials
 ├── templates/               # Page templates
-├── tailwind.config.js       # Tailwind configuration
 ├── vite.config.js           # Vite build configuration
 └── package.json
 ```

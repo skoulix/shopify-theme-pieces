@@ -149,11 +149,11 @@
 
   /* Sizes */
   .btn--xs {
-    @apply h-8 px-4 text-xs tracking-wide;
+    @apply h-8 px-4 text-xs tracking-wider;
   }
 
   .btn--sm {
-    @apply h-10 px-5 text-xs tracking-wider;
+    @apply h-10 px-5 text-xs tracking-widest;
   }
 
   .btn--md {
@@ -161,7 +161,7 @@
   }
 
   .btn--lg {
-    @apply h-14 px-9 text-sm;
+    @apply h-14 px-9 text-sm tracking-wider;
   }
 
   .btn--icon {

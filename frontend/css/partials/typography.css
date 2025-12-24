@@ -170,6 +170,7 @@
   .section-description {
     @apply font-body leading-loose max-w-prose;
     font-size: calc(clamp(0.875rem, 1.5vw, 1.125rem) * var(--body-font-scale, 1));
+    letter-spacing: var(--body-letter-spacing, 0);
     opacity: var(--opacity-muted);
     margin-top: clamp(1.25rem, 2.5vw, 1.75rem) !important;
   }
@@ -292,6 +293,7 @@
   .quote-text {
     @apply font-body leading-relaxed italic;
     font-size: calc(clamp(1.125rem, 2vw, 1.5rem) * var(--body-font-scale, 1));
+    letter-spacing: var(--body-letter-spacing, 0);
   }
 
   /* ==========================================================================
