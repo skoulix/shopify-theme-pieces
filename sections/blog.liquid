@@ -79,22 +79,25 @@
                 </a>
               </h2>
 
-              {% if section.settings.show_excerpt %}
-                <p class="blog-item-excerpt mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-3{% if is_featured %} lg:text-[0.9375rem] lg:line-clamp-6{% endif %}">
-                  {{ article.excerpt_or_content | strip_html | truncate: 160 }}
-                </p>
-              {% endif %}
-
-              <div class="blog-item-meta mt-4 text-xs text-(--color-text-secondary) overflow-hidden">
+              <div class="blog-item-meta mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary) overflow-hidden">
                 <span class="inline-block">
                   <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
                     {{ article.published_at | date: '%b %d, %Y' }}
                   </time>
                 </span>
                 {% if section.settings.show_author %}
-                  <span class="blog-item-author inline-block">{{ article.author }}</span>
+                  <span class="blog-item-author flex items-center gap-1.5">
+                    <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+                    {{ article.author }}
+                  </span>
                 {% endif %}
               </div>
+
+              {% if section.settings.show_excerpt %}
+                <p class="blog-item-excerpt mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-3{% if is_featured %} lg:text-[0.9375rem] lg:line-clamp-6{% endif %}">
+                  {{ article.excerpt_or_content | strip_html | truncate: 160 }}
+                </p>
+              {% endif %}
 
               <a href="{{ article.url }}" class="blog-item-cta inline-flex items-center gap-2 mt-auto pt-4 text-sm font-semibold tracking-widest text-(--color-text) uppercase">
                 <span class="blog-item-cta-text-wrapper"><span class="blog-item-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
