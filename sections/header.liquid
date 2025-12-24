@@ -834,7 +834,7 @@
       // Animate drawer open (always)
       openTimeline
         .to(backdrop, { opacity: 1, duration: 0.5, ease: 'power2.out' }, 0)
-        .to(drawer, { clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'power4.inOut' }, 0);
+        .to(drawer, { clipPath: 'inset(0 0 0% 0)', duration: 0.7, ease: 'power3.out' }, 0);
 
       // Only animate text content if enabled
       if (shouldAnimateText) {
@@ -849,7 +849,7 @@
             duration: 0.8,
             stagger: 0.08,
             ease: 'power4.out'
-          }, 0.5);
+          }, 0.8);
         }
 
         // Animate toggle icons with a playful spin-in
@@ -889,30 +889,28 @@
       linkSplits = [];
     }
 
-    // Always animate drawer close if GSAP available
-    if (window.gsap) {
-      if (openTimeline) openTimeline.kill();
+    // Close instantly and reset for next open
+    if (openTimeline) openTimeline.kill();
+    cleanupTextWrappers();
 
-      gsap.timeline({
-        onComplete: () => {
-          cleanupTextWrappers();
-          mobileNav.classList.remove('is-open');
-          mobileNav.setAttribute('inert', '');
-          document.body.style.overflow = '';
-          document.body.classList.remove('mobile-menu-open');
-          isAnimating = false;
-        }
-      })
-        .to(backdrop, { opacity: 0, duration: 0.3, ease: 'power2.in' }, 0)
-        .to(drawer, { clipPath: 'inset(0 0 100% 0)', duration: 0.4, ease: 'power3.in' }, 0);
-    } else {
-      cleanupTextWrappers();
-      mobileNav.classList.remove('is-open');
-      mobileNav.setAttribute('inert', '');
-      document.body.style.overflow = '';
-      document.body.classList.remove('mobile-menu-open');
-      isAnimating = false;
+    // Reset animated elements to initial state
+    if (window.gsap) {
+      const header = mobileNav.querySelector('.mobile-nav__header');
+      const toggleIcons = mobileNav.querySelectorAll('.mobile-nav__toggle-icon');
+      const footer = mobileNav.querySelector('.mobile-nav__footer');
+
+      gsap.set(backdrop, { opacity: 0 });
+      gsap.set(drawer, { clipPath: 'inset(0 0 100% 0)' });
+      gsap.set(header, { opacity: 0, y: -20 });
+      gsap.set(toggleIcons, { opacity: 0, scale: 0, rotation: -90 });
+      gsap.set(footer, { opacity: 0, y: 20 });
     }
+
+    mobileNav.classList.remove('is-open');
+    mobileNav.setAttribute('inert', '');
+    document.body.style.overflow = '';
+    document.body.classList.remove('mobile-menu-open');
+    isAnimating = false;
   }
 
   // Open button (hamburger)
