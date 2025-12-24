@@ -52,28 +52,6 @@
     }
   }
 
-  .blog-card-cta-text-wrapper {
-    overflow: hidden;
-    display: inline-block;
-  }
-
-  .blog-card-cta .blog-card-cta-text {
-    display: inline-block;
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .blog-card-cta .blog-card-cta-text::after {
-    content: attr(data-hover);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    white-space: nowrap;
-  }
-
-  .blog-card-cta:hover .blog-card-cta-text {
-    transform: translateY(-100%);
-  }
 </style>
 
 <section
@@ -107,8 +85,10 @@
         </div>
 
         {% if section.settings.show_view_all %}
-          <a href="{{ blog.url | default: routes.blogs_url }}" class="fb-view-all-{{ section.id }} text-hover-reveal inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
-            <span data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span>
+          <a href="{{ blog.url | default: routes.blogs_url }}" class="fb-view-all-{{ section.id }} link-cta link-cta--reveal uppercase" data-tween data-tween-type="fade-up">
+            <span class="overflow-hidden">
+              <span class="link-cta-text" data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span>
+            </span>
             {% if blog %}<span class="sr-only">{{ blog.title }}</span>{% endif %}
             <i class="ph ph-arrow-right" aria-hidden="true"></i>
           </a>
@@ -184,8 +164,10 @@
               {% endif %}
 
               {% if section.settings.show_read_more %}
-                <a href="{{ article.url }}" class="blog-card-cta inline-flex items-center gap-2 mt-auto pt-4 text-sm font-semibold tracking-widest text-(--color-text) uppercase">
-                  <span class="blog-card-cta-text-wrapper"><span class="blog-card-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
+                <a href="{{ article.url }}" class="link-cta link-cta--reveal mt-auto pt-4 uppercase">
+                  <span class="overflow-hidden">
+                    <span class="link-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span>
+                  </span>
                   <i class="ph ph-arrow-right" aria-hidden="true"></i>
                 </a>
               {% endif %}
@@ -229,8 +211,10 @@
                 </p>
               {% endif %}
               {% if section.settings.show_read_more %}
-                <span class="blog-card-cta inline-flex items-center gap-2 mt-auto pt-4 text-sm font-semibold tracking-widest text-(--color-text) uppercase">
-                  <span class="blog-card-cta-text-wrapper"><span class="blog-card-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
+                <span class="link-cta link-cta--reveal mt-auto pt-4 uppercase">
+                  <span class="overflow-hidden">
+                    <span class="link-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span>
+                  </span>
                   <i class="ph ph-arrow-right" aria-hidden="true"></i>
                 </span>
               {% endif %}

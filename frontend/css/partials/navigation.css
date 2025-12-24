@@ -18,8 +18,8 @@
   }
 
   .mobile-nav__link {
-    @apply py-3 font-heading text-4xl md:text-5xl text-(--color-text) leading-snug tracking-tight
-           transition-colors duration-200;
+    @apply py-3 font-heading text-4xl md:text-5xl text-(--color-text) leading-snug tracking-tight;
+    transition: color var(--transition-base);
   }
 
   .mobile-nav__link:hover,
@@ -32,7 +32,8 @@
   }
 
   .mobile-nav__link-line {
-    @apply absolute left-0 bottom-2 w-full h-0.5 bg-current scale-x-0 origin-right transition-transform duration-300;
+    @apply absolute left-0 bottom-2 w-full h-0.5 bg-current scale-x-0 origin-right;
+    transition: transform var(--transition-base);
   }
 
   .mobile-nav__link:hover .mobile-nav__link-line {
@@ -44,7 +45,8 @@
   }
 
   .mobile-nav__toggle-icon {
-    @apply text-2xl transition-transform duration-300;
+    @apply text-2xl;
+    transition: transform var(--transition-base);
   }
 
   .mobile-nav__link--parent[aria-expanded="true"] .mobile-nav__toggle-icon {
@@ -52,8 +54,8 @@
   }
 
   .mobile-nav__submenu {
-    @apply transition-[grid-template-rows] duration-500;
     grid-template-rows: 0fr;
+    transition: grid-template-rows var(--transition-slow);
   }
 
   .mobile-nav__submenu.is-open {
@@ -67,7 +69,8 @@
   /* Sliding Panels */
   .mobile-nav--slide .mobile-nav__panel {
     @apply absolute top-0 left-0 w-full h-full flex flex-col will-change-transform
-           bg-(--color-background) translate-x-full transition-transform duration-300;
+           bg-(--color-background) translate-x-full;
+    transition: transform var(--transition-base);
   }
 
   .mobile-nav--slide .mobile-nav__panel--main {

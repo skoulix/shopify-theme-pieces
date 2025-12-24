@@ -5,8 +5,8 @@
 @layer components {
   .input {
     @apply block h-11 px-4 bg-transparent text-sm leading-none
-           border border-(--color-border) rounded-(--input-radius) text-(--color-text)
-           transition-colors duration-150;
+           border border-(--color-border) rounded-(--input-radius) text-(--color-text);
+    transition: border-color var(--transition-fast);
   }
 
   .input::placeholder {
@@ -19,6 +19,10 @@
 
   .input:focus {
     @apply outline-none border-(--color-text);
+  }
+
+  .input:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   /* Sizes */

@@ -10,11 +10,6 @@
   /* Title line stagger (managed by TweenManager) */
   .blog-wrapper .page-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 8vw, 6rem); }
   .blog-item-author::before { content: ''; display: inline-block; width: 4px; height: 4px; border-radius: 50%; background: var(--color-text-secondary); margin-right: 0.5rem; vertical-align: middle; }
-  /* blog-item-image animation handled by TweenManager */
-  .blog-item-cta-text-wrapper { overflow: hidden; display: inline-block; }
-  .blog-item-cta .blog-item-cta-text { display: inline-block; position: relative; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  .blog-item-cta .blog-item-cta-text::after { content: attr(data-hover); position: absolute; left: 0; top: 100%; white-space: nowrap; }
-  .blog-item-cta:hover .blog-item-cta-text { transform: translateY(-100%); }
 </style>
 
 <section class="blog-wrapper page-padding" data-blog-wrapper>
@@ -99,8 +94,10 @@
                 </p>
               {% endif %}
 
-              <a href="{{ article.url }}" class="blog-item-cta inline-flex items-center gap-2 mt-auto pt-4 text-sm font-semibold tracking-widest text-(--color-text) uppercase">
-                <span class="blog-item-cta-text-wrapper"><span class="blog-item-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
+              <a href="{{ article.url }}" class="link-cta link-cta--reveal mt-auto pt-4 uppercase">
+                <span class="overflow-hidden">
+                  <span class="link-cta-text" data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span>
+                </span>
                 <span class="sr-only">: {{ article.title }}</span>
                 <i class="ph ph-arrow-right" aria-hidden="true"></i>
               </a>

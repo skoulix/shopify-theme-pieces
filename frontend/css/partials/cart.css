@@ -60,11 +60,15 @@
   .cart-drawer__close {
     @apply flex items-center justify-center size-10 -m-2 ml-auto bg-transparent border-none cursor-pointer;
     color: var(--color-text);
-    transition: opacity var(--transition-sm);
+    transition: opacity var(--transition-fast);
   }
 
   .cart-drawer__close:hover {
     opacity: var(--opacity-secondary);
+  }
+
+  .cart-drawer__close:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   .cart-drawer__close i {
@@ -151,12 +155,16 @@
   .cart-drawer__quantity-btn {
     @apply size-8 flex items-center justify-center bg-transparent border-none cursor-pointer;
     color: var(--color-text);
-    transition: all var(--transition-base);
+    transition: background-color var(--transition-fast), color var(--transition-fast), transform var(--transition-fast);
   }
 
   .cart-drawer__quantity-btn:hover {
     background: var(--color-primary);
     color: var(--color-primary-contrast);
+  }
+
+  .cart-drawer__quantity-btn:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   .cart-drawer__quantity-btn:active {
@@ -210,11 +218,15 @@
   .cart-drawer__remove {
     @apply flex items-center justify-center size-8 bg-transparent border-none cursor-pointer;
     color: var(--color-text-secondary);
-    transition: color var(--transition-sm);
+    transition: color var(--transition-fast);
   }
 
   .cart-drawer__remove:hover {
     color: var(--color-sale, #dc2626);
+  }
+
+  .cart-drawer__remove:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   .cart-drawer__remove i {
@@ -250,16 +262,20 @@
   .cart-drawer__note-toggle {
     @apply flex items-center justify-between w-full py-3 text-xs font-semibold tracking-wide uppercase cursor-pointer;
     color: var(--color-text-secondary);
-    transition: color var(--transition-sm);
+    transition: color var(--transition-fast);
   }
 
   .cart-drawer__note-toggle:hover {
     color: var(--color-text);
   }
 
+  .cart-drawer__note-toggle:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
+  }
+
   .cart-drawer__note-toggle i {
     @apply text-base;
-    transition: transform var(--transition-sm);
+    transition: transform var(--transition-fast);
   }
 
   .cart-drawer__note-wrapper[open] .cart-drawer__note-toggle i {
@@ -375,11 +391,15 @@
   .cart-notification__close {
     @apply absolute top-2 right-2 flex items-center justify-center size-8 bg-transparent border-none cursor-pointer;
     color: var(--color-text-secondary);
-    transition: color var(--transition-sm);
+    transition: color var(--transition-fast);
   }
 
   .cart-notification__close:hover {
     color: var(--color-text);
+  }
+
+  .cart-notification__close:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   .cart-notification__close i {

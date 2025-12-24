@@ -26,7 +26,7 @@
     border: 1px solid var(--color-border) !important;
     border-radius: var(--button-radius) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.3s ease !important;
+    transition: background-color var(--transition-base), border-color var(--transition-base) !important;
   }
 
   .gnext:hover,
@@ -41,7 +41,7 @@
   .gprev svg {
     @apply text-xl! max-md:text-base!;
     color: var(--color-text) !important;
-    transition: color 0.3s ease !important;
+    transition: color var(--transition-base) !important;
   }
 
   .gnext:hover i,
@@ -66,7 +66,7 @@
     border: 1px solid var(--color-border) !important;
     border-radius: var(--button-radius) !important;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-    transition: all 0.3s ease !important;
+    transition: background-color var(--transition-base), border-color var(--transition-base) !important;
   }
 
   .gclose:hover {
@@ -78,7 +78,7 @@
   .gclose svg {
     @apply text-xl! max-md:text-base!;
     color: var(--color-text) !important;
-    transition: color 0.3s ease !important;
+    transition: color var(--transition-base) !important;
   }
 
   .gclose:hover i,

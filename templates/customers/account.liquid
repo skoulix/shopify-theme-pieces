@@ -4,13 +4,6 @@
 {%- endcomment -%}
 
 <style>
-  .customer-page__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 0.9;
-    color: var(--color-text);
-  }
 
   .customer-nav__link {
     display: flex;
@@ -88,7 +81,7 @@
 <div class="page-container page-padding">
   {%- comment -%} Header {%- endcomment -%}
   <header class="mb-12" data-tween-group="customer-account" data-tween-start="top bottom">
-    <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
+    <h1 class="page-title mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.account.title' | t }}
     </h1>
     <p class="text-(--color-text-secondary)" data-tween data-tween-type="fade-up">

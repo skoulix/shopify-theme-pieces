@@ -9,15 +9,21 @@
      ========================================================================== */
 
   .page-title {
-    @apply font-heading font-bold leading-tight text-balance;
+    @apply font-heading leading-tight text-balance;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
-    /* Mobile: 2.5rem-4.5rem, Desktop: 3rem-5rem */
-    font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1));
+    font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1));
   }
 
   @media (min-width: 1024px) {
     .page-title {
-      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(2.5rem, 4vw, 3.5rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .page-title {
+      font-size: calc(clamp(3rem, 3.5vw, 4rem) * var(--heading-font-scale, 1));
     }
   }
 
@@ -28,55 +34,72 @@
      ========================================================================== */
 
   .section-title {
-    @apply font-heading font-bold leading-tight text-balance;
-    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
-    font-size: calc(clamp(2rem, 5vw, 3.5rem) * var(--heading-font-scale, 1));
-  }
-
-  /* Larger variant for hero sections */
-  .section-title--hero {
-    @apply leading-tight;
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    font-size: calc(clamp(2.5rem, 10vw, 5rem) * var(--heading-font-scale, 1));
-  }
-
-  /* Hero title - primary hero headline */
-  .hero-title {
-    @apply font-heading font-bold leading-tight text-balance;
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    font-size: calc(clamp(2.5rem, 10vw, 5rem) * var(--heading-font-scale, 1));
-  }
-
-  /* Newsletter title */
-  .newsletter-title {
-    @apply font-heading font-bold leading-snug text-balance;
-    letter-spacing: calc(-0.025em + var(--heading-letter-spacing, 0em));
-    font-size: calc(clamp(1.5rem, 4vw, 2.25rem) * var(--heading-font-scale, 1));
-  }
-
-  /* Blog card title */
-  .blog-card-title {
-    @apply font-heading font-semibold leading-snug;
-    letter-spacing: calc(-0.015em + var(--heading-letter-spacing, 0em));
-    font-size: clamp(1.125rem, 2vw, 1.375rem); /* 18px - 22px */
-  }
-
-  /* Featured blog card - larger title */
-  .blog-card-title--featured {
-    @apply font-bold leading-snug;
+    @apply font-heading leading-tight text-balance;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
-    font-size: clamp(1.5rem, 3vw, 2.5rem);
+    font-size: calc(clamp(1.5rem, 4vw, 2.25rem) * var(--heading-font-scale, 1));
   }
 
   @media (min-width: 1024px) {
     .section-title {
-      font-size: calc(clamp(2.5rem, 4vw, 4rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(2rem, 3vw, 2.75rem) * var(--heading-font-scale, 1));
     }
+  }
 
-    .section-title--hero,
-    .hero-title {
-      font-size: calc(clamp(4rem, 8vw, 7rem) * var(--heading-font-scale, 1));
+  @media (min-width: 1536px) {
+    .section-title {
+      font-size: calc(clamp(2.25rem, 2.5vw, 3rem) * var(--heading-font-scale, 1));
     }
+  }
+
+  /* Hero title - primary hero headline (larger than page-title) */
+  .hero-title {
+    @apply font-heading leading-none text-balance;
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+    font-size: calc(clamp(2rem, 8vw, 3.5rem) * var(--heading-font-scale, 1));
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .hero-title {
+      font-size: calc(clamp(4rem, 5vw, 6rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  /* Newsletter title (h3) */
+  .newsletter-title {
+    @apply font-heading leading-snug text-balance;
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    font-size: calc(clamp(1.125rem, 2.5vw, 1.5rem) * var(--heading-font-scale, 1));
+  }
+
+  @media (min-width: 1024px) {
+    .newsletter-title {
+      font-size: calc(clamp(1.25rem, 2vw, 1.75rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  /* Blog card title */
+  .blog-card-title {
+    @apply font-heading leading-snug;
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.015em + var(--heading-letter-spacing, 0em));
+    font-size: clamp(1rem, 2vw, 1.25rem);
+  }
+
+  /* Featured blog card - larger title */
+  .blog-card-title--featured {
+    @apply leading-snug;
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    font-size: clamp(1.125rem, 2vw, 1.5rem);
   }
 
   /* Title line offsets for SplitText animations */
@@ -201,7 +224,8 @@
      ========================================================================== */
 
   .stat-number {
-    @apply font-bold leading-none;
+    @apply font-heading leading-none;
+    font-weight: var(--font-heading-weight, 700);
     font-size: clamp(3rem, 8vw, 5rem);
     letter-spacing: calc(var(--tracking-tight) + var(--heading-letter-spacing, 0em));
   }
@@ -287,7 +311,8 @@
      ========================================================================== */
 
   .drawer-title {
-    @apply font-heading text-lg font-semibold leading-snug;
+    @apply font-heading text-lg leading-snug;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
   }
 
@@ -297,7 +322,8 @@
      ========================================================================== */
 
   .popup-title {
-    @apply font-heading text-2xl font-semibold leading-snug;
+    @apply font-heading text-2xl leading-snug;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(var(--tracking-tight) + var(--heading-letter-spacing, 0em));
   }
 
@@ -306,7 +332,8 @@
      ========================================================================== */
 
   .footer-brand {
-    @apply font-heading text-xl font-bold;
+    @apply font-heading text-xl;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
   }
 
@@ -392,6 +419,10 @@
     background-color: var(--color-text);
     border-color: var(--color-text);
     color: var(--color-background);
+  }
+
+  .icon-btn:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 
   .icon-btn:disabled {

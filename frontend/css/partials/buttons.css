@@ -231,19 +231,7 @@
 
   /* Link CTA */
   .link-cta {
-    @apply inline-flex items-center gap-3 no-underline text-xs font-semibold tracking-widest transition-opacity duration-200;
-  }
-
-  .link-cta:hover {
-    @apply opacity-60;
-  }
-
-  .link-cta i, .link-cta svg {
-    @apply transition-transform duration-200;
-  }
-
-  .link-cta:hover i, .link-cta:hover svg {
-    @apply translate-x-1;
+    @apply inline-flex items-center gap-3 no-underline text-xs font-semibold tracking-widest;
   }
 
   /* Text Hover Reveal */
@@ -277,9 +265,5 @@
 
   .link-cta--reveal:hover .link-cta-text {
     @apply -translate-y-full;
-  }
-
-  .link-cta--reveal:hover i, .link-cta--reveal:hover svg {
-    @apply translate-x-1;
   }
 }

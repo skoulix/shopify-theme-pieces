@@ -18,21 +18,21 @@
   }
 
   .text-reveal-heading-{{ section.id }} {
-    font-size: calc(clamp(2rem, 8vw, 6rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 0.95;
+    font-size: calc(clamp(1.75rem, 6vw, 3rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+    line-height: 1.05;
   }
 
   @media (min-width: 1024px) {
     .text-reveal-heading-{{ section.id }} {
-      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(2.5rem, 5vw, 4rem) * var(--heading-font-scale, 1));
     }
   }
 
   @media (min-width: 1536px) {
     .text-reveal-heading-{{ section.id }} {
-      font-size: calc(clamp(4rem, 5vw, 6rem) * var(--heading-font-scale, 1));
+      font-size: calc(clamp(3rem, 4vw, 5rem) * var(--heading-font-scale, 1));
     }
   }
 

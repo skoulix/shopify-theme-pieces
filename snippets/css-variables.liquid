@@ -452,13 +452,14 @@
   }
 
   /* Policy pages styling - use !important to override Shopify's default 65ch max-width */
+  /* Matches .page-padding utility: top = page-vertical-padding + header-height, bottom = page-vertical-padding */
   .shopify-policy__container {
     max-width: var(--page-max-width) !important;
     margin-left: auto;
     margin-right: auto;
     padding-left: var(--page-padding);
     padding-right: var(--page-padding);
-    padding-top: var(--header-height, 65px);
+    padding-top: calc(var(--page-vertical-padding) + var(--header-height, 65px));
     padding-bottom: var(--page-vertical-padding);
   }
 
@@ -468,7 +469,8 @@
   }
 
   .shopify-policy__title {
-    margin-top: 0;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
     margin-bottom: clamp(2rem, 4vw, 3rem);
   }
 
@@ -478,9 +480,11 @@
   }
 
   .shopify-policy__title h1 {
+    margin: 0 !important;
+    padding: 0 !important;
     font-family: var(--font-heading);
-    font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1)) !important;
-    font-weight: 700;
+    font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1)) !important;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     line-height: 1.25;
     text-wrap: balance;
@@ -493,7 +497,13 @@
     }
 
     .shopify-policy__title h1 {
-      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1)) !important;
+      font-size: calc(clamp(2.5rem, 4vw, 3.5rem) * var(--heading-font-scale, 1)) !important;
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .shopify-policy__title h1 {
+      font-size: calc(clamp(3rem, 3.5vw, 4rem) * var(--heading-font-scale, 1)) !important;
     }
   }
 

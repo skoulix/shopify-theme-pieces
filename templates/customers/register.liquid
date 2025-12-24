@@ -4,13 +4,6 @@
 {%- endcomment -%}
 
 <style>
-  .customer-page__title {
-    font-size: clamp(2rem, 5vw, 3.5rem);
-    font-weight: 700;
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 0.9;
-    color: var(--color-text);
-  }
 
   .customer-form__input {
     width: 100%;
@@ -76,7 +69,7 @@
 
 <div class="page-container page-padding">
   <div class="max-w-md mx-auto text-center" data-tween-group="customer-register" data-tween-start="top bottom">
-    <h1 class="customer-page__title font-heading mb-3" data-tween data-tween-type="split-text">
+    <h1 class="page-title mb-3" data-tween data-tween-type="split-text">
       {{ 'customers.register.title' | t }}
     </h1>
     <p class="text-(--color-text-secondary) mb-10" data-tween data-tween-type="fade-up">
