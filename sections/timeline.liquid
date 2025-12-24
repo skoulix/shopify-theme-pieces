@@ -124,8 +124,8 @@
 
   /* Year */
   .timeline-year-{{ section.id }} {
-    font-size: clamp(2.5rem, 5vw, 4rem);
-    font-weight: 900;
+    font-size: calc(clamp(2.5rem, 5vw, 4rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
     line-height: 1;
     opacity: 0.15;
@@ -148,8 +148,8 @@
   }
 
   .timeline-item-title-{{ section.id }} {
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
-    font-weight: 700;
+    font-size: calc(clamp(1.125rem, 2vw, 1.5rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     margin-bottom: 0.75rem;
   }

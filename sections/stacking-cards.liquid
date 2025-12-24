@@ -153,8 +153,8 @@
   }
 
   .stacking-card-title-{{ section.id }} {
-    font-size: clamp(1.25rem, 2.5vw, 1.75rem);
-    font-weight: 700;
+    font-size: calc(clamp(1.25rem, 2.5vw, 1.75rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     line-height: 1.2;
     color: var(--color-text);

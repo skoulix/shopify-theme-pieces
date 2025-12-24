@@ -116,9 +116,9 @@
     top: 50%;
     right: 0;
     transform: translateY(-50%);
-    font-size: clamp(18rem, 35vw, 45rem);
-    font-weight: 900;
-    letter-spacing: -0.05em;
+    font-size: calc(clamp(18rem, 35vw, 45rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.05em + var(--heading-letter-spacing, 0em));
     line-height: 0.8;
     opacity: 0.03;
     pointer-events: none;

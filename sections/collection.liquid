@@ -149,20 +149,20 @@
 
   /* Metro Title - Bold typography */
   .metro-item-title {
-    font-size: 1.125rem; font-weight: 600; line-height: 1.25;
+    font-size: calc(1.125rem * var(--heading-font-scale, 1)); font-weight: var(--font-heading-weight, 700); line-height: 1.25;
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     color: white; margin: 0;
     display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
     text-shadow: 0 2px 4px rgba(0,0,0,0.2);
   }
   @media (min-width: 768px) {
-    .metro-item-title { font-size: 1.25rem; }
+    .metro-item-title { font-size: calc(1.25rem * var(--heading-font-scale, 1)); }
   }
-  .metro-item--hero .metro-item-title { font-size: 1.5rem; -webkit-line-clamp: 3; font-weight: 700; }
-  .metro-item--wide .metro-item-title { font-size: 1.25rem; }
+  .metro-item--hero .metro-item-title { font-size: calc(1.5rem * var(--heading-font-scale, 1)); -webkit-line-clamp: 3; }
+  .metro-item--wide .metro-item-title { font-size: calc(1.25rem * var(--heading-font-scale, 1)); }
   @media (min-width: 768px) {
-    .metro-item--hero .metro-item-title { font-size: 2rem; }
-    .metro-item--wide .metro-item-title { font-size: 1.5rem; }
+    .metro-item--hero .metro-item-title { font-size: calc(2rem * var(--heading-font-scale, 1)); }
+    .metro-item--wide .metro-item-title { font-size: calc(1.5rem * var(--heading-font-scale, 1)); }
   }
 
   /* Metro Price - Clean display */

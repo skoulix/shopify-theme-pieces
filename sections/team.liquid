@@ -115,8 +115,8 @@
   }
 
   .team-member-name-{{ section.id }} {
-    font-size: clamp(1rem, 2vw, 1.25rem);
-    font-weight: 700;
+    font-size: calc(clamp(1rem, 2vw, 1.25rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
     transform: translateY(10px);
     transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);

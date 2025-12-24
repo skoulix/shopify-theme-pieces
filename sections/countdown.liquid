@@ -71,7 +71,7 @@
     align-items: baseline;
     justify-content: center;
     font-size: calc(clamp(3rem, 12vw, 7rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
+    font-weight: var(--font-heading-weight, 700);
     font-family: var(--font-heading);
     line-height: 1;
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
@@ -191,7 +191,7 @@
     right: -0.75rem;
     top: 0;
     font-size: calc(clamp(2rem, 8vw, 4rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
+    font-weight: var(--font-heading-weight, 700);
     font-family: var(--font-heading);
     opacity: 0.3;
   }
@@ -251,7 +251,7 @@
 
   .countdown-title-{{ section.id }} {
     font-size: calc(clamp(1.25rem, 3vw, 1.75rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
+    font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     line-height: 1.2;
   }
@@ -297,7 +297,7 @@
 
   .countdown-value-{{ section.id }} {
     font-size: calc(clamp(1.25rem, 3.5vw, 1.75rem) * var(--heading-font-scale, 1));
-    font-weight: 700;
+    font-weight: var(--font-heading-weight, 700);
     font-family: var(--font-heading);
     line-height: 1;
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));

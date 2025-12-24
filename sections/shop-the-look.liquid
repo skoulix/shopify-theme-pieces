@@ -193,8 +193,8 @@
   }
 
   .shop-the-look-complete-{{ section.id }} .complete-title {
-    font-size: 1.125rem;
-    font-weight: 700;
+    font-size: calc(1.125rem * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     margin-bottom: 0.25rem;
   }
 
@@ -208,8 +208,8 @@
   }
 
   .shop-the-look-complete-{{ section.id }} .complete-total-price {
-    font-size: 1.5rem;
-    font-weight: 700;
+    font-size: calc(1.5rem * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
     line-height: 1.2;
   }
 
