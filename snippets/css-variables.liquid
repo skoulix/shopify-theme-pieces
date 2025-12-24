@@ -342,6 +342,31 @@
     letter-spacing: 0.2em;
   }
 
+  /* Section label - uppercase depends on settings */
+  .section-label {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
+  /* Blog category - uppercase depends on settings */
+  .blog-category {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
+  /* Form label - uppercase depends on settings */
+  .form-label {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
+  /* Badge - uppercase depends on settings */
+  .badge {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
+  /* Page header subtitle - uppercase depends on settings */
+  .page-header-subtitle {
+    {% if settings.buttons_uppercase %}text-transform: uppercase;{% endif %}
+  }
+
   /* Cards */
   .card {
     background-color: var(--color-background);
