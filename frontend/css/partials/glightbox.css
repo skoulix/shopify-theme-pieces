@@ -1,278 +1,215 @@
 /* ==========================================================================
    GLightbox - Product Image Lightbox Styles
    Custom theme styling for GLightbox
+   Note: Uses !important to override library defaults
    ========================================================================== */
 
 /* Import base GLightbox styles */
 @import 'glightbox/dist/css/glightbox.min.css';
 
-/* Override GLightbox styles to match theme */
-.glightbox-container {
-  font-family: var(--font-body);
-}
+@layer components {
+  /* Override GLightbox styles to match theme */
+  .glightbox-container {
+    font-family: var(--font-body);
+  }
 
-/* Backdrop */
-.goverlay {
-  background: rgba(0, 0, 0, 0.95) !important;
-}
+  /* Backdrop */
+  .goverlay {
+    background: rgba(0, 0, 0, 0.95) !important;
+  }
 
-/* Navigation arrows */
-.gnext,
-.gprev {
-  width: 48px !important;
-  height: 48px !important;
-  background: var(--color-background) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--button-radius) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  transition: all 0.3s ease !important;
-}
-
-.gnext:hover,
-.gprev:hover {
-  background: var(--color-text) !important;
-  border-color: var(--color-text) !important;
-}
-
-.gnext i,
-.gprev i,
-.gnext svg,
-.gprev svg {
-  font-size: 1.25rem !important;
-  color: var(--color-text) !important;
-  transition: color 0.3s ease !important;
-}
-
-.gnext:hover i,
-.gprev:hover i,
-.gnext:hover svg,
-.gprev:hover svg {
-  color: var(--color-background) !important;
-}
-
-.gprev {
-  left: 1.5rem !important;
-}
-
-.gnext {
-  right: 1.5rem !important;
-}
-
-/* Close button */
-.gclose {
-  width: 48px !important;
-  height: 48px !important;
-  background: var(--color-background) !important;
-  border: 1px solid var(--color-border) !important;
-  border-radius: var(--button-radius) !important;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  top: 1.5rem !important;
-  right: 1.5rem !important;
-  transition: all 0.3s ease !important;
-  opacity: 1 !important;
-}
-
-.gclose:hover {
-  background: var(--color-text) !important;
-  border-color: var(--color-text) !important;
-}
-
-.gclose i,
-.gclose svg {
-  font-size: 1.25rem !important;
-  color: var(--color-text) !important;
-  transition: color 0.3s ease !important;
-}
-
-.gclose:hover i,
-.gclose:hover svg {
-  color: var(--color-background) !important;
-}
-
-/* Hide default SVG icons */
-.gnext svg.default,
-.gprev svg.default,
-.gclose svg.default {
-  display: none !important;
-}
-
-/* Slide content */
-.gslide-image img {
-  border-radius: calc(var(--card-radius) * 0.5) !important;
-}
-
-/* Zoom cursor states */
-.gslide-image.zoomable img {
-  cursor: zoom-in !important;
-}
-
-.gslide-image.zoomable img.zoomed {
-  cursor: grab !important;
-  max-width: none !important;
-  max-height: none !important;
-}
-
-.gslide-image.zoomable img.zoomed:active {
-  cursor: grabbing !important;
-}
-
-/* Video container */
-.gvideo-wrapper {
-  max-width: 90vw !important;
-  border-radius: calc(var(--card-radius) * 0.5) !important;
-  overflow: hidden !important;
-}
-
-/* Inline video (local Shopify videos) */
-.glightbox-video {
-  max-width: 90vw !important;
-  max-height: 80vh !important;
-  border-radius: calc(var(--card-radius) * 0.5) !important;
-  display: block !important;
-}
-
-/* Ensure video controls are visible */
-.glightbox-video::-webkit-media-controls {
-  display: flex !important;
-  visibility: visible !important;
-  opacity: 1 !important;
-}
-
-video[controls].glightbox-video {
-  pointer-events: auto !important;
-}
-
-.ginlined-content {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  overflow: visible !important;
-}
-
-/* Inline content wrapper - ensure video controls work */
-.gslide-inline {
-  overflow: visible !important;
-  background: transparent !important;
-}
-
-.gslide-inline .ginner-container {
-  overflow: visible !important;
-}
-
-.gslide-inline .gslide-media {
-  overflow: visible !important;
-}
-
-/* Counter / slide info */
-.gslide-desc {
-  background: transparent !important;
-  padding: 1rem 0 !important;
-}
-
-.gdesc-inner {
-  padding: 0 !important;
-}
-
-.gslide-title {
-  font-family: var(--font-heading) !important;
-  font-size: 1rem !important;
-  font-weight: 600 !important;
-  color: var(--color-background) !important;
-  margin: 0 !important;
-}
-
-/* Loader */
-.gloader {
-  border: 2px solid rgba(255, 255, 255, 0.2) !important;
-  border-top-color: white !important;
-}
-
-/* Counter at bottom */
-.gcounter {
-  position: fixed !important;
-  bottom: 1.5rem !important;
-  left: 50% !important;
-  transform: translateX(-50%) !important;
-  font-size: 0.75rem !important;
-  font-weight: 600 !important;
-  letter-spacing: 0.2em !important;
-  text-transform: uppercase !important;
-  color: rgba(255, 255, 255, 0.6) !important;
-  background: rgba(0, 0, 0, 0.5) !important;
-  padding: 0.5rem 1rem !important;
-  border-radius: 100px !important;
-}
-
-/* Mobile adjustments */
-@media (max-width: 768px) {
+  /* Navigation arrows */
   .gnext,
-  .gprev,
-  .gclose {
-    width: 40px !important;
-    height: 40px !important;
-  }
-
   .gprev {
-    left: 1rem !important;
+    @apply size-12! flex! items-center! justify-center! max-md:size-10!;
+    background: var(--color-background) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--button-radius) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
   }
 
-  .gnext {
-    right: 1rem !important;
-  }
-
-  .gclose {
-    top: 1rem !important;
-    right: 1rem !important;
+  .gnext:hover,
+  .gprev:hover {
+    background: var(--color-text) !important;
+    border-color: var(--color-text) !important;
   }
 
   .gnext i,
   .gprev i,
-  .gclose i,
   .gnext svg,
-  .gprev svg,
+  .gprev svg {
+    @apply text-xl! max-md:text-base!;
+    color: var(--color-text) !important;
+    transition: color 0.3s ease !important;
+  }
+
+  .gnext:hover i,
+  .gprev:hover i,
+  .gnext:hover svg,
+  .gprev:hover svg {
+    color: var(--color-background) !important;
+  }
+
+  .gprev {
+    @apply left-6! max-md:left-4!;
+  }
+
+  .gnext {
+    @apply right-6! max-md:right-4!;
+  }
+
+  /* Close button */
+  .gclose {
+    @apply size-12! flex! items-center! justify-center! top-6! right-6! opacity-100! max-md:size-10! max-md:top-4! max-md:right-4!;
+    background: var(--color-background) !important;
+    border: 1px solid var(--color-border) !important;
+    border-radius: var(--button-radius) !important;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3) !important;
+    transition: all 0.3s ease !important;
+  }
+
+  .gclose:hover {
+    background: var(--color-text) !important;
+    border-color: var(--color-text) !important;
+  }
+
+  .gclose i,
   .gclose svg {
-    font-size: 1rem !important;
+    @apply text-xl! max-md:text-base!;
+    color: var(--color-text) !important;
+    transition: color 0.3s ease !important;
   }
-}
 
-/* Animation overrides for smoother transitions */
-.glightbox-clean .gslide-media {
-  box-shadow: none !important;
-}
-
-/* Zoom effect on open */
-.glightbox-fade-in {
-  animation: glightboxFadeIn 0.3s ease-out forwards !important;
-}
-
-.glightbox-fade-out {
-  animation: glightboxFadeOut 0.2s ease-in forwards !important;
-}
-
-@keyframes glightboxFadeIn {
-  from {
-    opacity: 0;
-    transform: scale(0.95);
+  .gclose:hover i,
+  .gclose:hover svg {
+    color: var(--color-background) !important;
   }
-  to {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
 
-@keyframes glightboxFadeOut {
-  from {
-    opacity: 1;
-    transform: scale(1);
+  /* Hide default SVG icons */
+  .gnext svg.default,
+  .gprev svg.default,
+  .gclose svg.default {
+    @apply hidden!;
   }
-  to {
-    opacity: 0;
-    transform: scale(0.95);
+
+  /* Slide content */
+  .gslide-image img {
+    border-radius: calc(var(--card-radius) * 0.5) !important;
+  }
+
+  /* Zoom cursor states */
+  .gslide-image.zoomable img {
+    @apply cursor-zoom-in!;
+  }
+
+  .gslide-image.zoomable img.zoomed {
+    @apply cursor-grab! max-w-none! max-h-none!;
+  }
+
+  .gslide-image.zoomable img.zoomed:active {
+    @apply cursor-grabbing!;
+  }
+
+  /* Video container */
+  .gvideo-wrapper {
+    @apply max-w-[90vw]! overflow-hidden!;
+    border-radius: calc(var(--card-radius) * 0.5) !important;
+  }
+
+  /* Inline video (local Shopify videos) */
+  .glightbox-video {
+    @apply max-w-[90vw]! max-h-[80vh]! block!;
+    border-radius: calc(var(--card-radius) * 0.5) !important;
+  }
+
+  /* Ensure video controls are visible */
+  .glightbox-video::-webkit-media-controls {
+    @apply flex! visible! opacity-100!;
+  }
+
+  video[controls].glightbox-video {
+    @apply pointer-events-auto!;
+  }
+
+  .ginlined-content {
+    @apply flex! items-center! justify-center! overflow-visible!;
+  }
+
+  /* Inline content wrapper - ensure video controls work */
+  .gslide-inline {
+    @apply overflow-visible! bg-transparent!;
+  }
+
+  .gslide-inline .ginner-container {
+    @apply overflow-visible!;
+  }
+
+  .gslide-inline .gslide-media {
+    @apply overflow-visible!;
+  }
+
+  /* Counter / slide info */
+  .gslide-desc {
+    @apply bg-transparent! py-4! px-0!;
+  }
+
+  .gdesc-inner {
+    @apply p-0!;
+  }
+
+  .gslide-title {
+    @apply font-heading! text-base! font-semibold! m-0!;
+    color: var(--color-background) !important;
+  }
+
+  /* Loader */
+  .gloader {
+    border: 2px solid rgba(255, 255, 255, 0.2) !important;
+    border-top-color: white !important;
+  }
+
+  /* Counter at bottom */
+  .gcounter {
+    @apply fixed! bottom-6! left-1/2! -translate-x-1/2! text-xs! font-semibold! uppercase! py-2! px-4! rounded-full!;
+    letter-spacing: 0.2em !important;
+    color: rgba(255, 255, 255, 0.6) !important;
+    background: rgba(0, 0, 0, 0.5) !important;
+  }
+
+  /* Animation overrides for smoother transitions */
+  .glightbox-clean .gslide-media {
+    @apply shadow-none!;
+  }
+
+  /* Zoom effect on open */
+  .glightbox-fade-in {
+    animation: glightboxFadeIn 0.3s ease-out forwards !important;
+  }
+
+  .glightbox-fade-out {
+    animation: glightboxFadeOut 0.2s ease-in forwards !important;
+  }
+
+  @keyframes glightboxFadeIn {
+    from {
+      opacity: 0;
+      transform: scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: scale(1);
+    }
+  }
+
+  @keyframes glightboxFadeOut {
+    from {
+      opacity: 1;
+      transform: scale(1);
+    }
+    to {
+      opacity: 0;
+      transform: scale(0.95);
+    }
   }
 }

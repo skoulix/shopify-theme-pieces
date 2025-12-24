@@ -1,25 +1,18 @@
 /* ==========================================================================
-   Utilities Layer - Custom utilities
-   ========================================================================== */
-
-/* ==========================================================================
-   Layout Components
+   Utilities - Layout components and reusable patterns
    ========================================================================== */
 
 @layer components {
-  /* Page container */
+  /* Page Container */
   .page-width {
-    @apply mx-auto w-full px-4 sm:px-6 lg:px-8;
-    max-width: var(--page-max-width, 1280px);
+    @apply mx-auto w-full px-4 sm:px-6 lg:px-8 max-w-(--page-max-width);
   }
 
-  /* Section padding - uses theme setting via CSS variable */
+  /* Section Padding */
   .section-padding {
-    padding-top: var(--section-vertical-padding);
-    padding-bottom: var(--section-vertical-padding);
+    @apply py-(--section-vertical-padding);
   }
 
-  /* Section padding variants - for sections that need different spacing */
   .section-padding-sm {
     padding-top: calc(var(--section-vertical-padding) * 0.6);
     padding-bottom: calc(var(--section-vertical-padding) * 0.6);
@@ -30,413 +23,254 @@
     padding-bottom: calc(var(--section-vertical-padding) * 1.5);
   }
 
-  /* Page padding - for main template pages (article, cart, search, etc.) */
   .page-padding {
-    padding-top: var(--page-vertical-padding);
-    padding-bottom: var(--page-vertical-padding);
+    @apply py-(--page-vertical-padding);
   }
 
-  /* Section spacing - fixed values (deprecated, use section-padding) */
   .section {
     @apply py-16 sm:py-24;
   }
 
-  /* Visually hidden (for screen readers) */
-  .visually-hidden {
-    @apply sr-only;
+  /* Drawer Backdrop */
+  .drawer-backdrop {
+    @apply absolute inset-0 opacity-0 backdrop-blur-sm bg-black/50 transition-opacity duration-300;
   }
-}
 
-/* ==========================================================================
-   Drawer/Modal Backdrop - Reusable backdrop for drawers and modals
-   ========================================================================== */
+  .drawer-backdrop.is-visible,
+  .is-open > .drawer-backdrop,
+  .is-open .drawer-backdrop {
+    @apply opacity-100;
+  }
 
-.drawer-backdrop {
-  position: absolute;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
-  opacity: 0;
-  transition: opacity 0.3s ease;
-}
+  /* Drawer Container */
+  .drawer-container {
+    @apply pointer-events-none invisible transition-[visibility] duration-0 delay-300;
+  }
 
-.drawer-backdrop.is-visible,
-.is-open > .drawer-backdrop,
-.is-open .drawer-backdrop {
-  opacity: 1;
-}
+  .drawer-container.is-open {
+    @apply pointer-events-auto visible delay-0;
+  }
 
-/* ==========================================================================
-   Generic Drawer - Visibility with delayed hide for close animation
-   ========================================================================== */
+  /* Facets Drawer */
+  .facets-drawer {
+    @apply pointer-events-none invisible transition-[visibility] duration-0 delay-300;
+  }
 
-.drawer-container {
-  pointer-events: none;
-  visibility: hidden;
-  /* Delay visibility:hidden until after slide-out animation completes */
-  transition: visibility 0s 0.3s;
-}
+  .facets-drawer.is-open {
+    @apply pointer-events-auto visible delay-0;
+  }
 
-.drawer-container.is-open {
-  pointer-events: auto;
-  visibility: visible;
-  /* No delay when opening - show immediately */
-  transition: visibility 0s 0s;
-}
+  [id^="shopify-section-quick-view"] {
+    @apply contents;
+  }
 
-/* ==========================================================================
-   Facets Drawer - Filter/Sort drawer with slide animation
-   ========================================================================== */
+  /* Collection Filters */
+  .collection-wrapper.is-transitioning [data-collection-content] {
+    @apply opacity-50 pointer-events-none;
+  }
 
-.facets-drawer {
-  pointer-events: none;
-  visibility: hidden;
-  /* Delay visibility:hidden until after slide-out animation completes */
-  transition: visibility 0s 0.3s;
-}
+  .facets-view-btn {
+    @apply bg-transparent text-(--color-text-secondary);
+  }
 
-.facets-drawer.is-open {
-  pointer-events: auto;
-  visibility: visible;
-  /* No delay when opening - show immediately */
-  transition: visibility 0s 0s;
-}
+  .facets-view-btn:hover {
+    @apply text-(--color-text) bg-(--color-background-secondary);
+  }
 
-/* Quick view modal section wrapper - ensure full height for AJAX-loaded content */
-[id^="shopify-section-quick-view"] {
-  display: contents;
-}
+  .facets-view-btn.is-active {
+    @apply text-(--color-background) bg-(--color-text);
+  }
 
-/* ==========================================================================
-   Facets / Collection Filters
-   ========================================================================== */
+  .product-card-list-buttons-mobile {
+    @apply hidden;
+  }
 
-/* Collection transitioning state */
-.collection-wrapper.is-transitioning [data-collection-content] {
-  opacity: 0.5;
-  pointer-events: none;
-}
+  [data-card-no-border][data-card-no-shadow] .product-card-content,
+  [data-card-no-border][data-card-no-shadow] .product-card-quick-add {
+    @apply px-0;
+  }
 
-/* View toggle buttons */
-.facets-view-btn {
-  color: var(--color-text-secondary);
-  background: transparent;
-}
-
-.facets-view-btn:hover {
-  color: var(--color-text);
-  background: var(--color-background-secondary);
-}
-
-.facets-view-btn.is-active {
-  color: var(--color-background);
-  background: var(--color-text);
-}
-
-/* Hide mobile list buttons by default (grid view) - these are in product-card.liquid */
-.product-card-list-buttons-mobile {
-  display: none;
-}
-
-/* Product card when no border AND no shadow */
-[data-card-no-border][data-card-no-shadow] .product-card-content {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-[data-card-no-border][data-card-no-shadow] .product-card-quick-add {
-  padding-left: 0;
-  padding-right: 0;
-}
-
-/* ==========================================================================
-   Product Card List - Unified list view component for grid and metro
-   ========================================================================== */
-
-.product-card-list {
-  display: grid;
-  grid-template-columns: 80px 1fr;
-  gap: 1rem;
-  align-items: start;
-  border-radius: var(--card-radius);
-  border: var(--card-border-width) solid var(--color-border);
-  box-shadow: var(--card-shadow);
-  background: var(--color-background);
-}
-
-.product-card-list__image {
-  width: 80px;
-  height: auto;
-  aspect-ratio: 1;
-  flex-shrink: 0;
-  grid-row: 1 / -1;
-  align-self: center;
-  border-radius: var(--card-radius);
-  overflow: hidden;
-  display: block;
-}
-
-.product-card-list__content {
-  padding: 0.75rem 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.25rem;
-  text-decoration: none;
-}
-
-/* Vendor and title use card-meta and card-title classes from typography.css */
-.product-card-list__vendor {
-  margin: 0;
-}
-
-.product-card-list__title {
-  margin: 0;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
-.product-card-list__title a {
-  color: inherit;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.product-card-list__title a:hover {
-  color: var(--color-primary);
-}
-
-.product-card-list__price {
-  color: var(--color-text-secondary);
-  font-size: 0.875rem;
-  margin: 0;
-}
-
-.product-card-list__price-compare {
-  text-decoration: line-through;
-  opacity: 0.6;
-  margin-right: 0.5rem;
-}
-
-.product-card-list__price-sale {
-  color: var(--color-sale);
-}
-
-/* Mobile buttons */
-.product-card-list__buttons-mobile {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  grid-column: 2;
-  padding-bottom: 0.75rem;
-  padding-right: 0.5rem;
-}
-
-.product-card-list__actions-mobile {
-  display: flex;
-  gap: 0.5rem;
-  width: 100%;
-  justify-content: space-between;
-}
-
-.product-card-list__actions-mobile .btn {
-  flex: 1;
-}
-
-/* Desktop buttons - hidden on mobile */
-.product-card-list__buttons-desktop {
-  display: none;
-}
-
-@media (min-width: 768px) {
+  /* Product Card List View */
   .product-card-list {
-    grid-template-columns: 100px 1fr auto;
-    gap: 1.5rem;
-    align-items: center;
+    @apply grid gap-4 items-start bg-(--color-background)
+           rounded-(--card-radius) border-(length:--card-border-width) border-(--color-border)
+           shadow-(--card-shadow);
+    grid-template-columns: 80px 1fr;
   }
 
   .product-card-list__image {
-    width: 100px;
+    @apply w-20 h-auto aspect-square shrink-0 self-center overflow-hidden block rounded-(--card-radius);
+    grid-row: 1 / -1;
   }
 
-  /* Hide mobile buttons, show desktop */
+  .product-card-list__content {
+    @apply py-3 flex flex-col gap-1 no-underline;
+  }
+
+  .product-card-list__vendor {
+    @apply m-0;
+  }
+
+  .product-card-list__title {
+    @apply m-0 line-clamp-2;
+  }
+
+  .product-card-list__title a {
+    @apply text-inherit no-underline transition-colors duration-200;
+  }
+
+  .product-card-list__title a:hover {
+    @apply text-(--color-primary);
+  }
+
+  .product-card-list__price {
+    @apply text-sm m-0 text-(--color-text-secondary);
+  }
+
+  .product-card-list__price-compare {
+    @apply line-through opacity-60 mr-2;
+  }
+
+  .product-card-list__price-sale {
+    @apply text-(--color-sale);
+  }
+
   .product-card-list__buttons-mobile {
-    display: none;
+    @apply flex flex-col gap-2 pb-3 pr-2;
+    grid-column: 2;
+  }
+
+  .product-card-list__actions-mobile {
+    @apply flex gap-2 w-full justify-between;
+  }
+
+  .product-card-list__actions-mobile .btn {
+    @apply flex-1;
   }
 
   .product-card-list__buttons-desktop {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    padding-right: 0.5rem;
+    @apply hidden md:flex md:flex-col md:gap-2 md:pr-2;
   }
 
   .product-card-list__buttons-desktop > a,
   .product-card-list__buttons-desktop > button {
-    width: auto;
-    min-width: 190px;
+    @apply md:w-auto md:min-w-48;
   }
 
   .product-card-list__actions-desktop {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.5rem;
+    @apply flex justify-between gap-2;
   }
 
   .product-card-list__actions-desktop .btn {
-    flex: 1;
+    @apply flex-1;
   }
-}
 
-/* Remove right padding when card has no border */
-[data-card-no-border] .product-card-list__buttons-mobile {
-  padding-right: 0;
-}
+  @media (min-width: 768px) {
+    .product-card-list {
+      @apply gap-6 items-center;
+      grid-template-columns: 100px 1fr auto;
+    }
 
-[data-card-no-border] .product-card-list__buttons-desktop {
-  padding-right: 0;
-}
+    .product-card-list__image {
+      @apply w-24;
+    }
 
-/* List view grid - single column with unified card component */
-.collection-list-view {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 1rem;
-}
-
-[data-card-no-border] .collection-list-view {
-  gap: 0;
-}
-
-[data-card-no-border] .collection-list-view .product-card-list {
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-border);
-}
-
-/* Add left padding on mobile when card has border so image doesn't touch edges */
-@media (max-width: 767px) {
-  .collection-wrapper:not([data-card-no-border]) .collection-list-view .product-card-list {
-    padding-left: 0.5rem;
+    .product-card-list__buttons-mobile {
+      @apply hidden;
+    }
   }
-}
 
-/* ==========================================================================
-   Toast Notifications
-   ========================================================================== */
+  [data-card-no-border] .product-card-list__buttons-mobile,
+  [data-card-no-border] .product-card-list__buttons-desktop {
+    @apply pr-0;
+  }
 
-.toast-container {
-  position: fixed;
-  bottom: 1.5rem;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  pointer-events: none;
-  width: 100%;
-  max-width: 28rem;
-  padding: 0 1rem;
-}
+  .collection-list-view {
+    @apply grid gap-4;
+    grid-template-columns: 1fr;
+  }
 
-@media (min-width: 640px) {
+  [data-card-no-border] .collection-list-view {
+    @apply gap-0;
+  }
+
+  [data-card-no-border] .collection-list-view .product-card-list {
+    @apply py-4 border-b border-(--color-border);
+  }
+
+  @media (max-width: 767px) {
+    .collection-wrapper:not([data-card-no-border]) .collection-list-view .product-card-list {
+      @apply pl-2;
+    }
+  }
+
+  /* Toast Notifications */
   .toast-container {
-    bottom: 2rem;
+    @apply fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2
+           flex flex-col gap-3 pointer-events-none w-full max-w-md px-4 z-(--z-toast);
   }
-}
 
-.toast {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 1rem 1.25rem;
-  background-color: var(--color-text);
-  color: var(--color-background);
-  border-radius: var(--button-radius);
-  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
-  pointer-events: auto;
-  opacity: 0;
-  transform: translateY(1rem);
-  transition: opacity 0.3s ease, transform 0.3s ease;
-}
+  .toast {
+    @apply flex items-center gap-3 py-4 px-5 pointer-events-auto opacity-0 shadow-lg
+           bg-(--color-text) text-(--color-background) rounded-(--button-radius)
+           translate-y-4 transition-[opacity,transform] duration-300;
+  }
 
-.toast--visible {
-  opacity: 1;
-  transform: translateY(0);
-}
+  .toast--visible {
+    @apply opacity-100 translate-y-0;
+  }
 
-.toast--leaving {
-  opacity: 0;
-  transform: translateY(-0.5rem);
-}
+  .toast--leaving {
+    @apply opacity-0 -translate-y-2;
+  }
 
-.toast__icon {
-  flex-shrink: 0;
-  font-size: 1.25rem;
-  line-height: 1;
-}
+  .toast__icon {
+    @apply shrink-0 text-xl leading-none;
+  }
 
-.toast--success .toast__icon {
-  color: var(--color-success, #22c55e);
-}
+  .toast--success .toast__icon {
+    @apply text-green-500;
+  }
 
-.toast--error .toast__icon {
-  color: var(--color-error, #ef4444);
-}
+  .toast--error .toast__icon {
+    @apply text-red-500;
+  }
 
-.toast--info .toast__icon {
-  color: var(--color-info, #3b82f6);
-}
+  .toast--info .toast__icon {
+    @apply text-blue-500;
+  }
 
-.toast__message {
-  flex: 1;
-  font-size: 0.875rem;
-  line-height: 1.4;
-}
+  .toast__message {
+    @apply flex-1 text-sm leading-relaxed;
+  }
 
-.toast__close {
-  flex-shrink: 0;
-  padding: 0.25rem;
-  margin: -0.25rem;
-  background: transparent;
-  border: none;
-  color: inherit;
-  opacity: 0.6;
-  cursor: pointer;
-  transition: opacity 0.2s ease;
-}
+  .toast__close {
+    @apply shrink-0 p-1 -m-1 bg-transparent border-none text-inherit opacity-60
+           cursor-pointer transition-opacity duration-200;
+  }
 
-.toast__close:hover {
-  opacity: 1;
-}
+  .toast__close:hover {
+    @apply opacity-100;
+  }
 
-/* ==========================================================================
-   Shopify Placeholder SVGs - Adapt to color scheme
-   ========================================================================== */
+  /* Shopify Placeholder SVGs */
+  .placeholder-svg,
+  svg[viewBox="0 0 525.5 525.5"],
+  svg[viewBox="0 0 1054 1054"],
+  svg[viewBox="0 0 787.58 462.72"],
+  svg[viewBox="0 0 787.57 462.72"],
+  svg[viewBox="0 0 1052.72 788.03"],
+  svg[viewBox="0 0 1052 400"] {
+    @apply opacity-15;
+  }
 
-/*
- * Shopify placeholder SVGs use various viewBox sizes.
- * Target common viewBox patterns used by Shopify placeholders.
- * These adapt to color schemes across all sections.
- */
-.placeholder-svg,
-svg[viewBox="0 0 525.5 525.5"],
-svg[viewBox="0 0 1054 1054"],
-svg[viewBox="0 0 787.58 462.72"],
-svg[viewBox="0 0 787.57 462.72"],
-svg[viewBox="0 0 1052.72 788.03"],
-svg[viewBox="0 0 1052 400"] {
-  opacity: 0.15;
-}
-
-.placeholder-svg path,
-svg[viewBox="0 0 525.5 525.5"] path,
-svg[viewBox="0 0 1054 1054"] path,
-svg[viewBox="0 0 787.58 462.72"] path,
-svg[viewBox="0 0 787.57 462.72"] path,
-svg[viewBox="0 0 1052.72 788.03"] path,
-svg[viewBox="0 0 1052 400"] path {
-  fill: var(--color-text);
+  .placeholder-svg path,
+  svg[viewBox="0 0 525.5 525.5"] path,
+  svg[viewBox="0 0 1054 1054"] path,
+  svg[viewBox="0 0 787.58 462.72"] path,
+  svg[viewBox="0 0 787.57 462.72"] path,
+  svg[viewBox="0 0 1052.72 788.03"] path,
+  svg[viewBox="0 0 1052 400"] path {
+    @apply fill-(--color-text);
+  }
 }

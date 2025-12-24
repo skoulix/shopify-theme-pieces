@@ -1,209 +1,141 @@
 /* ==========================================================================
-   Animation Styles - Centralized reveal animations
+   Animation Styles - Reveal animations and states
    ========================================================================== */
 
-/* ==========================================================================
-   Title Reveal Animation - Hidden by default for SplitText animations
-   Usage: Add [data-section-title] to title elements that will be animated
-   The JS will animate them in, this CSS hides them initially
-   ========================================================================== */
-
-[data-section-title] {
-  opacity: 0;
-}
-
-/* Show immediately when animations are disabled */
-html.animations-disabled [data-section-title] {
-  opacity: 1;
-}
-
-@media (prefers-reduced-motion: reduce) {
+@layer components {
+  /* Section Title Animation */
   [data-section-title] {
-    opacity: 1;
+    @apply opacity-0;
   }
-}
 
-/* ==========================================================================
-   Shopify Policy Pages - Initial hidden state for intro animations
-   These pages have no template access, so we target by class name
-   ========================================================================== */
+  html.animations-disabled [data-section-title] {
+    @apply opacity-100;
+  }
 
-.shopify-policy__title,
-.shopify-policy__body {
-  opacity: 0;
-  transform: translateY(30px);
-}
+  @media (prefers-reduced-motion: reduce) {
+    [data-section-title] {
+      @apply opacity-100;
+    }
+  }
 
-/* Show immediately when animations are disabled */
-html.animations-disabled .shopify-policy__title,
-html.animations-disabled .shopify-policy__body {
-  opacity: 1;
-  transform: none;
-}
-
-@media (prefers-reduced-motion: reduce) {
+  /* Shopify Policy Pages */
   .shopify-policy__title,
   .shopify-policy__body {
-    opacity: 1;
-    transform: none;
+    @apply opacity-0 translate-y-8;
   }
-}
 
-/* Scroll locking for modals, drawers, and page transitions */
-html.scroll-locked {
-  overflow: hidden;
-}
+  html.animations-disabled .shopify-policy__title,
+  html.animations-disabled .shopify-policy__body {
+    @apply opacity-100 translate-y-0;
+  }
 
-html.scroll-locked body {
-  overflow: hidden;
-  /* Note: position:fixed was removed because it causes scroll jump during Swup transitions.
-     Lenis handles scroll locking via its own mechanisms. For modals/drawers,
-     overflow:hidden on html is sufficient when combined with Lenis.stop() */
-}
+  @media (prefers-reduced-motion: reduce) {
+    .shopify-policy__title,
+    .shopify-policy__body {
+      @apply opacity-100 translate-y-0;
+    }
+  }
 
-/* Image reveal animation states */
-.reveal-image {
-  clip-path: inset(0 100% 0 0);
-}
+  /* Scroll Locking */
+  html.scroll-locked {
+    @apply overflow-hidden;
+  }
 
-.reveal-image--animated {
-  clip-path: inset(0 0% 0 0);
-}
+  html.scroll-locked body {
+    @apply overflow-hidden;
+  }
 
-/* Content fade-up animation states */
-.reveal-content {
-  opacity: 0;
-  transform: translateY(30px);
-}
+  /* Image Reveal */
+  .reveal-image {
+    clip-path: inset(0 100% 0 0);
+  }
 
-.reveal-content--animated {
-  opacity: 1;
-  transform: translateY(0);
-}
+  .reveal-image--animated {
+    clip-path: inset(0 0% 0 0);
+  }
 
-/* Transitioning state - prevents interactions during animation */
-.is-transitioning {
-  pointer-events: none;
-}
+  /* Content Fade Up */
+  .reveal-content {
+    @apply opacity-0 translate-y-8;
+  }
 
-/* Loading state - used for initial hidden state */
-.is-loading .reveal-image {
-  clip-path: inset(0 100% 0 0);
-}
+  .reveal-content--animated {
+    @apply opacity-100 translate-y-0;
+  }
 
-/* ==========================================================================
-   Section Header Intro Animation - GSAP-controlled fade up effect
-   Usage: <span data-section-intro>Label</span>
-   These are animated via GSAP timeline in section JS, NOT IntersectionObserver
-   This allows coordinated sequencing: label → title → description
-   ========================================================================== */
+  .is-transitioning {
+    @apply pointer-events-none;
+  }
 
-[data-section-intro] {
-  opacity: 0;
-  transform: translateY(30px);
-}
+  .is-loading .reveal-image {
+    clip-path: inset(0 100% 0 0);
+  }
 
-/* Reduced motion - show immediately */
-@media (prefers-reduced-motion: reduce) {
+  /* Section Intro Animation */
   [data-section-intro] {
-    opacity: 1;
-    transform: none;
+    @apply opacity-0 translate-y-8;
   }
-}
 
-/* Animations disabled via theme settings - show immediately */
-html.animations-disabled [data-section-intro] {
-  opacity: 1;
-  transform: none;
-}
+  @media (prefers-reduced-motion: reduce) {
+    [data-section-intro] {
+      @apply opacity-100 translate-y-0;
+    }
+  }
 
-/* ==========================================================================
-   Global Tween Animation System - Declarative GSAP-controlled animations
-   Usage: Add data-tween to any element, optionally with data-tween-type
-   Group elements with data-tween-group for sequenced animations
+  html.animations-disabled [data-section-intro] {
+    @apply opacity-100 translate-y-0;
+  }
 
-   Types:
-   - fade-up (default): Fade in from below
-   - fade-down: Fade in from above
-   - fade-left: Fade in from right
-   - fade-right: Fade in from left
-   - fade: Simple fade in
-   - split-text: Split text lines with reveal
-   - clip-right: Clip-path reveal left to right
-   - clip-up: Clip-path reveal bottom to top
-   - clip-down: Clip-path reveal top to bottom
-   - scale: Scale up with fade
-   ========================================================================== */
+  /* Global Tween System */
+  [data-tween]:not([data-tween-type="clip-right"]):not([data-tween-type="clip-up"]):not([data-tween-type="clip-down"]),
+  [data-tween-type="fade"],
+  [data-tween-type="fade-up"],
+  [data-tween-type="fade-down"],
+  [data-tween-type="fade-left"],
+  [data-tween-type="fade-right"],
+  [data-tween-type="scale"],
+  [data-tween-type="scale-up"] {
+    @apply opacity-0;
+  }
 
-/* Fade animations - initial hidden state */
-/* Note: clip-* types use clip-path only, not opacity */
-[data-tween]:not([data-tween-type="clip-right"]):not([data-tween-type="clip-up"]):not([data-tween-type="clip-down"]),
-[data-tween-type="fade"],
-[data-tween-type="fade-up"],
-[data-tween-type="fade-down"],
-[data-tween-type="fade-left"],
-[data-tween-type="fade-right"],
-[data-tween-type="scale"],
-[data-tween-type="scale-up"] {
-  opacity: 0;
-}
+  [data-tween-type="split-text"] {
+    @apply opacity-0;
+  }
 
-/* Split text - hidden until JS animates */
-[data-tween-type="split-text"] {
-  opacity: 0;
-}
+  [data-tween-type="clip-right"] {
+    clip-path: inset(0 100% 0 0);
+  }
 
-/* Clip animations - use clip-path only (no opacity) */
-[data-tween-type="clip-right"] {
-  clip-path: inset(0 100% 0 0);
-}
+  [data-tween-type="clip-up"] {
+    clip-path: inset(100% 0 0 0);
+  }
 
-[data-tween-type="clip-up"] {
-  clip-path: inset(100% 0 0 0);
-}
+  [data-tween-type="clip-down"] {
+    clip-path: inset(0 0 100% 0);
+  }
 
-[data-tween-type="clip-down"] {
-  clip-path: inset(0 0 100% 0);
-}
+  .tween-split-line {
+    @apply block;
+  }
 
-/* Split text line styling */
-.tween-split-line {
-  display: block;
-}
+  .tween-split-line:nth-child(2) {
+    @apply ml-2;
+  }
 
-/* Staggered line offset for visual interest (optional, matches section-title-line) */
-.tween-split-line:nth-child(2) {
-  margin-left: 0.5em;
-}
+  @media (prefers-reduced-motion: reduce) {
+    [data-tween], [data-tween-type] {
+      @apply opacity-100! translate-0!;
+      clip-path: none !important;
+    }
+  }
 
-/* Reduced motion - show everything immediately */
-@media (prefers-reduced-motion: reduce) {
-  [data-tween],
-  [data-tween-type] {
-    opacity: 1 !important;
-    transform: none !important;
+  html.animations-disabled [data-tween],
+  html.animations-disabled [data-tween-type] {
+    @apply opacity-100! translate-0!;
     clip-path: none !important;
   }
-}
 
-/* Animations disabled via theme settings - show immediately */
-html.animations-disabled [data-tween],
-html.animations-disabled [data-tween-type] {
-  opacity: 1 !important;
-  transform: none !important;
-  clip-path: none !important;
-}
-
-/* ==========================================================================
-   Spinner Animation - for loading states
-   Note: Tailwind has native `animate-spin` - this is kept for non-Tailwind contexts
-   ========================================================================== */
-
-@keyframes spin {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-.animate-spin {
-  animation: spin 1s linear infinite;
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
 }
