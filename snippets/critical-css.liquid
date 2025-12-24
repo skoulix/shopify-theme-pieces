@@ -1,162 +1,21 @@
 {%- comment -%}
-  Critical CSS - Inlined styles for above-the-fold content
-  This CSS loads synchronously to prevent FOUC (Flash of Unstyled Content)
+  Critical CSS - Minimal inlined styles for FOUC prevention only
 
-  Includes:
-  - Minimal reset
-  - Layout utilities (page-container, page-full)
-  - Header base styles
-  - Loading states to prevent layout shift
-  - Skip link styles
+  IMPORTANT: All resets and utilities are handled by Tailwind's @layer system.
+  DO NOT add unlayered CSS here as it overrides Tailwind utilities.
+
+  Only includes:
+  - Animation initial states (opacity: 0, clip-path) to prevent flash
+  - Page transition overlay
 {%- endcomment -%}
 
 <style>
   /* ==========================================================================
-     Minimal Reset - Only what's needed for initial render
-     ========================================================================== */
-  *, *::before, *::after { box-sizing: border-box; }
-  * { margin: 0; }
-  html { -webkit-text-size-adjust: 100%; }
-  body { line-height: 1.5; -webkit-font-smoothing: antialiased; }
-  img, picture, video, canvas, svg { display: block; max-width: 100%; }
-  button, input, select, textarea { font: inherit; }
-
-  /* ==========================================================================
-     Layout Utilities - Match Tailwind output
-     ========================================================================== */
-  .page-container {
-    max-width: var(--page-max-width);
-    margin-left: auto;
-    margin-right: auto;
-    padding-left: var(--page-padding);
-    padding-right: var(--page-padding);
-  }
-
-  .page-full {
-    padding-left: var(--page-padding);
-    padding-right: var(--page-padding);
-  }
-
-  /* ==========================================================================
-     Critical Tailwind Classes - Only above-the-fold essentials
-     ========================================================================== */
-  .antialiased { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
-  .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); white-space: nowrap; border-width: 0; }
-  .relative { position: relative; }
-  .absolute { position: absolute; }
-  .fixed { position: fixed; }
-  .inset-0 { inset: 0; }
-  .top-0 { top: 0; }
-  .left-0 { left: 0; }
-  .right-0 { right: 0; }
-  .z-30 { z-index: 30; }
-  .z-40 { z-index: 40; }
-  .z-50 { z-index: 50; }
-  .block { display: block; }
-  .inline-block { display: inline-block; }
-  .flex { display: flex; }
-  .inline-flex { display: inline-flex; }
-  .hidden { display: none; }
-  .items-center { align-items: center; }
-  .justify-between { justify-content: space-between; }
-  .justify-center { justify-content: center; }
-  .gap-x-8 { column-gap: 2rem; }
-  .overflow-hidden { overflow: hidden; }
-  .border-b { border-bottom-width: 1px; }
-  .bg-white { background-color: #fff; }
-  .py-4 { padding-top: 1rem; padding-bottom: 1rem; }
-  .text-xl { font-size: 1.25rem; line-height: 1.75rem; }
-  .text-2xl { font-size: 1.5rem; line-height: 2rem; }
-  .font-bold { font-weight: 700; }
-  .font-semibold { font-weight: 600; }
-  .transition-colors { transition-property: color, background-color, border-color; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: var(--duration-fast, 150ms); }
-  .duration-300 { transition-duration: var(--duration-normal, 300ms); }
-  .pointer-events-none { pointer-events: none; }
-
-  /* Responsive hidden/shown */
-  @media (min-width: 1024px) {
-    .lg\:hidden { display: none; }
-    .lg\:block { display: block; }
-    .lg\:flex { display: flex; }
-    .lg\:flex-1 { flex: 1 1 0%; }
-  }
-
-  /* Negative margin for buttons */
-  .-m-1\.5 { margin: -0.375rem; }
-  .-m-2\.5 { margin: -0.625rem; }
-  .p-1\.5 { padding: 0.375rem; }
-  .p-2\.5 { padding: 0.625rem; }
-  .rounded-md { border-radius: 0.375rem; }
-
-  /* Center positioning for mobile logo */
-  .left-1\/2 { left: 50%; }
-  .-translate-x-1\/2 { transform: translateX(-50%); }
-
-  /* ==========================================================================
-     Header Critical Styles
-     ========================================================================== */
-  .header-group {
-    position: relative;
-    z-index: 50;
-  }
-
-  /* When mobile menu is open, raise header z-index above all fixed elements */
-  body.mobile-menu-open .header-group {
-    z-index: 110;
-  }
-
-  .header-group.is-sticky {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease, border-color 0.3s ease;
-  }
-
-  .header-group.is-hidden {
-    transform: translateY(-100%);
-  }
-
-  /* Spacer creates space below fixed header so content isn't hidden behind it.
-     Uses :has() to detect header state since spacer is not a sibling of header-wrapper.
-     JavaScript in header.liquid also updates this dynamically. */
-  .header-spacer {
-    display: none;
-    height: var(--header-height, 65px);
-  }
-
-  /* Show spacer when header is sticky but NOT transparent */
-  body:has(.header-wrapper.is-sticky:not(.is-transparent)) .header-spacer {
-    display: block;
-  }
-
-  .header-inner {
-    background-color: var(--color-background);
-    border-color: var(--color-border);
-  }
-
-  /* ==========================================================================
-     Skip Link - Accessibility
-     ========================================================================== */
-  .sr-only.focus\:not-sr-only:focus {
-    position: absolute;
-    width: auto;
-    height: auto;
-    padding: 1rem;
-    margin: 0;
-    overflow: visible;
-    clip: auto;
-    white-space: normal;
-    background-color: white;
-    color: #4f46e5;
-    z-index: 50;
-  }
-
-  /* ==========================================================================
      Animation Initial States - Prevent flash of animated content
+     These use attribute selectors which won't conflict with class utilities
      ========================================================================== */
+
   /* Global tween system - hide elements that will animate in */
-  /* Note: clip-* types use clip-path only, not opacity */
   [data-tween]:not([data-tween-type="clip-right"]):not([data-tween-type="clip-up"]):not([data-tween-type="clip-down"]),
   [data-tween-type="fade"],
   [data-tween-type="fade-up"],
@@ -221,47 +80,8 @@
     transform: scaleY(0);
   }
 
-  /* ==========================================================================
-     Mobile Nav - Prevent FOUC (drawer hidden until CSS/JS loads)
-     ========================================================================== */
-  .mobile-nav {
-    visibility: hidden;
-    pointer-events: none;
-  }
-
+  /* Mobile nav drawer initial state for clip-path animation */
   .mobile-nav__drawer {
     clip-path: inset(0 0 100% 0);
-  }
-
-  /* ==========================================================================
-     Main Content Wrapper - Prevents content jump
-     ========================================================================== */
-  .site-content {
-    min-height: 90vh;
-  }
-
-  main {
-    outline: none;
-  }
-
-  /* ==========================================================================
-     Lenis Smooth Scroll - Critical overrides
-     ========================================================================== */
-  html.lenis,
-  html.lenis body {
-    height: auto;
-  }
-
-  .lenis.lenis-smooth {
-    scroll-behavior: auto !important;
-  }
-
-  .lenis.lenis-stopped {
-    overflow: hidden;
-  }
-
-  /* Prevent layout shift when scrollbar appears/disappears */
-  html {
-    scrollbar-gutter: stable;
   }
 </style>

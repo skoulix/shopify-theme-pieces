@@ -26,7 +26,7 @@
       {% endif %}
       {%- capture back_text -%}{{ 'blog.back_to_blog' | t: blog: blog.title }}{%- endcapture -%}
       <div class="mb-12" data-tween data-tween-type="fade-up">
-        <a href="{{ blog.url }}" class="text-hover-reveal inline-flex items-center gap-2 text-sm font-semibold tracking-widest text-(--color-text-secondary)">
+        <a href="{{ blog.url }}" class="text-hover-reveal inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary)">
           <i class="ph ph-arrow-left" aria-hidden="true"></i>
           <span data-hover="{{ back_text }}">{{ back_text }}</span>
         </a>

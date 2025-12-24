@@ -793,10 +793,10 @@
 
       // Only set up text animations if enabled
       if (shouldAnimateText) {
-        if (header) gsap.set(header, { opacity: 0, y: -20 });
-        if (linkItems.length > 0) gsap.set(linkItems, { opacity: 1 }); // Items visible, chars will animate
-        if (toggleIcons.length > 0) gsap.set(toggleIcons, { opacity: 0, scale: 0, rotation: -90 });
-        if (footer) gsap.set(footer, { opacity: 0, y: 20 });
+        gsap.set(header, { opacity: 0, y: -20 });
+        gsap.set(linkItems, { opacity: 1 }); // Items visible, chars will animate
+        gsap.set(toggleIcons, { opacity: 0, scale: 0, rotation: -90 });
+        gsap.set(footer, { opacity: 0, y: 20 });
 
         // Set link texts to hidden initially, will reveal by line
         if (SplitText) {
@@ -839,7 +839,7 @@
       // Only animate text content if enabled
       if (shouldAnimateText) {
         // Animate header
-        if (header) openTimeline.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.4);
+        openTimeline.to(header, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.4);
 
         // Animate each link line reveal with stagger
         if (linkSplits.length > 0) {
@@ -853,18 +853,16 @@
         }
 
         // Animate toggle icons with a playful spin-in
-        if (toggleIcons.length > 0) {
-          openTimeline.to(toggleIcons, {
-            opacity: 1,
-            scale: 1,
-            rotation: 0,
-            duration: 0.6,
-            stagger: 0.08,
-            ease: 'back.out(1.7)'
-          }, 0.7);
-        }
+        openTimeline.to(toggleIcons, {
+          opacity: 1,
+          scale: 1,
+          rotation: 0,
+          duration: 0.6,
+          stagger: 0.08,
+          ease: 'back.out(1.7)'
+        }, 0.7);
 
-        if (footer) openTimeline.to(footer, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.9);
+        openTimeline.to(footer, { opacity: 1, y: 0, duration: 0.5, ease: 'power3.out' }, 0.9);
       }
     } else {
       isAnimating = false;

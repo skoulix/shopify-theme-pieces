@@ -84,7 +84,7 @@
   }
 </style>
 
-<section class="wishlist-section-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" data-wishlist-section id="wishlist-section-{{ section.id }}">
+<section class="wishlist-section-{{ section.id }} page-padding color-{{ section.settings.color_scheme }}" data-wishlist-section id="wishlist-section-{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     <div class="section-header-spacing {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="wishlist-header-{{ section.id }}">

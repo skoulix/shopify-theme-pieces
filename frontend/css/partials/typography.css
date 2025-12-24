@@ -102,7 +102,7 @@
      ========================================================================== */
 
   .section-header {
-    margin-bottom: clamp(2rem, 5vh, 4rem);
+    margin-bottom: clamp(2rem, 5vh, 4rem) !important;
   }
 
   /* Reset spacing for elements inside .section-header since base classes now include spacing */
@@ -112,7 +112,7 @@
 
   .section-header .section-cta,
   .section-header .btn {
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem) !important;
   }
 
   /* ==========================================================================
@@ -122,12 +122,12 @@
 
   .section-label {
     @apply inline-block text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary);
-    margin-bottom: clamp(1rem, 2vw, 1.5rem);
+    margin-bottom: clamp(1rem, 2vw, 1.5rem) !important;
   }
 
   /* No spacing variant */
   .section-label--inline {
-    @apply mb-0;
+    margin-bottom: 0 !important;
   }
 
   /* ==========================================================================
@@ -135,7 +135,8 @@
      ========================================================================== */
 
   .blog-category {
-    @apply text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary) mb-3;
+    @apply text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary);
+    margin-bottom: 0.75rem !important;
   }
 
   /* ==========================================================================
@@ -147,7 +148,7 @@
     @apply leading-loose max-w-prose;
     font-size: clamp(var(--text-sm), 1.5vw, var(--text-lg));
     opacity: var(--opacity-muted);
-    margin-top: clamp(1.25rem, 2.5vw, 1.75rem);
+    margin-top: clamp(1.25rem, 2.5vw, 1.75rem) !important;
   }
 
   /* Centered variant */
@@ -161,7 +162,7 @@
      ========================================================================== */
 
   .section-cta {
-    margin-top: clamp(1.5rem, 3vw, 2.5rem);
+    margin-top: clamp(1.5rem, 3vw, 2.5rem) !important;
   }
 
   /* ==========================================================================
@@ -173,7 +174,8 @@
      ========================================================================== */
 
   .page-header-subtitle {
-    @apply flex items-center gap-4 mt-8 text-sm;
+    @apply flex items-center gap-4 text-sm;
+    margin-top: 2rem !important;
     letter-spacing: 0.2em;
     color: var(--color-text-secondary);
   }
@@ -210,7 +212,8 @@
      ========================================================================== */
 
   .form-label {
-    @apply block text-sm font-semibold uppercase tracking-widest mb-3;
+    @apply block text-sm font-semibold uppercase tracking-widest;
+    margin-bottom: 0.75rem !important;
     color: var(--color-text-secondary);
   }
 
@@ -246,7 +249,8 @@
      ========================================================================== */
 
   .card-price {
-    @apply text-sm font-medium mt-2;
+    @apply text-sm font-medium;
+    margin-top: 0.5rem !important;
     color: var(--color-text-secondary);
   }
 
@@ -353,7 +357,7 @@
 
   /* Spacing for section content below header */
   .spacing-content {
-    margin-top: clamp(2rem, 5vh, 4rem);
+    margin-top: clamp(2rem, 5vh, 4rem) !important;
   }
 
   /* ==========================================================================
@@ -363,12 +367,12 @@
      ========================================================================== */
 
   .section-header-spacing {
-    margin-bottom: clamp(2rem, 4vw, 3rem);
+    margin-bottom: clamp(2rem, 4vw, 3rem) !important;
   }
 
   @media (min-width: 1024px) {
     .section-header-spacing {
-      margin-bottom: clamp(2.5rem, 4vw, 4rem);
+      margin-bottom: clamp(2.5rem, 4vw, 4rem) !important;
     }
   }
 

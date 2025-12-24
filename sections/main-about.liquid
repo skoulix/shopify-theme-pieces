@@ -1,0 +1,22 @@
+{%- comment -%}
+  Main About Section
+  Provides page-level top padding for the about page template (header offset only)
+  This section exists solely to add the header height offset before stacked sections
+{%- endcomment -%}
+
+<style>
+  .about-page-spacer {
+    padding-top: var(--header-height, 65px);
+  }
+</style>
+
+<div class="about-page-spacer"></div>
+
+{% schema %}
+{
+  "name": "About Page Spacer",
+  "tag": "section",
+  "class": "section-main-about",
+  "settings": []
+}
+{% endschema %}

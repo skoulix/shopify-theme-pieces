@@ -42,6 +42,12 @@
     @apply cursor-pointer appearance-none pr-10;
   }
 
+  /* Option elements need explicit color - browsers don't inherit from select */
+  select option {
+    color: var(--color-text);
+    background-color: var(--color-background);
+  }
+
   /* States */
   .input:disabled, .input[disabled], .input.is-disabled {
     @apply cursor-not-allowed opacity-50;
