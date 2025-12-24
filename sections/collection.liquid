@@ -325,7 +325,7 @@
   endcase
 -%}
 <div
-  class="collection-wrapper is-loading min-h-screen page-padding"
+  class="collection-wrapper is-loading min-h-screen page-padding color-{{ section.settings.color_scheme }}"
   data-collection-wrapper
   data-layout-style="{{ layout_style }}"
   data-header-align="{{ section.settings.header_alignment }}"
@@ -1536,6 +1536,12 @@
       "label": "Enable layout toggle",
       "default": true,
       "info": "Allow customers to switch between grid and list views"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ]
 }
