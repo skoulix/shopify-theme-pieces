@@ -82,6 +82,7 @@
                     {% if is_active %}aria-current="page"{% endif %}
                   >
                     <span class="mobile-nav__link-text inline-block overflow-hidden">{{ link.title }}</span>
+                    <span class="mobile-nav__link-line"></span>
                   </a>
                 {% endif %}
               </li>
@@ -144,6 +145,7 @@
                         {% if child_active %}aria-current="page"{% endif %}
                       >
                         <span class="mobile-nav__link-text inline-block overflow-hidden">{{ child.title }}</span>
+                        <span class="mobile-nav__link-line"></span>
                       </a>
                     {% endif %}
                   </li>
@@ -192,6 +194,7 @@
                           {% if grandchild_active %}aria-current="page"{% endif %}
                         >
                           <span class="mobile-nav__link-text inline-block overflow-hidden">{{ grandchild.title }}</span>
+                          <span class="mobile-nav__link-line"></span>
                         </a>
                       </li>
                     {% endfor %}
@@ -296,38 +299,16 @@
     <div class="mobile-nav__footer p-5 border-t border-(--color-border)">
       <div class="mobile-nav__footer-links flex flex-wrap gap-4">
         {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="mobile-nav__footer-link inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)" data-mobile-nav-close>
-            <i class="ph ph-user text-lg"></i>
+          <a href="{{ routes.account_url }}" class="mobile-nav__footer-link inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)" data-mobile-nav-close>
+            <i class="ph ph-user text-base"></i>
             <span>{{ 'accessibility.account' | t }}</span>
           </a>
         {% endif %}
         {% if show_search %}
-          <a href="{{ routes.search_url }}" class="mobile-nav__footer-link inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)" data-mobile-nav-close>
-            <i class="ph ph-magnifying-glass text-lg"></i>
+          <a href="{{ routes.search_url }}" class="mobile-nav__footer-link inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)" data-mobile-nav-close>
+            <i class="ph ph-magnifying-glass text-base"></i>
             <span>{{ 'accessibility.search' | t }}</span>
           </a>
-        {% endif %}
-        {% if show_cart %}
-          {% if settings.cart_type == 'drawer' %}
-            <button
-              type="button"
-              class="mobile-nav__footer-link inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) bg-transparent border-none cursor-pointer transition-colors duration-200 hover:text-(--color-text)"
-              data-mobile-nav-close
-              data-cart-drawer-toggle
-            >
-              <i class="ph ph-bag text-lg"></i>
-              <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
-            </button>
-          {% else %}
-            <a
-              href="{{ routes.cart_url }}"
-              class="mobile-nav__footer-link inline-flex items-center gap-2 text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)"
-              data-mobile-nav-close
-            >
-              <i class="ph ph-bag text-lg"></i>
-              <span>Cart (<span data-cart-count>{{ cart.item_count }}</span>)</span>
-            </a>
-          {% endif %}
         {% endif %}
       </div>
     </div>

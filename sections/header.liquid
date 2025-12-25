@@ -450,11 +450,11 @@
             {% else %}
               <a
                 href="{{ link.url }}"
-                class="relative text-sm font-semibold leading-6 text-(--color-text) hover:text-(--color-primary) transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-0.5 after:bg-current after:transition-all after:duration-300 after:ease-out{% if is_active %} after:w-full{% else %} after:w-0 hover:after:w-full{% endif %}"
+                class="nav-link{% if is_active %} is-active{% endif %}"
                 data-nav-link
                 {% if is_active %}aria-current="page"{% endif %}
               >
-                {{ link.title }}
+                <span class="nav-link__text">{{ link.title }}</span>
               </a>
             {% endif %}
           {% endfor %}
@@ -471,6 +471,24 @@
 
       {%- comment -%} Right: Icons {%- endcomment -%}
       <div class="flex lg:flex-1 justify-end gap-x-1 lg:gap-x-2">
+        {%- comment -%} Mobile Cart Icon {%- endcomment -%}
+        {% if section.settings.show_cart %}
+          {% if settings.cart_type == 'drawer' %}
+            <button type="button" class="header-icon group lg:hidden" data-cart-drawer-toggle>
+              <i class="ph ph-bag"></i>
+              <span class="ml-1 text-sm font-medium text-(--color-text){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
+            </button>
+          {% else %}
+            <a href="{{ routes.cart_url }}" class="header-icon group lg:hidden">
+              <i class="ph ph-bag"></i>
+              <span class="ml-1 text-sm font-medium text-(--color-text){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
+            </a>
+          {% endif %}
+        {% endif %}
+
+        {%- comment -%} Desktop Icons {%- endcomment -%}
         {% if section.settings.show_search %}
           {% if section.settings.search_type == 'drawer' %}
             <button type="button" class="header-icon hidden lg:flex" data-search-drawer-toggle>
@@ -501,13 +519,13 @@
             <button type="button" class="header-icon group hidden lg:flex" data-cart-drawer-toggle>
               <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
-              <span class="sr-only">items in cart</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
             </button>
           {% else %}
             <a href="{{ routes.cart_url }}" class="header-icon group hidden lg:flex">
               <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
-              <span class="sr-only">items in cart</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
             </a>
           {% endif %}
         {% endif %}
@@ -633,11 +651,11 @@
           {% else %}
             <a
               href="{{ link.url }}"
-              class="relative text-sm font-semibold leading-6 text-(--color-text) hover:text-(--color-primary) transition-colors after:absolute after:bottom-[-2px] after:left-0 after:h-0.5 after:bg-current after:transition-all after:duration-300 after:ease-out{% if is_active %} after:w-full{% else %} after:w-0 hover:after:w-full{% endif %}"
+              class="nav-link{% if is_active %} is-active{% endif %}"
               data-nav-link
               {% if is_active %}aria-current="page"{% endif %}
             >
-              {{ link.title }}
+              <span class="nav-link__text">{{ link.title }}</span>
             </a>
           {% endif %}
         {% endfor %}
@@ -645,6 +663,24 @@
 
       {%- comment -%} Header Icons (Mobile + Desktop) {%- endcomment -%}
       <div class="flex {% if nav_position == 'center' or nav_position == 'left' %}lg:flex-1{% endif %} justify-end gap-x-1 lg:gap-x-2">
+        {%- comment -%} Mobile Cart Icon {%- endcomment -%}
+        {% if section.settings.show_cart %}
+          {% if settings.cart_type == 'drawer' %}
+            <button type="button" class="header-icon group lg:hidden" data-cart-drawer-toggle>
+              <i class="ph ph-bag"></i>
+              <span class="ml-1 text-sm font-medium text-(--color-text){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
+            </button>
+          {% else %}
+            <a href="{{ routes.cart_url }}" class="header-icon group lg:hidden">
+              <i class="ph ph-bag"></i>
+              <span class="ml-1 text-sm font-medium text-(--color-text){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
+            </a>
+          {% endif %}
+        {% endif %}
+
+        {%- comment -%} Desktop Icons {%- endcomment -%}
         {% if section.settings.show_search %}
           {% if section.settings.search_type == 'drawer' %}
             <button type="button" class="header-icon hidden lg:flex" data-search-drawer-toggle>
@@ -675,13 +711,13 @@
             <button type="button" class="header-icon group hidden lg:flex" data-cart-drawer-toggle>
               <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
-              <span class="sr-only">items in cart</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
             </button>
           {% else %}
             <a href="{{ routes.cart_url }}" class="header-icon group hidden lg:flex">
               <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
-              <span class="sr-only">items in cart</span>
+              <span class="sr-only">{{ 'accessibility.cart' | t }}</span>
             </a>
           {% endif %}
         {% endif %}
