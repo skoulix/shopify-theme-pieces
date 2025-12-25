@@ -475,21 +475,21 @@
           {% if section.settings.search_type == 'drawer' %}
             <button
               type="button"
-              class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
+              class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
               data-search-drawer-toggle
             >
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
               <i class="ph ph-magnifying-glass text-xl"></i>
             </button>
           {% else %}
-            <a href="{{ routes.search_url }}" class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+            <a href="{{ routes.search_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
               <i class="ph ph-magnifying-glass text-xl"></i>
             </a>
           {% endif %}
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+          <a href="{{ routes.account_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
             <span class="sr-only">{{ 'accessibility.account' | t }}</span>
             <i class="ph ph-user text-xl"></i>
           </a>
@@ -665,21 +665,21 @@
           {% if section.settings.search_type == 'drawer' %}
             <button
               type="button"
-              class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
+              class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
               data-search-drawer-toggle
             >
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
               <i class="ph ph-magnifying-glass text-xl"></i>
             </button>
           {% else %}
-            <a href="{{ routes.search_url }}" class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+            <a href="{{ routes.search_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
               <i class="ph ph-magnifying-glass text-xl"></i>
             </a>
           {% endif %}
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="hidden lg:block p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+          <a href="{{ routes.account_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
             <span class="sr-only">{{ 'accessibility.account' | t }}</span>
             <i class="ph ph-user text-xl"></i>
           </a>
