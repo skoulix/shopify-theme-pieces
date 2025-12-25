@@ -8,10 +8,11 @@
   /* Base Button */
   .btn {
     @apply relative inline-flex items-center justify-center gap-2 h-11 px-7
-           text-xs font-semibold tracking-widest leading-none
+           text-xs font-semibold leading-none
            rounded-(--button-radius) shadow-(--button-shadow)
-           cursor-pointer overflow-hidden no-underline whitespace-nowrap
+           overflow-hidden no-underline whitespace-nowrap
            transition-[color,border-color,box-shadow] duration-200;
+    letter-spacing: var(--button-letter-spacing, 0.1em);
   }
 
   .btn:hover {
@@ -149,11 +150,11 @@
 
   /* Sizes */
   .btn--xs {
-    @apply h-8 px-4 text-xs tracking-wider;
+    @apply h-8 px-4 text-xs;
   }
 
   .btn--sm {
-    @apply h-10 px-5 text-xs tracking-widest;
+    @apply h-10 px-5 text-xs;
   }
 
   .btn--md {
@@ -161,7 +162,7 @@
   }
 
   .btn--lg {
-    @apply h-14 px-9 text-sm tracking-wider;
+    @apply h-14 px-9 text-sm;
   }
 
   .btn--icon {
@@ -191,7 +192,7 @@
      ========================================================================== */
 
   .share-btn {
-    @apply size-10 flex items-center justify-center border cursor-pointer;
+    @apply size-10 flex items-center justify-center border;
     border-color: var(--color-border);
     border-radius: var(--button-radius);
     color: var(--color-text);
@@ -317,5 +318,119 @@
 
   .text-hover-reveal:hover span {
     @apply -translate-y-full;
+  }
+
+  /* ==========================================================================
+     Card Action Button - Product card icon buttons (quick view, wishlist, compare)
+     Used in: product-card, collection metro items
+     ========================================================================== */
+
+  .card-action-btn {
+    @apply size-10 flex items-center justify-center rounded-full shadow-md
+           transform scale-90 transition-all duration-300;
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  .card-action-btn:hover {
+    background-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .group:hover .card-action-btn {
+    @apply scale-100;
+  }
+
+  /* Wishlist active state */
+  .card-action-btn[data-wishlist-toggle].is-active {
+    background-color: var(--color-sale);
+    color: white;
+  }
+
+  /* Compare active state */
+  .card-action-btn[data-compare-toggle].is-active {
+    background-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  /* ==========================================================================
+     Drawer Close Button - Close buttons in slide-out drawers
+     Used in: cart-drawer, search-drawer, facets drawer, mobile menu
+     ========================================================================== */
+
+  .drawer-close {
+    @apply flex items-center justify-center size-10 -m-2 ml-auto
+           bg-transparent border-none;
+    color: var(--color-text);
+    transition: opacity var(--transition-fast);
+  }
+
+  .drawer-close:hover {
+    @apply opacity-60;
+  }
+
+  .drawer-close:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
+  }
+
+  /* Size variants */
+  .drawer-close--lg {
+    @apply size-12 -m-3;
+  }
+
+  /* ==========================================================================
+     Modal Close Button - Close buttons in modals/popups
+     Used in: quick-view-modal, newsletter-popup, age-gate
+     ========================================================================== */
+
+  .modal-close {
+    @apply absolute top-4 right-4 z-10 size-10 flex items-center justify-center
+           rounded-full transition-transform duration-200;
+    background-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .modal-close:hover {
+    @apply scale-110 opacity-90;
+  }
+
+  .modal-close:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
+  }
+
+  /* ==========================================================================
+     Drawer Backdrop - Overlay for drawers and modals
+     Used in: cart-drawer, search-drawer, mobile-menu, quick-view-modal
+     ========================================================================== */
+
+  .drawer-backdrop {
+    @apply fixed inset-0 opacity-0 transition-opacity duration-300;
+    background-color: rgba(0, 0, 0, 0.5);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+  }
+
+  .group.is-open .drawer-backdrop,
+  .group[class*="is-open"] .drawer-backdrop {
+    @apply opacity-100;
+  }
+
+  /* ==========================================================================
+     Remove Item Button - Small icon buttons for removing items
+     Used in: cart-drawer, cart page
+     ========================================================================== */
+
+  .remove-btn {
+    @apply flex items-center justify-center size-8 bg-transparent border-none;
+    color: var(--color-text-secondary);
+    transition: color var(--transition-fast);
+  }
+
+  .remove-btn:hover {
+    color: var(--color-sale);
+  }
+
+  .remove-btn:focus-visible {
+    @apply outline-2 outline-offset-2 outline-(--color-primary);
   }
 }

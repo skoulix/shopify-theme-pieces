@@ -22,7 +22,7 @@
   data-size-chart-drawer
 >
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-[.is-open]:opacity-100" data-size-chart-close></div>
+  <div class="drawer-backdrop group-[.is-open]:opacity-100" data-size-chart-close></div>
 
   {%- comment -%} Panel {%- endcomment -%}
   <div class="absolute top-0 right-0 bottom-0 w-full max-w-[540px] h-full bg-(--color-background) flex flex-col transform translate-x-full transition-transform duration-300 shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-(--color-border) group-[.is-open]:translate-x-0">
@@ -37,12 +37,7 @@
           endif
         -%}
       </h2>
-      <button
-        type="button"
-        class="flex items-center justify-center w-10 h-10 -m-2 ml-auto bg-transparent border-none text-(--color-text) cursor-pointer transition-opacity hover:opacity-60"
-        data-size-chart-close
-        aria-label="{{ 'accessibility.close' | t }}"
-      >
+      <button type="button" class="drawer-close" data-size-chart-close aria-label="{{ 'accessibility.close' | t }}">
         <i class="ph ph-x text-xl"></i>
       </button>
     </div>

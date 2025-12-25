@@ -73,9 +73,9 @@
           {%- assign has_secondary = true -%}
         {%- endif -%}
         {%- if has_secondary -%}
-          {%- assign primary_class = 'w-full h-full object-cover scale-100 transition-all duration-500 group-hover:scale-105 group-hover:opacity-0' -%}
+          {%- assign primary_class = 'image-primary has-secondary' -%}
         {%- else -%}
-          {%- assign primary_class = 'w-full h-full object-cover scale-100 transition-transform duration-500 group-hover:scale-105' -%}
+          {%- assign primary_class = 'image-primary' -%}
         {%- endif -%}
         {{ product.featured_image | image_url: width: 1200 | image_tag:
           class: primary_class,
@@ -91,7 +91,7 @@
           {%- assign secondary_focal_point = product.images[1].presentation.focal_point | default: '50% 50%' -%}
           {%- assign secondary_focal_point_style = 'object-position: ' | append: secondary_focal_point -%}
           {{ product.images[1] | image_url: width: 1200 | image_tag:
-            class: 'absolute inset-0 w-full h-full object-cover scale-100 opacity-0 transition-all duration-500 group-hover:opacity-100 group-hover:scale-105',
+            class: 'image-secondary',
             style: secondary_focal_point_style,
             loading: 'lazy',
             decoding: 'async',
@@ -135,7 +135,7 @@
         {% if settings.enable_quick_view and product.available %}
           <button
             type="button"
-            class="product-card-quick-view w-10 h-10 flex items-center justify-center rounded-full bg-(--color-background) text-(--color-text) shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background)"
+            class="card-action-btn"
             data-quick-view-trigger="{{ product.handle }}"
             aria-label="{{ 'products.product.quick_view' | t | default: 'Quick view' }}: {{ product.title }}"
           >
@@ -149,7 +149,7 @@
           {%- endcapture -%}
           <button
             type="button"
-            class="product-card-wishlist w-10 h-10 flex items-center justify-center rounded-full bg-(--color-background) text-(--color-text) shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) [&.is-active]:bg-(--color-sale) [&.is-active]:text-white"
+            class="card-action-btn"
             data-wishlist-toggle="{{ product.id }}"
             data-product-json='{{ wishlist_product_json | strip_newlines | replace: "'", "&#39;" }}'
             aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}"
@@ -165,7 +165,7 @@
           {%- endcapture -%}
           <button
             type="button"
-            class="product-card-compare w-10 h-10 flex items-center justify-center rounded-full bg-(--color-background) text-(--color-text) shadow-md transform scale-90 group-hover:scale-100 transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
+            class="card-action-btn"
             data-compare-toggle="{{ product.id }}"
             data-product-json='{{ compare_product_json | strip_newlines | replace: "'", "&#39;" }}'
             aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}"

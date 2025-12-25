@@ -142,19 +142,14 @@
     inert
   >
     {%- comment -%} Backdrop {%- endcomment -%}
-    <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-[.is-open]:opacity-100" data-facets-close></div>
+    <div class="drawer-backdrop group-[.is-open]:opacity-100" data-facets-close></div>
 
     {%- comment -%} Drawer Panel {%- endcomment -%}
     <div class="absolute left-0 top-0 bottom-0 w-full max-w-md sm:max-w-md bg-(--color-background) -translate-x-full transition-transform duration-300 ease-out flex flex-col shadow-[4px_0_24px_rgba(0,0,0,0.15)] border-r border-(--color-border) group-[.is-open]:translate-x-0">
       {%- comment -%} Header {%- endcomment -%}
       <div class="flex items-center justify-between px-6 py-4 border-b border-(--color-border)">
         <h2 class="drawer-title">{{ 'general.filter_and_sort' | t }}</h2>
-        <button
-          type="button"
-          class="w-10 h-10 -mr-4 flex items-center justify-center bg-transparent border-none cursor-pointer hover:opacity-60 transition-opacity"
-          data-facets-close
-          aria-label="{{ 'accessibility.close_filters' | t }}"
-        >
+        <button type="button" class="drawer-close -mr-2" data-facets-close aria-label="{{ 'accessibility.close_filters' | t }}">
           <i class="ph ph-x text-xl"></i>
         </button>
       </div>

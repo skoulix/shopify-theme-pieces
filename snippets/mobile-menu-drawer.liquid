@@ -31,13 +31,13 @@
 
 <div id="mobile-menu" class="mobile-nav mobile-nav--{{ mobile_menu_style }} group fixed inset-0 z-200 pointer-events-none invisible [&.is-open]:pointer-events-auto [&.is-open]:visible lg:hidden" role="dialog" aria-modal="true" inert data-mobile-menu-style="{{ mobile_menu_style }}">
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div class="mobile-nav__backdrop fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-[.is-open]:opacity-100" data-mobile-nav-close></div>
+  <div class="mobile-nav__backdrop drawer-backdrop group-[.is-open]:opacity-100" data-mobile-nav-close></div>
 
   {%- comment -%} Drawer Panel {%- endcomment -%}
   <div class="mobile-nav__drawer absolute inset-0 bg-(--color-background) flex flex-col">
     {%- comment -%} Header {%- endcomment -%}
     <div class="mobile-nav__header flex items-center justify-end p-5">
-      <button type="button" class="mobile-nav__close flex items-center justify-center w-12 h-12 -m-3 bg-transparent border-none text-(--color-text) cursor-pointer transition-opacity duration-200 hover:opacity-60" data-mobile-nav-close>
+      <button type="button" class="mobile-nav__close drawer-close drawer-close--lg" data-mobile-nav-close>
         <span class="sr-only">{{ 'accessibility.close_menu' | t }}</span>
         <i class="ph ph-x text-2xl"></i>
       </button>

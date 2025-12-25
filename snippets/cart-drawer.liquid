@@ -49,18 +49,14 @@
   {%- comment -%} Live region for screen reader announcements {%- endcomment -%}
   <div class="sr-only" aria-live="polite" aria-atomic="true" data-cart-status></div>
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-[.is-open]:opacity-100" data-cart-drawer-close></div>
+  <div class="drawer-backdrop group-[.is-open]:opacity-100" data-cart-drawer-close></div>
 
   {%- comment -%} Drawer Panel {%- endcomment -%}
   <div class="color-scheme-1 absolute top-0 right-0 w-full max-w-[420px] h-full bg-(--color-background) flex flex-col translate-x-full transition-transform duration-300 ease-out group-[.is-open]:translate-x-0 shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-(--color-border)" data-cart-drawer-panel>
     {%- comment -%} Header {%- endcomment -%}
     <div class="flex items-center gap-3 px-6 py-5 border-b border-(--color-border)">
       <h2 class="flex-1 drawer-title text-xl m-0">{{ 'cart.title' | t }}</h2>
-      <button
-        type="button"
-        class="flex items-center justify-center w-10 h-10 -m-2 ml-auto bg-transparent border-none text-(--color-text) cursor-pointer transition-opacity hover:opacity-60"
-        data-cart-drawer-close
-      >
+      <button type="button" class="drawer-close" data-cart-drawer-close>
         <span class="sr-only">{{ 'cart.close' | t }}</span>
         <i class="ph ph-x text-xl"></i>
       </button>
@@ -184,13 +180,7 @@
                       <i class="ph ph-plus"></i>
                     </button>
                   </div>
-                  <button
-                    type="button"
-                    class="flex items-center justify-center w-8 h-8 bg-transparent border-none text-(--color-text-secondary) cursor-pointer transition-colors hover:text-(--color-sale)"
-                    data-remove-item
-                    data-line="{{ forloop.index }}"
-                    aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}"
-                  >
+                  <button type="button" class="remove-btn" data-remove-item data-line="{{ forloop.index }}" aria-label="{{ 'cart.remove_item' | t: title: item.product.title }}">
                     <i class="ph ph-trash text-base"></i>
                   </button>
                 </div>

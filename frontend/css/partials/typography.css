@@ -482,4 +482,33 @@
   .overlay-on-hover:hover {
     @apply opacity-100;
   }
+
+  /* ==========================================================================
+     Image Hover Swap - Secondary image reveals on hover
+     Used in: product-card, collection metro items
+     Wrap images in a container with group class, primary gets .image-primary,
+     secondary gets .image-secondary
+     ========================================================================== */
+
+  .image-primary {
+    @apply w-full h-full object-cover scale-100;
+    transition: scale var(--transition-slow), opacity var(--transition-slow);
+  }
+
+  .group:hover .image-primary.has-secondary {
+    @apply scale-105 opacity-0;
+  }
+
+  .group:hover .image-primary:not(.has-secondary) {
+    @apply scale-105;
+  }
+
+  .image-secondary {
+    @apply absolute inset-0 w-full h-full object-cover scale-100 opacity-0;
+    transition: scale var(--transition-slow), opacity var(--transition-slow);
+  }
+
+  .group:hover .image-secondary {
+    @apply scale-105 opacity-100;
+  }
 }

@@ -34,7 +34,7 @@
   aria-label="{{ 'search.title' | t }}"
 >
   {%- comment -%} Backdrop {%- endcomment -%}
-  <div class="fixed inset-0 bg-black/50 backdrop-blur-sm opacity-0 transition-opacity duration-300 group-[.is-open]:opacity-100" data-search-drawer-close></div>
+  <div class="drawer-backdrop group-[.is-open]:opacity-100" data-search-drawer-close></div>
 
   {%- comment -%} Drawer Panel - slides from top {%- endcomment -%}
   <div class="absolute top-0 left-0 right-0 bg-(--color-background) -translate-y-full will-change-transform shadow-[0_4px_24px_rgba(0,0,0,0.15)] border-b border-(--color-border)" data-search-drawer-panel>
@@ -42,11 +42,7 @@
       {%- comment -%} Header {%- endcomment -%}
       <div class="flex items-center justify-between mb-4">
         <h2 class="drawer-title">{{ 'search.title' | t }}</h2>
-        <button
-          type="button"
-          class="flex items-center justify-center w-10 h-10 -m-2 bg-transparent border-none text-(--color-text) cursor-pointer transition-opacity hover:opacity-60"
-          data-search-drawer-close
-        >
+        <button type="button" class="drawer-close" data-search-drawer-close>
           <span class="sr-only">{{ 'accessibility.close' | t }}</span>
           <i class="ph ph-x text-xl"></i>
         </button>
