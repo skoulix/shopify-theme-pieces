@@ -160,6 +160,7 @@
   function updateCartCount(count) {
     document.querySelectorAll('[data-cart-count]').forEach(el => {
       el.textContent = count;
+      el.classList.toggle('hidden', count === 0);
     });
   }
 

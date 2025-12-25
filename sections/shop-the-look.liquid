@@ -534,6 +534,7 @@
         // Update cart count
         document.querySelectorAll('[data-cart-count]').forEach(function(el) {
           el.textContent = cart.item_count;
+          el.classList.toggle('hidden', cart.item_count === 0);
         });
 
         // Dispatch cart updated event for reactive components (e.g., free shipping bar)
@@ -612,6 +613,7 @@
         // Update cart count
         document.querySelectorAll('[data-cart-count]').forEach(function(el) {
           el.textContent = cart.item_count;
+          el.classList.toggle('hidden', cart.item_count === 0);
         });
 
         // Dispatch cart updated event for reactive components (e.g., free shipping bar)

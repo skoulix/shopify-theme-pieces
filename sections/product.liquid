@@ -1622,6 +1622,7 @@
         // Update cart count in header
         document.querySelectorAll('[data-cart-count]').forEach(el => {
           el.textContent = cart.item_count;
+          el.classList.toggle('hidden', cart.item_count === 0);
         });
 
         // Dispatch cart updated event for reactive components (e.g., free shipping bar)
@@ -1768,6 +1769,7 @@
       const cart = await cartResponse.json();
       document.querySelectorAll('[data-cart-count]').forEach(el => {
         el.textContent = cart.item_count;
+        el.classList.toggle('hidden', cart.item_count === 0);
       });
 
       // Dispatch cart updated event for reactive components (e.g., free shipping bar)

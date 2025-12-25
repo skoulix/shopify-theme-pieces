@@ -3,6 +3,24 @@
    ========================================================================== */
 
 @layer components {
+  /* ==========================================================================
+     Header Icon - Reusable icon button/link styling for header
+     Used for: search, account, wishlist, cart icons
+     ========================================================================== */
+
+  .header-icon {
+    @apply p-2 flex items-center transition-colors cursor-pointer;
+    color: var(--color-text-secondary);
+  }
+
+  .header-icon:hover {
+    color: var(--color-text) !important;
+  }
+
+  .header-icon i {
+    @apply text-xl;
+  }
+
   /* Mobile Nav */
   .mobile-nav.is-open {
     @apply pointer-events-auto visible;

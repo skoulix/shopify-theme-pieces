@@ -473,55 +473,39 @@
       <div class="flex lg:flex-1 justify-end gap-x-1 lg:gap-x-2">
         {% if section.settings.show_search %}
           {% if section.settings.search_type == 'drawer' %}
-            <button
-              type="button"
-              class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-              data-search-drawer-toggle
-            >
+            <button type="button" class="header-icon hidden lg:flex" data-search-drawer-toggle>
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
-              <i class="ph ph-magnifying-glass text-xl"></i>
+              <i class="ph ph-magnifying-glass"></i>
             </button>
           {% else %}
-            <a href="{{ routes.search_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+            <a href="{{ routes.search_url }}" class="header-icon hidden lg:flex">
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
-              <i class="ph ph-magnifying-glass text-xl"></i>
+              <i class="ph ph-magnifying-glass"></i>
             </a>
           {% endif %}
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+          <a href="{{ routes.account_url }}" class="header-icon hidden lg:flex">
             <span class="sr-only">{{ 'accessibility.account' | t }}</span>
-            <i class="ph ph-user text-xl"></i>
+            <i class="ph ph-user"></i>
           </a>
         {% endif %}
         {% if section.settings.show_wishlist %}
-          <button
-            type="button"
-            class="hidden lg:flex p-2 items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-            data-wishlist-open
-            aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}"
-          >
-            <i class="ph ph-heart text-xl"></i>
+          <button type="button" class="header-icon hidden lg:flex" data-wishlist-open aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}">
+            <i class="ph ph-heart"></i>
             <span class="ml-1 text-sm font-medium text-(--color-text) hidden" data-wishlist-count></span>
           </button>
         {% endif %}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
-            <button
-              type="button"
-              class="group p-2 flex items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-              data-cart-drawer-toggle
-            >
-              <i class="ph ph-bag text-xl"></i>
+            <button type="button" class="header-icon group hidden lg:flex" data-cart-drawer-toggle>
+              <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
               <span class="sr-only">items in cart</span>
             </button>
           {% else %}
-            <a
-              href="{{ routes.cart_url }}"
-              class="group p-2 flex items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors"
-            >
-              <i class="ph ph-bag text-xl"></i>
+            <a href="{{ routes.cart_url }}" class="header-icon group hidden lg:flex">
+              <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
               <span class="sr-only">items in cart</span>
             </a>
@@ -663,55 +647,39 @@
       <div class="flex {% if nav_position == 'center' or nav_position == 'left' %}lg:flex-1{% endif %} justify-end gap-x-1 lg:gap-x-2">
         {% if section.settings.show_search %}
           {% if section.settings.search_type == 'drawer' %}
-            <button
-              type="button"
-              class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-              data-search-drawer-toggle
-            >
+            <button type="button" class="header-icon hidden lg:flex" data-search-drawer-toggle>
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
-              <i class="ph ph-magnifying-glass text-xl"></i>
+              <i class="ph ph-magnifying-glass"></i>
             </button>
           {% else %}
-            <a href="{{ routes.search_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+            <a href="{{ routes.search_url }}" class="header-icon hidden lg:flex">
               <span class="sr-only">{{ 'accessibility.search' | t }}</span>
-              <i class="ph ph-magnifying-glass text-xl"></i>
+              <i class="ph ph-magnifying-glass"></i>
             </a>
           {% endif %}
         {% endif %}
         {% if shop.customer_accounts_enabled %}
-          <a href="{{ routes.account_url }}" class="hidden lg:flex items-center p-2 text-(--color-text-secondary) hover:text-(--color-text) transition-colors">
+          <a href="{{ routes.account_url }}" class="header-icon hidden lg:flex">
             <span class="sr-only">{{ 'accessibility.account' | t }}</span>
-            <i class="ph ph-user text-xl"></i>
+            <i class="ph ph-user"></i>
           </a>
         {% endif %}
         {% if section.settings.show_wishlist %}
-          <button
-            type="button"
-            class="hidden lg:flex p-2 items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-            data-wishlist-open
-            aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}"
-          >
-            <i class="ph ph-heart text-xl"></i>
+          <button type="button" class="header-icon hidden lg:flex" data-wishlist-open aria-label="{{ 'accessibility.wishlist' | t | default: 'Open wishlist' }}">
+            <i class="ph ph-heart"></i>
             <span class="ml-1 text-sm font-medium text-(--color-text) hidden" data-wishlist-count></span>
           </button>
         {% endif %}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
-            <button
-              type="button"
-              class="group p-2 flex items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors cursor-pointer"
-              data-cart-drawer-toggle
-            >
-              <i class="ph ph-bag text-xl"></i>
+            <button type="button" class="header-icon group hidden lg:flex" data-cart-drawer-toggle>
+              <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
               <span class="sr-only">items in cart</span>
             </button>
           {% else %}
-            <a
-              href="{{ routes.cart_url }}"
-              class="group p-2 flex items-center text-(--color-text-secondary) hover:text-(--color-text) transition-colors"
-            >
-              <i class="ph ph-bag text-xl"></i>
+            <a href="{{ routes.cart_url }}" class="header-icon group hidden lg:flex">
+              <i class="ph ph-bag"></i>
               <span class="ml-1 text-sm font-medium text-(--color-text) group-hover:text-(--color-primary){% if cart.item_count == 0 %} hidden{% endif %}" data-cart-count>{{ cart.item_count }}</span>
               <span class="sr-only">items in cart</span>
             </a>
