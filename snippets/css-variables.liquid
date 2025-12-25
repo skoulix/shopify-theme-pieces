@@ -130,7 +130,7 @@
     /* Buttons */
     --button-radius: {{ settings.button_radius }}px;
     --button-border-width: {{ settings.button_border_width }}px;
-    --button-letter-spacing: {{ settings.button_letter_spacing | default: 0.1 }}em;
+    --button-letter-spacing: calc({{ settings.button_letter_spacing | default: 10 }} * 0.01em);
     --button-shadow: {{ button_shadow_value }};
     --button-shadow-hover: {{ button_shadow_hover_value }};
 

@@ -149,17 +149,7 @@
       },
       {
         "type": "header",
-        "content": "Scale"
-      },
-      {
-        "type": "range",
-        "id": "body_scale",
-        "min": 90,
-        "max": 120,
-        "step": 1,
-        "default": 100,
-        "unit": "%",
-        "label": "Body font size"
+        "content": "Headings"
       },
       {
         "type": "range",
@@ -169,27 +159,7 @@
         "step": 1,
         "default": 100,
         "unit": "%",
-        "label": "Heading font size"
-      },
-      {
-        "type": "header",
-        "content": "Style"
-      },
-      {
-        "type": "checkbox",
-        "id": "headings_uppercase",
-        "default": true,
-        "label": "Uppercase headings"
-      },
-      {
-        "type": "checkbox",
-        "id": "buttons_uppercase",
-        "default": true,
-        "label": "Uppercase buttons"
-      },
-      {
-        "type": "header",
-        "content": "Letter spacing"
+        "label": "Font size"
       },
       {
         "type": "range",
@@ -199,8 +169,28 @@
         "step": 10,
         "default": 0,
         "unit": "‰",
-        "label": "Heading letter spacing",
+        "label": "Letter spacing",
         "info": "Adjust tracking for heading fonts. Condensed fonts like Bebas Neue often benefit from increased spacing."
+      },
+      {
+        "type": "checkbox",
+        "id": "headings_uppercase",
+        "default": true,
+        "label": "Uppercase"
+      },
+      {
+        "type": "header",
+        "content": "Body"
+      },
+      {
+        "type": "range",
+        "id": "body_scale",
+        "min": 90,
+        "max": 120,
+        "step": 1,
+        "default": 100,
+        "unit": "%",
+        "label": "Font size"
       },
       {
         "type": "range",
@@ -210,7 +200,7 @@
         "step": 10,
         "default": 0,
         "unit": "‰",
-        "label": "Body letter spacing",
+        "label": "Letter spacing",
         "info": "Adjust tracking for body text. Affects paragraphs, descriptions, and prose content."
       }
     ]
@@ -319,6 +309,17 @@
     "settings": [
       {
         "type": "range",
+        "id": "button_letter_spacing",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 10,
+        "unit": "%",
+        "label": "Letter spacing",
+        "info": "0% = normal, 10% = 0.1em, 20% = wide"
+      },
+      {
+        "type": "range",
         "id": "button_radius",
         "min": 0,
         "max": 100,
@@ -351,14 +352,10 @@
         ]
       },
       {
-        "type": "range",
-        "id": "button_letter_spacing",
-        "min": 0,
-        "max": 0.2,
-        "step": 0.01,
-        "default": 0.1,
-        "unit": "em",
-        "label": "Letter spacing"
+        "type": "checkbox",
+        "id": "buttons_uppercase",
+        "default": true,
+        "label": "Uppercase"
       }
     ]
   },
