@@ -68,7 +68,7 @@
   }
 
   .mobile-nav__drawer {
-    @apply will-change-transform transition-[clip-path] duration-500 ease-out;
+    @apply will-change-transform;
     clip-path: inset(0 0 100% 0);
   }
 
