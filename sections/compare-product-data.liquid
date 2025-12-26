@@ -1,0 +1,98 @@
+{%- comment -%}
+  Compare Product Data Section
+  Outputs product data including metafields as JSON for the compare feature.
+  Fetched via Section Rendering API: /products/{handle}?sections=compare-product-data
+
+  This section has no visual output - it only provides JSON data for JavaScript to consume.
+{%- endcomment -%}
+
+{%- liquid
+  assign p = product
+
+  # Build metafields object - check common namespaces
+  # We'll output each namespace separately for cleaner organization
+-%}
+
+<script type="application/json" data-compare-product-data>
+{
+  "id": {{ p.id | json }},
+  "handle": {{ p.handle | json }},
+  "title": {{ p.title | json }},
+  "vendor": {{ p.vendor | json }},
+  "type": {{ p.type | json }},
+  "tags": {{ p.tags | json }},
+  "available": {{ p.available | json }},
+  "price": {{ p.price | json }},
+  "compare_at_price": {{ p.compare_at_price | default: 0 | json }},
+  "options": [
+    {%- for option in p.options_with_values -%}
+      {
+        "name": {{ option.name | json }},
+        "values": {{ option.values | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ],
+  "variant": {
+    "sku": {{ p.selected_or_first_available_variant.sku | default: '' | json }},
+    "weight": {{ p.selected_or_first_available_variant.weight | default: 0 | json }},
+    "weight_unit": {{ p.selected_or_first_available_variant.weight_unit | default: 'g' | json }},
+    "barcode": {{ p.selected_or_first_available_variant.barcode | default: '' | json }}
+  },
+  "metafields": {
+    {%- comment -%} Custom metafields (Shopify's default namespace for store-created metafields) {%- endcomment -%}
+    "custom": {
+      {%- assign custom_output = false -%}
+      {%- for metafield in p.metafields.custom -%}
+        {%- if metafield.value != blank and metafield.type != 'file_reference' -%}
+          {%- if custom_output -%},{%- endif -%}
+          {{ metafield.key | json }}: {
+            "value": {{ metafield.value | json }},
+            "type": {{ metafield.type | json }}
+          }
+          {%- assign custom_output = true -%}
+        {%- endif -%}
+      {%- endfor -%}
+    },
+    {%- comment -%} Descriptors namespace (care_guide, material, etc.) {%- endcomment -%}
+    "descriptors": {
+      {%- assign desc_output = false -%}
+      {%- if p.metafields.descriptors.care_guide.value != blank -%}
+        {%- if desc_output -%},{%- endif -%}
+        "care_guide": {{ p.metafields.descriptors.care_guide.value | json }}
+        {%- assign desc_output = true -%}
+      {%- endif -%}
+      {%- if p.metafields.descriptors.material.value != blank -%}
+        {%- if desc_output -%},{%- endif -%}
+        "material": {{ p.metafields.descriptors.material.value | json }}
+        {%- assign desc_output = true -%}
+      {%- endif -%}
+      {%- if p.metafields.descriptors.fabric.value != blank -%}
+        {%- if desc_output -%},{%- endif -%}
+        "fabric": {{ p.metafields.descriptors.fabric.value | json }}
+        {%- assign desc_output = true -%}
+      {%- endif -%}
+    },
+    {%- comment -%} Product-specific fields that are commonly used for filtering/comparison {%- endcomment -%}
+    "product": {
+      {%- assign prod_output = false -%}
+      {%- if p.metafields.product.subtitle.value != blank -%}
+        {%- if prod_output -%},{%- endif -%}
+        "subtitle": {{ p.metafields.product.subtitle.value | json }}
+        {%- assign prod_output = true -%}
+      {%- endif -%}
+      {%- if p.metafields.product.rating.value != blank -%}
+        {%- if prod_output -%},{%- endif -%}
+        "rating": {{ p.metafields.product.rating.value | json }}
+        {%- assign prod_output = true -%}
+      {%- endif -%}
+    }
+  }
+}
+</script>
+
+{% schema %}
+{
+  "name": "Compare Product Data",
+  "settings": []
+}
+{% endschema %}

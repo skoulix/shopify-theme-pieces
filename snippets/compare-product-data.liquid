@@ -1,0 +1,87 @@
+{%- comment -%}
+  Compare Product Data Snippet
+  Outputs product data including metafields as JSON for the compare feature
+  Used via Section Rendering API: /products/{handle}?sections=compare-product-data
+
+  This snippet is rendered as a section to access full product data including metafields.
+{%- endcomment -%}
+
+{%- liquid
+  # Get the product from the request
+  assign p = product
+
+  # Common metafield namespaces to check
+  # custom.* - Shopify's default custom metafields
+  # product.* - Common product namespace
+  # descriptors.* - Product descriptors
+  # specifications.* - Technical specs
+-%}
+
+{%- capture metafields_json -%}
+{
+  {%- comment -%} Custom namespace metafields {%- endcomment -%}
+  {%- if p.metafields.custom != blank -%}
+    {%- for metafield in p.metafields.custom -%}
+      {%- if metafield.value != blank -%}
+        {{ metafield.key | json }}: {{ metafield.value | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+}
+{%- endcapture -%}
+
+{%- capture specs_json -%}
+{
+  {%- comment -%} Specifications namespace {%- endcomment -%}
+  {%- if p.metafields.specifications != blank -%}
+    {%- for metafield in p.metafields.specifications -%}
+      {%- if metafield.value != blank -%}
+        {{ metafield.key | json }}: {{ metafield.value | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+}
+{%- endcapture -%}
+
+{%- capture descriptors_json -%}
+{
+  {%- comment -%} Descriptors namespace (care instructions, materials, etc.) {%- endcomment -%}
+  {%- if p.metafields.descriptors != blank -%}
+    {%- for metafield in p.metafields.descriptors -%}
+      {%- if metafield.value != blank -%}
+        {{ metafield.key | json }}: {{ metafield.value | json }}{%- unless forloop.last -%},{%- endunless -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endif -%}
+}
+{%- endcapture -%}
+
+<script type="application/json" data-compare-product-data>
+{
+  "id": {{ p.id | json }},
+  "handle": {{ p.handle | json }},
+  "title": {{ p.title | json }},
+  "vendor": {{ p.vendor | json }},
+  "type": {{ p.type | json }},
+  "tags": {{ p.tags | json }},
+  "options": [
+    {%- for option in p.options_with_values -%}
+      {
+        "name": {{ option.name | json }},
+        "values": {{ option.values | json }}
+      }{%- unless forloop.last -%},{%- endunless -%}
+    {%- endfor -%}
+  ],
+  "variant": {
+    "sku": {{ p.selected_or_first_available_variant.sku | json }},
+    "weight": {{ p.selected_or_first_available_variant.weight | json }},
+    "weight_unit": {{ p.selected_or_first_available_variant.weight_unit | json }},
+    "barcode": {{ p.selected_or_first_available_variant.barcode | json }}
+  },
+  "metafields": {
+    "custom": {{ metafields_json | strip_newlines }},
+    "specifications": {{ specs_json | strip_newlines }},
+    "descriptors": {{ descriptors_json | strip_newlines }}
+  }
+}
+</script>

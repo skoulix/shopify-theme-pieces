@@ -217,6 +217,9 @@
 
   if (!section || !content) return;
 
+  // Cache for fetched product details (metafields, tags, options)
+  const productDetailsCache = new Map();
+
   function getProducts() {
     try {
       const stored = localStorage.getItem(STORAGE_KEY);
@@ -265,6 +268,92 @@
     return div.innerHTML;
   }
 
+  /**
+   * Fetch product details via Shopify AJAX API
+   * Returns product data including options, tags, and variants
+   */
+  async function fetchProductDetails(handle) {
+    if (productDetailsCache.has(handle)) {
+      return productDetailsCache.get(handle);
+    }
+
+    try {
+      const res = await fetch(`/products/${handle}.json`);
+      if (!res.ok) return null;
+      const data = await res.json();
+      productDetailsCache.set(handle, data.product);
+      return data.product;
+    } catch {
+      return null;
+    }
+  }
+
+  /**
+   * Fetch all product details in parallel
+   */
+  async function fetchAllProductDetails(products) {
+    const handles = products.map(p => p.handle).filter(Boolean);
+    const results = await Promise.allSettled(handles.map(h => fetchProductDetails(h)));
+    const detailsMap = new Map();
+
+    results.forEach((result, index) => {
+      if (result.status === 'fulfilled' && result.value) {
+        detailsMap.set(handles[index], result.value);
+      }
+    });
+
+    return detailsMap;
+  }
+
+  /**
+   * Extract comparable attributes from product details
+   * Common product attributes: options (Size, Color, Material), tags, weight
+   */
+  function extractComparableAttributes(detailsMap, products) {
+    const attributes = {
+      options: new Map(), // option name -> Map of productId -> values
+      tags: new Set(),
+      weight: new Map()
+    };
+
+    // Collect all option names across products
+    detailsMap.forEach((details, handle) => {
+      if (details.options) {
+        details.options.forEach(opt => {
+          if (opt.name && opt.name !== 'Title') {
+            if (!attributes.options.has(opt.name)) {
+              attributes.options.set(opt.name, new Map());
+            }
+            const product = products.find(p => p.handle === handle);
+            if (product) {
+              attributes.options.get(opt.name).set(String(product.id), opt.values.join(', '));
+            }
+          }
+        });
+      }
+
+      // Collect tags
+      if (details.tags) {
+        const tagsArray = typeof details.tags === 'string'
+          ? details.tags.split(', ')
+          : details.tags;
+        tagsArray.forEach(tag => attributes.tags.add(tag));
+      }
+
+      // Collect weight
+      const product = products.find(p => p.handle === handle);
+      if (product && details.variants && details.variants[0]) {
+        const variant = details.variants[0];
+        if (variant.weight && variant.weight > 0) {
+          const weightUnit = variant.weight_unit || 'g';
+          attributes.weight.set(String(product.id), `${variant.weight} ${weightUnit}`);
+        }
+      }
+    });
+
+    return attributes;
+  }
+
   let isRendering = false;
 
   function removeProduct(productId) {
@@ -276,7 +365,7 @@
     document.dispatchEvent(new CustomEvent('compare:removed', { detail: { productId } }));
   }
 
-  function render() {
+  async function render() {
     const products = getProducts();
 
     if (countEl) {
@@ -297,6 +386,56 @@
         </div>
       `;
       return;
+    }
+
+    // Show loading state
+    content.innerHTML = `
+      <div class="compare-empty">
+        <div class="compare-empty__icon">
+          <i class="ph ph-spinner animate-spin"></i>
+        </div>
+        <p class="compare-empty__text">{{ 'products.compare.loading' | t | default: 'Loading comparison data...' }}</p>
+      </div>
+    `;
+
+    // Fetch additional product details (options, tags, weight)
+    const detailsMap = await fetchAllProductDetails(products);
+    const attributes = extractComparableAttributes(detailsMap, products);
+
+    // Build options rows HTML
+    let optionsRowsHtml = '';
+    attributes.options.forEach((productValues, optionName) => {
+      optionsRowsHtml += `
+        <div class="compare-table__row">
+          <div class="compare-table__header-cell text-label-sm">${escapeHtml(optionName)}</div>
+          ${products.map(p => {
+            const value = productValues.get(String(p.id));
+            return `
+              <div class="compare-table__cell">
+                <span class="compare-table__value">${escapeHtml(value) || '-'}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
+    });
+
+    // Build weight row if any product has weight
+    let weightRowHtml = '';
+    if (attributes.weight.size > 0) {
+      weightRowHtml = `
+        <div class="compare-table__row">
+          <div class="compare-table__header-cell text-label-sm">{{ 'products.compare.weight' | t | default: 'Weight' }}</div>
+          ${products.map(p => {
+            const value = attributes.weight.get(String(p.id));
+            return `
+              <div class="compare-table__cell">
+                <span class="compare-table__value">${escapeHtml(value) || '-'}</span>
+              </div>
+            `;
+          }).join('')}
+        </div>
+      `;
     }
 
     let html = `
@@ -345,6 +484,12 @@
               </div>
             `).join('')}
           </div>
+
+          <!-- Dynamic Options Rows (Size, Color, Material, etc.) -->
+          ${optionsRowsHtml}
+
+          <!-- Weight Row -->
+          ${weightRowHtml}
 
           <!-- SKU Row -->
           <div class="compare-table__row">
