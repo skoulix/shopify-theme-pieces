@@ -54,10 +54,25 @@
      Metro Grid - Modern Bento Layout
      ========================================================================== */
 
+  /* Note: grid-template-columns with var() fallbacks require explicit declaration order
+     to ensure mobile-first cascade. @apply responsive variants get hoisted, so we use
+     separate rules for the base grid-template-columns */
   .collection-metro {
-    @apply gap-3 md:gap-4 lg:gap-5 md:grid-cols-[repeat(var(--columns-tablet),1fr)] lg:grid-cols-[repeat(var(--columns-desktop),1fr)];
     grid-template-columns: repeat(var(--columns-mobile, 2), 1fr);
     grid-auto-flow: dense;
+    @apply gap-3 md:gap-4 lg:gap-5;
+  }
+
+  @media (min-width: 768px) {
+    .collection-metro {
+      grid-template-columns: repeat(var(--columns-tablet, 2), 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .collection-metro {
+      grid-template-columns: repeat(var(--columns-desktop, 4), 1fr);
+    }
   }
 
   /* Metro Item Aspect Ratio */
@@ -81,16 +96,19 @@
   }
 
   /* Metro Item Sizes - Creative bento pattern */
+  /* Using explicit grid-column/grid-row instead of @apply col-span-2 to avoid
+     grid-area shorthand which would override mobile media query rules */
   .metro-item--hero {
-    @apply col-span-2 row-span-2;
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
   }
 
   .metro-item--wide {
-    @apply col-span-2;
+    grid-column: span 2 / span 2;
   }
 
   .metro-item--tall {
-    @apply row-span-2;
+    grid-row: span 2 / span 2;
   }
 
   /* Adjust spans when columns are limited (mobile) - explicit media query for CSS var support */
@@ -112,28 +130,29 @@
   /* When only 2 columns */
   [data-metro-cols="2"] .metro-item--hero,
   [data-metro-cols="2"] .metro-item--wide {
-    @apply col-span-2;
+    grid-column: span 2 / span 2;
   }
 
   [data-metro-cols="2"] .metro-item--hero {
-    @apply row-span-2;
+    grid-row: span 2 / span 2;
   }
 
   [data-metro-cols="2"] .metro-item--tall {
-    @apply row-span-1;
+    grid-row: span 1 / span 1;
   }
 
   /* When 3 columns */
   [data-metro-cols="3"] .metro-item--hero {
-    @apply col-span-2 row-span-2;
+    grid-column: span 2 / span 2;
+    grid-row: span 2 / span 2;
   }
 
   [data-metro-cols="3"] .metro-item--wide {
-    @apply col-span-2;
+    grid-column: span 2 / span 2;
   }
 
   [data-metro-cols="3"] .metro-item--tall {
-    @apply row-span-1;
+    grid-row: span 1 / span 1;
   }
 
   /* ==========================================================================
