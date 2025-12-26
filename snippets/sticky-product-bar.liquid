@@ -83,18 +83,18 @@
   }
 
   .sticky-product-bar__title {
-    font-size: 0.8125rem;
+    font-size: 0.875rem;
     font-weight: 600;
+    line-height: 1;
     color: var(--color-text);
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
-    line-height: 1.3;
   }
 
   @media (min-width: 768px) {
     .sticky-product-bar__title {
-      font-size: 0.875rem;
+      font-size: 1rem;
     }
   }
 
@@ -106,12 +106,21 @@
   }
 
   .sticky-product-bar__variant {
+    font-size: 0.875rem;
+    line-height: 1;
     color: var(--color-text-secondary);
+  }
+
+  @media (min-width: 768px) {
+    .sticky-product-bar__variant {
+      font-size: 1rem;
+    }
   }
 
   .sticky-product-bar__price {
     font-size: 0.875rem;
     font-weight: 500;
+    line-height: 1;
     color: var(--color-text);
   }
 
@@ -299,7 +308,7 @@
         <h3 class="sticky-product-bar__title">{{ product.title }}</h3>
         <div class="sticky-product-bar__meta">
           {% unless product.has_only_default_variant %}
-            <span class="sticky-product-bar__variant text-label-sm" data-sticky-bar-variant>
+            <span class="sticky-product-bar__variant" data-sticky-bar-variant>
               {{ current_variant.title }}
             </span>
           {% endunless %}

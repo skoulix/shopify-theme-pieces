@@ -130,20 +130,20 @@
               {% endif %}
             </a>
 
-            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween data-tween-type="fade-up">
+            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween-group="fb-card-{{ section.id }}-{{ forloop.index0 }}">
               {% if section.settings.show_tags and article.tags.size > 0 %}
-                <p class="blog-category">
+                <p class="blog-category" data-tween data-tween-type="fade-up">
                   {{ article.tags.first }}
                 </p>
               {% endif %}
 
-              <h3 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}">
+              <h3 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}" data-tween data-tween-type="split-text">
                 <a href="{{ article.url }}" class="hover:text-(--color-primary) transition-colors">
                   {{ article.title }}
                 </a>
               </h3>
 
-              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)">
+              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
                 <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
                   {{ article.published_at | date: '%b %d, %Y' }}
                 </time>
@@ -156,13 +156,13 @@
               </div>
 
               {% if section.settings.show_excerpt %}
-                <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}">
+                <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}" data-tween data-tween-type="fade-up">
                   {{ article.excerpt_or_content | strip_html | truncate: 140 }}
                 </p>
               {% endif %}
 
               {% if section.settings.show_read_more %}
-                <a href="{{ article.url }}" class="link-cta mt-auto pt-4 uppercase">
+                <a href="{{ article.url }}" class="link-cta mt-auto pt-4 uppercase" data-tween data-tween-type="fade-up">
                   <span class="link-cta-text"><span data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
                   <i class="ph ph-arrow-right" aria-hidden="true"></i>
                 </a>
@@ -183,16 +183,16 @@
             <div class="aspect-[16/10] overflow-hidden{% if is_featured %} lg:aspect-auto lg:h-full{% endif %}" data-tween data-tween-type="clip-right">
               {{ 'lifestyle-' | append: placeholder_index | placeholder_svg_tag: 'w-full h-full object-cover' }}
             </div>
-            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween data-tween-type="fade-up">
+            <div class="p-5 lg:p-6 flex flex-col flex-1{% if is_featured %} lg:py-8 lg:px-8 lg:justify-center{% endif %}" data-tween-group="fb-placeholder-{{ section.id }}-{{ forloop.index0 }}">
               {% if section.settings.show_tags %}
-                <p class="blog-category">
+                <p class="blog-category" data-tween data-tween-type="fade-up">
                   Category
                 </p>
               {% endif %}
-              <h3 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}">
+              <h3 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}" data-tween data-tween-type="split-text">
                 {{ 'sections.featured_blog.placeholder_title' | t }} {{ forloop.index }}
               </h3>
-              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)">
+              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
                 <time>{{ 'now' | date: '%b %d, %Y' }}</time>
                 {% if section.settings.show_author %}
                   <span class="flex items-center gap-1.5">
@@ -202,12 +202,12 @@
                 {% endif %}
               </div>
               {% if section.settings.show_excerpt %}
-                <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}">
+                <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}" data-tween data-tween-type="fade-up">
                   {{ 'sections.featured_blog.placeholder_excerpt' | t }}
                 </p>
               {% endif %}
               {% if section.settings.show_read_more %}
-                <span class="link-cta mt-auto pt-4 uppercase">
+                <span class="link-cta mt-auto pt-4 uppercase" data-tween data-tween-type="fade-up">
                   <span class="link-cta-text"><span data-hover="{{ 'blog.read_article' | t }}">{{ 'blog.read_article' | t }}</span></span>
                   <i class="ph ph-arrow-right" aria-hidden="true"></i>
                 </span>
