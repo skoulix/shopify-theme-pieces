@@ -1,0 +1,452 @@
+/* ==========================================================================
+   Collection - Collection page and metro grid styles
+   ========================================================================== */
+
+@layer components {
+  /* ==========================================================================
+     Collection Header
+     ========================================================================== */
+
+  .collection-header-title {
+    @apply font-heading leading-none lg:text-[calc(clamp(3.5rem,7vw,6rem)*var(--heading-font-scale,1))] 2xl:text-[calc(clamp(4.5rem,6vw,8rem)*var(--heading-font-scale,1))];
+    font-size: calc(clamp(2.5rem, 10vw, 4.5rem) * var(--heading-font-scale, 1));
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+  }
+
+  .collection-wrapper[data-header-align="left"] .collection-header-title-line:nth-child(2) {
+    margin-left: clamp(1.5rem, 10vw, 8rem);
+  }
+
+  .collection-wrapper[data-header-align="left"] .collection-header-title-line:nth-child(3) {
+    margin-left: clamp(3rem, 18vw, 14rem);
+  }
+
+  .collection-wrapper.is-loading [data-collection-title] {
+    @apply opacity-0;
+  }
+
+  html.animations-disabled .collection-wrapper.is-loading [data-collection-title] {
+    @apply opacity-100;
+  }
+
+  /* ==========================================================================
+     Collection Grid
+     Note: grid-template-columns with var() fallbacks require @media (commas break arbitrary values)
+     ========================================================================== */
+
+  .collection-grid {
+    grid-template-columns: repeat(var(--columns-mobile, 1), 1fr);
+  }
+
+  .collection-grid {
+    @apply md:grid-cols-[repeat(var(--columns-tablet),1fr)] lg:grid-cols-[repeat(var(--columns-desktop),1fr)];
+  }
+
+  .collection-wrapper.is-loading .product-card-image {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html.animations-disabled .collection-wrapper.is-loading .product-card-image {
+    clip-path: none;
+  }
+
+  /* ==========================================================================
+     Metro Grid - Modern Bento Layout
+     ========================================================================== */
+
+  .collection-metro {
+    @apply gap-3 md:gap-4 lg:gap-5 md:grid-cols-[repeat(var(--columns-tablet),1fr)] lg:grid-cols-[repeat(var(--columns-desktop),1fr)];
+    grid-template-columns: repeat(var(--columns-mobile, 2), 1fr);
+    grid-auto-flow: dense;
+  }
+
+  /* Metro Item Aspect Ratio */
+  .metro-item {
+    aspect-ratio: var(--metro-aspect-ratio, 3/4);
+  }
+
+  .metro-item--hero {
+    aspect-ratio: var(--metro-aspect-ratio, 3/4);
+  }
+
+  /* Adapt mode - no fixed aspect ratio, use natural image height */
+  [data-metro-adapt] .metro-item {
+    @apply min-h-[280px] md:min-h-[320px];
+    aspect-ratio: auto;
+  }
+
+  [data-metro-adapt] .metro-item--hero {
+    @apply min-h-[400px] md:min-h-[500px];
+    aspect-ratio: auto;
+  }
+
+  /* Metro Item Sizes - Creative bento pattern */
+  .metro-item--hero {
+    @apply col-span-2 row-span-2;
+  }
+
+  .metro-item--wide {
+    @apply col-span-2;
+  }
+
+  .metro-item--tall {
+    @apply row-span-2;
+  }
+
+  /* Adjust spans when columns are limited (mobile) */
+  .metro-item--hero,
+  .metro-item--wide {
+    @apply max-md:col-span-[var(--columns-mobile)];
+  }
+
+  .metro-item--tall {
+    @apply max-md:row-span-1;
+  }
+
+  .metro-item--hero {
+    @apply max-md:row-span-2;
+  }
+
+  /* When only 2 columns */
+  [data-metro-cols="2"] .metro-item--hero,
+  [data-metro-cols="2"] .metro-item--wide {
+    @apply col-span-2;
+  }
+
+  [data-metro-cols="2"] .metro-item--hero {
+    @apply row-span-2;
+  }
+
+  [data-metro-cols="2"] .metro-item--tall {
+    @apply row-span-1;
+  }
+
+  /* When 3 columns */
+  [data-metro-cols="3"] .metro-item--hero {
+    @apply col-span-2 row-span-2;
+  }
+
+  [data-metro-cols="3"] .metro-item--wide {
+    @apply col-span-2;
+  }
+
+  [data-metro-cols="3"] .metro-item--tall {
+    @apply row-span-1;
+  }
+
+  /* ==========================================================================
+     Metro Item Base - Modern Card Design
+     ========================================================================== */
+
+  .metro-item {
+    @apply relative overflow-hidden transform-gpu bg-(--color-background-secondary) border-(length:--card-border-width) border-(--color-border) shadow-(--card-shadow);
+    border-radius: var(--card-radius);
+  }
+
+  .metro-item-inner {
+    @apply relative w-full h-full overflow-hidden;
+  }
+
+  /* ==========================================================================
+     Metro Image - Cinematic zoom
+     ========================================================================== */
+
+  .metro-item-image {
+    @apply absolute inset-0 w-full h-full object-cover will-change-transform;
+    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
+  }
+
+  .metro-item:hover .metro-item-image {
+    @apply scale-[1.12];
+  }
+
+  .metro-item-image--secondary {
+    @apply opacity-0;
+  }
+
+  .metro-item--has-secondary:hover .metro-item-image--primary {
+    @apply opacity-0;
+  }
+
+  .metro-item--has-secondary:hover .metro-item-image--secondary {
+    @apply opacity-100;
+  }
+
+  /* ==========================================================================
+     Metro Overlay - Always dark gradient for white text readability
+     ========================================================================== */
+
+  .metro-item-overlay {
+    @apply absolute inset-0 pointer-events-none z-[1];
+    background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0) 0%,
+      rgba(0, 0, 0, 0.1) 40%,
+      rgba(0, 0, 0, 0.5) 70%,
+      rgba(0, 0, 0, 0.8) 100%
+    );
+    transition: background 0.5s ease;
+  }
+
+  .metro-item:hover .metro-item-overlay {
+    background: linear-gradient(180deg,
+      rgba(0, 0, 0, 0.05) 0%,
+      rgba(0, 0, 0, 0.2) 40%,
+      rgba(0, 0, 0, 0.65) 70%,
+      rgba(0, 0, 0, 0.9) 100%
+    );
+  }
+
+  /* ==========================================================================
+     Metro Content - Refined typography
+     Touch devices: buttons always visible, content has room for them
+     ========================================================================== */
+
+  .metro-item-content {
+    @apply absolute bottom-0 left-0 right-0 z-[2] p-6 pb-20 opacity-100 translate-y-0 md:p-7 md:pb-[5.5rem];
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding-bottom 0.4s ease;
+  }
+
+  .metro-item--hero .metro-item-content {
+    @apply p-8 pb-24 md:p-10 md:pb-[6.5rem];
+  }
+
+  /* Hover devices: animate content on hover */
+  @media (hover: hover) and (pointer: fine) {
+    .metro-item-content {
+      @apply pb-6 translate-y-2 opacity-95;
+    }
+
+    .metro-item:hover .metro-item-content {
+      @apply translate-y-0 opacity-100 pb-20;
+    }
+
+    .metro-item--hero .metro-item-content {
+      @apply pb-8;
+    }
+
+    .metro-item--hero:hover .metro-item-content {
+      @apply pb-24;
+    }
+  }
+
+  @media (hover: hover) and (pointer: fine) and (min-width: 768px) {
+    .metro-item-content {
+      @apply pb-7;
+    }
+
+    .metro-item:hover .metro-item-content {
+      @apply pb-[5.5rem];
+    }
+
+    .metro-item--hero .metro-item-content {
+      @apply pb-10;
+    }
+
+    .metro-item--hero:hover .metro-item-content {
+      @apply pb-[6.5rem];
+    }
+  }
+
+  /* ==========================================================================
+     Metro Vendor - Elegant label
+     ========================================================================== */
+
+  .metro-item-vendor {
+    @apply inline-block m-0 mb-2.5 py-1 border-b border-white/20 text-white/70;
+  }
+
+  /* ==========================================================================
+     Metro Title - Bold typography
+     ========================================================================== */
+
+  .metro-item-title {
+    @apply font-heading m-0 text-white leading-tight line-clamp-2 md:text-[calc(1.25rem*var(--heading-font-scale,1))];
+    font-size: calc(1.125rem * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    text-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+
+  .metro-item--hero .metro-item-title {
+    @apply line-clamp-3 md:text-[calc(2rem*var(--heading-font-scale,1))];
+    font-size: calc(1.5rem * var(--heading-font-scale, 1));
+  }
+
+  .metro-item--wide .metro-item-title {
+    @apply md:text-[calc(1.5rem*var(--heading-font-scale,1))];
+    font-size: calc(1.25rem * var(--heading-font-scale, 1));
+  }
+
+  /* ==========================================================================
+     Metro Price - Clean display
+     ========================================================================== */
+
+  .metro-item-price {
+    @apply flex items-baseline gap-2.5 flex-wrap mt-3 text-base text-white font-semibold md:text-[1.0625rem];
+  }
+
+  .metro-item-price-compare {
+    @apply line-through opacity-50 text-sm font-normal;
+  }
+
+  .metro-item-price-sale {
+    @apply text-(--color-sale) font-bold;
+  }
+
+  .metro-item--hero .metro-item-price {
+    @apply text-lg mt-4 md:text-xl;
+  }
+
+  /* ==========================================================================
+     Metro Actions Wrapper - Positioned outside <a> to avoid nested links
+     ========================================================================== */
+
+  .metro-item-actions-wrapper {
+    @apply absolute bottom-0 left-0 right-0 p-6 z-[3] pointer-events-none md:p-7;
+  }
+
+  .metro-item--hero .metro-item-actions-wrapper {
+    @apply p-8 md:p-10;
+  }
+
+  /* ==========================================================================
+     Metro Actions - Floating buttons
+     Touch devices: always visible
+     ========================================================================== */
+
+  .metro-item-actions {
+    @apply flex items-center gap-2.5 opacity-100 translate-y-0 pointer-events-auto;
+    transition: opacity 0.4s ease 0.1s, transform 0.5s cubic-bezier(0.16, 1, 0.3, 1) 0.1s;
+  }
+
+  /* Hover devices: hide by default, show on hover */
+  @media (hover: hover) and (pointer: fine) {
+    .metro-item-actions {
+      @apply opacity-0 translate-y-4;
+    }
+
+    .metro-item:hover .metro-item-actions {
+      @apply opacity-100 translate-y-0;
+    }
+  }
+
+  .metro-item-action {
+    @apply flex items-center justify-center shrink-0 size-10 rounded-full text-white cursor-pointer;
+    background: rgba(255, 255, 255, 0.15);
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .metro-item-action:hover {
+    @apply bg-white text-(--color-text) scale-110;
+    border-color: white;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  .metro-item-action.is-active {
+    @apply bg-(--color-sale) border-(--color-sale);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+  }
+
+  /* Quick-add loading state */
+  .metro-item-action[data-quick-add]:disabled {
+    @apply cursor-wait opacity-70;
+  }
+
+  .metro-item-action[data-quick-add] .icon-loading {
+    @apply hidden animate-spin;
+  }
+
+  .metro-item-action[data-quick-add]:disabled .icon-default {
+    @apply hidden;
+  }
+
+  .metro-item-action[data-quick-add]:disabled .icon-loading {
+    @apply block;
+  }
+
+  .metro-item-action[data-quick-add].is-added {
+    background: var(--color-success, #22c55e);
+    border-color: var(--color-success, #22c55e);
+  }
+
+  .metro-item-action[data-quick-add].is-added .icon-default {
+    @apply hidden;
+  }
+
+  .metro-item-action[data-quick-add].is-added .icon-added {
+    @apply block;
+  }
+
+  .metro-item-action[data-quick-add] .icon-added {
+    @apply hidden;
+  }
+
+  /* ==========================================================================
+     Metro CTA Button
+     ========================================================================== */
+
+  .metro-item-cta {
+    @apply inline-flex items-center justify-center gap-2 py-3 px-5 text-xs font-semibold tracking-wider uppercase bg-white text-(--color-text) border-none cursor-pointer no-underline leading-none pointer-events-auto;
+    border-radius: var(--button-radius);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .metro-item-cta:hover {
+    @apply bg-(--color-primary) text-(--color-primary-contrast) -translate-y-0.5;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  }
+
+  .metro-item-cta--disabled {
+    @apply opacity-50 cursor-not-allowed pointer-events-none shadow-none;
+  }
+
+  /* ==========================================================================
+     Metro Sale Badge - Premium pill
+     ========================================================================== */
+
+  .metro-item-sale-badge {
+    @apply absolute top-4 left-4 z-[3] py-2 px-3.5 text-[0.8125rem] font-bold tracking-wide uppercase text-white bg-(--color-sale) md:top-5 md:left-5 md:px-4 md:text-sm;
+    border-radius: var(--badge-radius);
+  }
+
+  .metro-item--hero .metro-item-sale-badge {
+    @apply top-6 left-6 py-2.5 px-[1.125rem] text-sm md:top-8 md:left-8;
+  }
+
+  /* ==========================================================================
+     Metro Sold Out - Muted state
+     ========================================================================== */
+
+  .metro-item-soldout .metro-item-image {
+    filter: grayscale(60%) brightness(0.85);
+  }
+
+  .metro-item-soldout .metro-item-overlay {
+    background: linear-gradient(180deg, rgba(0, 0, 0, 0.1) 0%, rgba(0, 0, 0, 0.6) 100%);
+  }
+
+  .metro-item-soldout:hover {
+    @apply transform-none;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+  }
+
+  /* ==========================================================================
+     Loading States
+     ========================================================================== */
+
+  .collection-wrapper.is-loading .metro-item-inner {
+    clip-path: inset(0 100% 0 0);
+  }
+
+  html.animations-disabled .collection-wrapper.is-loading .metro-item-inner {
+    clip-path: none;
+  }
+
+  .collection-wrapper.is-transitioning {
+    @apply pointer-events-none;
+  }
+}

@@ -9,22 +9,10 @@
      ========================================================================== */
 
   .page-title {
-    @apply font-heading leading-tight text-balance;
+    @apply font-heading leading-tight text-balance lg:text-[calc(clamp(2.5rem,4vw,3.5rem)*var(--heading-font-scale,1))] 2xl:text-[calc(clamp(3rem,3.5vw,4rem)*var(--heading-font-scale,1))];
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     font-size: calc(clamp(1.75rem, 5vw, 2.75rem) * var(--heading-font-scale, 1));
-  }
-
-  @media (min-width: 1024px) {
-    .page-title {
-      font-size: calc(clamp(2.5rem, 4vw, 3.5rem) * var(--heading-font-scale, 1));
-    }
-  }
-
-  @media (min-width: 1536px) {
-    .page-title {
-      font-size: calc(clamp(3rem, 3.5vw, 4rem) * var(--heading-font-scale, 1));
-    }
   }
 
   /* ==========================================================================
@@ -34,56 +22,26 @@
      ========================================================================== */
 
   .section-title {
-    @apply font-heading leading-tight text-balance;
+    @apply font-heading leading-tight text-balance lg:text-[calc(clamp(2rem,3vw,2.75rem)*var(--heading-font-scale,1))] 2xl:text-[calc(clamp(2.25rem,2.5vw,3rem)*var(--heading-font-scale,1))];
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     font-size: calc(clamp(1.5rem, 4vw, 2.25rem) * var(--heading-font-scale, 1));
   }
 
-  @media (min-width: 1024px) {
-    .section-title {
-      font-size: calc(clamp(2rem, 3vw, 2.75rem) * var(--heading-font-scale, 1));
-    }
-  }
-
-  @media (min-width: 1536px) {
-    .section-title {
-      font-size: calc(clamp(2.25rem, 2.5vw, 3rem) * var(--heading-font-scale, 1));
-    }
-  }
-
   /* Hero title - primary hero headline (larger than page-title) */
   .hero-title {
-    @apply font-heading leading-none text-balance;
+    @apply font-heading leading-none text-balance lg:text-[calc(clamp(3rem,6vw,5rem)*var(--heading-font-scale,1))] 2xl:text-[calc(clamp(4rem,5vw,6rem)*var(--heading-font-scale,1))];
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
     font-size: calc(clamp(2rem, 8vw, 3.5rem) * var(--heading-font-scale, 1));
   }
 
-  @media (min-width: 1024px) {
-    .hero-title {
-      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1));
-    }
-  }
-
-  @media (min-width: 1536px) {
-    .hero-title {
-      font-size: calc(clamp(4rem, 5vw, 6rem) * var(--heading-font-scale, 1));
-    }
-  }
-
   /* Newsletter title (h3) */
   .newsletter-title {
-    @apply font-heading leading-snug text-balance;
+    @apply font-heading leading-snug text-balance lg:text-[calc(clamp(1.25rem,2vw,1.75rem)*var(--heading-font-scale,1))];
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
     font-size: calc(clamp(1.125rem, 2.5vw, 1.5rem) * var(--heading-font-scale, 1));
-  }
-
-  @media (min-width: 1024px) {
-    .newsletter-title {
-      font-size: calc(clamp(1.25rem, 2vw, 1.75rem) * var(--heading-font-scale, 1));
-    }
   }
 
   /* Blog card title */
@@ -246,16 +204,10 @@
      ========================================================================== */
 
   .card-title {
-    @apply font-heading font-semibold leading-snug;
+    @apply font-heading font-semibold leading-snug md:text-[calc(1.0625rem*var(--heading-font-scale,1))];
     letter-spacing: calc(0.01em + var(--heading-letter-spacing, 0em));
     font-size: calc(0.9375rem * var(--heading-font-scale, 1));
     color: var(--color-text);
-  }
-
-  @media (min-width: 768px) {
-    .card-title {
-      font-size: calc(1.0625rem * var(--heading-font-scale, 1));
-    }
   }
 
   /* ==========================================================================
@@ -398,13 +350,8 @@
      ========================================================================== */
 
   .section-header-spacing {
+    @apply lg:mb-[clamp(2.5rem,4vw,4rem)];
     margin-bottom: clamp(2rem, 4vw, 3rem) !important;
-  }
-
-  @media (min-width: 1024px) {
-    .section-header-spacing {
-      margin-bottom: clamp(2.5rem, 4vw, 4rem) !important;
-    }
   }
 
   /* ==========================================================================

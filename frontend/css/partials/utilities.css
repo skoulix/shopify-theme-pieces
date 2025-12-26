@@ -166,19 +166,17 @@
     @apply flex-1;
   }
 
-  @media (min-width: 768px) {
-    .product-card-list {
-      @apply gap-6 items-center;
-      grid-template-columns: 100px 1fr auto;
-    }
+  /* Product card list - responsive grid */
+  .product-card-list {
+    @apply md:gap-6 md:items-center md:grid-cols-[100px_1fr_auto];
+  }
 
-    .product-card-list__image {
-      @apply w-24;
-    }
+  .product-card-list__image {
+    @apply md:w-24;
+  }
 
-    .product-card-list__buttons-mobile {
-      @apply hidden;
-    }
+  .product-card-list__buttons-mobile {
+    @apply md:hidden;
   }
 
   [data-card-no-border] .product-card-list__buttons-mobile,
@@ -199,10 +197,8 @@
     @apply py-4 border-b border-(--color-border);
   }
 
-  @media (max-width: 767px) {
-    .collection-wrapper:not([data-card-no-border]) .collection-list-view .product-card-list {
-      @apply pl-2;
-    }
+  .collection-wrapper:not([data-card-no-border]) .collection-list-view .product-card-list {
+    @apply max-md:pl-2;
   }
 
   /* Toast Notifications */
