@@ -173,12 +173,12 @@
      ========================================================================== */
 
   .metro-item-image {
-    @apply absolute inset-0 w-full h-full object-cover will-change-transform;
-    transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.5s ease, filter 0.5s ease;
+    @apply absolute inset-0 w-full h-full object-cover will-change-transform scale-100;
+    transition: scale var(--transition-slow), opacity var(--transition-slow);
   }
 
   .metro-item:hover .metro-item-image {
-    @apply scale-[1.12];
+    @apply scale-105;
   }
 
   .metro-item-image--secondary {
@@ -186,11 +186,11 @@
   }
 
   .metro-item--has-secondary:hover .metro-item-image--primary {
-    @apply opacity-0;
+    @apply scale-105 opacity-0;
   }
 
   .metro-item--has-secondary:hover .metro-item-image--secondary {
-    @apply opacity-100;
+    @apply scale-105 opacity-100;
   }
 
   /* ==========================================================================
@@ -307,7 +307,7 @@
   }
 
   .metro-item-price-compare {
-    @apply line-through opacity-50 text-sm font-normal;
+    @apply line-through text-white/50 text-sm font-normal;
   }
 
   .metro-item-price-sale {

@@ -213,7 +213,7 @@
                 <div class="metro-item-content">
                   {%- comment -%} Vendor {%- endcomment -%}
                   {% if settings.show_vendor and product.vendor != blank %}
-                    <p class="metro-item-vendor text-meta">{{ product.vendor }}</p>
+                    <p class="metro-item-vendor{% if settings.buttons_uppercase %} uppercase{% endif %}">{{ product.vendor }}</p>
                   {% endif %}
 
                   {%- comment -%} Title {%- endcomment -%}

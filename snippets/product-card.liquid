@@ -123,6 +123,13 @@
 
     {%- comment -%} Badges - outside the link {%- endcomment -%}
     <div class="absolute top-3 left-3 flex flex-col gap-2 pointer-events-none">
+      {% unless product.available %}
+        {% if settings.show_sold_out_badge %}
+          <span class="badge badge--soldout">
+            {{ 'products.product.sold_out' | t }}
+          </span>
+        {% endif %}
+      {% endunless %}
       {% if product.compare_at_price > product.price and settings.show_sale_badge %}
         <span class="badge badge--sale">
           {% if settings.sale_badge_style == 'percentage' %}
@@ -133,13 +140,6 @@
           {% endif %}
         </span>
       {% endif %}
-      {% unless product.available %}
-        {% if settings.show_sold_out_badge %}
-          <span class="badge badge--soldout">
-            {{ 'products.product.sold_out' | t }}
-          </span>
-        {% endif %}
-      {% endunless %}
     </div>
 
     {%- comment -%} Action buttons - outside the link, grouped together {%- endcomment -%}
