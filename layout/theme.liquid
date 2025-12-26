@@ -238,7 +238,7 @@
           // Announce to screen readers
           const liveRegion = document.getElementById('cart-live-region');
           if (liveRegion) {
-            liveRegion.textContent = `{{ 'accessibility.cart_updated' | t }}. {{ 'accessibility.items_in_cart' | t: count: '${cart.item_count}' }}`.replace('${cart.item_count}', cart.item_count);
+            liveRegion.textContent = `{{ 'accessibility.cart_updated' | t }}. {{ 'accessibility.items_in_cart' | t: count: '[COUNT]' }}`.replace('[COUNT]', cart.item_count);
           }
 
           // Dispatch cart updated event for reactive components (e.g., free shipping bar)

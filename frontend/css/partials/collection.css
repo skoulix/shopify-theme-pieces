@@ -93,18 +93,20 @@
     @apply row-span-2;
   }
 
-  /* Adjust spans when columns are limited (mobile) */
-  .metro-item--hero,
-  .metro-item--wide {
-    @apply max-md:col-span-[var(--columns-mobile)];
-  }
+  /* Adjust spans when columns are limited (mobile) - explicit media query for CSS var support */
+  @media (max-width: 767px) {
+    .metro-item--hero,
+    .metro-item--wide {
+      grid-column: span var(--columns-mobile) / span var(--columns-mobile);
+    }
 
-  .metro-item--tall {
-    @apply max-md:row-span-1;
-  }
+    .metro-item--tall {
+      grid-row: span 1 / span 1;
+    }
 
-  .metro-item--hero {
-    @apply max-md:row-span-2;
+    .metro-item--hero {
+      grid-row: span 2 / span 2;
+    }
   }
 
   /* When only 2 columns */
