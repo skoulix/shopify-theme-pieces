@@ -36,7 +36,7 @@
     assign has_variants = true
   endif
 
-  # Image aspect ratio
+  # Image aspect ratio - use image's natural ratio for adapt mode to prevent CLS
   case settings.product_card_image_ratio
     when 'portrait'
       assign image_ratio_class = 'aspect-[3/4]'
@@ -45,7 +45,11 @@
     when 'landscape'
       assign image_ratio_class = 'aspect-[4/3]'
     when 'adapt'
-      assign image_ratio_class = ''
+      if product.featured_image
+        assign image_ratio_class = 'aspect-[' | append: product.featured_image.width | append: '/' | append: product.featured_image.height | append: ']'
+      else
+        assign image_ratio_class = 'aspect-[3/4]'
+      endif
   endcase
 
   # Check if any action buttons are enabled
@@ -54,6 +58,16 @@
     assign show_action_buttons = true
   endif
 -%}
+
+{%- comment -%} Pre-generate product JSON once for reuse across all buttons {%- endcomment -%}
+{%- capture product_json_base -%}
+{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
+{%- endcapture -%}
+{%- assign product_json_wishlist = product_json_base | strip_newlines | replace: "'", "&#39;" -%}
+{%- capture product_json_compare_extra -%}
+{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
+{%- endcapture -%}
+{%- assign product_json_compare = product_json_compare_extra | strip_newlines | replace: "'", "&#39;" -%}
 
 <div
   class="product-card group relative flex flex-col no-underline text-inherit rounded-(--card-radius) overflow-hidden h-full border-(--card-border-width) border-solid border-(--color-border)"
@@ -64,7 +78,7 @@
 >
   {%- comment -%} Image area with link {%- endcomment -%}
   <div class="product-card-image relative overflow-hidden {{ image_ratio_class }}"{% if animate_image %} data-tween data-tween-type="clip-right"{% endif %}>
-    <a href="{{ product_url }}" class="block w-full h-full" aria-label="{{ product.title }}">
+    <a href="{{ product_url }}" class="block w-full h-full">
       {% if product.featured_image %}
         {%- assign focal_point = product.featured_image.presentation.focal_point | default: '50% 50%' -%}
         {%- assign focal_point_style = 'object-position: ' | append: focal_point -%}
@@ -144,14 +158,11 @@
         {% endif %}
         {%- comment -%} Wishlist Button {%- endcomment -%}
         {% if settings.enable_wishlist %}
-          {%- capture wishlist_product_json -%}
-            {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
-          {%- endcapture -%}
           <button
             type="button"
             class="card-action-btn"
             data-wishlist-toggle="{{ product.id }}"
-            data-product-json='{{ wishlist_product_json | strip_newlines | replace: "'", "&#39;" }}'
+            data-product-json='{{ product_json_wishlist }}'
             aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}"
             aria-pressed="false"
           >
@@ -160,14 +171,11 @@
         {% endif %}
         {%- comment -%} Compare Button {%- endcomment -%}
         {% if settings.enable_compare %}
-          {%- capture compare_product_json -%}
-            {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
-          {%- endcapture -%}
           <button
             type="button"
             class="card-action-btn"
             data-compare-toggle="{{ product.id }}"
-            data-product-json='{{ compare_product_json | strip_newlines | replace: "'", "&#39;" }}'
+            data-product-json='{{ product_json_compare }}'
             aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}"
             aria-pressed="false"
           >
@@ -233,14 +241,12 @@
             </button>
           {% endif %}
           {% if settings.enable_wishlist %}
-            {%- capture mobile_wishlist_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}{%- endcapture -%}
-            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ mobile_wishlist_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-heart" aria-hidden="true"></i>
             </button>
           {% endif %}
           {% if settings.enable_compare %}
-            {%- capture mobile_compare_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}{%- endcapture -%}
-            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ mobile_compare_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-scales" aria-hidden="true"></i>
             </button>
           {% endif %}
@@ -273,14 +279,12 @@
             </button>
           {% endif %}
           {% if settings.enable_wishlist %}
-            {%- capture desktop_wishlist_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}{%- endcapture -%}
-            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ desktop_wishlist_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-heart" aria-hidden="true"></i>
             </button>
           {% endif %}
           {% if settings.enable_compare %}
-            {%- capture desktop_compare_json -%}{"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}{%- endcapture -%}
-            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ desktop_compare_json | strip_newlines | replace: "'", "&#39;" }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-scales" aria-hidden="true"></i>
             </button>
           {% endif %}

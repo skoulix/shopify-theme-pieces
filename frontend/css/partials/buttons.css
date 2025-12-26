@@ -674,6 +674,10 @@
     color: var(--color-background);
   }
 
+  .card-action-btn:focus-visible {
+    @apply scale-100 outline-2 outline-offset-2 outline-(--color-primary);
+  }
+
   .group:hover .card-action-btn {
     @apply scale-100;
   }

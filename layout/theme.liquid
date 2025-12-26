@@ -133,6 +133,9 @@
       {{ 'accessibility.skip_to_text' | t }}
     </a>
 
+    {%- comment -%} Aria-live region for cart announcements (screen readers) {%- endcomment -%}
+    <div id="cart-live-region" class="visually-hidden" aria-live="polite" aria-atomic="true"></div>
+
     {% sections 'header-group' %}
 
     {%- comment -%} Spacer to prevent content jump when header is fixed {%- endcomment -%}
@@ -185,6 +188,14 @@
 
     {%- comment -%} Quick Add Script {%- endcomment -%}
     <script>
+      // Fetch with timeout wrapper
+      function fetchWithTimeout(url, options = {}, timeout = 8000) {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), timeout);
+        return fetch(url, { ...options, signal: controller.signal })
+          .finally(() => clearTimeout(timeoutId));
+      }
+
       document.addEventListener('click', async function(e) {
         const quickAddBtn = e.target.closest('[data-quick-add]');
         if (!quickAddBtn) return;
@@ -205,7 +216,7 @@
         if (addingText) addingText.classList.remove('hidden');
 
         try {
-          const res = await fetch('/cart/add.js', {
+          const res = await fetchWithTimeout('/cart/add.js', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ id: variantId, quantity: 1 })
@@ -217,12 +228,18 @@
           }
 
           // Update cart count
-          const cartRes = await fetch('/cart.js');
+          const cartRes = await fetchWithTimeout('/cart.js');
           const cart = await cartRes.json();
           document.querySelectorAll('[data-cart-count]').forEach(el => {
             el.textContent = cart.item_count;
             el.classList.toggle('hidden', cart.item_count === 0);
           });
+
+          // Announce to screen readers
+          const liveRegion = document.getElementById('cart-live-region');
+          if (liveRegion) {
+            liveRegion.textContent = `{{ 'accessibility.cart_updated' | t }}. {{ 'accessibility.items_in_cart' | t: count: '${cart.item_count}' }}`.replace('${cart.item_count}', cart.item_count);
+          }
 
           // Dispatch cart updated event for reactive components (e.g., free shipping bar)
           document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
@@ -264,7 +281,12 @@
           quickAddBtn.disabled = false;
           if (addingText) addingText.classList.add('hidden');
           if (addText) addText.classList.remove('hidden');
-          toast.error(err.message || 'Could not add to cart. Please try again.');
+          // Handle timeout specifically
+          if (err.name === 'AbortError') {
+            toast.error('Request timed out. Please try again.');
+          } else {
+            toast.error(err.message || 'Could not add to cart. Please try again.');
+          }
         }
       });
     </script>
