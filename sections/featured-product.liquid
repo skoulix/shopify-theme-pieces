@@ -128,12 +128,12 @@
               data-media-id="{{ media.id }}"
             >
               {% if media.media_type == 'image' %}
-                {{ media | image_url: width: 1200 | image_tag:
+                {{ media | image_url: width: 1600 | image_tag:
                   class: 'w-full h-full object-cover',
                   loading: 'lazy',
                   decoding: 'async',
                   sizes: '(max-width: 1024px) 100vw, 50vw',
-                  widths: '600, 800, 1000, 1200',
+                  widths: '600, 800, 1000, 1200, 1600',
                   alt: media.alt | default: product.title
                 }}
               {% endif %}

@@ -91,26 +91,26 @@
         {%- else -%}
           {%- assign primary_class = 'image-primary' -%}
         {%- endif -%}
-        {{ product.featured_image | image_url: width: 1200 | image_tag:
+        {{ product.featured_image | image_url: width: 2000 | image_tag:
           class: primary_class,
           style: focal_point_style,
           loading: 'lazy',
           decoding: 'async',
-          sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
-          widths: '400, 600, 800, 1200',
+          sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw',
+          widths: '400, 600, 800, 1000, 1200, 1600, 2000',
           alt: product.title
         }}
         {%- comment -%} Secondary image on hover {%- endcomment -%}
         {% if has_secondary %}
           {%- assign secondary_focal_point = product.images[1].presentation.focal_point | default: '50% 50%' -%}
           {%- assign secondary_focal_point_style = 'object-position: ' | append: secondary_focal_point -%}
-          {{ product.images[1] | image_url: width: 1200 | image_tag:
+          {{ product.images[1] | image_url: width: 2000 | image_tag:
             class: 'image-secondary',
             style: secondary_focal_point_style,
             loading: 'lazy',
             decoding: 'async',
-            sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw',
-            widths: '400, 600, 800, 1200',
+            sizes: '(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 50vw',
+            widths: '400, 600, 800, 1000, 1200, 1600, 2000',
             alt: product.title
           }}
         {% endif %}

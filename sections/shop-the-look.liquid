@@ -246,12 +246,12 @@
         <div class="lg:sticky lg:top-12">
           <div class="shop-the-look-image-{{ section.id }}" data-tween data-tween-type="fade-up">
             {% if section.settings.image != blank %}
-              {{ section.settings.image | image_url: width: 1200 | image_tag:
+              {{ section.settings.image | image_url: width: 1600 | image_tag:
                 class: 'w-full h-auto',
                 loading: 'lazy',
           decoding: 'async',
                 sizes: '(max-width: 1024px) 100vw, 50vw',
-                widths: '600, 800, 1000, 1200',
+                widths: '600, 800, 1000, 1200, 1600',
                 alt: section.settings.image.alt | default: section.settings.title
               }}
 

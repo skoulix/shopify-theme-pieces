@@ -108,12 +108,12 @@
           >
             <div class="collections-metro-item-inner relative overflow-hidden bg-(--color-background-secondary)">
               {% if collection.featured_image %}
-                {{ collection.featured_image | image_url: width: 1200 | image_tag:
+                {{ collection.featured_image | image_url: width: 1600 | image_tag:
                   class: 'collections-metro-item-image w-full h-full object-cover',
                   loading: 'lazy',
           decoding: 'async',
                   sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
-                  widths: '400, 600, 800, 1200',
+                  widths: '400, 600, 800, 1000, 1200, 1600',
                   alt: collection.featured_image.alt | default: collection.title
                 }}
               {% else %}
