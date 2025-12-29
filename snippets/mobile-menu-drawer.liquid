@@ -10,6 +10,8 @@
   - show_search: {Boolean} Show search link in footer
   - show_cart: {Boolean} Show cart link in footer
   - nav_uppercase: {Boolean} Uppercase navigation text
+  - enable_country_selector: {Boolean} Show country/region selector
+  - enable_language_selector: {Boolean} Show language selector
 
   Usage:
   {% render 'mobile-menu-drawer',
@@ -17,7 +19,9 @@
     style: section.settings.mobile_menu_style,
     show_search: section.settings.show_search,
     show_cart: section.settings.show_cart,
-    nav_uppercase: section.settings.nav_uppercase
+    nav_uppercase: section.settings.nav_uppercase,
+    enable_country_selector: section.settings.enable_country_selector,
+    enable_language_selector: section.settings.enable_language_selector
   %}
 {%- endcomment -%}
 
@@ -296,8 +300,8 @@
     {% endif %}
 
     {%- comment -%} Footer {%- endcomment -%}
-    <div class="mobile-nav__footer p-5 border-t border-(--color-border)">
-      <div class="mobile-nav__footer-links flex flex-wrap gap-4">
+    <div class="mobile-nav__footer border-t border-(--color-border) divide-y divide-(--color-border)">
+      <div class="mobile-nav__footer-links flex flex-wrap gap-4 px-5 py-4">
         {% if shop.customer_accounts_enabled %}
           <a href="{{ routes.account_url }}" class="mobile-nav__footer-link inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-widest text-(--color-text-secondary) no-underline transition-colors duration-200 hover:text-(--color-text)" data-mobile-nav-close>
             <i class="ph ph-user text-base"></i>
@@ -311,6 +315,15 @@
           </a>
         {% endif %}
       </div>
+      {%- if enable_country_selector or enable_language_selector -%}
+        <div class="mobile-nav__localization px-5 py-4">
+          {%- render 'localization-form',
+            show_country: enable_country_selector,
+            show_language: enable_language_selector,
+            dropdown_direction: 'up'
+          -%}
+        </div>
+      {%- endif -%}
     </div>
   </div>
 </div>

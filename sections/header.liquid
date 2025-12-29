@@ -470,7 +470,7 @@
       </div>
 
       {%- comment -%} Right: Icons {%- endcomment -%}
-      <div class="flex lg:flex-1 justify-end gap-x-1 lg:gap-x-2">
+      <div class="flex lg:flex-1 justify-end items-center gap-x-1">
         {%- comment -%} Mobile Cart Icon {%- endcomment -%}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
@@ -487,6 +487,17 @@
             </a>
           {% endif %}
         {% endif %}
+
+        {%- comment -%} Localization selectors (before icons) {%- endcomment -%}
+        {%- if section.settings.enable_country_selector or section.settings.enable_language_selector -%}
+          <div class="header-localization hidden lg:flex items-center mr-2">
+            {%- render 'localization-form',
+              show_country: section.settings.enable_country_selector,
+              show_language: section.settings.enable_language_selector,
+              dropdown_direction: 'down'
+            -%}
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Desktop Icons {%- endcomment -%}
         {% if section.settings.show_search %}
@@ -662,7 +673,7 @@
       </div>
 
       {%- comment -%} Header Icons (Mobile + Desktop) {%- endcomment -%}
-      <div class="flex {% if nav_position == 'center' or nav_position == 'left' %}lg:flex-1{% endif %} justify-end gap-x-1 lg:gap-x-2">
+      <div class="flex {% if nav_position == 'center' or nav_position == 'left' %}lg:flex-1{% endif %} justify-end items-center gap-x-1">
         {%- comment -%} Mobile Cart Icon {%- endcomment -%}
         {% if section.settings.show_cart %}
           {% if settings.cart_type == 'drawer' %}
@@ -679,6 +690,17 @@
             </a>
           {% endif %}
         {% endif %}
+
+        {%- comment -%} Localization selectors (before icons) {%- endcomment -%}
+        {%- if section.settings.enable_country_selector or section.settings.enable_language_selector -%}
+          <div class="header-localization hidden lg:flex items-center shrink-0 mr-2">
+            {%- render 'localization-form',
+              show_country: section.settings.enable_country_selector,
+              show_language: section.settings.enable_language_selector,
+              dropdown_direction: 'down'
+            -%}
+          </div>
+        {%- endif -%}
 
         {%- comment -%} Desktop Icons {%- endcomment -%}
         {% if section.settings.show_search %}
@@ -732,7 +754,9 @@
     style: section.settings.mobile_menu_style,
     show_search: section.settings.show_search,
     show_cart: section.settings.show_cart,
-    nav_uppercase: section.settings.nav_uppercase
+    nav_uppercase: section.settings.nav_uppercase,
+    enable_country_selector: section.settings.enable_country_selector,
+    enable_language_selector: section.settings.enable_language_selector
   %}
 </header>
 </div><!-- /.header-wrapper -->
@@ -1864,6 +1888,24 @@
       "id": "show_cart",
       "default": true,
       "label": "Show cart icon"
+    },
+    {
+      "type": "header",
+      "content": "Localization"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_country_selector",
+      "default": false,
+      "label": "Enable country/region selector",
+      "info": "Only shows when multiple countries are available in your market settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_language_selector",
+      "default": false,
+      "label": "Enable language selector",
+      "info": "Only shows when multiple languages are available"
     },
     {
       "type": "header",

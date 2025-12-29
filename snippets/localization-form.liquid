@@ -5,11 +5,24 @@
 {%- endcomment -%}
 
 {%- liquid
-  assign show_country = show_country | default: true
-  assign show_language = show_language | default: true
+  # Handle boolean defaults properly - Liquid's default filter treats false as falsy
+  if show_country == nil
+    assign show_country = true
+  endif
+  if show_language == nil
+    assign show_language = true
+  endif
+  assign dropdown_direction = dropdown_direction | default: 'up'
+
+  # Dropdown positioning classes based on direction
+  if dropdown_direction == 'down'
+    assign dropdown_position_class = 'top-full mt-2'
+  else
+    assign dropdown_position_class = 'bottom-full mb-2'
+  endif
 -%}
 
-<div class="localization-form flex flex-wrap items-center gap-4" style="color: inherit;">
+<div class="localization-form flex flex-wrap items-center gap-3" style="color: inherit;">
   {%- if show_country and localization.available_countries.size > 1 -%}
     <div class="localization-form__country relative">
       {%- form 'localization', id: 'country-form', class: 'localization-form__form' -%}
@@ -22,27 +35,36 @@
             aria-controls="country-list"
             data-localization-trigger="country"
           >
+            <span class="localization-form__flag">{{ localization.country.iso_code | replace: 'A', '🇦' | replace: 'B', '🇧' | replace: 'C', '🇨' | replace: 'D', '🇩' | replace: 'E', '🇪' | replace: 'F', '🇫' | replace: 'G', '🇬' | replace: 'H', '🇭' | replace: 'I', '🇮' | replace: 'J', '🇯' | replace: 'K', '🇰' | replace: 'L', '🇱' | replace: 'M', '🇲' | replace: 'N', '🇳' | replace: 'O', '🇴' | replace: 'P', '🇵' | replace: 'Q', '🇶' | replace: 'R', '🇷' | replace: 'S', '🇸' | replace: 'T', '🇹' | replace: 'U', '🇺' | replace: 'V', '🇻' | replace: 'W', '🇼' | replace: 'X', '🇽' | replace: 'Y', '🇾' | replace: 'Z', '🇿' }}</span>
             <span class="localization-form__currency">{{ localization.country.currency.iso_code }}</span>
-            <span class="localization-form__country-name">{{ localization.country.name }}</span>
             <i class="ph ph-caret-down text-xs transition-transform duration-200" data-caret></i>
           </button>
 
           <div
             id="country-list"
-            class="localization-form__dropdown absolute bottom-full left-0 mb-2 min-w-[200px] max-h-[300px] overflow-y-auto bg-(--color-background) text-(--color-text) border border-(--color-border) rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
+            class="localization-form__dropdown absolute {{ dropdown_position_class }} left-0 min-w-60 max-h-75 bg-(--color-background) text-(--color-text) border border-(--color-border) rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
             data-localization-panel="country"
+            data-lenis-prevent
           >
-            <ul class="py-2" role="listbox" aria-label="{{ 'localization.country_label' | t }}">
+            <div class="p-2 border-b border-(--color-border)">
+              <input
+                type="text"
+                class="w-full px-3 py-2 text-xs bg-(--color-background-secondary) border border-(--color-border) rounded-md outline-none focus:border-(--color-primary) transition-colors"
+                placeholder="{{ 'localization.search_country' | t | default: 'Search countries...' }}"
+                data-country-search
+              >
+            </div>
+            <ul class="py-2 max-h-50 overflow-y-auto" role="listbox" aria-label="{{ 'localization.country_label' | t }}" data-country-list>
               {%- for country in localization.available_countries -%}
                 <li>
                   <button
                     type="button"
-                    class="w-full px-4 py-2 text-left text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors flex items-center justify-between gap-4{% if country.iso_code == localization.country.iso_code %} font-semibold{% endif %}"
+                    class="w-full px-4 py-2 text-left text-xs text-(--color-text) hover:bg-(--color-background-secondary) transition-colors flex items-center justify-between gap-2{% if country.iso_code == localization.country.iso_code %} font-semibold{% endif %}"
                     data-country-code="{{ country.iso_code }}"
                     role="option"
                     aria-selected="{% if country.iso_code == localization.country.iso_code %}true{% else %}false{% endif %}"
                   >
-                    <span>{{ country.name }}</span>
+                    <span class="flex items-center gap-2"><span>{{ country.iso_code | replace: 'A', '🇦' | replace: 'B', '🇧' | replace: 'C', '🇨' | replace: 'D', '🇩' | replace: 'E', '🇪' | replace: 'F', '🇫' | replace: 'G', '🇬' | replace: 'H', '🇭' | replace: 'I', '🇮' | replace: 'J', '🇯' | replace: 'K', '🇰' | replace: 'L', '🇱' | replace: 'M', '🇲' | replace: 'N', '🇳' | replace: 'O', '🇴' | replace: 'P', '🇵' | replace: 'Q', '🇶' | replace: 'R', '🇷' | replace: 'S', '🇸' | replace: 'T', '🇹' | replace: 'U', '🇺' | replace: 'V', '🇻' | replace: 'W', '🇼' | replace: 'X', '🇽' | replace: 'Y', '🇾' | replace: 'Z', '🇿' }}</span>{{ country.name }}</span>
                     <span class="text-(--color-text-secondary)">{{ country.currency.iso_code }} {{ country.currency.symbol }}</span>
                   </button>
                 </li>
@@ -74,15 +96,16 @@
 
           <div
             id="language-list"
-            class="localization-form__dropdown absolute bottom-full left-0 mb-2 min-w-[160px] max-h-[300px] overflow-y-auto bg-(--color-background) text-(--color-text) border border-(--color-border) rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
+            class="localization-form__dropdown absolute {{ dropdown_position_class }} left-0 min-w-50 max-h-75 overflow-y-auto bg-(--color-background) text-(--color-text) border border-(--color-border) rounded-lg shadow-lg opacity-0 invisible translate-y-2 transition-all duration-200 z-50"
             data-localization-panel="language"
+            data-lenis-prevent
           >
             <ul class="py-2" role="listbox" aria-label="{{ 'localization.language_label' | t }}">
               {%- for language in localization.available_languages -%}
                 <li>
                   <button
                     type="button"
-                    class="w-full px-4 py-2 text-left text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors{% if language.iso_code == localization.language.iso_code %} font-semibold{% endif %}"
+                    class="w-full px-4 py-2 text-left text-xs text-(--color-text) hover:bg-(--color-background-secondary) transition-colors{% if language.iso_code == localization.language.iso_code %} font-semibold{% endif %}"
                     data-language-code="{{ language.iso_code }}"
                     hreflang="{{ language.iso_code }}"
                     role="option"
@@ -146,12 +169,35 @@
 
     // Country toggle
     if (countryTrigger && countryPanel) {
+      const countrySearch = countryPanel.querySelector('[data-country-search]');
+      const countryList = countryPanel.querySelector('[data-country-list]');
+      const countryItems = countryList ? countryList.querySelectorAll('li') : [];
+
       countryTrigger.addEventListener('click', (e) => {
         e.stopPropagation();
         const isOpen = countryTrigger.getAttribute('aria-expanded') === 'true';
         closeAllPanels();
-        if (!isOpen) openPanel(countryTrigger, countryPanel);
+        if (!isOpen) {
+          openPanel(countryTrigger, countryPanel);
+          if (countrySearch) {
+            countrySearch.value = '';
+            countryItems.forEach(item => item.style.display = '');
+            setTimeout(() => countrySearch.focus(), 50);
+          }
+        }
       });
+
+      // Country search
+      if (countrySearch) {
+        countrySearch.addEventListener('input', (e) => {
+          const query = e.target.value.toLowerCase();
+          countryItems.forEach(item => {
+            const text = item.textContent.toLowerCase();
+            item.style.display = text.includes(query) ? '' : 'none';
+          });
+        });
+        countrySearch.addEventListener('click', (e) => e.stopPropagation());
+      }
 
       // Country selection
       countryPanel.querySelectorAll('[data-country-code]').forEach(btn => {
