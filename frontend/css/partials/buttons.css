@@ -65,6 +65,22 @@
     @apply text-(--color-text) transition-colors duration-200;
   }
 
+  /* Active state for wishlist buttons */
+  .btn--secondary.is-active.product-card-wishlist {
+    @apply bg-(--color-sale) text-white border-(--color-sale);
+  }
+  .btn--secondary.is-active.product-card-wishlist i {
+    @apply text-white;
+  }
+
+  /* Active state for compare buttons */
+  .btn--secondary.is-active.product-card-compare {
+    @apply bg-(--color-text) text-(--color-background) border-(--color-text);
+  }
+  .btn--secondary.is-active.product-card-compare i {
+    @apply text-(--color-background);
+  }
+
   .btn--hover-simple .btn--secondary:hover,
   .btn--hover-simple.btn--secondary:hover {
     @apply bg-(--color-text) text-(--color-background);
