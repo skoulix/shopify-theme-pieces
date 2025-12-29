@@ -55,10 +55,6 @@
     </div>
 
     <div class="flex items-center gap-4">
-      <div class="facets-product-count text-sm text-(--color-text-secondary)" id="ProductCount">
-        <span>{{ results.products_count }} {{ results.products_count | pluralize: 'product', 'products' }}</span>
-      </div>
-
       {%- comment -%} View Toggle {%- endcomment -%}
       {% if enable_layout_toggle %}
         <div class="facets-view-toggle flex items-center border border-(--color-border) rounded-(--input-radius) overflow-hidden" style="box-shadow: var(--button-shadow)">

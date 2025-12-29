@@ -528,11 +528,12 @@ class FacetFiltersForm extends HTMLElement {
   }
 
   updateProductCount(doc) {
-    const newCount = doc.querySelector('#ProductCount');
-    const currentCount = this.querySelector('#ProductCount');
+    // Update the header subtitle counter
+    const newSubtitle = doc.querySelector('[data-subtitle-text]');
+    const currentSubtitle = document.querySelector('[data-subtitle-text]');
 
-    if (newCount && currentCount) {
-      currentCount.replaceChildren(...newCount.cloneNode(true).childNodes);
+    if (newSubtitle && currentSubtitle) {
+      currentSubtitle.textContent = newSubtitle.textContent;
     }
   }
 

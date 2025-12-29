@@ -6,10 +6,12 @@
 
 {%- if settings.popup_enabled -%}
   {%- liquid
-    assign popup_bg = settings.popup_bg
-    assign popup_text = settings.popup_text_color
-    assign btn_bg = settings.popup_btn_bg
-    assign btn_text = settings.popup_btn_text
+    # Use color scheme values for popup colors
+    assign scheme = settings.color_schemes['scheme-1'].settings
+    assign popup_bg = scheme.background
+    assign popup_text = scheme.text
+    assign btn_bg = scheme.primary
+    assign btn_text = scheme.primary_contrast
     assign layout = settings.popup_layout
     assign size = settings.popup_size
     assign image = settings.popup_image
