@@ -16,9 +16,16 @@
 
   /* Central line */
   .timeline-line {
-    @apply absolute top-0 bottom-0 bg-(--color-border) md:left-1/2 md:-translate-x-1/2;
+    @apply absolute top-0 bottom-0 bg-(--color-border);
     left: 20px;
     width: 2px;
+  }
+
+  @media (min-width: 768px) {
+    .timeline-line {
+      left: 50%;
+      transform: translateX(-50%);
+    }
   }
 
   .timeline-line-progress {

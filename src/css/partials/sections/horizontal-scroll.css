@@ -1,0 +1,179 @@
+/* ==========================================================================
+   Horizontal Scroll Gallery Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section */
+  .hscroll-section {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Blurred background layer */
+  .hscroll-bg {
+    @apply absolute inset-0 z-0 overflow-hidden;
+  }
+
+  .hscroll-bg-image {
+    @apply absolute object-cover;
+    inset: -20px;
+    width: calc(100% + 40px);
+    height: calc(100% + 40px);
+    filter: blur(25px) saturate(1.2);
+    opacity: 0;
+    transition: opacity 0.6s ease-out;
+    transform: scale(1.1);
+  }
+
+  .hscroll-bg-image.is-active {
+    opacity: 0.4;
+  }
+
+  .hscroll-bg-overlay {
+    @apply absolute inset-0 z-1;
+    background: linear-gradient(
+      to right,
+      var(--color-background) 0%,
+      transparent 30%,
+      transparent 70%,
+      var(--color-background) 100%
+    );
+  }
+
+  /* Wrapper - height set via CSS custom property */
+  .hscroll-wrapper {
+    height: var(--hscroll-wrapper-height, calc(500vw + 100vh));
+  }
+
+  /* Sticky container */
+  .hscroll-sticky {
+    @apply sticky top-0 overflow-hidden;
+    height: 100vh;
+  }
+
+  /* Track */
+  .hscroll-track {
+    @apply relative z-2 flex h-full;
+    will-change: transform;
+  }
+
+  /* Panel */
+  .hscroll-panel {
+    @apply shrink-0 flex items-center justify-center;
+    width: 100vw;
+    height: 100%;
+    padding: 2rem;
+  }
+
+  /* Intro panel */
+  .hscroll-intro {
+    @apply flex flex-col justify-center items-start text-left;
+    padding: clamp(2rem, 5vw, 6rem);
+  }
+
+  .hscroll-intro .section-title {
+    max-width: 20ch;
+  }
+
+  .hscroll-intro .section-description {
+    max-width: 40ch;
+  }
+
+  /* Item card */
+  .hscroll-item {
+    @apply relative block overflow-hidden no-underline;
+    width: 80vw;
+    max-width: 900px;
+    height: 70vh;
+    max-height: 600px;
+    border-radius: var(--card-radius);
+    color: inherit;
+  }
+
+  @media (min-width: 1024px) {
+    .hscroll-item {
+      width: 60vw;
+      height: 75vh;
+      max-height: 700px;
+    }
+  }
+
+  .hscroll-item img {
+    @apply w-full h-full object-cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .hscroll-item:hover img {
+    @apply scale-105;
+  }
+
+  /* Placeholder */
+  .hscroll-placeholder {
+    @apply absolute inset-0 flex items-center justify-center bg-(--color-background-secondary);
+  }
+
+  .hscroll-placeholder svg {
+    width: 60%;
+    height: 60%;
+    opacity: 0.3;
+  }
+
+  /* Item overlay */
+  .hscroll-item-overlay {
+    @apply absolute inset-0 pointer-events-none;
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.7) 0%, rgba(0, 0, 0, 0) 50%);
+  }
+
+  /* Item content */
+  .hscroll-item-content {
+    @apply absolute bottom-0 left-0 right-0;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    color: #ffffff;
+  }
+
+  .hscroll-item-label {
+    @apply opacity-70 mb-3;
+  }
+
+  .hscroll-item-title {
+    font-size: calc(clamp(1.25rem, 2.5vw, 2rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    line-height: 1.1;
+  }
+
+  .hscroll-item-text {
+    @apply mt-3 opacity-80;
+    font-size: 0.875rem;
+    max-width: 40ch;
+    line-height: 1.6;
+  }
+
+  /* Counter */
+  .hscroll-counter {
+    @apply fixed z-10;
+    bottom: 2rem;
+    right: 2rem;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    color: var(--color-text);
+  }
+
+  .hscroll-section.is-active .hscroll-counter {
+    opacity: 0.5;
+  }
+
+  /* Progress bar */
+  .hscroll-progress {
+    @apply fixed bottom-0 left-0 z-10;
+    height: 3px;
+    background: var(--color-text);
+    width: 0%;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+  }
+
+  .hscroll-section.is-active .hscroll-progress {
+    opacity: 0.3;
+  }
+}

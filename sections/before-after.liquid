@@ -8,150 +8,30 @@
   else
     assign container_class = 'page-container'
   endif
+
+  # Header alignment classes
+  case section.settings.header_alignment
+    when 'center'
+      assign header_align_class = 'text-center'
+      assign description_align_class = 'mx-auto'
+    when 'right'
+      assign header_align_class = 'text-right'
+      assign description_align_class = 'ml-auto'
+    else
+      assign header_align_class = 'text-left'
+      assign description_align_class = ''
+  endcase
 -%}
 
-<style>
-  {% if section.settings.full_width %}
-  .before-after-{{ section.id }} {
-    padding-bottom: 0;
-  }
-  {% endif %}
-
-  .before-after-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .before-after-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .before-after-container-{{ section.id }} {
-    position: relative;
-    border-radius: var(--card-radius);
-    overflow: hidden;
-    cursor: ew-resize;
-    touch-action: pan-y pinch-zoom;
-  }
-
-  .before-after-{{ section.id }}.is-full-width .before-after-container-{{ section.id }} {
-    border-radius: 0;
-  }
-
-  .before-after-image-{{ section.id }} {
-    display: block;
-    width: 100%;
-    height: auto;
-    aspect-ratio: {{ section.settings.aspect_ratio }};
-    object-fit: cover;
-    pointer-events: none;
-    user-select: none;
-  }
-
-  .before-after-before-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    width: 50%;
-  }
-
-  .before-after-before-{{ section.id }} img,
-  .before-after-before-{{ section.id }} svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    height: 100%;
-    max-width: none;
-    object-fit: cover;
-    object-position: left center;
-  }
-
-  /* Handle / Slider */
-  .before-after-handle-{{ section.id }} {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    left: 50%;
-    width: 4px;
-    background: #ffffff;
-    transform: translateX(-50%);
-    cursor: ew-resize;
-    z-index: 10;
-    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
-  }
-
-  .before-after-handle-btn-{{ section.id }} {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: #ffffff;
-    border: none;
-    cursor: ew-resize;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0;
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-    transition: transform 0.2s ease;
-  }
-
-  .before-after-handle-btn-{{ section.id }}:hover {
-    transform: translate(-50%, -50%) scale(1.1);
-  }
-
-  .before-after-handle-btn-{{ section.id }} i {
-    font-size: 1rem;
-    color: #000000;
-  }
-
-  .before-after-handle-btn-{{ section.id }} i:first-child {
-    margin-right: -4px;
-  }
-
-  .before-after-handle-btn-{{ section.id }} i:last-child {
-    margin-left: -4px;
-  }
-
-  /* Labels */
-  .before-after-labels-{{ section.id }} {
-    position: absolute;
-    bottom: 1.5rem;
-    left: 1.5rem;
-    right: 1.5rem;
-    display: flex;
-    justify-content: space-between;
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  .before-after-label-tag-{{ section.id }} {
-    padding: 0.5rem 1rem;
-    background: rgba(0, 0, 0, 0.6);
-    color: #ffffff;
-    border-radius: 100px;
-    backdrop-filter: blur(10px);
-  }
-
-</style>
-
 <section
-  class="before-after-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}{% if section.settings.full_width %} is-full-width{% endif %}"
+  class="before-after-section section-padding color-{{ section.settings.color_scheme }}{% if section.settings.full_width %} is-full-width{% endif %}"
   data-before-after-section="{{ section.id }}"
+  style="--before-after-aspect-ratio: {{ section.settings.aspect_ratio }};"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="before-after-header-{{ section.id }}" data-tween-group="before-after-header-{{ section.id }}">
+      <div class="before-after-header {{ header_align_class }}" data-tween-group="before-after-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -165,7 +45,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description" data-tween data-tween-type="fade-up">
+          <p class="section-description {{ description_align_class }}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -174,17 +54,16 @@
 
     {%- comment -%} Comparison Slider {%- endcomment -%}
     <div
-      class="before-after-container-{{ section.id }} bg-(--color-background-secondary)"
+      class="before-after-container bg-(--color-background-secondary)"
       data-before-after-container
       data-tween data-tween-type="fade-up"
       role="img"
       aria-label="{{ 'sections.before_after.comparison_label' | t: before: section.settings.before_label, after: section.settings.after_label }}"
     >
       {%- comment -%} After Image (Background) {%- endcomment -%}
-      {%- capture image_class -%}before-after-image-{{ section.id }}{%- endcapture -%}
       {% if section.settings.image_after != blank %}
         {{ section.settings.image_after | image_url: width: 2000 | image_tag:
-          class: image_class,
+          class: 'before-after-image',
           loading: 'lazy',
           decoding: 'async',
           sizes: '(max-width: 1000px) 100vw, 1000px',
@@ -192,29 +71,29 @@
           alt: section.settings.after_label
         }}
       {% else %}
-        {{ 'product-1' | placeholder_svg_tag: image_class }}
+        {{ 'product-1' | placeholder_svg_tag: 'before-after-image' }}
       {% endif %}
 
       {%- comment -%} Before Image (Overlay) {%- endcomment -%}
-      <div class="before-after-before-{{ section.id }}" data-before-after-before>
+      <div class="before-after-before" data-before-after-before>
         {% if section.settings.image_before != blank %}
           {{ section.settings.image_before | image_url: width: 2000 | image_tag:
-            class: image_class,
+            class: 'before-after-image',
             loading: 'lazy',
-          decoding: 'async',
+            decoding: 'async',
             sizes: '(max-width: 1000px) 100vw, 1000px',
             widths: '600, 800, 1000, 1200, 1600, 2000',
             alt: section.settings.before_label
           }}
         {% else %}
-          {{ 'product-2' | placeholder_svg_tag: image_class }}
+          {{ 'product-2' | placeholder_svg_tag: 'before-after-image' }}
         {% endif %}
       </div>
 
       {%- comment -%} Handle {%- endcomment -%}
-      <div class="before-after-handle-{{ section.id }}" data-before-after-handle>
+      <div class="before-after-handle" data-before-after-handle>
         <button
-          class="before-after-handle-btn-{{ section.id }}"
+          class="before-after-handle-btn"
           aria-label="{{ 'accessibility.drag_to_compare' | t }}"
           tabindex="0"
         >
@@ -225,9 +104,9 @@
 
       {%- comment -%} Labels {%- endcomment -%}
       {% if section.settings.show_labels %}
-        <div class="before-after-labels-{{ section.id }}">
-          <span class="before-after-label-tag-{{ section.id }} text-label">{{ section.settings.before_label }}</span>
-          <span class="before-after-label-tag-{{ section.id }} text-label">{{ section.settings.after_label }}</span>
+        <div class="before-after-labels">
+          <span class="before-after-label-tag text-label">{{ section.settings.before_label }}</span>
+          <span class="before-after-label-tag text-label">{{ section.settings.after_label }}</span>
         </div>
       {% endif %}
     </div>

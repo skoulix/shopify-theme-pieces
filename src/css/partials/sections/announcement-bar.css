@@ -1,0 +1,92 @@
+/* ==========================================================================
+   Announcement Bar Styles
+   ========================================================================== */
+
+@layer components {
+  /* Container uses CSS custom property for height */
+  .announcement-bar {
+    min-height: var(--announcement-bar-height, 40px);
+  }
+
+  .announcement-bar a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .announcement-bar a:hover {
+    opacity: 0.8;
+  }
+
+  /* Slides */
+  .announcement-bar__slide {
+    @apply absolute inset-0 flex items-center justify-center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.5s ease, visibility 0.5s ease;
+  }
+
+  .announcement-bar__slide.is-active {
+    @apply relative;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  /* Countdown */
+  .announcement-bar__countdown {
+    @apply inline-flex items-center;
+    gap: 0.5rem;
+    margin-left: 0.75rem;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .announcement-bar__countdown-unit {
+    @apply flex flex-col items-center;
+    min-width: 2rem;
+  }
+
+  .announcement-bar__countdown-label {
+    @apply opacity-70;
+  }
+
+  /* Dismissed state */
+  .announcement-bar.is-dismissed {
+    @apply hidden;
+  }
+
+  /* Arrow buttons */
+  .announcement-bar__arrow {
+    @apply absolute bg-transparent border-none p-2 cursor-pointer z-1;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .announcement-bar__arrow:hover {
+    opacity: 1;
+  }
+
+  .announcement-bar__arrow--prev {
+    left: 0.5rem;
+  }
+
+  .announcement-bar__arrow--next {
+    right: var(--announcement-arrow-next-offset, 0.5rem);
+  }
+
+  /* Close button */
+  .announcement-bar__close {
+    @apply absolute bg-transparent border-none p-2 cursor-pointer;
+    right: 0.5rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--color-text);
+    opacity: 0.6;
+    transition: opacity 0.2s;
+  }
+
+  .announcement-bar__close:hover {
+    opacity: 1;
+  }
+}

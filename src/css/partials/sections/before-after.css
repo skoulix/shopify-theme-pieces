@@ -1,0 +1,102 @@
+/* ==========================================================================
+   Before/After Comparison Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Header */
+  .before-after-header {
+    margin-bottom: clamp(3rem, 6vh, 5rem);
+  }
+
+  /* Container */
+  .before-after-container {
+    @apply relative overflow-hidden;
+    border-radius: var(--card-radius);
+    cursor: ew-resize;
+    touch-action: pan-y pinch-zoom;
+  }
+
+  .before-after-section.is-full-width {
+    padding-bottom: 0;
+  }
+
+  .before-after-section.is-full-width .before-after-container {
+    border-radius: 0;
+  }
+
+  /* Images */
+  .before-after-image {
+    @apply block w-full h-auto object-cover pointer-events-none select-none;
+    aspect-ratio: var(--before-after-aspect-ratio, 16/9);
+  }
+
+  /* Before overlay */
+  .before-after-before {
+    @apply absolute inset-0 overflow-hidden;
+    width: 50%;
+  }
+
+  .before-after-before img,
+  .before-after-before svg {
+    @apply absolute top-0 left-0 h-full max-w-none object-cover;
+    object-position: left center;
+  }
+
+  /* Handle / Slider */
+  .before-after-handle {
+    @apply absolute top-0 bottom-0 z-10;
+    left: 50%;
+    width: 4px;
+    background: #ffffff;
+    transform: translateX(-50%);
+    cursor: ew-resize;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+  }
+
+  .before-after-handle-btn {
+    @apply absolute flex items-center justify-center rounded-full border-none;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    background: #ffffff;
+    cursor: ew-resize;
+    gap: 0;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease;
+  }
+
+  .before-after-handle-btn:hover {
+    transform: translate(-50%, -50%) scale(1.1);
+  }
+
+  .before-after-handle-btn i {
+    font-size: 1rem;
+    color: #000000;
+  }
+
+  .before-after-handle-btn i:first-child {
+    margin-right: -4px;
+  }
+
+  .before-after-handle-btn i:last-child {
+    margin-left: -4px;
+  }
+
+  /* Labels */
+  .before-after-labels {
+    @apply absolute flex justify-between pointer-events-none z-5;
+    bottom: 1.5rem;
+    left: 1.5rem;
+    right: 1.5rem;
+  }
+
+  .before-after-label-tag {
+    padding: 0.5rem 1rem;
+    background: rgba(0, 0, 0, 0.6);
+    color: #ffffff;
+    border-radius: 100px;
+    backdrop-filter: blur(10px);
+  }
+}

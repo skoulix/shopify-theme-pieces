@@ -17,15 +17,20 @@
 @import './partials/collection.css';
 @import './partials/collections.css';
 @import './partials/glightbox.css';
-@import './partials/testimonials.css';
-@import './partials/team.css';
-@import './partials/features-grid.css';
-@import './partials/timeline.css';
-@import './partials/compare.css';
-@import './partials/stacking-cards.css';
-@import './partials/countdown.css';
-@import './partials/shoppable-videos.css';
-@import './partials/video.css';
+
+/* Section-specific styles */
+@import './partials/sections/testimonials.css';
+@import './partials/sections/team.css';
+@import './partials/sections/features-grid.css';
+@import './partials/sections/timeline.css';
+@import './partials/sections/compare.css';
+@import './partials/sections/stacking-cards.css';
+@import './partials/sections/countdown.css';
+@import './partials/sections/shoppable-videos.css';
+@import './partials/sections/video.css';
+@import './partials/sections/before-after.css';
+@import './partials/sections/horizontal-scroll.css';
+@import './partials/sections/announcement-bar.css';
 
 @plugin "@tailwindcss/typography";
 

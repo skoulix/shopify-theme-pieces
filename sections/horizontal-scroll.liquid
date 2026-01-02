@@ -3,232 +3,26 @@
   Scrolls horizontally while the user scrolls vertically
 {%- endcomment -%}
 
-{%- comment -%}
-  Horizontal Scroll Gallery is always full-width by design
-{%- endcomment -%}
-
-<style>
-  .hscroll-section-{{ section.id }} {
-    background-color: var(--color-background);
-    color: var(--color-text);
-  }
-
-  /* Blurred background layer */
-  .hscroll-bg-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-    overflow: hidden;
-  }
-
-  .hscroll-bg-image-{{ section.id }} {
-    position: absolute;
-    inset: -20px;
-    width: calc(100% + 40px);
-    height: calc(100% + 40px);
-    object-fit: cover;
-    filter: blur(25px) saturate(1.2);
-    opacity: 0;
-    transition: opacity 0.6s ease-out;
-    transform: scale(1.1);
-  }
-
-  .hscroll-bg-image-{{ section.id }}.is-active {
-    opacity: 0.4;
-  }
-
-  .hscroll-bg-overlay-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to right,
-      var(--color-background) 0%,
-      transparent 30%,
-      transparent 70%,
-      var(--color-background) 100%
-    );
-    z-index: 1;
-  }
-
-  .hscroll-wrapper-{{ section.id }} {
-    /* Height = scroll distance (intro + image panels * 100vw) + viewport height for sticky */
-    /* This ensures enough scroll room even when section is last on page */
-    /* blocks.size + 1 accounts for the intro panel */
-    height: calc({{ section.blocks.size | plus: 1 | times: 100 }}vw + 100vh);
-  }
-
-  .hscroll-sticky-{{ section.id }} {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    overflow: hidden;
-  }
-
-  .hscroll-track-{{ section.id }} {
-    position: relative;
-    z-index: 2;
-    display: flex;
-    height: 100%;
-    will-change: transform;
-  }
-
-  .hscroll-panel-{{ section.id }} {
-    flex-shrink: 0;
-    width: 100vw;
-    height: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .hscroll-intro-{{ section.id }} {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: flex-start;
-    text-align: left;
-    padding: clamp(2rem, 5vw, 6rem);
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .hscroll-intro-{{ section.id }} .section-title {
-    max-width: 20ch;
-  }
-
-  .hscroll-intro-{{ section.id }} .section-description {
-    max-width: 40ch;
-  }
-
-  .hscroll-item-{{ section.id }} {
-    position: relative;
-    display: block;
-    width: 80vw;
-    max-width: 900px;
-    height: 70vh;
-    max-height: 600px;
-    overflow: hidden;
-    border-radius: {{ settings.card_radius }}px;
-    text-decoration: none;
-    color: inherit;
-  }
-
-  @media (min-width: 1024px) {
-    .hscroll-item-{{ section.id }} {
-      width: 60vw;
-      height: 75vh;
-      max-height: 700px;
-    }
-  }
-
-  .hscroll-item-{{ section.id }} img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .hscroll-item-{{ section.id }}:hover img {
-    transform: scale(1.05);
-  }
-
-  /* Placeholder styling */
-  .hscroll-placeholder-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background: var(--color-background-secondary);
-  }
-
-  .hscroll-placeholder-{{ section.id }} svg {
-    width: 60%;
-    height: 60%;
-    opacity: 0.3;
-  }
-
-  .hscroll-item-overlay-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(to top, rgba(0,0,0,0.7) 0%, rgba(0,0,0,0) 50%);
-    pointer-events: none;
-  }
-
-  .hscroll-item-content-{{ section.id }} {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: clamp(1.5rem, 3vw, 2.5rem);
-    color: #ffffff;
-  }
-
-  .hscroll-item-label-{{ section.id }} {
-    opacity: 0.7;
-    margin-bottom: 0.75rem;
-  }
-
-  .hscroll-item-title-{{ section.id }} {
-    font-size: calc(clamp(1.25rem, 2.5vw, 2rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
-    line-height: 1.1;
-  }
-
-  .hscroll-item-text-{{ section.id }} {
-    margin-top: 0.75rem;
-    font-size: 0.875rem;
-    opacity: 0.8;
-    max-width: 40ch;
-    line-height: 1.6;
-  }
-
-  .hscroll-counter-{{ section.id }} {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-    color: var(--color-text);
-  }
-
-  .hscroll-section-{{ section.id }}.is-active .hscroll-counter-{{ section.id }} {
-    opacity: 0.5;
-  }
-
-  .hscroll-progress-{{ section.id }} {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    height: 3px;
-    background: var(--color-text);
-    width: 0%;
-    opacity: 0;
-    transition: opacity 0.3s ease;
-    z-index: 10;
-  }
-
-  .hscroll-section-{{ section.id }}.is-active .hscroll-progress-{{ section.id }} {
-    opacity: 0.3;
-  }
-
-</style>
+{%- liquid
+  # Calculate wrapper height based on block count
+  assign panel_count = section.blocks.size | plus: 1
+  assign wrapper_height_vw = panel_count | times: 100
+-%}
 
 <section
-  class="hscroll-section-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="hscroll-section color-{{ section.settings.color_scheme }}"
   data-hscroll-section="{{ section.id }}"
+  style="--hscroll-wrapper-height: calc({{ wrapper_height_vw }}vw + 100vh);"
 >
-  <div class="hscroll-wrapper-{{ section.id }}">
-    <div class="hscroll-sticky-{{ section.id }}">
+  <div class="hscroll-wrapper">
+    <div class="hscroll-sticky">
       {%- comment -%} Blurred background images {%- endcomment -%}
-      <div class="hscroll-bg-{{ section.id }}" data-hscroll-bg>
+      <div class="hscroll-bg" data-hscroll-bg>
         {% for block in section.blocks %}
           {% if block.settings.image != blank %}
             <img
               src="{{ block.settings.image | image_url: width: 800 }}"
-              class="hscroll-bg-image-{{ section.id }}"
+              class="hscroll-bg-image"
               loading="lazy"
               decoding="async"
               data-bg-index="{{ forloop.index0 }}"
@@ -238,12 +32,12 @@
             >
           {% endif %}
         {% endfor %}
-        <div class="hscroll-bg-overlay-{{ section.id }}"></div>
+        <div class="hscroll-bg-overlay"></div>
       </div>
 
-      <div class="hscroll-track-{{ section.id }}" data-hscroll-track>
+      <div class="hscroll-track" data-hscroll-track>
         {%- comment -%} Intro Panel - uses global data-tween system for animations {%- endcomment -%}
-        <div class="hscroll-panel-{{ section.id }} hscroll-intro-{{ section.id }}">
+        <div class="hscroll-panel hscroll-intro">
           <div data-tween-group="hscroll-header-{{ section.id }}">
             {% if section.settings.label != blank %}
               <span class="section-label" data-tween data-tween-type="fade-up">
@@ -267,11 +61,11 @@
 
         {%- comment -%} Image Panels {%- endcomment -%}
         {% for block in section.blocks %}
-          <div class="hscroll-panel-{{ section.id }}" data-hscroll-panel {{ block.shopify_attributes }}>
+          <div class="hscroll-panel" data-hscroll-panel {{ block.shopify_attributes }}>
             {% if block.settings.link != blank %}
-              <a href="{{ block.settings.link }}" class="hscroll-item-{{ section.id }}" data-hscroll-item>
+              <a href="{{ block.settings.link }}" class="hscroll-item" data-hscroll-item>
             {% else %}
-              <div class="hscroll-item-{{ section.id }}" data-hscroll-item>
+              <div class="hscroll-item" data-hscroll-item>
             {% endif %}
               {% if block.settings.image != blank %}
                 {{ block.settings.image | image_url: width: 1600 | image_tag:
@@ -283,22 +77,22 @@
                   alt: block.settings.image.alt | default: block.settings.title | default: section.settings.heading
                 }}
               {% else %}
-                <div class="hscroll-placeholder-{{ section.id }}">
+                <div class="hscroll-placeholder">
                   {{ 'image' | placeholder_svg_tag }}
                 </div>
               {% endif %}
 
-              <div class="hscroll-item-overlay-{{ section.id }}"></div>
+              <div class="hscroll-item-overlay"></div>
 
-              <div class="hscroll-item-content-{{ section.id }}">
+              <div class="hscroll-item-content">
                 {% if block.settings.label != blank %}
-                  <span class="hscroll-item-label-{{ section.id }} text-label">{{ block.settings.label }}</span>
+                  <span class="hscroll-item-label text-label">{{ block.settings.label }}</span>
                 {% endif %}
                 {% if block.settings.title != blank %}
-                  <h3 class="hscroll-item-title-{{ section.id }} font-heading">{{ block.settings.title }}</h3>
+                  <h3 class="hscroll-item-title font-heading">{{ block.settings.title }}</h3>
                 {% endif %}
                 {% if block.settings.text != blank %}
-                  <p class="hscroll-item-text-{{ section.id }}">{{ block.settings.text }}</p>
+                  <p class="hscroll-item-text">{{ block.settings.text }}</p>
                 {% endif %}
               </div>
             {% if block.settings.link != blank %}
@@ -312,11 +106,11 @@
     </div>
   </div>
 
-  <div class="hscroll-counter-{{ section.id }} text-counter" data-hscroll-counter>
+  <div class="hscroll-counter text-counter" data-hscroll-counter>
     <span data-hscroll-current>1</span> / <span>{{ section.blocks.size }}</span>
   </div>
 
-  <div class="hscroll-progress-{{ section.id }}" data-hscroll-progress></div>
+  <div class="hscroll-progress" data-hscroll-progress></div>
 </section>
 
 <script>
