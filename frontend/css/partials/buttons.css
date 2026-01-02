@@ -19,7 +19,10 @@
     @apply shadow-(--button-shadow-hover);
   }
 
-  .btn span, .btn i, .btn svg, .btn > * {
+  .btn span,
+  .btn i,
+  .btn svg,
+  .btn > * {
     @apply relative z-10;
   }
 
@@ -34,7 +37,10 @@
     color: var(--color-primary-contrast) !important;
   }
 
-  .btn--primary span, .btn--primary i, .btn--primary svg, .btn--primary > * {
+  .btn--primary span,
+  .btn--primary i,
+  .btn--primary svg,
+  .btn--primary > * {
     @apply transition-colors duration-200;
     color: var(--color-primary-contrast) !important;
   }
@@ -61,7 +67,10 @@
     @apply text-(--color-text) bg-transparent border border-(--color-text);
   }
 
-  .btn--secondary span, .btn--secondary i, .btn--secondary svg, .btn--secondary > * {
+  .btn--secondary span,
+  .btn--secondary i,
+  .btn--secondary svg,
+  .btn--secondary > * {
     @apply text-(--color-text) transition-colors duration-200;
   }
 
@@ -102,7 +111,10 @@
     @apply text-(--color-primary) bg-transparent border border-(--color-primary);
   }
 
-  .btn--outline span, .btn--outline i, .btn--outline svg, .btn--outline > * {
+  .btn--outline span,
+  .btn--outline i,
+  .btn--outline svg,
+  .btn--outline > * {
     @apply transition-colors duration-200;
   }
 
@@ -127,7 +139,10 @@
     @apply text-(--color-background) bg-(--color-text) border border-(--color-text);
   }
 
-  .btn--solid-secondary span, .btn--solid-secondary i, .btn--solid-secondary svg, .btn--solid-secondary > * {
+  .btn--solid-secondary span,
+  .btn--solid-secondary i,
+  .btn--solid-secondary svg,
+  .btn--solid-secondary > * {
     @apply transition-colors duration-200;
   }
 
@@ -558,7 +573,9 @@
   }
 
   /* States */
-  .btn:disabled, .btn[disabled], .btn.is-disabled {
+  .btn:disabled,
+  .btn[disabled],
+  .btn.is-disabled {
     @apply cursor-not-allowed pointer-events-none opacity-50;
   }
 
@@ -574,7 +591,8 @@
     @apply border-(--color-primary-contrast) border-r-transparent;
   }
 
-  .btn--secondary.is-loading::after, .btn--tertiary.is-loading::after {
+  .btn--secondary.is-loading::after,
+  .btn--tertiary.is-loading::after {
     @apply border-(--color-text) border-r-transparent;
   }
 
@@ -597,7 +615,10 @@
     border-color: var(--section-text, var(--color-text));
   }
 
-  .btn--section:hover span, .btn--section:hover i, .btn--section:hover svg, .btn--section:hover > * {
+  .btn--section:hover span,
+  .btn--section:hover i,
+  .btn--section:hover svg,
+  .btn--section:hover > * {
     color: var(--section-bg, var(--color-background));
   }
 
@@ -768,7 +789,7 @@
   }
 
   .group.is-open .drawer-backdrop,
-  .group[class*="is-open"] .drawer-backdrop {
+  .group[class*='is-open'] .drawer-backdrop {
     @apply opacity-100;
   }
 

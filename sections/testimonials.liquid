@@ -10,227 +10,14 @@
   endif
 -%}
 
-<style>
-  .testimonials-{{ section.id }} {
-    overflow: hidden;
-  }
-
-  .testimonials-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label and title use global .section-* classes from typography.css */
-
-  .testimonials-slider-{{ section.id }} {
-    position: relative;
-    overflow: visible;
-  }
-
-  .testimonials-track-{{ section.id }} {
-    display: flex;
-    gap: 1.5rem;
-    transition: transform 0.8s cubic-bezier(0.65, 0, 0.35, 1);
-  }
-
-  .testimonial-{{ section.id }} {
-    flex-shrink: 0;
-    width: calc(100% - 2rem);
-  }
-
-  @media (min-width: 768px) {
-    .testimonials-track-{{ section.id }} {
-      gap: 2rem;
-    }
-
-    .testimonial-{{ section.id }} {
-      width: calc(50% - 1rem);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .testimonial-{{ section.id }} {
-      width: calc(45% - 1rem);
-    }
-  }
-
-  .testimonial-{{ section.id }} {
-    display: flex;
-  }
-
-  .testimonial-inner-{{ section.id }} {
-    position: relative;
-    padding: clamp(2rem, 4vw, 3rem);
-    background: var(--color-background-secondary);
-    color: var(--color-text);
-    border-radius: var(--card-radius);
-    display: flex;
-    flex-direction: column;
-    height: 100%;
-    width: 100%;
-    border: var(--card-border-width) solid var(--color-border);
-    box-shadow: var(--card-shadow);
-  }
-
-  .testimonial-text-wrapper-{{ section.id }} {
-    flex: 1;
-  }
-
-  .testimonial-quote-icon-{{ section.id }} {
-    position: absolute;
-    top: -1rem;
-    left: 2rem;
-    font-size: 4rem;
-    line-height: 1;
-    opacity: 0.1;
-    font-family: Georgia, serif;
-  }
-
-  .testimonial-rating-{{ section.id }} {
-    display: flex;
-    gap: 0.25rem;
-    margin-bottom: 1.5rem;
-    color: var(--color-primary);
-  }
-
-  .testimonial-rating-{{ section.id }} i {
-    font-size: 1rem;
-  }
-
-  .testimonial-text-{{ section.id }} {
-    font-size: clamp(1.125rem, 2vw, 1.5rem);
-    line-height: 1.6;
-    font-weight: 500;
-    letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
-    color: var(--color-text);
-  }
-
-  .testimonial-author-{{ section.id }} {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    margin-top: 2rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-border);
-  }
-
-  .testimonial-avatar-{{ section.id }} {
-    width: 56px;
-    height: 56px;
-    border-radius: 50%;
-    overflow: hidden;
-    flex-shrink: 0;
-  }
-
-  .testimonial-avatar-{{ section.id }} img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .testimonial-avatar-placeholder-{{ section.id }} {
-    width: 100%;
-    height: 100%;
-    background: color-mix(in srgb, var(--color-primary) 20%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: calc(1.25rem * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    color: var(--color-primary);
-  }
-
-  .testimonial-author-info-{{ section.id }} {
-    color: var(--color-text);
-  }
-
-  .testimonial-author-name-{{ section.id }} {
-    font-weight: 600;
-    font-size: 1rem;
-  }
-
-  .testimonial-author-title-{{ section.id }} {
-    font-size: 0.875rem;
-    opacity: 0.6;
-    margin-top: 0.25rem;
-  }
-
-  /* Navigation */
-  .testimonials-nav-{{ section.id }} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 3rem;
-  }
-
-  .testimonials-nav-btn-{{ section.id }} {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid var(--color-border);
-    color: var(--color-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .testimonials-nav-btn-{{ section.id }}:hover {
-    background: var(--color-text);
-    color: var(--color-background);
-  }
-
-  .testimonials-nav-btn-{{ section.id }}:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .testimonials-nav-btn-{{ section.id }}:disabled:hover {
-    background: transparent;
-    color: var(--color-text);
-  }
-
-  .testimonials-dots-{{ section.id }} {
-    display: flex;
-    gap: 0.5rem;
-  }
-
-  .testimonials-dot-{{ section.id }} {
-    width: 8px;
-    height: 8px;
-    border-radius: 50%;
-    background: var(--color-border);
-    border: none;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    padding: 0;
-  }
-
-  .testimonials-dot-{{ section.id }}.is-active {
-    background: var(--color-text);
-    transform: scale(1.25);
-  }
-
-  /* Counter */
-  .testimonials-counter-{{ section.id }} {
-    opacity: 0.5;
-    min-width: 60px;
-    text-align: center;
-  }
-
-</style>
-
 <section
-  class="testimonials-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="testimonials-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
   data-testimonials="{{ section.id }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="testimonials-header-{{ section.id }}" data-tween-group="testimonials-header-{{ section.id }}">
+      <div class="testimonials-header text-{{ section.settings.header_alignment }}" data-tween-group="testimonials-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -246,16 +33,16 @@
     {% endif %}
 
     {%- comment -%} Slider {%- endcomment -%}
-    <div class="testimonials-slider-{{ section.id }}" data-tween data-tween-type="fade-up">
-      <div class="testimonials-track-{{ section.id }}" data-testimonials-track>
+    <div class="testimonials-slider" data-tween data-tween-type="fade-up">
+      <div class="testimonials-track" data-testimonials-track>
         {% for block in section.blocks %}
-          <div class="testimonial-{{ section.id }}" data-testimonial {{ block.shopify_attributes }}>
-            <div class="testimonial-inner-{{ section.id }}">
-              <span class="testimonial-quote-icon-{{ section.id }}" aria-hidden="true">"</span>
+          <div class="testimonial" data-testimonial {{ block.shopify_attributes }}>
+            <div class="testimonial-inner">
+              <span class="testimonial-quote-icon" aria-hidden="true">"</span>
 
-              <div class="testimonial-text-wrapper-{{ section.id }}">
+              <div class="testimonial-text-wrapper">
                 {% if section.settings.show_rating %}
-                  <div class="testimonial-rating-{{ section.id }}" aria-label="{{ block.settings.rating }} out of 5 stars">
+                  <div class="testimonial-rating" aria-label="{{ block.settings.rating }} out of 5 stars">
                     {% for i in (1..5) %}
                       {% if i <= block.settings.rating %}
                         <i class="ph-fill ph-star"></i>
@@ -266,34 +53,34 @@
                   </div>
                 {% endif %}
 
-                <blockquote class="testimonial-text-{{ section.id }}">
+                <blockquote class="testimonial-text">
                   "{{ block.settings.quote }}"
                 </blockquote>
               </div>
 
-              <div class="testimonial-author-{{ section.id }}">
-                <div class="testimonial-avatar-{{ section.id }}">
+              <div class="testimonial-author">
+                <div class="testimonial-avatar">
                   {% if block.settings.avatar != blank %}
                     {{ block.settings.avatar | image_url: width: 120 | image_tag:
                       loading: 'lazy',
-          decoding: 'async',
+                      decoding: 'async',
                       sizes: '56px',
                       widths: '56, 112',
                       alt: block.settings.avatar.alt | default: block.settings.author
                     }}
                   {% else %}
-                    <div class="testimonial-avatar-placeholder-{{ section.id }}">
+                    <div class="testimonial-avatar-placeholder">
                       {{ block.settings.author | slice: 0 | upcase }}
                     </div>
                   {% endif %}
                 </div>
 
-                <div class="testimonial-author-info-{{ section.id }}">
-                  <div class="testimonial-author-name-{{ section.id }}">
+                <div class="testimonial-author-info">
+                  <div class="testimonial-author-name">
                     {{ block.settings.author }}
                   </div>
                   {% if block.settings.author_title != blank %}
-                    <div class="testimonial-author-title-{{ section.id }}">
+                    <div class="testimonial-author-title">
                       {{ block.settings.author_title }}
                     </div>
                   {% endif %}
@@ -307,22 +94,22 @@
 
     {%- comment -%} Navigation {%- endcomment -%}
     {% if section.blocks.size > 1 %}
-      <div class="testimonials-nav-{{ section.id }}" data-tween data-tween-type="fade-up">
-        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-prev aria-label="{{ 'accessibility.previous_testimonial' | t }}">
+      <div class="testimonials-nav" data-tween data-tween-type="fade-up">
+        <button class="testimonials-nav-btn" data-testimonials-prev aria-label="{{ 'accessibility.previous_testimonial' | t }}">
           <i class="ph ph-arrow-left"></i>
         </button>
 
-        <div class="testimonials-dots-{{ section.id }}" data-testimonials-dots>
+        <div class="testimonials-dots" data-testimonials-dots>
           {% for block in section.blocks %}
             <button
-              class="testimonials-dot-{{ section.id }}{% if forloop.first %} is-active{% endif %}"
+              class="testimonials-dot{% if forloop.first %} is-active{% endif %}"
               data-testimonials-dot="{{ forloop.index0 }}"
               aria-label="{{ 'accessibility.go_to_testimonial' | t: index: forloop.index }}"
             ></button>
           {% endfor %}
         </div>
 
-        <button class="testimonials-nav-btn-{{ section.id }}" data-testimonials-next aria-label="{{ 'accessibility.next_testimonial' | t }}">
+        <button class="testimonials-nav-btn" data-testimonials-next aria-label="{{ 'accessibility.next_testimonial' | t }}">
           <i class="ph ph-arrow-right"></i>
         </button>
       </div>

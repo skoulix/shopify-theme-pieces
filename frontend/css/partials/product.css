@@ -218,7 +218,7 @@
      ========================================================================== */
 
   .product-description {
-    @apply text-[0.8125rem] tracking-widest leading-relaxed mt-8 text-(--color-text-secondary) lg:max-w-[420px];
+    @apply text-[0.8125rem] tracking-widest leading-relaxed mt-8 text-(--color-text-secondary) lg:max-w-105;
   }
 
   /* ==========================================================================
@@ -306,9 +306,15 @@
   }
 
   @keyframes quantityPop {
-    0% { transform: scale(1); }
-    50% { transform: scale(1.2); }
-    100% { transform: scale(1); }
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
   }
 
   /* ==========================================================================
@@ -328,7 +334,7 @@
   }
 
   .product-add-btn-text {
-    @apply relative z-[1] flex items-center justify-center gap-2;
+    @apply relative z-1 flex items-center justify-center gap-2;
   }
 
   /* ==========================================================================
@@ -453,7 +459,7 @@
   }
 
   .variant-picker__dropdown-swatch {
-    @apply absolute left-0 pointer-events-none z-[1];
+    @apply absolute left-0 pointer-events-none z-1;
   }
 
   .variant-picker__select {
@@ -587,11 +593,11 @@
   }
 
   .product-gallery.fit-portrait .product-gallery-image img {
-    @apply object-cover aspect-[3/4] w-auto h-full max-w-full;
+    @apply object-cover aspect-3/4 w-auto h-full max-w-full;
   }
 
   .product-gallery.fit-landscape .product-gallery-image img {
-    @apply object-cover aspect-[4/3] w-full h-auto max-h-full;
+    @apply object-cover aspect-4/3 w-full h-auto max-h-full;
   }
 
   /* ==========================================================================
@@ -623,7 +629,7 @@
   }
 
   .product-media-poster {
-    @apply absolute inset-0 z-[1] cursor-pointer flex items-center justify-center;
+    @apply absolute inset-0 z-1 cursor-pointer flex items-center justify-center;
   }
 
   .product-media-poster img {
@@ -635,7 +641,7 @@
   }
 
   .product-media-poster .play-icon {
-    @apply absolute z-[2] size-16 flex items-center justify-center rounded-full bg-(--color-background) text-(--color-text) transition-transform duration-300 ease-out;
+    @apply absolute z-2 size-16 flex items-center justify-center rounded-full bg-(--color-background) text-(--color-text) transition-transform duration-300 ease-out;
   }
 
   .product-media-poster:hover .play-icon {

@@ -13,11 +13,11 @@
     letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
   }
 
-  .collection-wrapper[data-header-align="left"] .collection-header-title-line:nth-child(2) {
+  .collection-wrapper[data-header-align='left'] .collection-header-title-line:nth-child(2) {
     margin-left: clamp(1.5rem, 10vw, 8rem);
   }
 
-  .collection-wrapper[data-header-align="left"] .collection-header-title-line:nth-child(3) {
+  .collection-wrapper[data-header-align='left'] .collection-header-title-line:nth-child(3) {
     margin-left: clamp(3rem, 18vw, 14rem);
   }
 
@@ -86,12 +86,12 @@
 
   /* Adapt mode - no fixed aspect ratio, use natural image height */
   [data-metro-adapt] .metro-item {
-    @apply min-h-[280px] md:min-h-[320px];
+    @apply min-h-70 md:min-h-80;
     aspect-ratio: auto;
   }
 
   [data-metro-adapt] .metro-item--hero {
-    @apply min-h-[400px] md:min-h-[500px];
+    @apply min-h-100 md:min-h-125;
     aspect-ratio: auto;
   }
 
@@ -128,30 +128,30 @@
   }
 
   /* When only 2 columns */
-  [data-metro-cols="2"] .metro-item--hero,
-  [data-metro-cols="2"] .metro-item--wide {
+  [data-metro-cols='2'] .metro-item--hero,
+  [data-metro-cols='2'] .metro-item--wide {
     grid-column: span 2 / span 2;
   }
 
-  [data-metro-cols="2"] .metro-item--hero {
+  [data-metro-cols='2'] .metro-item--hero {
     grid-row: span 2 / span 2;
   }
 
-  [data-metro-cols="2"] .metro-item--tall {
+  [data-metro-cols='2'] .metro-item--tall {
     grid-row: span 1 / span 1;
   }
 
   /* When 3 columns */
-  [data-metro-cols="3"] .metro-item--hero {
+  [data-metro-cols='3'] .metro-item--hero {
     grid-column: span 2 / span 2;
     grid-row: span 2 / span 2;
   }
 
-  [data-metro-cols="3"] .metro-item--wide {
+  [data-metro-cols='3'] .metro-item--wide {
     grid-column: span 2 / span 2;
   }
 
-  [data-metro-cols="3"] .metro-item--tall {
+  [data-metro-cols='3'] .metro-item--tall {
     grid-row: span 1 / span 1;
   }
 
@@ -198,8 +198,9 @@
      ========================================================================== */
 
   .metro-item-overlay {
-    @apply absolute inset-0 pointer-events-none z-[1];
-    background: linear-gradient(180deg,
+    @apply absolute inset-0 pointer-events-none z-1;
+    background: linear-gradient(
+      180deg,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 0.1) 40%,
       rgba(0, 0, 0, 0.5) 70%,
@@ -209,7 +210,8 @@
   }
 
   .metro-item:hover .metro-item-overlay {
-    background: linear-gradient(180deg,
+    background: linear-gradient(
+      180deg,
       rgba(0, 0, 0, 0.05) 0%,
       rgba(0, 0, 0, 0.2) 40%,
       rgba(0, 0, 0, 0.65) 70%,
@@ -223,12 +225,12 @@
      ========================================================================== */
 
   .metro-item-content {
-    @apply absolute bottom-0 left-0 right-0 z-[2] p-6 pb-20 opacity-100 translate-y-0 md:p-7 md:pb-[5.5rem];
+    @apply absolute bottom-0 left-0 right-0 z-2 p-6 pb-20 opacity-100 translate-y-0 md:p-7 md:pb-22;
     transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, padding-bottom 0.4s ease;
   }
 
   .metro-item--hero .metro-item-content {
-    @apply p-8 pb-24 md:p-10 md:pb-[6.5rem];
+    @apply p-8 pb-24 md:p-10 md:pb-26;
   }
 
   /* Hover devices: animate content on hover */
@@ -256,7 +258,7 @@
     }
 
     .metro-item:hover .metro-item-content {
-      @apply pb-[5.5rem];
+      @apply pb-22;
     }
 
     .metro-item--hero .metro-item-content {
@@ -264,7 +266,7 @@
     }
 
     .metro-item--hero:hover .metro-item-content {
-      @apply pb-[6.5rem];
+      @apply pb-26;
     }
   }
 
@@ -323,7 +325,7 @@
      ========================================================================== */
 
   .metro-item-actions-wrapper {
-    @apply absolute bottom-0 left-0 right-0 p-6 z-[3] pointer-events-none md:p-7;
+    @apply absolute bottom-0 left-0 right-0 p-6 z-3 pointer-events-none md:p-7;
   }
 
   .metro-item--hero .metro-item-actions-wrapper {
@@ -358,11 +360,9 @@
     backdrop-filter: blur(16px);
     -webkit-backdrop-filter: blur(16px);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
-                color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      border-color 0.3s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+      color 0.3s cubic-bezier(0.16, 1, 0.3, 1);
   }
 
   .metro-item-action:hover {
@@ -436,7 +436,7 @@
      ========================================================================== */
 
   .metro-item-badges {
-    @apply absolute top-4 left-4 z-[3] flex flex-col gap-2 md:top-5 md:left-5;
+    @apply absolute top-4 left-4 z-3 flex flex-col gap-2 md:top-5 md:left-5;
   }
 
   .metro-item--hero .metro-item-badges {

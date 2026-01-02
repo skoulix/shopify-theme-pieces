@@ -112,19 +112,19 @@
 
   /* Metro item aspect ratios */
   .collections-metro-item-normal .collections-metro-item-inner {
-    @apply aspect-[4/5] md:aspect-square;
+    @apply aspect-4/5 md:aspect-square;
   }
 
   .collections-metro-item-large .collections-metro-item-inner {
-    @apply aspect-video sm:aspect-[4/5] md:aspect-video;
+    @apply aspect-video sm:aspect-4/5 md:aspect-video;
   }
 
   .collections-metro-item-wide .collections-metro-item-inner {
-    @apply aspect-video sm:aspect-[4/5] md:aspect-video;
+    @apply aspect-video sm:aspect-4/5 md:aspect-video;
   }
 
   .collections-metro-item-tall .collections-metro-item-inner {
-    @apply aspect-[4/5] md:aspect-[3/5];
+    @apply aspect-4/5 md:aspect-3/5;
   }
 
   /* ==========================================================================
@@ -145,8 +145,9 @@
      ========================================================================== */
 
   .collections-metro-item-overlay {
-    @apply absolute inset-0 pointer-events-none z-[1];
-    background: linear-gradient(180deg,
+    @apply absolute inset-0 pointer-events-none z-1;
+    background: linear-gradient(
+      180deg,
       rgba(0, 0, 0, 0) 0%,
       rgba(0, 0, 0, 0.1) 40%,
       rgba(0, 0, 0, 0.5) 70%,
@@ -156,7 +157,8 @@
   }
 
   .collections-metro-item:hover .collections-metro-item-overlay {
-    background: linear-gradient(180deg,
+    background: linear-gradient(
+      180deg,
       rgba(0, 0, 0, 0.05) 0%,
       rgba(0, 0, 0, 0.2) 40%,
       rgba(0, 0, 0, 0.65) 70%,
@@ -169,7 +171,7 @@
      ========================================================================== */
 
   .collections-metro-item-content {
-    @apply absolute bottom-0 left-0 right-0 z-[2] p-6 md:p-7;
+    @apply absolute bottom-0 left-0 right-0 z-2 p-6 md:p-7;
   }
 
   .collections-metro-item-large .collections-metro-item-content {
@@ -211,11 +213,11 @@
   }
 
   /* Header title line stagger - only for left alignment */
-  .collections-wrapper[data-header-align="left"] .page-title .collections-header-title-line:nth-child(2) {
+  .collections-wrapper[data-header-align='left'] .page-title .collections-header-title-line:nth-child(2) {
     margin-left: clamp(1.5rem, 10vw, 8rem);
   }
 
-  .collections-wrapper[data-header-align="left"] .page-title .collections-header-title-line:nth-child(3) {
+  .collections-wrapper[data-header-align='left'] .page-title .collections-header-title-line:nth-child(3) {
     margin-left: clamp(3rem, 18vw, 14rem);
   }
 }
