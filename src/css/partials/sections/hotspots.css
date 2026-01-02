@@ -1,0 +1,157 @@
+/* ==========================================================================
+   Hotspots Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Header */
+  .hotspots-header {
+    margin-bottom: clamp(3rem, 6vh, 5rem);
+    text-align: var(--hotspots-align, left);
+  }
+
+  .hotspots-header .section-description {
+    margin-left: var(--hotspots-description-ml, 0);
+    margin-right: var(--hotspots-description-mr, 0);
+  }
+
+  /* Container */
+  .hotspots-container {
+    @apply relative z-1;
+  }
+
+  /* Image */
+  .hotspots-image {
+    @apply w-full h-auto;
+    border-radius: var(--card-radius);
+    border: var(--hotspots-border, none);
+    box-shadow: var(--hotspots-shadow, none);
+  }
+
+  /* Hotspot dot */
+  .hotspot-dot {
+    @apply absolute z-10;
+    transform: translate(-50%, -50%);
+  }
+
+  /* Mobile position overrides */
+  @media (max-width: 767px) {
+    .hotspot-dot {
+      left: var(--mobile-x, 50%) !important;
+      top: var(--mobile-y, 50%) !important;
+    }
+  }
+
+  /* Hotspot trigger button */
+  .hotspot-trigger {
+    @apply relative flex items-center justify-center rounded-full cursor-pointer;
+    width: 2rem;
+    height: 2rem;
+    transition: transform 0.3s ease;
+  }
+
+  .hotspot-trigger:hover {
+    transform: scale(1.1);
+  }
+
+  .hotspot-trigger:focus-visible {
+    outline: 2px solid var(--color-primary, #4f46e5);
+    outline-offset: 3px;
+    transform: scale(1.1);
+  }
+
+  @media (min-width: 768px) {
+    .hotspot-trigger {
+      width: 2.5rem;
+      height: 2.5rem;
+    }
+  }
+
+  /* Pulse animation ring */
+  .hotspot-pulse {
+    @apply absolute inset-0 rounded-full;
+    opacity: 0.3;
+    animation: hotspot-ping 2s cubic-bezier(0, 0, 0.2, 1) infinite;
+  }
+
+  @keyframes hotspot-ping {
+    75%, 100% {
+      transform: scale(2);
+      opacity: 0;
+    }
+  }
+
+  /* Native popover styles */
+  .hotspot-popover {
+    margin: 0;
+    padding: 0;
+    border: none;
+    background: transparent;
+    max-width: min(90vw, 400px);
+    position: fixed;
+    inset: unset;
+  }
+
+  .hotspot-popover::backdrop {
+    background: transparent;
+  }
+
+  @media (max-width: 767px) {
+    .hotspot-popover::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+    }
+
+    .hotspot-popover {
+      max-width: 100%;
+      width: 100%;
+      bottom: 0;
+      left: 0 !important;
+      right: 0;
+      top: auto !important;
+    }
+  }
+
+  /* Popover content */
+  .hotspot-popover-content {
+    @apply relative;
+    background: rgba(255, 255, 255, 0.98);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-radius: 1.5rem 1.5rem 0 0;
+    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
+    max-height: 85vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .hotspot-popover-content .close-popover-btn {
+    @apply absolute z-10;
+    top: 1rem;
+    right: 1rem;
+  }
+
+  /* Desktop popover content */
+  @media (min-width: 768px) {
+    .hotspot-popover-content {
+      border-radius: var(--card-radius);
+      max-height: none;
+      overflow-y: visible;
+      box-shadow: var(--hotspots-popover-shadow, 0 10px 40px rgba(0, 0, 0, 0.15));
+      border: var(--hotspots-popover-border, none);
+    }
+  }
+
+  .hotspot-popover:popover-open {
+    animation: hotspot-fadeIn 0.2s ease-out;
+  }
+
+  @keyframes hotspot-fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+}

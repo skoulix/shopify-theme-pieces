@@ -9,202 +9,48 @@
     assign container_class = 'page-container'
   endif
 
-  # Use global card settings for popover
-  assign card_radius = settings.card_radius | default: 8
-  assign card_border_width = settings.card_border_width | default: 0
-  assign card_shadow = settings.card_shadow | default: 'none'
+  # Header alignment CSS custom properties
+  if section.settings.header_alignment == 'center'
+    assign description_ml = 'auto'
+    assign description_mr = 'auto'
+  elsif section.settings.header_alignment == 'right'
+    assign description_ml = 'auto'
+    assign description_mr = '0'
+  else
+    assign description_ml = '0'
+    assign description_mr = '0'
+  endif
+
+  # Image border and shadow (using global card settings)
+  assign border_width = settings.card_border_width | default: 0
+  assign shadow = settings.card_shadow | default: 'none'
+
+  if border_width > 0
+    assign image_border = border_width | append: 'px solid var(--color-border)'
+    assign popover_border = image_border
+  else
+    assign image_border = 'none'
+    assign popover_border = 'none'
+  endif
+
+  if shadow != 'none'
+    assign image_shadow = shadow
+    assign popover_shadow = shadow
+  else
+    assign image_shadow = 'none'
+    assign popover_shadow = '0 10px 40px rgba(0, 0, 0, 0.15)'
+  endif
 -%}
 
-<style>
-
-  .hotspots-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .hotspots-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .hotspots-container-{{ section.id }} {
-    position: relative;
-    z-index: 1;
-  }
-
-  .hotspots-image-{{ section.id }} {
-    width: 100%;
-    height: auto;
-    border-radius: {{ card_radius }}px;
-    {% if card_border_width > 0 %}
-    border: {{ card_border_width }}px solid var(--color-border);
-    {% endif %}
-    {% if card_shadow != 'none' %}
-    box-shadow: {{ card_shadow }};
-    {% endif %}
-  }
-
-  /* Hotspot dot styles */
-  .hotspot-dot-{{ section.id }} {
-    position: absolute;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-  }
-
-  .hotspot-trigger-{{ section.id }} {
-    position: relative;
-    width: 2rem;
-    height: 2rem;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: transform 0.3s ease;
-  }
-
-  .hotspot-trigger-{{ section.id }}:hover {
-    transform: scale(1.1);
-  }
-
-  .hotspot-trigger-{{ section.id }}:focus-visible {
-    outline: 2px solid var(--color-primary, #4f46e5);
-    outline-offset: 3px;
-    transform: scale(1.1);
-  }
-
-  @media (min-width: 768px) {
-    .hotspot-trigger-{{ section.id }} {
-      width: 2.5rem;
-      height: 2.5rem;
-    }
-  }
-
-  /* Pulse animation */
-  .hotspot-pulse-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    opacity: 0.3;
-    animation: hotspot-ping-{{ section.id }} 2s cubic-bezier(0, 0, 0.2, 1) infinite;
-  }
-
-  @keyframes hotspot-ping-{{ section.id }} {
-    75%, 100% {
-      transform: scale(2);
-      opacity: 0;
-    }
-  }
-
-  /* Mobile position overrides */
-  @media (max-width: 767px) {
-    .hotspot-dot-{{ section.id }} {
-      left: var(--mobile-x, 50%) !important;
-      top: var(--mobile-y, 50%) !important;
-    }
-  }
-
-  /* Native popover styles */
-  .hotspot-popover-{{ section.id }} {
-    margin: 0;
-    padding: 0;
-    border: none;
-    background: transparent;
-    max-width: min(90vw, 400px);
-    position: fixed;
-    inset: unset;
-  }
-
-  .hotspot-popover-{{ section.id }}::backdrop {
-    background: transparent;
-  }
-
-  @media (max-width: 767px) {
-    .hotspot-popover-{{ section.id }}::backdrop {
-      background: rgba(0, 0, 0, 0.5);
-    }
-  }
-
-  /* Mobile popover content - fixed styling */
-  .hotspot-popover-content-{{ section.id }} {
-    position: relative;
-    background: rgba(255, 255, 255, 0.98);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border-radius: 1.5rem 1.5rem 0 0;
-    box-shadow: 0 -10px 40px rgba(0, 0, 0, 0.15);
-    max-height: 85vh;
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-
-  /* Close button - always top right */
-  .hotspot-popover-content-{{ section.id }} .close-popover-btn {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    z-index: 10;
-  }
-
-  /* Desktop popover content - use theme card settings */
-  @media (min-width: 768px) {
-    .hotspot-popover-content-{{ section.id }} {
-      border-radius: {{ card_radius }}px;
-      max-height: none;
-      overflow-y: visible;
-      {% if card_shadow != 'none' %}
-      box-shadow: {{ card_shadow }};
-      {% else %}
-      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15);
-      {% endif %}
-      {% if card_border_width > 0 %}
-      border: {{ card_border_width }}px solid var(--color-border);
-      {% endif %}
-    }
-  }
-
-  .hotspot-popover-{{ section.id }}:popover-open {
-    animation: hotspot-fadeIn-{{ section.id }} 0.2s ease-out;
-  }
-
-  @keyframes hotspot-fadeIn-{{ section.id }} {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Mobile popover positioning */
-  @media (max-width: 767px) {
-    .hotspot-popover-{{ section.id }} {
-      max-width: 100%;
-      width: 100%;
-      bottom: 0;
-      left: 0 !important;
-      right: 0;
-      top: auto !important;
-    }
-  }
-
-</style>
-
 <section
-  class="hotspots-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="hotspots-section section-padding color-{{ section.settings.color_scheme }}"
+  style="--hotspots-align: {{ section.settings.header_alignment }}; --hotspots-description-ml: {{ description_ml }}; --hotspots-description-mr: {{ description_mr }}; --hotspots-border: {{ image_border }}; --hotspots-shadow: {{ image_shadow }}; --hotspots-popover-shadow: {{ popover_shadow }}; --hotspots-popover-border: {{ popover_border }};"
   data-hotspots-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.title != blank or section.settings.label != blank %}
-      <header class="hotspots-header-{{ section.id }}" data-tween-group="hotspots-header-{{ section.id }}">
+      <header class="hotspots-header" data-tween-group="hotspots-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
         {% endif %}
@@ -222,7 +68,7 @@
     {% endif %}
 
     {%- comment -%} Image with Hotspots {%- endcomment -%}
-    <div class="hotspots-container-{{ section.id }}" data-tween data-tween-type="fade-up">
+    <div class="hotspots-container" data-tween data-tween-type="fade-up">
       {% if section.settings.desktop_image != blank %}
         {%- comment -%} Desktop Image {%- endcomment -%}
         <img
@@ -232,7 +78,7 @@
                   {{ section.settings.desktop_image | image_url: width: 1920 }} 1920w"
           sizes="100vw"
           alt="{{ section.settings.desktop_image.alt | default: section.settings.title }}"
-          class="hotspots-image-{{ section.id }} hidden md:block"
+          class="hotspots-image hidden md:block"
           loading="lazy"
           decoding="async"
           width="{{ section.settings.desktop_image.width }}"
@@ -248,7 +94,7 @@
                     {{ section.settings.mobile_image | image_url: width: 800 }} 800w"
             sizes="100vw"
             alt="{{ section.settings.mobile_image.alt | default: section.settings.desktop_image.alt | default: section.settings.title }}"
-            class="hotspots-image-{{ section.id }} block md:hidden"
+            class="hotspots-image block md:hidden"
             loading="lazy"
             decoding="async"
             width="{{ section.settings.mobile_image.width }}"
@@ -258,7 +104,7 @@
           <img
             src="{{ section.settings.desktop_image | image_url: width: 800 }}"
             alt="{{ section.settings.desktop_image.alt | default: section.settings.title }}"
-            class="hotspots-image-{{ section.id }} block md:hidden"
+            class="hotspots-image block md:hidden"
             loading="lazy"
             decoding="async"
             width="{{ section.settings.desktop_image.width }}"
@@ -267,7 +113,7 @@
         {% endif %}
       {% else %}
         {%- comment -%} Placeholder when no image {%- endcomment -%}
-        <div class="hotspots-image-{{ section.id }} w-full aspect-[16/9] bg-(--color-background-secondary) flex items-center justify-center">
+        <div class="hotspots-image w-full aspect-[16/9] bg-(--color-background-secondary) flex items-center justify-center">
           {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
         </div>
       {% endif %}
@@ -285,7 +131,7 @@
           -%}
 
           <div
-            class="hotspot-dot-{{ section.id }}"
+            class="hotspot-dot"
             data-hotspot-id="{{ block.id }}"
             style="left: {{ position_x }}%; top: {{ position_y }}%;{% if position_x_mobile != blank %} --mobile-x: {{ position_x_mobile }}%;{% endif %}{% if position_y_mobile != blank %} --mobile-y: {{ position_y_mobile }}%;{% endif %}"
             {{ block.shopify_attributes }}
@@ -299,7 +145,7 @@
             -%}
             <button
               type="button"
-              class="hotspot-trigger-{{ section.id }}"
+              class="hotspot-trigger"
               style="background-color: {{ dot_color }};"
               aria-label="{{ hotspot_aria_label }}"
               aria-haspopup="dialog"
@@ -307,7 +153,7 @@
               data-hotspot-trigger
               popovertarget="popover-{{ block.id }}"
             >
-              <span class="hotspot-pulse-{{ section.id }}" style="background-color: {{ dot_color }};"></span>
+              <span class="hotspot-pulse" style="background-color: {{ dot_color }};"></span>
               <i class="ph ph-plus relative z-2" style="color: {{ icon_color }};"></i>
             </button>
           </div>
@@ -325,11 +171,11 @@
             popover
             role="dialog"
             aria-labelledby="popover-title-{{ block.id }}"
-            class="hotspot-popover-{{ section.id }}"
+            class="hotspot-popover"
             data-position="{{ popover_position }}"
             data-trigger-id="hotspot-{{ block.id }}"
           >
-            <div class="hotspot-popover-content-{{ section.id }} w-full md:w-96">
+            <div class="hotspot-popover-content w-full md:w-96">
               {%- comment -%} Close button - positioned at top right {%- endcomment -%}
               <button
                 class="absolute top-4 right-4 w-8 h-8 flex items-center justify-center rounded-full bg-black/10 hover:bg-black/20 transition-colors close-popover-btn z-10"
@@ -447,8 +293,13 @@
   // Get all hotspot triggers for keyboard navigation
   const triggers = Array.from(section.querySelectorAll('[data-hotspot-trigger]'));
 
+  // Get all popovers in this section by finding triggers and their targets
+  const popovers = Array.from(section.querySelectorAll('[data-hotspot-trigger]')).map(function(trigger) {
+    return document.getElementById(trigger.getAttribute('popovertarget'));
+  }).filter(Boolean);
+
   // Update aria-expanded when popovers toggle
-  document.querySelectorAll('.hotspot-popover-' + sectionId).forEach(function(popover) {
+  popovers.forEach(function(popover) {
     popover.addEventListener('toggle', function(event) {
       const trigger = document.querySelector('[popovertarget="' + popover.id + '"]');
 
@@ -457,7 +308,7 @@
         if (trigger) trigger.setAttribute('aria-expanded', 'true');
 
         // Close other popovers and update their aria-expanded
-        document.querySelectorAll('.hotspot-popover-' + sectionId).forEach(function(otherPopover) {
+        popovers.forEach(function(otherPopover) {
           if (otherPopover !== popover && otherPopover.matches(':popover-open')) {
             otherPopover.hidePopover();
             const otherTrigger = document.querySelector('[popovertarget="' + otherPopover.id + '"]');
@@ -514,7 +365,7 @@
   });
 
   // Handle close buttons - return focus to trigger
-  document.querySelectorAll('.close-popover-btn').forEach(function(btn) {
+  section.querySelectorAll('.close-popover-btn').forEach(function(btn) {
     btn.addEventListener('click', function(e) {
       const popover = e.target.closest('[popover]');
       if (popover) {
@@ -529,16 +380,20 @@
   // Close popovers on scroll (desktop only)
   window.addEventListener('scroll', function() {
     if (window.innerWidth >= 768) {
-      document.querySelectorAll('.hotspot-popover-' + sectionId + ':popover-open').forEach(function(popover) {
-        popover.hidePopover();
+      popovers.forEach(function(popover) {
+        if (popover.matches(':popover-open')) {
+          popover.hidePopover();
+        }
       });
     }
   });
 
   // Reposition on resize
   window.addEventListener('resize', function() {
-    document.querySelectorAll('.hotspot-popover-' + sectionId + ':popover-open').forEach(function(popover) {
-      positionPopover(popover);
+    popovers.forEach(function(popover) {
+      if (popover.matches(':popover-open')) {
+        positionPopover(popover);
+      }
     });
   });
 })();
