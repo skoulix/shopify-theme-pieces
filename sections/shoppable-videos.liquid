@@ -22,331 +22,58 @@
   assign card_shadow = settings.card_shadow | default: 'none'
 -%}
 
-<style>
-  .shoppable-videos-{{ section.id }} {
-    background-color: var(--color-background);
-    color: var(--color-text);
-    overflow: hidden;
-  }
+{%- liquid
+  # Compute slide widths based on settings
+  case videos_mobile
+    when '2'
+      assign slide_width_mobile = 'calc(50% - 0.5rem)'
+    else
+      assign slide_width_mobile = '75%'
+  endcase
 
-  /* Header - matching testimonials */
-  .shoppable-videos-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
+  case videos_tablet
+    when '2'
+      assign slide_width_tablet = 'calc(45% - 0.5rem)'
+    when '4'
+      assign slide_width_tablet = 'calc(24% - 0.75rem)'
+    else
+      assign slide_width_tablet = 'calc(32% - 0.67rem)'
+  endcase
 
-  /* Label, title, description use global .section-* classes from typography.css */
-  .shoppable-videos-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
+  case videos_desktop
+    when '2'
+      assign slide_width_desktop = 'calc(45% - 0.5rem)'
+    when '3'
+      assign slide_width_desktop = 'calc(32% - 0.67rem)'
+    when '5'
+      assign slide_width_desktop = 'calc(19% - 0.8rem)'
+    when '6'
+      assign slide_width_desktop = 'calc(16% - 0.83rem)'
+    else
+      assign slide_width_desktop = 'calc(24% - 0.75rem)'
+  endcase
 
-  /* Video card styles */
-  .shoppable-video-card-{{ section.id }} {
-    position: relative;
-    overflow: hidden;
-    isolation: isolate;
-    display: block;
-    aspect-ratio: {{ video_aspect_ratio }};
-    width: 100%;
-    height: auto;
-    border-radius: {{ card_radius }}px;
-    {% if card_border_width > 0 %}
-    border: {{ card_border_width }}px solid var(--color-border);
-    {% endif %}
-    {% case card_shadow %}
-      {% when 'sm' %}
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      {% when 'md' %}
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      {% when 'lg' %}
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-      {% when 'hard' %}
-      box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--color-text) 15%, transparent);
-    {% endcase %}
-  }
-
-  .shoppable-video-card-{{ section.id }} .carousel-video {
-    border-radius: {{ card_radius }}px;
-  }
-
-  .shoppable-video-slide-{{ section.id }} {
-    flex-shrink: 0;
-    {%- comment -%} Mobile: Centered with nearby slides visible {%- endcomment -%}
-    {%- case videos_mobile -%}
-      {%- when '2' -%}
-        width: calc(50% - 0.5rem);
-      {%- else -%}
-        width: 75%;
-    {%- endcase -%}
-  }
-
-  @media (min-width: 768px) {
-    .shoppable-video-slide-{{ section.id }} {
-      {%- comment -%} Tablet: Show configured number with peek {%- endcomment -%}
-      {%- case videos_tablet -%}
-        {%- when '2' -%}
-          width: calc(45% - 0.5rem);
-        {%- when '4' -%}
-          width: calc(24% - 0.75rem);
-        {%- else -%}
-          width: calc(32% - 0.67rem);
-      {%- endcase -%}
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .shoppable-video-slide-{{ section.id }} {
-      {%- comment -%} Desktop: Show configured number with peek for scrolling {%- endcomment -%}
-      {%- case videos_desktop -%}
-        {%- when '2' -%}
-          width: calc(45% - 0.5rem);
-        {%- when '3' -%}
-          width: calc(32% - 0.67rem);
-        {%- when '5' -%}
-          width: calc(19% - 0.8rem);
-        {%- when '6' -%}
-          width: calc(16% - 0.83rem);
-        {%- else -%}
-          width: calc(24% - 0.75rem);
-      {%- endcase -%}
-    }
-  }
-
-  /* Play overlay */
-  .shoppable-video-card-{{ section.id }}.cursor-pointer .play-overlay {
-    opacity: 0;
-    transition: opacity 0.3s ease;
-  }
-
-  .shoppable-video-card-{{ section.id }}.cursor-pointer:hover .play-overlay {
-    opacity: 1;
-  }
-
-  .shoppable-video-card-{{ section.id }}.cursor-default {
-    cursor: default !important;
-  }
-
-  /* Navigation - matching testimonials style */
-  .shoppable-videos-nav-{{ section.id }} {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
-    margin-top: 3rem;
-  }
-
-  .shoppable-videos-nav-btn-{{ section.id }} {
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: transparent;
-    border: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
-    color: var(--color-text);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-  }
-
-  .shoppable-videos-nav-btn-{{ section.id }}:hover {
-    background: var(--color-text);
-    color: var(--color-background);
-  }
-
-  .shoppable-videos-nav-btn-{{ section.id }}:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-  }
-
-  .shoppable-videos-nav-btn-{{ section.id }}:disabled:hover {
-    background: transparent;
-    color: var(--color-text);
-  }
-
-  /* Lightbox styles */
-  .shoppable-video-lightbox {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.95);
-    z-index: 9999;
-    display: none;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .shoppable-video-lightbox.active {
-    display: flex;
-  }
-
-  .shoppable-lightbox-content {
-    display: flex;
-    gap: 2rem;
-    max-width: 1400px;
-    width: 90%;
-    max-height: 85vh;
-  }
-
-  .shoppable-lightbox-video {
-    flex: 1;
-    position: relative;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .shoppable-lightbox-video video {
-    width: 100%;
-    height: auto;
-    max-height: 75vh;
-    max-width: 100%;
-    object-fit: contain;
-    transition: opacity 0.3s ease;
-    border-radius: {{ card_radius }}px;
-  }
-
-  .shoppable-lightbox-product {
-    width: 320px;
-    background: white;
-    padding: 1.5rem;
-    border-radius: {{ card_radius }}px;
-    overflow-y: auto;
-    max-height: 75vh;
-    flex-shrink: 0;
-  }
-
-  #shoppable-product-info-{{ section.id }} {
-    transition: opacity 0.3s ease;
-  }
-
-  .shoppable-lightbox-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    width: 48px;
-    height: 48px;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    z-index: 10000;
-    color: white;
-  }
-
-  .shoppable-lightbox-close:hover {
-    background: white;
-    color: black;
-  }
-
-  /* Lightbox navigation buttons */
-  .shoppable-lightbox-nav {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 10000;
-    width: 48px;
-    height: 48px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    border: 1px solid rgba(255, 255, 255, 0.3);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    transition: all 0.3s ease;
-    color: white;
-  }
-
-  .shoppable-lightbox-nav:hover {
-    background: white;
-    color: black;
-  }
-
-  .shoppable-lightbox-nav.lightbox-prev { left: 2rem; }
-  .shoppable-lightbox-nav.lightbox-next { right: 2rem; }
-  .shoppable-lightbox-nav:disabled { opacity: 0.3; cursor: not-allowed; }
-  .shoppable-lightbox-nav:disabled:hover { background: rgba(255, 255, 255, 0.1); color: white; transform: translateY(-50%); }
-
-  /* Mobile responsive lightbox */
-  @media (max-width: 768px) {
-    .shoppable-lightbox-nav {
-      width: 40px;
-      height: 40px;
-      top: auto;
-      transform: none;
-    }
-    .shoppable-lightbox-nav.lightbox-prev { top: 20px; left: 20px; }
-    .shoppable-lightbox-nav.lightbox-next { top: 20px; left: 70px; }
-    .shoppable-lightbox-nav:hover { transform: none; }
-    .shoppable-lightbox-nav:disabled:hover { transform: none; }
-
-    .shoppable-lightbox-content {
-      flex-direction: column;
-      width: calc(100% - 1rem);
-      max-width: calc(100% - 1rem);
-      max-height: calc(100vh - 1rem);
-      gap: 0;
-      margin: 0.5rem;
-    }
-
-    .shoppable-lightbox-video {
-      width: 100%;
-      flex: 1;
-      min-height: 0;
-    }
-
-    .shoppable-lightbox-video video {
-      border-radius: {{ card_radius }}px {{ card_radius }}px 0 0 !important;
-      max-height: 60vh;
-      width: 100%;
-    }
-
-    .shoppable-lightbox-product {
-      width: 100%;
-      max-height: 35vh;
-      border-radius: 0 0 {{ card_radius }}px {{ card_radius }}px;
-      padding: 1rem;
-    }
-  }
-
-  /* Slider container - transform-based infinite carousel */
-  .shoppable-videos-slider-{{ section.id }} {
-    position: relative;
-    overflow: hidden;
-  }
-
-  .shoppable-videos-track-{{ section.id }} {
-    display: flex;
-    gap: {% case video_spacing %}{% when 'none' %}0{% when 'small' %}0.5rem{% when 'large' %}1.5rem{% else %}1rem{% endcase %};
-    will-change: transform;
-  }
-
-  .shoppable-videos-track-{{ section.id }}.is-animating {
-    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
-  }
-
-</style>
+  case video_spacing
+    when 'none'
+      assign gap_value = '0'
+    when 'small'
+      assign gap_value = '0.5rem'
+    when 'large'
+      assign gap_value = '1.5rem'
+    else
+      assign gap_value = '1rem'
+  endcase
+-%}
 
 <section
-  class="shoppable-videos-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="shoppable-videos section-padding color-{{ section.settings.color_scheme }}"
   data-shoppable-videos="{{ section.id }}"
+  style="--shoppable-aspect-ratio: {{ video_aspect_ratio }}; --shoppable-video-gap: {{ gap_value }}; --shoppable-slide-width-mobile: {{ slide_width_mobile }}; --shoppable-slide-width-tablet: {{ slide_width_tablet }}; --shoppable-slide-width-desktop: {{ slide_width_desktop }};"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
-      <div class="shoppable-videos-header-{{ section.id }}" data-tween-group="shoppable-videos-header-{{ section.id }}">
+      <div class="shoppable-videos-header text-{{ section.settings.header_alignment }}" data-tween-group="shoppable-videos-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -360,7 +87,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description mt-6" data-tween data-tween-type="fade-up">
+          <p class="section-description mt-6{% if section.settings.header_alignment == 'center' %} mx-auto{% elsif section.settings.header_alignment == 'right' %} ml-auto{% endif %}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -368,8 +95,8 @@
     {% endif %}
 
     <!-- Videos Carousel -->
-    <div class="shoppable-videos-slider-{{ section.id }}" data-shoppable-videos-slider data-tween data-tween-type="fade-up">
-      <div class="shoppable-videos-track-{{ section.id }}" data-shoppable-videos-track>
+    <div class="shoppable-videos-slider" data-shoppable-videos-slider data-tween data-tween-type="fade-up">
+      <div class="shoppable-videos-track" data-shoppable-videos-track>
         {% for block in section.blocks %}
           {% if block.type == 'video' %}
             {%- liquid
@@ -381,8 +108,8 @@
                 assign has_video = true
               endif
             -%}
-            <div class="shoppable-video-slide-{{ section.id }}" data-video-slide {{ block.shopify_attributes }}>
-                <div class="shoppable-video-card-{{ section.id }} relative w-full overflow-hidden {% if has_video %}cursor-pointer{% else %}cursor-default{% endif %} bg-(--color-background-secondary)"
+            <div class="shoppable-video-slide" data-video-slide {{ block.shopify_attributes }}>
+                <div class="shoppable-video-card relative w-full overflow-hidden {% if has_video %}cursor-pointer{% else %}cursor-default{% endif %} bg-(--color-background-secondary)"
                      {% if has_video %}
                        data-video-url="{{ video_hosted.sources[1].url | default: video_hosted.sources[0].url }}"
                      {% endif %}
@@ -429,7 +156,7 @@
                   {% endif %}
 
                   {% if section.settings.show_product_info and product != blank %}
-                    <div class="shoppable-product-info absolute inset-x-0 bottom-0 p-3 pointer-events-none" style="z-index: 20; border-radius: 0 0 {{ card_radius }}px {{ card_radius }}px;">
+                    <div class="shoppable-product-info absolute inset-x-0 bottom-0 p-3 pointer-events-none z-20 rounded-b-(--card-radius)">
                       <h3 class="text-white text-sm font-semibold mb-1 line-clamp-2">{{ product.title }}</h3>
                       <div class="text-sm text-white mb-2">
                         {% if product.compare_at_price > product.price %}
@@ -450,11 +177,11 @@
 
     <!-- Navigation Buttons -->
     {% if section.blocks.size > 1 %}
-      <div class="shoppable-videos-nav-{{ section.id }}" data-tween data-tween-type="fade-up">
-        <button type="button" class="shoppable-videos-nav-btn-{{ section.id }}" data-shoppable-videos-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
+      <div class="shoppable-videos-nav" data-tween data-tween-type="fade-up">
+        <button type="button" class="shoppable-videos-nav-btn" data-shoppable-videos-prev aria-label="{{ 'accessibility.previous_slide' | t }}">
           <i class="ph ph-arrow-left"></i>
         </button>
-        <button type="button" class="shoppable-videos-nav-btn-{{ section.id }}" data-shoppable-videos-next aria-label="{{ 'accessibility.next_slide' | t }}">
+        <button type="button" class="shoppable-videos-nav-btn" data-shoppable-videos-next aria-label="{{ 'accessibility.next_slide' | t }}">
           <i class="ph ph-arrow-right"></i>
         </button>
       </div>
@@ -781,7 +508,7 @@
   const lightboxVideo = document.getElementById('shoppable-lightbox-video-{{ section.id }}');
   const productInfo = document.getElementById('shoppable-product-info-{{ section.id }}');
   const closeBtn = lightbox ? lightbox.querySelector('.shoppable-lightbox-close') : null;
-  const videoThumbnails = section.querySelectorAll('.shoppable-video-card-{{ section.id }}');
+  const videoThumbnails = section.querySelectorAll('.shoppable-video-card');
   let currentVideoIndex = 0;
   const lightboxPrevBtn = lightbox ? lightbox.querySelector('.lightbox-prev') : null;
   const lightboxNextBtn = lightbox ? lightbox.querySelector('.lightbox-next') : null;

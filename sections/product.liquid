@@ -3,417 +3,526 @@
 {% comment %} Dynamic styles that depend on Liquid theme settings {% endcomment %}
 <style>
   {% if settings.headings_uppercase %}
-  .product-description { text-transform: uppercase; }
+    .product-description {
+      text-transform: uppercase;
+    }
   {% endif %}
 
   {% if settings.buttons_uppercase %}
-  .shopify-payment-button__button,
-  .shopify-payment-button__button--unbranded {
-    text-transform: uppercase !important;
-  }
+    .shopify-payment-button__button,
+    .shopify-payment-button__button--unbranded {
+      text-transform: uppercase !important;
+    }
   {% endif %}
 </style>
 
 <div class="product-section-wrapper{% if section.settings.full_width %} is-full-width{% endif %}">
-<section class="product-hero color-{{ section.settings.color_scheme }}" data-product-section>
-  <div class="product-gallery{% if section.settings.image_fit != 'cover' %} fit-{{ section.settings.image_fit }}{% endif %}" data-product-gallery>
-    <div class="product-gallery-main" data-gallery-main>
-      {% for media in product.media %}
-        {%- case media.media_type -%}
-          {%- when 'image' -%}
-            <div class="product-gallery-image{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-media-type="image">
-              {%- if forloop.first -%}
-                {{ media | image_url: width: 1800 | image_tag:
-                  class: '',
-                  loading: 'eager',
-                  fetchpriority: 'high',
-                  decoding: 'async',
-                  sizes: '(max-width: 1024px) 100vw, 55vw',
-                  widths: '600, 900, 1200, 1800'
-                }}
-              {%- else -%}
-                {{ media | image_url: width: 1800 | image_tag:
-                  class: '',
-                  loading: 'lazy',
-                  decoding: 'async',
-                  sizes: '(max-width: 1024px) 100vw, 55vw',
-                  widths: '600, 900, 1200, 1800'
-                }}
-              {%- endif -%}
-              {% if section.settings.enable_lightbox %}
-                <button type="button" class="product-zoom-btn" data-zoom-btn="{{ forloop.index0 }}" aria-label="{{ 'products.product.zoom' | t | default: 'Zoom image' }}">
-                  <i class="ph ph-magnifying-glass-plus"></i>
-                </button>
-              {% endif %}
-            </div>
-
-          {%- when 'video' -%}
-            <div class="product-gallery-media{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-media-type="video">
-              <div class="product-media-wrapper">
-                <div class="product-media-poster" data-video-poster>
-                  {{ media.preview_image | image_url: width: 1800 | image_tag:
-                    loading: 'lazy',
-                    decoding: 'async',
-                    alt: media.alt | default: product.title
-                  }}
-                  <span class="play-icon" aria-hidden="true">
-                    <i class="ph ph-play text-xl"></i>
-                  </span>
-                </div>
-                {{ media | video_tag:
-                  controls: true,
-                  loop: section.settings.video_loop,
-                  muted: section.settings.video_autoplay,
-                  autoplay: false,
-                  preload: 'metadata',
-                  class: 'product-video'
-                }}
-              </div>
-            </div>
-
-          {%- when 'external_video' -%}
-            <div class="product-gallery-media{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-media-type="external_video" data-external-video-id="{{ media.external_id }}" data-external-video-host="{{ media.host }}">
-              <div class="product-media-wrapper">
-                <div class="product-media-poster" data-video-poster>
-                  {{ media.preview_image | image_url: width: 1800 | image_tag:
-                    loading: 'lazy',
-                    decoding: 'async',
-                    alt: media.alt | default: product.title
-                  }}
-                  <span class="play-icon" aria-hidden="true">
-                    <i class="ph ph-play text-xl"></i>
-                  </span>
-                </div>
-                <template data-external-video-template>
-                  {%- if media.host == 'youtube' -%}
-                    <iframe
-                      src="https://www.youtube.com/embed/{{ media.external_id }}?enablejsapi=1&autoplay=1"
-                      allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                      allowfullscreen
-                      loading="lazy"
-                    ></iframe>
-                  {%- elsif media.host == 'vimeo' -%}
-                    <iframe
-                      src="https://player.vimeo.com/video/{{ media.external_id }}?autoplay=1"
-                      allow="autoplay; fullscreen; picture-in-picture"
-                      allowfullscreen
-                      loading="lazy"
-                    ></iframe>
-                  {%- endif -%}
-                </template>
-              </div>
-            </div>
-
-          {%- when 'model' -%}
-            <div class="product-gallery-media{% if forloop.first %} is-active{% endif %}" data-gallery-image="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-media-type="model">
-              <div class="product-media-wrapper">
-                {{ media | model_viewer_tag:
-                  reveal: 'interaction',
-                  toggleable: true,
-                  image_size: '1800x',
-                  ar: true,
-                  ar-modes: 'webxr scene-viewer quick-look',
-                  camera-controls: true,
-                  touch-action: 'pan-y',
-                  interaction-prompt: 'auto',
-                  poster: media.preview_image | image_url: width: 1800
-                }}
-                <div class="model-viewer-ui">
-                  <button type="button" data-model-reset aria-label="{{ 'products.product.media.reset_3d_model' | t }}">
-                    <i class="ph ph-arrows-counter-clockwise"></i>
-                  </button>
-                  {%- if media.sources[0].url contains 'usdz' or media.sources[1].url contains 'usdz' -%}
-                    <button type="button" data-model-ar aria-label="{{ 'products.product.media.view_in_ar' | t }}">
-                      <i class="ph ph-cube"></i>
-                    </button>
-                  {%- endif -%}
-                </div>
-              </div>
-            </div>
-        {%- endcase -%}
-      {% else %}
-        <div class="product-gallery-image is-active">
-          <div class="w-full h-full flex items-center justify-center bg-(--color-background-secondary)">
-            <i class="ph ph-image text-8xl text-(--color-text-secondary) opacity-30"></i>
-          </div>
-        </div>
-      {% endfor %}
-    </div>
-
-    {% if product.media.size > 1 %}
-      <div class="product-image-counter text-counter" data-image-counter>
-        <span class="product-image-counter-current" data-counter-current>01</span>
-        <span>/</span>
-        <span>{{ product.media.size | prepend: '00' | slice: -2, 2 }}</span>
-      </div>
-
-      <div class="product-thumbnails{% if section.settings.thumbnail_position == 'left' %} thumbnails-left{% elsif section.settings.thumbnail_position == 'bottom' %} thumbnails-bottom{% endif %}" data-thumbnails>
+  <section class="product-hero color-{{ section.settings.color_scheme }}" data-product-section>
+    <div class="product-gallery{% if section.settings.image_fit != 'cover' %} fit-{{ section.settings.image_fit }}{% endif %}" data-product-gallery>
+      <div class="product-gallery-main" data-gallery-main>
         {% for media in product.media %}
-          <button class="product-thumbnail{% if forloop.first %} is-active{% endif %}" data-thumbnail="{{ forloop.index0 }}" data-media-id="{{ media.id }}" data-media-type="{{ media.media_type }}" aria-label="{{ 'accessibility.view_media' | t: index: forloop.index, total: product.media.size }}">
-            {{ media.preview_image | image_url: width: 150 | image_tag: loading: 'lazy', decoding: 'async', alt: media.alt | default: product.title }}
-            {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
-              <span class="product-thumbnail-icon"><i class="ph ph-play"></i></span>
-            {%- elsif media.media_type == 'model' -%}
-              <span class="product-thumbnail-icon"><i class="ph ph-cube"></i></span>
-            {%- endif -%}
-          </button>
+          {%- case media.media_type -%}
+            {%- when 'image' -%}
+              <div
+                class="product-gallery-image{% if forloop.first %} is-active{% endif %}"
+                data-gallery-image="{{ forloop.index0 }}"
+                data-media-id="{{ media.id }}"
+                data-media-type="image">
+                {%- if forloop.first -%}
+                  {{ media | image_url: width: 1800 | image_tag: class: '', loading: 'eager', fetchpriority: 'high', decoding: 'async', sizes: '(max-width: 1024px) 100vw, 55vw', widths: '600, 900, 1200, 1800'
+                  }}
+                {%- else -%}
+                  {{ media | image_url: width: 1800 | image_tag: class: '', loading: 'lazy', decoding: 'async', sizes: '(max-width: 1024px) 100vw, 55vw', widths: '600, 900, 1200, 1800'
+                  }}
+                {%- endif -%}
+                {% if section.settings.enable_lightbox %}
+                  <button
+                    type="button"
+                    class="product-zoom-btn"
+                    data-zoom-btn="{{ forloop.index0 }}"
+                    aria-label="{{ 'products.product.zoom' | t | default: 'Zoom image' }}">
+                    <i class="ph ph-magnifying-glass-plus"></i>
+                  </button>
+                {% endif %}
+              </div>
+
+            {%- when 'video' -%}
+              <div
+                class="product-gallery-media{% if forloop.first %} is-active{% endif %}"
+                data-gallery-image="{{ forloop.index0 }}"
+                data-media-id="{{ media.id }}"
+                data-media-type="video">
+                <div class="product-media-wrapper">
+                  <div class="product-media-poster" data-video-poster>
+                    {{ media.preview_image | image_url: width: 1800 | image_tag: loading: 'lazy', decoding: 'async', alt: media.alt | default: product.title
+                    }}
+                    <span class="play-icon" aria-hidden="true">
+                      <i class="ph ph-play text-xl"></i>
+                    </span>
+                  </div>
+                  {{ media | video_tag: controls: true, loop: section.settings.video_loop, muted: section.settings.video_autoplay, autoplay: false, preload: 'metadata', class: 'product-video'
+                  }}
+                </div>
+              </div>
+
+            {%- when 'external_video' -%}
+              <div
+                class="product-gallery-media{% if forloop.first %} is-active{% endif %}"
+                data-gallery-image="{{ forloop.index0 }}"
+                data-media-id="{{ media.id }}"
+                data-media-type="external_video"
+                data-external-video-id="{{ media.external_id }}"
+                data-external-video-host="{{ media.host }}">
+                <div class="product-media-wrapper">
+                  <div class="product-media-poster" data-video-poster>
+                    {{ media.preview_image | image_url: width: 1800 | image_tag: loading: 'lazy', decoding: 'async', alt: media.alt | default: product.title
+                    }}
+                    <span class="play-icon" aria-hidden="true">
+                      <i class="ph ph-play text-xl"></i>
+                    </span>
+                  </div>
+                  <template data-external-video-template>
+                    {%- if media.host == 'youtube' -%}
+                      <iframe
+                        src="https://www.youtube.com/embed/{{ media.external_id }}?enablejsapi=1&autoplay=1"
+                        allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"></iframe>
+                    {%- elsif media.host == 'vimeo' -%}
+                      <iframe
+                        src="https://player.vimeo.com/video/{{ media.external_id }}?autoplay=1"
+                        allow="autoplay; fullscreen; picture-in-picture"
+                        allowfullscreen
+                        loading="lazy"></iframe>
+                    {%- endif -%}
+                  </template>
+                </div>
+              </div>
+
+            {%- when 'model' -%}
+              <div
+                class="product-gallery-media{% if forloop.first %} is-active{% endif %}"
+                data-gallery-image="{{ forloop.index0 }}"
+                data-media-id="{{ media.id }}"
+                data-media-type="model">
+                <div class="product-media-wrapper">
+                  {{ media | model_viewer_tag: reveal: 'interaction', toggleable: true, image_size: '1800x', ar: true, ar-modes: 'webxr scene-viewer quick-look', camera-controls: true, touch-action: 'pan-y', interaction-prompt: 'auto', poster: media.preview_image | image_url: width: 1800
+                  }}
+                  <div class="model-viewer-ui">
+                    <button
+                      type="button"
+                      data-model-reset
+                      aria-label="{{ 'products.product.media.reset_3d_model' | t }}">
+                      <i class="ph ph-arrows-counter-clockwise"></i>
+                    </button>
+                    {%- if media.sources[0].url contains 'usdz' or media.sources[1].url contains 'usdz' -%}
+                      <button
+                        type="button"
+                        data-model-ar
+                        aria-label="{{ 'products.product.media.view_in_ar' | t }}">
+                        <i class="ph ph-cube"></i>
+                      </button>
+                    {%- endif -%}
+                  </div>
+                </div>
+              </div>
+          {%- endcase -%}
+        {% else %}
+          <div class="product-gallery-image is-active">
+            <div class="w-full h-full flex items-center justify-center bg-(--color-background-secondary)">
+              <i class="ph ph-image text-8xl text-(--color-text-secondary) opacity-30"></i>
+            </div>
+          </div>
         {% endfor %}
       </div>
-    {% endif %}
-  </div>
 
-  <div class="product-info {% if section.settings.full_width %} is-full-width{% endif %}">
-    <div class="{% if section.settings.full_width %}lg:max-w-2xl{% endif %}">
-      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+      {% if product.media.size > 1 %}
+        <div class="product-image-counter text-counter" data-image-counter>
+          <span class="product-image-counter-current" data-counter-current>01</span>
+          <span>/</span>
+          <span>{{ product.media.size | prepend: '00' | slice: -2, 2 }}</span>
+        </div>
 
-      {%- for block in section.blocks -%}
-        {%- case block.type -%}
-
-          {%- when 'breadcrumbs' -%}
-            <div class="mb-4" {{ block.shopify_attributes }}>
-              {% render 'breadcrumbs',
-                separator: block.settings.separator,
-                show_home_icon: block.settings.show_home_icon
-              %}
-            </div>
-
-          {%- when 'vendor' -%}
-            {% if product.vendor != blank %}
-              <div class="product-vendor text-meta overflow-hidden" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-                <span class="inline-block">{{ product.vendor }}</span>
-              </div>
-            {% endif %}
-
-          {%- when 'title' -%}
-            <h1 class="product-title font-heading" {{ block.shopify_attributes }}>
-              {%- if block.settings.split_words -%}
-                {%- assign title_words = product.title | split: ' ' -%}
-                {%- for word in title_words -%}
-                  <span class="product-title-line">
-                    <span class="inline-block">{{ word }}</span>
-                  </span>
-                {%- endfor -%}
-              {%- else -%}
-                <span class="product-title-line">
-                  <span class="inline-block">{{ product.title }}</span>
+        <div class="product-thumbnails{% if section.settings.thumbnail_position == 'left' %} thumbnails-left{% elsif section.settings.thumbnail_position == 'bottom' %} thumbnails-bottom{% endif %}" data-thumbnails>
+          {% for media in product.media %}
+            <button
+              class="product-thumbnail{% if forloop.first %} is-active{% endif %}"
+              data-thumbnail="{{ forloop.index0 }}"
+              data-media-id="{{ media.id }}"
+              data-media-type="{{ media.media_type }}"
+              aria-label="{{ 'accessibility.view_media' | t: index: forloop.index, total: product.media.size }}">
+              {{ media.preview_image | image_url: width: 150 | image_tag: loading: 'lazy', decoding: 'async', alt: media.alt | default: product.title }}
+              {%- if media.media_type == 'video' or media.media_type == 'external_video' -%}
+                <span class="product-thumbnail-icon">
+                  <i class="ph ph-play"></i>
+                </span>
+              {%- elsif media.media_type == 'model' -%}
+                <span class="product-thumbnail-icon">
+                  <i class="ph ph-cube"></i>
                 </span>
               {%- endif -%}
-            </h1>
+            </button>
+          {% endfor %}
+        </div>
+      {% endif %}
+    </div>
 
-          {%- when 'price' -%}
-            <div class="product-price-display mt-6" data-tween data-tween-type="fade-up" data-price-display {{ block.shopify_attributes }}>
-              {% if current_variant.compare_at_price > current_variant.price %}
-                <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
-              {% endif %}
-              <span data-product-price>{{ current_variant.price | money }}</span>
-              {%- if current_variant.unit_price_measurement -%}
-                <div class="unit-price text-sm text-(--color-text-secondary) mt-1" data-unit-price>
-                  <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
-                  <span data-unit-price-value>{{ current_variant.unit_price | money }}</span>/<span data-unit-price-unit>{{ current_variant.unit_price_measurement.reference_value }}{{ current_variant.unit_price_measurement.reference_unit }}</span>
-                </div>
-              {%- endif -%}
-            </div>
+    <div class="product-info {% if section.settings.full_width %} is-full-width{% endif %}">
+      <div class="{% if section.settings.full_width %}lg:max-w-2xl{% endif %}">
+        {%- assign product_form_id = 'product-form-' | append: section.id -%}
 
-          {%- when 'inventory_countdown' -%}
-            <div class="mt-4" data-tween data-tween-type="fade-up" data-inventory-block {{ block.shopify_attributes }}>
-              {% render 'inventory-countdown',
-                variant: current_variant,
-                threshold: block.settings.threshold,
-                show_exact: block.settings.show_exact_count,
-                style: block.settings.style,
-                icon: block.settings.show_icon
-              %}
-            </div>
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
 
-          {%- when 'description' -%}
-            {% if product.description != blank %}
-              {%- assign desc_text = product.description | strip_html | truncate: block.settings.truncate_length -%}
-              <div class="product-description"{% if block.settings.enable_shuffle %} data-shuffle-text data-original-text="{{ desc_text | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %} {{ block.shopify_attributes }}>
-                {{ desc_text }}
-              </div>
-            {% endif %}
-
-          {%- when 'variant_picker' -%}
-            {% if product.variants.size > 1 %}
-              <div class="mt-8" data-tween data-tween-type="fade-up">
-                {% render 'product-variant-picker',
-                  product: product,
-                  block: block,
-                  product_form_id: product_form_id,
-                  section_id: section.id
+            {%- when 'breadcrumbs' -%}
+              <div class="mb-4" {{ block.shopify_attributes }}>
+                {% render 'breadcrumbs'
+                  , separator: block.settings.separator
+                  , show_home_icon: block.settings.show_home_icon
                 %}
               </div>
-            {% endif %}
 
-          {%- when 'quantity_selector' -%}
-            <div class="product-form-group mt-8" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              <label class="product-form-label text-label-sm">{% if block.settings.label != blank %}{{ block.settings.label }}{% else %}{{ 'products.product.quantity' | t }}{% endif %}</label>
-              <div class="product-quantity" data-quantity-wrapper>
-                <button type="button" class="product-quantity-btn" data-quantity-minus aria-label="{{ 'products.product.decrease_quantity' | t }}">
-                  <i class="ph ph-minus"></i>
-                </button>
-                <div class="product-quantity-value !border-none">
-                  <input type="number" id="quantity-{{ section.id }}" name="quantity" form="{{ product_form_id }}" value="1" min="1" class="product-quantity-input !border-none" data-quantity-input aria-label="{{ 'products.product.quantity' | t }}">
+            {%- when 'vendor' -%}
+              {% if product.vendor != blank %}
+                <div
+                  class="product-vendor text-meta overflow-hidden"
+                  data-tween
+                  data-tween-type="fade-up"
+                  {{ block.shopify_attributes }}>
+                  <span class="inline-block">{{ product.vendor }}</span>
                 </div>
-                <button type="button" class="product-quantity-btn" data-quantity-plus aria-label="{{ 'products.product.increase_quantity' | t }}">
-                  <i class="ph ph-plus"></i>
-                </button>
-              </div>
-            </div>
+              {% endif %}
 
-          {%- when 'buy_buttons' -%}
-            <div class="product-form" data-tween data-tween-type="fade-up" data-product-form {{ block.shopify_attributes }}>
-              {% form 'product', product, id: product_form_id %}
-                {%- comment -%} Hidden variant input if no variant picker block or single variant {%- endcomment -%}
-                {%- assign needs_hidden_input = false -%}
-                {%- if product.has_only_default_variant or product.variants.size == 1 -%}
-                  {%- comment -%} Single variant - always need hidden input {%- endcomment -%}
-                  {%- assign needs_hidden_input = true -%}
-                {%- else -%}
-                  {%- comment -%} Multiple variants - check if variant picker block exists {%- endcomment -%}
-                  {%- assign has_variant_picker = false -%}
-                  {%- for b in section.blocks -%}
-                    {%- if b.type == 'variant_picker' -%}
-                      {%- assign has_variant_picker = true -%}
-                      {%- break -%}
-                    {%- endif -%}
+            {%- when 'title' -%}
+              <h1 class="product-title font-heading" {{ block.shopify_attributes }}>
+                {%- if block.settings.split_words -%}
+                  {%- assign title_words = product.title | split: ' ' -%}
+                  {%- for word in title_words -%}
+                    <span class="product-title-line">
+                      <span class="inline-block">{{ word }}</span>
+                    </span>
                   {%- endfor -%}
-                  {%- unless has_variant_picker -%}
-                    {%- assign needs_hidden_input = true -%}
-                  {%- endunless -%}
-                {%- endif -%}
-                {%- if needs_hidden_input -%}
-                  <input type="hidden" name="id" value="{{ current_variant.id }}">
-                {%- endif -%}
-
-                {%- comment -%} Gift Card Recipient - Required for Theme Store {%- endcomment -%}
-                {%- render 'gift-card-recipient', product: product, form: form, section: section -%}
-
-                <button type="submit" class="btn btn--primary btn--lg btn--full product-add-btn" data-add-to-cart {% unless current_variant.available %}disabled{% endunless %}>
-                  <span class="product-add-btn-text">
-                    {% if current_variant.available %}
-                      <i class="ph ph-bag"></i>
-                      <span>{% if block.settings.add_to_cart_text != blank %}{{ block.settings.add_to_cart_text }}{% else %}{{ 'products.product.add_to_cart' | t }}{% endif %}</span>
-                    {% else %}
-                      <span>{% if block.settings.sold_out_text != blank %}{{ block.settings.sold_out_text }}{% else %}{{ 'products.product.sold_out' | t }}{% endif %}</span>
-                    {% endif %}
+                {%- else -%}
+                  <span class="product-title-line">
+                    <span class="inline-block">{{ product.title }}</span>
                   </span>
-                </button>
+                {%- endif -%}
+              </h1>
 
-                {% if block.settings.show_dynamic_checkout and current_variant.available %}
-                  <div>
-                    {{ form | payment_button }}
+            {%- when 'price' -%}
+              <div
+                class="product-price-display mt-6"
+                data-tween
+                data-tween-type="fade-up"
+                data-price-display
+                {{ block.shopify_attributes }}>
+                {% if current_variant.compare_at_price > current_variant.price %}
+                  <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
+                {% endif %}
+                <span data-product-price>{{ current_variant.price | money }}</span>
+                {%- if current_variant.unit_price_measurement -%}
+                  <div class="unit-price text-sm text-(--color-text-secondary) mt-1" data-unit-price>
+                    <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
+                    <span data-unit-price-value>{{ current_variant.unit_price | money }}</span>/<span data-unit-price-unit>{{ current_variant.unit_price_measurement.reference_value }}{{ current_variant.unit_price_measurement.reference_unit }}</span>
                   </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'inventory_countdown' -%}
+              <div
+                class="mt-4"
+                data-tween
+                data-tween-type="fade-up"
+                data-inventory-block
+                {{ block.shopify_attributes }}>
+                {% render 'inventory-countdown'
+                  , variant: current_variant
+                  , threshold: block.settings.threshold
+                  , show_exact: block.settings.show_exact_count
+                  , style: block.settings.style
+                  , icon: block.settings.show_icon
+                %}
+              </div>
+
+            {%- when 'description' -%}
+              {% if product.description != blank %}
+                {%- assign desc_text = product.description | strip_html | truncate: block.settings.truncate_length -%}
+                <div
+                  class="product-description"
+                  {% if block.settings.enable_shuffle %}
+                  data-shuffle-text
+                  data-original-text="{{ desc_text | escape }}"
+                  {% else %}
+                  data-tween
+                  data-tween-type="fade-up"
+                  {% endif %}
+                  {{ block.shopify_attributes }}>
+                  {{ desc_text }}
+                </div>
+              {% endif %}
+
+            {%- when 'variant_picker' -%}
+              {% if product.variants.size > 1 %}
+                <div
+                  class="mt-8"
+                  data-tween
+                  data-tween-type="fade-up">
+                  {% render 'product-variant-picker'
+                    , product: product
+                    , block: block
+                    , product_form_id: product_form_id
+                    , section_id: section.id
+                  %}
+                </div>
+              {% endif %}
+
+            {%- when 'quantity_selector' -%}
+              <div
+                class="product-form-group mt-8"
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
+                <label class="product-form-label text-label-sm">
+                  {% if block.settings.label != blank %}
+                    {{ block.settings.label }}
+                  {% else %}
+                    {{ 'products.product.quantity' | t }}{% endif %}
+                </label>
+                <div class="product-quantity" data-quantity-wrapper>
+                  <button
+                    type="button"
+                    class="product-quantity-btn"
+                    data-quantity-minus
+                    aria-label="{{ 'products.product.decrease_quantity' | t }}">
+                    <i class="ph ph-minus"></i>
+                  </button>
+                  <div class="product-quantity-value border-none!">
+                    <input
+                      type="number"
+                      id="quantity-{{ section.id }}"
+                      name="quantity"
+                      form="{{ product_form_id }}"
+                      value="1"
+                      min="1"
+                      class="product-quantity-input border-none!"
+                      data-quantity-input
+                      aria-label="{{ 'products.product.quantity' | t }}">
+                  </div>
+                  <button
+                    type="button"
+                    class="product-quantity-btn"
+                    data-quantity-plus
+                    aria-label="{{ 'products.product.increase_quantity' | t }}">
+                    <i class="ph ph-plus"></i>
+                  </button>
+                </div>
+              </div>
+
+            {%- when 'buy_buttons' -%}
+              <div
+                class="product-form"
+                data-tween
+                data-tween-type="fade-up"
+                data-product-form
+                {{ block.shopify_attributes }}>
+                {% form 'product'
+                  , product
+                  , id: product_form_id %}
+                  {%- comment -%} Hidden variant input if no variant picker block or single variant {%- endcomment -%}
+                  {%- assign needs_hidden_input = false -%}
+                  {%- if product.has_only_default_variant or product.variants.size == 1 -%}
+                    {%- comment -%} Single variant - always need hidden input {%- endcomment -%}
+                    {%- assign needs_hidden_input = true -%}
+                  {%- else -%}
+                    {%- comment -%} Multiple variants - check if variant picker block exists {%- endcomment -%}
+                    {%- assign has_variant_picker = false -%}
+                    {%- for b in section.blocks -%}
+                      {%- if b.type == 'variant_picker' -%}
+                        {%- assign has_variant_picker = true -%}
+                        {%- break -%}
+                      {%- endif -%}
+                    {%- endfor -%}
+                    {%- unless has_variant_picker -%}
+                      {%- assign needs_hidden_input = true -%}
+                    {%- endunless -%}
+                  {%- endif -%}
+                  {%- if needs_hidden_input -%}
+                    <input
+                      type="hidden"
+                      name="id"
+                      value="{{ current_variant.id }}">
+                {%- endif -%}
+
+                  {%- comment -%} Gift Card Recipient - Required for Theme Store {%- endcomment -%}
+                  {%- render 'gift-card-recipient'
+                    , product: product
+                    , form: form
+                    , section: section -%}
+
+                  <button
+                    type="submit"
+                    class="btn btn--primary btn--lg btn--full product-add-btn"
+                    data-add-to-cart
+                    {% unless current_variant.available %}
+                    disabled{% endunless %}>
+                    <span class="product-add-btn-text">
+                      {% if current_variant.available %}
+                        <i class="ph ph-bag"></i>
+                        <span>
+                          {% if block.settings.add_to_cart_text != blank %}
+                            {{ block.settings.add_to_cart_text }}
+                          {% else %}
+                            {{ 'products.product.add_to_cart' | t }}{% endif %}
+                        </span>
+                      {% else %}
+                        <span>
+                          {% if block.settings.sold_out_text != blank %}
+                            {{ block.settings.sold_out_text }}
+                          {% else %}
+                            {{ 'products.product.sold_out' | t }}{% endif %}
+                        </span>
+                      {% endif %}
+                    </span>
+                  </button>
+
+                  {% if block.settings.show_dynamic_checkout and current_variant.available %}
+                    <div>
+                      {{ form | payment_button }}
+                    </div>
                 {% endif %}
 
-                {%- comment -%} Shop Pay Installments - Required for Theme Store {%- endcomment -%}
-                {{ form | payment_terms }}
-              {% endform %}
-            </div>
-
-          {%- when 'pickup_availability' -%}
-            {% if current_variant.available %}
-              <div data-tween data-tween-type="fade-up" data-pickup-availability {{ block.shopify_attributes }}>
-                {%- render 'pickup-availability', product: product -%}
+                  {%- comment -%} Shop Pay Installments - Required for Theme Store {%- endcomment -%}
+                  {{ form | payment_terms }}
+                {% endform %}
               </div>
-            {% endif %}
 
-          {%- when 'delivery_estimator' -%}
-            {% if current_variant.available %}
-              <div data-tween data-tween-type="fade-up" data-delivery-estimator {{ block.shopify_attributes }}>
-                {%- render 'delivery-estimator' -%}
+            {%- when 'pickup_availability' -%}
+              {% if current_variant.available %}
+                <div
+                  data-tween
+                  data-tween-type="fade-up"
+                  data-pickup-availability
+                  {{ block.shopify_attributes }}>
+                  {%- render 'pickup-availability'
+                    , product: product -%}
+                </div>
+              {% endif %}
+
+            {%- when 'delivery_estimator' -%}
+              {% if current_variant.available %}
+                <div
+                  data-tween
+                  data-tween-type="fade-up"
+                  data-delivery-estimator
+                  {{ block.shopify_attributes }}>
+                  {%- render 'delivery-estimator' -%}
+                </div>
+              {% endif %}
+
+            {%- when 'social_proof' -%}
+              <div
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
+                {%- render 'social-proof'
+                  , product: product -%}
               </div>
-            {% endif %}
 
-          {%- when 'social_proof' -%}
-            <div data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              {%- render 'social-proof', product: product -%}
-            </div>
-
-          {%- when 'text' -%}
-            <div class="product-custom-text mt-4 text-sm text-(--color-text-secondary)" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              {{ block.settings.text }}
-            </div>
-
-          {%- when 'collapsible_tab' -%}
-            <details class="product-accordion border-t border-(--color-border) group first-of-type:mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              <summary class="flex items-center justify-between py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
-                <span class="text-sm font-medium">{{ block.settings.heading }}</span>
-                <i class="ph ph-plus text-sm group-open:hidden"></i>
-                <i class="ph ph-minus text-sm hidden group-open:inline"></i>
-              </summary>
-              <div class="pb-4 text-sm text-(--color-text-secondary) leading-relaxed">
-                {{ block.settings.content }}
+            {%- when 'text' -%}
+              <div
+                class="product-custom-text mt-4 text-sm text-(--color-text-secondary)"
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
+                {{ block.settings.text }}
               </div>
-            </details>
 
-          {%- when 'size_chart' -%}
-            {%- comment -%} Size chart link and modal - excluded from gift cards {%- endcomment -%}
-            {%- liquid
-              assign has_size_option = false
-              unless product.gift_card?
-                for option in product.options
-                  assign option_downcase = option | downcase
-                  if option_downcase contains 'size' or option_downcase contains 'taille'
-                    assign has_size_option = true
-                    break
-                  endif
-                endfor
-              endunless
-            -%}
-            {% unless product.gift_card? %}
-            {% if has_size_option or block.settings.show_always %}
+            {%- when 'collapsible_tab' -%}
+              <details
+                class="product-accordion border-t border-(--color-border) group first-of-type:mt-4"
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
+                <summary class="flex items-center justify-between py-4 cursor-pointer list-none [&::-webkit-details-marker]:hidden">
+                  <span class="text-sm font-medium">{{ block.settings.heading }}</span>
+                  <i class="ph ph-plus text-sm group-open:hidden"></i>
+                  <i class="ph ph-minus text-sm hidden group-open:inline"></i>
+                </summary>
+                <div class="pb-4 text-sm text-(--color-text-secondary) leading-relaxed">
+                  {{ block.settings.content }}
+                </div>
+              </details>
+
+            {%- when 'size_chart' -%}
+              {%- comment -%} Size chart link and modal - excluded from gift cards {%- endcomment -%}
               {%- liquid
-                assign link_text = block.settings.link_text
-                if link_text == blank
-                  assign link_text = 'products.size_chart.title' | t
-                endif
-                assign drawer_heading = block.settings.drawer_heading
-                if drawer_heading == blank
-                  assign drawer_heading = 'products.size_chart.title' | t
-                endif
+                assign has_size_option = false
+                unless product.gift_card?
+                  for option in product.options
+                    assign option_downcase = option | downcase
+                    if option_downcase contains 'size' or option_downcase contains 'taille'
+                      assign has_size_option = true
+                      break
+                    endif
+                  endfor
+                endunless
               -%}
-              <div class="size-chart-trigger mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-                <button
-                  type="button"
-                  class="inline-flex items-center gap-2 text-sm text-(--color-text-secondary) hover:text-(--color-primary) transition-colors"
-                  data-size-chart-open
-                  aria-haspopup="dialog"
-                >
-                  <i class="ph ph-ruler text-lg"></i>
-                  <span class="underline underline-offset-2">{{ link_text }}</span>
-                </button>
-              </div>
+              {% unless product.gift_card? %}
+                {% if has_size_option or block.settings.show_always %}
+                  {%- liquid
+                    assign link_text = block.settings.link_text
+                    if link_text == blank
+                      assign link_text = 'products.size_chart.title' | t
+                    endif
+                    assign drawer_heading = block.settings.drawer_heading
+                    if drawer_heading == blank
+                      assign drawer_heading = 'products.size_chart.title' | t
+                    endif
+                  -%}
+                  <div
+                    class="size-chart-trigger mt-4"
+                    data-tween
+                    data-tween-type="fade-up"
+                    {{ block.shopify_attributes }}>
+                    <button
+                      type="button"
+                      class="inline-flex items-center gap-2 text-sm text-(--color-text-secondary) hover:text-(--color-primary) transition-colors"
+                      data-size-chart-open
+                      aria-haspopup="dialog">
+                      <i class="ph ph-ruler text-lg"></i>
+                      <span class="underline underline-offset-2">{{ link_text }}</span>
+                    </button>
+                  </div>
 
-              {%- comment -%} Update global size chart drawer content on open {%- endcomment -%}
-              {%- liquid
-                assign size_chart_page = block.settings.page
-                assign size_chart_content = block.settings.content
-                assign use_page = false
-                assign use_custom = false
+                  {%- comment -%} Update global size chart drawer content on open {%- endcomment -%}
+                  {%- liquid
+                    assign size_chart_page = block.settings.page
+                    assign size_chart_content = block.settings.content
+                    assign use_page = false
+                    assign use_custom = false
 
-                if size_chart_page != blank
-                  assign use_page = true
-                else
-                  # For richtext, strip HTML tags and check if actual text content exists
-                  assign content_text_only = size_chart_content | strip_html | strip
-                  if content_text_only != blank
-                    assign use_custom = true
-                  endif
-                endif
-              -%}
-              <script>
-                (function() {
-                  const heading = {{ drawer_heading | json }};
-                  {% if use_page %}
+                    if size_chart_page != blank
+                      assign use_page = true
+                    else
+                      # For richtext, strip HTML tags and check if actual text content exists
+                      assign content_text_only = size_chart_content | strip_html | strip
+                      if content_text_only != blank
+                        assign use_custom = true
+                      endif
+                    endif
+                  -%}
+                  <script>
+                                    (function() {
+                                      const heading = {{ drawer_heading | json }};
+                                      {% if use_page %}
                     const content = {{ size_chart_page.content | json }};
-                  {% elsif use_custom %}
+                                      {% elsif use_custom %}
                     const content = {{ size_chart_content | json }};
-                  {% else %}
+                                      {% else %}
                     const content = null;
-                  {% endif %}
+                                      {% endif %}
 
-                  function updateDrawer() {
+                                      function updateDrawer() {
                     const drawer = document.getElementById('size-chart-drawer');
                     if (!drawer) return;
 
@@ -427,313 +536,346 @@
                     if (bodyEl && content) {
                       bodyEl.innerHTML = '<div class="prose prose-sm max-w-none">' + content + '</div>';
                     }
-                  }
+                                      }
 
-                  // Update on click (before drawer opens)
-                  document.addEventListener('click', (e) => {
+                                      // Update on click (before drawer opens)
+                                      document.addEventListener('click', (e) => {
                     if (e.target.closest('[data-size-chart-open]')) {
                       updateDrawer();
                     }
-                  });
+                                      });
 
-                  // Also update on custom event
-                  document.addEventListener('size-chart:open', updateDrawer);
-                })();
-              </script>
-            {% endif %}
-            {% endunless %}
+                                      // Also update on custom event
+                                      document.addEventListener('size-chart:open', updateDrawer);
+                                    })();
+                  </script>
+                {% endif %}
+              {% endunless %}
 
-          {%- when 'back_in_stock' -%}
-            {%- comment -%} Back in stock notification form {%- endcomment -%}
-            <div data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              {% render 'back-in-stock-form', product: product, variant: current_variant %}
-            </div>
+            {%- when 'back_in_stock' -%}
+              {%- comment -%} Back in stock notification form {%- endcomment -%}
+              <div
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
+                {% render 'back-in-stock-form'
+                  , product: product
+                  , variant: current_variant %}
+              </div>
 
-          {%- when 'complementary_products' -%}
-            {%- comment -%} Complementary Products Block - Horizontal Layout {%- endcomment -%}
-            {%- liquid
-              assign block_title = block.settings.title
-              if block_title == blank
-                assign block_title = 'products.complementary.title' | t
-              endif
-            -%}
-            <div
-              class="mt-6"
-              data-complementary-block
-              data-product-id="{{ product.id }}"
-              data-limit="{{ block.settings.products_to_show }}"
-              data-show-add-all="{{ block.settings.show_add_all }}"
-              data-title="{{ block_title | escape }}"
-              style="display: none;"
-              {{ block.shopify_attributes }}
-            >
-              <p class="section-label section-label--inline mb-3" data-tween data-tween-type="fade-up">{{ block_title }}</p>
-              {%- comment -%} Skeleton Loading State {%- endcomment -%}
-              <div class="flex flex-col gap-3" data-complementary-loading data-tween data-tween-type="fade-up">
-                {% for i in (1..block.settings.products_to_show) %}
-                  <div class="flex items-center gap-3 p-2 border border-(--color-border) rounded-(--card-radius) animate-pulse">
-                    <div class="shrink-0 w-12 h-12 rounded-(--card-radius) bg-(--color-text) opacity-10"></div>
-                    <div class="flex-1">
-                      <div class="h-3.5 w-3/4 bg-(--color-text) opacity-10 rounded"></div>
-                      <div class="h-3 w-1/3 bg-(--color-text) opacity-10 rounded mt-1.5"></div>
+            {%- when 'complementary_products' -%}
+              {%- comment -%} Complementary Products Block - Horizontal Layout {%- endcomment -%}
+              {%- liquid
+                assign block_title = block.settings.title
+                if block_title == blank
+                  assign block_title = 'products.complementary.title' | t
+                endif
+              -%}
+              <div
+                class="mt-6"
+                data-complementary-block
+                data-product-id="{{ product.id }}"
+                data-limit="{{ block.settings.products_to_show }}"
+                data-show-add-all="{{ block.settings.show_add_all }}"
+                data-title="{{ block_title | escape }}"
+                style="display: none;"
+                {{ block.shopify_attributes }}>
+                <p
+                  class="section-label section-label--inline mb-3"
+                  data-tween
+                  data-tween-type="fade-up">{{ block_title }}</p>
+                {%- comment -%} Skeleton Loading State {%- endcomment -%}
+                <div
+                  class="flex flex-col gap-3"
+                  data-complementary-loading
+                  data-tween
+                  data-tween-type="fade-up">
+                  {% for i in (1..block.settings.products_to_show) %}
+                    <div class="flex items-center gap-3 p-2 border border-(--color-border) rounded-(--card-radius) animate-pulse">
+                      <div class="shrink-0 w-12 h-12 rounded-(--card-radius) bg-(--color-text) opacity-10"></div>
+                      <div class="flex-1">
+                        <div class="h-3.5 w-3/4 bg-(--color-text) opacity-10 rounded"></div>
+                        <div class="h-3 w-1/3 bg-(--color-text) opacity-10 rounded mt-1.5"></div>
+                      </div>
+                      <div class="shrink-0 w-8 h-8 rounded-full bg-(--color-text) opacity-10"></div>
                     </div>
-                    <div class="shrink-0 w-8 h-8 rounded-full bg-(--color-text) opacity-10"></div>
-                  </div>
-                {% endfor %}
+                  {% endfor %}
+                </div>
+                {%- comment -%} Products List {%- endcomment -%}
+                <div
+                  class="flex flex-col gap-3"
+                  data-complementary-list
+                  data-tween
+                  data-tween-type="fade-up"
+                  style="display: none;"></div>
+                {%- if block.settings.show_add_all -%}
+                  <button
+                    type="button"
+                    class="btn btn--secondary btn--sm w-full mt-3 hidden"
+                    data-complementary-add-all
+                    data-tween
+                    data-tween-type="fade-up">
+                    <i class="ph ph-plus"></i>
+                    <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
+                  </button>
+                {%- endif -%}
               </div>
-              {%- comment -%} Products List {%- endcomment -%}
-              <div class="flex flex-col gap-3" data-complementary-list data-tween data-tween-type="fade-up" style="display: none;">
-              </div>
-              {%- if block.settings.show_add_all -%}
-                <button type="button" class="btn btn--secondary btn--sm w-full mt-3 hidden" data-complementary-add-all data-tween data-tween-type="fade-up">
-                  <i class="ph ph-plus"></i>
-                  <span data-add-all-text>{{ 'products.complementary.add_all' | t }}</span>
-                </button>
-              {%- endif -%}
-            </div>
 
-          {%- when 'wishlist_button' -%}
-            {%- if settings.enable_wishlist -%}
-              {%- capture wishlist_product_json -%}
+            {%- when 'wishlist_button' -%}
+              {%- if settings.enable_wishlist -%}
+                {%- capture wishlist_product_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              <div class="mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-                {%- assign wb_icon_size = 'text-base' -%}
-                {%- assign wb_btn_class = 'btn btn--secondary btn--sm' -%}
-                {%- if block.settings.style == 'icon_only' -%}
-                  {%- assign wb_icon_size = 'text-xl' -%}
-                  {%- assign wb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
-                {%- endif -%}
-                <button
-                  type="button"
-                  class="product-wishlist-btn {{ wb_btn_class }} [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
-                  data-wishlist-toggle="{{ product.id }}"
-                  data-product-json='{{ wishlist_product_json | strip_newlines }}'
-                  aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
-                  aria-pressed="false"
-                >
-                  {%- if block.settings.style != 'text_only' -%}
-                    <i class="ph ph-heart {{ wb_icon_size }}" aria-hidden="true"></i>
+                <div
+                  class="mt-4"
+                  data-tween
+                  data-tween-type="fade-up"
+                  {{ block.shopify_attributes }}>
+                  {%- assign wb_icon_size = 'text-base' -%}
+                  {%- assign wb_btn_class = 'btn btn--secondary btn--sm' -%}
+                  {%- if block.settings.style == 'icon_only' -%}
+                    {%- assign wb_icon_size = 'text-xl' -%}
+                    {%- assign wb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
                   {%- endif -%}
-                  {%- if block.settings.style != 'icon_only' -%}
-                    <span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>
-                  {%- endif -%}
-                </button>
-              </div>
-            {%- endif -%}
+                  <button
+                    type="button"
+                    class="product-wishlist-btn {{ wb_btn_class }} [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
+                    data-wishlist-toggle="{{ product.id }}"
+                    data-product-json='{{ wishlist_product_json | strip_newlines }}'
+                    aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
+                    aria-pressed="false">
+                    {%- if block.settings.style != 'text_only' -%}
+                      <i class="ph ph-heart {{ wb_icon_size }}" aria-hidden="true"></i>
+                    {%- endif -%}
+                    {%- if block.settings.style != 'icon_only' -%}
+                      <span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>
+                    {%- endif -%}
+                  </button>
+                </div>
+              {%- endif -%}
 
-          {%- when 'compare_button' -%}
-            {%- if settings.enable_compare -%}
-              {%- capture compare_product_json -%}
+            {%- when 'compare_button' -%}
+              {%- if settings.enable_compare -%}
+                {%- capture compare_product_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              <div class="mt-4" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-                {%- assign cb_icon_size = 'text-base' -%}
-                {%- assign cb_btn_class = 'btn btn--secondary btn--sm' -%}
-                {%- if block.settings.style == 'icon_only' -%}
-                  {%- assign cb_icon_size = 'text-xl' -%}
-                  {%- assign cb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
-                {%- endif -%}
-                <button
-                  type="button"
-                  class="product-compare-btn {{ cb_btn_class }} [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
-                  data-compare-toggle="{{ product.id }}"
-                  data-product-json='{{ compare_product_json | strip_newlines }}'
-                  aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
-                  aria-pressed="false"
-                >
-                  {%- if block.settings.style != 'text_only' -%}
-                    <i class="ph ph-scales {{ cb_icon_size }}" aria-hidden="true"></i>
+                <div
+                  class="mt-4"
+                  data-tween
+                  data-tween-type="fade-up"
+                  {{ block.shopify_attributes }}>
+                  {%- assign cb_icon_size = 'text-base' -%}
+                  {%- assign cb_btn_class = 'btn btn--secondary btn--sm' -%}
+                  {%- if block.settings.style == 'icon_only' -%}
+                    {%- assign cb_icon_size = 'text-xl' -%}
+                    {%- assign cb_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
                   {%- endif -%}
-                  {%- if block.settings.style != 'icon_only' -%}
-                    <span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>
-                  {%- endif -%}
-                </button>
-              </div>
-            {%- endif -%}
+                  <button
+                    type="button"
+                    class="product-compare-btn {{ cb_btn_class }} [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
+                    data-compare-toggle="{{ product.id }}"
+                    data-product-json='{{ compare_product_json | strip_newlines }}'
+                    aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
+                    aria-pressed="false">
+                    {%- if block.settings.style != 'text_only' -%}
+                      <i class="ph ph-scales {{ cb_icon_size }}" aria-hidden="true"></i>
+                    {%- endif -%}
+                    {%- if block.settings.style != 'icon_only' -%}
+                      <span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>
+                    {%- endif -%}
+                  </button>
+                </div>
+              {%- endif -%}
 
-          {%- when 'wc_buttons' -%}
-            {%- if settings.enable_wishlist or settings.enable_compare -%}
-              {%- capture wc_wishlist_json -%}
+            {%- when 'wc_buttons' -%}
+              {%- if settings.enable_wishlist or settings.enable_compare -%}
+                {%- capture wc_wishlist_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              {%- capture wc_compare_json -%}
+                {%- capture wc_compare_json -%}
                 {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
               {%- endcapture -%}
-              {%- assign wc_display_style = block.settings.display_style | default: 'icon_text' -%}
-              {%- assign wc_show_icon = true -%}
-              {%- assign wc_show_text = true -%}
-              {%- assign wc_icon_size = 'text-base' -%}
-              {%- assign wc_btn_class = 'btn btn--secondary btn--sm' -%}
-              {%- if wc_display_style == 'icon_only' -%}
-                {%- assign wc_show_text = false -%}
-                {%- assign wc_icon_size = 'text-xl' -%}
-                {%- assign wc_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
-              {%- elsif wc_display_style == 'text_only' -%}
-                {%- assign wc_show_icon = false -%}
+                {%- assign wc_display_style = block.settings.display_style | default: 'icon_text' -%}
+                {%- assign wc_show_icon = true -%}
+                {%- assign wc_show_text = true -%}
+                {%- assign wc_icon_size = 'text-base' -%}
+                {%- assign wc_btn_class = 'btn btn--secondary btn--sm' -%}
+                {%- if wc_display_style == 'icon_only' -%}
+                  {%- assign wc_show_text = false -%}
+                  {%- assign wc_icon_size = 'text-xl' -%}
+                  {%- assign wc_btn_class = 'w-11 h-11 flex items-center justify-center rounded-full border border-(--color-border) text-(--color-text) transition-all duration-300 hover:bg-(--color-text) hover:text-(--color-background) hover:border-(--color-text)' -%}
+                {%- elsif wc_display_style == 'text_only' -%}
+                  {%- assign wc_show_icon = false -%}
+                {%- endif -%}
+                <div
+                  class="mt-4 flex justify-start gap-3"
+                  data-tween
+                  data-tween-type="fade-up"
+                  {{ block.shopify_attributes }}>
+                  {%- if settings.enable_wishlist -%}
+                    <button
+                      type="button"
+                      class="{{ wc_btn_class }} product-wishlist-btn [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
+                      data-wishlist-toggle="{{ product.id }}"
+                      data-product-json='{{ wc_wishlist_json | strip_newlines }}'
+                      aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
+                      aria-pressed="false">
+                      {%- if wc_show_icon -%}
+                        <i class="ph ph-heart {{ wc_icon_size }}" aria-hidden="true"></i>
+                      {%- endif -%}
+                      {%- if wc_show_text -%}
+                        <span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>
+                      {%- endif -%}
+                    </button>
+                  {%- endif -%}
+                  {%- if settings.enable_compare -%}
+                    <button
+                      type="button"
+                      class="{{ wc_btn_class }} product-compare-btn [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
+                      data-compare-toggle="{{ product.id }}"
+                      data-product-json='{{ wc_compare_json | strip_newlines }}'
+                      aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
+                      aria-pressed="false">
+                      {%- if wc_show_icon -%}
+                        <i class="ph ph-scales {{ wc_icon_size }}" aria-hidden="true"></i>
+                      {%- endif -%}
+                      {%- if wc_show_text -%}
+                        <span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>
+                      {%- endif -%}
+                    </button>
+                  {%- endif -%}
+                </div>
               {%- endif -%}
-              <div class="mt-4 flex justify-start gap-3" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
+
+            {%- when 'social_actions' -%}
+              {%- capture social_wishlist_json -%}
+              {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
+            {%- endcapture -%}
+              {%- capture social_compare_json -%}
+              {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
+            {%- endcapture -%}
+              <div
+                class="mt-4 flex flex-wrap items-center gap-3"
+                data-tween
+                data-tween-type="fade-up"
+                {{ block.shopify_attributes }}>
                 {%- if settings.enable_wishlist -%}
                   <button
                     type="button"
-                    class="{{ wc_btn_class }} product-wishlist-btn [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
+                    class="product-wishlist-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
                     data-wishlist-toggle="{{ product.id }}"
-                    data-product-json='{{ wc_wishlist_json | strip_newlines }}'
+                    data-product-json='{{ social_wishlist_json | strip_newlines }}'
                     aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
-                    aria-pressed="false"
-                  >
-                    {%- if wc_show_icon -%}<i class="ph ph-heart {{ wc_icon_size }}" aria-hidden="true"></i>{%- endif -%}
-                    {%- if wc_show_text -%}<span data-wishlist-btn-text>{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}</span>{%- endif -%}
+                    aria-pressed="false">
+                    <i class="ph ph-heart text-lg" aria-hidden="true"></i>
                   </button>
                 {%- endif -%}
                 {%- if settings.enable_compare -%}
                   <button
                     type="button"
-                    class="{{ wc_btn_class }} product-compare-btn [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
+                    class="product-compare-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
                     data-compare-toggle="{{ product.id }}"
-                    data-product-json='{{ wc_compare_json | strip_newlines }}'
+                    data-product-json='{{ social_compare_json | strip_newlines }}'
                     aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
-                    aria-pressed="false"
-                  >
-                    {%- if wc_show_icon -%}<i class="ph ph-scales {{ wc_icon_size }}" aria-hidden="true"></i>{%- endif -%}
-                    {%- if wc_show_text -%}<span data-compare-btn-text>{{ 'products.compare.add_to_compare' | t | default: 'Add to Compare' }}</span>{%- endif -%}
+                    aria-pressed="false">
+                    <i class="ph ph-scales text-lg" aria-hidden="true"></i>
                   </button>
                 {%- endif -%}
-              </div>
-            {%- endif -%}
-
-          {%- when 'social_actions' -%}
-            {%- capture social_wishlist_json -%}
-              {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"available":{{ product.available | json }}}
-            {%- endcapture -%}
-            {%- capture social_compare_json -%}
-              {"id":{{ product.id | json }},"handle":{{ product.handle | json }},"title":{{ product.title | json }},"url":{{ product.url | json }},"image":{{ product.featured_image | image_url: width: 800 | json }},"price":{{ product.price | json }},"compareAtPrice":{{ product.compare_at_price | default: 0 | json }},"vendor":{{ product.vendor | json }},"type":{{ product.type | json }},"sku":{{ product.selected_or_first_available_variant.sku | json }},"available":{{ product.available | json }}}
-            {%- endcapture -%}
-            <div class="mt-4 flex flex-wrap items-center gap-3" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-              {%- if settings.enable_wishlist -%}
-                <button
-                  type="button"
-                  class="product-wishlist-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) [&.is-active]:bg-(--color-sale) [&.is-active]:text-white [&.is-active]:border-(--color-sale)"
-                  data-wishlist-toggle="{{ product.id }}"
-                  data-product-json='{{ social_wishlist_json | strip_newlines }}'
-                  aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}"
-                  aria-pressed="false"
-                >
-                  <i class="ph ph-heart text-lg" aria-hidden="true"></i>
-                </button>
-              {%- endif -%}
-              {%- if settings.enable_compare -%}
-                <button
-                  type="button"
-                  class="product-compare-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) [&.is-active]:bg-(--color-text) [&.is-active]:text-(--color-background)"
-                  data-compare-toggle="{{ product.id }}"
-                  data-product-json='{{ social_compare_json | strip_newlines }}'
-                  aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}"
-                  aria-pressed="false"
-                >
-                  <i class="ph ph-scales text-lg" aria-hidden="true"></i>
-                </button>
-              {%- endif -%}
-              {%- if block.settings.show_share -%}
-                {%- liquid
-                  assign share_url = shop.url | append: product.url
-                  assign share_title = product.title | url_encode
-                  assign share_image = product.featured_image | image_url: width: 1200
-                -%}
-                <div class="relative" data-share-wrapper>
-                  <button
-                    type="button"
-                    class="product-share-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) hover:bg-(--color-text) hover:text-(--color-background)"
-                    data-share-trigger
-                    data-share-url="{{ share_url }}"
-                    data-share-title="{{ product.title | escape }}"
-                    aria-label="{{ 'products.product.share' | t | default: 'Share' }}"
-                    aria-expanded="false"
-                    aria-haspopup="true"
-                  >
-                    <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
-                  </button>
-                </div>
-                {%- comment -%} Share popup rendered outside section via portal {%- endcomment -%}
-                <template data-share-popup-template>
-                  <div
-                    class="share-popup fixed bg-(--color-background) border border-(--color-border) shadow-xl p-4 opacity-0 invisible translate-y-2 transition-all duration-200 z-9999 min-w-[200px]"
-                    data-share-popup
-                    role="menu"
-                  >
-                    <p class="text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) mb-3">{{ 'general.share' | t }}</p>
-                    <div class="flex flex-col gap-2">
-                      <a
-                        href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
-                        target="_blank"
-                        rel="noopener"
-                        class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
-                        role="menuitem"
-                        aria-label="{{ 'accessibility.share_on_facebook' | t }}"
-                      >
-                        <i class="ph ph-facebook-logo text-lg"></i>
-                        <span>Facebook</span>
-                      </a>
-                      <a
-                        href="https://twitter.com/intent/tweet?url={{ share_url }}&text={{ share_title }}"
-                        target="_blank"
-                        rel="noopener"
-                        class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
-                        role="menuitem"
-                        aria-label="{{ 'accessibility.share_on_twitter' | t }}"
-                      >
-                        <i class="ph ph-x-logo text-lg"></i>
-                        <span>X (Twitter)</span>
-                      </a>
-                      <a
-                        href="https://pinterest.com/pin/create/button/?url={{ share_url }}&media={{ share_image }}&description={{ share_title }}"
-                        target="_blank"
-                        rel="noopener"
-                        class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
-                        role="menuitem"
-                        aria-label="{{ 'accessibility.share_on_pinterest' | t }}"
-                      >
-                        <i class="ph ph-pinterest-logo text-lg"></i>
-                        <span>Pinterest</span>
-                      </a>
-                      <a
-                        href="mailto:?subject={{ share_title }}&body={{ share_url }}"
-                        class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
-                        role="menuitem"
-                        aria-label="{{ 'accessibility.share_via_email' | t }}"
-                      >
-                        <i class="ph ph-envelope text-lg"></i>
-                        <span>Email</span>
-                      </a>
-                      <button
-                        type="button"
-                        class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200 w-full text-left"
-                        data-copy-link="{{ share_url }}"
-                        role="menuitem"
-                        aria-label="{{ 'accessibility.copy_link' | t }}"
-                      >
-                        <i class="ph ph-link text-lg"></i>
-                        <span data-copy-text>{{ 'accessibility.copy_link' | t }}</span>
-                      </button>
-                    </div>
+                {%- if block.settings.show_share -%}
+                  {%- liquid
+                    assign share_url = shop.url | append: product.url
+                    assign share_title = product.title | url_encode
+                    assign share_image = product.featured_image | image_url: width: 1200
+                  -%}
+                  <div class="relative" data-share-wrapper>
+                    <button
+                      type="button"
+                      class="product-share-btn inline-flex items-center justify-center w-10 h-10 border border-(--color-border) rounded-full text-sm transition-all duration-300 hover:border-(--color-text) hover:bg-(--color-text) hover:text-(--color-background)"
+                      data-share-trigger
+                      data-share-url="{{ share_url }}"
+                      data-share-title="{{ product.title | escape }}"
+                      aria-label="{{ 'products.product.share' | t | default: 'Share' }}"
+                      aria-expanded="false"
+                      aria-haspopup="true">
+                      <i class="ph ph-share-network text-lg" aria-hidden="true"></i>
+                    </button>
                   </div>
-                </template>
-              {%- endif -%}
-            </div>
+                  {%- comment -%} Share popup rendered outside section via portal {%- endcomment -%}
+                  <template data-share-popup-template>
+                    <div
+                      class="share-popup fixed bg-(--color-background) border border-(--color-border) shadow-xl p-4 opacity-0 invisible translate-y-2 transition-all duration-200 z-9999 min-w-[200px]"
+                      data-share-popup
+                      role="menu">
+                      <p class="text-sm font-semibold uppercase tracking-widest text-(--color-text-secondary) mb-3">{{ 'general.share' | t }}</p>
+                      <div class="flex flex-col gap-2">
+                        <a
+                          href="https://www.facebook.com/sharer/sharer.php?u={{ share_url }}"
+                          target="_blank"
+                          rel="noopener"
+                          class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
+                          role="menuitem"
+                          aria-label="{{ 'accessibility.share_on_facebook' | t }}">
+                          <i class="ph ph-facebook-logo text-lg"></i>
+                          <span>Facebook</span>
+                        </a>
+                        <a
+                          href="https://twitter.com/intent/tweet?url={{ share_url }}&text={{ share_title }}"
+                          target="_blank"
+                          rel="noopener"
+                          class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
+                          role="menuitem"
+                          aria-label="{{ 'accessibility.share_on_twitter' | t }}">
+                          <i class="ph ph-x-logo text-lg"></i>
+                          <span>X (Twitter)</span>
+                        </a>
+                        <a
+                          href="https://pinterest.com/pin/create/button/?url={{ share_url }}&media={{ share_image }}&description={{ share_title }}"
+                          target="_blank"
+                          rel="noopener"
+                          class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
+                          role="menuitem"
+                          aria-label="{{ 'accessibility.share_on_pinterest' | t }}">
+                          <i class="ph ph-pinterest-logo text-lg"></i>
+                          <span>Pinterest</span>
+                        </a>
+                        <a
+                          href="mailto:?subject={{ share_title }}&body={{ share_url }}"
+                          class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200"
+                          role="menuitem"
+                          aria-label="{{ 'accessibility.share_via_email' | t }}">
+                          <i class="ph ph-envelope text-lg"></i>
+                          <span>Email</span>
+                        </a>
+                        <button
+                          type="button"
+                          class="flex items-center gap-3 py-2 px-3 text-sm text-(--color-text) hover:bg-(--color-background-secondary) transition-colors duration-200 w-full text-left"
+                          data-copy-link="{{ share_url }}"
+                          role="menuitem"
+                          aria-label="{{ 'accessibility.copy_link' | t }}">
+                          <i class="ph ph-link text-lg"></i>
+                          <span data-copy-text>{{ 'accessibility.copy_link' | t }}</span>
+                        </button>
+                      </div>
+                    </div>
+                  </template>
+                {%- endif -%}
+              </div>
 
-        {%- endcase -%}
-      {%- endfor -%}
+          {%- endcase -%}
+        {%- endfor -%}
+      </div>
     </div>
-  </div>
-</section>
+  </section>
 
-{% if section.settings.show_sticky_bar %}
-  {% render 'sticky-product-bar', product: product, current_variant: current_variant %}
-{% endif %}
+  {% if section.settings.show_sticky_bar %}
+    {% render 'sticky-product-bar'
+      , product: product
+      , current_variant: current_variant %}
+  {% endif %}
 </div>
 
 <script>
-(function() {
+  (function() {
   const section = document.querySelector('[data-product-section]');
   if (!section) return;
 
@@ -1237,11 +1379,11 @@
     }
   }
   {% endif %}
-})();
+  })();
 </script>
 
 <script>
-(function() {
+  (function() {
   function initProductAnimation() {
     const section = document.querySelector('[data-product-section]');
     if (!section) return;
@@ -1398,11 +1540,11 @@
       requestAnimationFrame(initProductAnimation);
     });
   }
-})();
+  })();
 </script>
 
 <script>
-(function() {
+  (function() {
   function setupBuyButton() {
     const buyButtonWrapper = document.querySelector('shopify-buy-it-now-button');
     if (!buyButtonWrapper) {
@@ -1488,14 +1630,14 @@
       setTimeout(setupBuyButton, 100);
     });
   }
-})();
+  })();
 </script>
 
 <script>
-/**
- * AJAX Add to Cart - Handles form submission and triggers drawer/notification
- */
-(function() {
+  /**
+   * AJAX Add to Cart - Handles form submission and triggers drawer/notification
+   */
+  (function() {
   function initAddToCart() {
     const section = document.querySelector('[data-product-section]');
     if (!section) return;
@@ -1607,14 +1749,14 @@
       requestAnimationFrame(initAddToCart);
     });
   }
-})();
+  })();
 </script>
 
 <script>
-/**
- * Complementary Products - Vanilla JS with JSON API
- */
-(function() {
+  /**
+   * Complementary Products - Vanilla JS with JSON API
+   */
+  (function() {
   const block = document.querySelector('[data-complementary-block]');
   if (!block) return;
 
@@ -1801,12 +1943,12 @@
   } else {
     loadComplementaryProducts();
   }
-})();
+  })();
 </script>
 
 {%- comment -%} Track Recently Viewed Product {%- endcomment -%}
 <script>
-(function() {
+  (function() {
   const STORAGE_KEY = 'pieces_recently_viewed';
   const MAX_PRODUCTS = 12;
 
@@ -1851,488 +1993,548 @@
   } else {
     setTimeout(addProduct, 100);
   }
-})();
+  })();
 </script>
 
 {% schema %}
-{
-  "name": "Product",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "default": true,
-      "label": "Full width"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "select",
-      "id": "image_fit",
-      "label": "Image fit",
-      "default": "cover",
-      "options": [
-        { "value": "cover", "label": "Cover" },
-        { "value": "contain", "label": "Contain" },
-        { "value": "square", "label": "Square" },
-        { "value": "portrait", "label": "Portrait" },
-        { "value": "landscape", "label": "Landscape" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "thumbnail_position",
-      "label": "Thumbnail position",
-      "default": "right",
-      "options": [
-        { "value": "left", "label": "Left side" },
-        { "value": "right", "label": "Right side" },
-        { "value": "bottom", "label": "Bottom" }
-      ]
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_lightbox",
-      "label": "Enable image lightbox",
-      "default": true,
-      "info": "Click product images to view in fullscreen"
-    },
-    {
-      "type": "header",
-      "content": "Video"
-    },
-    {
-      "type": "checkbox",
-      "id": "video_loop",
-      "label": "Loop videos",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "video_autoplay",
-      "label": "Autoplay videos when visible",
-      "default": false,
-      "info": "Videos will be muted when autoplay is enabled"
-    },
-    {
-      "type": "header",
-      "content": "Sticky add to cart"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_sticky_bar",
-      "default": true,
-      "label": "Show sticky add to cart bar",
-      "info": "Shows a bottom bar when the product form scrolls out of view. Hides when the footer is visible."
+  {
+    "name": "Product",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "default": true,
+        "label": "Full width"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "scheme-1"
+      },
+      {
+        "type": "select",
+        "id": "image_fit",
+        "label": "Image fit",
+        "default": "cover",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Cover"
+          },
+          {
+            "value": "contain",
+            "label": "Contain"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "portrait",
+            "label": "Portrait"
+          },
+          {
+            "value": "landscape",
+            "label": "Landscape"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "thumbnail_position",
+        "label": "Thumbnail position",
+        "default": "right",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left side"
+          },
+          {
+            "value": "right",
+            "label": "Right side"
+          },
+          {
+            "value": "bottom",
+            "label": "Bottom"
+          }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_lightbox",
+        "label": "Enable image lightbox",
+        "default": true,
+        "info": "Click product images to view in fullscreen"
+      },
+      {
+        "type": "header",
+        "content": "Video"
+      },
+      {
+        "type": "checkbox",
+        "id": "video_loop",
+        "label": "Loop videos",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "video_autoplay",
+        "label": "Autoplay videos when visible",
+        "default": false,
+        "info": "Videos will be muted when autoplay is enabled"
+      },
+      {
+        "type": "header",
+        "content": "Sticky add to cart"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_sticky_bar",
+        "default": true,
+        "label": "Show sticky add to cart bar",
+        "info": "Shows a bottom bar when the product form scrolls out of view. Hides when the footer is visible."
+      }
+    ],
+    "blocks": [
+      {
+        "type": "breadcrumbs",
+        "name": "Breadcrumbs",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "separator",
+            "label": "Separator",
+            "default": "/"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_home_icon",
+            "label": "Show home icon",
+            "default": false,
+            "info": "Display an icon instead of 'Home' text"
+          }
+        ]
+      },
+      {
+        "type": "vendor",
+        "name": "Vendor",
+        "limit": 1
+      },
+      {
+        "type": "title",
+        "name": "Title",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "checkbox",
+            "id": "split_words",
+            "label": "Split words onto separate lines",
+            "default": true,
+            "info": "Creates a stacked, creative title layout"
+          }
+        ]
+      },
+      {
+        "type": "price",
+        "name": "Price",
+        "limit": 1
+      },
+      {
+        "type": "inventory_countdown",
+        "name": "Inventory countdown",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "range",
+            "id": "threshold",
+            "label": "Low stock threshold",
+            "min": 3,
+            "max": 20,
+            "step": 1,
+            "default": 10,
+            "info": "Show warning when stock is at or below this number"
+          },
+          {
+            "type": "select",
+            "id": "style",
+            "label": "Display style",
+            "options": [
+              {
+                "value": "bar",
+                "label": "Progress bar"
+              },
+              {
+                "value": "minimal",
+                "label": "Minimal text"
+              },
+              {
+                "value": "badge",
+                "label": "Badge"
+              }
+            ],
+            "default": "bar"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_exact_count",
+            "label": "Show exact count",
+            "default": true,
+            "info": "Display exact number remaining vs generic 'Low stock'"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_icon",
+            "label": "Show icon",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "description",
+        "name": "Description",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "range",
+            "id": "truncate_length",
+            "label": "Character limit",
+            "min": 50,
+            "max": 500,
+            "step": 10,
+            "default": 200
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_shuffle",
+            "label": "Enable shuffle effect",
+            "default": false,
+            "info": "Animate description with text scramble effect on page load"
+          }
+        ]
+      },
+      {
+        "type": "variant_picker",
+        "name": "Variant picker",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "select",
+            "id": "picker_type",
+            "label": "Picker type",
+            "options": [
+              {
+                "value": "dropdown",
+                "label": "Dropdown"
+              },
+              {
+                "value": "button",
+                "label": "Buttons"
+              }
+            ],
+            "default": "button"
+          },
+          {
+            "type": "select",
+            "id": "swatch_shape",
+            "label": "Color swatch style",
+            "info": "Options with color swatches will display as visual swatches instead of the picker type above.",
+            "options": [
+              {
+                "value": "circle",
+                "label": "Circle"
+              },
+              {
+                "value": "square",
+                "label": "Square"
+              },
+              {
+                "value": "none",
+                "label": "None (use picker type)"
+              }
+            ],
+            "default": "circle"
+          }
+        ]
+      },
+      {
+        "type": "quantity_selector",
+        "name": "Quantity selector",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "label",
+            "label": "Label",
+            "default": "Quantity"
+          }
+        ]
+      },
+      {
+        "type": "buy_buttons",
+        "name": "Buy buttons",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "add_to_cart_text",
+            "label": "Add to cart text",
+            "info": "Leave blank to use translation"
+          },
+          {
+            "type": "text",
+            "id": "sold_out_text",
+            "label": "Sold out text",
+            "info": "Leave blank to use translation"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_dynamic_checkout",
+            "label": "Show dynamic checkout button",
+            "info": "Using the payment methods available on your store, customers see their preferred option, like PayPal or Apple Pay.",
+            "default": true
+          }
+        ]
+      },
+      {
+        "type": "pickup_availability",
+        "name": "Pickup availability",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "delivery_estimator",
+        "name": "Delivery estimator",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "social_proof",
+        "name": "Social proof",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "richtext",
+            "id": "text",
+            "label": "Text",
+            "default": "<p>Add custom text like shipping info or care instructions.</p>"
+          }
+        ]
+      },
+      {
+        "type": "collapsible_tab",
+        "name": "Collapsible tab",
+        "settings": [
+          {
+            "type": "text",
+            "id": "heading",
+            "label": "Heading",
+            "default": "Shipping & Returns"
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Content",
+            "default": "<p>Add content for this collapsible tab.</p>"
+          }
+        ]
+      },
+      {
+        "type": "size_chart",
+        "name": "Size chart",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "text",
+            "id": "link_text",
+            "label": "Link text",
+            "info": "Leave blank to use default translation"
+          },
+          {
+            "type": "text",
+            "id": "drawer_heading",
+            "label": "Drawer heading",
+            "info": "Leave blank to use default translation"
+          },
+          {
+            "type": "page",
+            "id": "page",
+            "label": "Size chart page",
+            "info": "Select a page with your size chart content. Leave blank to use default table or custom content below."
+          },
+          {
+            "type": "richtext",
+            "id": "content",
+            "label": "Custom content",
+            "info": "Used if no page is selected. Leave blank for default size chart table."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_always",
+            "label": "Show for all products",
+            "default": false,
+            "info": "By default, only shows for products with a Size option"
+          }
+        ]
+      },
+      {
+        "type": "back_in_stock",
+        "name": "Back in stock",
+        "limit": 1,
+        "settings": []
+      },
+      {
+        "type": "complementary_products",
+        "name": "Complementary products",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Shows products frequently bought together. To set up complementary products, use the Search & Discovery app."
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Title",
+            "info": "Leave blank to use default translation"
+          },
+          {
+            "type": "range",
+            "id": "products_to_show",
+            "min": 1,
+            "max": 4,
+            "step": 1,
+            "default": 2,
+            "label": "Products to show"
+          },
+          {
+            "type": "checkbox",
+            "id": "show_add_all",
+            "label": "Show add all button",
+            "default": true,
+            "info": "Only shows when all products have a single variant"
+          }
+        ]
+      },
+      {
+        "type": "wishlist_button",
+        "name": "Wishlist button",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Requires 'Enable wishlist' to be enabled in theme settings."
+          },
+          {
+            "type": "select",
+            "id": "style",
+            "label": "Button style",
+            "default": "icon_text",
+            "options": [
+              {
+                "value": "icon_only",
+                "label": "Icon only"
+              },
+              {
+                "value": "icon_text",
+                "label": "Icon with text"
+              },
+              {
+                "value": "text_only",
+                "label": "Text only"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "compare_button",
+        "name": "Compare button",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Requires 'Enable compare' to be enabled in theme settings."
+          },
+          {
+            "type": "select",
+            "id": "style",
+            "label": "Button style",
+            "default": "icon_text",
+            "options": [
+              {
+                "value": "icon_only",
+                "label": "Icon only"
+              },
+              {
+                "value": "icon_text",
+                "label": "Icon with text"
+              },
+              {
+                "value": "text_only",
+                "label": "Text only"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "wc_buttons",
+        "name": "Wishlist & Compare",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Shows wishlist and compare buttons side by side in a 50/50 layout. Individual buttons will only show if enabled in theme settings."
+          },
+          {
+            "type": "select",
+            "id": "display_style",
+            "label": "Display style",
+            "default": "icon_text",
+            "options": [
+              {
+                "value": "icon_only",
+                "label": "Icon only"
+              },
+              {
+                "value": "icon_text",
+                "label": "Icon with text"
+              },
+              {
+                "value": "text_only",
+                "label": "Text only"
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "type": "social_actions",
+        "name": "Social actions",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "paragraph",
+            "content": "Shows wishlist, compare, and share buttons in a row. Individual buttons will only show if enabled in theme settings."
+          },
+          {
+            "type": "checkbox",
+            "id": "show_share",
+            "label": "Show share button",
+            "default": true
+          }
+        ]
+      }
+    ],
+    "disabled_on": {
+      "groups": ["header", "footer"]
     }
-  ],
-  "blocks": [
-    {
-      "type": "breadcrumbs",
-      "name": "Breadcrumbs",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "separator",
-          "label": "Separator",
-          "default": "/"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_home_icon",
-          "label": "Show home icon",
-          "default": false,
-          "info": "Display an icon instead of 'Home' text"
-        }
-      ]
-    },
-    {
-      "type": "vendor",
-      "name": "Vendor",
-      "limit": 1
-    },
-    {
-      "type": "title",
-      "name": "Title",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "checkbox",
-          "id": "split_words",
-          "label": "Split words onto separate lines",
-          "default": true,
-          "info": "Creates a stacked, creative title layout"
-        }
-      ]
-    },
-    {
-      "type": "price",
-      "name": "Price",
-      "limit": 1
-    },
-    {
-      "type": "inventory_countdown",
-      "name": "Inventory countdown",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "threshold",
-          "label": "Low stock threshold",
-          "min": 3,
-          "max": 20,
-          "step": 1,
-          "default": 10,
-          "info": "Show warning when stock is at or below this number"
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Display style",
-          "options": [
-            { "value": "bar", "label": "Progress bar" },
-            { "value": "minimal", "label": "Minimal text" },
-            { "value": "badge", "label": "Badge" }
-          ],
-          "default": "bar"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_exact_count",
-          "label": "Show exact count",
-          "default": true,
-          "info": "Display exact number remaining vs generic 'Low stock'"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_icon",
-          "label": "Show icon",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "description",
-      "name": "Description",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "range",
-          "id": "truncate_length",
-          "label": "Character limit",
-          "min": 50,
-          "max": 500,
-          "step": 10,
-          "default": 200
-        },
-        {
-          "type": "checkbox",
-          "id": "enable_shuffle",
-          "label": "Enable shuffle effect",
-          "default": false,
-          "info": "Animate description with text scramble effect on page load"
-        }
-      ]
-    },
-    {
-      "type": "variant_picker",
-      "name": "Variant picker",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "select",
-          "id": "picker_type",
-          "label": "Picker type",
-          "options": [
-            {
-              "value": "dropdown",
-              "label": "Dropdown"
-            },
-            {
-              "value": "button",
-              "label": "Buttons"
-            }
-          ],
-          "default": "button"
-        },
-        {
-          "type": "select",
-          "id": "swatch_shape",
-          "label": "Color swatch style",
-          "info": "Options with color swatches will display as visual swatches instead of the picker type above.",
-          "options": [
-            {
-              "value": "circle",
-              "label": "Circle"
-            },
-            {
-              "value": "square",
-              "label": "Square"
-            },
-            {
-              "value": "none",
-              "label": "None (use picker type)"
-            }
-          ],
-          "default": "circle"
-        }
-      ]
-    },
-    {
-      "type": "quantity_selector",
-      "name": "Quantity selector",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Quantity"
-        }
-      ]
-    },
-    {
-      "type": "buy_buttons",
-      "name": "Buy buttons",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "add_to_cart_text",
-          "label": "Add to cart text",
-          "info": "Leave blank to use translation"
-        },
-        {
-          "type": "text",
-          "id": "sold_out_text",
-          "label": "Sold out text",
-          "info": "Leave blank to use translation"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_dynamic_checkout",
-          "label": "Show dynamic checkout button",
-          "info": "Using the payment methods available on your store, customers see their preferred option, like PayPal or Apple Pay.",
-          "default": true
-        }
-      ]
-    },
-    {
-      "type": "pickup_availability",
-      "name": "Pickup availability",
-      "limit": 1,
-      "settings": []
-    },
-    {
-      "type": "delivery_estimator",
-      "name": "Delivery estimator",
-      "limit": 1,
-      "settings": []
-    },
-    {
-      "type": "social_proof",
-      "name": "Social proof",
-      "limit": 1,
-      "settings": []
-    },
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        {
-          "type": "richtext",
-          "id": "text",
-          "label": "Text",
-          "default": "<p>Add custom text like shipping info or care instructions.</p>"
-        }
-      ]
-    },
-    {
-      "type": "collapsible_tab",
-      "name": "Collapsible tab",
-      "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Heading",
-          "default": "Shipping & Returns"
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Content",
-          "default": "<p>Add content for this collapsible tab.</p>"
-        }
-      ]
-    },
-    {
-      "type": "size_chart",
-      "name": "Size chart",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "text",
-          "id": "link_text",
-          "label": "Link text",
-          "info": "Leave blank to use default translation"
-        },
-        {
-          "type": "text",
-          "id": "drawer_heading",
-          "label": "Drawer heading",
-          "info": "Leave blank to use default translation"
-        },
-        {
-          "type": "page",
-          "id": "page",
-          "label": "Size chart page",
-          "info": "Select a page with your size chart content. Leave blank to use default table or custom content below."
-        },
-        {
-          "type": "richtext",
-          "id": "content",
-          "label": "Custom content",
-          "info": "Used if no page is selected. Leave blank for default size chart table."
-        },
-        {
-          "type": "checkbox",
-          "id": "show_always",
-          "label": "Show for all products",
-          "default": false,
-          "info": "By default, only shows for products with a Size option"
-        }
-      ]
-    },
-    {
-      "type": "back_in_stock",
-      "name": "Back in stock",
-      "limit": 1,
-      "settings": []
-    },
-    {
-      "type": "complementary_products",
-      "name": "Complementary products",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Shows products frequently bought together. To set up complementary products, use the Search & Discovery app."
-        },
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "info": "Leave blank to use default translation"
-        },
-        {
-          "type": "range",
-          "id": "products_to_show",
-          "min": 1,
-          "max": 4,
-          "step": 1,
-          "default": 2,
-          "label": "Products to show"
-        },
-        {
-          "type": "checkbox",
-          "id": "show_add_all",
-          "label": "Show add all button",
-          "default": true,
-          "info": "Only shows when all products have a single variant"
-        }
-      ]
-    },
-    {
-      "type": "wishlist_button",
-      "name": "Wishlist button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Requires 'Enable wishlist' to be enabled in theme settings."
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Button style",
-          "default": "icon_text",
-          "options": [
-            { "value": "icon_only", "label": "Icon only" },
-            { "value": "icon_text", "label": "Icon with text" },
-            { "value": "text_only", "label": "Text only" }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "compare_button",
-      "name": "Compare button",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Requires 'Enable compare' to be enabled in theme settings."
-        },
-        {
-          "type": "select",
-          "id": "style",
-          "label": "Button style",
-          "default": "icon_text",
-          "options": [
-            { "value": "icon_only", "label": "Icon only" },
-            { "value": "icon_text", "label": "Icon with text" },
-            { "value": "text_only", "label": "Text only" }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "wc_buttons",
-      "name": "Wishlist & Compare",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Shows wishlist and compare buttons side by side in a 50/50 layout. Individual buttons will only show if enabled in theme settings."
-        },
-        {
-          "type": "select",
-          "id": "display_style",
-          "label": "Display style",
-          "default": "icon_text",
-          "options": [
-            { "value": "icon_only", "label": "Icon only" },
-            { "value": "icon_text", "label": "Icon with text" },
-            { "value": "text_only", "label": "Text only" }
-          ]
-        }
-      ]
-    },
-    {
-      "type": "social_actions",
-      "name": "Social actions",
-      "limit": 1,
-      "settings": [
-        {
-          "type": "paragraph",
-          "content": "Shows wishlist, compare, and share buttons in a row. Individual buttons will only show if enabled in theme settings."
-        },
-        {
-          "type": "checkbox",
-          "id": "show_share",
-          "label": "Show share button",
-          "default": true
-        }
-      ]
-    }
-  ],
-  "disabled_on": {
-    "groups": ["header", "footer"]
   }
-}
 {% endschema %}
