@@ -16,210 +16,14 @@
   assign card_shadow = settings.card_shadow
 -%}
 
-<style>
-  .stacking-cards-{{ section.id }} {
-    position: relative;
-    background-color: var(--color-background);
-    color: var(--color-text);
-  }
-
-  .stacking-cards-bg-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    overflow: hidden;
-    z-index: 0;
-  }
-
-  .stacking-cards-bg-{{ section.id }} img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: {{ section.settings.background_image_position }};
-    {% if section.settings.background_image_blur > 0 %}
-    filter: blur({{ section.settings.background_image_blur }}px);
-    transform: scale(1.1);
-    {% endif %}
-  }
-
-  .stacking-cards-overlay-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    z-index: 1;
-    pointer-events: none;
-  }
-
-  .stacking-cards-wrapper-{{ section.id }} {
-    min-height: {{ section.blocks.size | times: 100 }}vh;
-    position: relative;
-    z-index: 2;
-  }
-
-  .stacking-cards-header-{{ section.id }} {
-    position: relative;
-    z-index: 2;
-    padding: var(--section-vertical-padding) 0;
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .stacking-cards-header-{{ section.id }} .section-description {
-    max-width: 50ch;
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .stacking-cards-sticky-{{ section.id }} {
-    position: sticky;
-    top: 0;
-    height: 100vh;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 2rem;
-  }
-
-  .stacking-card-{{ section.id }} {
-    position: absolute;
-    width: 90%;
-    max-width: 900px;
-    background: var(--color-background);
-    border-radius: {{ card_radius }}px;
-    overflow: hidden;
-    transform-origin: center top;
-    {% if card_border_width > 0 %}
-    border: {{ card_border_width }}px solid color-mix(in srgb, var(--color-text) 20%, transparent);
-    {% endif %}
-    {% case card_shadow %}
-      {% when 'none' %}
-      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 10px 20px -10px rgba(0, 0, 0, 0.15);
-      {% when 'sm' %}
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05), 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 10px 20px -10px rgba(0, 0, 0, 0.15);
-      {% when 'md' %}
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1), 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 10px 20px -10px rgba(0, 0, 0, 0.15);
-      {% when 'lg' %}
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1), 0 25px 60px -15px rgba(0, 0, 0, 0.3), 0 10px 20px -10px rgba(0, 0, 0, 0.2);
-      {% when 'hard' %}
-      box-shadow: 4px 4px 0 0 color-mix(in srgb, var(--color-text) 20%, transparent), 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 10px 20px -10px rgba(0, 0, 0, 0.15);
-    {% endcase %}
-  }
-
-  .stacking-card-inner-{{ section.id }} {
-    display: grid;
-    grid-template-columns: 1fr;
-    min-height: 400px;
-  }
-
-  @media (min-width: 768px) {
-    .stacking-card-inner-{{ section.id }} {
-      grid-template-columns: 1fr 1fr;
-      min-height: 450px;
-    }
-  }
-
-  .stacking-card-image-{{ section.id }} {
-    position: relative;
-    overflow: hidden;
-    min-height: 250px;
-  }
-
-  .stacking-card-image-{{ section.id }} img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .stacking-card-{{ section.id }}:hover .stacking-card-image-{{ section.id }} img {
-    transform: scale(1.05);
-  }
-
-  .stacking-card-content-{{ section.id }} {
-    padding: clamp(2rem, 4vw, 3rem);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    color: var(--color-text);
-  }
-
-  .stacking-card-number-{{ section.id }} {
-    opacity: 0.4;
-    margin-bottom: 1.5rem;
-  }
-
-  .stacking-card-title-{{ section.id }} {
-    font-size: calc(clamp(1.25rem, 2.5vw, 1.75rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
-    line-height: 1.2;
-    color: var(--color-text);
-  }
-
-  .stacking-card-text-{{ section.id }} {
-    margin-top: 1rem;
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    opacity: 0.75;
-  }
-
-  .stacking-card-link-{{ section.id }} {
-    margin-top: 2rem;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    color: var(--color-text);
-  }
-
-  .stacking-card-link-text-wrapper-{{ section.id }} {
-    overflow: hidden;
-    display: inline-block;
-  }
-
-  .stacking-card-link-{{ section.id }} .stacking-card-link-text-{{ section.id }} {
-    display: inline-block;
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .stacking-card-link-{{ section.id }} .stacking-card-link-text-{{ section.id }}::after {
-    content: attr(data-hover);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    white-space: nowrap;
-  }
-
-  .stacking-card-link-{{ section.id }}:hover .stacking-card-link-text-{{ section.id }} {
-    transform: translateY(-100%);
-  }
-
-  /* Card stacking animation states */
-  .stacking-card-{{ section.id }} {
-    opacity: 0;
-    transform: translateY(100px) scale(0.95);
-    pointer-events: none;
-  }
-
-  /* Active card (set by JS when card becomes visible) */
-  .stacking-card-{{ section.id }}.is-active {
-    pointer-events: auto;
-  }
-
-  /* Note: This section requires scroll animation to function - no reduced motion fallback */
-</style>
-
 <section
-  class="stacking-cards-{{ section.id }} color-{{ section.settings.color_scheme }}"
+  class="stacking-cards color-{{ section.settings.color_scheme }}"
   data-stacking-cards="{{ section.id }}"
+  style="--stacking-bg-position: {{ section.settings.background_image_position }};{% if section.settings.background_image_blur > 0 %} --stacking-bg-blur: {{ section.settings.background_image_blur }}px;{% endif %}"
 >
   {%- comment -%} Background Image {%- endcomment -%}
   {% if section.settings.background_image != blank %}
-    <div class="stacking-cards-bg-{{ section.id }}">
+    <div class="stacking-cards-bg{% if section.settings.background_image_blur > 0 %} stacking-cards-bg--blur{% endif %}">
       {{ section.settings.background_image | image_url: width: 2000 | image_tag:
         loading: 'eager',
         decoding: 'async',
@@ -233,12 +37,12 @@
   {%- comment -%} Background Overlay {%- endcomment -%}
   {% if section.settings.background_overlay_color != blank and section.settings.background_overlay_opacity > 0 %}
     {%- assign overlay_opacity = section.settings.background_overlay_opacity | divided_by: 100.0 -%}
-    <div class="stacking-cards-overlay-{{ section.id }}" style="background-color: {{ section.settings.background_overlay_color | color_modify: 'alpha', overlay_opacity }};"></div>
+    <div class="stacking-cards-overlay" style="background-color: {{ section.settings.background_overlay_color | color_modify: 'alpha', overlay_opacity }};"></div>
   {% endif %}
 
   {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
   {% if section.settings.label != blank or section.settings.title != blank %}
-    <div class="{{ container_class }} stacking-cards-header-{{ section.id }}" data-tween-group="stacking-cards-header-{{ section.id }}">
+    <div class="{{ container_class }} stacking-cards-header text-{{ section.settings.header_alignment }}" data-tween-group="stacking-cards-header-{{ section.id }}">
       {% if section.settings.label != blank %}
         <span class="section-label" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
@@ -260,18 +64,18 @@
   {% endif %}
 
   {%- comment -%} Cards {%- endcomment -%}
-  <div class="stacking-cards-wrapper-{{ section.id }}">
-    <div class="stacking-cards-sticky-{{ section.id }}" data-stacking-sticky>
+  <div class="stacking-cards-wrapper" style="min-height: {{ section.blocks.size | times: 100 }}vh;">
+    <div class="stacking-cards-sticky" data-stacking-sticky>
       {% for block in section.blocks %}
         <div
-          class="stacking-card-{{ section.id }}"
+          class="stacking-card"
           data-stacking-card
           data-card-index="{{ forloop.index0 }}"
           style="z-index: {{ forloop.index }};"
           {{ block.shopify_attributes }}
         >
-          <div class="stacking-card-inner-{{ section.id }}">
-            <div class="stacking-card-image-{{ section.id }}">
+          <div class="stacking-card-inner">
+            <div class="stacking-card-image">
               {% if block.settings.image != blank %}
                 {{ block.settings.image | image_url: width: 800 | image_tag:
                   loading: 'lazy',
@@ -285,27 +89,27 @@
               {% endif %}
             </div>
 
-            <div class="stacking-card-content-{{ section.id }}">
-              <span class="stacking-card-number-{{ section.id }} text-label-sm">
+            <div class="stacking-card-content">
+              <span class="stacking-card-number text-label-sm">
                 {{ forloop.index | prepend: '00' | slice: -2, 2 }}
               </span>
 
               {% if block.settings.title != blank %}
-                <h3 class="stacking-card-title-{{ section.id }} font-heading">
+                <h3 class="stacking-card-title font-heading">
                   {{ block.settings.title }}
                 </h3>
               {% endif %}
 
               {% if block.settings.text != blank %}
-                <p class="stacking-card-text-{{ section.id }}">
+                <p class="stacking-card-text">
                   {{ block.settings.text }}
                 </p>
               {% endif %}
 
               {% if block.settings.link != blank and block.settings.link_text != blank %}
-                <a href="{{ block.settings.link }}" class="stacking-card-link-{{ section.id }} text-link-sm">
-                  <span class="stacking-card-link-text-wrapper-{{ section.id }}">
-                    <span class="stacking-card-link-text-{{ section.id }}" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
+                <a href="{{ block.settings.link }}" class="stacking-card-link text-link-sm">
+                  <span class="stacking-card-link-text-wrapper">
+                    <span class="stacking-card-link-text" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
                   </span>
                   <i class="ph ph-arrow-right"></i>
                 </a>
@@ -334,7 +138,7 @@
     }
 
     const cards = section.querySelectorAll('[data-stacking-card]');
-    const wrapper = section.querySelector('.stacking-cards-wrapper-{{ section.id }}');
+    const wrapper = section.querySelector('.stacking-cards-wrapper');
     const totalCards = cards.length;
     let activeCardIndex = -1;
 

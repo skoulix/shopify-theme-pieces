@@ -1,0 +1,402 @@
+/* ==========================================================================
+   Countdown Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Base section */
+  .countdown-section {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  .countdown-section.is-expired {
+    @apply hidden;
+  }
+
+  /* ============================================
+     HERO DESIGN - Large dramatic countdown
+     ============================================ */
+  .countdown--hero .countdown-grid {
+    @apply grid grid-cols-2 gap-6;
+  }
+
+  @media (min-width: 640px) {
+    .countdown--hero .countdown-grid {
+      @apply grid-cols-4 gap-8;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .countdown--hero .countdown-grid {
+      gap: 4rem;
+    }
+  }
+
+  .countdown--hero .countdown-item {
+    @apply text-center opacity-0;
+    transform: translateY(30px);
+  }
+
+  .countdown--hero .countdown-item.is-visible {
+    @apply opacity-100;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  .countdown--hero .countdown-value {
+    @apply flex items-baseline justify-center font-heading;
+    font-size: calc(clamp(3rem, 12vw, 7rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    line-height: 1;
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+    min-width: 2ch;
+  }
+
+  .countdown--hero .countdown-label {
+    @apply mt-3 opacity-50;
+    font-size: clamp(0.75rem, 1.5vw, 0.75rem);
+    letter-spacing: 0.2em;
+  }
+
+  .countdown--hero .countdown-header {
+    @apply mb-16;
+  }
+
+  .countdown--hero .countdown-header .section-description {
+    max-width: 600px;
+  }
+
+  .countdown--hero .countdown-cta {
+    @apply mt-12;
+  }
+
+  /* Hero form */
+  .countdown--hero .countdown-form {
+    @apply mt-12;
+  }
+
+  .countdown--hero.text-center .countdown-form {
+    @apply flex justify-center;
+  }
+
+  .countdown--hero .countdown-form-inner {
+    @apply flex flex-col gap-3 w-full;
+    max-width: 400px;
+  }
+
+  @media (min-width: 640px) {
+    .countdown--hero .countdown-form-inner {
+      @apply flex-row gap-2;
+    }
+  }
+
+  .countdown--hero .countdown-form input[type="email"] {
+    @apply flex-1;
+    min-width: 0;
+    padding: 0.875rem 1rem;
+    font-size: 0.875rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius, 4px);
+    color: var(--color-text);
+    caret-color: var(--color-text);
+    transition: border-color 0.2s ease;
+  }
+
+  .countdown--hero .countdown-form input[type="email"]::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  .countdown--hero .countdown-form input[type="email"]:focus {
+    @apply outline-none;
+    border-color: var(--color-text);
+  }
+
+  .countdown--hero .countdown-form .btn {
+    @apply h-auto;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+
+  .countdown--hero .countdown-form-message {
+    @apply mt-3;
+    font-size: 0.875rem;
+  }
+
+  .countdown--hero.text-center .countdown-form-message {
+    @apply text-center;
+  }
+
+  .countdown-form-message.success {
+    color: #22c55e;
+  }
+
+  .countdown-form-message.error {
+    color: #ef4444;
+  }
+
+  /* Hero dividers */
+  .countdown--hero.show-dividers .countdown-item {
+    @apply relative;
+  }
+
+  .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
+    @apply absolute font-heading;
+    content: ':';
+    right: -0.75rem;
+    top: 0;
+    font-size: calc(clamp(2rem, 8vw, 4rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    opacity: 0.3;
+  }
+
+  @media (max-width: 639px) {
+    .countdown--hero.show-dividers .countdown-item:nth-child(2)::after {
+      @apply hidden;
+    }
+  }
+
+  @media (min-width: 640px) {
+    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
+      right: -1rem;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
+      right: -2rem;
+    }
+  }
+
+  /* ============================================
+     COMPACT DESIGN - Medium-sized countdown
+     ============================================ */
+  .countdown--compact {
+    padding: clamp(2rem, 4vw, 3rem) 0;
+  }
+
+  .countdown--compact .countdown-inner {
+    @apply flex flex-col items-center gap-6;
+  }
+
+  @media (min-width: 768px) {
+    .countdown--compact .countdown-inner {
+      @apply flex-row items-center gap-12;
+    }
+  }
+
+  .countdown--compact .countdown-header {
+    @apply text-center;
+  }
+
+  @media (min-width: 768px) {
+    .countdown--compact .countdown-header {
+      @apply text-left;
+    }
+  }
+
+  .countdown--compact .countdown-title {
+    @apply font-heading;
+    font-size: calc(clamp(1.25rem, 3vw, 1.75rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    line-height: 1.2;
+  }
+
+  .countdown--compact .countdown-subtitle {
+    @apply mt-2 opacity-70;
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+  }
+
+  .countdown--compact .countdown-grid {
+    @apply flex items-center gap-2 shrink-0;
+  }
+
+  @media (min-width: 640px) {
+    .countdown--compact .countdown-grid {
+      gap: 0.75rem;
+    }
+  }
+
+  .countdown--compact .countdown-item {
+    @apply inline-flex items-center gap-2 opacity-0;
+    transform: translateY(20px);
+  }
+
+  .countdown--compact .countdown-item-inner {
+    @apply flex flex-col items-center;
+  }
+
+  .countdown--compact .countdown-item.is-visible {
+    @apply opacity-100;
+    transform: translateY(0);
+    transition: opacity 0.6s ease, transform 0.6s ease;
+  }
+
+  .countdown--compact .countdown-value {
+    @apply font-heading;
+    font-size: calc(clamp(1.25rem, 3.5vw, 1.75rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    line-height: 1;
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    min-width: 2ch;
+  }
+
+  .countdown--compact .countdown-label {
+    @apply opacity-50;
+    margin-top: 0.2rem;
+    font-size: 0.625rem;
+    letter-spacing: 0.15em;
+  }
+
+  .countdown--compact .countdown-divider {
+    @apply font-heading;
+    font-size: calc(clamp(1rem, 2.5vw, 1.25rem) * var(--heading-font-scale, 1));
+    font-weight: 600;
+    opacity: 0.3;
+    line-height: 1;
+    align-self: flex-start;
+    padding-top: 0.1em;
+  }
+
+  /* Compact form */
+  .countdown--compact .countdown-form {
+    @apply shrink-0;
+  }
+
+  .countdown--compact .countdown-form-inner {
+    @apply flex gap-2;
+  }
+
+  .countdown--compact .countdown-form input[type="email"] {
+    width: 200px;
+    padding: 0.625rem 0.875rem;
+    font-size: 0.8rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius, 4px);
+    color: var(--color-text);
+    caret-color: var(--color-text);
+    transition: border-color 0.2s ease;
+  }
+
+  .countdown--compact .countdown-form input[type="email"]::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  .countdown--compact .countdown-form input[type="email"]:focus {
+    @apply outline-none;
+    border-color: var(--color-text);
+  }
+
+  .countdown--compact .countdown-form .btn {
+    @apply h-auto;
+    padding: 0.625rem 1rem;
+    font-size: 0.8125rem;
+  }
+
+  .countdown--compact .countdown-form-message {
+    @apply absolute;
+    margin-top: 0.5rem;
+    font-size: 0.8125rem;
+  }
+
+  /* ============================================
+     MINIMAL DESIGN - Inline for headers/announcements
+     ============================================ */
+  .countdown--minimal {
+    padding: 0.75rem 0;
+  }
+
+  .countdown--minimal .countdown-inner {
+    @apply flex flex-wrap items-center justify-center;
+    gap: 0.5rem 1rem;
+  }
+
+  .countdown--minimal .countdown-text {
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+    font-weight: 500;
+    letter-spacing: 0.05em;
+  }
+
+  .countdown--minimal .countdown-grid {
+    @apply flex items-center font-heading;
+    gap: 0.25rem;
+    font-weight: 600;
+    font-size: clamp(0.75rem, 1.2vw, 0.875rem);
+    letter-spacing: 0.02em;
+  }
+
+  .countdown--minimal .countdown-item {
+    @apply flex items-center;
+    gap: 0.15rem;
+  }
+
+  .countdown--minimal .countdown-value {
+    font-variant-numeric: tabular-nums;
+    min-width: 1.5ch;
+  }
+
+  .countdown--minimal .countdown-label {
+    @apply opacity-70;
+    font-size: 0.65em;
+  }
+
+  .countdown--minimal .countdown-separator {
+    @apply opacity-40;
+    margin: 0 0.15rem;
+  }
+
+  .countdown--minimal .countdown-cta .btn {
+    font-size: clamp(0.75rem, 1vw, 0.75rem);
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    color: var(--color-text);
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+  }
+
+  .countdown--minimal .countdown-cta .btn:hover {
+    @apply opacity-100;
+  }
+
+  /* Minimal form */
+  .countdown--minimal .countdown-form-inner {
+    @apply flex gap-2;
+  }
+
+  .countdown--minimal .countdown-form input[type="email"] {
+    width: 180px;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+    background: transparent;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius, 4px);
+    color: var(--color-text);
+    caret-color: var(--color-text);
+  }
+
+  .countdown--minimal .countdown-form input[type="email"]::placeholder {
+    color: var(--color-text);
+    opacity: 0.5;
+  }
+
+  .countdown--minimal .countdown-form .btn {
+    @apply h-auto;
+    padding: 0.5rem 0.75rem;
+    font-size: 0.8125rem;
+  }
+
+  /* Reduced motion fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .countdown-item {
+      @apply opacity-100;
+      transform: none;
+    }
+  }
+}

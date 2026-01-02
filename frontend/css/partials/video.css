@@ -1,0 +1,209 @@
+/* ==========================================================================
+   Video Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section */
+  .video-section {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Container */
+  .video-container {
+    @apply relative overflow-hidden;
+    aspect-ratio: var(--video-aspect-ratio, 16/9);
+    border-radius: var(--video-border-radius, 0px);
+  }
+
+  /* Allow controls to be visible when enabled */
+  .video-container.show-controls {
+    @apply overflow-visible;
+  }
+
+  .video-container video {
+    @apply absolute inset-0 w-full h-full object-cover;
+    border-radius: var(--video-border-radius, 0px);
+  }
+
+  /* Placeholder */
+  .video-placeholder {
+    @apply absolute inset-0 w-full h-full flex flex-col items-center justify-center overflow-hidden;
+    background: #0a0a0a;
+  }
+
+  .video-placeholder::before {
+    @apply absolute inset-0;
+    content: '';
+    background:
+      radial-gradient(ellipse 80% 50% at 50% -20%, rgba(120, 119, 198, 0.2), transparent),
+      radial-gradient(ellipse 60% 40% at 80% 50%, rgba(255, 119, 198, 0.12), transparent),
+      radial-gradient(ellipse 60% 40% at 20% 80%, rgba(120, 200, 255, 0.12), transparent);
+  }
+
+  .video-placeholder-pattern {
+    @apply absolute inset-0;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.06'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    background-size: 60px 60px;
+  }
+
+  .video-placeholder-grid {
+    @apply absolute inset-0;
+    background-image:
+      linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+    background-size: 80px 80px;
+    mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+  }
+
+  .video-placeholder-glow {
+    @apply absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle, rgba(120, 119, 198, 0.15) 0%, transparent 70%);
+    filter: blur(60px);
+    animation: video-glow-pulse 4s ease-in-out infinite;
+  }
+
+  @keyframes video-glow-pulse {
+    0%, 100% {
+      opacity: 0.5;
+      transform: translate(-50%, -50%) scale(1);
+    }
+    50% {
+      opacity: 0.8;
+      transform: translate(-50%, -50%) scale(1.1);
+    }
+  }
+
+  .video-placeholder-content {
+    @apply absolute flex flex-col items-center gap-8 z-1;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+
+  .video-placeholder-icon {
+    @apply relative flex items-center justify-center;
+    width: 6rem;
+    height: 6rem;
+  }
+
+  .video-placeholder-icon::before {
+    @apply absolute inset-0 rounded-full;
+    content: '';
+    background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0.02));
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255,255,255,0.1);
+  }
+
+  .video-placeholder-icon::after {
+    @apply absolute rounded-full;
+    content: '';
+    inset: -20px;
+    border: 1px dashed rgba(255,255,255,0.1);
+    animation: video-spin 20s linear infinite;
+  }
+
+  .video-placeholder-icon i {
+    @apply relative;
+    font-size: 1.75rem;
+    color: rgba(255, 255, 255, 0.8);
+    margin-left: 3px;
+    filter: drop-shadow(0 0 20px rgba(255,255,255,0.3));
+  }
+
+  .video-placeholder-text {
+    @apply text-center;
+  }
+
+  .video-placeholder-bars {
+    @apply flex items-end justify-center mt-4;
+    gap: 3px;
+    height: 20px;
+  }
+
+  .video-placeholder-bars span {
+    width: 3px;
+    background: linear-gradient(to top, rgba(120, 119, 198, 0.6), rgba(255, 119, 198, 0.6));
+    border-radius: 2px;
+    animation: video-bar 1s ease-in-out infinite;
+  }
+
+  .video-placeholder-bars span:nth-child(1) { height: 40%; animation-delay: 0s; }
+  .video-placeholder-bars span:nth-child(2) { height: 70%; animation-delay: 0.1s; }
+  .video-placeholder-bars span:nth-child(3) { height: 50%; animation-delay: 0.2s; }
+  .video-placeholder-bars span:nth-child(4) { height: 90%; animation-delay: 0.3s; }
+  .video-placeholder-bars span:nth-child(5) { height: 60%; animation-delay: 0.4s; }
+
+  @keyframes video-spin {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+
+  @keyframes video-bar {
+    0%, 100% { transform: scaleY(1); }
+    50% { transform: scaleY(0.5); }
+  }
+
+  /* Overlay */
+  .video-overlay {
+    @apply absolute inset-0 pointer-events-none z-1;
+  }
+
+  /* Content */
+  .video-content {
+    @apply absolute inset-0 flex flex-col pointer-events-none z-2;
+    padding: clamp(2rem, 5vw, 4rem);
+    color: var(--color-text);
+  }
+
+  .video-content a,
+  .video-content button {
+    @apply pointer-events-auto;
+  }
+
+  .video-content .section-title {
+    color: var(--color-text);
+  }
+
+  .video-content .section-description {
+    color: var(--color-text);
+    opacity: 0.9;
+  }
+
+  /* Button styling - secondary buttons use text/background for visibility */
+  .video-section .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .video-section .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .video-section .btn--secondary:hover,
+  .video-section .btn--secondary:hover span,
+  .video-section .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  .video-section .btn--solid-secondary {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .video-section .btn--solid-secondary::before {
+    background: var(--color-background);
+  }
+
+  .video-section .btn--solid-secondary:hover,
+  .video-section .btn--solid-secondary:hover span,
+  .video-section .btn--solid-secondary:hover i {
+    color: var(--color-text);
+  }
+}

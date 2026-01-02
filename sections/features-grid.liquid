@@ -10,214 +10,15 @@
   endif
 -%}
 
-<style>
-
-  .features-grid-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .features-grid-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .features-grid-container-{{ section.id }} {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: clamp(1rem, 2vw, 1.5rem);
-  }
-
-  @media (min-width: 768px) {
-    .features-grid-container-{{ section.id }} {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    /* Bento layout for desktop */
-    .features-grid-container-{{ section.id }}.bento-layout {
-      grid-template-columns: repeat(4, 1fr);
-      grid-template-rows: repeat(2, auto);
-    }
-
-    .features-grid-container-{{ section.id }}.bento-layout .feature-item-{{ section.id }}:nth-child(1) {
-      grid-column: span 2;
-      grid-row: span 2;
-    }
-
-    .features-grid-container-{{ section.id }}.bento-layout .feature-item-{{ section.id }}:nth-child(2),
-    .features-grid-container-{{ section.id }}.bento-layout .feature-item-{{ section.id }}:nth-child(3) {
-      grid-column: span 2;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .features-grid-container-{{ section.id }}.standard-layout {
-      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    }
-  }
-
-  .feature-item-{{ section.id }} {
-    position: relative;
-    padding: clamp(1.5rem, 3vw, 2.5rem);
-    background: var(--color-background-secondary);
-    color: var(--color-text);
-    border-radius: var(--card-radius);
-    overflow: hidden;
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    border: var(--card-border-width) solid var(--color-border);
-    box-shadow: var(--card-shadow);
-  }
-
-  .feature-item-{{ section.id }}:hover {
-    transform: translateY(-4px);
-  }
-
-  /* Background gradient decoration */
-  .feature-item-{{ section.id }}::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 60%;
-    background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 15%, transparent), transparent 70%);
-    pointer-events: none;
-  }
-
-  .feature-item-icon-{{ section.id }} {
-    width: 56px;
-    height: 56px;
-    border-radius: 12px;
-    background: color-mix(in srgb, var(--color-primary) 15%, transparent);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1.5rem;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .feature-item-{{ section.id }}:hover .feature-item-icon-{{ section.id }} {
-    background: var(--color-primary);
-    transform: scale(1.1);
-  }
-
-  .feature-item-icon-{{ section.id }} i {
-    font-size: 1.5rem;
-    color: var(--color-primary);
-    transition: color 0.4s ease;
-  }
-
-  .feature-item-{{ section.id }}:hover .feature-item-icon-{{ section.id }} i {
-    color: var(--color-primary-contrast);
-  }
-
-  .feature-item-number-{{ section.id }} {
-    position: absolute;
-    top: 1.5rem;
-    right: 1.5rem;
-    opacity: 0.2;
-  }
-
-  .feature-item-title-{{ section.id }} {
-    font-size: calc(clamp(1.125rem, 2vw, 1.5rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
-    line-height: 1.2;
-    margin-bottom: 0.75rem;
-    color: var(--color-text);
-  }
-
-  .feature-item-text-{{ section.id }} {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    opacity: 0.7;
-    color: var(--color-text);
-  }
-
-  .feature-item-link-{{ section.id }} {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.75rem;
-    margin-top: 1.5rem;
-    color: var(--color-primary);
-  }
-
-  .feature-item-link-text-wrapper-{{ section.id }} {
-    overflow: hidden;
-    display: inline-block;
-  }
-
-  .feature-item-link-{{ section.id }} .feature-item-link-text-{{ section.id }} {
-    display: inline-block;
-    position: relative;
-    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .feature-item-link-{{ section.id }} .feature-item-link-text-{{ section.id }}::after {
-    content: attr(data-hover);
-    position: absolute;
-    left: 0;
-    top: 100%;
-    white-space: nowrap;
-  }
-
-  .feature-item-link-{{ section.id }}:hover .feature-item-link-text-{{ section.id }} {
-    transform: translateY(-100%);
-  }
-
-  /* Large featured item in bento */
-  .feature-item-{{ section.id }}.is-large {
-    min-height: 400px;
-    display: flex;
-    flex-direction: column;
-    justify-content: flex-end;
-  }
-
-  .feature-item-{{ section.id }}.is-large .feature-item-icon-{{ section.id }} {
-    width: 72px;
-    height: 72px;
-    margin-bottom: 2rem;
-  }
-
-  .feature-item-{{ section.id }}.is-large .feature-item-icon-{{ section.id }} i {
-    font-size: 2rem;
-  }
-
-  .feature-item-{{ section.id }}.is-large .feature-item-title-{{ section.id }} {
-    font-size: clamp(1.5rem, 3vw, 2rem);
-  }
-
-  /* Custom icon styles */
-  .feature-item-icon--custom {
-    background: transparent !important;
-  }
-
-  .feature-item-icon--custom img {
-    max-width: 2.5rem;
-    max-height: 2.5rem;
-    object-fit: contain;
-  }
-
-  .feature-item-{{ section.id }}.is-large .feature-item-icon--custom img {
-    max-width: 3rem;
-    max-height: 3rem;
-  }
-
-</style>
-
 <section
-  class="features-grid-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="features-grid-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
   data-features-grid-section="{{ section.id }}"
+  style="--features-columns: {{ section.settings.columns }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="features-grid-header-{{ section.id }}" data-tween-group="features-grid-header-{{ section.id }}">
+      <div class="features-grid-header text-{{ section.settings.header_alignment }}" data-tween-group="features-grid-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -231,7 +32,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description" data-tween data-tween-type="fade-up">
+          <p class="section-description{% if section.settings.header_alignment == 'center' %} mx-auto{% elsif section.settings.header_alignment == 'right' %} ml-auto{% endif %}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -239,46 +40,46 @@
     {% endif %}
 
     {%- comment -%} Features Grid {%- endcomment -%}
-    <div class="features-grid-container-{{ section.id }} {{ section.settings.layout }}-layout" data-tween data-tween-type="fade-up">
+    <div class="features-grid-container {{ section.settings.layout }}-layout lg:grid-cols-[repeat(var(--features-columns),1fr)]" data-tween data-tween-type="fade-up">
       {% for block in section.blocks %}
         <div
-          class="feature-item-{{ section.id }}{% if section.settings.layout == 'bento' and forloop.first %} is-large{% endif %}"
+          class="feature-item{% if section.settings.layout == 'bento' and forloop.first %} is-large{% endif %}"
           {{ block.shopify_attributes }}
         >
-          <span class="feature-item-number-{{ section.id }} text-label-sm">
+          <span class="feature-item-number text-label-sm">
             {{ forloop.index | prepend: '00' | slice: -2, 2 }}
           </span>
 
           {%- if block.settings.custom_icon != blank -%}
-            <div class="feature-item-icon-{{ section.id }} feature-item-icon--custom">
+            <div class="feature-item-icon feature-item-icon--custom">
               {{ block.settings.custom_icon | image_url: width: 80 | image_tag:
                 loading: 'lazy',
-          decoding: 'async',
+                decoding: 'async',
                 alt: block.settings.title
               }}
             </div>
           {%- elsif block.settings.icon != 'none' -%}
-            <div class="feature-item-icon-{{ section.id }}">
+            <div class="feature-item-icon">
               <i class="ph ph-{{ block.settings.icon }}"></i>
             </div>
           {%- endif -%}
 
           {% if block.settings.title != blank %}
-            <h3 class="feature-item-title-{{ section.id }} font-heading">
+            <h3 class="feature-item-title font-heading">
               {{ block.settings.title }}
             </h3>
           {% endif %}
 
           {% if block.settings.text != blank %}
-            <p class="feature-item-text-{{ section.id }}">
+            <p class="feature-item-text">
               {{ block.settings.text }}
             </p>
           {% endif %}
 
           {% if block.settings.link != blank and block.settings.link_text != blank %}
-            <a href="{{ block.settings.link }}" class="feature-item-link-{{ section.id }} text-link-sm">
-              <span class="feature-item-link-text-wrapper-{{ section.id }}">
-                <span class="feature-item-link-text-{{ section.id }}" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
+            <a href="{{ block.settings.link }}" class="feature-item-link text-link-sm">
+              <span class="feature-item-link-text-wrapper">
+                <span class="feature-item-link-text" data-hover="{{ block.settings.link_text }}">{{ block.settings.link_text }}</span>
               </span>
               <i class="ph ph-arrow-right"></i>
             </a>

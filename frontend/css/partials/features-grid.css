@@ -1,0 +1,159 @@
+/* ==========================================================================
+   Features Grid Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Header */
+  .features-grid-header {
+    margin-bottom: clamp(3rem, 6vh, 5rem);
+  }
+
+  /* Grid container */
+  .features-grid-container {
+    @apply grid grid-cols-1 md:grid-cols-2;
+    gap: clamp(1rem, 2vw, 1.5rem);
+  }
+
+  /* Bento layout */
+  @media (min-width: 768px) {
+    .features-grid-container.bento-layout {
+      @apply grid-cols-4;
+      grid-template-rows: repeat(2, auto);
+    }
+
+    .features-grid-container.bento-layout .feature-item:nth-child(1) {
+      grid-column: span 2;
+      grid-row: span 2;
+    }
+
+    .features-grid-container.bento-layout .feature-item:nth-child(2),
+    .features-grid-container.bento-layout .feature-item:nth-child(3) {
+      grid-column: span 2;
+    }
+  }
+
+  /* Feature item */
+  .feature-item {
+    @apply relative overflow-hidden bg-(--color-background-secondary) text-(--color-text);
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    border-radius: var(--card-radius);
+    border: var(--card-border-width) solid var(--color-border);
+    box-shadow: var(--card-shadow);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .feature-item:hover {
+    transform: translateY(-4px);
+  }
+
+  /* Background gradient decoration */
+  .feature-item::before {
+    @apply absolute top-0 right-0 pointer-events-none;
+    content: '';
+    width: 60%;
+    height: 60%;
+    background: radial-gradient(circle at top right, color-mix(in srgb, var(--color-primary) 15%, transparent), transparent 70%);
+  }
+
+  /* Icon */
+  .feature-item-icon {
+    @apply flex items-center justify-center mb-6;
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: color-mix(in srgb, var(--color-primary) 15%, transparent);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .feature-item:hover .feature-item-icon {
+    @apply bg-(--color-primary) scale-110;
+  }
+
+  .feature-item-icon i {
+    @apply text-2xl text-(--color-primary);
+    transition: color 0.4s ease;
+  }
+
+  .feature-item:hover .feature-item-icon i {
+    @apply text-(--color-primary-contrast);
+  }
+
+  /* Number */
+  .feature-item-number {
+    @apply absolute opacity-20;
+    top: 1.5rem;
+    right: 1.5rem;
+  }
+
+  /* Title */
+  .feature-item-title {
+    @apply mb-3 text-(--color-text);
+    font-size: calc(clamp(1.125rem, 2vw, 1.5rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    line-height: 1.2;
+  }
+
+  /* Text */
+  .feature-item-text {
+    @apply text-sm leading-relaxed opacity-70 text-(--color-text);
+  }
+
+  /* Link */
+  .feature-item-link {
+    @apply inline-flex items-center gap-3 mt-6 text-(--color-primary);
+  }
+
+  .feature-item-link-text-wrapper {
+    @apply overflow-hidden inline-block;
+  }
+
+  .feature-item-link-text {
+    @apply inline-block relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .feature-item-link-text::after {
+    @apply absolute left-0 whitespace-nowrap;
+    content: attr(data-hover);
+    top: 100%;
+  }
+
+  .feature-item-link:hover .feature-item-link-text {
+    transform: translateY(-100%);
+  }
+
+  /* Large featured item in bento */
+  .feature-item.is-large {
+    @apply flex flex-col justify-end;
+    min-height: 400px;
+  }
+
+  .feature-item.is-large .feature-item-icon {
+    @apply w-18 h-18 mb-8;
+  }
+
+  .feature-item.is-large .feature-item-icon i {
+    @apply text-3xl;
+  }
+
+  .feature-item.is-large .feature-item-title {
+    font-size: clamp(1.5rem, 3vw, 2rem);
+  }
+
+  /* Custom icon styles */
+  .feature-item-icon--custom {
+    @apply bg-transparent!;
+  }
+
+  .feature-item-icon--custom img {
+    max-width: 2.5rem;
+    max-height: 2.5rem;
+    @apply object-contain;
+  }
+
+  .feature-item.is-large .feature-item-icon--custom img {
+    max-width: 3rem;
+    max-height: 3rem;
+  }
+}

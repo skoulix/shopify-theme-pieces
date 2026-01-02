@@ -1,0 +1,205 @@
+/* ==========================================================================
+   Compare Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section */
+  .compare-section {
+    min-height: 60vh;
+  }
+
+  /* Title line reveal animation (managed by TweenManager) */
+  .compare-section .page-title .tween-split-line:nth-child(2) {
+    margin-left: clamp(0.5rem, 4vw, 2rem);
+  }
+
+  /* Empty state */
+  .compare-empty {
+    @apply text-center;
+    padding: 4rem 0;
+  }
+
+  .compare-empty__icon {
+    @apply opacity-30 mb-6;
+    font-size: 4rem;
+  }
+
+  .compare-empty__title {
+    @apply mb-2;
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+
+  .compare-empty__text {
+    @apply opacity-70 mb-6;
+  }
+
+  /* Table container */
+  .compare-table {
+    @apply w-full overflow-x-auto mb-8;
+  }
+
+  .compare-table__inner {
+    @apply grid;
+    min-width: 600px;
+  }
+
+  .compare-table__row {
+    display: contents;
+  }
+
+  /* Header cell with sticky positioning and backdrop blur */
+  .compare-table__header-cell {
+    @apply sticky left-0 z-10;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+    color: var(--color-text);
+    vertical-align: middle;
+    background: rgba(var(--color-background-rgb, 255, 255, 255), 0.5);
+    -webkit-backdrop-filter: blur(8px) saturate(150%);
+    backdrop-filter: blur(8px) saturate(150%);
+    box-shadow: 4px 0 12px -2px rgba(0, 0, 0, 0.08);
+  }
+
+  @supports (color-mix(in srgb, red, blue)) {
+    .compare-table__header-cell {
+      background: color-mix(in srgb, var(--color-background) 60%, transparent);
+    }
+  }
+
+  @supports not (backdrop-filter: blur(1px)) {
+    .compare-table__header-cell {
+      background: var(--color-background);
+      opacity: 0.95;
+    }
+  }
+
+  /* Table cells */
+  .compare-table__cell {
+    @apply text-center;
+    padding: 1rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  /* Product image */
+  .compare-table__product-image {
+    @apply relative mx-auto mb-4 overflow-visible;
+    width: 100%;
+    max-width: 200px;
+    aspect-ratio: 3/4;
+    border-radius: var(--card-radius);
+    background: var(--color-background-secondary, rgba(0,0,0,0.03));
+  }
+
+  .compare-table__product-image img {
+    @apply w-full h-full object-cover;
+    border-radius: var(--card-radius);
+  }
+
+  /* Remove icon */
+  .compare-table__remove-icon {
+    @apply absolute flex items-center justify-center rounded-full cursor-pointer z-1;
+    top: -0.5rem;
+    right: -0.5rem;
+    width: 1.75rem;
+    height: 1.75rem;
+    background: var(--color-background);
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    opacity: 0.9;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .compare-table__remove-icon:hover {
+    @apply opacity-100;
+    transform: scale(1.1);
+    background: var(--color-sale);
+    color: #fff;
+  }
+
+  .compare-table__remove-icon i {
+    font-size: 0.875rem;
+    line-height: 1;
+  }
+
+  /* Product title */
+  .compare-table__product-title {
+    @apply mb-2;
+    font-size: 1rem;
+    font-weight: 600;
+  }
+
+  .compare-table__product-title a {
+    @apply no-underline;
+    color: inherit;
+  }
+
+  .compare-table__product-title a:hover {
+    @apply underline;
+  }
+
+  /* Product price */
+  .compare-table__product-price {
+    @apply mb-4;
+    font-size: 1rem;
+  }
+
+  .compare-table__product-price .compare-price {
+    @apply line-through opacity-60 mr-2;
+  }
+
+  .compare-table__product-price .sale-price {
+    color: var(--color-sale);
+  }
+
+  /* Value cells */
+  .compare-table__value {
+    font-size: 0.875rem;
+  }
+
+  .compare-table__value--available {
+    color: var(--color-success, #22c55e);
+  }
+
+  .compare-table__value--unavailable {
+    color: var(--color-error, #ef4444);
+  }
+
+  /* Button overrides for proper contrast in color schemes */
+  .compare-section .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .compare-section .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .compare-section .btn--secondary:hover,
+  .compare-section .btn--secondary:hover span,
+  .compare-section .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  .compare-section .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .compare-section .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+
+  .compare-section .btn--primary:hover,
+  .compare-section .btn--primary:hover span,
+  .compare-section .btn--primary:hover i {
+    color: var(--color-primary);
+  }
+
+  /* Actions */
+  .compare-actions {
+    @apply flex justify-center gap-4 mt-8;
+  }
+}

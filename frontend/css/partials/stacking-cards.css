@@ -1,0 +1,165 @@
+/* ==========================================================================
+   Stacking Cards Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section */
+  .stacking-cards {
+    @apply relative;
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Background */
+  .stacking-cards-bg {
+    @apply absolute inset-0 overflow-hidden z-0;
+  }
+
+  .stacking-cards-bg img {
+    @apply w-full h-full object-cover;
+    object-position: var(--stacking-bg-position, center center);
+  }
+
+  .stacking-cards-bg--blur img {
+    filter: blur(var(--stacking-bg-blur, 0px));
+    transform: scale(1.1);
+  }
+
+  /* Overlay */
+  .stacking-cards-overlay {
+    @apply absolute inset-0 z-1 pointer-events-none;
+  }
+
+  /* Wrapper */
+  .stacking-cards-wrapper {
+    @apply relative z-2;
+  }
+
+  /* Header */
+  .stacking-cards-header {
+    @apply relative z-2;
+    padding: var(--section-vertical-padding) 0;
+  }
+
+  .stacking-cards-header .section-description {
+    max-width: 50ch;
+  }
+
+  .stacking-cards-header.text-center .section-description {
+    @apply mx-auto;
+  }
+
+  .stacking-cards-header.text-right .section-description {
+    @apply ml-auto;
+  }
+
+  /* Sticky container */
+  .stacking-cards-sticky {
+    @apply sticky top-0 flex items-center justify-center;
+    height: 100vh;
+    padding: 2rem;
+  }
+
+  /* Card */
+  .stacking-card {
+    @apply absolute overflow-hidden;
+    width: 90%;
+    max-width: 900px;
+    background: var(--color-background);
+    border-radius: var(--card-radius);
+    transform-origin: center top;
+    border: var(--card-border-width) solid color-mix(in srgb, var(--color-text) 20%, transparent);
+    box-shadow: var(--stacking-card-shadow, 0 25px 60px -15px rgba(0, 0, 0, 0.25), 0 10px 20px -10px rgba(0, 0, 0, 0.15));
+  }
+
+  /* Card inner grid */
+  .stacking-card-inner {
+    @apply grid grid-cols-1;
+    min-height: 400px;
+  }
+
+  @media (min-width: 768px) {
+    .stacking-card-inner {
+      @apply grid-cols-2;
+      min-height: 450px;
+    }
+  }
+
+  /* Card image */
+  .stacking-card-image {
+    @apply relative overflow-hidden;
+    min-height: 250px;
+  }
+
+  .stacking-card-image img {
+    @apply absolute inset-0 w-full h-full object-cover;
+    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stacking-card:hover .stacking-card-image img {
+    @apply scale-105;
+  }
+
+  /* Card content */
+  .stacking-card-content {
+    @apply flex flex-col justify-center;
+    padding: clamp(2rem, 4vw, 3rem);
+    color: var(--color-text);
+  }
+
+  /* Card number */
+  .stacking-card-number {
+    @apply opacity-40 mb-6;
+  }
+
+  /* Card title */
+  .stacking-card-title {
+    @apply text-(--color-text);
+    font-size: calc(clamp(1.25rem, 2.5vw, 1.75rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
+    line-height: 1.2;
+  }
+
+  /* Card text */
+  .stacking-card-text {
+    @apply mt-4 opacity-75;
+    font-size: 0.9375rem;
+    line-height: 1.7;
+  }
+
+  /* Card link */
+  .stacking-card-link {
+    @apply inline-flex items-center gap-3 mt-8 text-(--color-text);
+  }
+
+  .stacking-card-link-text-wrapper {
+    @apply overflow-hidden inline-block;
+  }
+
+  .stacking-card-link-text {
+    @apply inline-block relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .stacking-card-link-text::after {
+    @apply absolute left-0 whitespace-nowrap;
+    content: attr(data-hover);
+    top: 100%;
+  }
+
+  .stacking-card-link:hover .stacking-card-link-text {
+    transform: translateY(-100%);
+  }
+
+  /* Card animation states */
+  .stacking-card {
+    @apply opacity-0 pointer-events-none;
+    transform: translateY(100px) scale(0.95);
+  }
+
+  /* Active card (set by JS when card becomes visible) */
+  .stacking-card.is-active {
+    @apply pointer-events-auto;
+  }
+}

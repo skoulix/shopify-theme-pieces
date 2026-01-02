@@ -10,194 +10,15 @@
   endif
 -%}
 
-<style>
-
-  .timeline-header-{{ section.id }} {
-    margin-bottom: clamp(4rem, 8vh, 6rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label and title use global .section-* classes from typography.css */
-
-  .timeline-wrapper-{{ section.id }} {
-    position: relative;
-    max-width: 900px;
-    margin: 0 auto;
-  }
-
-  /* Central line */
-  .timeline-line-{{ section.id }} {
-    position: absolute;
-    left: 20px;
-    top: 0;
-    bottom: 0;
-    width: 2px;
-    background: var(--color-border);
-  }
-
-  @media (min-width: 768px) {
-    .timeline-line-{{ section.id }} {
-      left: 50%;
-      transform: translateX(-50%);
-    }
-  }
-
-  .timeline-line-progress-{{ section.id }} {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 0;
-    background: {{ section.settings.accent_color }};
-    transition: height 0.1s linear;
-  }
-
-  /* Timeline items */
-  .timeline-item-{{ section.id }} {
-    position: relative;
-    padding-left: 60px;
-    padding-bottom: clamp(3rem, 6vh, 5rem);
-  }
-
-  @media (min-width: 768px) {
-    .timeline-item-{{ section.id }} {
-      padding-left: 0;
-      padding-right: 0;
-      width: 50%;
-    }
-
-    .timeline-item-{{ section.id }}:nth-child(odd) {
-      margin-left: auto;
-      padding-left: calc(50px + 2rem);
-    }
-
-    .timeline-item-{{ section.id }}:nth-child(even) {
-      padding-right: calc(50px + 2rem);
-      text-align: right;
-    }
-  }
-
-  /* Dot marker */
-  .timeline-dot-{{ section.id }} {
-    position: absolute;
-    left: 12px;
-    top: 0;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: var(--color-background);
-    border: 3px solid var(--color-border);
-    z-index: 2;
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  @media (min-width: 768px) {
-    .timeline-item-{{ section.id }}:nth-child(odd) .timeline-dot-{{ section.id }} {
-      left: -9px;
-    }
-
-    .timeline-item-{{ section.id }}:nth-child(even) .timeline-dot-{{ section.id }} {
-      right: -9px;
-      left: auto;
-    }
-  }
-
-  .timeline-item-{{ section.id }}.is-active .timeline-dot-{{ section.id }} {
-    border-color: {{ section.settings.accent_color }};
-    background: {{ section.settings.accent_color }};
-    transform: scale(1.3);
-  }
-
-  .timeline-item-{{ section.id }}.is-active .timeline-dot-{{ section.id }}::after {
-    content: '';
-    position: absolute;
-    inset: -6px;
-    border-radius: 50%;
-    border: 2px solid {{ section.settings.accent_color }}40;
-    animation: timeline-pulse-{{ section.id }} 2s ease-out infinite;
-  }
-
-  @keyframes timeline-pulse-{{ section.id }} {
-    0% { transform: scale(1); opacity: 1; }
-    100% { transform: scale(1.8); opacity: 0; }
-  }
-
-  /* Year */
-  .timeline-year-{{ section.id }} {
-    font-size: calc(clamp(2.5rem, 5vw, 4rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 1;
-    opacity: 0.15;
-    margin-bottom: 1rem;
-    transition: opacity 0.4s ease;
-  }
-
-  .timeline-item-{{ section.id }}.is-active .timeline-year-{{ section.id }} {
-    opacity: 0.3;
-  }
-
-  /* Content */
-  .timeline-content-{{ section.id }} {
-    opacity: 0.6;
-    transition: opacity 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .timeline-item-{{ section.id }}.is-active .timeline-content-{{ section.id }} {
-    opacity: 1;
-  }
-
-  .timeline-item-title-{{ section.id }} {
-    font-size: calc(clamp(1.125rem, 2vw, 1.5rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.02em + var(--heading-letter-spacing, 0em));
-    margin-bottom: 0.75rem;
-  }
-
-  .timeline-item-text-{{ section.id }} {
-    font-size: 0.9375rem;
-    line-height: 1.7;
-    opacity: 0.8;
-  }
-
-  .timeline-item-image-{{ section.id }} {
-    margin-top: 1.5rem;
-    border-radius: var(--card-radius);
-    overflow: hidden;
-    max-width: 300px;
-  }
-
-  @media (min-width: 768px) {
-    .timeline-item-{{ section.id }}:nth-child(even) .timeline-item-image-{{ section.id }} {
-      margin-left: auto;
-    }
-  }
-
-  .timeline-item-image-{{ section.id }} img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  /* Animation states */
-  html.animations-disabled .timeline-content-{{ section.id }} {
-    opacity: 1;
-  }
-
-  html.animations-disabled .timeline-dot-{{ section.id }} {
-    border-color: {{ section.settings.accent_color }};
-  }
-
-</style>
-
 <section
-  class="timeline-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="timeline-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
   data-timeline-section="{{ section.id }}"
+  style="--timeline-accent-color: {{ section.settings.accent_color }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="timeline-header-{{ section.id }}" data-tween-group="timeline-header-{{ section.id }}">
+      <div class="timeline-header text-{{ section.settings.header_alignment }}" data-tween-group="timeline-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -213,45 +34,45 @@
     {% endif %}
 
     {%- comment -%} Timeline {%- endcomment -%}
-    <div class="timeline-wrapper-{{ section.id }}" data-timeline-wrapper>
-      <div class="timeline-line-{{ section.id }}">
-        <div class="timeline-line-progress-{{ section.id }}" data-timeline-progress></div>
+    <div class="timeline-wrapper" data-timeline-wrapper>
+      <div class="timeline-line">
+        <div class="timeline-line-progress" data-timeline-progress></div>
       </div>
 
       {% for block in section.blocks %}
         <div
-          class="timeline-item-{{ section.id }}{% if forloop.first %} is-active{% endif %}"
+          class="timeline-item{% if forloop.first %} is-active{% endif %}"
           data-timeline-item
           data-tween
           data-tween-type="fade-up"
           {{ block.shopify_attributes }}
         >
-          <div class="timeline-dot-{{ section.id }}" data-timeline-dot></div>
+          <div class="timeline-dot" data-timeline-dot></div>
 
           {% if block.settings.year != blank %}
-            <div class="timeline-year-{{ section.id }} font-heading">
+            <div class="timeline-year font-heading">
               {{ block.settings.year }}
             </div>
           {% endif %}
 
-          <div class="timeline-content-{{ section.id }}">
+          <div class="timeline-content">
             {% if block.settings.title != blank %}
-              <h3 class="timeline-item-title-{{ section.id }} font-heading">
+              <h3 class="timeline-item-title font-heading">
                 {{ block.settings.title }}
               </h3>
             {% endif %}
 
             {% if block.settings.text != blank %}
-              <p class="timeline-item-text-{{ section.id }}">
+              <p class="timeline-item-text">
                 {{ block.settings.text }}
               </p>
             {% endif %}
 
             {% if block.settings.image != blank %}
-              <div class="timeline-item-image-{{ section.id }}">
+              <div class="timeline-item-image">
                 {{ block.settings.image | image_url: width: 600 | image_tag:
                   loading: 'lazy',
-          decoding: 'async',
+                  decoding: 'async',
                   sizes: '300px',
                   widths: '300, 600',
                   alt: block.settings.image.alt | default: block.settings.title | default: section.settings.title

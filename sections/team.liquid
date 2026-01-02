@@ -8,238 +8,17 @@
   else
     assign container_class = 'page-container'
   endif
-
-  # Use global card settings
-  assign card_radius = settings.card_radius
-  assign card_border_width = settings.card_border_width
-  assign card_shadow = settings.card_shadow
 -%}
 
-<style>
-
-  .team-header-{{ section.id }} {
-    margin-bottom: clamp(3rem, 6vh, 5rem);
-    text-align: {{ section.settings.header_alignment }};
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .team-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .team-grid-{{ section.id }} {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: clamp(1rem, 2vw, 2rem);
-  }
-
-  @media (min-width: 768px) {
-    .team-grid-{{ section.id }} {
-      grid-template-columns: repeat(3, 1fr);
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .team-grid-{{ section.id }} {
-      grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
-    }
-  }
-
-  .team-member-{{ section.id }} {
-    position: relative;
-    overflow: hidden;
-    border-radius: {{ card_radius }}px;
-    aspect-ratio: 3/4;
-    cursor: pointer;
-    {% if card_border_width > 0 %}
-    border: {{ card_border_width }}px solid rgba(255, 255, 255, 0.2);
-    {% endif %}
-    {% case card_shadow %}
-      {% when 'sm' %}
-      box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
-      {% when 'md' %}
-      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
-      {% when 'lg' %}
-      box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
-      {% when 'hard' %}
-      box-shadow: 4px 4px 0 0 rgba(0, 0, 0, 0.1);
-    {% endcase %}
-  }
-
-  .team-member-image-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-  }
-
-  .team-member-image-{{ section.id }} img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-image-{{ section.id }} img {
-    transform: scale(1.1);
-  }
-
-  .team-member-overlay-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    background: linear-gradient(
-      to top,
-      rgba(0, 0, 0, 0.8) 0%,
-      rgba(0, 0, 0, 0.4) 40%,
-      rgba(0, 0, 0, 0) 100%
-    );
-    opacity: 0.6;
-    transition: opacity 0.4s ease;
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-overlay-{{ section.id }} {
-    opacity: 1;
-  }
-
-  .team-member-content-{{ section.id }} {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    padding: clamp(1rem, 3vw, 2rem);
-    color: #ffffff;
-    z-index: 2;
-  }
-
-  .team-member-name-{{ section.id }} {
-    font-size: calc(clamp(1rem, 2vw, 1.25rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.01em + var(--heading-letter-spacing, 0em));
-    transform: translateY(10px);
-    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-name-{{ section.id }} {
-    transform: translateY(0);
-  }
-
-  .team-member-role-{{ section.id }} {
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
-    margin-top: 0.5rem;
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-role-{{ section.id }} {
-    opacity: 0.7;
-    transform: translateY(0);
-  }
-
-  .team-member-bio-wrapper-{{ section.id }} {
-    display: grid;
-    grid-template-rows: 0fr;
-    transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-    margin-top: 0;
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-bio-wrapper-{{ section.id }} {
-    grid-template-rows: 1fr;
-    margin-top: 0.75rem;
-  }
-
-  .team-member-bio-{{ section.id }} {
-    font-size: 0.875rem;
-    line-height: 1.6;
-    opacity: 0;
-    overflow: hidden;
-    transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
-    min-height: 0;
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-bio-{{ section.id }} {
-    opacity: 0.8;
-  }
-
-  .team-member-social-{{ section.id }} {
-    display: flex;
-    gap: 0.75rem;
-    margin-top: 1rem;
-    opacity: 0;
-    transform: translateY(10px);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
-  }
-
-  .team-member-{{ section.id }}:hover .team-member-social-{{ section.id }} {
-    opacity: 1;
-    transform: translateY(0);
-  }
-
-  .team-member-social-link-{{ section.id }} {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
-    background: rgba(255, 255, 255, 0.1);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    color: #ffffff;
-    transition: all 0.3s ease;
-  }
-
-  .team-member-social-link-{{ section.id }}:hover {
-    background: rgba(255, 255, 255, 0.2);
-    transform: translateY(-2px);
-  }
-
-  /* Placeholder Avatar */
-  .team-member-placeholder-{{ section.id }} {
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(145deg, var(--color-border, #e5e5e5) 0%, var(--color-background-secondary, #f5f5f5) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .team-member-avatar-{{ section.id }} {
-    width: 45%;
-    max-width: 140px;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--color-text, #333) 0%, color-mix(in srgb, var(--color-text, #333) 70%, transparent) 100%);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: relative;
-    box-shadow: 0 8px 32px -8px rgba(0, 0, 0, 0.2);
-  }
-
-  .team-member-avatar-{{ section.id }}::before {
-    content: '';
-    position: absolute;
-    inset: 4px;
-    border-radius: 50%;
-    border: 2px solid rgba(255, 255, 255, 0.15);
-  }
-
-  .team-member-avatar-{{ section.id }} i {
-    font-size: clamp(2.5rem, 8vw, 4rem);
-    color: rgba(255, 255, 255, 0.9);
-  }
-
-</style>
-
 <section
-  class="team-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="team-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
   data-team-section="{{ section.id }}"
+  style="--team-columns: {{ section.settings.columns }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank %}
-      <div class="team-header-{{ section.id }}" data-tween-group="team-header-{{ section.id }}">
+      <div class="team-header text-{{ section.settings.header_alignment }}" data-tween-group="team-header-{{ section.id }}">
         {% if section.settings.label != blank %}
           <span class="section-label" data-tween data-tween-type="fade-up">
             {{ section.settings.label }}
@@ -253,7 +32,7 @@
         {% endif %}
 
         {% if section.settings.description != blank %}
-          <p class="section-description" data-tween data-tween-type="fade-up">
+          <p class="section-description{% if section.settings.header_alignment == 'center' %} mx-auto{% elsif section.settings.header_alignment == 'right' %} ml-auto{% endif %}" data-tween data-tween-type="fade-up">
             {{ section.settings.description }}
           </p>
         {% endif %}
@@ -261,64 +40,64 @@
     {% endif %}
 
     {%- comment -%} Team Grid {%- endcomment -%}
-    <div class="team-grid-{{ section.id }}">
+    <div class="team-grid lg:grid-cols-[repeat(var(--team-columns),1fr)]">
       {% for block in section.blocks %}
-        <div class="team-member-{{ section.id }}" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
-          <div class="team-member-image-{{ section.id }}">
+        <div class="team-member" data-tween data-tween-type="fade-up" {{ block.shopify_attributes }}>
+          <div class="team-member-image">
             {% if block.settings.image != blank %}
               {{ block.settings.image | image_url: width: 800 | image_tag:
                 loading: 'lazy',
-          decoding: 'async',
+                decoding: 'async',
                 sizes: '(max-width: 768px) 50vw, (max-width: 1024px) 33vw, 25vw',
                 widths: '300, 400, 500, 600, 800',
                 alt: block.settings.image.alt | default: block.settings.name | default: section.settings.title
               }}
             {% else %}
-              <div class="team-member-placeholder-{{ section.id }}">
-                <div class="team-member-avatar-{{ section.id }}">
+              <div class="team-member-placeholder">
+                <div class="team-member-avatar">
                   <i class="ph ph-user"></i>
                 </div>
               </div>
             {% endif %}
           </div>
 
-          <div class="team-member-overlay-{{ section.id }}"></div>
+          <div class="team-member-overlay"></div>
 
-          <div class="team-member-content-{{ section.id }}">
+          <div class="team-member-content">
             {% if block.settings.name != blank %}
-              <h3 class="team-member-name-{{ section.id }} font-heading">
+              <h3 class="team-member-name font-heading">
                 {{ block.settings.name }}
               </h3>
             {% endif %}
 
             {% if block.settings.role != blank %}
-              <p class="team-member-role-{{ section.id }} text-label-sm">
+              <p class="team-member-role text-label-sm">
                 {{ block.settings.role }}
               </p>
             {% endif %}
 
             {% if block.settings.bio != blank %}
-              <div class="team-member-bio-wrapper-{{ section.id }}">
-                <p class="team-member-bio-{{ section.id }}">
+              <div class="team-member-bio-wrapper">
+                <p class="team-member-bio">
                   {{ block.settings.bio }}
                 </p>
               </div>
             {% endif %}
 
             {% if block.settings.linkedin != blank or block.settings.twitter != blank or block.settings.instagram != blank %}
-              <div class="team-member-social-{{ section.id }}">
+              <div class="team-member-social">
                 {% if block.settings.linkedin != blank %}
-                  <a href="{{ block.settings.linkedin }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.linkedin' | t }}">
+                  <a href="{{ block.settings.linkedin }}" class="team-member-social-link" target="_blank" rel="noopener" aria-label="{{ 'social.linkedin' | t }}">
                     <i class="ph ph-linkedin-logo"></i>
                   </a>
                 {% endif %}
                 {% if block.settings.twitter != blank %}
-                  <a href="{{ block.settings.twitter }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.twitter' | t }}">
+                  <a href="{{ block.settings.twitter }}" class="team-member-social-link" target="_blank" rel="noopener" aria-label="{{ 'social.twitter' | t }}">
                     <i class="ph ph-x-logo"></i>
                   </a>
                 {% endif %}
                 {% if block.settings.instagram != blank %}
-                  <a href="{{ block.settings.instagram }}" class="team-member-social-link-{{ section.id }}" target="_blank" rel="noopener" aria-label="{{ 'social.instagram' | t }}">
+                  <a href="{{ block.settings.instagram }}" class="team-member-social-link" target="_blank" rel="noopener" aria-label="{{ 'social.instagram' | t }}">
                     <i class="ph ph-instagram-logo"></i>
                   </a>
                 {% endif %}
@@ -377,16 +156,6 @@
       "step": 1,
       "default": 4,
       "label": "Columns (desktop)"
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "min": 0,
-      "max": 40,
-      "step": 4,
-      "default": 12,
-      "unit": "px",
-      "label": "Card corner radius"
     },
     {
       "type": "header",

@@ -1,0 +1,266 @@
+/* ==========================================================================
+   Shoppable Videos Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section */
+  .shoppable-videos {
+    @apply overflow-hidden;
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Header */
+  .shoppable-videos-header {
+    margin-bottom: clamp(3rem, 6vh, 5rem);
+  }
+
+  .shoppable-videos-header.text-center .section-description {
+    @apply mx-auto;
+  }
+
+  .shoppable-videos-header.text-right .section-description {
+    @apply ml-auto;
+  }
+
+  /* Slider container */
+  .shoppable-videos-slider {
+    @apply relative overflow-hidden;
+  }
+
+  .shoppable-videos-track {
+    @apply flex;
+    gap: var(--shoppable-video-gap, 1rem);
+    will-change: transform;
+  }
+
+  .shoppable-videos-track.is-animating {
+    transition: transform 0.5s cubic-bezier(0.25, 0.1, 0.25, 1);
+  }
+
+  /* Video slide */
+  .shoppable-video-slide {
+    @apply shrink-0;
+    width: var(--shoppable-slide-width-mobile, 75%);
+  }
+
+  @media (min-width: 768px) {
+    .shoppable-video-slide {
+      width: var(--shoppable-slide-width-tablet, calc(32% - 0.67rem));
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .shoppable-video-slide {
+      width: var(--shoppable-slide-width-desktop, calc(24% - 0.75rem));
+    }
+  }
+
+  /* Video card */
+  .shoppable-video-card {
+    @apply relative overflow-hidden block;
+    isolation: isolate;
+    aspect-ratio: var(--shoppable-aspect-ratio, 9/16);
+    width: 100%;
+    height: auto;
+    border-radius: var(--card-radius);
+    border: var(--card-border-width) solid var(--color-border);
+    box-shadow: var(--card-shadow);
+  }
+
+  .shoppable-video-card .carousel-video {
+    border-radius: var(--card-radius);
+  }
+
+  /* Play overlay */
+  .shoppable-video-card.cursor-pointer .play-overlay {
+    @apply opacity-0;
+    transition: opacity 0.3s ease;
+  }
+
+  .shoppable-video-card.cursor-pointer:hover .play-overlay {
+    @apply opacity-100;
+  }
+
+  .shoppable-video-card.cursor-default {
+    cursor: default !important;
+  }
+
+  /* Navigation */
+  .shoppable-videos-nav {
+    @apply flex items-center justify-center gap-4 mt-12;
+  }
+
+  .shoppable-videos-nav-btn {
+    @apply flex items-center justify-center rounded-full cursor-pointer;
+    width: 48px;
+    height: 48px;
+    background: transparent;
+    border: 1px solid color-mix(in srgb, var(--color-text) 30%, transparent);
+    color: var(--color-text);
+    transition: all 0.3s ease;
+  }
+
+  .shoppable-videos-nav-btn:hover {
+    background: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .shoppable-videos-nav-btn:disabled {
+    @apply opacity-30 cursor-not-allowed;
+  }
+
+  .shoppable-videos-nav-btn:disabled:hover {
+    background: transparent;
+    color: var(--color-text);
+  }
+
+  /* Lightbox */
+  .shoppable-video-lightbox {
+    @apply fixed inset-0 hidden items-center justify-center;
+    background: rgba(0, 0, 0, 0.95);
+    z-index: 9999;
+  }
+
+  .shoppable-video-lightbox.active {
+    @apply flex;
+  }
+
+  .shoppable-lightbox-content {
+    @apply flex gap-8;
+    max-width: 1400px;
+    width: 90%;
+    max-height: 85vh;
+  }
+
+  .shoppable-lightbox-video {
+    @apply flex-1 relative flex items-center justify-center;
+  }
+
+  .shoppable-lightbox-video video {
+    @apply w-full h-auto;
+    max-height: 75vh;
+    max-width: 100%;
+    object-fit: contain;
+    transition: opacity 0.3s ease;
+    border-radius: var(--card-radius);
+  }
+
+  .shoppable-lightbox-product {
+    @apply shrink-0 overflow-y-auto;
+    width: 320px;
+    background: white;
+    padding: 1.5rem;
+    border-radius: var(--card-radius);
+    max-height: 75vh;
+  }
+
+  .shoppable-lightbox-close {
+    @apply absolute flex items-center justify-center rounded-full cursor-pointer;
+    top: 20px;
+    right: 20px;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    z-index: 10000;
+    color: white;
+  }
+
+  .shoppable-lightbox-close:hover {
+    background: white;
+    color: black;
+  }
+
+  /* Lightbox navigation */
+  .shoppable-lightbox-nav {
+    @apply absolute flex items-center justify-center rounded-full cursor-pointer;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 10000;
+    width: 48px;
+    height: 48px;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    transition: all 0.3s ease;
+    color: white;
+  }
+
+  .shoppable-lightbox-nav:hover {
+    background: white;
+    color: black;
+  }
+
+  .shoppable-lightbox-nav.lightbox-prev {
+    left: 2rem;
+  }
+
+  .shoppable-lightbox-nav.lightbox-next {
+    right: 2rem;
+  }
+
+  .shoppable-lightbox-nav:disabled {
+    @apply opacity-30 cursor-not-allowed;
+  }
+
+  .shoppable-lightbox-nav:disabled:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
+    transform: translateY(-50%);
+  }
+
+  /* Mobile lightbox */
+  @media (max-width: 768px) {
+    .shoppable-lightbox-nav {
+      width: 40px;
+      height: 40px;
+      top: auto;
+      transform: none;
+    }
+
+    .shoppable-lightbox-nav.lightbox-prev {
+      top: 20px;
+      left: 20px;
+    }
+
+    .shoppable-lightbox-nav.lightbox-next {
+      top: 20px;
+      left: 70px;
+    }
+
+    .shoppable-lightbox-nav:hover {
+      transform: none;
+    }
+
+    .shoppable-lightbox-nav:disabled:hover {
+      transform: none;
+    }
+
+    .shoppable-lightbox-content {
+      @apply flex-col gap-0;
+      width: calc(100% - 1rem);
+      max-width: calc(100% - 1rem);
+      max-height: calc(100vh - 1rem);
+      margin: 0.5rem;
+    }
+
+    .shoppable-lightbox-video {
+      @apply w-full flex-1;
+      min-height: 0;
+    }
+
+    .shoppable-lightbox-video video {
+      border-radius: var(--card-radius) var(--card-radius) 0 0 !important;
+      max-height: 60vh;
+      width: 100%;
+    }
+
+    .shoppable-lightbox-product {
+      @apply w-full;
+      max-height: 35vh;
+      border-radius: 0 0 var(--card-radius) var(--card-radius);
+      padding: 1rem;
+    }
+  }
+}
