@@ -10,58 +10,34 @@
 -%}
 
 <style>
-
-  .fc-header-{{ section.id }} {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: clamp(2rem, 5vh, 4rem);
-  }
-
-  @media (min-width: 768px) {
-    .fc-header-{{ section.id }} {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 2rem;
-    }
-  }
-
-  .fc-header-content-{{ section.id }} {
-    text-align: {{ section.settings.header_alignment }};
-    flex: 1;
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .fc-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .fc-view-all-{{ section.id }} {
-    flex-shrink: 0;
-  }
-
   .fc-{{ section.id }} .fc-grid {
     grid-template-columns: repeat(1, 1fr);
   }
-
   @media (min-width: 640px) {
     .fc-{{ section.id }} .fc-grid {
       grid-template-columns: repeat(2, 1fr);
     }
   }
-
   @media (min-width: 1024px) {
     .fc-{{ section.id }} .fc-grid {
       grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
     }
   }
 </style>
+
+{%- liquid
+  case section.settings.header_alignment
+    when 'center'
+      assign header_text_class = 'text-center'
+      assign desc_margin_class = 'mx-auto'
+    when 'right'
+      assign header_text_class = 'text-right'
+      assign desc_margin_class = 'ml-auto'
+    else
+      assign header_text_class = 'text-left'
+      assign desc_margin_class = ''
+  endcase
+-%}
 
 <section
   class="fc-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
@@ -70,8 +46,8 @@
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
     {% if section.settings.label != blank or section.settings.title != blank or collection.title != blank or section.settings.show_view_all %}
-      <div class="fc-header-{{ section.id }}">
-        <div class="fc-header-content-{{ section.id }}" data-tween-group="fc-header-{{ section.id }}">
+      <div class="flex flex-col gap-6 mb-[clamp(2rem,5vh,4rem)] md:flex-row md:justify-between md:items-end md:gap-8">
+        <div class="flex-1 {{ header_text_class }}" data-tween-group="fc-header-{{ section.id }}">
           {% if section.settings.label != blank %}
             <span class="section-label" data-tween data-tween-type="fade-up">
               {{ section.settings.label }}
@@ -87,7 +63,7 @@
           </h2>
 
           {% if section.settings.description != blank %}
-            <p class="section-description" data-tween data-tween-type="fade-up">
+            <p class="section-description {{ desc_margin_class }}" data-tween data-tween-type="fade-up">
               {{ section.settings.description }}
             </p>
           {% endif %}

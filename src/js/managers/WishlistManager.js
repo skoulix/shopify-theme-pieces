@@ -1,3 +1,5 @@
+import { formatMoney } from '../utils/formatMoney.js';
+
 /**
  * WishlistManager - Track and display wishlist/favorite products
  * Stores product data in localStorage for persistence
@@ -154,37 +156,10 @@ class WishlistManager {
   }
 
   /**
-   * Format money according to shop settings
+   * Format money - delegates to shared utility
    */
   formatMoney(cents) {
-    // Handle string input - remove any non-numeric chars except decimal
-    if (typeof cents === 'string') {
-      cents = cents.replace(/[^\d.-]/g, '');
-      // If it has a decimal, it might be dollars - convert to cents
-      if (cents.includes('.')) {
-        cents = Math.round(parseFloat(cents) * 100);
-      } else {
-        cents = parseInt(cents, 10);
-      }
-    }
-    cents = cents || 0;
-
-    const moneyFormat = window.themeSettings?.moneyFormat || '${{amount}}';
-    const value = cents / 100;
-    const amountNoDecimals = Math.floor(value);
-
-    // Format with thousand separators
-    const amountFormatted = value.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const amountWithComma = value.toLocaleString('de-DE', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-    const amountNoDecimalsWithComma = amountNoDecimals.toLocaleString('de-DE');
-    const amountWithApostrophe = value.toLocaleString('de-CH', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
-
-    return moneyFormat
-      .replace('{{amount_with_comma_separator}}', amountWithComma)
-      .replace('{{amount_no_decimals_with_comma_separator}}', amountNoDecimalsWithComma)
-      .replace('{{amount_with_apostrophe_separator}}', amountWithApostrophe)
-      .replace('{{amount_no_decimals}}', amountNoDecimals.toLocaleString('en-US'))
-      .replace('{{amount}}', amountFormatted);
+    return formatMoney(cents);
   }
 }
 

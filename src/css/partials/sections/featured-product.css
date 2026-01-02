@@ -1,0 +1,102 @@
+/* Featured Product Section */
+@layer components {
+  /* Gallery image transitions */
+  .fp-gallery-image {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+  }
+
+  .fp-gallery-image.is-active {
+    opacity: 1;
+  }
+
+  /* Thumbnail active state */
+  .fp-thumbnail.is-active {
+    opacity: 1;
+    border-color: var(--color-text);
+  }
+
+  /* Variant button selected state */
+  .fp-variant-input:checked + .fp-variant-button {
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
+  }
+
+  /* Swatch label outline states */
+  .fp-swatch-label {
+    outline: 2px solid transparent;
+    outline-offset: 2px;
+  }
+
+  .fp-variant-input:checked + .fp-swatch-label {
+    outline-color: var(--color-text);
+  }
+
+  .fp-variant-input:checked:hover + .fp-swatch-label {
+    outline-color: var(--color-text);
+  }
+
+  .fp-variant-input:hover + .fp-swatch-label {
+    outline-color: var(--color-text-secondary);
+  }
+
+  /* Disabled variant states */
+  .fp-variant-input:disabled + .fp-swatch-label,
+  .fp-variant-input:disabled + .fp-variant-button {
+    pointer-events: none;
+  }
+
+  .fp-variant-input:disabled + .fp-swatch-label > span {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .fp-variant-input:disabled + .fp-swatch-label > span::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: -10%;
+    width: 120%;
+    height: 1px;
+    background: var(--color-text);
+    transform: rotate(-45deg);
+  }
+
+  /* Quantity input - hide spinners */
+  .fp-quantity-input {
+    -moz-appearance: textfield;
+  }
+
+  .fp-quantity-input::-webkit-outer-spin-button,
+  .fp-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+
+  /* CTA hover text animation */
+  .fp-cta-text-wrapper {
+    overflow: hidden;
+    display: inline-block;
+  }
+
+  .fp-cta-text {
+    display: inline-block;
+    position: relative;
+    transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .fp-cta-text::after {
+    content: attr(data-hover);
+    position: absolute;
+    left: 0;
+    top: 100%;
+    white-space: nowrap;
+  }
+
+  .fp-cta:hover .fp-cta-text {
+    transform: translateY(-100%);
+  }
+}

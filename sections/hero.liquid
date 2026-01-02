@@ -15,43 +15,6 @@
   @media (min-width: 1024px) { .hero-section-{{ section.id }} .hero-title { font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1)); } }
   @media (min-width: 1536px) { .hero-section-{{ section.id }} .hero-title { font-size: calc(clamp(4rem, 5vw, 6rem) * var(--heading-font-scale, 1)); } }
   .hero-section-{{ section.id }} .hero-description { font-size: clamp(0.875rem, 1.5vw, 1rem); }
-
-  /* Button styling - secondary buttons use text/background for overlay visibility */
-  .hero-section-{{ section.id }} .btn--secondary {
-    color: var(--color-text);
-    border-color: var(--color-text);
-  }
-  .hero-section-{{ section.id }} .btn--secondary::before {
-    background: var(--color-text);
-  }
-  .hero-section-{{ section.id }} .btn--secondary:hover,
-  .hero-section-{{ section.id }} .btn--secondary:hover span,
-  .hero-section-{{ section.id }} .btn--secondary:hover i {
-    color: var(--color-background);
-  }
-  .hero-section-{{ section.id }} .btn--solid-secondary {
-    background: var(--color-text);
-    border-color: var(--color-text);
-    color: var(--color-background);
-  }
-  .hero-section-{{ section.id }} .btn--solid-secondary::before {
-    background: var(--color-background);
-  }
-  .hero-section-{{ section.id }} .btn--solid-secondary:hover,
-  .hero-section-{{ section.id }} .btn--solid-secondary:hover span,
-  .hero-section-{{ section.id }} .btn--solid-secondary:hover i {
-    color: var(--color-text);
-  }
-
-  /* Initial clip-path state for media swipe animation */
-  [data-hero-section="{{ section.id }}"] [data-hero-media] {
-    clip-path: inset(0 0 100% 0);
-  }
-
-  /* When animations disabled, show media immediately */
-  html.animations-disabled [data-hero-section="{{ section.id }}"] [data-hero-media] {
-    clip-path: none;
-  }
 </style>
 
 <section

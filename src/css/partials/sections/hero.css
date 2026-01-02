@@ -1,0 +1,45 @@
+/* Hero Section */
+@layer components {
+  /* Hero secondary button styling - uses text/background for overlay visibility */
+  .hero-section-wrapper .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .hero-section-wrapper .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .hero-section-wrapper .btn--secondary:hover,
+  .hero-section-wrapper .btn--secondary:hover span,
+  .hero-section-wrapper .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  /* Solid secondary button */
+  .hero-section-wrapper .btn--solid-secondary {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .hero-section-wrapper .btn--solid-secondary::before {
+    background: var(--color-background);
+  }
+
+  .hero-section-wrapper .btn--solid-secondary:hover,
+  .hero-section-wrapper .btn--solid-secondary:hover span,
+  .hero-section-wrapper .btn--solid-secondary:hover i {
+    color: var(--color-text);
+  }
+
+  /* Initial clip-path state for media swipe animation */
+  [data-hero-section] [data-hero-media] {
+    clip-path: inset(0 0 100% 0);
+  }
+
+  /* When animations disabled, show media immediately */
+  html.animations-disabled [data-hero-section] [data-hero-media] {
+    clip-path: none;
+  }
+}

@@ -5,15 +5,7 @@
 
 import { safeLocalStorage } from '../utils/storage.js';
 import { DURATION, DEBOUNCE } from '../utils/constants.js';
-
-// Debounce helper
-function debounce(fn, wait) {
-  let timeout;
-  return function (...args) {
-    clearTimeout(timeout);
-    timeout = setTimeout(() => fn.apply(this, args), wait);
-  };
-}
+import { debounce } from '../utils/debounce.js';
 
 class FacetFiltersForm extends HTMLElement {
   constructor() {

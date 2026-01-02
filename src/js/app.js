@@ -16,6 +16,9 @@ import Lenis from 'lenis';
 // Import styles
 import '../css/app.css';
 
+// Import utils (registers on window.pieces)
+import './utils/formatMoney.js';
+
 // Import managers
 import { lenisManager } from './managers/LenisManager.js';
 import { swupManager } from './managers/SwupManager.js';
