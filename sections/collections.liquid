@@ -1,5 +1,10 @@
 {%- liquid
-  assign layout_style = section.settings.layout_style
+  # Derive layout style from bento pattern setting
+  if section.settings.enable_bento_pattern
+    assign layout_style = 'metro'
+  else
+    assign layout_style = 'grid'
+  endif
   assign full_width = section.settings.full_width
 
   if full_width
@@ -7,58 +12,26 @@
   else
     assign container_class = 'page-container'
   endif
+
+  # Header alignment classes
+  case section.settings.header_alignment
+    when 'center'
+      assign header_align_class = 'text-center'
+    when 'right'
+      assign header_align_class = 'text-right'
+    else
+      assign header_align_class = 'text-left'
+  endcase
 -%}
 
-<style>
-  /* Title line stagger (managed by TweenManager) */
-  .collections-wrapper .page-title .collections-header-title-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
-  .collections-wrapper .page-title .collections-header-title-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
-  .collections-wrapper.is-loading [data-collections-title] { opacity: 0; }
-  html.animations-disabled .collections-wrapper.is-loading [data-collections-title] { opacity: 1; }
-  .collections-grid { grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); }
-  @media (min-width: 768px) { .collections-grid { grid-template-columns: repeat(var(--columns-tablet, 2), 1fr); } }
-  @media (min-width: 1024px) { .collections-grid { grid-template-columns: repeat(var(--columns-desktop, 3), 1fr); } }
-  .collections-wrapper.is-loading .collection-card-image { clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .collections-wrapper.is-loading .collection-card-image { clip-path: none; }
-  .collections-metro { grid-template-columns: repeat(var(--columns-mobile, 1), 1fr); }
-  @media (min-width: 768px) { .collections-metro { grid-template-columns: repeat(var(--columns-tablet, 2), 1fr); } }
-  @media (min-width: 1024px) { .collections-metro { grid-template-columns: repeat(var(--columns-desktop, 4), 1fr); } }
-  .collections-metro-item-image { transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-  .collections-metro-item-large { grid-column: span 2; grid-row: span 2; }
-  .collections-metro-item-wide { grid-column: span 2; }
-  .collections-metro-item-tall { grid-row: span 2; }
-  @media (max-width: 767px) { .collections-metro-item-large, .collections-metro-item-wide, .collections-metro-item-tall { grid-column: span 1; grid-row: span 1; } }
-  .collections-metro-item-large .collections-metro-item-inner, .collections-metro-item-wide .collections-metro-item-inner { aspect-ratio: 16/9; }
-  .collections-metro-item-tall .collections-metro-item-inner { aspect-ratio: 3/5; }
-  .collections-metro-item-normal .collections-metro-item-inner { aspect-ratio: 1/1; }
-  @media (max-width: 640px) { .collections-metro-item .collections-metro-item-inner { aspect-ratio: 4/5; } }
-  .collections-metro-item-overlay { background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 50%); }
-  .collections-metro-item:hover .collections-metro-item-overlay { opacity: 1; }
-  .collections-metro-item:hover .collections-metro-item-image { transform: scale(1.05); }
-  .collections-metro-item-content { transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1); }
-  .collections-metro-item:hover .collections-metro-item-content { transform: translateY(0); opacity: 1; }
-  .collections-metro-item-large .collections-metro-item-title { font-size: 1.5rem; }
-  .collections-wrapper.is-loading .collections-metro-item-inner { clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .collections-wrapper.is-loading .collections-metro-item-inner { clip-path: none; }
-  /* Grid card styles */
-  .collection-card { position: relative; overflow: hidden; }
-  .collection-card-image { position: relative; overflow: hidden; aspect-ratio: 4/5; background: var(--color-background-secondary); clip-path: inset(0 100% 0 0); }
-  html.animations-disabled .collection-card-image { clip-path: none; }
-  .collection-card-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1); }
-  .collection-card:hover .collection-card-image img { transform: scale(1.05); }
-  .collection-card-title { font-size: calc(0.875rem * var(--heading-font-scale, 1)); font-weight: var(--font-heading-weight, 700); letter-spacing: calc(0.05em + var(--heading-letter-spacing, 0em)); margin-top: 1rem; }
-  .collection-card-title .overflow-hidden span { display: inline-block; }
-  .collection-card-count { color: var(--color-text-secondary); margin-top: 0.25rem; }
-  .collection-card-count .overflow-hidden span { display: inline-block; }
-</style>
-
 <div
-  class="collections-wrapper is-loading min-h-screen page-padding"
+  class="collections-wrapper is-loading min-h-screen page-padding color-{{ section.settings.color_scheme }}"
   data-collections-wrapper
   data-layout-style="{{ layout_style }}"
+  data-header-align="{{ section.settings.header_alignment }}"
   style="--columns-desktop: {{ section.settings.columns_desktop }}; --columns-tablet: {{ section.settings.columns_tablet }}; --columns-mobile: {{ section.settings.columns_mobile }};"
 >
-  <header class="section-header-spacing {{ container_class }}">
+  <header class="section-header-spacing {{ container_class }} {{ header_align_class }}">
     {% if section.settings.label != blank %}
       <span class="section-label block" data-tween data-tween-type="fade-up">
         {{ section.settings.label }}
@@ -77,7 +50,14 @@
     {% endif %}
 
     {% if section.settings.description != blank %}
-      <div class="mt-8 max-w-[380px] text-sm uppercase tracking-wider leading-relaxed text-(--color-text-secondary) pl-[0.15em]" data-shuffle-text data-original-text="{{ section.settings.description | escape }}">
+      {%- capture desc_align_class -%}
+        {%- case section.settings.header_alignment -%}
+          {%- when 'center' -%}mx-auto text-center
+          {%- when 'right' -%}ml-auto text-right
+          {%- else -%}text-left
+        {%- endcase -%}
+      {%- endcapture -%}
+      <div class="mt-8 max-w-95 text-sm{% if settings.headings_uppercase %} uppercase{% endif %} tracking-wider leading-relaxed text-(--color-text-secondary) pl-[0.15em] {{ desc_align_class }}"{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
         {{ section.settings.description }}
       </div>
     {% endif %}
@@ -111,22 +91,24 @@
                 {{ collection.featured_image | image_url: width: 1600 | image_tag:
                   class: 'collections-metro-item-image w-full h-full object-cover',
                   loading: 'lazy',
-          decoding: 'async',
+                  decoding: 'async',
                   sizes: '(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw',
                   widths: '400, 600, 800, 1000, 1200, 1600',
                   alt: collection.featured_image.alt | default: collection.title
                 }}
               {% else %}
                 <div class="collections-metro-item-image w-full h-full flex items-center justify-center bg-(--color-background-secondary)">
-                  <i class="ph ph-folder text-6xl text-(--color-text-secondary) opacity-30"></i>
+                  <i class="ph ph-folder text-6xl text-white/20"></i>
                 </div>
               {% endif %}
 
-              <div class="collections-metro-item-overlay absolute inset-0 opacity-0 transition-opacity duration-500"></div>
+              {%- comment -%} Gradient Overlay {%- endcomment -%}
+              <div class="collections-metro-item-overlay"></div>
 
-              <div class="collections-metro-item-content absolute bottom-0 left-0 right-0 p-6 translate-y-5 opacity-0">
-                <h3 class="collections-metro-item-title card-title text-white">{{ collection.title }}</h3>
-                <p class="text-white/80 text-sm mt-1">{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</p>
+              {%- comment -%} Content - title and count {%- endcomment -%}
+              <div class="collections-metro-item-content">
+                <h3 class="collections-metro-item-title">{{ collection.title }}</h3>
+                <p class="collections-metro-item-count">{{ collection.products_count }} {{ collection.products_count | pluralize: 'Product', 'Products' }}</p>
               </div>
             </div>
           </a>
@@ -520,10 +502,21 @@
     },
     {
       "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
+      "id": "enable_description_shuffle",
+      "label": "Enable description shuffle effect",
       "default": false,
-      "info": "Remove max-width container constraint"
+      "info": "Animate description with text scramble effect on page load"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "left"
     },
     {
       "type": "checkbox",
@@ -532,24 +525,22 @@
       "default": true
     },
     {
-      "type": "select",
-      "id": "layout_style",
-      "label": "Layout style",
-      "options": [
-        {
-          "value": "grid",
-          "label": "Grid"
-        },
-        {
-          "value": "metro",
-          "label": "Metro"
-        }
-      ],
-      "default": "grid"
+      "type": "header",
+      "content": "Layout"
     },
     {
-      "type": "header",
-      "content": "Layout settings"
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false,
+      "info": "Remove max-width container constraint"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_bento_pattern",
+      "label": "Enable bento layout",
+      "default": false,
+      "info": "Display collections in a modern bento/metro grid with varying sizes"
     },
     {
       "type": "range",
@@ -559,7 +550,7 @@
       "step": 1,
       "default": 3,
       "label": "Columns on desktop",
-      "info": "For Metro style, 4 columns recommended"
+      "info": "For bento layout, 4+ columns recommended"
     },
     {
       "type": "range",
@@ -585,6 +576,12 @@
         }
       ],
       "default": "1"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
     }
   ],
   "presets": [
