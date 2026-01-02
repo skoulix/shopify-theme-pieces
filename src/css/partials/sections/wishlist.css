@@ -1,0 +1,97 @@
+/* ==========================================================================
+   Wishlist Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Section min height */
+  .wishlist-section {
+    min-height: 60vh;
+  }
+
+  /* Title line reveal animation (managed by TweenManager) */
+  .wishlist-section .page-title .tween-split-line:nth-child(2) {
+    margin-left: clamp(0.5rem, 4vw, 2rem);
+  }
+
+  /* Empty state */
+  .wishlist-empty {
+    text-align: center;
+    padding: 4rem 0;
+  }
+
+  .wishlist-empty__icon {
+    font-size: 4rem;
+    opacity: 0.3;
+    margin-bottom: 1.5rem;
+  }
+
+  .wishlist-empty__title {
+    font-size: 1.25rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+  }
+
+  .wishlist-empty__text {
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
+  }
+
+  /* Grid layout */
+  .wishlist-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (min-width: 768px) {
+    .wishlist-grid {
+      grid-template-columns: repeat(3, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .wishlist-grid {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+
+  /* Actions */
+  .wishlist-actions {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 3rem;
+  }
+
+  /* Button overrides - reset to use global styles */
+  .wishlist-section .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-border);
+  }
+
+  .wishlist-section .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .wishlist-section .btn--secondary:hover,
+  .wishlist-section .btn--secondary:hover span,
+  .wishlist-section .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  .wishlist-section .btn--primary {
+    color: var(--color-primary-contrast);
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+  }
+
+  .wishlist-section .btn--primary::before {
+    background: var(--color-primary-contrast);
+  }
+
+  .wishlist-section .btn--primary:hover,
+  .wishlist-section .btn--primary:hover span,
+  .wishlist-section .btn--primary:hover i {
+    color: var(--color-primary);
+  }
+}
