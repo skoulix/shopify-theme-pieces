@@ -27,7 +27,7 @@
     </div>
 
     <footer class="wishlist-drawer__footer">
-      <a href="/pages/wishlist" class="btn btn--primary btn--full" data-wishlist-view-btn>
+      <a href="{{ pages['wishlist'].url | default: '/pages/wishlist' }}" class="btn btn--primary btn--full" data-wishlist-view-btn>
         <span>{{ 'products.wishlist.view_all' | t | default: 'View All Saved Items' }}</span>
       </a>
     </footer>

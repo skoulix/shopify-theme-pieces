@@ -105,8 +105,9 @@
     modal.removeAttribute('inert');
     lockScroll();
 
-    // Fetch product data
-    fetch(`/products/${productHandle}?section_id=quick-view-product`)
+    // Fetch product data - use Shopify.routes.root to respect current locale
+    const rootUrl = window.Shopify?.routes?.root || '/';
+    fetch(`${rootUrl}products/${productHandle}?section_id=quick-view-product`)
       .then(res => res.text())
       .then(html => {
         body.innerHTML = html;
@@ -253,7 +254,7 @@
             }
           }));
         } else if (cartType === 'page') {
-          window.location.href = '/cart';
+          window.location.href = window.routes?.cartUrl || '/cart';
           return;
         }
 

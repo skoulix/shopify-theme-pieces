@@ -305,7 +305,7 @@
     </div>
 
     <div class="compare-drawer__footer">
-      <a href="/pages/compare" class="btn btn--primary btn--xs compare-drawer__compare-btn" data-compare-view-btn>
+      <a href="{{ pages['compare'].url | default: '/pages/compare' }}" class="btn btn--primary btn--xs compare-drawer__compare-btn" data-compare-view-btn>
         <span>{{ 'products.compare.view_comparison' | t | default: 'View Comparison' }}</span>
         <i class="ph ph-arrow-right"></i>
       </a>

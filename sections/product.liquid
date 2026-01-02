@@ -1710,7 +1710,7 @@
           }));
         } else {
           // cartType === 'page' - redirect to cart
-          window.location.href = '/cart';
+          window.location.href = window.routes?.cartUrl || '/cart';
           return;
         }
 

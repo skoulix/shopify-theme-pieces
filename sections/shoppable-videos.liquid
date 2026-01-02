@@ -646,7 +646,7 @@
               } else {
                 // cartType === 'page' - redirect to cart
                 closeLightbox();
-                window.location.href = '/cart';
+                window.location.href = window.routes?.cartUrl || '/cart';
               }
             } else {
               button.innerHTML = '<span>{{ "cart.error" | t }}</span>';

@@ -328,7 +328,9 @@ class CartDrawerManager {
 
     try {
       // Use Section Rendering API for proper Liquid rendering (compare-at prices, etc.)
-      const response = await fetch('/?section_id=cart-drawer');
+      // Use Shopify.routes.root to respect current locale (e.g., /el/ for Greek)
+      const rootUrl = window.Shopify?.routes?.root || '/';
+      const response = await fetch(`${rootUrl}?section_id=cart-drawer`);
       if (response.ok) {
         const html = await response.text();
         const parser = new DOMParser();

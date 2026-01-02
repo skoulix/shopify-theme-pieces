@@ -266,7 +266,7 @@
               }
             }));
           } else if (cartType === 'page') {
-            window.location.href = '/cart';
+            window.location.href = window.routes?.cartUrl || '/cart';
             return;
           }
 
@@ -332,6 +332,11 @@
         quantity: `{{ 'accessibility.quantity' | t }}`,
         // General
         backHome: `{{ '404.back_home' | t }}`,
+        // Errors
+        errorNetwork: `{{ 'errors.network' | t }}`,
+        errorServer: `{{ 'errors.server' | t }}`,
+        errorTimeout: `{{ 'errors.timeout' | t }}`,
+        errorRateLimit: `{{ 'errors.rate_limit' | t }}`,
       };
 
       // Aliases

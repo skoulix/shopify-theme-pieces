@@ -253,7 +253,7 @@
             }
           }));
         } else {
-          window.location.href = '/cart';
+          window.location.href = window.routes?.cartUrl || '/cart';
           return;
         }
 
