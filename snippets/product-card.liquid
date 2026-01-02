@@ -241,12 +241,12 @@
             </button>
           {% endif %}
           {% if settings.enable_wishlist %}
-            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:bg-(--color-sale)! [&.is-active]:text-white! [&.is-active]:border-(--color-sale)!" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-heart" aria-hidden="true"></i>
             </button>
           {% endif %}
           {% if settings.enable_compare %}
-            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:bg-(--color-text)! [&.is-active]:text-(--color-background)!" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-scales" aria-hidden="true"></i>
             </button>
           {% endif %}
@@ -279,12 +279,12 @@
             </button>
           {% endif %}
           {% if settings.enable_wishlist %}
-            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-sale) [&.is-active]:!text-white [&.is-active]:!border-(--color-sale)" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-wishlist btn btn--secondary btn--sm btn--icon [&.is-active]:bg-(--color-sale)! [&.is-active]:text-white! [&.is-active]:border-(--color-sale)!" data-wishlist-toggle="{{ product.id }}" data-product-json='{{ product_json_wishlist }}' aria-label="{{ 'products.wishlist.add_to_wishlist' | t | default: 'Add to wishlist' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-heart" aria-hidden="true"></i>
             </button>
           {% endif %}
           {% if settings.enable_compare %}
-            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:!bg-(--color-text) [&.is-active]:!text-(--color-background)" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
+            <button type="button" class="product-card-compare btn btn--secondary btn--sm btn--icon [&.is-active]:bg-(--color-text)! [&.is-active]:text-(--color-background)!" data-compare-toggle="{{ product.id }}" data-product-json='{{ product_json_compare }}' aria-label="{{ 'products.compare.add_to_compare' | t | default: 'Add to compare' }}: {{ product.title }}" aria-pressed="false">
               <i class="ph ph-scales" aria-hidden="true"></i>
             </button>
           {% endif %}
