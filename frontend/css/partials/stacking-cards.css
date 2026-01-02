@@ -74,13 +74,12 @@
 
   /* Card inner grid */
   .stacking-card-inner {
-    @apply grid grid-cols-1;
+    @apply grid grid-cols-1 md:grid-cols-2;
     min-height: 400px;
   }
 
   @media (min-width: 768px) {
     .stacking-card-inner {
-      @apply grid-cols-2;
       min-height: 450px;
     }
   }

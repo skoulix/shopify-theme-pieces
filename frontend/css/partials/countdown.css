@@ -17,19 +17,7 @@
      HERO DESIGN - Large dramatic countdown
      ============================================ */
   .countdown--hero .countdown-grid {
-    @apply grid grid-cols-2 gap-6;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--hero .countdown-grid {
-      @apply grid-cols-4 gap-8;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .countdown--hero .countdown-grid {
-      gap: 4rem;
-    }
+    @apply grid grid-cols-2 gap-6 sm:grid-cols-4 sm:gap-8 lg:gap-16;
   }
 
   .countdown--hero .countdown-item {
@@ -80,14 +68,8 @@
   }
 
   .countdown--hero .countdown-form-inner {
-    @apply flex flex-col gap-3 w-full;
+    @apply flex flex-col gap-3 w-full sm:flex-row sm:gap-2;
     max-width: 400px;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--hero .countdown-form-inner {
-      @apply flex-row gap-2;
-    }
   }
 
   .countdown--hero .countdown-form input[type="email"] {
@@ -142,7 +124,7 @@
   }
 
   .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
-    @apply absolute font-heading;
+    @apply absolute font-heading hidden sm:block sm:-right-4 lg:-right-8;
     content: ':';
     right: -0.75rem;
     top: 0;
@@ -151,22 +133,10 @@
     opacity: 0.3;
   }
 
-  @media (max-width: 639px) {
-    .countdown--hero.show-dividers .countdown-item:nth-child(2)::after {
-      @apply hidden;
-    }
-  }
-
-  @media (min-width: 640px) {
-    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
-      right: -1rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
-      right: -2rem;
-    }
+  /* Show divider after 1st and 3rd on mobile (2-col grid) */
+  .countdown--hero.show-dividers .countdown-item:nth-child(1)::after,
+  .countdown--hero.show-dividers .countdown-item:nth-child(3)::after {
+    @apply block sm:block;
   }
 
   /* ============================================
@@ -177,23 +147,11 @@
   }
 
   .countdown--compact .countdown-inner {
-    @apply flex flex-col items-center gap-6;
-  }
-
-  @media (min-width: 768px) {
-    .countdown--compact .countdown-inner {
-      @apply flex-row items-center gap-12;
-    }
+    @apply flex flex-col items-center gap-6 md:flex-row md:items-center md:gap-12;
   }
 
   .countdown--compact .countdown-header {
-    @apply text-center;
-  }
-
-  @media (min-width: 768px) {
-    .countdown--compact .countdown-header {
-      @apply text-left;
-    }
+    @apply text-center md:text-left;
   }
 
   .countdown--compact .countdown-title {
@@ -210,13 +168,7 @@
   }
 
   .countdown--compact .countdown-grid {
-    @apply flex items-center gap-2 shrink-0;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--compact .countdown-grid {
-      gap: 0.75rem;
-    }
+    @apply flex items-center gap-2 shrink-0 sm:gap-3;
   }
 
   .countdown--compact .countdown-item {
@@ -392,7 +344,7 @@
     font-size: 0.8125rem;
   }
 
-  /* Reduced motion fallback */
+  /* Reduced motion fallback - keep as @media since it's a user preference query */
   @media (prefers-reduced-motion: reduce) {
     .countdown-item {
       @apply opacity-100;

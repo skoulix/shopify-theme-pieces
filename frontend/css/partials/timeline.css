@@ -16,15 +16,9 @@
 
   /* Central line */
   .timeline-line {
-    @apply absolute top-0 bottom-0 bg-(--color-border);
+    @apply absolute top-0 bottom-0 bg-(--color-border) md:left-1/2 md:-translate-x-1/2;
     left: 20px;
     width: 2px;
-  }
-
-  @media (min-width: 768px) {
-    .timeline-line {
-      @apply left-1/2 -translate-x-1/2;
-    }
   }
 
   .timeline-line-progress {
@@ -35,24 +29,25 @@
 
   /* Timeline items */
   .timeline-item {
-    @apply relative;
+    @apply relative md:pl-0 md:pr-0 md:w-1/2;
     padding-left: 60px;
     padding-bottom: clamp(3rem, 6vh, 5rem);
   }
 
-  @media (min-width: 768px) {
-    .timeline-item {
-      @apply pl-0 pr-0 w-1/2;
-    }
+  .timeline-item:nth-child(odd) {
+    @apply md:ml-auto;
+    padding-left: 60px;
+  }
 
+  @media (min-width: 768px) {
     .timeline-item:nth-child(odd) {
-      @apply ml-auto;
       padding-left: calc(50px + 2rem);
     }
 
     .timeline-item:nth-child(even) {
       @apply text-right;
       padding-right: calc(50px + 2rem);
+      padding-left: 0;
     }
   }
 
@@ -138,10 +133,8 @@
     max-width: 300px;
   }
 
-  @media (min-width: 768px) {
-    .timeline-item:nth-child(even) .timeline-item-image {
-      @apply ml-auto;
-    }
+  .timeline-item:nth-child(even) .timeline-item-image {
+    @apply md:ml-auto;
   }
 
   .timeline-item-image img {
