@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Text Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Container */
+  .text-section {
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Content wrapper */
+  .text-section-content {
+    text-align: var(--text-section-align, center);
+    max-width: var(--text-section-max-width, 42rem);
+    margin-left: var(--text-section-ml, auto);
+    margin-right: var(--text-section-mr, auto);
+  }
+
+  .text-section-content .section-description {
+    margin-left: var(--text-section-desc-ml, auto);
+    margin-right: var(--text-section-desc-mr, auto);
+  }
+
+  /* Buttons container */
+  .text-section-buttons {
+    @apply flex flex-wrap gap-4;
+    margin-top: 2rem;
+    justify-content: var(--text-section-justify, center);
+  }
+
+  /* Button styling - secondary buttons use text/background for visibility */
+  .text-section .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .text-section .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .text-section .btn--secondary:hover,
+  .text-section .btn--secondary:hover span,
+  .text-section .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  .text-section .btn--solid-secondary {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .text-section .btn--solid-secondary::before {
+    background: var(--color-background);
+  }
+
+  .text-section .btn--solid-secondary:hover,
+  .text-section .btn--solid-secondary:hover span,
+  .text-section .btn--solid-secondary:hover i {
+    color: var(--color-text);
+  }
+}

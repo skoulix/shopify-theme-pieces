@@ -73,64 +73,6 @@
   </div>
 </section>
 
-<style>
-  .trust-badges__grid {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .trust-badges__grid {
-      grid-template-columns: repeat(var(--badge-columns, 4), 1fr);
-    }
-  }
-
-  .trust-badge {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    text-align: center;
-    padding: 1.5rem 1rem;
-  }
-
-  .trust-badge__icon {
-    width: 3rem;
-    height: 3rem;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 1rem;
-    color: var(--badge-icon-color, var(--color-primary));
-    font-size: 2rem;
-  }
-
-  .trust-badge__icon--custom {
-    width: auto;
-    height: auto;
-  }
-
-  .trust-badge__icon--custom img {
-    max-width: 3rem;
-    max-height: 3rem;
-    object-fit: contain;
-  }
-
-  .trust-badge__title {
-    font-size: 0.875rem;
-    font-weight: 600;
-    margin: 0 0 0.25rem;
-    letter-spacing: 0.025em;
-  }
-
-  .trust-badge__description {
-    font-size: 0.8125rem;
-    color: var(--color-text-secondary);
-    margin: 0;
-    line-height: 1.5;
-  }
-</style>
-
 {% schema %}
 {
   "name": "Trust Badges",

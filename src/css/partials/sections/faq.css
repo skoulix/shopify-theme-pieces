@@ -1,0 +1,87 @@
+/* ==========================================================================
+   FAQ Section Styles
+   ========================================================================== */
+
+@layer components {
+  /* Item borders */
+  .faq-item {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .faq-item:first-child {
+    border-top: 1px solid var(--color-border);
+  }
+
+  /* Question (summary) */
+  .faq-question {
+    @apply flex items-center justify-between gap-4 cursor-pointer;
+    padding: 1.5rem 0;
+    list-style: none;
+    transition: opacity 0.3s ease;
+  }
+
+  .faq-question::-webkit-details-marker {
+    @apply hidden;
+  }
+
+  .faq-question:hover {
+    @apply opacity-70;
+  }
+
+  .faq-question-text {
+    font-size: calc(clamp(1rem, 2vw, 1.25rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    line-height: 1.4;
+  }
+
+  /* Icon */
+  .faq-icon {
+    @apply shrink-0 flex items-center justify-center rounded-full;
+    width: 2rem;
+    height: 2rem;
+    border: 1px solid var(--color-border);
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), background-color 0.3s ease;
+  }
+
+  .faq-icon i {
+    font-size: 0.875rem;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-item[open] .faq-icon {
+    background-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .faq-item[open] .faq-icon i {
+    transform: rotate(45deg);
+  }
+
+  /* Smooth slide animation using grid */
+  .faq-answer {
+    @apply grid;
+    grid-template-rows: 0fr;
+    transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+
+  .faq-item[open] .faq-answer {
+    grid-template-rows: 1fr;
+  }
+
+  /* When closing, animate back to 0fr while still open */
+  .faq-item.is-closing .faq-answer {
+    grid-template-rows: 0fr;
+  }
+
+  .faq-answer-inner {
+    @apply overflow-hidden;
+  }
+
+  .faq-answer-text {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    line-height: 1.7;
+    opacity: 0.75;
+    padding-bottom: 1.5rem;
+    padding-right: 3rem;
+  }
+}

@@ -8,81 +8,30 @@
   else
     assign container_class = 'page-container'
   endif
+
+  # Alignment CSS custom properties
+  if section.settings.content_alignment == 'center'
+    assign ml = 'auto'
+    assign mr = 'auto'
+    assign justify = 'center'
+  elsif section.settings.content_alignment == 'right'
+    assign ml = 'auto'
+    assign mr = '0'
+    assign justify = 'flex-end'
+  else
+    assign ml = '0'
+    assign mr = '0'
+    assign justify = 'flex-start'
+  endif
 -%}
 
-<style>
-  .text-section-{{ section.id }} {
-    background-color: var(--color-background);
-    color: var(--color-text);
-  }
-
-  .text-section-content-{{ section.id }} {
-    text-align: {{ section.settings.content_alignment }};
-    max-width: {{ section.settings.content_width }}rem;
-    {% if section.settings.content_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.content_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .text-section-content-{{ section.id }} .section-description {
-    {% if section.settings.content_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.content_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .text-section-buttons-{{ section.id }} {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1rem;
-    margin-top: 2rem;
-    {% if section.settings.content_alignment == 'center' %}
-    justify-content: center;
-    {% elsif section.settings.content_alignment == 'right' %}
-    justify-content: flex-end;
-    {% endif %}
-  }
-
-  /* Button styling - secondary buttons use text/background for visibility */
-  .text-section-{{ section.id }} .btn--secondary {
-    color: var(--color-text);
-    border-color: var(--color-text);
-  }
-  .text-section-{{ section.id }} .btn--secondary::before {
-    background: var(--color-text);
-  }
-  .text-section-{{ section.id }} .btn--secondary:hover,
-  .text-section-{{ section.id }} .btn--secondary:hover span,
-  .text-section-{{ section.id }} .btn--secondary:hover i {
-    color: var(--color-background);
-  }
-  .text-section-{{ section.id }} .btn--solid-secondary {
-    background: var(--color-text);
-    border-color: var(--color-text);
-    color: var(--color-background);
-  }
-  .text-section-{{ section.id }} .btn--solid-secondary::before {
-    background: var(--color-background);
-  }
-  .text-section-{{ section.id }} .btn--solid-secondary:hover,
-  .text-section-{{ section.id }} .btn--solid-secondary:hover span,
-  .text-section-{{ section.id }} .btn--solid-secondary:hover i {
-    color: var(--color-text);
-  }
-</style>
-
 <section
-  class="text-section-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="text-section section-padding color-{{ section.settings.color_scheme }}"
+  style="--text-section-align: {{ section.settings.content_alignment }}; --text-section-max-width: {{ section.settings.content_width }}rem; --text-section-ml: {{ ml }}; --text-section-mr: {{ mr }}; --text-section-desc-ml: {{ ml }}; --text-section-desc-mr: {{ mr }}; --text-section-justify: {{ justify }};"
   data-text-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
-    <div class="text-section-content-{{ section.id }}" data-tween-group="text-section-{{ section.id }}">
+    <div class="text-section-content" data-tween-group="text-section-{{ section.id }}">
       {% if section.settings.label != blank %}
         <span class="section-label" data-tween data-tween-type="fade-up">
           {{ section.settings.label }}
@@ -102,7 +51,7 @@
       {% endif %}
 
       {% if section.blocks.size > 0 %}
-        <div class="text-section-buttons-{{ section.id }}" data-tween data-tween-type="fade-up">
+        <div class="text-section-buttons" data-tween data-tween-type="fade-up">
           {% for block in section.blocks %}
             {% if block.type == 'button' and block.settings.button_label != blank %}
               {%- liquid
