@@ -12,37 +12,131 @@
 
 <style>
   /* Title line stagger (managed by TweenManager) */
-  .cart-wrapper .page-title .tween-split-line:nth-child(2) { margin-left: clamp(1.5rem, 10vw, 8rem); }
-  .cart-wrapper .page-title .tween-split-line:nth-child(3) { margin-left: clamp(3rem, 18vw, 14rem); }
-  .cart-quantity { display: inline-flex; align-items: center; background: transparent; border-radius: var(--input-radius); padding: 0; position: relative; overflow: hidden; border: var(--input-border-width) solid var(--color-border); box-shadow: var(--input-shadow); }
-  .cart-quantity-btn { width: 2.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; background: transparent; border: none; cursor: pointer; color: var(--color-text); transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  .cart-quantity-btn:hover { background: var(--color-primary); color: var(--color-primary-contrast); }
-  .cart-quantity-btn:active { transform: scale(0.95); }
-  .cart-quantity-value { width: 3.5rem; height: 2.5rem; display: flex; align-items: center; justify-content: center; }
-  .cart-quantity-input { width: 100%; height: 100%; text-align: center; font-size: 1rem; font-weight: 600; background: transparent; border: none !important; border-width: 0 !important; box-shadow: none !important; color: var(--color-text); -moz-appearance: textfield; outline: none; }
-  .cart-quantity-input::-webkit-outer-spin-button, .cart-quantity-input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
-  .cart-quantity-input:focus { outline: none; border: none !important; }
-  .cart-quantity:focus-within { border-color: var(--color-primary); box-shadow: var(--input-shadow-focus); }
-  .cart-quantity.is-changing .cart-quantity-input { animation: cartQuantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
-  @keyframes cartQuantityPop { 0% { transform: scale(1); } 50% { transform: scale(1.2); } 100% { transform: scale(1); } }
-  .cart-wrapper.is-updating { cursor: wait; }
-  .cart-wrapper.is-updating * { cursor: wait !important; }
-  .cart-wrapper.is-updating [data-cart-form] { opacity: 0.5; pointer-events: none; }
+  .cart-wrapper .page-title .tween-split-line:nth-child(2) {
+    margin-left: clamp(1.5rem, 10vw, 8rem);
+  }
+  .cart-wrapper .page-title .tween-split-line:nth-child(3) {
+    margin-left: clamp(3rem, 18vw, 14rem);
+  }
+  .cart-quantity {
+    display: inline-flex;
+    align-items: center;
+    background: transparent;
+    border-radius: var(--input-radius);
+    padding: 0;
+    position: relative;
+    overflow: hidden;
+    border: var(--input-border-width) solid var(--color-border);
+    box-shadow: var(--input-shadow);
+  }
+  .cart-quantity-btn {
+    width: 2.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--color-text);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  .cart-quantity-btn:hover {
+    background: var(--color-primary);
+    color: var(--color-primary-contrast);
+  }
+  .cart-quantity-btn:active {
+    transform: scale(0.95);
+  }
+  .cart-quantity-value {
+    width: 3.5rem;
+    height: 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .cart-quantity-input {
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+    background: transparent;
+    border: none !important;
+    border-width: 0 !important;
+    box-shadow: none !important;
+    color: var(--color-text);
+    -moz-appearance: textfield;
+    outline: none;
+  }
+  .cart-quantity-input::-webkit-outer-spin-button,
+  .cart-quantity-input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+  }
+  .cart-quantity-input:focus {
+    outline: none;
+    border: none !important;
+  }
+  .cart-quantity:focus-within {
+    border-color: var(--color-primary);
+    box-shadow: var(--input-shadow-focus);
+  }
+  .cart-quantity.is-changing .cart-quantity-input {
+    animation: cartQuantityPop 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  @keyframes cartQuantityPop {
+    0% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.2);
+    }
+    100% {
+      transform: scale(1);
+    }
+  }
+  .cart-wrapper.is-updating {
+    cursor: wait;
+  }
+  .cart-wrapper.is-updating * {
+    cursor: wait !important;
+  }
+  .cart-wrapper.is-updating [data-cart-form] {
+    opacity: 0.5;
+    pointer-events: none;
+  }
   /* Dynamic checkout buttons styling */
-  .cart-dynamic-checkout { margin-top: 0.75rem; }
-  .cart-dynamic-checkout .dynamic-checkout__buttons { display: flex; flex-direction: column; gap: 0.5rem; }
-  .cart-dynamic-checkout [data-shopify-buttoncontainer] { justify-content: stretch; }
+  .cart-dynamic-checkout {
+    margin-top: 0.75rem;
+  }
+  .cart-dynamic-checkout .dynamic-checkout__buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+  .cart-dynamic-checkout [data-shopify-buttoncontainer] {
+    justify-content: stretch;
+  }
 </style>
 
 <div class="cart-wrapper min-h-screen page-padding" data-cart-wrapper>
-  <header class="section-header-spacing {{ container_class }}" data-tween-group="cart-header" data-tween-start="top bottom">
-    <h1 class="page-title" data-tween data-tween-type="split-text">
+  <header
+    class="section-header-spacing {{ container_class }} {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}"
+    data-tween-group="cart-header"
+    data-tween-start="top bottom">
+    <h1
+      class="page-title"
+      data-tween
+      data-tween-type="split-text">
       {{ 'cart.title' | t }}
     </h1>
 
-    <p class="page-header-subtitle">
+    <p class="page-header-subtitle {% if section.settings.header_alignment == 'center' %}justify-center{% elsif section.settings.header_alignment == 'right' %}justify-end{% endif %}">
       <span class="page-header-subtitle-line" data-subtitle-line></span>
-      <span class="overflow-hidden"><span class="inline-block" data-subtitle-text>{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }}</span></span>
+      <span class="overflow-hidden">
+        <span class="inline-block" data-subtitle-text>{{ cart.item_count }} {{ cart.item_count | pluralize: 'Item', 'Items' }}</span>
+      </span>
     </p>
   </header>
 
@@ -51,20 +145,25 @@
       <div class="lg:grid lg:grid-cols-12 lg:gap-x-12">
         {%- comment -%} Cart Items {%- endcomment -%}
         <div class="lg:col-span-7">
-          <form action="{{ routes.cart_url }}" method="post" id="cart-form" data-cart-form>
+          <form
+            action="{{ routes.cart_url }}"
+            method="post"
+            id="cart-form"
+            data-cart-form>
             <ul role="list" class="divide-y divide-(--color-border)">
               {% for item in cart.items %}
-                <li class="py-8 first:pt-0" data-cart-item data-line="{{ forloop.index }}" data-tween data-tween-type="fade-up">
+                <li
+                  class="py-8 first:pt-0"
+                  data-cart-item
+                  data-line="{{ forloop.index }}"
+                  data-tween
+                  data-tween-type="fade-up">
                   <div class="flex gap-6">
                     {%- comment -%} Image {%- endcomment -%}
                     <div class="w-28 h-36 flex-shrink-0 overflow-hidden bg-(--color-background-secondary)">
                       {% if item.image %}
                         <a href="{{ item.url }}" aria-label="{{ item.product.title }}">
-                          {{ item.image | image_url: width: 300 | image_tag:
-                            class: 'w-full h-full object-cover',
-                            loading: 'lazy',
-          decoding: 'async',
-                            alt: item.image.alt | default: item.product.title
+                          {{ item.image | image_url: width: 300 | image_tag: class: 'w-full h-full object-cover', loading: 'lazy', decoding: 'async', alt: item.image.alt | default: item.product.title
                           }}
                         </a>
                       {% endif %}
@@ -107,15 +206,17 @@
                             {% endif %}
                             {%- if item.unit_price_measurement -%}
                               <p class="text-xs text-(--color-text-secondary) mt-1">
-                                {{ item.unit_price | money }}/{{ item.unit_price_measurement.reference_value }}{{ item.unit_price_measurement.reference_unit }}
-                              </p>
+                                {{ item.unit_price | money }}/{{ item.unit_price_measurement.reference_value }}{{ item.unit_price_measurement.reference_unit }}</p>
                             {%- endif -%}
                           </div>
                         </div>
 
                         {%- comment -%} Line-level discount display - Required for Theme Store {%- endcomment -%}
                         {%- if item.line_level_discount_allocations.size > 0 -%}
-                          <ul class="mt-2 list-none p-0" role="list" aria-label="{{ 'accessibility.discount' | t }}">
+                          <ul
+                            class="mt-2 list-none p-0"
+                            role="list"
+                            aria-label="{{ 'accessibility.discount' | t }}">
                             {%- for discount in item.line_level_discount_allocations -%}
                               <li class="inline-flex items-center gap-1 text-xs text-green-600">
                                 <i class="ph ph-tag"></i>
@@ -129,7 +230,11 @@
                       <div class="flex items-center justify-between mt-4">
                         {%- comment -%} Quantity {%- endcomment -%}
                         <div class="cart-quantity" data-quantity-wrapper>
-                          <button type="button" class="cart-quantity-btn" data-quantity-minus aria-label="{{ 'accessibility.decrease_quantity' | t }}">
+                          <button
+                            type="button"
+                            class="cart-quantity-btn"
+                            data-quantity-minus
+                            aria-label="{{ 'accessibility.decrease_quantity' | t }}">
                             <i class="ph ph-minus"></i>
                           </button>
                           <div class="cart-quantity-value">
@@ -141,10 +246,13 @@
                               class="cart-quantity-input"
                               data-quantity-input
                               data-line="{{ forloop.index }}"
-                              aria-label="{{ 'accessibility.quantity' | t }}"
-                            >
+                              aria-label="{{ 'accessibility.quantity' | t }}">
                           </div>
-                          <button type="button" class="cart-quantity-btn" data-quantity-plus aria-label="{{ 'accessibility.increase_quantity' | t }}">
+                          <button
+                            type="button"
+                            class="cart-quantity-btn"
+                            data-quantity-plus
+                            aria-label="{{ 'accessibility.increase_quantity' | t }}">
                             <i class="ph ph-plus"></i>
                           </button>
                         </div>
@@ -154,8 +262,7 @@
                           type="button"
                           class="text-sm uppercase tracking-wider font-medium text-(--color-text-secondary) hover:text-(--color-text) transition-colors"
                           data-remove-item
-                          data-line="{{ forloop.index }}"
-                        >
+                          data-line="{{ forloop.index }}">
                           {{ 'cart.remove' | t }}
                         </button>
                       </div>
@@ -169,7 +276,10 @@
 
         {%- comment -%} Summary {%- endcomment -%}
         <div class="lg:col-span-5 mt-12 lg:mt-0">
-          <div class="sticky top-12 bg-(--color-background-secondary) p-8" data-tween data-tween-type="fade-up">
+          <div
+            class="sticky top-12 bg-(--color-background-secondary) p-8"
+            data-tween
+            data-tween-type="fade-up">
             {%- comment -%} Free Shipping Progress {%- endcomment -%}
             <div class="mb-6" data-free-shipping-wrapper>
               {% render 'free-shipping-progress' %}
@@ -216,15 +326,17 @@
                   class="w-full p-3 text-sm bg-transparent border border-(--color-border) text-(--color-text) resize-none focus:border-(--color-primary) focus:outline-none"
                   rows="3"
                   placeholder="{{ 'cart.note_placeholder' | t }}"
-                  data-cart-note
-                >{{ cart.note }}</textarea>
+                  data-cart-note>{{ cart.note }}</textarea>
               </div>
             </details>
 
             {%- comment -%} Actions {%- endcomment -%}
             <div class="mt-8 space-y-3">
               <form action="{{ routes.cart_url }}" method="post">
-                <button type="submit" name="checkout" class="btn btn--primary btn--full">
+                <button
+                  type="submit"
+                  name="checkout"
+                  class="btn btn--primary btn--full">
                   <i class="ph ph-lock-simple"></i>
                   <span>{{ 'cart.checkout' | t }}</span>
                 </button>
@@ -273,11 +385,15 @@
       </div>
     </div>
   {% else %}
-    <div class="{{ container_class }}" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
+    <div
+      class="{{ container_class }} px-0 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}"
+      data-tween
+      data-tween-type="fade-up"
+      data-tween-start="top bottom">
       <h2 class="section-title">{{ 'cart.empty' | t }}</h2>
-      <p class="mt-4 text-(--color-text-secondary) max-w-sm">{{ 'cart.empty_description' | t }}</p>
+      <p class="mt-4 text-(--color-text-secondary) max-w-sm {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}">{{ 'cart.empty_description' | t }}</p>
 
-      <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none">
+      <div class="mt-10 flex flex-col sm:flex-row gap-4 max-w-xs sm:max-w-none {% if section.settings.header_alignment == 'center' %}mx-auto sm:justify-center{% elsif section.settings.header_alignment == 'right' %}ml-auto sm:justify-end{% endif %}">
         <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary w-full sm:w-auto">
           <i class="ph ph-storefront"></i>
           <span>{{ 'cart.start_shopping' | t }}</span>
@@ -294,7 +410,7 @@
 {%- comment -%} Cart page functionality is now handled by CartPageManager in the bundled JS {%- endcomment -%}
 
 <script>
-(function() {
+  (function() {
   if (document.documentElement.classList.contains('animations-disabled')) return;
 
   const wrapper = document.querySelector('[data-cart-wrapper]');
@@ -333,68 +449,74 @@
   };
 
   initAnimation();
-})();
+  })();
 </script>
 
 {% schema %}
-{
-  "name": "Cart",
-  "settings": [
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": false
-    },
-    {
-      "type": "header",
-      "content": "Trust badges"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_trust_badges",
-      "label": "Show trust badges",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "badge_1_icon",
-      "label": "Badge 1 icon",
-      "default": "shield-check",
-      "info": "Phosphor icon name (e.g., shield-check, lock, credit-card)"
-    },
-    {
-      "type": "text",
-      "id": "badge_1_text",
-      "label": "Badge 1 text",
-      "default": "Secure"
-    },
-    {
-      "type": "text",
-      "id": "badge_2_icon",
-      "label": "Badge 2 icon",
-      "default": "truck",
-      "info": "Phosphor icon name (e.g., truck, package, airplane)"
-    },
-    {
-      "type": "text",
-      "id": "badge_2_text",
-      "label": "Badge 2 text",
-      "default": "Fast Shipping"
-    },
-    {
-      "type": "text",
-      "id": "badge_3_icon",
-      "label": "Badge 3 icon",
-      "default": "arrows-counter-clockwise",
-      "info": "Phosphor icon name (e.g., arrows-counter-clockwise, arrow-u-up-left)"
-    },
-    {
-      "type": "text",
-      "id": "badge_3_text",
-      "label": "Badge 3 text",
-      "default": "Easy Returns"
-    }
-  ]
-}
+  {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "full_width",
+        "label": "Full width",
+        "default": false
+      },
+      {
+        "type": "text_alignment",
+        "id": "header_alignment",
+        "default": "left",
+        "label": "Header alignment"
+      },
+      {
+        "type": "header",
+        "content": "Trust badges"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_trust_badges",
+        "label": "Show trust badges",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "badge_1_icon",
+        "label": "Badge 1 icon",
+        "default": "shield-check",
+        "info": "Phosphor icon name (e.g., shield-check, lock, credit-card)"
+      },
+      {
+        "type": "text",
+        "id": "badge_1_text",
+        "label": "Badge 1 text",
+        "default": "Secure"
+      },
+      {
+        "type": "text",
+        "id": "badge_2_icon",
+        "label": "Badge 2 icon",
+        "default": "truck",
+        "info": "Phosphor icon name (e.g., truck, package, airplane)"
+      },
+      {
+        "type": "text",
+        "id": "badge_2_text",
+        "label": "Badge 2 text",
+        "default": "Fast Shipping"
+      },
+      {
+        "type": "text",
+        "id": "badge_3_icon",
+        "label": "Badge 3 icon",
+        "default": "arrows-counter-clockwise",
+        "info": "Phosphor icon name (e.g., arrows-counter-clockwise, arrow-u-up-left)"
+      },
+      {
+        "type": "text",
+        "id": "badge_3_text",
+        "label": "Badge 3 text",
+        "default": "Easy Returns"
+      }
+    ]
+  }
 {% endschema %}
