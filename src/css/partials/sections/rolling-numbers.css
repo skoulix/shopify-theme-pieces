@@ -1,0 +1,104 @@
+/* ==========================================================================
+   Rolling Numbers Section
+   Animated statistics/metrics display with rolling number animations
+   Note: Dynamic styles (grid columns, alignment, animation duration) remain
+   inline in the section file as they depend on section settings.
+   ========================================================================== */
+
+@layer components {
+  /* Grid base - column count set dynamically inline */
+  .rolling-numbers-grid {
+    @apply grid gap-12;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 640px) {
+    .rolling-numbers-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .rolling-numbers-grid {
+      /* Column count overridden inline based on block count */
+      gap: 4rem;
+    }
+  }
+
+  /* Item animation states */
+  .rolling-numbers-item {
+    @apply opacity-0;
+    transform: translateY(30px);
+  }
+
+  .rolling-numbers-item.is-visible {
+    @apply opacity-100;
+    transform: translateY(0);
+    transition: opacity 0.8s ease, transform 0.8s ease;
+  }
+
+  /* Value container - alignment set dynamically inline */
+  .rolling-numbers-value {
+    @apply flex items-baseline font-heading;
+    gap: 0.1em;
+    font-size: calc(clamp(2.5rem, 8vw, 4.5rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    line-height: 1;
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+  }
+
+  /* Prefix/suffix styling */
+  .rolling-numbers-prefix,
+  .rolling-numbers-suffix {
+    font-size: 0.5em;
+    opacity: 0.7;
+  }
+
+  /* Label */
+  .rolling-numbers-label {
+    @apply mt-4 opacity-60;
+  }
+
+  /* Description - margin alignment set dynamically inline */
+  .rolling-numbers-description {
+    @apply mt-2 opacity-80;
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+    max-width: 280px;
+  }
+
+  /* Header - alignment set dynamically inline */
+  .rolling-numbers-header {
+    @apply mb-16;
+  }
+
+  .rolling-numbers-header .section-description {
+    max-width: 600px;
+    /* Margin alignment set dynamically inline */
+  }
+
+  /* Divider style - enabled via modifier class */
+  .rolling-numbers-grid--dividers .rolling-numbers-item:not(:last-child) {
+    @apply relative;
+  }
+
+  @media (min-width: 1024px) {
+    .rolling-numbers-grid--dividers .rolling-numbers-item:not(:last-child)::after {
+      @apply absolute;
+      content: '';
+      right: -2rem;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 60%;
+      background: var(--color-border);
+    }
+  }
+
+  /* Reduced motion fallback */
+  @media (prefers-reduced-motion: reduce) {
+    .rolling-numbers-item {
+      @apply opacity-100;
+      transform: none;
+    }
+  }
+}

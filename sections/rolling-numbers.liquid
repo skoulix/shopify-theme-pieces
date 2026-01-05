@@ -13,86 +13,30 @@
 -%}
 
 <style>
-
-  .rolling-numbers-grid-{{ section.id }} {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 3rem;
-  }
-
-  @media (min-width: 640px) {
-    .rolling-numbers-grid-{{ section.id }} {
-      grid-template-columns: repeat(2, 1fr);
-    }
-  }
-
+  /* Dynamic styles that depend on section settings */
   @media (min-width: 1024px) {
-    .rolling-numbers-grid-{{ section.id }} {
+    #shopify-section-{{ section.id }} .rolling-numbers-grid {
       grid-template-columns: repeat({{ section.blocks.size | at_most: 4 }}, 1fr);
-      gap: 4rem;
     }
   }
 
-  .rolling-numbers-item-{{ section.id }} {
+  #shopify-section-{{ section.id }} .rolling-numbers-item {
     text-align: {{ section.settings.content_alignment }};
-    opacity: 0;
-    transform: translateY(30px);
   }
 
-  .rolling-numbers-item-{{ section.id }}.is-visible {
-    opacity: 1;
-    transform: translateY(0);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-  }
-
-  .rolling-numbers-value-{{ section.id }} {
-    display: flex;
-    align-items: baseline;
+  #shopify-section-{{ section.id }} .rolling-numbers-value {
     justify-content: {{ section.settings.content_alignment }};
-    gap: 0.1em;
-    font-size: calc(clamp(2.5rem, 8vw, 4.5rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    font-family: var(--font-heading);
-    line-height: 1;
-    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
   }
 
-  .rolling-numbers-value-{{ section.id }} layflags-rolling-number {
+  #shopify-section-{{ section.id }} .rolling-numbers-value layflags-rolling-number {
     --roll-duration: {{ section.settings.animation_duration }}ms;
   }
 
-  .rolling-numbers-prefix-{{ section.id }},
-  .rolling-numbers-suffix-{{ section.id }} {
-    font-size: 0.5em;
-    opacity: 0.7;
-  }
-
-  .rolling-numbers-label-{{ section.id }} {
-    margin-top: 1rem;
-    opacity: 0.6;
-  }
-
-  .rolling-numbers-description-{{ section.id }} {
-    margin-top: 0.5rem;
-    font-size: clamp(0.875rem, 1.5vw, 1rem);
-    opacity: 0.8;
-    max-width: 280px;
-    {% if section.settings.content_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.content_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .rolling-numbers-header-{{ section.id }} {
+  #shopify-section-{{ section.id }} .rolling-numbers-header {
     text-align: {{ section.settings.content_alignment }};
-    margin-bottom: 4rem;
   }
 
-  /* Title uses global .section-title, subtitle uses .section-description from utilities.css */
-  .rolling-numbers-header-{{ section.id }} .section-description {
-    max-width: 600px;
+  #shopify-section-{{ section.id }} .rolling-numbers-description {
     {% if section.settings.content_alignment == 'center' %}
     margin-left: auto;
     margin-right: auto;
@@ -101,43 +45,27 @@
     {% endif %}
   }
 
-  /* Divider style */
-  {% if section.settings.show_dividers %}
-  .rolling-numbers-item-{{ section.id }}:not(:last-child) {
-    position: relative;
+  #shopify-section-{{ section.id }} .rolling-numbers-header .section-description {
+    {% if section.settings.content_alignment == 'center' %}
+    margin-left: auto;
+    margin-right: auto;
+    {% elsif section.settings.content_alignment == 'right' %}
+    margin-left: auto;
+    {% endif %}
   }
 
-  @media (min-width: 1024px) {
-    .rolling-numbers-item-{{ section.id }}:not(:last-child)::after {
-      content: '';
-      position: absolute;
-      right: -2rem;
-      top: 50%;
-      transform: translateY(-50%);
-      width: 1px;
-      height: 60%;
-      background: var(--color-border);
-    }
-  }
-  {% endif %}
-
-  /* Reduced motion fallback */
+  /* Reduced motion: disable roll animation */
   @media (prefers-reduced-motion: reduce) {
-    .rolling-numbers-value-{{ section.id }} layflags-rolling-number {
+    #shopify-section-{{ section.id }} .rolling-numbers-value layflags-rolling-number {
       --roll-duration: 0ms;
-    }
-
-    .rolling-numbers-item-{{ section.id }} {
-      opacity: 1;
-      transform: none;
     }
   }
 </style>
 
-<section class="rolling-numbers-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
+<section class="section-padding color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
   <div class="{{ container_class }}">
     {% if section.settings.title != blank or section.settings.subtitle != blank %}
-      <header class="rolling-numbers-header-{{ section.id }}" data-tween-group="rolling-numbers-header-{{ section.id }}">
+      <header class="rolling-numbers-header" data-tween-group="rolling-numbers-header-{{ section.id }}">
         {% if section.settings.title != blank %}
           <h2 class="section-title" data-tween data-tween-type="split-text">{{ section.settings.title }}</h2>
         {% endif %}
@@ -147,28 +75,28 @@
       </header>
     {% endif %}
 
-    <div class="rolling-numbers-grid-{{ section.id }}">
+    <div class="rolling-numbers-grid{% if section.settings.show_dividers %} rolling-numbers-grid--dividers{% endif %}">
       {% for block in section.blocks %}
         <div
-          class="rolling-numbers-item-{{ section.id }}"
+          class="rolling-numbers-item"
           data-rolling-item
           style="transition-delay: {{ forloop.index0 | times: 150 }}ms;"
           {{ block.shopify_attributes }}
         >
-          <div class="rolling-numbers-value-{{ section.id }}">
+          <div class="rolling-numbers-value">
             {% if block.settings.prefix != blank %}
-              <span class="rolling-numbers-prefix-{{ section.id }}">{{ block.settings.prefix }}</span>
+              <span class="rolling-numbers-prefix">{{ block.settings.prefix }}</span>
             {% endif %}
             <layflags-rolling-number data-target="{{ block.settings.number }}">0</layflags-rolling-number>
             {% if block.settings.suffix != blank %}
-              <span class="rolling-numbers-suffix-{{ section.id }}">{{ block.settings.suffix }}</span>
+              <span class="rolling-numbers-suffix">{{ block.settings.suffix }}</span>
             {% endif %}
           </div>
           {% if block.settings.label != blank %}
-            <p class="rolling-numbers-label-{{ section.id }} text-label">{{ block.settings.label }}</p>
+            <p class="rolling-numbers-label text-label">{{ block.settings.label }}</p>
           {% endif %}
           {% if block.settings.description != blank %}
-            <p class="rolling-numbers-description-{{ section.id }}">{{ block.settings.description }}</p>
+            <p class="rolling-numbers-description">{{ block.settings.description }}</p>
           {% endif %}
         </div>
       {% endfor %}
