@@ -67,8 +67,8 @@
               {% endif %}
 
               <h2 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}">
-                <a href="{{ article.url }}" class="hover:text-(--color-primary) transition-colors" data-tween data-tween-type="fade-up">
-                  {{ article.title }}
+                <a href="{{ article.url }}" class="block hover:text-(--color-primary) transition-colors">
+                  <span data-tween data-tween-type="split-text">{{ article.title }}</span>
                 </a>
               </h2>
 

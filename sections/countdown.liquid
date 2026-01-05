@@ -77,7 +77,7 @@
 
     {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
       <div class="countdown-cta" data-tween data-tween-type="fade-up">
-        <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}">
+        <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }}">
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>
@@ -94,7 +94,7 @@
               autocomplete="email"
             >
             <input type="hidden" name="contact[tags]" value="countdown,notify">
-            <button type="submit" class="btn {{ btn_class }}">
+            <button type="submit" class="btn{{ btn_class }}">
               <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
             </button>
           </div>
@@ -164,7 +164,7 @@
 
       {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta" data-tween data-tween-type="fade-up">
-          <a href="{{ section.settings.button_link }}" class="btn btn--sm {{ btn_class }}">
+          <a href="{{ section.settings.button_link }}" class="btn btn--sm{{ btn_class }}">
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>
           </a>
@@ -181,7 +181,7 @@
                 autocomplete="email"
               >
               <input type="hidden" name="contact[tags]" value="countdown,notify">
-              <button type="submit" class="btn {{ btn_class }}">
+              <button type="submit" class="btn{{ btn_class }}">
                 <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
               </button>
             </div>
@@ -236,7 +236,7 @@
 
       {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta">
-          <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}">{{ section.settings.button_text }}</a>
+          <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }}">{{ section.settings.button_text }}</a>
         </div>
       {% elsif section.settings.cta_type == 'email_form' %}
         <div class="countdown-form" data-countdown-form>
@@ -250,7 +250,7 @@
                 autocomplete="email"
               >
               <input type="hidden" name="contact[tags]" value="countdown,notify">
-              <button type="submit" class="btn {{ btn_class }}">
+              <button type="submit" class="btn{{ btn_class }}">
                 <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
               </button>
             </div>

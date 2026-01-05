@@ -262,7 +262,7 @@
 
             {% if block.settings.button_text != blank and block.settings.button_link != blank %}
               <div class="scroll-panel-button-{{ section.id }}">
-                <a href="{{ block.settings.button_link }}" class="btn {%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}">
+                <a href="{{ block.settings.button_link }}" class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}">
                   <span>{{ block.settings.button_text }}</span>
                   <i class="ph ph-arrow-right"></i>
                 </a>

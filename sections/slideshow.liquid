@@ -258,7 +258,7 @@
               <div class="slideshow__cta">
                 <a
                   href="{{ block.settings.button_link }}"
-                  class="btn {%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
+                  class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
                 >
                   <span>{{ block.settings.button_label }}</span>
                 </a>

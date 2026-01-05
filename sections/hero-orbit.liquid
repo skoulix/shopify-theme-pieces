@@ -92,7 +92,7 @@
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
       <div class="hero-orbit-cta" data-orbit-cta>
-        <a href="{{ section.settings.button_link }}" class="btn {%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}">
+        <a href="{{ section.settings.button_link }}" class="btn{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}">
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>
