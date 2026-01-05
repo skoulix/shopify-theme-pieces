@@ -82,7 +82,7 @@
   </div>
 
   {%- comment -%} Active Filters Pills {%- endcomment -%}
-  <div class="active-facets mb-6 {% if total_active_values == 0 %}hidden{% endif %}" id="ActiveFacets">
+  <div class="active-facets mb-6 {% if total_active_values == 0 %}hidden{% endif %}" id="ActiveFacets" data-tween data-tween-type="fade-up">
     <div class="flex flex-wrap items-center gap-2">
       {%- for filter in results.filters -%}
         {%- for value in filter.active_values -%}

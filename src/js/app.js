@@ -39,9 +39,37 @@ window.SplitText = SplitText;
 window.Lenis = Lenis;
 
 /**
+ * Initialize critical CSS hidden elements
+ * Sets opacity: 1 on elements that are hidden in critical CSS to prevent FOUC
+ * This allows the elements to be revealed by their respective animations
+ */
+function initCriticalCSSElements() {
+  // Only set opacity if animations are enabled
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) {
+    return;
+  }
+
+  // Find all elements that are hidden by critical CSS
+  const criticalElements = document.querySelectorAll(
+    '[data-subtitle-line], [data-subtitle-text], [data-shuffle-text], [data-text-reveal-label], [data-text-reveal-subtext], [data-text-reveal-cta]'
+  );
+
+  // Set opacity: 1 on each element so they can be revealed by their animations
+  criticalElements.forEach(el => {
+    // Only set if not already set by section-specific scripts
+    if (!el.style.opacity) {
+      gsap.set(el, { opacity: 1 });
+    }
+  });
+}
+
+/**
  * Initialize all reveal animations
  */
 function initAnimations() {
+  // Initialize critical CSS elements first
+  initCriticalCSSElements();
+
   // Initialize global tween system (handles data-tween, data-tween-type, data-tween-group)
   tweenManager.init();
 }

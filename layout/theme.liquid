@@ -104,6 +104,22 @@
       window._swupListeners = window._swupListeners || {};
 
       /**
+       * Wait for fonts to be ready before executing callback
+       * Prevents SplitText and layout issues when fonts are still loading
+       * @param {Function} callback - Function to call when fonts are ready
+       */
+      window.waitForFonts = function(callback) {
+        if (document.fonts && document.fonts.ready) {
+          document.fonts.ready.then(function() {
+            requestAnimationFrame(callback);
+          });
+        } else {
+          // Fallback for browsers without FontFaceSet API
+          requestAnimationFrame(callback);
+        }
+      };
+
+      /**
        * Register a swup:contentReplaced listener that only runs once per key
        * @param {string} key - Unique identifier for this listener
        * @param {Function} callback - Function to call on content replaced

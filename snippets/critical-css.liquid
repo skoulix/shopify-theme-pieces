@@ -84,4 +84,43 @@
   .mobile-nav__drawer {
     clip-path: inset(0 0 100% 0);
   }
+
+  /* Text scramble/shuffle effect - hide initially to prevent FOUC */
+  [data-shuffle-text] {
+    opacity: 0;
+  }
+
+  /* Text Reveal Section elements - hide initially */
+  [data-text-reveal-label],
+  [data-text-reveal-subtext],
+  [data-text-reveal-cta] {
+    opacity: 0;
+  }
+
+  /* Page header subtitle - hide until GSAP sets transform */
+  [data-subtitle-line],
+  [data-subtitle-text] {
+    opacity: 0;
+  }
+
+  /* Show immediately when animations disabled */
+  html.animations-disabled [data-shuffle-text],
+  html.animations-disabled [data-text-reveal-label],
+  html.animations-disabled [data-text-reveal-subtext],
+  html.animations-disabled [data-text-reveal-cta],
+  html.animations-disabled [data-subtitle-line],
+  html.animations-disabled [data-subtitle-text] {
+    opacity: 1 !important;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-shuffle-text],
+    [data-text-reveal-label],
+    [data-text-reveal-subtext],
+    [data-text-reveal-cta],
+    [data-subtitle-line],
+    [data-subtitle-text] {
+      opacity: 1 !important;
+    }
+  }
 </style>

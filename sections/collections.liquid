@@ -473,7 +473,13 @@
 
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('collections-init', () => {
-      requestAnimationFrame(initCollections);
+      // Wait for fonts to load before initializing (prevents SplitText warning)
+      if (window.waitForFonts) {
+        window.waitForFonts(initCollections);
+      } else {
+        // Fallback if waitForFonts not available
+        requestAnimationFrame(initCollections);
+      }
     });
   }
 })();

@@ -1371,22 +1371,21 @@
   }
 
   if (!setupLightbox()) {
-    // Wait for pieces to be ready
+    // Wait for pieces to be ready using requestAnimationFrame instead of setTimeout
+    function waitForLightbox() {
+      if (setupLightbox()) return;
+      requestAnimationFrame(waitForLightbox);
+    }
     if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => setTimeout(setupLightbox, 100));
+      document.addEventListener('DOMContentLoaded', waitForLightbox);
     } else {
-      setTimeout(setupLightbox, 100);
+      requestAnimationFrame(waitForLightbox);
     }
   }
   {% endif %}
-  })();
-</script>
 
-<script>
-  (function() {
+  // Product animation (consolidated into same IIFE)
   function initProductAnimation() {
-    const section = document.querySelector('[data-product-section]');
-    if (!section) return;
     if (section.dataset.animInitialized) return;
 
     // If animations disabled, skip
@@ -1402,7 +1401,7 @@
     }
 
     if (!gsap) {
-      setTimeout(initProductAnimation, 50);
+      requestAnimationFrame(initProductAnimation);
       return;
     }
 
@@ -1540,21 +1539,18 @@
       requestAnimationFrame(initProductAnimation);
     });
   }
-  })();
-</script>
 
-<script>
-  (function() {
+  // Buy button hover effect (consolidated)
   function setupBuyButton() {
     const buyButtonWrapper = document.querySelector('shopify-buy-it-now-button');
     if (!buyButtonWrapper) {
-      setTimeout(setupBuyButton, 100);
+      requestAnimationFrame(setupBuyButton);
       return;
     }
 
     const button = buyButtonWrapper.querySelector('button');
     if (!button) {
-      setTimeout(setupBuyButton, 100);
+      requestAnimationFrame(setupBuyButton);
       return;
     }
 
@@ -1627,20 +1623,12 @@
   // Reinitialize after Swup page transitions
   if (window.onSwupContentReplaced) {
     window.onSwupContentReplaced('product-buy-button', () => {
-      setTimeout(setupBuyButton, 100);
+      requestAnimationFrame(setupBuyButton);
     });
   }
-  })();
-</script>
 
-<script>
-  /**
-   * AJAX Add to Cart - Handles form submission and triggers drawer/notification
-   */
-  (function() {
+  // AJAX Add to Cart (consolidated)
   function initAddToCart() {
-    const section = document.querySelector('[data-product-section]');
-    if (!section) return;
 
     const form = section.querySelector('form[action*="/cart/add"]');
     if (!form) return;
@@ -1749,7 +1737,7 @@
       requestAnimationFrame(initAddToCart);
     });
   }
-  })();
+})();
 </script>
 
 <script>
@@ -1987,11 +1975,11 @@
     }
   }
 
-  // Track after a short delay to ensure page has loaded
+  // Track immediately - no delay needed, localStorage is synchronous
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => setTimeout(addProduct, 100));
+    document.addEventListener('DOMContentLoaded', addProduct);
   } else {
-    setTimeout(addProduct, 100);
+    addProduct();
   }
   })();
 </script>

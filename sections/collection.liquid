@@ -1085,10 +1085,17 @@
 
   // Reinitialize after Swup page transitions
   function handleSwupContentReplaced() {
-    // Small delay to ensure DOM is fully updated
-    requestAnimationFrame(() => {
-      initCollection();
-    });
+    // Wait for fonts to load before initializing (prevents SplitText warning)
+    if (window.waitForFonts) {
+      window.waitForFonts(() => {
+        initCollection();
+      });
+    } else {
+      // Fallback if waitForFonts not available
+      requestAnimationFrame(() => {
+        initCollection();
+      });
+    }
   }
 
   // Initialize
