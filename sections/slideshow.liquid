@@ -32,11 +32,19 @@
     opacity: 0;
     visibility: hidden;
     z-index: 0;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
   }
   #slideshow-{{ section.id }} .slideshow__slide.is-active {
     opacity: 1;
     visibility: visible;
     z-index: 1;
+  }
+  #slideshow-{{ section.id }} .slideshow__media,
+  #slideshow-{{ section.id }} .slideshow__media-wrapper {
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    will-change: transform;
   }
 
   /* Navigation dots with circular timer */
@@ -140,7 +148,7 @@
 </style>
 
 <section id="slideshow-{{ section.id }}" class="slideshow-section {{ section.blocks.first.settings.color_scheme | prepend: 'color-' }}" data-slideshow data-transition="{{ transition_effect }}">
-  <div class="slideshow relative overflow-hidden h-(--slideshow-height) min-h-[400px]" aria-label="{{ 'accessibility.slideshow' | t }}" role="region">
+  <div class="slideshow relative overflow-hidden h-(--slideshow-height) min-h-[400px] bg-(--color-background)" aria-label="{{ 'accessibility.slideshow' | t }}" role="region">
     {%- comment -%} Slides {%- endcomment -%}
     {% for block in section.blocks %}
       {%- liquid
@@ -219,10 +227,9 @@
               {{ 'lifestyle-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
             </div>
           {% endif %}
+          {%- comment -%} Overlay {%- endcomment -%}
+          <div class="slideshow__overlay absolute inset-0 pointer-events-none" style="background-color: {{ overlay_color | color_modify: 'alpha', overlay_alpha }};"></div>
         </div>
-
-        {%- comment -%} Overlay {%- endcomment -%}
-        <div class="slideshow__overlay absolute inset-0 pointer-events-none" style="background-color: {{ overlay_color | color_modify: 'alpha', overlay_alpha }};"></div>
 
         {%- comment -%} Content {%- endcomment -%}
         <div class="slideshow__content relative z-1 h-full flex flex-col p-8 page-container {{ content_justify }} {{ content_items }}">
@@ -396,6 +403,9 @@
       const autoplaySpeed = {{ autoplay_speed }} * 1000;
 
       // Transition configurations
+      // Helper to get media element
+      const getMediaElement = (slide) => slide.querySelector('.slideshow__media');
+
       const transitions = {
         fade: {
           duration: 0.8,
@@ -405,69 +415,73 @@
         slide: {
           duration: 1.2,
           enter: (slide, dir) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             // Slide enters from 100%
             gsap.set(slide, { xPercent: dir === 'next' ? 100 : -100, opacity: 1, visibility: 'visible' });
-            // Media is scaled up and offset in opposite direction - creates parallax as it settles
-            gsap.set(media, { scale: 1.2, xPercent: dir === 'next' ? -20 : 20 });
-            gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
+            // Media scaled up and offset in opposite direction - creates parallax as it settles
+            if (media) {
+              gsap.set(media, { scale: 1.2, xPercent: dir === 'next' ? -20 : 20, transformOrigin: 'center center' });
+              gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
+            }
             return gsap.to(slide, { xPercent: 0, duration: 1.2, ease: 'power3.inOut' });
           },
           exit: (slide, dir) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             // Media moves slower than slide, creating depth
-            gsap.to(media, { xPercent: dir === 'next' ? 20 : -20, scale: 1.1, duration: 1.2, ease: 'power2.inOut' });
+            if (media) gsap.to(media, { xPercent: dir === 'next' ? 20 : -20, scale: 1.1, transformOrigin: 'center center', duration: 1.2, ease: 'power2.inOut' });
             return gsap.to(slide, { xPercent: dir === 'next' ? -100 : 100, duration: 1.2, ease: 'power3.inOut' });
           }
         },
         'zoom-in': {
           duration: 1.4,
           enter: (slide) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             gsap.set(slide, { opacity: 0, visibility: 'visible' });
-            gsap.set(media, { scale: 1, transformOrigin: 'center center' });
+            if (media) gsap.set(media, { scale: 1, transformOrigin: 'center center' });
             // Fade in slide while zooming media
             gsap.to(slide, { opacity: 1, duration: 0.8, ease: 'power2.out' });
-            return gsap.to(media, { scale: 1.15, duration: 1.4, ease: 'power2.out' });
+            return media ? gsap.to(media, { scale: 1.15, duration: 1.4, ease: 'power2.out' }) : null;
           },
           exit: (slide) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             // Fade out while continuing zoom slightly
-            gsap.to(media, { scale: 1.2, duration: 0.6, ease: 'power2.in' });
+            if (media) gsap.to(media, { scale: 1.2, duration: 0.6, ease: 'power2.in' });
             return gsap.to(slide, { opacity: 0, duration: 0.6, ease: 'power2.in' });
           }
         },
         'zoom-out': {
           duration: 1.4,
           enter: (slide) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             gsap.set(slide, { opacity: 0, visibility: 'visible' });
-            gsap.set(media, { scale: 1.3, transformOrigin: 'center center' });
+            if (media) gsap.set(media, { scale: 1.3, transformOrigin: 'center center' });
             // Fade in slide while zooming out media
             gsap.to(slide, { opacity: 1, duration: 0.8, ease: 'power2.out' });
-            return gsap.to(media, { scale: 1, duration: 1.4, ease: 'power2.out' });
+            return media ? gsap.to(media, { scale: 1, duration: 1.4, ease: 'power2.out' }) : null;
           },
           exit: (slide) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             // Fade out while continuing to zoom out slightly
-            gsap.to(media, { scale: 0.95, duration: 0.6, ease: 'power2.in' });
+            if (media) gsap.to(media, { scale: 0.95, duration: 0.6, ease: 'power2.in' });
             return gsap.to(slide, { opacity: 0, duration: 0.6, ease: 'power2.in' });
           }
         },
         swipe: {
           duration: 1.2,
           enter: (slide, dir) => {
-            const media = slide.querySelector('.slideshow__media');
+            const media = getMediaElement(slide);
             // Next: reveal from right (clip left side), Prev: reveal from left (clip right side)
             gsap.set(slide, { clipPath: dir === 'next' ? 'inset(0 0 0 100%)' : 'inset(0 100% 0 0)', opacity: 1, visibility: 'visible' });
             // Media parallax - offset in opposite direction and scale up
-            gsap.set(media, { scale: 1.15, xPercent: dir === 'next' ? 15 : -15 });
-            gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
+            if (media) {
+              gsap.set(media, { scale: 1.15, xPercent: dir === 'next' ? 15 : -15, transformOrigin: 'center center' });
+              gsap.to(media, { scale: 1, xPercent: 0, duration: 1.4, ease: 'power2.out' });
+            }
             return gsap.to(slide, { clipPath: 'inset(0 0% 0 0%)', duration: 1.2, ease: 'power4.inOut' });
           },
           exit: (slide, dir) => {
-            const media = slide.querySelector('.slideshow__media');
-            gsap.to(media, { xPercent: dir === 'next' ? -15 : 15, scale: 1.1, duration: 1.2, ease: 'power2.inOut' });
+            const media = getMediaElement(slide);
+            if (media) gsap.to(media, { xPercent: dir === 'next' ? -15 : 15, scale: 1.1, transformOrigin: 'center center', duration: 1.2, ease: 'power2.inOut' });
             return gsap.to(slide, {
               clipPath: dir === 'next' ? 'inset(0 100% 0 0)' : 'inset(0 0 0 100%)',
               duration: 1.2,
@@ -504,12 +518,12 @@
 
           // Description fade up
           if (description) {
-            tl.fromTo(description, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay + 0.3);
+            tl.fromTo(description, { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, ease: 'power3.out' }, delay + 0.1);
           }
 
           // CTA fade up
           if (cta) {
-            tl.fromTo(cta, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, delay + 0.5);
+            tl.fromTo(cta, { y: 20, opacity: 0 }, { y: 0, opacity: 1, duration: 0.6, ease: 'power3.out' }, delay + 0.25);
           }
         } else {
           // Animate out - simpler exit

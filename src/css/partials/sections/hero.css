@@ -1,6 +1,90 @@
-/* Hero Section */
+/* ==========================================================================
+   Hero Section
+   ========================================================================== */
+
 @layer components {
-  /* Hero secondary button styling - uses text/background for overlay visibility */
+  /* Hero container */
+  .hero-section {
+    @apply relative flex items-end overflow-hidden;
+    height: 100dvh;
+    max-height: 100dvh;
+    min-height: 600px;
+  }
+
+  @supports not (height: 100dvh) {
+    .hero-section {
+      height: 100vh;
+      max-height: 100vh;
+    }
+  }
+
+  /* Hero media background */
+  .hero-media {
+    @apply absolute inset-0 z-0;
+  }
+
+  .hero-media img,
+  .hero-media video {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Gradient overlay via ::after pseudo-element (opacity set via inline style) */
+  .hero-media::after {
+    content: '';
+    @apply absolute inset-0 z-1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, var(--hero-overlay-opacity, 0.4)) 0%,
+      rgba(0, 0, 0, calc(var(--hero-overlay-opacity, 0.4) / 2)) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Hero content container */
+  .hero-content {
+    @apply relative z-10 w-full pt-32 flex flex-col;
+    padding-bottom: clamp(3rem, 10vh, 8rem);
+  }
+
+  /* Hero title - responsive sizing with font scale */
+  .hero-title {
+    font-size: calc(clamp(2rem, 8vw, 3.5rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em));
+    line-height: 1;
+  }
+
+  @media (min-width: 1024px) {
+    .hero-title {
+      font-size: calc(clamp(3rem, 6vw, 5rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  @media (min-width: 1536px) {
+    .hero-title {
+      font-size: calc(clamp(4rem, 5vw, 6rem) * var(--heading-font-scale, 1));
+    }
+  }
+
+  /* Hero description */
+  .hero-description {
+    font-size: clamp(0.875rem, 1.5vw, 1rem);
+  }
+
+  /* Hero scroll indicator */
+  .hero-scroll-indicator {
+    @apply absolute bottom-8 flex flex-col items-center gap-2 z-10;
+  }
+
+  .hero-scroll-indicator span {
+    @apply text-[0.8125rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl];
+  }
+
+  .hero-scroll-line {
+    @apply w-px h-[60px] bg-current origin-top;
+  }
+
+  /* Secondary button styling for hero overlays */
   .hero-section-wrapper .btn--secondary {
     color: var(--color-text);
     border-color: var(--color-text);

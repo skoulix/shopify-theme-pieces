@@ -3,262 +3,60 @@
   Three animation styles: Orbit, Cascade, Spiral
 {%- endcomment -%}
 
+{%- liquid
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
 <style>
-  .hero-orbit-{{ section.id }} {
-    position: relative;
-    width: 100%;
-    height: 85vh;
-    min-height: 600px;
-    overflow: hidden;
-    background-color: var(--color-background);
-    color: var(--color-text);
+  #hero-orbit-{{ section.id }} {
+    --hero-orbit-card-bg: {{ section.settings.card_background }};
+    --hero-orbit-image-fit: {{ section.settings.image_fit }};
+    --hero-orbit-overlay-color: {{ section.settings.overlay_color }};
+    --hero-orbit-overlay-opacity: {{ overlay_opacity }};
   }
-
-  .hero-orbit-bg-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    z-index: 0;
-  }
-
-  .hero-orbit-bg-{{ section.id }} img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    object-position: {{ section.settings.background_image_position }};
-    {% if section.settings.background_image_blur > 0 %}
+  {% if section.settings.background_image_blur > 0 %}
+  #hero-orbit-{{ section.id }} .hero-orbit-bg img {
     filter: blur({{ section.settings.background_image_blur }}px);
     transform: scale(1.1);
-    {% endif %}
   }
-
-  .hero-orbit-scene-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    perspective: 1000px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  {% endif %}
+  #hero-orbit-{{ section.id }} .hero-orbit-bg img {
+    object-position: {{ section.settings.background_image_position }};
   }
-
-  .hero-orbit-container-{{ section.id }} {
-    position: relative;
-    width: 100%;
-    height: 100%;
-  }
-
-  .hero-orbit-group-{{ section.id }} {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 1px;
-    height: 1px;
-    transform-style: preserve-3d;
-  }
-
-  .hero-orbit-card-{{ section.id }} {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%) scale(0);
-    opacity: 0;
-    will-change: transform, opacity;
-    transform-style: preserve-3d;
-  }
-
-  .hero-orbit-card-inner-{{ section.id }} {
-    width: clamp(80px, 15vw, 120px);
-    aspect-ratio: 2/3;
-    border-radius: 8px;
-    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
-    overflow: hidden;
-    background: {{ section.settings.card_background }};
-  }
-
-  .hero-orbit-card-img-{{ section.id }} {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: {{ section.settings.image_fit }};
-    object-position: center;
-  }
-
-  /* Placeholder SVG styling */
-  .hero-orbit-card-inner-{{ section.id }} svg.placeholder-svg {
-    background: #ffffff !important;
-  }
-  .hero-orbit-card-inner-{{ section.id }} svg.placeholder-svg path {
-    fill: #e0e0e0 !important;
-  }
-
-  @media (min-width: 768px) {
-    .hero-orbit-card-inner-{{ section.id }} {
-      width: clamp(100px, 12vw, 140px);
-    }
-  }
-
-  .hero-orbit-overlay-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    background: {{ section.settings.overlay_color }};
-    opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
-    pointer-events: none;
-    z-index: 5;
-  }
-
-  .hero-orbit-content-{{ section.id }} {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: var(--page-padding);
-    pointer-events: none;
-    z-index: 10;
-  }
-
-  .hero-orbit-headings-{{ section.id }} {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-  }
-
-  .hero-orbit-title-{{ section.id }} {
-    font-size: calc(clamp(3rem, 15vw, 8rem) * var(--heading-font-scale, 1));
-    font-weight: var(--font-heading-weight, 700);
-    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
-    line-height: 0.85;
-    margin: 0;
-    opacity: 0;
-    filter: blur(10px);
-    will-change: opacity, filter;
-  }
-
-  .hero-orbit-subtitle-{{ section.id }} {
-    font-size: clamp(0.875rem, 2vw, 1.25rem);
-    opacity: 0;
-    filter: blur(5px);
-    will-change: opacity, filter;
-  }
-
-  .hero-orbit-cta-{{ section.id }} {
-    margin-top: 2rem;
-    opacity: 0;
-    transform: translateY(20px);
-    pointer-events: auto;
-    will-change: opacity, transform;
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--secondary {
-    color: var(--color-text);
-    border-color: var(--color-text);
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--secondary::before {
-    background: var(--color-text);
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--secondary:hover,
-  .hero-orbit-cta-{{ section.id }} .btn--secondary:hover span,
-  .hero-orbit-cta-{{ section.id }} .btn--secondary:hover i {
-    color: var(--color-background);
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--solid-secondary {
-    background: var(--color-text);
-    border-color: var(--color-text);
-    color: var(--color-background);
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--solid-secondary::before {
-    background: var(--color-background);
-  }
-
-  .hero-orbit-cta-{{ section.id }} .btn--solid-secondary:hover,
-  .hero-orbit-cta-{{ section.id }} .btn--solid-secondary:hover span,
-  .hero-orbit-cta-{{ section.id }} .btn--solid-secondary:hover i {
-    color: var(--color-text);
-  }
-
-  .hero-orbit-scroll-{{ section.id }} {
-    position: absolute;
-    bottom: 2rem;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 0.5rem;
-    opacity: 0;
-    pointer-events: auto;
-    z-index: 10;
-  }
-
-  /* Scroll indicator uses .text-label-sm */
-
-  .hero-orbit-scroll-{{ section.id }} i {
-    font-size: 1.25rem;
-    animation: hero-orbit-bounce-{{ section.id }} 2s ease-in-out infinite;
-  }
-
-  @keyframes hero-orbit-bounce-{{ section.id }} {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(8px); }
-  }
-
-  /* Loading state */
-  .hero-orbit-{{ section.id }}.is-loading .hero-orbit-card-{{ section.id }} {
-    opacity: 0;
-    transform: translate(-50%, -50%) scale(0);
-  }
-
-  /* Note: This section requires animation to function - ignores theme animation settings */
 </style>
 
 <section
-  class="hero-orbit-{{ section.id }} color-{{ section.settings.color_scheme }} is-loading"
+  id="hero-orbit-{{ section.id }}"
+  class="hero-orbit color-{{ section.settings.color_scheme }} is-loading"
   data-hero-orbit="{{ section.id }}"
-  data-animation-style="{{ section.settings.animation_style }}"
->
+  data-animation-style="{{ section.settings.animation_style }}">
   {% if section.settings.background_image != blank %}
-    <div class="hero-orbit-bg-{{ section.id }}">
-      {{ section.settings.background_image | image_url: width: 2000 | image_tag:
-        loading: 'eager',
-        decoding: 'async',
-        fetchpriority: 'high',
-        sizes: '100vw',
-        widths: '600, 1000, 1400, 1800, 2000'
-      }}
+    <div class="hero-orbit-bg">
+      {{ section.settings.background_image | image_url: width: 2000 | image_tag: loading: 'eager', decoding: 'async', fetchpriority: 'high', sizes: '100vw', widths: '600, 1000, 1400, 1800, 2000' }}
     </div>
   {% endif %}
 
-  <div class="hero-orbit-scene-{{ section.id }}" data-orbit-scene>
-    <div class="hero-orbit-container-{{ section.id }}" data-orbit-container>
-      <div class="hero-orbit-group-{{ section.id }}" data-orbit-group>
+  <div class="hero-orbit-scene" data-orbit-scene>
+    <div class="hero-orbit-container" data-orbit-container>
+      <div class="hero-orbit-group" data-orbit-group>
         {% for block in section.blocks %}
           <div
-            class="hero-orbit-card-{{ section.id }}"
+            class="hero-orbit-card"
             data-orbit-card="{{ forloop.index0 }}"
-            {{ block.shopify_attributes }}
-          >
-            <div class="hero-orbit-card-inner-{{ section.id }}">
+            {{ block.shopify_attributes }}>
+            <div class="hero-orbit-card-inner">
               {% if block.settings.image != blank %}
                 <img
-                  class="hero-orbit-card-img-{{ section.id }}"
+                  class="hero-orbit-card-img"
                   src="{{ block.settings.image | image_url: width: 400 }}"
                   alt="{{ block.settings.image.alt | escape }}"
                   width="{{ block.settings.image.width }}"
                   height="{{ block.settings.image.height }}"
                   loading="eager"
-                  decoding="async"
-                >
+                  decoding="async">
               {% else %}
                 {%- assign placeholder_index = forloop.index | modulo: 6 | plus: 1 -%}
-                {%- capture placeholder_class -%}hero-orbit-card-img-{{ section.id }}{%- endcapture -%}
-                {{ 'product-' | append: placeholder_index | placeholder_svg_tag: placeholder_class }}
+                {{ 'product-' | append: placeholder_index | placeholder_svg_tag: 'hero-orbit-card-img' }}
               {% endif %}
             </div>
           </div>
@@ -268,25 +66,25 @@
   </div>
 
   {% if section.settings.overlay_opacity > 0 %}
-    <div class="hero-orbit-overlay-{{ section.id }}"></div>
+    <div class="hero-orbit-overlay"></div>
   {% endif %}
 
-  <div class="hero-orbit-content-{{ section.id }}">
-    <div class="hero-orbit-headings-{{ section.id }}">
+  <div class="hero-orbit-content">
+    <div class="hero-orbit-headings">
       {% if section.settings.title_line_1 != blank %}
-        <h1 class="hero-orbit-title-{{ section.id }} font-heading" data-orbit-title>
+        <h1 class="hero-orbit-title font-heading" data-orbit-title>
           {{ section.settings.title_line_1 }}
         </h1>
       {% endif %}
 
       {% if section.settings.title_line_2 != blank %}
-        <h1 class="hero-orbit-title-{{ section.id }} font-heading" data-orbit-title>
+        <h1 class="hero-orbit-title font-heading" data-orbit-title>
           {{ section.settings.title_line_2 }}
         </h1>
       {% endif %}
 
       {% if section.settings.subtitle != blank %}
-        <p class="hero-orbit-subtitle-{{ section.id }} text-label text-balance max-w-6xl" data-orbit-subtitle>
+        <p class="hero-orbit-subtitle text-label text-balance max-w-6xl" data-orbit-subtitle>
           {{ section.settings.subtitle }}
         </p>
       {% endif %}
@@ -308,7 +106,7 @@
           endif
         endif
       -%}
-      <div class="hero-orbit-cta-{{ section.id }}" data-orbit-cta>
+      <div class="hero-orbit-cta" data-orbit-cta>
         <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}">
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
@@ -318,7 +116,7 @@
   </div>
 
   {% if section.settings.show_scroll_indicator %}
-    <div class="hero-orbit-scroll-{{ section.id }}" data-orbit-scroll>
+    <div class="hero-orbit-scroll" data-orbit-scroll>
       <span class="text-label-sm">{{ 'accessibility.scroll_down' | t }}</span>
       <i class="ph ph-caret-down"></i>
     </div>
@@ -326,7 +124,7 @@
 </section>
 
 <script>
-(function() {
+  (function() {
   const section = document.querySelector('[data-hero-orbit="{{ section.id }}"]');
   if (!section || section.dataset.heroOrbitInitialized) return;
   section.dataset.heroOrbitInitialized = 'true';
@@ -669,258 +467,322 @@
   window.addEventListener('swup:willReplaceContent', function cleanup() {
     window.removeEventListener('swup:willReplaceContent', cleanup);
   }, { once: true });
-})();
+  })();
 </script>
 
 {% schema %}
-{
-  "name": "Hero Orbit",
-  "tag": "section",
-  "class": "hero-orbit-section",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Content"
-    },
-    {
-      "type": "text",
-      "id": "title_line_1",
-      "default": "Celestial",
-      "label": "Title line 1"
-    },
-    {
-      "type": "text",
-      "id": "title_line_2",
-      "default": "Visions",
-      "label": "Title line 2"
-    },
-    {
-      "type": "text",
-      "id": "subtitle",
-      "default": "2024",
-      "label": "Subtitle"
-    },
-    {
-      "type": "text",
-      "id": "button_text",
-      "label": "Button text"
-    },
-    {
-      "type": "url",
-      "id": "button_link",
-      "label": "Button link"
-    },
-    {
-      "type": "select",
-      "id": "button_style",
-      "label": "Button style",
-      "default": "outline",
-      "options": [
-        { "value": "solid", "label": "Solid" },
-        { "value": "outline", "label": "Outline" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "button_color",
-      "label": "Button color",
-      "default": "primary",
-      "options": [
-        { "value": "primary", "label": "Primary (accent)" },
-        { "value": "secondary", "label": "Secondary (neutral)" }
-      ]
-    },
-    {
-      "type": "select",
-      "id": "button_size",
-      "label": "Button size",
-      "options": [
-        { "value": "small", "label": "Small" },
-        { "value": "default", "label": "Default" },
-        { "value": "large", "label": "Large" }
-      ],
-      "default": "large"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_scroll_indicator",
-      "default": true,
-      "label": "Show scroll indicator"
-    },
-    {
-      "type": "header",
-      "content": "Animation"
-    },
-    {
-      "type": "select",
-      "id": "animation_style",
-      "label": "Animation style",
-      "options": [
-        {
-          "value": "orbit",
-          "label": "Orbit - Expand from center"
-        },
-        {
-          "value": "cascade",
-          "label": "Cascade - Flip up from below"
-        },
-        {
-          "value": "spiral",
-          "label": "Spiral - Enter from sides"
-        }
-      ],
-      "default": "orbit",
-      "info": "Choose how images animate into the circle"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_rotation",
-      "default": true,
-      "label": "Enable continuous rotation"
-    },
-    {
-      "type": "range",
-      "id": "rotation_speed",
-      "min": 20,
-      "max": 120,
-      "step": 10,
-      "default": 60,
-      "unit": "s",
-      "label": "Rotation speed",
-      "info": "Time for one full rotation"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_flip",
-      "default": true,
-      "label": "Enable random card flips"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-3"
-    },
-    {
-      "type": "image_picker",
-      "id": "background_image",
-      "label": "Background image"
-    },
-    {
-      "type": "select",
-      "id": "background_image_position",
-      "label": "Background image position",
-      "options": [
-        { "value": "top left", "label": "Top left" },
-        { "value": "top center", "label": "Top center" },
-        { "value": "top right", "label": "Top right" },
-        { "value": "center left", "label": "Center left" },
-        { "value": "center center", "label": "Center" },
-        { "value": "center right", "label": "Center right" },
-        { "value": "bottom left", "label": "Bottom left" },
-        { "value": "bottom center", "label": "Bottom center" },
-        { "value": "bottom right", "label": "Bottom right" }
-      ],
-      "default": "center center"
-    },
-    {
-      "type": "range",
-      "id": "background_image_blur",
-      "min": 0,
-      "max": 20,
-      "step": 1,
-      "default": 0,
-      "unit": "px",
-      "label": "Background image blur"
-    },
-    {
-      "type": "color",
-      "id": "overlay_color",
-      "default": "#000000",
-      "label": "Overlay color"
-    },
-    {
-      "type": "range",
-      "id": "overlay_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 5,
-      "default": 40,
-      "unit": "%",
-      "label": "Overlay opacity",
-      "info": "Darkens the background for better text readability"
-    },
-    {
-      "type": "header",
-      "content": "Cards"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Card background",
-      "default": "#ffffff"
-    },
-    {
-      "type": "select",
-      "id": "image_fit",
-      "label": "Image fit",
-      "options": [
-        {
-          "value": "cover",
-          "label": "Cover"
-        },
-        {
-          "value": "contain",
-          "label": "Contain"
-        }
-      ],
-      "default": "cover",
-      "info": "Cover fills the card, Contain shows the full image"
-    },
-    {
-      "type": "range",
-      "id": "card_tilt",
-      "min": -30,
-      "max": 30,
-      "step": 1,
-      "default": -15,
-      "unit": "°",
-      "label": "Card tilt",
-      "info": "Subtle creative tilt applied to all cards"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "image",
-      "name": "Image",
-      "settings": [
-        {
-          "type": "image_picker",
-          "id": "image",
-          "label": "Image"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Hero Orbit",
-      "category": "Image & media",
-      "blocks": [
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" },
-        { "type": "image" }
-      ]
-    }
-  ]
-}
+  {
+    "name": "Hero Orbit",
+    "tag": "section",
+    "class": "hero-orbit-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Content"
+      },
+      {
+        "type": "text",
+        "id": "title_line_1",
+        "default": "Celestial",
+        "label": "Title line 1"
+      },
+      {
+        "type": "text",
+        "id": "title_line_2",
+        "default": "Visions",
+        "label": "Title line 2"
+      },
+      {
+        "type": "text",
+        "id": "subtitle",
+        "default": "2024",
+        "label": "Subtitle"
+      },
+      {
+        "type": "text",
+        "id": "button_text",
+        "label": "Button text"
+      },
+      {
+        "type": "url",
+        "id": "button_link",
+        "label": "Button link"
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "default": "outline",
+        "options": [
+          {
+            "value": "solid",
+            "label": "Solid"
+          },
+          {
+            "value": "outline",
+            "label": "Outline"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_color",
+        "label": "Button color",
+        "default": "primary",
+        "options": [
+          {
+            "value": "primary",
+            "label": "Primary (accent)"
+          },
+          {
+            "value": "secondary",
+            "label": "Secondary (neutral)"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "button_size",
+        "label": "Button size",
+        "options": [
+          {
+            "value": "small",
+            "label": "Small"
+          },
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "large",
+            "label": "Large"
+          }
+        ],
+        "default": "large"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_scroll_indicator",
+        "default": true,
+        "label": "Show scroll indicator"
+      },
+      {
+        "type": "header",
+        "content": "Animation"
+      },
+      {
+        "type": "select",
+        "id": "animation_style",
+        "label": "Animation style",
+        "options": [
+          {
+            "value": "orbit",
+            "label": "Orbit - Expand from center"
+          },
+          {
+            "value": "cascade",
+            "label": "Cascade - Flip up from below"
+          },
+          {
+            "value": "spiral",
+            "label": "Spiral - Enter from sides"
+          }
+        ],
+        "default": "orbit",
+        "info": "Choose how images animate into the circle"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_rotation",
+        "default": true,
+        "label": "Enable continuous rotation"
+      },
+      {
+        "type": "range",
+        "id": "rotation_speed",
+        "min": 20,
+        "max": 120,
+        "step": 10,
+        "default": 60,
+        "unit": "s",
+        "label": "Rotation speed",
+        "info": "Time for one full rotation"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_flip",
+        "default": true,
+        "label": "Enable random card flips"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "scheme-3"
+      },
+      {
+        "type": "image_picker",
+        "id": "background_image",
+        "label": "Background image"
+      },
+      {
+        "type": "select",
+        "id": "background_image_position",
+        "label": "Background image position",
+        "options": [
+          {
+            "value": "top left",
+            "label": "Top left"
+          },
+          {
+            "value": "top center",
+            "label": "Top center"
+          },
+          {
+            "value": "top right",
+            "label": "Top right"
+          },
+          {
+            "value": "center left",
+            "label": "Center left"
+          },
+          {
+            "value": "center center",
+            "label": "Center"
+          },
+          {
+            "value": "center right",
+            "label": "Center right"
+          },
+          {
+            "value": "bottom left",
+            "label": "Bottom left"
+          },
+          {
+            "value": "bottom center",
+            "label": "Bottom center"
+          },
+          {
+            "value": "bottom right",
+            "label": "Bottom right"
+          }
+        ],
+        "default": "center center"
+      },
+      {
+        "type": "range",
+        "id": "background_image_blur",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "default": 0,
+        "unit": "px",
+        "label": "Background image blur"
+      },
+      {
+        "type": "color",
+        "id": "overlay_color",
+        "default": "#000000",
+        "label": "Overlay color"
+      },
+      {
+        "type": "range",
+        "id": "overlay_opacity",
+        "min": 0,
+        "max": 100,
+        "step": 5,
+        "default": 40,
+        "unit": "%",
+        "label": "Overlay opacity",
+        "info": "Darkens the background for better text readability"
+      },
+      {
+        "type": "header",
+        "content": "Cards"
+      },
+      {
+        "type": "color",
+        "id": "card_background",
+        "label": "Card background",
+        "default": "#ffffff"
+      },
+      {
+        "type": "select",
+        "id": "image_fit",
+        "label": "Image fit",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Cover"
+          },
+          {
+            "value": "contain",
+            "label": "Contain"
+          }
+        ],
+        "default": "cover",
+        "info": "Cover fills the card, Contain shows the full image"
+      },
+      {
+        "type": "range",
+        "id": "card_tilt",
+        "min": -30,
+        "max": 30,
+        "step": 1,
+        "default": -15,
+        "unit": "°",
+        "label": "Card tilt",
+        "info": "Subtle creative tilt applied to all cards"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "image",
+        "name": "Image",
+        "settings": [
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Image"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Hero Orbit",
+        "category": "Image & media",
+        "blocks": [
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          },
+          {
+            "type": "image"
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}

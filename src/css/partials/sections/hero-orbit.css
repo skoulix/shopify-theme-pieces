@@ -1,0 +1,171 @@
+/* ==========================================================================
+   Hero Orbit Section
+   Animation styles: Orbit, Cascade, Spiral
+   ========================================================================== */
+
+@layer components {
+  /* Hero Orbit container */
+  .hero-orbit {
+    @apply relative w-full overflow-hidden;
+    height: 100vh;
+    min-height: 600px;
+    background-color: var(--color-background);
+    color: var(--color-text);
+  }
+
+  /* Background image */
+  .hero-orbit-bg {
+    @apply absolute inset-0 z-0;
+  }
+
+  .hero-orbit-bg img {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Scene container with 3D perspective */
+  .hero-orbit-scene {
+    @apply absolute inset-0 flex items-center justify-center;
+    perspective: 1000px;
+  }
+
+  .hero-orbit-container {
+    @apply relative w-full h-full;
+  }
+
+  .hero-orbit-group {
+    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+    width: 1px;
+    height: 1px;
+    transform-style: preserve-3d;
+  }
+
+  /* Orbit cards */
+  .hero-orbit-card {
+    @apply absolute left-1/2 top-1/2 opacity-0;
+    transform: translate(-50%, -50%) scale(0);
+    will-change: transform, opacity;
+    transform-style: preserve-3d;
+  }
+
+  .hero-orbit-card-inner {
+    @apply rounded-lg shadow-lg overflow-hidden;
+    width: clamp(80px, 15vw, 120px);
+    aspect-ratio: 2 / 3;
+    background: var(--hero-orbit-card-bg, #fff);
+  }
+
+  @media (min-width: 768px) {
+    .hero-orbit-card-inner {
+      width: clamp(100px, 12vw, 140px);
+    }
+  }
+
+  .hero-orbit-card-img {
+    @apply block w-full h-full object-center;
+    object-fit: var(--hero-orbit-image-fit, cover);
+  }
+
+  /* Placeholder SVG styling */
+  .hero-orbit-card-inner svg.placeholder-svg {
+    background: #ffffff !important;
+  }
+
+  .hero-orbit-card-inner svg.placeholder-svg path {
+    fill: #e0e0e0 !important;
+  }
+
+  /* Overlay */
+  .hero-orbit-overlay {
+    @apply absolute inset-0 pointer-events-none z-5;
+    background: var(--hero-orbit-overlay-color, #000);
+    opacity: var(--hero-orbit-overlay-opacity, 0.4);
+  }
+
+  /* Content container */
+  .hero-orbit-content {
+    @apply absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-10;
+    padding: var(--page-padding);
+  }
+
+  .hero-orbit-headings {
+    @apply flex flex-col items-center gap-2;
+  }
+
+  /* Title styling */
+  .hero-orbit-title {
+    @apply m-0 opacity-0;
+    font-size: calc(clamp(3rem, 15vw, 8rem) * var(--heading-font-scale, 1));
+    font-weight: var(--font-heading-weight, 700);
+    letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
+    line-height: 0.85;
+    filter: blur(10px);
+    will-change: opacity, filter;
+  }
+
+  /* Subtitle styling */
+  .hero-orbit-subtitle {
+    @apply opacity-0;
+    font-size: clamp(0.875rem, 2vw, 1.25rem);
+    filter: blur(5px);
+    will-change: opacity, filter;
+  }
+
+  /* CTA button container */
+  .hero-orbit-cta {
+    @apply mt-8 opacity-0 translate-y-5 pointer-events-auto;
+    will-change: opacity, transform;
+  }
+
+  /* Secondary button styling for orbit hero */
+  .hero-orbit-cta .btn--secondary {
+    color: var(--color-text);
+    border-color: var(--color-text);
+  }
+
+  .hero-orbit-cta .btn--secondary::before {
+    background: var(--color-text);
+  }
+
+  .hero-orbit-cta .btn--secondary:hover,
+  .hero-orbit-cta .btn--secondary:hover span,
+  .hero-orbit-cta .btn--secondary:hover i {
+    color: var(--color-background);
+  }
+
+  .hero-orbit-cta .btn--solid-secondary {
+    background: var(--color-text);
+    border-color: var(--color-text);
+    color: var(--color-background);
+  }
+
+  .hero-orbit-cta .btn--solid-secondary::before {
+    background: var(--color-background);
+  }
+
+  .hero-orbit-cta .btn--solid-secondary:hover,
+  .hero-orbit-cta .btn--solid-secondary:hover span,
+  .hero-orbit-cta .btn--solid-secondary:hover i {
+    color: var(--color-text);
+  }
+
+  /* Scroll indicator */
+  .hero-orbit-scroll {
+    @apply absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 pointer-events-auto z-10;
+  }
+
+  .hero-orbit-scroll i {
+    @apply text-xl;
+    animation: hero-orbit-bounce 2s ease-in-out infinite;
+  }
+
+  @keyframes hero-orbit-bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* Loading state */
+  .hero-orbit.is-loading .hero-orbit-card {
+    @apply opacity-0;
+    transform: translate(-50%, -50%) scale(0);
+  }
+}
