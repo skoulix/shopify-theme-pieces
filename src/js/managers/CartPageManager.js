@@ -12,6 +12,7 @@ class CartPageManager {
     this.isInitialized = false;
     this.isReady = false;
     this.unsubscribe = null;
+    this.hasRenderedOnce = false;
   }
 
   /**
@@ -45,9 +46,13 @@ class CartPageManager {
       this.wrapper.classList.add('is-updating');
     } else {
       this.wrapper.classList.remove('is-updating');
-      // Only re-render after initial animations are complete
-      if (cart && this.isReady) {
+      // Only re-render after initial page load (skip first render to avoid flash)
+      if (cart && this.isReady && this.hasRenderedOnce) {
         this.render();
+      }
+      // Mark that we've seen the first state change
+      if (!this.hasRenderedOnce) {
+        this.hasRenderedOnce = true;
       }
     }
   }
@@ -197,6 +202,8 @@ class CartPageManager {
                   alt="${item.title}"
                   class="w-full h-full object-cover"
                   loading="lazy"
+                  fetchpriority="low"
+                  decoding="async"
                 >
               </a>
             ` : ''}
