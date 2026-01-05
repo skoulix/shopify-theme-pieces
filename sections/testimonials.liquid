@@ -177,7 +177,7 @@
     // Announce slide change to screen readers
     const statusEl = section.querySelector('[data-testimonials-status]');
     if (statusEl) {
-      statusEl.textContent = `{{ 'accessibility.testimonial_x_of_y' | t: current: '${index + 1}', total: '${totalSlides}' | default: 'Testimonial ${index + 1} of ${totalSlides}' }}`;
+      statusEl.textContent = '{{ "accessibility.testimonial_x_of_y" | t }}'.replace('{{ current }}', index + 1).replace('{{ total }}', totalSlides);
     }
   }
 

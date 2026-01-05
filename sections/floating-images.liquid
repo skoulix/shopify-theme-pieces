@@ -91,11 +91,10 @@
       {% endif %}
 
       {% if section.settings.button_text != blank %}
-        {%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}
         <div class="mt-8" data-tween data-tween-type="fade-up">
           <a
             href="{{ section.settings.button_link | default: '#' }}"
-            class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}"
+            class="btn {%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}"
           >
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>

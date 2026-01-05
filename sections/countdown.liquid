@@ -33,7 +33,7 @@
   endif
 
   -%}
-{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}
+{%- capture btn_class -%}{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{%- endcapture -%}
 
 {% case design %}
 {% when 'hero' %}

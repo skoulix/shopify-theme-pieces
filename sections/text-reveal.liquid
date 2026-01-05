@@ -74,8 +74,7 @@
           <i class="ph ph-arrow-right"></i>
         </a>
       {% else %}
-        {%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}
-        <a href="{{ section.settings.button_link }}" class="btn {{ btn_class }}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} section-cta" data-text-reveal-cta>
+        <a href="{{ section.settings.button_link }}" class="btn {%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} section-cta" data-text-reveal-cta>
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>

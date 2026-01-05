@@ -256,10 +256,9 @@
 
             {% if block.settings.button_label != blank and block.settings.button_link != blank %}
               <div class="slideshow__cta">
-                {%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}
                 <a
                   href="{{ block.settings.button_link }}"
-                  class="btn {{ btn_class }}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
+                  class="btn {%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
                 >
                   <span>{{ block.settings.button_label }}</span>
                 </a>
@@ -599,7 +598,7 @@
         // Announce slide change to screen readers
         const statusEl = section.querySelector('[data-slideshow-status]');
         if (statusEl) {
-          statusEl.textContent = `{{ 'accessibility.slide_x_of_y' | t: current: '${index + 1}', total: '${totalSlides}' }}`;
+          statusEl.textContent = '{{ "accessibility.slide_x_of_y" | t }}'.replace('{{ current }}', index + 1).replace('{{ total }}', totalSlides);
         }
 
         // Reset progress bar

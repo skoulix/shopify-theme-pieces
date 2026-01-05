@@ -1,35 +1,32 @@
 {%- comment -%}
   Button Class Helper
-  Calculates the appropriate button class based on style and color settings.
+  Calculates and outputs the appropriate button class based on style and color settings.
 
   Usage:
-  {% render 'button-class', style: section.settings.button_style, color: section.settings.button_color %}
-
-  Output: Sets `btn_class` variable in parent scope with the appropriate class.
+  <a class="btn {% render 'button-class', style: section.settings.button_style, color: section.settings.button_color %}">
 
   Parameters:
   - style: 'solid' or 'outline'
   - color: 'primary' or 'secondary'
 
-  Result Classes:
+  Output Classes:
   - solid + primary = btn--primary
   - solid + secondary = btn--solid-secondary
   - outline + primary = btn--outline
   - outline + secondary = btn--secondary
 {%- endcomment -%}
-
 {%- liquid
   if style == 'outline'
     if color == 'secondary'
-      assign btn_class = 'btn--secondary'
+      echo 'btn--secondary'
     else
-      assign btn_class = 'btn--outline'
+      echo 'btn--outline'
     endif
   else
     if color == 'secondary'
-      assign btn_class = 'btn--solid-secondary'
+      echo 'btn--solid-secondary'
     else
-      assign btn_class = 'btn--primary'
+      echo 'btn--primary'
     endif
   endif
 -%}
