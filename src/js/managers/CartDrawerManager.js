@@ -36,6 +36,7 @@ class CartDrawerManager {
     this.panel = null;
     this.isOpen = false;
     this.isAnimating = false;
+    this.isRendering = false;
     this.noteTimeout = null;
     this.boundHandlers = {};
     this.unsubscribe = null;
@@ -74,11 +75,11 @@ class CartDrawerManager {
     } else {
       this.drawer.classList.remove('is-loading');
       this.drawer.setAttribute('aria-busy', 'false');
-    }
 
-    // Re-render if drawer is open
-    if (this.isOpen && cart) {
-      this.render();
+      // Re-render only when update completes (not during) and drawer is open
+      if (this.isOpen && cart && !this.isRendering) {
+        this.render();
+      }
     }
   }
 
@@ -279,13 +280,9 @@ class CartDrawerManager {
       this.focusTrap = createFocusTrap(this.panel);
     }, DURATION.normal);
 
-    // Fetch fresh data in background and re-render if needed (non-blocking)
+    // Fetch fresh data in background (onCartStateChange will handle re-render)
     if (!skipFetch) {
-      cartState.fetch().then(() => {
-        if (this.isOpen) {
-          this.render();
-        }
-      });
+      cartState.fetch();
     }
   }
 
@@ -343,7 +340,9 @@ class CartDrawerManager {
    * This ensures compare-at prices are properly rendered via Liquid
    */
   async render() {
-    if (!this.drawer) return;
+    if (!this.drawer || this.isRendering) return;
+
+    this.isRendering = true;
 
     try {
       // Use Section Rendering API for proper Liquid rendering (compare-at prices, etc.)
@@ -380,6 +379,8 @@ class CartDrawerManager {
     } catch {
       // Fallback to JS rendering on error
       this.renderFallback();
+    } finally {
+      this.isRendering = false;
     }
   }
 

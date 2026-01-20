@@ -39,4 +39,23 @@
     border-top-right-radius: max(0px, calc(var(--input-radius) - var(--input-border-width)));
     border-bottom-right-radius: max(0px, calc(var(--input-radius) - var(--input-border-width)));
   }
+
+  /* Loading spinner - hidden by default, visible when cart is loading */
+  #cart-drawer .cart-drawer__spinner {
+    display: inline-flex;
+    align-items: center;
+    opacity: 0;
+    transition: opacity 0.2s ease;
+    color: var(--color-text-secondary);
+  }
+
+  #cart-drawer.is-loading .cart-drawer__spinner,
+  #cart-drawer.is-updating .cart-drawer__spinner {
+    opacity: 1;
+  }
+
+  #cart-drawer .cart-drawer__spinner i {
+    font-size: 1rem;
+    animation: spin 0.6s linear infinite;
+  }
 }

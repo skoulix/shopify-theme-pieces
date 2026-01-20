@@ -84,7 +84,7 @@
      ========================================================================== */
 
   .product-price-display {
-    @apply font-light tracking-wide text-(--color-text);
+    @apply flex items-center flex-wrap gap-2 font-light tracking-wide text-(--color-text);
     font-size: clamp(1rem, 5cqw, 1.75rem);
   }
 
@@ -99,7 +99,11 @@
   }
 
   .product-price-display .compare-price {
-    @apply text-[0.75em] line-through opacity-60 mr-2;
+    @apply text-[0.75em] line-through opacity-60;
+  }
+
+  .product-price-display .badge {
+    @apply text-xs;
   }
 
   /* ==========================================================================

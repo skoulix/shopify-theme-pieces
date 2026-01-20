@@ -18,10 +18,15 @@
   <div class="drawer-backdrop group-[.is-open]:opacity-100" data-cart-drawer-close></div>
 
   {%- comment -%} Drawer Panel {%- endcomment -%}
-  <div class="color-scheme-1 absolute top-0 right-0 w-full max-w-[420px] h-full bg-(--color-background) flex flex-col translate-x-full transition-transform duration-300 ease-out group-[.is-open]:translate-x-0 shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-(--color-border)" data-cart-drawer-panel>
+  <div class="color-scheme-1 absolute top-0 right-0 w-full max-w-[460px] h-full bg-(--color-background) flex flex-col translate-x-full transition-transform duration-300 ease-out group-[.is-open]:translate-x-0 shadow-[-4px_0_24px_rgba(0,0,0,0.15)] border-l border-(--color-border)" data-cart-drawer-panel>
     {%- comment -%} Header {%- endcomment -%}
     <div class="flex items-center gap-3 px-6 py-5 border-b border-(--color-border)">
-      <h2 class="flex-1 drawer-title text-xl m-0">{{ 'cart.title' | t }}</h2>
+      <h2 class="flex-1 drawer-title text-xl m-0 flex items-center gap-3">
+        {{ 'cart.title' | t }}
+        <span class="cart-drawer__spinner" aria-hidden="true">
+          <i class="ph ph-circle-notch text-base"></i>
+        </span>
+      </h2>
       <button type="button" class="drawer-close" data-cart-drawer-close>
         <span class="sr-only">{{ 'cart.close' | t }}</span>
         <i class="ph ph-x text-xl"></i>

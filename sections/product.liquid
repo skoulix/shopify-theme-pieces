@@ -220,6 +220,12 @@
                   <span class="compare-price" data-compare-price>{{ current_variant.compare_at_price | money }}</span>
                 {% endif %}
                 <span data-product-price>{{ current_variant.price | money }}</span>
+                {% if settings.show_sale_badge %}
+                  <span class="badge badge--sale{% unless current_variant.compare_at_price > current_variant.price %} hidden{% endunless %}" data-sale-badge>
+                    {%- assign save_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+                    -<span data-sale-percent>{{ save_percent }}</span>%
+                  </span>
+                {% endif %}
                 {%- if current_variant.unit_price_measurement -%}
                   <div class="unit-price text-sm text-(--color-text-secondary) mt-1" data-unit-price>
                     <span class="visually-hidden">{{ 'accessibility.unit_price_separator' | t }}</span>
@@ -963,6 +969,19 @@
         compareEl.style.display = '';
       } else {
         compareEl.style.display = 'none';
+      }
+    }
+
+    // Update sale badge
+    const saleBadge = section.querySelector('[data-sale-badge]');
+    if (saleBadge) {
+      if (variant.compare_at_price && variant.compare_at_price > variant.price) {
+        const savePercent = Math.round((variant.compare_at_price - variant.price) * 100 / variant.compare_at_price);
+        const percentEl = saleBadge.querySelector('[data-sale-percent]');
+        if (percentEl) percentEl.textContent = savePercent;
+        saleBadge.classList.remove('hidden');
+      } else {
+        saleBadge.classList.add('hidden');
       }
     }
 

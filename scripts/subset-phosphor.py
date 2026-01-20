@@ -54,6 +54,7 @@ USED_ICONS = [
     "plus",
     "squares-four",
     "spinner",
+    "circle-notch",
     "trash",
     "x",
     # Media
