@@ -12,11 +12,6 @@
 -%}
 
 <style>
-  .related-products-{{ section.id }} .nav-btn:hover:not(:disabled) {
-    background-color: var(--color-text);
-    color: var(--color-background);
-    border-color: var(--color-text);
-  }
   .related-products-{{ section.id }} .skeleton-bg {
     background-color: var(--color-text);
     opacity: 0.1;
@@ -50,23 +45,23 @@
       </div>
 
       {%- comment -%} Navigation {%- endcomment -%}
-      <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
+      <div class="slider-nav {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
         <button
           type="button"
-          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="slider-nav-btn"
           data-carousel-prev
           aria-label="{{ 'accessibility.previous_products' | t }}"
           disabled
         >
-          <i class="ph ph-arrow-left text-xl"></i>
+          <i class="ph ph-arrow-left"></i>
         </button>
         <button
           type="button"
-          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="slider-nav-btn"
           data-carousel-next
           aria-label="{{ 'accessibility.next_products' | t }}"
         >
-          <i class="ph ph-arrow-right text-xl"></i>
+          <i class="ph ph-arrow-right"></i>
         </button>
       </div>
     </div>
@@ -309,10 +304,15 @@
       "default": "Related Products"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "label": "Header alignment",
-      "default": "left"
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "range",

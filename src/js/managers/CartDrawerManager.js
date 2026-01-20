@@ -254,20 +254,8 @@ class CartDrawerManager {
     // Store the element that triggered the open for focus restoration
     this.previouslyFocused = document.activeElement;
 
-    // Add loading cursor to cart toggle buttons as feedback while fetching
-    const cartToggles = document.querySelectorAll('[data-cart-drawer-toggle]');
-
-    if (!skipFetch) {
-      cartToggles.forEach(btn => btn.style.cursor = 'wait');
-
-      // Fetch fresh cart data first, then open the drawer
-      await cartState.fetch();
-
-      // Remove loading cursor
-      cartToggles.forEach(btn => btn.style.cursor = '');
-    }
-
-    // Render the cart content before opening
+    // Open drawer immediately with cached data for instant feedback
+    // Render the cart content before opening (uses cached cart data)
     this.render();
 
     // Update state - use inert instead of aria-hidden to properly handle focus
@@ -290,6 +278,15 @@ class CartDrawerManager {
       // Create focus trap for accessibility
       this.focusTrap = createFocusTrap(this.panel);
     }, DURATION.normal);
+
+    // Fetch fresh data in background and re-render if needed (non-blocking)
+    if (!skipFetch) {
+      cartState.fetch().then(() => {
+        if (this.isOpen) {
+          this.render();
+        }
+      });
+    }
   }
 
   /**
