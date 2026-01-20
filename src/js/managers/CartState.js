@@ -101,23 +101,39 @@ class CartState {
 
   /**
    * Update cart line quantity
+   * @param {number} line - Line item index (1-based)
+   * @param {number} quantity - New quantity
+   * @param {string[]} [sections] - Optional section IDs to fetch rendered HTML
+   * @returns {Promise<{cart: Object, sections?: Object}>} Cart data and optional section HTML
    */
-  async updateLine(line, quantity) {
+  async updateLine(line, quantity, sections = []) {
     this.isUpdating = true;
     this.notify();
 
     const defaultError = window.cartStrings?.error || 'Could not update cart';
 
     try {
+      // Build request body - include sections for Section Rendering API (like Dawn theme)
+      const body = { line, quantity };
+      if (sections.length > 0) {
+        body.sections = sections;
+        body.sections_url = window.location.pathname;
+      }
+
       const response = await this.fetchWithTimeout('/cart/change.js', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ line, quantity })
+        body: JSON.stringify(body)
       });
 
       if (response.ok) {
-        this.cart = await response.json();
-        document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart: this.cart } }));
+        const data = await response.json();
+        // Extract cart data (sections are included in the same response)
+        this.cart = data;
+        document.dispatchEvent(new CustomEvent('cart:updated', {
+          detail: { cart: this.cart, sections: data.sections }
+        }));
+        return { cart: this.cart, sections: data.sections };
       } else {
         await this.handleErrorResponse(response, defaultError);
       }
@@ -132,7 +148,7 @@ class CartState {
       this.notify();
     }
 
-    return this.cart;
+    return { cart: this.cart };
   }
 
   /**

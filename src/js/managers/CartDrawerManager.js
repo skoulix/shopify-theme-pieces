@@ -63,7 +63,8 @@ class CartDrawerManager {
   }
 
   /**
-   * Handle cart state changes
+   * Handle cart state changes - only manages loading state
+   * Actual rendering is handled by updateQuantity with Section Rendering API
    */
   onCartStateChange(cart, isUpdating) {
     if (!this.drawer) return;
@@ -75,11 +76,6 @@ class CartDrawerManager {
     } else {
       this.drawer.classList.remove('is-loading');
       this.drawer.setAttribute('aria-busy', 'false');
-
-      // Re-render only when update completes (not during) and drawer is open
-      if (this.isOpen && cart && !this.isRendering) {
-        this.render();
-      }
     }
   }
 
@@ -200,7 +196,8 @@ class CartDrawerManager {
       if (plusBtn) quantity++;
       if (removeBtn) quantity = 0;
 
-      await cartState.updateLine(line, quantity);
+      // Use Section Rendering API for efficient update (like Dawn theme)
+      await this.updateQuantity(line, quantity);
 
       // Announce change to screen readers
       if (removeBtn || quantity === 0) {
@@ -218,7 +215,68 @@ class CartDrawerManager {
     if (e.target.matches('[data-quantity-input]')) {
       const line = parseInt(e.target.dataset.line);
       const quantity = parseInt(e.target.value) || 0;
-      await cartState.updateLine(line, quantity);
+      // Use Section Rendering API for efficient update (like Dawn theme)
+      await this.updateQuantity(line, quantity);
+    }
+  }
+
+  /**
+   * Update quantity using Section Rendering API (like Dawn theme)
+   * This fetches cart data AND pre-rendered HTML in a single request
+   */
+  async updateQuantity(line, quantity) {
+    // Request both cart-drawer section and cart-icon-bubble in one call
+    const sections = ['cart-drawer', 'cart-icon-bubble'];
+    const result = await cartState.updateLine(line, quantity, sections);
+
+    // Update drawer with pre-rendered section HTML if available
+    if (result.sections?.['cart-drawer']) {
+      this.renderFromSectionHtml(result.sections['cart-drawer']);
+    }
+
+    // Update cart icon bubble if available
+    if (result.sections?.['cart-icon-bubble']) {
+      const iconBubble = document.getElementById('cart-icon-bubble');
+      if (iconBubble) {
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(result.sections['cart-icon-bubble'], 'text/html');
+        const newIconBubble = doc.querySelector('.shopify-section');
+        if (newIconBubble) {
+          iconBubble.innerHTML = newIconBubble.innerHTML;
+        }
+      }
+    }
+  }
+
+  /**
+   * Render cart drawer from pre-rendered section HTML
+   */
+  renderFromSectionHtml(html) {
+    if (!this.drawer) return;
+
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(html, 'text/html');
+
+    // Extract content and footer from the section HTML
+    const newContent = doc.querySelector('[data-cart-drawer-content]');
+    const newFooter = doc.querySelector('[data-cart-drawer-footer]');
+
+    const content = this.drawer.querySelector('[data-cart-drawer-content]');
+    const footer = this.drawer.querySelector('[data-cart-drawer-footer]');
+
+    if (newContent && content) {
+      content.replaceChildren(...newContent.cloneNode(true).childNodes);
+    }
+
+    if (newFooter) {
+      if (footer) {
+        footer.outerHTML = newFooter.outerHTML;
+      } else {
+        this.panel.insertAdjacentHTML('beforeend', newFooter.outerHTML);
+      }
+    } else if (footer) {
+      // No footer in new content (empty cart)
+      footer.remove();
     }
   }
 
@@ -257,6 +315,11 @@ class CartDrawerManager {
 
     // Open drawer immediately with cached data for instant feedback
     // Render the cart content before opening (uses cached cart data)
+    // Store current cart token to prevent duplicate render when fetch completes with same data
+    const currentCart = cartState.get();
+    if (currentCart?.token) {
+      this.lastCartToken = currentCart.token;
+    }
     this.render();
 
     // Update state - use inert instead of aria-hidden to properly handle focus
