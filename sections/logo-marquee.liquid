@@ -55,7 +55,7 @@
   data-marquee-speed="{{ section.settings.speed }}"
   data-marquee-scroll-aware="{{ section.settings.scroll_aware }}"
   data-marquee-scroll-speed="{{ section.settings.scroll_speed }}"
-  data-marquee-status="running"
+  data-marquee-status="normal"
 >
   <div class="{{ container_class }}">
     {% if section.settings.label != blank %}
@@ -117,13 +117,16 @@
   const scrollSpeedMultiplier = parseFloat(section.dataset.marqueeScrollSpeed) || 2;
 
   let tween = null;
-  let scrollDirection = 1;
   let isHovered = false;
+  // Direction multiplier: -1 = left (content moves left/negative x), 1 = right (content moves right/positive x)
+  // Setting "left" means visual movement to left, setting "right" means visual movement to right
+  let currentDirection = direction === 1 ? 1 : -1; // right setting = 1, left setting = -1
 
   function initMarquee() {
     const gsap = window.pieces?.gsap || window.gsap;
+    const ScrollTrigger = window.pieces?.ScrollTrigger || window.ScrollTrigger;
 
-    if (!gsap) {
+    if (!gsap || !ScrollTrigger) {
       requestAnimationFrame(initMarquee);
       return;
     }
@@ -150,132 +153,161 @@
       });
     }
 
-    // Create the infinite scroll animation
-    const duration = baseSpeed;
-    const startX = direction === -1 ? 0 : -oneSetWidth;
-    const endX = direction === -1 ? -oneSetWidth : 0;
+    // Create wrap function for seamless looping
+    const wrapX = gsap.utils.wrap(-oneSetWidth, 0);
 
+    // Set initial position based on direction
+    // For right direction (1), start at -oneSetWidth so we can move towards 0 (positive movement)
+    // For left direction (-1), start at 0 so we can move towards -oneSetWidth (negative movement)
+    const startX = currentDirection === 1 ? -oneSetWidth : 0;
     gsap.set(track, { x: startX });
 
-    tween = gsap.to(track, {
-      x: endX,
-      duration: duration,
-      ease: 'none',
-      repeat: -1,
-      modifiers: {
-        x: gsap.utils.unitize(x => {
-          const val = parseFloat(x) % oneSetWidth;
-          return direction === -1 ? val : (val > 0 ? val - oneSetWidth : val);
-        })
-      }
-    });
+    // Speed in pixels per second
+    const pixelsPerSecond = oneSetWidth / baseSpeed;
+    let currentX = startX;
 
-    // Scroll-aware direction and speed (only if enabled)
+    // Use gsap.ticker for smooth continuous animation
+    function animate(time, deltaTime) {
+      if (!tween || tween.paused) return;
+
+      // Calculate movement based on direction and delta time
+      const movement = (pixelsPerSecond * deltaTime / 1000) * currentDirection;
+      currentX += movement;
+
+      // Wrap the position
+      currentX = wrapX(currentX);
+
+      gsap.set(track, { x: currentX });
+    }
+
+    // Create a simple object to control play/pause state
+    tween = {
+      paused: false,
+      pause: function() { this.paused = true; },
+      play: function() { this.paused = false; },
+      kill: function() { gsap.ticker.remove(animate); }
+    };
+
+    gsap.ticker.add(animate);
+
+    // Scroll-aware direction inversion and acceleration (only if enabled)
     if (scrollAware) {
-      let scrollTimeout;
+      const trackWrapper = section.querySelector('.logo-marquee-track-wrapper');
+      // Store the initial direction for reference
+      const initialDirection = currentDirection;
+      let lastScrollY = window.scrollY;
+      let scrollDelta = 0;
+      const scrollThreshold = 50; // Minimum scroll distance to trigger direction change
+      let currentScrollState = null; // null = initial, 'down' = scrolling down, 'up' = scrolling up
 
-      function handleScrollUpdate(velocity) {
-        if (isHovered) return;
+      // Direction inversion on scroll
+      ScrollTrigger.create({
+        trigger: section,
+        start: 'top bottom',
+        end: 'bottom top',
+        onUpdate: function(self) {
+          if (isHovered || !tween) return;
 
-        // Determine scroll direction (positive = scrolling down, negative = scrolling up)
-        const isScrollingDown = velocity > 0.1;
-        const isScrollingUp = velocity < -0.1;
-
-        // Calculate speed multiplier based on scroll velocity
-        const absVelocity = Math.abs(velocity);
-        const scrollSpeed = Math.min(absVelocity / 2, scrollSpeedMultiplier);
-        const timeScale = 1 + scrollSpeed;
-
-        // Direction logic:
-        // - When direction is "left" (-1): scroll down = move left (positive timeScale), scroll up = move right (negative timeScale)
-        // - When direction is "right" (1): scroll down = move right (negative timeScale), scroll up = move left (positive timeScale)
-        let finalTimeScale;
-        if (isScrollingDown) {
-          finalTimeScale = direction === -1 ? timeScale : -timeScale;
-        } else if (isScrollingUp) {
-          finalTimeScale = direction === -1 ? -timeScale : timeScale;
-        } else {
-          return; // No significant scroll, don't change
-        }
-
-        // Apply direction and speed
-        gsap.to(tween, {
-          timeScale: finalTimeScale,
-          duration: 0.2,
-          ease: 'power2.out',
-          overwrite: true
-        });
-
-        // Return to normal speed when scrolling stops
-        clearTimeout(scrollTimeout);
-        scrollTimeout = setTimeout(function() {
-          if (!isHovered) {
-            gsap.to(tween, {
-              timeScale: direction === -1 ? 1 : -1,
-              duration: 0.5,
-              ease: 'power2.out'
-            });
-          }
-        }, 150);
-      }
-
-      // Try to use Lenis velocity (more accurate with smooth scroll)
-      const lenis = window.pieces?.lenis?.lenis;
-      if (lenis) {
-        lenis.on('scroll', function(e) {
-          handleScrollUpdate(e.velocity);
-        });
-      } else {
-        // Fallback to native scroll velocity calculation
-        let lastScrollY = window.scrollY;
-        let lastScrollTime = performance.now();
-
-        window.addEventListener('scroll', function() {
-          const now = performance.now();
+          // Calculate actual scroll delta
           const currentScrollY = window.scrollY;
-          const deltaY = currentScrollY - lastScrollY;
-          const deltaTime = now - lastScrollTime;
+          const delta = currentScrollY - lastScrollY;
+          lastScrollY = currentScrollY;
 
-          let velocity = 0;
-          if (deltaTime > 0) {
-            velocity = (deltaY / deltaTime) * 10; // Scale to match Lenis velocity range
+          // Ignore tiny movements (Lenis settling, momentum)
+          if (Math.abs(delta) < 3) return;
+
+          // Accumulate scroll in same direction, reset if direction changes
+          if ((delta > 0 && scrollDelta >= 0) || (delta < 0 && scrollDelta <= 0)) {
+            scrollDelta += delta;
+          } else {
+            // Direction changed, reset delta
+            scrollDelta = delta;
           }
 
-          lastScrollY = currentScrollY;
-          lastScrollTime = now;
+          // Only trigger direction change after significant scroll
+          if (Math.abs(scrollDelta) < scrollThreshold) return;
 
-          handleScrollUpdate(velocity);
-        }, { passive: true });
+          // Determine new scroll state
+          const newScrollState = scrollDelta > 0 ? 'down' : 'up';
+
+          // Only change if scroll state actually changed
+          if (currentScrollState === newScrollState) return;
+          currentScrollState = newScrollState;
+          scrollDelta = 0; // Reset after state change
+
+          // Calculate new direction:
+          // - Scroll down = NORMAL (same as initial)
+          // - Scroll up = INVERTED (opposite of initial)
+          let newDirection;
+          if (newScrollState === 'down') {
+            // Normal: same as initial direction
+            newDirection = initialDirection;
+            section.dataset.marqueeStatus = 'normal';
+          } else {
+            // Inverted: flip the initial direction
+            newDirection = -initialDirection;
+            section.dataset.marqueeStatus = 'inverted';
+          }
+
+          // Only change if direction actually changes
+          if (currentDirection === newDirection) return;
+
+          currentDirection = newDirection;
+        }
+      });
+
+      // Scroll acceleration effect using scrub
+      if (trackWrapper) {
+        const scrollAcceleration = scrollSpeedMultiplier * 5; // Convert 1-5 to vw amount
+
+        // Set wrapper styles for scroll effect
+        trackWrapper.style.marginLeft = -scrollAcceleration + 'vw';
+        trackWrapper.style.width = (scrollAcceleration * 2) + 100 + 'vw';
+
+        // Create scrubbed timeline for scroll acceleration
+        gsap.timeline({
+          scrollTrigger: {
+            trigger: section,
+            start: 'top bottom',
+            end: 'bottom top',
+            scrub: 0
+          }
+        }).fromTo(trackWrapper,
+          { x: (direction === -1 ? scrollAcceleration : -scrollAcceleration) + 'vw' },
+          { x: (direction === -1 ? -scrollAcceleration : scrollAcceleration) + 'vw', ease: 'none' }
+        );
       }
     }
 
     // Pause on hover
+    let statusBeforeHover = section.dataset.marqueeStatus || 'normal';
+
     section.addEventListener('mouseenter', function() {
+      statusBeforeHover = section.dataset.marqueeStatus || 'normal';
       isHovered = true;
       section.dataset.marqueeStatus = 'paused';
-      gsap.to(tween, { timeScale: 0, duration: 0.5, ease: 'power2.out' });
+      tween.pause();
     });
 
     section.addEventListener('mouseleave', function() {
       isHovered = false;
-      section.dataset.marqueeStatus = 'running';
-      gsap.to(tween, {
-        timeScale: direction === -1 ? 1 : -1,
-        duration: 0.5,
-        ease: 'power2.out'
-      });
+      section.dataset.marqueeStatus = statusBeforeHover;
+      tween.play();
     });
 
     // IntersectionObserver for play/pause optimization
+    let statusBeforeOffscreen = section.dataset.marqueeStatus || 'normal';
+
     const observer = new IntersectionObserver(function(entries) {
       entries.forEach(function(entry) {
         if (entry.isIntersecting) {
           if (!isHovered && tween) {
             tween.play();
-            section.dataset.marqueeStatus = 'running';
+            section.dataset.marqueeStatus = statusBeforeOffscreen;
           }
         } else {
           if (tween) {
+            statusBeforeOffscreen = section.dataset.marqueeStatus || 'normal';
             tween.pause();
             section.dataset.marqueeStatus = 'paused';
           }
