@@ -51,8 +51,11 @@
   class="logo-marquee section-padding-sm color-{{ section.settings.color_scheme }}"
   style="--logo-marquee-align: {{ section.settings.header_alignment }}; --logo-marquee-header-padding: {{ header_padding }}; --logo-marquee-max-width: {{ wrapper_max_width }}; --logo-marquee-margin: {{ wrapper_margin }}; --logo-marquee-padding: {{ wrapper_padding }}; --logo-marquee-mask-offset: {{ mask_offset }}; --logo-marquee-height: {{ section.settings.logo_height }}px; --logo-marquee-max-logo-width: {{ section.settings.logo_max_width }}px; --logo-marquee-opacity: {{ opacity }}; --logo-marquee-filter: {{ filter_value | default: 'none' }}; --logo-marquee-filter-hover: {{ filter_hover_value }};"
   data-logo-marquee="{{ section.id }}"
-  data-direction="{{ section.settings.direction }}"
-  data-speed="{{ section.settings.speed }}"
+  data-marquee-direction="{{ section.settings.direction }}"
+  data-marquee-speed="{{ section.settings.speed }}"
+  data-marquee-scroll-aware="{{ section.settings.scroll_aware }}"
+  data-marquee-scroll-speed="{{ section.settings.scroll_speed }}"
+  data-marquee-status="running"
 >
   <div class="{{ container_class }}">
     {% if section.settings.label != blank %}
@@ -100,117 +103,190 @@
   if (!section || section.dataset.marqueeInitialized) return;
   section.dataset.marqueeInitialized = 'true';
 
-  const track = section.querySelector('[data-logo-track]');
-  if (!track) return;
-
-  const direction = section.dataset.direction === 'right' ? 1 : -1;
-  const speed = parseInt(section.dataset.speed, 10) || 30;
-
   // Check if animations should run
   const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
   if (!shouldAnimate) return;
 
+  const track = section.querySelector('[data-logo-track]');
+  if (!track) return;
+
+  // Configuration from data attributes
+  const direction = section.dataset.marqueeDirection === 'right' ? 1 : -1;
+  const baseSpeed = parseFloat(section.dataset.marqueeSpeed) || 30;
+  const scrollAware = section.dataset.marqueeScrollAware === 'true';
+  const scrollSpeedMultiplier = parseFloat(section.dataset.marqueeScrollSpeed) || 2;
+
   let tween = null;
-  let isInitialized = false;
+  let scrollDirection = 1;
+  let isHovered = false;
 
   function initMarquee() {
-    // Re-query section in case DOM was replaced
-    const currentSection = document.querySelector(`[data-logo-marquee="${sectionId}"]`);
-    const currentTrack = currentSection?.querySelector('[data-logo-track]');
-    if (!currentSection || !currentTrack) return;
-
-    // Kill existing animation
-    if (tween) {
-      tween.kill();
-      tween = null;
-    }
-
     const gsap = window.pieces?.gsap || window.gsap;
+
     if (!gsap) {
-      setTimeout(initMarquee, 100);
+      requestAnimationFrame(initMarquee);
       return;
     }
 
-    const items = currentTrack.querySelectorAll('.logo-marquee-item');
+    const items = track.querySelectorAll('.logo-marquee-item');
     if (items.length === 0) return;
 
-    // Only clone items on first init (check if already has clones)
-    if (!isInitialized) {
-      // Calculate total width of one set of items
-      let totalWidth = 0;
+    // Calculate total width of one set of items
+    let oneSetWidth = 0;
+    items.forEach(item => {
+      oneSetWidth += item.offsetWidth;
+    });
+
+    // Clone items to fill the track for seamless loop
+    const viewportWidth = window.innerWidth;
+    const clonesNeeded = Math.ceil((viewportWidth * 3) / oneSetWidth) + 1;
+
+    for (let i = 0; i < clonesNeeded; i++) {
       items.forEach(item => {
-        totalWidth += item.offsetWidth;
+        const clone = item.cloneNode(true);
+        clone.setAttribute('aria-hidden', 'true');
+        clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
+        track.appendChild(clone);
       });
-
-      // Clone items to fill the track for seamless loop
-      const viewportWidth = window.innerWidth;
-      const clonesNeeded = Math.ceil((viewportWidth * 2) / totalWidth) + 1;
-
-      for (let i = 0; i < clonesNeeded; i++) {
-        items.forEach(item => {
-          const clone = item.cloneNode(true);
-          clone.setAttribute('aria-hidden', 'true');
-          clone.querySelectorAll('a').forEach(a => a.setAttribute('tabindex', '-1'));
-          currentTrack.appendChild(clone);
-        });
-      }
-    }
-
-    // Calculate total width after cloning
-    let totalWidth = 0;
-    const allItems = currentTrack.querySelectorAll('.logo-marquee-item');
-    // Only count original items (first set)
-    const originalCount = items.length;
-    for (let i = 0; i < originalCount; i++) {
-      totalWidth += allItems[i].offsetWidth;
     }
 
     // Create the infinite scroll animation
-    // For left scroll (direction -1): animate from 0 to -totalWidth, wrap using negative modulo
-    // For right scroll (direction 1): start at -totalWidth and animate to 0, wrap using negative modulo
-    if (direction === 1) {
-      // Right scroll: start offset, animate towards 0
-      gsap.set(currentTrack, { x: -totalWidth });
-      tween = gsap.to(currentTrack, {
-        x: 0,
-        duration: speed,
-        ease: 'none',
-        repeat: -1,
-        modifiers: {
-          x: gsap.utils.unitize(x => {
-            const val = parseFloat(x) % totalWidth;
-            return val > 0 ? val - totalWidth : val;
-          })
+    const duration = baseSpeed;
+    const startX = direction === -1 ? 0 : -oneSetWidth;
+    const endX = direction === -1 ? -oneSetWidth : 0;
+
+    gsap.set(track, { x: startX });
+
+    tween = gsap.to(track, {
+      x: endX,
+      duration: duration,
+      ease: 'none',
+      repeat: -1,
+      modifiers: {
+        x: gsap.utils.unitize(x => {
+          const val = parseFloat(x) % oneSetWidth;
+          return direction === -1 ? val : (val > 0 ? val - oneSetWidth : val);
+        })
+      }
+    });
+
+    // Scroll-aware direction and speed (only if enabled)
+    if (scrollAware) {
+      let scrollTimeout;
+
+      function handleScrollUpdate(velocity) {
+        if (isHovered) return;
+
+        // Determine scroll direction (positive = scrolling down, negative = scrolling up)
+        const isScrollingDown = velocity > 0.1;
+        const isScrollingUp = velocity < -0.1;
+
+        // Calculate speed multiplier based on scroll velocity
+        const absVelocity = Math.abs(velocity);
+        const scrollSpeed = Math.min(absVelocity / 2, scrollSpeedMultiplier);
+        const timeScale = 1 + scrollSpeed;
+
+        // Direction logic:
+        // - When direction is "left" (-1): scroll down = move left (positive timeScale), scroll up = move right (negative timeScale)
+        // - When direction is "right" (1): scroll down = move right (negative timeScale), scroll up = move left (positive timeScale)
+        let finalTimeScale;
+        if (isScrollingDown) {
+          finalTimeScale = direction === -1 ? timeScale : -timeScale;
+        } else if (isScrollingUp) {
+          finalTimeScale = direction === -1 ? -timeScale : timeScale;
+        } else {
+          return; // No significant scroll, don't change
         }
-      });
-    } else {
-      // Left scroll (default): animate from 0 to negative
-      tween = gsap.to(currentTrack, {
-        x: -totalWidth,
-        duration: speed,
-        ease: 'none',
-        repeat: -1,
-        modifiers: {
-          x: gsap.utils.unitize(x => parseFloat(x) % totalWidth)
-        }
-      });
+
+        // Apply direction and speed
+        gsap.to(tween, {
+          timeScale: finalTimeScale,
+          duration: 0.2,
+          ease: 'power2.out',
+          overwrite: true
+        });
+
+        // Return to normal speed when scrolling stops
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(function() {
+          if (!isHovered) {
+            gsap.to(tween, {
+              timeScale: direction === -1 ? 1 : -1,
+              duration: 0.5,
+              ease: 'power2.out'
+            });
+          }
+        }, 150);
+      }
+
+      // Try to use Lenis velocity (more accurate with smooth scroll)
+      const lenis = window.pieces?.lenis?.lenis;
+      if (lenis) {
+        lenis.on('scroll', function(e) {
+          handleScrollUpdate(e.velocity);
+        });
+      } else {
+        // Fallback to native scroll velocity calculation
+        let lastScrollY = window.scrollY;
+        let lastScrollTime = performance.now();
+
+        window.addEventListener('scroll', function() {
+          const now = performance.now();
+          const currentScrollY = window.scrollY;
+          const deltaY = currentScrollY - lastScrollY;
+          const deltaTime = now - lastScrollTime;
+
+          let velocity = 0;
+          if (deltaTime > 0) {
+            velocity = (deltaY / deltaTime) * 10; // Scale to match Lenis velocity range
+          }
+
+          lastScrollY = currentScrollY;
+          lastScrollTime = now;
+
+          handleScrollUpdate(velocity);
+        }, { passive: true });
+      }
     }
 
-    // Pause on hover (use currentSection)
-    if (!isInitialized) {
-      currentSection.addEventListener('mouseenter', () => {
-        if (tween) gsap.to(tween, { timeScale: 0, duration: 0.5, ease: 'power2.out' });
-      });
+    // Pause on hover
+    section.addEventListener('mouseenter', function() {
+      isHovered = true;
+      section.dataset.marqueeStatus = 'paused';
+      gsap.to(tween, { timeScale: 0, duration: 0.5, ease: 'power2.out' });
+    });
 
-      currentSection.addEventListener('mouseleave', () => {
-        if (tween) gsap.to(tween, { timeScale: 1, duration: 0.5, ease: 'power2.out' });
+    section.addEventListener('mouseleave', function() {
+      isHovered = false;
+      section.dataset.marqueeStatus = 'running';
+      gsap.to(tween, {
+        timeScale: direction === -1 ? 1 : -1,
+        duration: 0.5,
+        ease: 'power2.out'
       });
-    }
+    });
 
-    isInitialized = true;
+    // IntersectionObserver for play/pause optimization
+    const observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          if (!isHovered && tween) {
+            tween.play();
+            section.dataset.marqueeStatus = 'running';
+          }
+        } else {
+          if (tween) {
+            tween.pause();
+            section.dataset.marqueeStatus = 'paused';
+          }
+        }
+      });
+    }, { threshold: 0 });
+
+    observer.observe(section);
   }
 
-  // Wait for GSAP to be available
+  // Initialize
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', initMarquee);
   } else {
@@ -264,7 +340,24 @@
       "default": 30,
       "unit": "s",
       "label": "Animation speed",
-      "info": "Lower = faster"
+      "info": "Duration for one complete loop"
+    },
+    {
+      "type": "checkbox",
+      "id": "scroll_aware",
+      "default": false,
+      "label": "Scroll-aware movement",
+      "info": "Inverts direction and accelerates based on scroll"
+    },
+    {
+      "type": "range",
+      "id": "scroll_speed",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 2,
+      "label": "Scroll acceleration",
+      "info": "Max speed multiplier while scrolling"
     },
     {
       "type": "header",

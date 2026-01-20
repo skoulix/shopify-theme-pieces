@@ -1,0 +1,342 @@
+{%- comment -%}
+  Highlight Text on Scroll Section
+  Text highlight effect using GSAP ScrollTrigger + SplitText
+
+  Settings:
+  - heading: The heading text to highlight on scroll
+  - heading_tag: HTML heading tag (h2-h6)
+  - scroll_start: When the animation starts
+  - scroll_end: When the animation ends
+  - fade_opacity: Opacity of unhighlighted text
+  - stagger: Stagger duration between characters
+  - color_scheme: Color scheme for the section
+{%- endcomment -%}
+
+<style>
+  #highlight-text-{{ section.id }} {
+    --highlight-text-padding-top: {{ section.settings.padding_top }}px;
+    --highlight-text-padding-bottom: {{ section.settings.padding_bottom }}px;
+  }
+</style>
+
+<section
+  id="highlight-text-{{ section.id }}"
+  class="highlight-text color-{{ section.settings.color_scheme }}"
+  data-section-id="{{ section.id }}"
+  data-alignment="{{ section.settings.text_alignment }}">
+
+  <div class="highlight-text__container page-width">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'heading' %}
+          <{{ block.settings.heading_tag | default: 'h2' }}
+            class="highlight-text__heading"
+            data-highlight-text
+            data-size="{{ block.settings.heading_size | default: 'xl' }}"
+            data-highlight-scroll-start="{{ block.settings.scroll_start | default: 'top 90%' }}"
+            data-highlight-scroll-end="{{ block.settings.scroll_end | default: 'center 40%' }}"
+            data-highlight-fade="{{ block.settings.fade_opacity | default: 0.2 }}"
+            data-highlight-stagger="{{ block.settings.stagger | default: 0.1 }}"
+            {{ block.shopify_attributes }}>
+            {{ block.settings.heading }}
+          </{{ block.settings.heading_tag | default: 'h2' }}>
+
+        {% when 'text' %}
+          <p class="highlight-text__text" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </p>
+
+        {% when 'button' %}
+          <a
+            href="{{ block.settings.button_url | default: '#' }}"
+            class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
+            {{ block.shopify_attributes }}>
+            <span>{{ block.settings.button_text }}</span>
+          </a>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('highlight-text-' + sectionId);
+  if (!section || section.dataset.highlightInitialized) return;
+  section.dataset.highlightInitialized = 'true';
+
+  // Skip if animations disabled
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  function initHighlightText() {
+    // Get GSAP from window.pieces or window
+    if (typeof gsap === 'undefined') {
+      if (window.pieces && window.pieces.gsap) {
+        window.gsap = window.pieces.gsap;
+      } else {
+        requestAnimationFrame(initHighlightText);
+        return;
+      }
+    }
+
+    // Get ScrollTrigger and SplitText
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    const SplitText = window.SplitText || (window.pieces && window.pieces.SplitText);
+
+    if (!ScrollTrigger || !SplitText) {
+      requestAnimationFrame(initHighlightText);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger, SplitText);
+
+    // Target only headings within this section
+    const headings = section.querySelectorAll('[data-highlight-text]');
+
+    headings.forEach(function(heading) {
+      const scrollStart = heading.getAttribute('data-highlight-scroll-start') || 'top 90%';
+      const scrollEnd = heading.getAttribute('data-highlight-scroll-end') || 'center 40%';
+      const fadedValue = parseFloat(heading.getAttribute('data-highlight-fade')) || 0.2;
+      const staggerValue = parseFloat(heading.getAttribute('data-highlight-stagger')) || 0.1;
+
+      new SplitText(heading, {
+        type: 'words, chars',
+        autoSplit: true,
+        onSplit: function(self) {
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              scrub: true,
+              trigger: heading,
+              start: scrollStart,
+              end: scrollEnd
+            }
+          });
+
+          tl.from(self.chars, {
+            autoAlpha: fadedValue,
+            stagger: staggerValue,
+            ease: 'linear'
+          });
+
+          return tl;
+        }
+      });
+    });
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initHighlightText);
+  } else {
+    initHighlightText();
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Highlight Text",
+  "tag": "section",
+  "class": "highlight-text-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "select",
+      "id": "text_alignment",
+      "label": "Text alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 200,
+      "step": 10,
+      "default": 100,
+      "unit": "px"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "heading",
+          "label": "Heading",
+          "default": "Highlight text as you scroll down the page"
+        },
+        {
+          "type": "select",
+          "id": "heading_tag",
+          "label": "Heading tag",
+          "default": "h2",
+          "options": [
+            { "value": "h2", "label": "H2" },
+            { "value": "h3", "label": "H3" },
+            { "value": "h4", "label": "H4" },
+            { "value": "h5", "label": "H5" },
+            { "value": "h6", "label": "H6" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "heading_size",
+          "label": "Heading size",
+          "default": "xl",
+          "options": [
+            { "value": "sm", "label": "Small" },
+            { "value": "md", "label": "Medium" },
+            { "value": "lg", "label": "Large" },
+            { "value": "xl", "label": "Extra large" },
+            { "value": "2xl", "label": "2X large" }
+          ]
+        },
+        {
+          "type": "header",
+          "content": "Animation"
+        },
+        {
+          "type": "text",
+          "id": "scroll_start",
+          "label": "Scroll start",
+          "default": "top 90%",
+          "info": "When the animation starts (e.g., 'top 90%')"
+        },
+        {
+          "type": "text",
+          "id": "scroll_end",
+          "label": "Scroll end",
+          "default": "center 40%",
+          "info": "When the animation ends (e.g., 'center 40%')"
+        },
+        {
+          "type": "range",
+          "id": "fade_opacity",
+          "label": "Pre-highlight opacity",
+          "min": 0.1,
+          "max": 0.9,
+          "step": 0.1,
+          "default": 0.2,
+          "info": "Opacity of text before highlighting"
+        },
+        {
+          "type": "range",
+          "id": "stagger",
+          "label": "Stagger duration",
+          "min": 0.1,
+          "max": 1,
+          "step": 0.1,
+          "default": 0.1,
+          "info": "Lower = smoother reveal"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Add supporting text below your heading."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "button_text",
+          "label": "Button text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "button_url",
+          "label": "Button URL"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Button style",
+          "default": "solid",
+          "options": [
+            { "value": "solid", "label": "Solid" },
+            { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Button color",
+          "default": "primary",
+          "options": [
+            { "value": "primary", "label": "Primary (accent)" },
+            { "value": "secondary", "label": "Secondary (neutral)" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Button size",
+          "default": "default",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Highlight Text",
+      "category": "Scrolling & animation",
+      "blocks": [
+        {
+          "type": "heading",
+          "settings": {
+            "heading": "Highlight text as you scroll down the page",
+            "heading_size": "xl"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

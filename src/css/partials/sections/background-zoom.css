@@ -1,0 +1,113 @@
+/* ==========================================================================
+   Background Zoom Section
+   Image to Background zoom effect using GSAP Flip + ScrollTrigger
+   ========================================================================== */
+
+@layer components {
+  /* Main container */
+  .background-zoom {
+    @apply relative flex flex-col justify-center items-center overflow-clip;
+    min-height: 100svh;
+    padding-top: calc(50dvh - 15em);
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  /* Headings */
+  .background-zoom__title {
+    @apply text-center mb-8;
+  }
+
+  .background-zoom__heading {
+    @apply text-center font-heading font-normal leading-[0.95] tracking-tight;
+    max-width: 7em;
+    margin-top: 0;
+    margin-bottom: -0.375em;
+    font-size: clamp(3.75em, 10vw, 7.5em);
+    letter-spacing: -0.04em;
+  }
+
+  .background-zoom__heading.is-margin-top {
+    margin-top: 33dvh;
+  }
+
+  .background-zoom__heading-accent {
+    color: var(--color-text-secondary);
+  }
+
+  /* Start element - defines initial size/shape */
+  .background-zoom__start {
+    @apply relative;
+    aspect-ratio: 1;
+    border-radius: 16em;
+    width: 16em;
+  }
+
+  /* Content element - this is what Flip animates */
+  .background-zoom__content {
+    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
+    border-radius: inherit;
+    will-change: width, height, transform;
+    background-color: var(--background-zoom-content-bg, var(--color-background-secondary));
+  }
+
+  /* Image inside content */
+  .background-zoom__img {
+    @apply absolute w-full h-full object-cover;
+  }
+
+  /* Overlay text on image */
+  .background-zoom__overlay-text {
+    @apply absolute w-full text-center font-black leading-none;
+    top: 1.25em;
+    font-size: 1.25em;
+    letter-spacing: -0.02em;
+    color: var(--background-zoom-overlay-text-color, var(--color-primary));
+  }
+
+  /* Dark overlay - fades in after zoom */
+  .background-zoom__dark {
+    @apply absolute inset-0 opacity-0;
+    background-color: var(--background-zoom-dark-color, rgba(0, 0, 0, 0.9));
+  }
+
+  /* End element - defines final size (full viewport) */
+  .background-zoom__end {
+    width: 100vw;
+    height: 100dvh;
+  }
+
+  /* Text content area after zoom */
+  .background-zoom__text {
+    @apply relative flex flex-col items-center w-full gap-8;
+    padding-bottom: calc(50dvh - 12em);
+  }
+
+  /* After section - the section that follows */
+  .background-zoom-after {
+    @apply relative flex justify-center items-center w-full;
+    min-height: 100dvh;
+    padding-left: 1em;
+    padding-right: 1em;
+  }
+
+  .background-zoom-after__text {
+    @apply absolute w-full text-center font-black leading-none;
+    bottom: 1.25em;
+    font-size: 1.25em;
+    letter-spacing: -0.02em;
+    color: var(--background-zoom-overlay-text-color, var(--color-primary));
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 767px) {
+    .background-zoom__heading {
+      font-size: clamp(2.5em, 12vw, 3.75em);
+    }
+
+    .background-zoom__start {
+      width: 12em;
+      border-radius: 12em;
+    }
+  }
+}

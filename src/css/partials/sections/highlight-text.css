@@ -1,0 +1,109 @@
+/* ==========================================================================
+   Highlight Text on Scroll Section
+   Text highlight effect using GSAP ScrollTrigger + SplitText
+   ========================================================================== */
+
+@layer components {
+  /* Section container */
+  .highlight-text {
+    @apply relative w-full;
+    padding-top: var(--highlight-text-padding-top, 100px);
+    padding-bottom: var(--highlight-text-padding-bottom, 100px);
+  }
+
+  /* Inner container */
+  .highlight-text__container {
+    @apply flex flex-col gap-6;
+    text-align: var(--highlight-text-alignment, center);
+  }
+
+  /* Heading styles */
+  .highlight-text__heading {
+    @apply font-heading font-normal leading-tight;
+    letter-spacing: -0.02em;
+    max-width: 20em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Heading sizes */
+  .highlight-text__heading[data-size="sm"] {
+    font-size: clamp(1.25rem, 3vw, 1.5rem);
+  }
+
+  .highlight-text__heading[data-size="md"] {
+    font-size: clamp(1.5rem, 4vw, 2rem);
+  }
+
+  .highlight-text__heading[data-size="lg"] {
+    font-size: clamp(2rem, 5vw, 3rem);
+  }
+
+  .highlight-text__heading[data-size="xl"] {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  .highlight-text__heading[data-size="2xl"] {
+    font-size: clamp(3rem, 8vw, 5rem);
+  }
+
+  /* Default size (xl) when no data-size attribute */
+  .highlight-text__heading:not([data-size]) {
+    font-size: clamp(2.5rem, 6vw, 4rem);
+  }
+
+  /* Text styles */
+  .highlight-text__text {
+    @apply text-lg opacity-80;
+    max-width: 40em;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* Alignment modifiers */
+  .highlight-text[data-alignment="left"] .highlight-text__container {
+    text-align: left;
+  }
+
+  .highlight-text[data-alignment="left"] .highlight-text__heading,
+  .highlight-text[data-alignment="left"] .highlight-text__text {
+    margin-left: 0;
+    margin-right: auto;
+  }
+
+  .highlight-text[data-alignment="right"] .highlight-text__container {
+    text-align: right;
+  }
+
+  .highlight-text[data-alignment="right"] .highlight-text__heading,
+  .highlight-text[data-alignment="right"] .highlight-text__text {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  /* Button container */
+  .highlight-text__container .btn {
+    align-self: center;
+  }
+
+  .highlight-text[data-alignment="left"] .highlight-text__container .btn {
+    align-self: flex-start;
+  }
+
+  .highlight-text[data-alignment="right"] .highlight-text__container .btn {
+    align-self: flex-end;
+  }
+
+  /* SplitText character styles - ensure smooth rendering */
+  .highlight-text__heading .char {
+    will-change: opacity;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 767px) {
+    .highlight-text {
+      padding-top: calc(var(--highlight-text-padding-top, 100px) * 0.6);
+      padding-bottom: calc(var(--highlight-text-padding-bottom, 100px) * 0.6);
+    }
+  }
+}

@@ -1,0 +1,560 @@
+{%- comment -%}
+  Background Zoom Section
+  Image to Background zoom effect using GSAP Flip + ScrollTrigger
+
+  Settings:
+  - image: Main image for the zoom effect
+  - title_before: Heading text before zoom
+  - title_after: Heading text after zoom (scrolled content)
+  - overlay_text: Text overlay on the image
+  - color_scheme: Color scheme for background, text, and accent colors
+{%- endcomment -%}
+
+<style>
+  #background-zoom-{{ section.id }} {
+    --background-zoom-content-bg: {{ section.settings.content_bg_color | default: 'var(--color-background-secondary)' }};
+    --background-zoom-overlay-text-color: {{ section.settings.overlay_text_color | default: 'var(--color-primary)' }};
+    --background-zoom-dark-color: {{ section.settings.dark_overlay_color | default: 'rgba(0, 0, 0, 0.75)' }};
+  }
+</style>
+
+<section
+  id="background-zoom-{{ section.id }}"
+  class="background-zoom color-{{ section.settings.color_scheme }}"
+  data-bg-zoom-init
+  data-section-id="{{ section.id }}">
+  {%- comment -%} Title Before Zoom {%- endcomment -%}
+  {% if section.settings.title_before != blank %}
+    <div class="background-zoom__title">
+      <h1 class="background-zoom__heading">
+        {{ section.settings.title_before }}
+        {% if section.settings.title_before_accent != blank %}
+          <span class="background-zoom__heading-accent">{{ section.settings.title_before_accent }}</span>
+        {% endif %}
+      </h1>
+    </div>
+  {% endif %}
+
+  {%- comment -%} Start Element - Initial circular state {%- endcomment -%}
+  <div data-bg-zoom-start class="background-zoom__start">
+    {%- comment -%} Content Element - This gets animated by Flip {%- endcomment -%}
+    <div data-bg-zoom-content class="background-zoom__content">
+      {%- comment -%} Image {%- endcomment -%}
+      {% if section.settings.image != blank %}
+        <img
+          data-bg-zoom-img
+          src="{{ section.settings.image | image_url: width: 1920 }}"
+          alt="{{ section.settings.image.alt | default: section.settings.title_before }}"
+          width="{{ section.settings.image.width }}"
+          height="{{ section.settings.image.height }}"
+          loading="eager"
+          fetchpriority="high"
+          class="background-zoom__img">
+      {% else %}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'background-zoom__img' }}
+      {% endif %}
+
+      {%- comment -%} Overlay Text {%- endcomment -%}
+      {% if section.settings.overlay_text != blank %}
+        <p class="background-zoom__overlay-text">{{ section.settings.overlay_text }}</p>
+      {% endif %}
+
+      {%- comment -%} Dark Overlay - fades in after zoom {%- endcomment -%}
+      <div data-bg-zoom-dark class="background-zoom__dark"></div>
+    </div>
+  </div>
+
+  {%- comment -%} End Element - Final full-viewport state {%- endcomment -%}
+  <div data-bg-zoom-end class="background-zoom__end"></div>
+
+  {%- comment -%} Text Content After Zoom {%- endcomment -%}
+  <div class="background-zoom__text">
+    {% for block in section.blocks %}
+      {% case block.type %}
+        {% when 'heading' %}
+          <h2 class="background-zoom__heading{% if block.settings.add_margin_top %} is-margin-top{% endif %}" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+            {% if block.settings.accent_text != blank %}
+              <br><span class="background-zoom__heading-accent">{{ block.settings.accent_text }}</span>
+            {% endif %}
+          </h2>
+        {% when 'text' %}
+          <p class="text-lg md:text-xl opacity-80 max-w-2xl text-center" {{ block.shopify_attributes }}>
+            {{ block.settings.text }}
+          </p>
+        {% when 'button' %}
+          <a
+            href="{{ block.settings.button_url | default: '#' }}"
+            class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
+            {{ block.shopify_attributes }}>
+            <span>{{ block.settings.button_text }}</span>
+          </a>
+      {% endcase %}
+    {% endfor %}
+  </div>
+</section>
+
+{%- comment -%} Optional After Section {%- endcomment -%}
+{% if section.settings.show_after_section %}
+  <section class="background-zoom-after color-{{ section.settings.after_color_scheme | default: section.settings.color_scheme }}">
+    {% if section.settings.after_overlay_text != blank %}
+      <p class="background-zoom-after__text">{{ section.settings.after_overlay_text }}</p>
+    {% endif %}
+    {% if section.settings.after_heading != blank %}
+      <h2 class="background-zoom__heading">{{ section.settings.after_heading }}</h2>
+    {% endif %}
+  </section>
+{% endif %}
+
+<script>
+  (function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('background-zoom-' + sectionId);
+  if (!section || section.dataset.bgZoomInitialized) return;
+  section.dataset.bgZoomInitialized = 'true';
+
+  // If animations disabled, skip
+  if (typeof window.shouldAnimate === 'function' && !window.shouldAnimate()) return;
+
+  function initBackgroundZoom() {
+    // Get gsap from window.pieces or window
+    if (typeof gsap === 'undefined') {
+      if (window.pieces && window.pieces.gsap) {
+        window.gsap = window.pieces.gsap;
+      } else {
+        requestAnimationFrame(initBackgroundZoom);
+        return;
+      }
+    }
+
+    // Get ScrollTrigger and Flip from window.pieces or window
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    const Flip = window.Flip || (window.pieces && window.pieces.Flip);
+
+    if (!ScrollTrigger || !Flip) {
+      requestAnimationFrame(initBackgroundZoom);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger, Flip);
+
+    // Wait for images to load
+    const images = section.querySelectorAll('img');
+    const imagePromises = Array.from(images).map(function(img) {
+      if (img.complete) return Promise.resolve();
+      return new Promise(function(resolve) {
+        img.addEventListener('load', resolve, { once: true });
+        img.addEventListener('error', resolve, { once: true });
+      });
+    });
+
+    Promise.all(imagePromises).then(function() {
+      requestAnimationFrame(function() {
+        requestAnimationFrame(function() {
+          initZoomAnimation();
+          ScrollTrigger.refresh(true);
+        });
+      });
+    });
+  }
+
+  function initZoomAnimation() {
+    const ScrollTrigger = window.ScrollTrigger || (window.pieces && window.pieces.ScrollTrigger);
+    const Flip = window.Flip || (window.pieces && window.pieces.Flip);
+
+    const containers = document.querySelectorAll('[data-bg-zoom-init]');
+    if (!containers.length) return;
+
+    let masterTimeline;
+
+    const getScrollRange = function(options) {
+      const st = ScrollTrigger.create({
+        trigger: options.trigger,
+        start: options.start,
+        endTrigger: options.endTrigger,
+        end: options.end
+      });
+      const range = Math.max(1, st.end - st.start);
+      st.kill();
+      return range;
+    };
+
+    const bgZoomTimeline = function() {
+      if (masterTimeline) {
+        masterTimeline.scrollTrigger?.kill();
+        masterTimeline.kill();
+      }
+
+      // Store animation data for each container
+      const containerData = [];
+
+      containers.forEach(function(container) {
+        const startEl = container.querySelector('[data-bg-zoom-start]');
+        const endEl = container.querySelector('[data-bg-zoom-end]');
+        const contentEl = container.querySelector('[data-bg-zoom-content]');
+        const darkEl = container.querySelector('[data-bg-zoom-dark]');
+        const imgEl = container.querySelector('[data-bg-zoom-img]');
+        if (!startEl || !endEl || !contentEl) return;
+
+        const startRadius = getComputedStyle(startEl).borderRadius;
+        const endRadius = getComputedStyle(endEl).borderRadius;
+        const hasRadius = startRadius !== '0px' || endRadius !== '0px';
+        contentEl.style.overflow = hasRadius ? 'hidden' : '';
+
+        // Calculate scroll ranges
+        const zoomScrollRange = getScrollRange({
+          trigger: startEl,
+          start: 'clamp(top bottom)',
+          endTrigger: endEl,
+          end: 'center center'
+        });
+
+        const afterScrollRange = getScrollRange({
+          trigger: endEl,
+          start: 'center center',
+          endTrigger: container,
+          end: 'bottom top'
+        });
+
+        // Get start and end states for Flip
+        const startState = Flip.getState(contentEl);
+        Flip.fit(contentEl, startEl, { scale: false });
+        const startFitState = Flip.getState(contentEl);
+
+        containerData.push({
+          container, startEl, endEl, contentEl, darkEl, imgEl,
+          startRadius, endRadius, hasRadius, zoomScrollRange, afterScrollRange, startFitState
+        });
+
+        // Reset initial state
+        if (hasRadius) gsap.set(contentEl, { borderRadius: startRadius });
+        if (imgEl) gsap.set(imgEl, { scale: 1, yPercent: 0, transformOrigin: '50% 50%' });
+        if (darkEl) gsap.set(darkEl, { opacity: 0 });
+      });
+
+      // Create timeline with scrub
+      masterTimeline = gsap.timeline({
+        defaults: { ease: 'none' },
+        scrollTrigger: {
+          trigger: containers[0].querySelector('[data-bg-zoom-start]') || containers[0],
+          start: 'clamp(top bottom)',
+          endTrigger: containers[containers.length - 1],
+          end: 'bottom top',
+          scrub: true,
+          invalidateOnRefresh: true
+        }
+      });
+
+      containerData.forEach(function(data) {
+        const { startEl, endEl, contentEl, darkEl, imgEl, startRadius, endRadius, hasRadius, zoomScrollRange, afterScrollRange } = data;
+
+        // Flip animation from start to end
+        masterTimeline.add(
+          Flip.fit(contentEl, endEl, {
+            duration: zoomScrollRange,
+            ease: 'none',
+            scale: false
+          })
+        );
+
+        // Border Radius animation
+        if (hasRadius) {
+          masterTimeline.to(contentEl, {
+            borderRadius: endRadius,
+            duration: zoomScrollRange
+          }, '<');
+        }
+
+        // Content Y Position after zoom
+        masterTimeline.to(contentEl, {
+          y: '+=' + afterScrollRange,
+          duration: afterScrollRange
+        });
+
+        // Dark Overlay fade in
+        if (darkEl) {
+          masterTimeline.to(darkEl, {
+            opacity: 0.75,
+            duration: afterScrollRange * 0.25
+          }, '<');
+        }
+
+        // Image scale and parallax
+        if (imgEl) {
+          masterTimeline.to(imgEl, {
+            scale: 1.25,
+            yPercent: -10,
+            duration: afterScrollRange
+          }, '<');
+        }
+      });
+
+      // Refresh and sync to current scroll position
+      ScrollTrigger.refresh(true);
+
+      // Force timeline to current progress after refresh
+      const st = masterTimeline.scrollTrigger;
+      if (st) {
+        masterTimeline.progress(st.progress, true);
+      }
+    };
+
+    bgZoomTimeline();
+
+    // Rebuild on resize
+    let resizeTimer;
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(bgZoomTimeline, 100);
+    });
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initBackgroundZoom);
+  } else {
+    initBackgroundZoom();
+  }
+  })();
+</script>
+
+{% schema %}
+  {
+    "name": "Background Zoom",
+    "tag": "section",
+    "class": "background-zoom-section",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Image"
+      },
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+        "type": "header",
+        "content": "Title (Before Zoom)"
+      },
+      {
+        "type": "text",
+        "id": "title_before",
+        "label": "Title",
+        "default": "Image to Background"
+      },
+      {
+        "type": "text",
+        "id": "title_before_accent",
+        "label": "Accent text",
+        "default": "(Zoom)"
+      },
+      {
+        "type": "header",
+        "content": "Image Overlay"
+      },
+      {
+        "type": "text",
+        "id": "overlay_text",
+        "label": "Overlay text",
+        "info": "Text displayed on top of the image"
+      },
+      {
+        "type": "header",
+        "content": "After Section"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_after_section",
+        "label": "Show after section",
+        "default": false
+      },
+      {
+        "type": "text",
+        "id": "after_heading",
+        "label": "After section heading",
+        "default": "And we reached the end!"
+      },
+      {
+        "type": "text",
+        "id": "after_overlay_text",
+        "label": "After section overlay text"
+      },
+      {
+        "type": "color_scheme",
+        "id": "after_color_scheme",
+        "label": "After section color scheme",
+        "default": "scheme-1"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "scheme-3"
+      },
+      {
+        "type": "color",
+        "id": "content_bg_color",
+        "label": "Content background color",
+        "info": "Background of the zoom container"
+      },
+      {
+        "type": "color",
+        "id": "overlay_text_color",
+        "label": "Overlay text color"
+      },
+      {
+        "type": "color",
+        "id": "dark_overlay_color",
+        "label": "Dark overlay color"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "heading",
+        "name": "Heading",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "label": "Text",
+            "default": "This is the after phase"
+          },
+          {
+            "type": "text",
+            "id": "accent_text",
+            "label": "Accent text",
+            "info": "Appears on a new line with accent color"
+          },
+          {
+            "type": "checkbox",
+            "id": "add_margin_top",
+            "label": "Add top margin",
+            "default": false,
+            "info": "Adds vertical spacing (33dvh)"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "textarea",
+            "id": "text",
+            "label": "Text",
+            "default": "Continue scrolling to reveal more content as the image zooms to fill the background."
+          }
+        ]
+      },
+      {
+        "type": "button",
+        "name": "Button",
+        "settings": [
+          {
+            "type": "text",
+            "id": "button_text",
+            "label": "Button text",
+            "default": "Learn More"
+          },
+          {
+            "type": "url",
+            "id": "button_url",
+            "label": "Button URL"
+          },
+          {
+            "type": "select",
+            "id": "button_style",
+            "label": "Button style",
+            "default": "outline",
+            "options": [
+              {
+                "value": "solid",
+                "label": "Solid"
+              },
+              {
+                "value": "outline",
+                "label": "Outline"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "button_color",
+            "label": "Button color",
+            "default": "primary",
+            "options": [
+              {
+                "value": "primary",
+                "label": "Primary (accent)"
+              },
+              {
+                "value": "secondary",
+                "label": "Secondary (neutral)"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "button_size",
+            "label": "Button size",
+            "default": "default",
+            "options": [
+              {
+                "value": "small",
+                "label": "Small"
+              },
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "large",
+                "label": "Large"
+              }
+            ]
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Background Zoom",
+        "category": "Scrolling & animation",
+        "settings": {
+          "title_before": "Image to Background",
+          "title_before_accent": "(Zoom)",
+          "overlay_text": "START SCROLLING"
+        },
+        "blocks": [
+          {
+            "type": "heading",
+            "settings": {
+              "text": "This is the after phase of the",
+              "accent_text": "(Zoom)",
+              "add_margin_top": false
+            }
+          },
+          {
+            "type": "heading",
+            "settings": {
+              "text": "more...",
+              "add_margin_top": true
+            }
+          },
+          {
+            "type": "heading",
+            "settings": {
+              "text": "and more!",
+              "add_margin_top": true
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

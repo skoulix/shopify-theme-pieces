@@ -1,5 +1,6 @@
 /* ==========================================================================
    Logo Marquee Styles
+   Advanced version with GSAP-powered scroll direction detection
    ========================================================================== */
 
 @layer components {
@@ -41,10 +42,11 @@
     background: linear-gradient(to left, var(--color-background), transparent);
   }
 
-  /* Track */
+  /* Track - GSAP handles animation */
   .logo-marquee-track {
     @apply flex;
     width: max-content;
+    will-change: transform;
   }
 
   /* Items */

@@ -1,0 +1,50 @@
+/* ==========================================================================
+   Marquee Radial Section
+   Curved/radial text marquee effect using GSAP + SVG textPath
+   ========================================================================== */
+
+@layer components {
+  /* Section container */
+  .marquee-radial {
+    @apply relative w-full overflow-hidden;
+    padding-top: var(--marquee-radial-padding-top, 40px);
+    padding-bottom: var(--marquee-radial-padding-bottom, 40px);
+  }
+
+  /* Wrapper for the marquee */
+  .marquee-radial__wrapper {
+    @apply relative w-full;
+  }
+
+  /* Text element - hidden but used for font measurement */
+  .marquee-radial__text {
+    @apply text-center whitespace-nowrap select-none font-heading font-bold uppercase;
+    letter-spacing: -0.04em;
+    font-size: clamp(4.5em, 10vw, 10em);
+    line-height: 1.1;
+  }
+
+  /* Outline text style */
+  .marquee-radial__text--outline {
+    -webkit-text-stroke: 1px currentColor;
+    text-stroke: 1px currentColor;
+    color: transparent;
+  }
+
+  /* Ensure SVG is properly positioned */
+  .marquee-radial__wrapper svg {
+    @apply pointer-events-none;
+  }
+
+  /* Mobile responsive */
+  @media (max-width: 767px) {
+    .marquee-radial {
+      padding-top: calc(var(--marquee-radial-padding-top, 40px) * 0.6);
+      padding-bottom: calc(var(--marquee-radial-padding-bottom, 40px) * 0.6);
+    }
+
+    .marquee-radial__text {
+      font-size: clamp(2.5em, 12vw, 4.5em);
+    }
+  }
+}
