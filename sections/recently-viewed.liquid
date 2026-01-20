@@ -12,14 +12,29 @@
 -%}
 
 <style>
-  .recently-viewed-{{ section.id }} .nav-btn:hover:not(:disabled) {
-    background-color: var(--color-text);
-    color: var(--color-background);
-    border-color: var(--color-text);
-  }
   .recently-viewed-{{ section.id }} .skeleton-bg {
     background-color: var(--color-text);
     opacity: 0.1;
+  }
+  /* Hide scrollbar for native scroll-snap track */
+  .recently-viewed-{{ section.id }} .recently-viewed-track::-webkit-scrollbar {
+    display: none;
+  }
+  /* Responsive slide widths using CSS variables from section settings */
+  .recently-viewed-{{ section.id }} .recently-viewed-slide {
+    --gap: 1rem;
+    width: calc((100% - (var(--gap) * (var(--slides-mobile) - 1))) / var(--slides-mobile));
+  }
+  @media (min-width: 768px) {
+    .recently-viewed-{{ section.id }} .recently-viewed-slide {
+      --gap: 1.5rem;
+      width: calc((100% - (var(--gap) * (var(--slides-tablet) - 1))) / var(--slides-tablet));
+    }
+  }
+  @media (min-width: 1024px) {
+    .recently-viewed-{{ section.id }} .recently-viewed-slide {
+      width: calc((100% - (var(--gap) * (var(--slides-desktop) - 1))) / var(--slides-desktop));
+    }
   }
   /* Title line reveal animation (managed by TweenManager) */
   .tween-split-line:nth-child(2) { margin-left: clamp(0.5rem, 4vw, 2rem); }
@@ -52,7 +67,10 @@
   data-enable-wishlist="{{ settings.enable_wishlist }}"
   data-enable-compare="{{ settings.enable_compare }}"
   data-enable-quick-view="{{ settings.enable_quick_view }}"
-  style="display: none;"
+  data-slides-mobile="{{ section.settings.slides_mobile }}"
+  data-slides-tablet="{{ section.settings.slides_tablet }}"
+  data-slides-desktop="{{ section.settings.slides_desktop }}"
+  style="display: none; --slides-mobile: {{ section.settings.slides_mobile }}; --slides-tablet: {{ section.settings.slides_tablet }}; --slides-desktop: {{ section.settings.slides_desktop }};"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
@@ -72,39 +90,39 @@
       </div>
 
       {%- comment -%} Navigation {%- endcomment -%}
-      <div class="flex items-center gap-3 {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
+      <div class="slider-nav {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
         <button
           type="button"
-          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="slider-nav-btn"
           data-carousel-prev
           aria-label="{{ 'accessibility.previous_products' | t }}"
           disabled
         >
-          <i class="ph ph-arrow-left text-xl"></i>
+          <i class="ph ph-arrow-left"></i>
         </button>
         <button
           type="button"
-          class="nav-btn w-12 h-12 flex items-center justify-center border border-current/30 rounded-full bg-transparent cursor-pointer transition-all duration-300 disabled:opacity-30 disabled:cursor-not-allowed"
+          class="slider-nav-btn"
           data-carousel-next
           aria-label="{{ 'accessibility.next_products' | t }}"
         >
-          <i class="ph ph-arrow-right text-xl"></i>
+          <i class="ph ph-arrow-right"></i>
         </button>
       </div>
     </div>
 
     {%- comment -%} Carousel Container {%- endcomment -%}
     <div class="relative">
-      <div class="overflow-hidden" data-carousel-viewport>
-        {%- comment -%} Products will be rendered here via JS {%- endcomment -%}
-        <div class="flex gap-6 p-1.5 transition-transform duration-500 ease-out items-stretch" data-carousel-track>
-        </div>
+      {%- comment -%} Products will be rendered here via JS - Native scroll-snap {%- endcomment -%}
+      <div class="recently-viewed-track flex gap-4 md:gap-6 overflow-x-auto items-stretch" data-carousel-track style="scroll-snap-type: x mandatory; scroll-behavior: smooth; -webkit-overflow-scrolling: touch; scrollbar-width: none; -ms-overflow-style: none;">
       </div>
 
       {%- comment -%} Progress Bar {%- endcomment -%}
-      <div class="h-0.5 bg-current/15 rounded-sm overflow-hidden mt-8" data-carousel-progress>
-        <div class="h-full w-0 bg-current transition-[width] duration-400 ease-out" data-carousel-progress-bar></div>
-      </div>
+      {% if section.settings.show_progress_bar %}
+        <div class="h-0.5 bg-current/15 rounded-sm overflow-hidden mt-8" data-carousel-progress>
+          <div class="h-full w-0 bg-current transition-[width] duration-400 ease-out" data-carousel-progress-bar></div>
+        </div>
+      {% endif %}
     </div>
   </div>
 </section>
@@ -127,15 +145,91 @@
     const enableQuickView = section.dataset.enableQuickView === 'true';
     const showActionButtons = enableWishlist || enableCompare || enableQuickView;
 
+    // Slides per view settings from data attributes
+    const slidesMobile = parseInt(section.dataset.slidesMobile, 10) || 1;
+    const slidesTablet = parseInt(section.dataset.slidesTablet, 10) || 2;
+    const slidesDesktop = parseInt(section.dataset.slidesDesktop, 10) || 4;
+
     const track = section.querySelector('[data-carousel-track]');
     const prevBtn = section.querySelector('[data-carousel-prev]');
     const nextBtn = section.querySelector('[data-carousel-next]');
     const progressBar = section.querySelector('[data-carousel-progress-bar]');
     const nav = section.querySelector('[data-carousel-nav]');
 
-    let currentIndex = 0;
-    let slidesPerView = 4;
     let totalSlides = 0;
+    let isAnimating = false;
+
+    // Get slides per view for current breakpoint
+    function getSlidesPerView() {
+      const width = window.innerWidth;
+      if (width >= 1024) return slidesDesktop;
+      if (width >= 768) return slidesTablet;
+      return slidesMobile;
+    }
+
+    // Get max scroll index
+    function getMaxIndex() {
+      const slidesPerView = getSlidesPerView();
+      return Math.max(0, totalSlides - slidesPerView);
+    }
+
+    // Get current slide index based on scroll position
+    function getCurrentIndex() {
+      if (!track.children.length) return 0;
+      const slideWidth = track.children[0].offsetWidth;
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      return Math.round(track.scrollLeft / (slideWidth + gap));
+    }
+
+    // Scroll to specific slide
+    function scrollToSlide(index) {
+      const slides = track.children;
+      if (!slides[index] || isAnimating) return;
+
+      isAnimating = true;
+      // Pre-update button states and progress bar for target position (instant feedback)
+      const maxIndex = getMaxIndex();
+      const slidesPerView = getSlidesPerView();
+      if (prevBtn) prevBtn.disabled = index <= 0;
+      if (nextBtn) nextBtn.disabled = index >= maxIndex;
+      if (progressBar) {
+        const progress = maxIndex > 0 ? ((index + slidesPerView) / totalSlides) * 100 : 100;
+        progressBar.style.width = `${Math.min(100, progress)}%`;
+      }
+
+      const slideWidth = slides[0].offsetWidth;
+      const gap = parseFloat(getComputedStyle(track).gap) || 0;
+      const targetScroll = index * (slideWidth + gap);
+
+      track.scrollTo({ left: targetScroll, behavior: 'smooth' });
+    }
+
+    // Update button states and progress bar
+    function updateButtonStates(index) {
+      const maxIndex = getMaxIndex();
+      const slidesPerView = getSlidesPerView();
+
+      if (prevBtn) prevBtn.disabled = index <= 0;
+      if (nextBtn) nextBtn.disabled = index >= maxIndex;
+
+      // Update progress bar
+      if (progressBar) {
+        const progress = maxIndex > 0 ? ((index + slidesPerView) / totalSlides) * 100 : 100;
+        progressBar.style.width = `${Math.min(100, progress)}%`;
+      }
+    }
+
+    // Update nav visibility
+    function updateNavVisibility() {
+      if (!nav) return;
+      const slidesPerView = getSlidesPerView();
+      if (totalSlides <= slidesPerView) {
+        nav.classList.add('is-hidden');
+      } else {
+        nav.classList.remove('is-hidden');
+      }
+      updateButtonStates(getCurrentIndex());
+    }
 
     function getProducts() {
       try {
@@ -230,7 +324,7 @@
         const salePercent = getSalePercent(product.compareAtPrice, product.price);
 
         return `
-        <div class="shrink-0 w-[calc(100%-2rem)] sm:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)] xl:w-[calc(25%-1.125rem)] min-w-0 flex">
+        <div class="recently-viewed-slide shrink-0 min-w-0 flex" style="scroll-snap-align: start;">
           <article
             class="product-card group relative flex flex-col no-underline text-inherit rounded-(--card-radius) overflow-hidden h-full w-full border-(--card-border-width) border-solid border-(--color-border) shadow-(--card-shadow)"
           >
@@ -331,15 +425,8 @@
       `}).join('');
 
       totalSlides = products.length;
-      updateSlidesPerView();
-      updateCarousel();
-
-      // Hide nav if not enough slides
-      if (totalSlides <= slidesPerView) {
-        nav.style.display = 'none';
-      } else {
-        nav.style.display = 'flex';
-      }
+      updateNavVisibility();
+      updateButtonStates(0);
 
       // Trigger tween animations for new elements
       // Need to wait for TweenManager to be available on initial page load
@@ -354,82 +441,51 @@
       triggerTweenReinit();
     }
 
-    function updateSlidesPerView() {
-      const width = window.innerWidth;
-      if (width < 640) slidesPerView = 1;
-      else if (width < 1024) slidesPerView = 2;
-      else if (width < 1280) slidesPerView = 3;
-      else slidesPerView = 4;
-    }
-
-    function updateCarousel() {
-      if (totalSlides === 0) return;
-
-      const maxIndex = Math.max(0, totalSlides - slidesPerView);
-      currentIndex = Math.min(currentIndex, maxIndex);
-
-      const slideWidth = track.children[0]?.offsetWidth || 0;
-      const gap = 24; // 1.5rem
-      const offset = currentIndex * (slideWidth + gap);
-
-      track.style.transform = `translateX(-${offset}px)`;
-
-      // Update buttons
-      prevBtn.disabled = currentIndex === 0;
-      nextBtn.disabled = currentIndex >= maxIndex;
-
-      // Update progress
-      const progress = maxIndex > 0 ? ((currentIndex + slidesPerView) / totalSlides) * 100 : 100;
-      progressBar.style.width = `${Math.min(100, progress)}%`;
-    }
-
-    // Event listeners
-    prevBtn.addEventListener('click', () => {
-      currentIndex = Math.max(0, currentIndex - 1);
-      updateCarousel();
-    });
-
-    nextBtn.addEventListener('click', () => {
-      const maxIndex = Math.max(0, totalSlides - slidesPerView);
-      currentIndex = Math.min(maxIndex, currentIndex + 1);
-      updateCarousel();
-    });
-
-    // Touch/swipe support
-    let touchStartX = 0;
-    let touchEndX = 0;
-
-    track.addEventListener('touchstart', e => {
-      touchStartX = e.changedTouches[0].screenX;
-    }, { passive: true });
-
-    track.addEventListener('touchend', e => {
-      touchEndX = e.changedTouches[0].screenX;
-      const diff = touchStartX - touchEndX;
-
-      if (Math.abs(diff) > 50) {
-        if (diff > 0) {
-          nextBtn.click();
-        } else {
-          prevBtn.click();
+    // Navigation buttons
+    if (prevBtn) {
+      prevBtn.addEventListener('click', () => {
+        const current = getCurrentIndex();
+        if (current > 0) {
+          scrollToSlide(current - 1);
         }
+      });
+    }
+
+    if (nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const current = getCurrentIndex();
+        const maxIndex = getMaxIndex();
+        if (current < maxIndex) {
+          scrollToSlide(current + 1);
+        }
+      });
+    }
+
+    // Sync button states and progress bar with scroll position
+    let scrollTimeout;
+    track.addEventListener('scroll', () => {
+      // Update progress bar and button states immediately during scroll (real-time feedback)
+      const currentIndex = getCurrentIndex();
+      const maxIndex = getMaxIndex();
+      const slidesPerView = getSlidesPerView();
+      if (progressBar) {
+        const progress = maxIndex > 0 ? ((currentIndex + slidesPerView) / totalSlides) * 100 : 100;
+        progressBar.style.width = `${Math.min(100, progress)}%`;
       }
+      if (prevBtn) prevBtn.disabled = currentIndex <= 0;
+      if (nextBtn) nextBtn.disabled = currentIndex >= maxIndex;
+
+      // Debounce isAnimating reset
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(() => {
+        isAnimating = false;
+      }, 50);
     }, { passive: true });
 
-    // Resize handler
-    let resizeTimeout;
+    // Update on resize
     window.addEventListener('resize', () => {
-      clearTimeout(resizeTimeout);
-      resizeTimeout = setTimeout(() => {
-        updateSlidesPerView();
-        updateCarousel();
-
-        if (totalSlides <= slidesPerView) {
-          nav.style.display = 'none';
-        } else {
-          nav.style.display = 'flex';
-        }
-      }, 100);
+      clearTimeout(scrollTimeout);
+      scrollTimeout = setTimeout(updateNavVisibility, 100);
     });
 
     // Initialize
@@ -482,10 +538,19 @@
       "default": "Recently Viewed"
     },
     {
-      "type": "text_alignment",
+      "type": "select",
       "id": "header_alignment",
       "label": "Header alignment",
-      "default": "left"
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
+      "type": "header",
+      "content": "Layout"
     },
     {
       "type": "range",
@@ -495,6 +560,45 @@
       "step": 1,
       "default": 8,
       "label": "Products to show"
+    },
+    {
+      "type": "select",
+      "id": "slides_mobile",
+      "default": "1",
+      "label": "Slides per view (mobile)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "slides_tablet",
+      "default": "2",
+      "label": "Slides per view (tablet)",
+      "options": [
+        { "value": "1", "label": "1" },
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "slides_desktop",
+      "default": "4",
+      "label": "Slides per view (desktop)",
+      "options": [
+        { "value": "2", "label": "2" },
+        { "value": "3", "label": "3" },
+        { "value": "4", "label": "4" },
+        { "value": "5", "label": "5" }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "show_progress_bar",
+      "default": true,
+      "label": "Show progress bar"
     },
     {
       "type": "header",
