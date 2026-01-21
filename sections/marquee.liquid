@@ -11,8 +11,7 @@
   data-marquee-scroll-aware="{{ section.settings.scroll_aware }}"
   data-marquee-scroll-speed="{{ section.settings.scroll_speed }}"
   data-marquee-pause-on-hover="{{ section.settings.pause_on_hover }}"
-  data-marquee-status="normal"
->
+  data-marquee-status="normal">
   <div class="marquee-wrapper">
     <div class="marquee-content">
       {% for block in section.blocks %}
@@ -36,7 +35,7 @@
 </section>
 
 <script>
-(function() {
+  (function() {
   const sectionId = '{{ section.id }}';
   const section = document.querySelector(`[data-marquee-section="${sectionId}"]`);
   if (!section || section.dataset.marqueeInitialized) return;
@@ -276,130 +275,174 @@
   } else {
     requestAnimationFrame(initMarquee);
   }
-})();
+  })();
 </script>
 
 {% schema %}
-{
-  "name": "Marquee",
-  "tag": "section",
-  "class": "marquee-section-wrapper",
-  "settings": [
-    {
-      "type": "header",
-      "content": "Animation"
-    },
-    {
-      "type": "select",
-      "id": "direction",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "right", "label": "Right" }
-      ],
-      "default": "left",
-      "label": "Direction"
-    },
-    {
-      "type": "range",
-      "id": "speed",
-      "min": 10,
-      "max": 60,
-      "step": 5,
-      "default": 30,
-      "unit": "s",
-      "label": "Animation speed",
-      "info": "Duration for one complete loop"
-    },
-    {
-      "type": "checkbox",
-      "id": "scroll_aware",
-      "default": false,
-      "label": "Scroll-aware movement",
-      "info": "Inverts direction and accelerates based on scroll"
-    },
-    {
-      "type": "range",
-      "id": "scroll_speed",
-      "min": 1,
-      "max": 5,
-      "step": 1,
-      "default": 2,
-      "label": "Scroll acceleration",
-      "info": "Max speed multiplier while scrolling"
-    },
-    {
-      "type": "checkbox",
-      "id": "pause_on_hover",
-      "default": true,
-      "label": "Pause on hover"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-3"
-    }
-  ],
-  "blocks": [
-    {
-      "type": "text",
-      "name": "Text",
-      "settings": [
-        {
-          "type": "text",
-          "id": "text",
-          "default": "Free Shipping",
-          "label": "Text"
-        },
-        {
-          "type": "checkbox",
-          "id": "outline",
-          "default": false,
-          "label": "Outline style"
-        }
-      ]
-    },
-    {
-      "type": "separator",
-      "name": "Separator",
-      "settings": [
-        {
-          "type": "select",
-          "id": "style",
-          "options": [
-            { "value": "dot", "label": "Dot" },
-            { "value": "icon", "label": "Icon" }
-          ],
-          "default": "dot",
-          "label": "Style"
-        },
-        {
-          "type": "text",
-          "id": "icon",
-          "default": "star-four",
-          "label": "Icon name",
-          "info": "Phosphor icon name (e.g., star-four, asterisk, diamond)"
-        }
-      ]
-    }
-  ],
-  "presets": [
-    {
-      "name": "Marquee",
-      "category": "Scrolling & animation",
-      "blocks": [
-        { "type": "text", "settings": { "text": "Free Shipping" } },
-        { "type": "separator", "settings": { "style": "dot" } },
-        { "type": "text", "settings": { "text": "New Arrivals", "outline": true } },
-        { "type": "separator", "settings": { "style": "icon", "icon": "star-four" } },
-        { "type": "text", "settings": { "text": "Limited Edition" } },
-        { "type": "separator", "settings": { "style": "dot" } }
-      ]
-    }
-  ]
-}
+  {
+    "name": "Marquee",
+    "tag": "section",
+    "class": "marquee-section-wrapper",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Animation"
+      },
+      {
+        "type": "select",
+        "id": "direction",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value": "right",
+            "label": "Right"
+          }
+        ],
+        "default": "left",
+        "label": "Direction"
+      },
+      {
+        "type": "range",
+        "id": "speed",
+        "min": 10,
+        "max": 60,
+        "step": 5,
+        "default": 30,
+        "unit": "s",
+        "label": "Animation speed",
+        "info": "Duration for one complete loop"
+      },
+      {
+        "type": "checkbox",
+        "id": "scroll_aware",
+        "default": true,
+        "label": "Scroll-aware movement",
+        "info": "Inverts direction and accelerates based on scroll"
+      },
+      {
+        "type": "range",
+        "id": "scroll_speed",
+        "min": 1,
+        "max": 5,
+        "step": 1,
+        "default": 2,
+        "label": "Scroll acceleration",
+        "info": "Max speed multiplier while scrolling"
+      },
+      {
+        "type": "checkbox",
+        "id": "pause_on_hover",
+        "default": true,
+        "label": "Pause on hover"
+      },
+      {
+        "type": "header",
+        "content": "Colors"
+      },
+      {
+        "type": "color_scheme",
+        "id": "color_scheme",
+        "label": "Color scheme",
+        "default": "scheme-3"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "text",
+        "name": "Text",
+        "settings": [
+          {
+            "type": "text",
+            "id": "text",
+            "default": "Free Shipping",
+            "label": "Text"
+          },
+          {
+            "type": "checkbox",
+            "id": "outline",
+            "default": false,
+            "label": "Outline style"
+          }
+        ]
+      },
+      {
+        "type": "separator",
+        "name": "Separator",
+        "settings": [
+          {
+            "type": "select",
+            "id": "style",
+            "options": [
+              {
+                "value": "dot",
+                "label": "Dot"
+              },
+              {
+                "value": "icon",
+                "label": "Icon"
+              }
+            ],
+            "default": "dot",
+            "label": "Style"
+          },
+          {
+            "type": "text",
+            "id": "icon",
+            "default": "star-four",
+            "label": "Icon name",
+            "info": "Phosphor icon name (e.g., star-four, asterisk, diamond)"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Marquee",
+        "category": "Scrolling & animation",
+        "blocks": [
+          {
+            "type": "text",
+            "settings": {
+              "text": "Free Shipping"
+            }
+          },
+          {
+            "type": "separator",
+            "settings": {
+              "style": "dot"
+            }
+          },
+          {
+            "type": "text",
+            "settings": {
+              "text": "New Arrivals",
+              "outline": true
+            }
+          },
+          {
+            "type": "separator",
+            "settings": {
+              "style": "icon",
+              "icon": "star-four"
+            }
+          },
+          {
+            "type": "text",
+            "settings": {
+              "text": "Limited Edition"
+            }
+          },
+          {
+            "type": "separator",
+            "settings": {
+              "style": "dot"
+            }
+          }
+        ]
+      }
+    ]
+  }
 {% endschema %}
