@@ -41,10 +41,6 @@
   if (!section || section.dataset.marqueeInitialized) return;
   section.dataset.marqueeInitialized = 'true';
 
-  // Check if animations should run
-  const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
-  if (!shouldAnimate) return;
-
   const wrapper = section.querySelector('.marquee-wrapper');
   const content = section.querySelector('.marquee-content');
   if (!wrapper || !content) return;
@@ -141,7 +137,7 @@
 
     gsap.ticker.add(animate);
 
-    // Scroll-aware direction inversion and acceleration (only if enabled)
+    // Scroll-aware direction inversion and acceleration (only if enabled in section settings)
     if (scrollAware) {
       // Store the initial direction for reference
       const initialDirection = currentDirection;

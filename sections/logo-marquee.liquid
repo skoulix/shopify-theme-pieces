@@ -20,7 +20,7 @@
     assign mask_offset = 'clamp(1rem, 3vw, 2rem)'
   endif
 
-  if section.settings.full_width and section.settings.header_alignment != 'center'
+  if section.settings.full_width and section.settings.label_alignment != 'center'
     assign header_padding = '0 var(--page-padding, clamp(1rem, 3vw, 2rem))'
   endif
 
@@ -49,7 +49,7 @@
 
 <section
   class="logo-marquee section-padding-sm color-{{ section.settings.color_scheme }}"
-  style="--logo-marquee-align: {{ section.settings.header_alignment }}; --logo-marquee-header-padding: {{ header_padding }}; --logo-marquee-max-width: {{ wrapper_max_width }}; --logo-marquee-margin: {{ wrapper_margin }}; --logo-marquee-padding: {{ wrapper_padding }}; --logo-marquee-mask-offset: {{ mask_offset }}; --logo-marquee-height: {{ section.settings.logo_height }}px; --logo-marquee-max-logo-width: {{ section.settings.logo_max_width }}px; --logo-marquee-opacity: {{ opacity }}; --logo-marquee-filter: {{ filter_value | default: 'none' }}; --logo-marquee-filter-hover: {{ filter_hover_value }};"
+  style="--logo-marquee-align: {{ section.settings.label_alignment }}; --logo-marquee-header-padding: {{ header_padding }}; --logo-marquee-max-width: {{ wrapper_max_width }}; --logo-marquee-margin: {{ wrapper_margin }}; --logo-marquee-padding: {{ wrapper_padding }}; --logo-marquee-mask-offset: {{ mask_offset }}; --logo-marquee-height: {{ section.settings.logo_height }}px; --logo-marquee-max-logo-width: {{ section.settings.logo_max_width }}px; --logo-marquee-opacity: {{ opacity }}; --logo-marquee-filter: {{ filter_value | default: 'none' }}; --logo-marquee-filter-hover: {{ filter_hover_value }};"
   data-logo-marquee="{{ section.id }}"
   data-marquee-direction="{{ section.settings.direction }}"
   data-marquee-speed="{{ section.settings.speed }}"
@@ -102,10 +102,6 @@
   const section = document.querySelector(`[data-logo-marquee="${sectionId}"]`);
   if (!section || section.dataset.marqueeInitialized) return;
   section.dataset.marqueeInitialized = 'true';
-
-  // Check if animations should run
-  const shouldAnimate = typeof window.shouldAnimate === 'function' ? window.shouldAnimate() : true;
-  if (!shouldAnimate) return;
 
   const track = section.querySelector('[data-logo-track]');
   if (!track) return;
@@ -190,7 +186,7 @@
 
     gsap.ticker.add(animate);
 
-    // Scroll-aware direction inversion and acceleration (only if enabled)
+    // Scroll-aware direction inversion and acceleration (only if enabled in section settings)
     if (scrollAware) {
       const trackWrapper = section.querySelector('.logo-marquee-track-wrapper');
       // Store the initial direction for reference
@@ -344,10 +340,15 @@
       "label": "Label"
     },
     {
-      "type": "text_alignment",
-      "id": "header_alignment",
+      "type": "select",
+      "id": "label_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
       "default": "center",
-      "label": "Header alignment"
+      "label": "Label alignment"
     },
     {
       "type": "header",

@@ -1,0 +1,547 @@
+{%- comment -%}
+  Logo Wall Cycle Section - Animated logo grid with cycling effect
+  Displays a grid of logos that cycle/swap with a smooth animation
+{%- endcomment -%}
+
+{%- liquid
+  capture filter_value
+    if section.settings.grayscale
+      echo 'grayscale(100%)'
+    endif
+    if section.settings.invert
+      if section.settings.grayscale
+        echo ' '
+      endif
+      echo 'invert(1)'
+    endif
+  endcapture
+-%}
+
+<style>
+  #logo-wall-cycle-{{ section.id }} {
+    --logo-wall-columns: {{ section.settings.columns_desktop }};
+    --logo-wall-columns-tablet: {{ section.settings.columns_tablet }};
+    --logo-wall-columns-mobile: {{ section.settings.columns_mobile }};
+    --logo-wall-gap: {{ section.settings.gap }}px;
+    --logo-wall-logo-height: {{ section.settings.logo_height }}px;
+    --logo-wall-filter: {{ filter_value | default: 'none' }};
+  }
+</style>
+
+<section
+  id="logo-wall-cycle-{{ section.id }}"
+  class="logo-wall-cycle section-padding color-{{ section.settings.color_scheme }}"
+  data-logo-wall-cycle-init
+  data-logo-wall-shuffle="{{ section.settings.shuffle }}"
+  data-logo-wall-loop-delay="{{ section.settings.loop_delay }}"
+  data-logo-wall-duration="{{ section.settings.animation_duration }}"
+  data-logo-wall-visible-desktop="{{ section.settings.visible_desktop }}"
+  data-logo-wall-visible-tablet="{{ section.settings.visible_tablet }}"
+  data-logo-wall-visible-mobile="{{ section.settings.visible_mobile }}"
+>
+  <div class="page-width">
+    {% if section.settings.label != blank %}
+      <div class="logo-wall-cycle__header" style="text-align: {{ section.settings.label_alignment }};">
+        <span class="text-label" data-tween data-tween-type="fade-up">
+          {{ section.settings.label }}
+        </span>
+      </div>
+    {% endif %}
+
+    <div class="logo-wall-cycle__collection">
+      <div data-logo-wall-list class="logo-wall-cycle__list">
+        {% for block in section.blocks %}
+          <div data-logo-wall-item class="logo-wall-cycle__item" {{ block.shopify_attributes }}>
+            <div data-logo-wall-target-parent class="logo-wall-cycle__logo">
+              <div class="logo-wall-cycle__logo-spacer"></div>
+              <div data-logo-wall-target class="logo-wall-cycle__logo-target">
+                <div data-logo-wall-inner class="logo-wall-cycle__logo-inner">
+                  {% if block.settings.logo != blank %}
+                    {{ block.settings.logo | image_url: height: 200 | image_tag:
+                      loading: 'lazy',
+                      decoding: 'async',
+                      class: 'logo-wall-cycle__logo-img',
+                      alt: block.settings.logo.alt | default: section.settings.label
+                    }}
+                  {% else %}
+                    <div class="logo-wall-cycle__placeholder">
+                      <i class="ph ph-image"></i>
+                    </div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const root = document.getElementById('logo-wall-cycle-' + sectionId);
+  if (!root || root.dataset.logoWallInitialized) return;
+  root.dataset.logoWallInitialized = 'true';
+
+  // Logo wall cycle always runs - it's the core functionality of this section
+
+  function initLogoWallCycle() {
+    const gsap = window.pieces?.gsap || window.gsap;
+
+    if (!gsap) {
+      requestAnimationFrame(initLogoWallCycle);
+      return;
+    }
+
+    const loopDelay = parseFloat(root.dataset.logoWallLoopDelay) || 1.5;
+    const duration = parseFloat(root.dataset.logoWallDuration) || 0.9;
+    const visibleDesktop = parseInt(root.dataset.logoWallVisibleDesktop) || 8;
+    const visibleTablet = parseInt(root.dataset.logoWallVisibleTablet) || 6;
+    const visibleMobile = parseInt(root.dataset.logoWallVisibleMobile) || 4;
+
+    const list = root.querySelector('[data-logo-wall-list]');
+    const items = Array.from(list.querySelectorAll('[data-logo-wall-item]'));
+
+    const shuffleFront = root.getAttribute('data-logo-wall-shuffle') !== 'false';
+
+    // Clone original targets BEFORE any manipulation
+    // This preserves the original content even after DOM removal
+    const originalTargetClones = items
+      .map(item => {
+        const target = item.querySelector('[data-logo-wall-target]');
+        return target ? target.cloneNode(true) : null;
+      })
+      .filter(Boolean);
+
+    // Total logos available from blocks
+    const totalLogos = originalTargetClones.length;
+
+    // Need at least 2 items to cycle
+    if (totalLogos < 2) return;
+
+    let visibleItems = [];
+    let visibleCount = 0;
+    let pool = [];
+    let pattern = [];
+    let patternIndex = 0;
+    let tl;
+    let isPaused = false;
+
+    // Get visible count based on current viewport
+    function getVisibleCount() {
+      const width = window.innerWidth;
+      if (width <= 575) return Math.min(visibleMobile, totalLogos);
+      if (width <= 991) return Math.min(visibleTablet, totalLogos);
+      return Math.min(visibleDesktop, totalLogos);
+    }
+
+    // Update item visibility based on current breakpoint
+    function updateVisibility() {
+      const count = getVisibleCount();
+      items.forEach((item, i) => {
+        item.style.display = i < count ? '' : 'none';
+      });
+      return count;
+    }
+
+    function shuffleArray(arr) {
+      const a = arr.slice();
+      for (let i = a.length - 1; i > 0; i--) {
+        const j = Math.floor(Math.random() * (i + 1));
+        [a[i], a[j]] = [a[j], a[i]];
+      }
+      return a;
+    }
+
+    function setup() {
+      if (tl) {
+        tl.kill();
+        tl = null;
+      }
+
+      // Update visibility and get visible count for current breakpoint
+      visibleCount = updateVisibility();
+      visibleItems = items.slice(0, visibleCount);
+
+      // If not enough logos to cycle (need more logos than visible slots)
+      // Just show logos statically, no cycling needed - but don't remove them!
+      if (totalLogos <= visibleCount) {
+        return;
+      }
+
+      // Create fresh clones for the pool
+      const allClones = originalTargetClones.map(n => n.cloneNode(true));
+
+      // Shuffle if enabled
+      const shuffled = shuffleFront ? shuffleArray(allClones) : allClones;
+
+      // Split: first visibleCount for display, rest for cycling pool
+      const initialLogos = shuffled.slice(0, visibleCount);
+      pool = shuffled.slice(visibleCount);
+
+      // Remove existing targets and place initial logos in visible slots
+      visibleItems.forEach((item, i) => {
+        const parent = item.querySelector('[data-logo-wall-target-parent]') || item;
+        // Remove old targets
+        parent.querySelectorAll('[data-logo-wall-target]').forEach(old => old.remove());
+        // Add new target
+        const target = initialLogos[i];
+        if (target) {
+          target.removeAttribute('style');
+          parent.appendChild(target);
+        }
+      });
+
+      // Create random pattern for which slot gets swapped each cycle
+      pattern = shuffleArray(
+        Array.from({ length: visibleCount }, (_, i) => i)
+      );
+      patternIndex = 0;
+
+      // Start cycling animation
+      if (pool.length > 0) {
+        scheduleNextSwap();
+      }
+    }
+
+    function scheduleNextSwap() {
+      if (isPaused) return;
+      tl = gsap.delayedCall(loopDelay, swapNext);
+    }
+
+    function swapNext() {
+      const nowCount = getVisibleCount();
+      if (nowCount !== visibleCount) {
+        setup();
+        return;
+      }
+      if (!pool.length) {
+        return;
+      }
+
+      const idx = pattern[patternIndex % visibleCount];
+      patternIndex++;
+
+      const container = visibleItems[idx];
+      const parent =
+        container.querySelector('[data-logo-wall-target-parent]') ||
+        container;
+      const existing = parent.querySelectorAll('[data-logo-wall-target]');
+      if (existing.length > 1) {
+        scheduleNextSwap();
+        return;
+      }
+
+      const current = parent.querySelector('[data-logo-wall-target]');
+      const incoming = pool.shift();
+
+      if (!incoming) {
+        scheduleNextSwap();
+        return;
+      }
+
+      // Get animation offset based on parent height (subtle movement)
+      const animOffset = parent.offsetHeight * 0.15;
+
+      // Get the inner elements for Y animation
+      const currentInner = current ? current.querySelector('[data-logo-wall-inner]') : null;
+      const incomingInner = incoming.querySelector('[data-logo-wall-inner]');
+
+      // Start incoming invisible and positioned below
+      incoming.style.opacity = '0';
+      if (incomingInner) {
+        gsap.set(incomingInner, { y: animOffset });
+      }
+      parent.appendChild(incoming);
+
+      if (current && currentInner) {
+        // Animate current: fade out and move up
+        gsap.to(currentInner, {
+          y: -animOffset,
+          duration,
+          ease: 'expo.inOut'
+        });
+        gsap.to(current, {
+          opacity: 0,
+          duration,
+          ease: 'expo.inOut',
+          onComplete: () => {
+            current.remove();
+            current.style.opacity = '';
+            gsap.set(currentInner, { clearProps: 'y' });
+            pool.push(current);
+          }
+        });
+      }
+
+      // Animate incoming: fade in and move to center
+      if (incomingInner) {
+        gsap.to(incomingInner, {
+          y: 0,
+          duration,
+          ease: 'expo.inOut'
+        });
+      }
+      gsap.to(incoming, {
+        opacity: 1,
+        duration,
+        ease: 'expo.inOut',
+        onComplete: scheduleNextSwap
+      });
+    }
+
+    setup();
+
+    // Pause when not in viewport using IntersectionObserver
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          isPaused = false;
+          if (tl) tl.play();
+          else if (pool.length > 0) scheduleNextSwap();
+        } else {
+          isPaused = true;
+          if (tl) tl.pause();
+        }
+      });
+    }, { threshold: 0 });
+
+    observer.observe(root);
+
+    // Pause when tab is not visible
+    document.addEventListener('visibilitychange', () => {
+      if (document.hidden) {
+        isPaused = true;
+        if (tl) tl.pause();
+      } else {
+        isPaused = false;
+        if (tl) tl.play();
+      }
+    });
+
+    // Handle resize
+    let resizeTimeout;
+    window.addEventListener('resize', () => {
+      clearTimeout(resizeTimeout);
+      resizeTimeout = setTimeout(() => {
+        const nowCount = getVisibleCount();
+        if (nowCount !== visibleCount) {
+          setup();
+        }
+      }, 250);
+    });
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initLogoWallCycle);
+  } else {
+    requestAnimationFrame(initLogoWallCycle);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Logo Wall Cycle",
+  "tag": "section",
+  "class": "logo-wall-cycle-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Content"
+    },
+    {
+      "type": "text",
+      "id": "label",
+      "default": "Trusted By",
+      "label": "Label"
+    },
+    {
+      "type": "select",
+      "id": "label_alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center",
+      "label": "Label alignment"
+    },
+    {
+      "type": "header",
+      "content": "Grid Layout"
+    },
+    {
+      "type": "range",
+      "id": "columns_desktop",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Columns (Desktop)"
+    },
+    {
+      "type": "range",
+      "id": "columns_tablet",
+      "min": 2,
+      "max": 4,
+      "step": 1,
+      "default": 3,
+      "label": "Columns (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "columns_mobile",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2,
+      "label": "Columns (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "visible_desktop",
+      "min": 4,
+      "max": 12,
+      "step": 1,
+      "default": 8,
+      "label": "Visible logos (Desktop)",
+      "info": "Number of logos visible at once"
+    },
+    {
+      "type": "range",
+      "id": "visible_tablet",
+      "min": 3,
+      "max": 9,
+      "step": 1,
+      "default": 6,
+      "label": "Visible logos (Tablet)"
+    },
+    {
+      "type": "range",
+      "id": "visible_mobile",
+      "min": 2,
+      "max": 6,
+      "step": 1,
+      "default": 4,
+      "label": "Visible logos (Mobile)"
+    },
+    {
+      "type": "range",
+      "id": "gap",
+      "min": 0,
+      "max": 40,
+      "step": 4,
+      "default": 16,
+      "unit": "px",
+      "label": "Gap between items"
+    },
+    {
+      "type": "header",
+      "content": "Animation"
+    },
+    {
+      "type": "range",
+      "id": "loop_delay",
+      "min": 0.5,
+      "max": 5,
+      "step": 0.5,
+      "default": 1.5,
+      "unit": "s",
+      "label": "Cycle interval",
+      "info": "Time between logo swaps"
+    },
+    {
+      "type": "range",
+      "id": "animation_duration",
+      "min": 0.3,
+      "max": 1.5,
+      "step": 0.1,
+      "default": 0.9,
+      "unit": "s",
+      "label": "Animation duration"
+    },
+    {
+      "type": "checkbox",
+      "id": "shuffle",
+      "default": true,
+      "label": "Shuffle initial logos",
+      "info": "Randomize which logos appear first"
+    },
+    {
+      "type": "header",
+      "content": "Logo Styling"
+    },
+    {
+      "type": "range",
+      "id": "logo_height",
+      "min": 30,
+      "max": 100,
+      "step": 5,
+      "default": 50,
+      "unit": "px",
+      "label": "Logo height"
+    },
+    {
+      "type": "checkbox",
+      "id": "grayscale",
+      "default": false,
+      "label": "Grayscale logos"
+    },
+    {
+      "type": "checkbox",
+      "id": "invert",
+      "default": false,
+      "label": "Invert logos",
+      "info": "Invert logo colors (useful for dark backgrounds)"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "logo",
+      "name": "Logo",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "logo",
+          "label": "Logo image",
+          "info": "Add alt text via the image's metadata in Files"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Logo Wall Cycle",
+      "category": "Social proof",
+      "blocks": [
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" },
+        { "type": "logo" }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -77,16 +77,4 @@
     }
   }
 
-  /* Reduced motion - show static content */
-  @media (prefers-reduced-motion: reduce) {
-    .marquee-content {
-      @apply flex-wrap justify-center;
-      width: auto;
-    }
-  }
-
-  html.animations-disabled .marquee-content {
-    @apply flex-wrap justify-center;
-    width: auto;
-  }
 }

@@ -99,14 +99,4 @@
     opacity: 0.3;
   }
 
-  /* Reduced motion - show static logos */
-  @media (prefers-reduced-motion: reduce) {
-    .logo-marquee-track {
-      @apply flex-wrap justify-center gap-4;
-    }
-  }
-
-  html.animations-disabled .logo-marquee-track {
-    @apply flex-wrap justify-center gap-4;
-  }
 }
