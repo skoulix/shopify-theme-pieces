@@ -1,0 +1,563 @@
+{%- comment -%}
+  Image Sequence on Scroll Section
+  Apple-style scroll effect where visuals respond to scroll position
+  Scrubs through a numbered image sequence as the user scrolls
+{%- endcomment -%}
+
+{%- liquid
+  assign scroll_height = section.settings.scroll_height | default: 300
+  assign frames = section.settings.frames | default: 120
+  assign digits = section.settings.digits | default: 3
+  assign index_start = section.settings.index_start | default: 0
+  assign filetype = section.settings.filetype | default: 'webp'
+  assign scroll_start = section.settings.scroll_start | default: 'top top'
+  assign scroll_end = section.settings.scroll_end | default: 'bottom top'
+  assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
+-%}
+
+<section
+  id="image-sequence-{{ section.id }}"
+  class="image-sequence color-{{ section.settings.color_scheme }}"
+  data-image-sequence-init
+  data-section-id="{{ section.id }}"
+  data-scroll-start="{{ scroll_start }}"
+  data-scroll-end="{{ scroll_end }}"
+  data-content-alignment="{{ section.settings.content_alignment }}"
+  style="--image-sequence-height: {{ scroll_height }}vh; --image-sequence-overlay-opacity: {{ overlay_opacity }};">
+
+  <div class="image-sequence__sticky">
+    <div class="image-sequence__element">
+      <canvas
+        data-sequence-canvas
+        data-desktop-src="{{ section.settings.desktop_source }}"
+        data-mobile-src="{{ section.settings.mobile_source | default: section.settings.desktop_source }}"
+        data-static-src="{{ section.settings.static_image | image_url: width: 1920 }}"
+        data-filetype="{{ filetype }}"
+        data-frames="{{ frames }}"
+        data-digits="{{ digits }}"
+        data-index-start="{{ index_start }}"
+        class="image-sequence__canvas">
+      </canvas>
+
+      {%- comment -%} Dark overlay {%- endcomment -%}
+      <div class="image-sequence__overlay"></div>
+
+      {%- comment -%} Content overlay {%- endcomment -%}
+      {% if section.blocks.size > 0 %}
+        <div class="image-sequence__content">
+          <div class="image-sequence__content-inner page-width">
+            {% for block in section.blocks %}
+              {% case block.type %}
+                {% when 'label' %}
+                  <span class="text-label" {{ block.shopify_attributes }}>
+                    {{ block.settings.text }}
+                  </span>
+                {% when 'heading' %}
+                  <h2 class="image-sequence__heading" {{ block.shopify_attributes }}>
+                    {{ block.settings.text }}
+                  </h2>
+                {% when 'text' %}
+                  <p class="image-sequence__text" {{ block.shopify_attributes }}>
+                    {{ block.settings.text }}
+                  </p>
+                {% when 'button' %}
+                  <a
+                    href="{{ block.settings.url | default: '#' }}"
+                    class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
+                    {{ block.shopify_attributes }}>
+                    <span>{{ block.settings.text }}</span>
+                  </a>
+              {% endcase %}
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</section>
+
+<script>
+(function() {
+  const sectionId = '{{ section.id }}';
+  const section = document.getElementById('image-sequence-' + sectionId);
+  if (!section || section.dataset.imageSequenceInitialized) return;
+  section.dataset.imageSequenceInitialized = 'true';
+
+  // If animations disabled or prefers reduced motion, show static image
+  const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function initImageSequence() {
+    const gsap = window.pieces?.gsap || window.gsap;
+    const ScrollTrigger = window.pieces?.ScrollTrigger || window.ScrollTrigger;
+
+    if (!gsap || !ScrollTrigger) {
+      requestAnimationFrame(initImageSequence);
+      return;
+    }
+
+    gsap.registerPlugin(ScrollTrigger);
+
+    const element = section.querySelector('.image-sequence__element');
+    const canvas = section.querySelector('[data-sequence-canvas]');
+    if (!element || !canvas) return;
+
+    // Data attributes and their fallbacks
+    const frames = parseInt(canvas.dataset.frames, 10) || 1;
+    const digits = parseInt(canvas.dataset.digits, 10) || 3;
+    const indexStart = parseInt(canvas.dataset.indexStart, 10) || 0;
+    const desktopSrc = canvas.dataset.desktopSrc || '';
+    const mobileSrc = canvas.dataset.mobileSrc || desktopSrc;
+    const staticSrc = canvas.dataset.staticSrc;
+    const filetype = canvas.dataset.filetype || 'webp';
+    const startTrigger = section.dataset.scrollStart || 'top top';
+    const endTrigger = section.dataset.scrollEnd || 'bottom top';
+
+    const isMobile = window.matchMedia('(max-width: 767px)').matches;
+    const baseUrl = isMobile ? mobileSrc : desktopSrc;
+    const lastIndex = indexStart + frames - 1;
+
+    // Debug: log configuration
+    console.log('[ImageSequence] Config:', {
+      baseUrl,
+      frames,
+      digits,
+      indexStart,
+      lastIndex,
+      filetype,
+      firstFrameUrl: baseUrl + String(indexStart).padStart(digits, '0') + '.' + filetype
+    });
+
+    // Track last rendered scroll progress for redraw on resize
+    let lastProgress = 0;
+
+    // Canvas setup (size to the element)
+    const ctx = canvas.getContext('2d');
+
+    function resizeCanvas() {
+      const dpr = window.devicePixelRatio || 1;
+      const width = element.clientWidth;
+      const height = element.clientHeight;
+      if (canvas.width !== width * dpr || canvas.height !== height * dpr) {
+        canvas.width = width * dpr;
+        canvas.height = height * dpr;
+        canvas.style.width = width + 'px';
+        canvas.style.height = height + 'px';
+      }
+    }
+    resizeCanvas();
+
+    // Image cache and loading queue
+    const loaded = new Map();
+    const queue = [];
+    let processingQueue = false;
+    let resizeTimer;
+
+    // Draw helper (canvas equivalent of object-fit: cover)
+    function drawCover(img) {
+      if (!img) return;
+      resizeCanvas();
+      const canvasWidth = canvas.width;
+      const canvasHeight = canvas.height;
+      const scale = Math.max(canvasWidth / img.width, canvasHeight / img.height);
+      const x = (canvasWidth - img.width * scale) / 2;
+      const y = (canvasHeight - img.height * scale) / 2;
+      ctx.clearRect(0, 0, canvasWidth, canvasHeight);
+      ctx.drawImage(img, x, y, img.width * scale, img.height * scale);
+    }
+
+    window.addEventListener('resize', function() {
+      clearTimeout(resizeTimer);
+      resizeTimer = setTimeout(function() {
+        resizeCanvas();
+        if (loaded.size) render(lastProgress);
+        ScrollTrigger.refresh();
+      }, 200);
+    });
+
+    function pad(num) {
+      return String(num).padStart(digits, '0');
+    }
+
+    function getUrl(i) {
+      return baseUrl + pad(i) + '.' + filetype;
+    }
+
+    function loadFrame(i, onDone) {
+      if (loaded.has(i) || i < indexStart || i > lastIndex) return;
+      const img = new Image();
+      const url = getUrl(i);
+      img.src = url;
+
+      img.onload = function() {
+        loaded.set(i, img);
+        if (typeof onDone === 'function') onDone();
+      };
+
+      img.onerror = function() {
+        console.warn('[ImageSequence] Failed to load frame', {
+          index: i,
+          url: url
+        });
+      };
+    }
+
+    // Progressive loader (binary midpoint / "wave" fill)
+    function processQueue() {
+      if (processingQueue) return;
+      const next = queue.shift();
+      if (!next) return;
+      processingQueue = true;
+      const a = next[0];
+      const b = next[1];
+      if (b - a <= 1) {
+        processingQueue = false;
+        processQueue();
+        return;
+      }
+      const m = Math.floor((a + b) / 2);
+      loadFrame(m, function() {
+        queue.push([a, m], [m, b]);
+        processingQueue = false;
+        setTimeout(processQueue, 0);
+      });
+    }
+
+    function startLoading() {
+      loadFrame(indexStart, function() {
+        drawImageAt(indexStart); // Show the first frame right away
+        loadFrame(lastIndex); // Preload the last frame
+        queue.push([indexStart, lastIndex]);
+        processQueue();
+        ScrollTrigger.refresh();
+      });
+    }
+
+    function findNearestLoaded(i) {
+      for (let r = 1; r <= 10; r++) {
+        if (loaded.has(i - r)) return i - r;
+        if (loaded.has(i + r)) return i + r;
+      }
+
+      const keys = Array.from(loaded.keys());
+      if (keys.length === 0) return null;
+      let nearest = keys[0];
+      let minDiff = Math.abs(i - nearest);
+      for (let k = 0; k < keys.length; k++) {
+        const diff = Math.abs(i - keys[k]);
+        if (diff < minDiff) {
+          nearest = keys[k];
+          minDiff = diff;
+        }
+      }
+      return nearest;
+    }
+
+    function drawImageAt(i) {
+      const img = loaded.get(i);
+      if (!img) return;
+      drawCover(img);
+    }
+
+    function render(progress) {
+      const relative = progress * (frames - 1);
+      const index = indexStart + Math.round(relative);
+      if (loaded.has(index)) {
+        drawImageAt(index);
+      } else {
+        const nearest = findNearestLoaded(index);
+        if (nearest !== null) drawImageAt(nearest);
+      }
+    }
+
+    // Reduced motion: draw a single static image (or first frame fallback)
+    if (reduceMotion) {
+      if (staticSrc && staticSrc !== '') {
+        const staticImage = new Image();
+        staticImage.src = staticSrc;
+        staticImage.onload = function() {
+          drawCover(staticImage);
+        };
+        return;
+      }
+      loadFrame(indexStart, function() {
+        drawImageAt(indexStart);
+      });
+      return;
+    }
+
+    // Begin loading frames in the background
+    startLoading();
+
+    // Set up ScrollTrigger
+    const st = ScrollTrigger.create({
+      trigger: section,
+      start: startTrigger,
+      end: endTrigger,
+      scrub: true,
+      onUpdate: function(self) {
+        lastProgress = self.progress;
+        render(self.progress);
+      }
+    });
+
+    // Draw once immediately
+    lastProgress = st.progress || 0;
+    render(lastProgress);
+  }
+
+  // Initialize
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initImageSequence);
+  } else {
+    requestAnimationFrame(initImageSequence);
+  }
+})();
+</script>
+
+{% schema %}
+{
+  "name": "Image Sequence",
+  "tag": "section",
+  "class": "image-sequence-section",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Image Sequence"
+    },
+    {
+      "type": "text",
+      "id": "desktop_source",
+      "label": "Desktop source URL",
+      "info": "Base URL for desktop frames (e.g., https://cdn.com/sequence/desktop/frame-). The frame number and extension will be appended automatically."
+    },
+    {
+      "type": "text",
+      "id": "mobile_source",
+      "label": "Mobile source URL",
+      "info": "Base URL for mobile frames. Falls back to desktop if not set."
+    },
+    {
+      "type": "image_picker",
+      "id": "static_image",
+      "label": "Static fallback image",
+      "info": "Shown when user prefers reduced motion"
+    },
+    {
+      "type": "range",
+      "id": "frames",
+      "label": "Total frames",
+      "min": 10,
+      "max": 300,
+      "step": 10,
+      "default": 120,
+      "info": "Number of frames in the sequence"
+    },
+    {
+      "type": "range",
+      "id": "digits",
+      "label": "Filename digits",
+      "min": 1,
+      "max": 5,
+      "step": 1,
+      "default": 3,
+      "info": "Zero-padding in filenames (e.g., 3 = 000, 001, 002)"
+    },
+    {
+      "type": "number",
+      "id": "index_start",
+      "label": "Start index",
+      "default": 0,
+      "info": "First frame number in filenames (usually 0 or 1)"
+    },
+    {
+      "type": "select",
+      "id": "filetype",
+      "label": "File type",
+      "options": [
+        { "value": "webp", "label": "WebP (Recommended)" },
+        { "value": "jpg", "label": "JPG" },
+        { "value": "png", "label": "PNG" },
+        { "value": "avif", "label": "AVIF" }
+      ],
+      "default": "webp"
+    },
+    {
+      "type": "header",
+      "content": "Scroll Behavior"
+    },
+    {
+      "type": "range",
+      "id": "scroll_height",
+      "label": "Scroll height",
+      "min": 100,
+      "max": 500,
+      "step": 50,
+      "default": 300,
+      "unit": "vh",
+      "info": "Total scroll distance to play through the sequence"
+    },
+    {
+      "type": "text",
+      "id": "scroll_start",
+      "label": "Scroll start",
+      "default": "top top",
+      "info": "ScrollTrigger start position (e.g., top top, top center)"
+    },
+    {
+      "type": "text",
+      "id": "scroll_end",
+      "label": "Scroll end",
+      "default": "bottom top",
+      "info": "ScrollTrigger end position (e.g., bottom top, bottom center)"
+    },
+    {
+      "type": "header",
+      "content": "Overlay & Content"
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "default": 0,
+      "unit": "%",
+      "label": "Overlay opacity"
+    },
+    {
+      "type": "select",
+      "id": "content_alignment",
+      "label": "Text alignment",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ],
+      "default": "center"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "label",
+      "name": "Label",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "SCROLL TO EXPLORE"
+        }
+      ]
+    },
+    {
+      "type": "heading",
+      "name": "Heading",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Image Sequence"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Text",
+          "default": "Scroll through this section to see the animation unfold frame by frame."
+        }
+      ]
+    },
+    {
+      "type": "button",
+      "name": "Button",
+      "settings": [
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Learn More"
+        },
+        {
+          "type": "url",
+          "id": "url",
+          "label": "URL"
+        },
+        {
+          "type": "select",
+          "id": "button_style",
+          "label": "Style",
+          "default": "solid",
+          "options": [
+            { "value": "solid", "label": "Solid" },
+            { "value": "outline", "label": "Outline" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_color",
+          "label": "Color",
+          "default": "primary",
+          "options": [
+            { "value": "primary", "label": "Primary" },
+            { "value": "secondary", "label": "Secondary" }
+          ]
+        },
+        {
+          "type": "select",
+          "id": "button_size",
+          "label": "Size",
+          "default": "default",
+          "options": [
+            { "value": "small", "label": "Small" },
+            { "value": "default", "label": "Default" },
+            { "value": "large", "label": "Large" }
+          ]
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Image Sequence",
+      "category": "Scrolling & animation",
+      "settings": {
+        "frames": 120,
+        "digits": 3,
+        "index_start": 0,
+        "filetype": "webp",
+        "scroll_height": 300
+      },
+      "blocks": [
+        {
+          "type": "label",
+          "settings": {
+            "text": "SCROLL TO EXPLORE"
+          }
+        },
+        {
+          "type": "heading",
+          "settings": {
+            "text": "Image Sequence"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

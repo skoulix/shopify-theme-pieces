@@ -1,0 +1,144 @@
+/* ==========================================================================
+   Image Sequence Section
+   Apple-style scroll effect scrubbing through numbered image sequence
+   ========================================================================== */
+
+@layer components {
+  /* Main container - defines scroll height */
+  .image-sequence {
+    @apply relative w-full;
+    height: var(--image-sequence-height, 300vh);
+  }
+
+  /* Sticky wrapper - stays in viewport while scrolling */
+  .image-sequence__sticky {
+    @apply sticky top-0 flex justify-center items-center w-full;
+    height: 100vh;
+  }
+
+  /* Element wrapper - full viewport canvas container */
+  .image-sequence__element {
+    @apply absolute inset-0 w-full h-full;
+    z-index: 0;
+  }
+
+  /* Canvas - renders the image sequence */
+  .image-sequence__canvas {
+    @apply w-full h-full relative;
+    padding: 0;
+  }
+
+  /* Dark overlay */
+  .image-sequence__overlay {
+    @apply absolute inset-0 pointer-events-none;
+    z-index: 1;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, var(--image-sequence-overlay-opacity, 0)) 0%,
+      rgba(0, 0, 0, calc(var(--image-sequence-overlay-opacity, 0) / 2)) 50%,
+      transparent 100%
+    );
+  }
+
+  /* Content overlay */
+  .image-sequence__content {
+    @apply absolute inset-0 z-10 flex;
+    pointer-events: none;
+  }
+
+  .image-sequence__content > * {
+    pointer-events: auto;
+  }
+
+  .image-sequence__content-inner {
+    @apply flex flex-col gap-4;
+  }
+
+  /* Content positioning */
+  .image-sequence[data-content-position="top-left"] .image-sequence__content {
+    @apply justify-start items-start;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="top-center"] .image-sequence__content {
+    @apply justify-center items-start;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="top-right"] .image-sequence__content {
+    @apply justify-end items-start;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="center-left"] .image-sequence__content {
+    @apply justify-start items-center;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="center"] .image-sequence__content,
+  .image-sequence:not([data-content-position]) .image-sequence__content {
+    @apply justify-center items-center;
+  }
+
+  .image-sequence[data-content-position="center-right"] .image-sequence__content {
+    @apply justify-end items-center;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="bottom-left"] .image-sequence__content {
+    @apply justify-start items-end;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="bottom-center"] .image-sequence__content {
+    @apply justify-center items-end;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  .image-sequence[data-content-position="bottom-right"] .image-sequence__content {
+    @apply justify-end items-end;
+    padding: clamp(2rem, 5vw, 4rem);
+  }
+
+  /* Content alignment */
+  .image-sequence[data-content-alignment="left"] .image-sequence__content-inner {
+    @apply items-start text-left;
+  }
+
+  .image-sequence[data-content-alignment="center"] .image-sequence__content-inner,
+  .image-sequence:not([data-content-alignment]) .image-sequence__content-inner {
+    @apply items-center text-center;
+  }
+
+  .image-sequence[data-content-alignment="right"] .image-sequence__content-inner {
+    @apply items-end text-right;
+  }
+
+  /* Heading */
+  .image-sequence__heading {
+    @apply font-heading font-bold leading-tight;
+    font-size: clamp(2rem, 6vw, 4.5rem);
+    letter-spacing: -0.02em;
+    max-width: 12em;
+    margin: 0;
+  }
+
+  /* Text */
+  .image-sequence__text {
+    @apply leading-relaxed opacity-80;
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    max-width: 40em;
+    margin: 0;
+  }
+
+  /* Responsive adjustments */
+  @media (max-width: 767px) {
+    .image-sequence__heading {
+      font-size: clamp(1.75rem, 8vw, 2.5rem);
+    }
+
+    .image-sequence__text {
+      font-size: clamp(0.9rem, 4vw, 1rem);
+    }
+  }
+}
