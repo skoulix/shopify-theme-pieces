@@ -166,6 +166,8 @@
           </div>
 
           {%- comment -%} Add to Cart Button {%- endcomment -%}
+          {%- assign btn_add_to_cart = 'products.product.add_to_cart' | t -%}
+          {%- assign btn_sold_out = 'products.product.sold_out' | t -%}
           <button
             type="submit"
             class="btn btn--primary btn--sm flex-1"
@@ -173,9 +175,9 @@
           >
             <span data-add-text>
               {% if current_variant.available %}
-                {{ 'products.product.add_to_cart' | t }}
+                {% render 'button-text', text: btn_add_to_cart %}
               {% else %}
-                {{ 'products.product.sold_out' | t }}
+                {% render 'button-text', text: btn_sold_out %}
               {% endif %}
             </span>
             <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>

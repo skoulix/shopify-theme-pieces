@@ -259,7 +259,7 @@
           <p class="compare-empty__text mx-auto">{{ 'products.compare.empty_text' | t | default: 'Add products to compare by clicking the compare icon on product cards.' }}</p>
           <div class="compare-empty__actions justify-center">
             <a href="/collections/all" class="btn btn--primary">
-              <span>{{ 'products.compare.browse_products' | t | default: 'Browse Products' }}</span>
+              {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.compare.browse_products' | t | default: 'Browse Products' }}"><span>{{ 'products.compare.browse_products' | t | default: 'Browse Products' }}</span></span>{%- else -%}<span>{{ 'products.compare.browse_products' | t | default: 'Browse Products' }}</span>{%- endif -%}
             </a>
           </div>
         </div>
@@ -422,8 +422,8 @@
             ${products.map(p => `
               <div class="compare-table__cell">
                 ${p.available
-                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--secondary btn--sm"><span>{{ 'products.product.view_product' | t | default: 'View Product' }}</span></a>`
-                  : `<button type="button" class="btn btn--secondary btn--sm" disabled><span>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</span></button>`
+                  ? `<a href="${escapeHtml(p.url)}" class="btn btn--secondary btn--sm">{%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.product.view_product' | t | default: 'View Product' }}"><span>{{ 'products.product.view_product' | t | default: 'View Product' }}</span></span>{%- else -%}<span>{{ 'products.product.view_product' | t | default: 'View Product' }}</span>{%- endif -%}</a>`
+                  : `<button type="button" class="btn btn--secondary btn--sm" disabled>{%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.product.sold_out' | t | default: 'Sold Out' }}"><span>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</span></span>{%- else -%}<span>{{ 'products.product.sold_out' | t | default: 'Sold Out' }}</span>{%- endif -%}</button>`
                 }
               </div>
             `).join('')}
@@ -434,10 +434,10 @@
       <div class="compare-actions">
         <button type="button" class="btn btn--secondary btn--lg" data-clear-compare>
           <i class="ph ph-trash"></i>
-          <span>{{ 'products.compare.clear_all' | t | default: 'Clear All' }}</span>
+          {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.compare.clear_all' | t | default: 'Clear All' }}"><span>{{ 'products.compare.clear_all' | t | default: 'Clear All' }}</span></span>{%- else -%}<span>{{ 'products.compare.clear_all' | t | default: 'Clear All' }}</span>{%- endif -%}
         </button>
         <a href="/collections/all" class="btn btn--primary btn--lg">
-          <span>{{ 'products.compare.continue_shopping' | t | default: 'Continue Shopping' }}</span>
+          {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.compare.continue_shopping' | t | default: 'Continue Shopping' }}"><span>{{ 'products.compare.continue_shopping' | t | default: 'Continue Shopping' }}</span></span>{%- else -%}<span>{{ 'products.compare.continue_shopping' | t | default: 'Continue Shopping' }}</span>{%- endif -%}
         </a>
       </div>
     `;

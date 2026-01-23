@@ -329,20 +329,22 @@
       </form>
 
       {%- comment -%} Footer {%- endcomment -%}
+      {%- assign btn_clear_all = 'general.clear_all' | t -%}
+      {%- assign btn_apply = 'general.apply' | t -%}
       <div class="px-6 py-4 border-t border-(--color-border) flex items-center gap-4">
         <a
           href="{{ results.url }}"
           class="btn btn--secondary flex-1 text-center"
           data-facet-clear-all
         >
-          <span>{{ 'general.clear_all' | t }}</span>
+          {% render 'button-text', text: btn_clear_all %}
         </a>
         <button
           type="button"
           class="btn btn--primary flex-1"
           data-facets-apply
         >
-          <span>{{ 'general.apply' | t }}</span>
+          {% render 'button-text', text: btn_apply %}
         </button>
       </div>
     </div>

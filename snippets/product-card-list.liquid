@@ -80,24 +80,29 @@
   </div>
 
   {%- comment -%} Mobile buttons {%- endcomment -%}
+  {%- assign btn_select_options = 'products.product.select_options' | t -%}
+  {%- assign btn_add_to_cart = 'products.product.add_to_cart' | t -%}
+  {%- assign btn_adding = 'cart.adding' | t -%}
+  {%- assign btn_added = 'cart.added' | t -%}
+  {%- assign btn_sold_out = 'products.product.sold_out' | t -%}
   <div class="product-card-list__buttons-mobile col-span-2">
     {% if product.available %}
       {% if has_variants %}
         <a
           href="{{ product_url }}"
           class="btn btn--primary btn--sm"
-          aria-label="{{ 'products.product.select_options' | t }}: {{ product.title }}">
-          <span>{{ 'products.product.select_options' | t }}</span>
+          aria-label="{{ btn_select_options }}: {{ product.title }}">
+          {% render 'button-text', text: btn_select_options %}
         </a>
       {% else %}
         <button
           type="button"
           class="btn btn--primary btn--sm"
           data-quick-add="{{ first_available_variant.id }}"
-          aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}">
-          <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
-          <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
-          <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
+          aria-label="{{ btn_add_to_cart }}: {{ product.title }}">
+          <span data-add-text>{% render 'button-text', text: btn_add_to_cart %}</span>
+          <span data-adding-text class="hidden">{{ btn_adding }}</span>
+          <span data-added-text class="hidden">{{ btn_added }}</span>
         </button>
       {% endif %}
     {% else %}
@@ -105,8 +110,8 @@
         type="button"
         class="btn btn--secondary btn--sm"
         disabled
-        aria-label="{{ 'products.product.sold_out' | t }}: {{ product.title }}">
-        <span>{{ 'products.product.sold_out' | t }}</span>
+        aria-label="{{ btn_sold_out }}: {{ product.title }}">
+        {% render 'button-text', text: btn_sold_out %}
       </button>
     {% endif %}
 
@@ -156,18 +161,18 @@
         <a
           href="{{ product_url }}"
           class="btn btn--primary"
-          aria-label="{{ 'products.product.select_options' | t }}: {{ product.title }}">
-          <span>{{ 'products.product.select_options' | t }}</span>
+          aria-label="{{ btn_select_options }}: {{ product.title }}">
+          {% render 'button-text', text: btn_select_options %}
         </a>
       {% else %}
         <button
           type="button"
           class="btn btn--primary"
           data-quick-add="{{ first_available_variant.id }}"
-          aria-label="{{ 'products.product.add_to_cart' | t }}: {{ product.title }}">
-          <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
-          <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
-          <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
+          aria-label="{{ btn_add_to_cart }}: {{ product.title }}">
+          <span data-add-text>{% render 'button-text', text: btn_add_to_cart %}</span>
+          <span data-adding-text class="hidden">{{ btn_adding }}</span>
+          <span data-added-text class="hidden">{{ btn_added }}</span>
         </button>
       {% endif %}
     {% else %}
@@ -175,8 +180,8 @@
         type="button"
         class="btn btn--secondary"
         disabled
-        aria-label="{{ 'products.product.sold_out' | t }}: {{ product.title }}">
-        <span>{{ 'products.product.sold_out' | t }}</span>
+        aria-label="{{ btn_sold_out }}: {{ product.title }}">
+        {% render 'button-text', text: btn_sold_out %}
       </button>
     {% endif %}
 

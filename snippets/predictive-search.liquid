@@ -370,7 +370,7 @@ class PredictiveSearch extends HTMLElement {
       html += `
         <div class="predictive-search__view-all p-4 border-t border-(--color-border)">
           <a href="${searchUrl}?q=${searchQuery}&type=product,article,page" class="btn btn--secondary btn--sm w-full">
-            <span>${this.dataset.viewAllText} "${this.input.value}"</span>
+            {%- if settings.button_hover_slide_text -%}<span data-hover="${this.dataset.viewAllText} &quot;${this.input.value}&quot;"><span>${this.dataset.viewAllText} "${this.input.value}"</span></span>{%- else -%}<span>${this.dataset.viewAllText} "${this.input.value}"</span>{%- endif -%}
           </a>
         </div>
       `;

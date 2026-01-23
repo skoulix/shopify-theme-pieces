@@ -214,10 +214,12 @@
           {%- comment -%} Pagination {%- endcomment -%}
           {% if paginate.pages > 1 %}
             <nav class="flex items-center justify-center gap-4 pt-16">
+              {%- assign btn_previous = 'accessibility.previous' | t -%}
+              {%- assign btn_next = 'accessibility.next' | t -%}
               {% if paginate.previous %}
                 <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
                   <i class="ph ph-arrow-left"></i>
-                  <span>{{ 'accessibility.previous' | t }}</span>
+                  {% render 'button-text', text: btn_previous %}
                 </a>
               {% endif %}
 
@@ -227,7 +229,7 @@
 
               {% if paginate.next %}
                 <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
-                  <span>{{ 'accessibility.next' | t }}</span>
+                  {% render 'button-text', text: btn_next %}
                   <i class="ph ph-arrow-right"></i>
                 </a>
               {% endif %}
@@ -239,14 +241,16 @@
         <div class="max-w-2xl -mt-6 {% if section.settings.header_alignment == 'center' %}mx-auto text-center{% elsif section.settings.header_alignment == 'right' %}ml-auto text-right{% endif %}" data-tween data-tween-type="fade-up" data-tween-start="top bottom">
           <p class="text-(--color-text-secondary)">{{ 'search.no_results_description' | t }}</p>
 
+          {%- assign btn_browse_products = '404.browse_products' | t -%}
+          {%- assign btn_back_home = '404.back_home' | t -%}
           <div class="mt-8 flex flex-wrap gap-3 {% if section.settings.header_alignment == 'center' %}justify-center{% elsif section.settings.header_alignment == 'right' %}justify-end{% endif %}">
             <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
               <i class="ph ph-storefront"></i>
-              <span>{{ '404.browse_products' | t }}</span>
+              {% render 'button-text', text: btn_browse_products %}
             </a>
             <a href="{{ routes.root_url }}" class="btn btn--secondary">
               <i class="ph ph-house"></i>
-              <span>{{ '404.back_home' | t }}</span>
+              {% render 'button-text', text: btn_back_home %}
             </a>
           </div>
 

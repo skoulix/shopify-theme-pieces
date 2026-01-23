@@ -128,7 +128,7 @@
           <p class="wishlist-empty__text mx-auto">{{ 'products.wishlist.empty_text' | t | default: 'Save your favorite products by clicking the heart icon on product cards.' }}</p>
           <div class="wishlist-empty__actions justify-center">
             <a href="/collections/all" class="btn btn--primary">
-              <span>{{ 'products.wishlist.browse_products' | t | default: 'Browse Products' }}</span>
+              {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.wishlist.browse_products' | t | default: 'Browse Products' }}"><span>{{ 'products.wishlist.browse_products' | t | default: 'Browse Products' }}</span></span>{%- else -%}<span>{{ 'products.wishlist.browse_products' | t | default: 'Browse Products' }}</span>{%- endif -%}
             </a>
           </div>
         </div>
@@ -198,10 +198,10 @@
       <div class="wishlist-actions">
         <button type="button" class="btn btn--secondary btn--lg" data-clear-wishlist>
           <i class="ph ph-trash"></i>
-          <span>{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}</span>
+          {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}"><span>{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}</span></span>{%- else -%}<span>{{ 'products.wishlist.clear_all' | t | default: 'Clear All' }}</span>{%- endif -%}
         </button>
         <a href="/collections/all" class="btn btn--primary btn--lg">
-          <span>{{ 'products.wishlist.continue_shopping' | t | default: 'Continue Shopping' }}</span>
+          {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.wishlist.continue_shopping' | t | default: 'Continue Shopping' }}"><span>{{ 'products.wishlist.continue_shopping' | t | default: 'Continue Shopping' }}</span></span>{%- else -%}<span>{{ 'products.wishlist.continue_shopping' | t | default: 'Continue Shopping' }}</span>{%- endif -%}
         </a>
       </div>
     `;

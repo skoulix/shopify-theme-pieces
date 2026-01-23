@@ -358,10 +358,12 @@
         </div>
       {% else %}
         <nav class="flex items-center justify-center gap-4 py-16 {{ container_class }}">
+          {%- assign btn_previous = 'general.previous' | t -%}
+          {%- assign btn_next = 'general.next' | t -%}
           {% if paginate.previous %}
             <a href="{{ paginate.previous.url }}" class="btn btn--secondary btn--sm">
               <i class="ph ph-arrow-left"></i>
-              <span>{{ 'general.previous' | t }}</span>
+              {% render 'button-text', text: btn_previous %}
             </a>
           {% endif %}
 
@@ -371,7 +373,7 @@
 
           {% if paginate.next %}
             <a href="{{ paginate.next.url }}" class="btn btn--secondary btn--sm">
-              <span>{{ 'general.next' | t }}</span>
+              {% render 'button-text', text: btn_next %}
               <i class="ph ph-arrow-right"></i>
             </a>
           {% endif %}

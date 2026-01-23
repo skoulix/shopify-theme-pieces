@@ -39,12 +39,13 @@
         class="back-in-stock-form__input"
         autocomplete="email"
       >
+      {%- assign btn_notify = 'products.back_in_stock.submit' | t -%}
       <button
         type="submit"
         class="btn btn--secondary flex-shrink-0"
         data-notify-submit
       >
-        <span data-btn-text>{{ 'products.back_in_stock.submit' | t }}</span>
+        <span data-btn-text>{% render 'button-text', text: btn_notify %}</span>
         <span data-btn-loading class="hidden"><i class="ph ph-spinner animate-spin"></i></span>
       </button>
     </form>

@@ -139,7 +139,7 @@
             type="submit"
             class="btn btn--primary btn--full"
           >
-            <span>{{ settings.popup_button_text }}</span>
+            {% render 'button-text', text: settings.popup_button_text %}
           </button>
         {% endform %}
 

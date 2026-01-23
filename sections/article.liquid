@@ -181,8 +181,9 @@
                 </div>
 
                 <div>
+                  {%- assign btn_submit = 'blog.comment_form_submit' | t -%}
                   <button type="submit" class="btn btn--primary">
-                    <span>{{ 'blog.comment_form_submit' | t }}</span>
+                    {% render 'button-text', text: btn_submit %}
                   </button>
                 </div>
               </div>

@@ -47,8 +47,9 @@
               endif
             endif
           -%}
+          {%- assign btn_text = button_text | default: 'Subscribe' -%}
           <button type="submit" class="btn {{ btn_class }} flex-none">
-            <span>{{ button_text | default: 'Subscribe' }}</span>
+            {% render 'button-text', text: btn_text %}
           </button>
         </div>
         {% if privacy_link != blank %}

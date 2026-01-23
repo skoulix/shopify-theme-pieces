@@ -125,16 +125,18 @@
             <span data-copy-text>{{ 'gift_card.copy_code' | t }}</span>
           </button>
 
+          {%- assign btn_add_wallet = 'gift_card.add_to_apple_wallet' | t -%}
+          {%- assign btn_shop_now = 'general.shop_now' | t -%}
           {% if gift_card.pass_url %}
             <a href="{{ gift_card.pass_url }}" class="btn btn--secondary btn--full">
               <i class="ph ph-wallet"></i>
-              <span>{{ 'gift_card.add_to_apple_wallet' | t }}</span>
+              {% render 'button-text', text: btn_add_wallet %}
             </a>
           {% endif %}
 
           <a href="{{ shop.url }}" class="btn btn--secondary btn--full">
             <i class="ph ph-storefront"></i>
-            <span>{{ 'general.shop_now' | t }}</span>
+            {% render 'button-text', text: btn_shop_now %}
           </a>
         </div>
 

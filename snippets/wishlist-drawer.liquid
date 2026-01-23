@@ -27,8 +27,9 @@
     </div>
 
     <footer class="wishlist-drawer__footer">
+      {%- assign btn_view_all = 'products.wishlist.view_all' | t | default: 'View All Saved Items' -%}
       <a href="{{ pages['wishlist'].url | default: '/pages/wishlist' }}" class="btn btn--primary btn--full" data-wishlist-view-btn>
-        <span>{{ 'products.wishlist.view_all' | t | default: 'View All Saved Items' }}</span>
+        {% render 'button-text', text: btn_view_all %}
       </a>
     </footer>
   </div>
@@ -156,7 +157,7 @@
           </div>
           <div class="wishlist-drawer__product-actions">
             <a href="${escapeHtml(product.url)}" class="btn btn--primary btn--xs">
-              <span>{{ 'products.wishlist.view' | t | default: 'View' }}</span>
+              {%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.wishlist.view' | t | default: 'View' }}"><span>{{ 'products.wishlist.view' | t | default: 'View' }}</span></span>{%- else -%}<span>{{ 'products.wishlist.view' | t | default: 'View' }}</span>{%- endif -%}
             </a>
             <button type="button" class="btn btn--secondary btn--xs btn--icon-only" data-remove-wishlist="${product.id}" aria-label="{{ 'products.wishlist.remove' | t | default: 'Remove from wishlist' }}">
               <i class="ph ph-trash"></i>

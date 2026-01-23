@@ -365,6 +365,18 @@
                     , form: form
                     , section: section -%}
 
+                  {%- liquid
+                    if block.settings.add_to_cart_text != blank
+                      assign btn_add_to_cart = block.settings.add_to_cart_text
+                    else
+                      assign btn_add_to_cart = 'products.product.add_to_cart' | t
+                    endif
+                    if block.settings.sold_out_text != blank
+                      assign btn_sold_out = block.settings.sold_out_text
+                    else
+                      assign btn_sold_out = 'products.product.sold_out' | t
+                    endif
+                  -%}
                   <button
                     type="submit"
                     class="btn btn--primary btn--lg btn--full product-add-btn"
@@ -374,19 +386,9 @@
                     <span class="product-add-btn-text">
                       {% if current_variant.available %}
                         <i class="ph ph-bag"></i>
-                        <span>
-                          {% if block.settings.add_to_cart_text != blank %}
-                            {{ block.settings.add_to_cart_text }}
-                          {% else %}
-                            {{ 'products.product.add_to_cart' | t }}{% endif %}
-                        </span>
+                        {% render 'button-text', text: btn_add_to_cart %}
                       {% else %}
-                        <span>
-                          {% if block.settings.sold_out_text != blank %}
-                            {{ block.settings.sold_out_text }}
-                          {% else %}
-                            {{ 'products.product.sold_out' | t }}{% endif %}
-                        </span>
+                        {% render 'button-text', text: btn_sold_out %}
                       {% endif %}
                     </span>
                   </button>

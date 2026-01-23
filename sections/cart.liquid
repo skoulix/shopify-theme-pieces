@@ -330,13 +330,14 @@
 
             {%- comment -%} Actions {%- endcomment -%}
             <div class="mt-8 space-y-3">
+              {%- assign btn_checkout = 'cart.checkout' | t -%}
               <form action="{{ routes.cart_url }}" method="post">
                 <button
                   type="submit"
                   name="checkout"
                   class="btn btn--primary btn--full">
                   <i class="ph ph-lock-simple"></i>
-                  <span>{{ 'cart.checkout' | t }}</span>
+                  {% render 'button-text', text: btn_checkout %}
                 </button>
               </form>
 
@@ -347,9 +348,10 @@
                 </div>
               {%- endif -%}
 
+              {%- assign btn_continue_shopping = 'cart.continue_shopping' | t -%}
               <a href="{{ routes.all_products_collection_url }}" class="btn btn--secondary btn--full">
                 <i class="ph ph-arrow-left"></i>
-                <span>{{ 'cart.continue_shopping' | t }}</span>
+                {% render 'button-text', text: btn_continue_shopping %}
               </a>
             </div>
 
@@ -391,14 +393,16 @@
       <h2 class="section-title">{{ 'cart.empty' | t }}</h2>
       <p class="mt-4 text-(--color-text-secondary) max-w-sm mx-auto">{{ 'cart.empty_description' | t }}</p>
 
+      {%- assign btn_start_shopping = 'cart.start_shopping' | t -%}
+      {%- assign btn_back_home = '404.back_home' | t -%}
       <div class="mt-10 flex flex-col sm:flex-row gap-4 mx-auto sm:justify-center">
         <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary w-full sm:w-auto">
           <i class="ph ph-storefront"></i>
-          <span>{{ 'cart.start_shopping' | t }}</span>
+          {% render 'button-text', text: btn_start_shopping %}
         </a>
         <a href="{{ routes.root_url }}" class="btn btn--secondary w-full sm:w-auto">
           <i class="ph ph-house"></i>
-          <span>{{ '404.back_home' | t }}</span>
+          {% render 'button-text', text: btn_back_home %}
         </a>
       </div>
     </div>

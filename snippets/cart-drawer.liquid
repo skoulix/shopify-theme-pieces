@@ -166,9 +166,10 @@
           </div>
           <h3 class="drawer-title">{{ 'cart.empty' | t }}</h3>
           <p class="m-0 text-(--color-text-secondary) text-sm">{{ 'cart.empty_description' | t }}</p>
+          {%- assign btn_start_shopping = 'cart.start_shopping' | t -%}
           <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary btn--full mt-2" data-cart-drawer-close>
             <i class="ph ph-storefront"></i>
-            <span>{{ 'cart.start_shopping' | t }}</span>
+            {% render 'button-text', text: btn_start_shopping %}
           </a>
         </div>
       {% endif %}
@@ -203,14 +204,16 @@
         </p>
 
         {%- comment -%} Actions {%- endcomment -%}
+        {%- assign btn_view_cart = 'cart.view_cart' | t -%}
+        {%- assign btn_checkout = 'cart.checkout' | t -%}
         <div class="flex flex-col gap-3">
           <a href="{{ routes.cart_url }}" class="btn btn--secondary btn--full" data-cart-drawer-close>
-            <span>{{ 'cart.view_cart' | t }}</span>
+            {% render 'button-text', text: btn_view_cart %}
           </a>
           <form action="{{ routes.cart_url }}" method="post" class="m-0">
             <button type="submit" name="checkout" class="btn btn--primary btn--full">
               <i class="ph ph-lock-simple"></i>
-              <span>{{ 'cart.checkout' | t }}</span>
+              {% render 'button-text', text: btn_checkout %}
             </button>
           </form>
         </div>

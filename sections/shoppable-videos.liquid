@@ -577,13 +577,13 @@
           <form class="shoppable-add-to-cart-form hidden md:block md:shrink-0 xl:hidden" data-product-id="${product.id}">
             <input type="hidden" name="id" value="${product.variantId}">
             <input type="hidden" name="quantity" value="1">
-            <button type="submit" class="btn btn--primary btn--sm"><span>{{ 'products.product.add_to_cart' | t }}</span></button>
+            <button type="submit" class="btn btn--primary btn--sm">{%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.product.add_to_cart' | t }}"><span>{{ 'products.product.add_to_cart' | t }}</span></span>{%- else -%}<span>{{ 'products.product.add_to_cart' | t }}</span>{%- endif -%}</button>
           </form>
         </div>
         <form class="shoppable-add-to-cart-form mt-3 md:hidden xl:block xl:mt-4" data-product-id="${product.id}">
           <input type="hidden" name="id" value="${product.variantId}">
           <input type="hidden" name="quantity" value="1">
-          <button type="submit" class="btn btn--primary btn--sm w-full"><span>{{ 'products.product.add_to_cart' | t }}</span></button>
+          <button type="submit" class="btn btn--primary btn--sm w-full">{%- if settings.button_hover_slide_text -%}<span data-hover="{{ 'products.product.add_to_cart' | t }}"><span>{{ 'products.product.add_to_cart' | t }}</span></span>{%- else -%}<span>{{ 'products.product.add_to_cart' | t }}</span>{%- endif -%}</button>
         </form>
       </div>
     `;
