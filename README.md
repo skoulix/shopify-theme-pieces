@@ -837,6 +837,90 @@ pieces/
 
 ---
 
+## SEO & Structured Data
+
+Comprehensive SEO optimization with schema.org structured data for enhanced search visibility.
+
+### Meta Tags
+
+Open Graph and Twitter Card meta tags are automatically generated in `snippets/meta-tags.liquid`:
+
+| Meta Type | Description |
+| --------- | ----------- |
+| **Open Graph** | `og:title`, `og:description`, `og:url`, `og:type`, `og:image` |
+| **Twitter Cards** | `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` |
+| **Product-specific** | `og:price:amount`, `og:price:currency` on product pages |
+
+Social sharing images follow a fallback chain: page image → share image setting → logo.
+
+### Structured Data (JSON-LD)
+
+Rich snippets via `snippets/structured-data.liquid` rendered on every page:
+
+| Schema Type | Pages | Description |
+| ----------- | ----- | ----------- |
+| **Organization** | All | Shop name, logo, social profiles, contact point |
+| **WebSite** | All | Site name with SearchAction for sitelinks search box |
+| **BreadcrumbList** | All (except home) | Navigation path hierarchy |
+| **Product** | Product pages | Name, description, images, SKU, GTIN, brand, offers, ratings |
+| **CollectionPage** | Collection pages | Collection title, description, image, item count |
+| **Article** | Blog articles | Headline, author, dates, publisher, featured image |
+| **LocalBusiness** | All (if enabled) | Physical store info for local SEO |
+| **FAQPage** | FAQ sections | Question/answer pairs for rich results |
+
+### Product Schema Features
+
+Product structured data includes:
+- Up to 5 product images
+- SKU and GTIN/barcode (if available)
+- Brand from vendor
+- AggregateOffer with price range
+- Stock availability status
+- Aggregate ratings from Shopify product reviews metafields
+
+### Local Business Schema
+
+Enable in theme settings for physical retail locations:
+
+```liquid
+{% comment %} Theme Settings {% endcomment %}
+Enable local business schema: checkbox
+Business phone: text
+Business email: text
+Street address: text
+City: text
+State/Province: text
+ZIP/Postal code: text
+Country: text
+Opening hours: text (e.g., "Mo-Fr 09:00-17:00")
+Price range: select ($, $$, $$$, $$$$)
+```
+
+### FAQ Schema
+
+Automatically generated for FAQ sections via `snippets/structured-data-faq.liquid`:
+
+```liquid
+{% render 'structured-data-faq', faqs: section.blocks %}
+```
+
+### Visual Breadcrumbs
+
+Rendered via `snippets/breadcrumbs.liquid` with customizable options:
+
+```liquid
+{% render 'breadcrumbs' %}
+{% render 'breadcrumbs', separator: '/', show_home_icon: true, alignment: 'center' %}
+```
+
+Supports: Products (with collection context), Collections, Blog articles, Pages, Search, Cart.
+
+### Canonical URLs
+
+Shopify's built-in `{{ canonical_url }}` is used throughout for proper URL canonicalization.
+
+---
+
 ## Accessibility
 
 - Semantic HTML structure
