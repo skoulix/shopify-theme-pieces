@@ -26,27 +26,14 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header with Navigation {%- endcomment -%}
-    <div class="collections-carousel-header-row" data-tween-group="cc-header-{{ section.id }}">
-      <div class="collections-carousel-header-content">
-        {% render 'section-header',
-          label: section.settings.label,
-          title: section.settings.title,
-          description: section.settings.description,
-          alignment: section.settings.header_alignment,
-          nowrap: true
-        %}
-      </div>
-
-      {%- comment -%} Navigation Arrows {%- endcomment -%}
-      <div class="slider-nav" data-carousel-nav data-tween data-tween-type="fade-up">
-        <button class="slider-nav-btn" data-carousel-prev disabled aria-label="{{ 'accessibility.previous' | t | default: 'Previous' }}">
-          <i class="ph ph-arrow-left"></i>
-        </button>
-        <button class="slider-nav-btn" data-carousel-next aria-label="{{ 'accessibility.next' | t | default: 'Next' }}">
-          <i class="ph ph-arrow-right"></i>
-        </button>
-      </div>
-    </div>
+    {% render 'section-header-nav',
+      label: section.settings.label,
+      title: section.settings.title,
+      description: section.settings.description,
+      alignment: section.settings.header_alignment,
+      group_id: section.id,
+      nav_data_prefix: 'carousel'
+    %}
 
     {%- comment -%} Check if any blocks have a collection selected {%- endcomment -%}
     {%- liquid

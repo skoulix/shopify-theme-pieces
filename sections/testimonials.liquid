@@ -15,27 +15,14 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header with Navigation {%- endcomment -%}
-    <div class="testimonials-header-row" data-tween-group="testimonials-header-{{ section.id }}">
-      <div class="testimonials-header-content">
-        {% render 'section-header',
-          label: section.settings.label,
-          title: section.settings.title,
-          nowrap: true
-        %}
-      </div>
-
-      {%- comment -%} Navigation Arrows {%- endcomment -%}
-      {% if section.blocks.size > 1 %}
-        <div class="slider-nav" data-testimonials-nav data-tween data-tween-type="fade-up">
-          <button class="slider-nav-btn" data-testimonials-prev disabled aria-label="{{ 'accessibility.previous_testimonial' | t | default: 'Previous' }}">
-            <i class="ph ph-arrow-left"></i>
-          </button>
-          <button class="slider-nav-btn" data-testimonials-next aria-label="{{ 'accessibility.next_testimonial' | t | default: 'Next' }}">
-            <i class="ph ph-arrow-right"></i>
-          </button>
-        </div>
-      {% endif %}
-    </div>
+    {% render 'section-header-nav',
+      label: section.settings.label,
+      title: section.settings.title,
+      alignment: section.settings.header_alignment,
+      group_id: section.id,
+      nav_data_prefix: 'testimonials',
+      show_nav: section.blocks.size > 1
+    %}
 
     {%- comment -%} Slider {%- endcomment -%}
     <div class="sr-only" aria-live="polite" aria-atomic="true" data-testimonials-status></div>

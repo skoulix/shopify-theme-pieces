@@ -8,48 +8,11 @@
 -%}
 
 <style>
-
-  .fb-header-{{ section.id }} {
-    display: flex;
-    flex-direction: column;
-    gap: 1.5rem;
-    margin-bottom: clamp(2rem, 5vh, 4rem);
-  }
-
-  @media (min-width: 768px) {
-    .fb-header-{{ section.id }} {
-      flex-direction: row;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 2rem;
-    }
-  }
-
-  .fb-header-content-{{ section.id }} {
-    text-align: {{ section.settings.header_alignment }};
-    flex: 1;
-  }
-
-  /* Label, title, description use global .section-* classes from typography.css */
-  .fb-header-{{ section.id }} .section-description {
-    {% if section.settings.header_alignment == 'center' %}
-    margin-left: auto;
-    margin-right: auto;
-    {% elsif section.settings.header_alignment == 'right' %}
-    margin-left: auto;
-    {% endif %}
-  }
-
-  .fb-view-all-{{ section.id }} {
-    flex-shrink: 0;
-  }
-
   @media (min-width: 1024px) {
     .fb-{{ section.id }} .fb-grid {
       grid-template-columns: repeat({{ section.settings.columns }}, 1fr);
     }
   }
-
 </style>
 
 <section
@@ -58,28 +21,18 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    {% if section.settings.label != blank or section.settings.title != blank or blog.title != blank or section.settings.show_view_all %}
-      <div class="fb-header-{{ section.id }}">
-        <div class="fb-header-content-{{ section.id }}" data-tween-group="fb-header-{{ section.id }}">
-          {% render 'section-header',
-            label: section.settings.label,
-            title: section.settings.title,
-            title_fallback: blog.title | default: 'Latest Posts',
-            description: section.settings.description,
-            alignment: section.settings.header_alignment,
-            nowrap: true
-          %}
-        </div>
-
-        {% if section.settings.show_view_all %}
-          <a href="{{ blog.url | default: routes.blogs_url }}" class="link-cta uppercase" data-tween data-tween-type="fade-up">
-            <span class="link-cta-text"><span data-hover="{{ section.settings.view_all_text }}">{{ section.settings.view_all_text }}</span></span>
-            {% if blog %}<span class="sr-only">{{ blog.title }}</span>{% endif %}
-            <i class="ph ph-arrow-right" aria-hidden="true"></i>
-          </a>
-        {% endif %}
-      </div>
-    {% endif %}
+    {% render 'section-header-link',
+      label: section.settings.label,
+      title: section.settings.title,
+      title_fallback: blog.title | default: 'Latest Posts',
+      description: section.settings.description,
+      alignment: section.settings.header_alignment,
+      group_id: section.id,
+      link_url: blog.url | default: routes.blogs_url,
+      link_text: section.settings.view_all_text,
+      link_sr_text: blog.title,
+      show_link: section.settings.show_view_all
+    %}
 
     {%- comment -%} Blog Grid {%- endcomment -%}
     <div class="fb-grid grid grid-cols-1 sm:grid-cols-2 gap-6 lg:gap-8">

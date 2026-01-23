@@ -1,0 +1,96 @@
+{%- comment -%}
+  Section Header with View All Link Component
+  Renders a section header alongside a "View All" link with alignment support.
+
+  Usage:
+  {% render 'section-header-link',
+    label: section.settings.label,
+    title: section.settings.title,
+    description: section.settings.description,
+    alignment: section.settings.header_alignment,
+    group_id: section.id,
+    link_url: collection.url,
+    link_text: section.settings.view_all_text,
+    link_sr_text: collection.title,
+    show_link: section.settings.show_view_all
+  %}
+
+  Parameters:
+  - label: (string) Optional small label text above title
+  - title: (string) Main heading text
+  - title_fallback: (string) Fallback title if title is blank
+  - description: (string) Optional description text below title
+  - alignment: (string) 'left', 'center', or 'right' - defaults to 'left'
+    - left: header left, link right
+    - right: header right, link left
+    - center: header centered, link centered below
+  - group_id: (string) Unique ID for animation group (usually section.id)
+  - link_url: (string) URL for the view all link
+  - link_text: (string) Text for the link - defaults to 'View all'
+  - link_sr_text: (string) Screen reader text (e.g., collection title)
+  - show_link: (boolean) Whether to show the link - defaults to true
+  - link_icon: (string) Phosphor icon class - defaults to 'arrow-right'
+{%- endcomment -%}
+
+{%- liquid
+  assign alignment = alignment | default: 'left'
+  if link_text == blank
+    assign link_text = 'general.view_all' | t | default: 'View all'
+  endif
+  assign link_icon = link_icon | default: 'arrow-right'
+
+  # Determine if link should be shown
+  assign render_link = false
+  if show_link and link_url != blank
+    assign render_link = true
+  endif
+
+  # Determine layout classes based on alignment
+  # Mobile: always stacked column
+  # Desktop: row with alignment-based positioning
+  case alignment
+    when 'center'
+      assign row_class = 'md:flex-col md:items-center md:text-center'
+      assign link_class = ''
+    when 'right'
+      assign row_class = 'md:flex-row-reverse md:justify-between md:items-end md:text-right'
+      assign link_class = ''
+    else
+      assign row_class = 'md:flex-row md:justify-between md:items-end'
+      assign link_class = ''
+  endcase
+
+  assign has_content = false
+  if label != blank or title != blank or title_fallback != blank or description != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if has_content or render_link -%}
+  <div class="section-header-link-row flex flex-col gap-6 {{ row_class }} md:gap-8 mb-[clamp(2rem,5vh,4rem)]"{% if group_id %} data-tween-group="header-link-{{ group_id }}"{% endif %}>
+    {%- if has_content -%}
+      <div class="section-header-link-content{% if alignment == 'center' %} w-full{% else %} flex-1{% endif %}">
+        {% render 'section-header',
+          label: label,
+          title: title,
+          title_fallback: title_fallback,
+          description: description,
+          alignment: alignment,
+          group_id: nil,
+          animate: true,
+          nowrap: true
+        %}
+      </div>
+    {%- endif -%}
+
+    {%- if render_link -%}
+      <a href="{{ link_url }}" class="link-cta uppercase {{ link_class }}" data-tween data-tween-type="fade-up">
+        <span class="link-cta-text"><span data-hover="{{ link_text }}">{{ link_text }}</span></span>
+        {%- if link_sr_text != blank -%}
+          <span class="sr-only">{{ link_sr_text }}</span>
+        {%- endif -%}
+        <i class="ph ph-{{ link_icon }}" aria-hidden="true"></i>
+      </a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

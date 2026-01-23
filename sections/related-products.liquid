@@ -51,41 +51,16 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    <div class="{% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% else %}flex items-end justify-between gap-6{% endif %} section-header-spacing">
-      <div data-tween-group="related-products-header-{{ section.id }}">
-        {% if section.settings.label != blank %}
-          <span class="section-label" data-tween data-tween-type="fade-up">
-            {{ section.settings.label }}
-          </span>
-        {% endif %}
-
-        {% if section.settings.title != blank %}
-          <h2 class="section-title" data-tween data-tween-type="split-text">
-            {{ section.settings.title }}
-          </h2>
-        {% endif %}
-      </div>
-
-      {%- comment -%} Navigation {%- endcomment -%}
-      <div class="slider-nav {% if section.settings.header_alignment == 'center' %}justify-center mt-6{% elsif section.settings.header_alignment == 'right' %}justify-end mt-6{% endif %}" data-carousel-nav>
-        <button
-          type="button"
-          class="slider-nav-btn"
-          data-carousel-prev
-          aria-label="{{ 'accessibility.previous_products' | t }}"
-          disabled
-        >
-          <i class="ph ph-arrow-left"></i>
-        </button>
-        <button
-          type="button"
-          class="slider-nav-btn"
-          data-carousel-next
-          aria-label="{{ 'accessibility.next_products' | t }}"
-        >
-          <i class="ph ph-arrow-right"></i>
-        </button>
-      </div>
+    <div class="section-header-spacing">
+      {% render 'section-header-nav',
+        label: section.settings.label,
+        title: section.settings.title,
+        alignment: section.settings.header_alignment,
+        group_id: section.id,
+        nav_data_prefix: 'carousel',
+        nav_prev_label: 'accessibility.previous_products' | t,
+        nav_next_label: 'accessibility.next_products' | t
+      %}
     </div>
 
     {%- comment -%} Carousel Container {%- endcomment -%}

@@ -34,27 +34,15 @@
   {% endif %}
 
   {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
-  {% if section.settings.label != blank or section.settings.title != blank %}
-    <div class="{{ container_class }} stacking-cards-header text-{{ section.settings.header_alignment }}" data-tween-group="stacking-cards-header-{{ section.id }}">
-      {% if section.settings.label != blank %}
-        <span class="section-label" data-tween data-tween-type="fade-up">
-          {{ section.settings.label }}
-        </span>
-      {% endif %}
-
-      {% if section.settings.title != blank %}
-        <h2 class="section-title" data-tween data-tween-type="split-text">
-          {{ section.settings.title }}
-        </h2>
-      {% endif %}
-
-      {% if section.settings.description != blank %}
-        <p class="section-description mt-6" data-tween data-tween-type="fade-up">
-          {{ section.settings.description }}
-        </p>
-      {% endif %}
-    </div>
-  {% endif %}
+  <div class="{{ container_class }} stacking-cards-header">
+    {% render 'section-header',
+      label: section.settings.label,
+      title: section.settings.title,
+      description: section.settings.description,
+      alignment: section.settings.header_alignment,
+      group_id: section.id
+    %}
+  </div>
 
   {%- comment -%} Cards {%- endcomment -%}
   <div class="stacking-cards-wrapper" style="min-height: {{ section.blocks.size | times: 100 }}vh;">

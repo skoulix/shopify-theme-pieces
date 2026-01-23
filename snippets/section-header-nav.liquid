@@ -1,0 +1,87 @@
+{%- comment -%}
+  Section Header with Navigation Component
+  Renders a section header alongside navigation arrows with alignment support.
+
+  Usage:
+  {% render 'section-header-nav',
+    label: section.settings.label,
+    title: section.settings.title,
+    description: section.settings.description,
+    alignment: section.settings.header_alignment,
+    group_id: section.id,
+    nav_prev_label: 'Previous',
+    nav_next_label: 'Next',
+    nav_data_prefix: 'carousel',
+    show_nav: true
+  %}
+
+  Parameters:
+  - label: (string) Optional small label text above title
+  - title: (string) Main heading text
+  - title_fallback: (string) Fallback title if title is blank
+  - description: (string) Optional description text below title
+  - alignment: (string) 'left', 'center', or 'right' - defaults to 'left'
+    - left: header left, nav right
+    - right: header right, nav left
+    - center: header centered, nav centered below
+  - group_id: (string) Unique ID for animation group (usually section.id)
+  - nav_prev_label: (string) Aria label for previous button
+  - nav_next_label: (string) Aria label for next button
+  - nav_data_prefix: (string) Data attribute prefix for nav buttons (e.g., 'carousel' creates data-carousel-prev)
+  - show_nav: (boolean) Whether to show navigation arrows - defaults to true
+  - nav_disabled_prev: (boolean) Whether prev button starts disabled - defaults to true
+{%- endcomment -%}
+
+{%- liquid
+  assign alignment = alignment | default: 'left'
+  assign show_nav = show_nav | default: true
+  assign nav_disabled_prev = nav_disabled_prev | default: true
+  assign nav_prev_label = nav_prev_label | default: 'accessibility.previous' | t | default: 'Previous'
+  assign nav_next_label = nav_next_label | default: 'accessibility.next' | t | default: 'Next'
+
+  # Determine layout classes based on alignment
+  case alignment
+    when 'center'
+      assign row_class = 'flex-col items-center text-center'
+      assign nav_class = 'mt-4'
+    when 'right'
+      assign row_class = 'flex-row-reverse justify-between items-end text-right'
+      assign nav_class = ''
+    else
+      assign row_class = 'flex-row justify-between items-end'
+      assign nav_class = ''
+  endcase
+
+  assign has_content = false
+  if label != blank or title != blank or title_fallback != blank or description != blank
+    assign has_content = true
+  endif
+-%}
+
+<div class="section-header-nav-row flex gap-6 {{ row_class }} mb-[clamp(2rem,5vh,4rem)]"{% if group_id %} data-tween-group="header-nav-{{ group_id }}"{% endif %}>
+  {%- if has_content -%}
+    <div class="section-header-nav-content{% if alignment == 'center' %} w-full{% else %} flex-1{% endif %}">
+      {% render 'section-header',
+        label: label,
+        title: title,
+        title_fallback: title_fallback,
+        description: description,
+        alignment: alignment,
+        group_id: nil,
+        animate: true,
+        nowrap: true
+      %}
+    </div>
+  {%- endif -%}
+
+  {%- if show_nav -%}
+    <div class="slider-nav {{ nav_class }}" data-{{ nav_data_prefix }}-nav data-tween data-tween-type="fade-up">
+      <button class="slider-nav-btn" data-{{ nav_data_prefix }}-prev{% if nav_disabled_prev %} disabled{% endif %} aria-label="{{ nav_prev_label }}">
+        <i class="ph ph-arrow-left"></i>
+      </button>
+      <button class="slider-nav-btn" data-{{ nav_data_prefix }}-next aria-label="{{ nav_next_label }}">
+        <i class="ph ph-arrow-right"></i>
+      </button>
+    </div>
+  {%- endif -%}
+</div>

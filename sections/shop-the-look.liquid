@@ -219,23 +219,15 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
-    {% if section.settings.title != blank or section.settings.label != blank %}
-      <header class="shop-the-look-header-{{ section.id }}" data-tween-group="shop-the-look-header-{{ section.id }}">
-        {% if section.settings.label != blank %}
-          <span class="section-label" data-tween data-tween-type="fade-up">{{ section.settings.label }}</span>
-        {% endif %}
-        {% if section.settings.title != blank %}
-          <h2 class="section-title" data-tween data-tween-type="split-text">
-            {{ section.settings.title }}
-          </h2>
-        {% endif %}
-        {% if section.settings.description != blank %}
-          <p class="section-description" data-tween data-tween-type="fade-up">
-            {{ section.settings.description }}
-          </p>
-        {% endif %}
-      </header>
-    {% endif %}
+    <header class="shop-the-look-header-{{ section.id }}">
+      {% render 'section-header',
+        label: section.settings.label,
+        title: section.settings.title,
+        description: section.settings.description,
+        alignment: section.settings.header_alignment,
+        group_id: section.id
+      %}
+    </header>
 
     {%- comment -%} Main Content Grid {%- endcomment -%}
     <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">

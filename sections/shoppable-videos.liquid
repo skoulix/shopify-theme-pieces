@@ -68,27 +68,13 @@
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
-    {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
-      <div class="shoppable-videos-header text-{{ section.settings.header_alignment }}" data-tween-group="shoppable-videos-header-{{ section.id }}">
-        {% if section.settings.label != blank %}
-          <span class="section-label" data-tween data-tween-type="fade-up">
-            {{ section.settings.label }}
-          </span>
-        {% endif %}
-
-        {% if section.settings.title != blank %}
-          <h2 class="section-title" data-tween data-tween-type="split-text">
-            {{ section.settings.title }}
-          </h2>
-        {% endif %}
-
-        {% if section.settings.description != blank %}
-          <p class="section-description mt-6{% if section.settings.header_alignment == 'center' %} mx-auto{% elsif section.settings.header_alignment == 'right' %} ml-auto{% endif %}" data-tween data-tween-type="fade-up">
-            {{ section.settings.description }}
-          </p>
-        {% endif %}
-      </div>
-    {% endif %}
+    {% render 'section-header',
+      label: section.settings.label,
+      title: section.settings.title,
+      description: section.settings.description,
+      alignment: section.settings.header_alignment,
+      group_id: section.id
+    %}
 
     <!-- Videos Carousel -->
     <div class="shoppable-videos-slider" data-shoppable-videos-slider data-tween data-tween-type="fade-up">
