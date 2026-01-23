@@ -4,37 +4,24 @@
 {%- endcomment -%}
 
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 -%}
 
 <section class="faq-section section-padding color-{{ section.settings.color_scheme }}" data-faq-section="{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
-    {% if section.settings.label != blank or section.settings.title != blank or section.settings.description != blank %}
-      <div class="section-header-spacing {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="faq-header-{{ section.id }}">
-        {% if section.settings.label != blank %}
-          <span class="section-label" data-tween data-tween-type="fade-up">
-            {{ section.settings.label }}
-          </span>
-        {% endif %}
-
-        {% if section.settings.title != blank %}
-          <h2 class="section-title" data-tween data-tween-type="split-text">
-            {{ section.settings.title }}
-          </h2>
-        {% endif %}
-
-        {% if section.settings.description != blank %}
-          <p class="section-description max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
-            {{ section.settings.description }}
-          </p>
-        {% endif %}
-      </div>
-    {% endif %}
+    <div class="section-header-spacing">
+      {% render 'section-header',
+        label: section.settings.label,
+        title: section.settings.title,
+        description: section.settings.description,
+        alignment: section.settings.header_alignment,
+        description_max_width: 'max-w-2xl',
+        group_id: section.id
+      %}
+    </div>
 
     {%- comment -%} FAQ Items {%- endcomment -%}
     {% if section.blocks.size > 0 %}

@@ -9,10 +9,9 @@
   assign enable_filtering = section.settings.enable_filtering
   assign enable_sorting = section.settings.enable_sorting
 
-  if full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
+  capture container_class
+    render 'container-class', full_width: full_width
+  endcapture
   endif
 -%}
 

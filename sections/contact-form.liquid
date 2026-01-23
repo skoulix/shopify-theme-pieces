@@ -3,25 +3,19 @@
 {%- endcomment -%}
 
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 
   assign heading = section.settings.title | default: 'Contact'
 
-  case section.settings.header_alignment
-    when 'center'
-      assign text_align = 'text-center'
-      assign desc_align = 'mx-auto'
-    when 'right'
-      assign text_align = 'text-right'
-      assign desc_align = 'ml-auto'
-    else
-      assign text_align = 'text-left'
-      assign desc_align = ''
-  endcase
+  capture text_align
+    render 'alignment-classes', alignment: section.settings.header_alignment, output: 'text'
+  endcapture
+
+  capture desc_align
+    render 'alignment-classes', alignment: section.settings.header_alignment, output: 'margin'
+  endcapture
 -%}
 
 <style>
@@ -45,7 +39,7 @@
     {% endif %}
 
     {% if section.settings.description != blank %}
-      <p class="mt-8 max-w-[420px] text-sm{% if settings.headings_uppercase %} uppercase{% endif %} tracking-wider leading-relaxed text-(--color-text-secondary) {{ desc_align }}" data-contact-description{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
+      <p class="mt-8 max-w-105 text-sm{% if settings.headings_uppercase %} uppercase{% endif %} tracking-wider leading-relaxed text-(--color-text-secondary) {{ desc_align }}" data-contact-description{% if section.settings.enable_description_shuffle %} data-shuffle-text data-original-text="{{ section.settings.description | escape }}"{% else %} data-tween data-tween-type="fade-up"{% endif %}>
         {{ section.settings.description }}
       </p>
     {% endif %}
@@ -85,7 +79,7 @@
               name="contact[name]"
               autocomplete="name"
               value="{% if form.name %}{{ form.name }}{% elsif customer %}{{ customer.name }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-[length:var(--input-border-width)] border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
+              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-(length:--input-border-width) border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
             >
           </div>
 
@@ -98,7 +92,7 @@
               autocomplete="email"
               required
               value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-[length:var(--input-border-width)] border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
+              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-(length:--input-border-width) border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
             >
           </div>
 
@@ -110,7 +104,7 @@
               name="contact[phone]"
               autocomplete="tel"
               value="{% if form.phone %}{{ form.phone }}{% endif %}"
-              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-[length:var(--input-border-width)] border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
+              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-(length:--input-border-width) border-solid border-(--color-border) rounded-(--input-radius) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm"
             >
           </div>
 
@@ -120,7 +114,7 @@
               id="ContactForm-body"
               name="contact[body]"
               rows="5"
-              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-[length:var(--input-border-width)] border-solid border-(--color-border) rounded-(--input-radius-textarea) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm resize-none"
+              class="contact-form-input block w-full py-3 px-4 text-(--color-text) bg-(--color-background) border-(length:--input-border-width) border-solid border-(--color-border) rounded-(--input-radius-textarea) placeholder:text-(--color-text-secondary) focus:border-(--color-primary) focus:outline-none text-sm resize-none"
             >{{ form.body }}</textarea>
           </div>
         </div>

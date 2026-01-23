@@ -1,0 +1,120 @@
+{%- comment -%}
+  Button Component
+  Renders a consistent button or link with all style options.
+
+  Usage:
+  {% render 'button',
+    text: section.settings.button_text,
+    url: section.settings.button_url,
+    style: section.settings.button_style,
+    color: section.settings.button_color,
+    size: section.settings.button_size,
+    icon: 'arrow-right',
+    icon_position: 'right',
+    class: 'section-cta',
+    animate: true
+  %}
+
+  Parameters:
+  - text: (string) Button text - required
+  - url: (string) Button URL - defaults to '#'
+  - style: (string) 'solid' or 'outline' - defaults to 'solid'
+  - color: (string) 'primary' or 'secondary' - defaults to 'primary'
+  - size: (string) 'small', 'default', or 'large' - defaults to 'default'
+  - icon: (string) Phosphor icon name (without 'ph-' prefix) - optional
+  - icon_position: (string) 'left' or 'right' - defaults to 'right'
+  - show_arrow: (boolean) Show arrow icon - defaults to false
+  - class: (string) Additional CSS classes - optional
+  - animate: (boolean) Add data-tween attributes - defaults to false
+  - new_tab: (boolean) Open link in new tab - defaults to false
+  - disabled: (boolean) Disable button - defaults to false
+  - type: (string) Button type attribute for form buttons - optional
+  - name: (string) Button name attribute - optional
+  - id: (string) Button id attribute - optional
+  - aria_label: (string) Accessible label - optional
+  - shopify_attributes: (string) Shopify block attributes - optional
+{%- endcomment -%}
+
+{%- liquid
+  unless text != blank
+    break
+  endunless
+
+  assign url = url | default: '#'
+  assign style = style | default: 'solid'
+  assign color = color | default: 'primary'
+  assign size = size | default: 'default'
+  assign icon_position = icon_position | default: 'right'
+  assign show_arrow = show_arrow | default: false
+  assign animate = animate | default: false
+  assign new_tab = new_tab | default: false
+  assign disabled = disabled | default: false
+
+  capture size_class
+    case size
+      when 'small'
+        echo ' btn--sm'
+      when 'large'
+        echo ' btn--lg'
+    endcase
+  endcapture
+
+  capture btn_class
+    echo 'btn'
+    render 'button-class', style: style, color: color
+    echo size_class
+    if class != blank
+      echo ' '
+      echo class
+    endif
+  endcapture
+
+  assign has_icon = false
+  if icon != blank or show_arrow
+    assign has_icon = true
+  endif
+
+  assign icon_name = icon
+  if show_arrow and icon == blank
+    assign icon_name = 'arrow-right'
+  endif
+-%}
+
+{%- if type != blank -%}
+  <button
+    type="{{ type }}"
+    class="{{ btn_class }}"
+    {%- if name %} name="{{ name }}"{% endif %}
+    {%- if id %} id="{{ id }}"{% endif %}
+    {%- if disabled %} disabled{% endif %}
+    {%- if aria_label %} aria-label="{{ aria_label }}"{% endif %}
+    {%- if animate %} data-tween data-tween-type="fade-up"{% endif %}
+    {{ shopify_attributes }}
+  >
+    {%- if has_icon and icon_position == 'left' -%}
+      <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
+    {%- endif -%}
+    <span>{{ text }}</span>
+    {%- if has_icon and icon_position == 'right' -%}
+      <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
+    {%- endif -%}
+  </button>
+{%- else -%}
+  <a
+    href="{{ url }}"
+    class="{{ btn_class }}"
+    {%- if id %} id="{{ id }}"{% endif %}
+    {%- if new_tab %} target="_blank" rel="noopener noreferrer"{% endif %}
+    {%- if aria_label %} aria-label="{{ aria_label }}"{% endif %}
+    {%- if animate %} data-tween data-tween-type="fade-up"{% endif %}
+    {{ shopify_attributes }}
+  >
+    {%- if has_icon and icon_position == 'left' -%}
+      <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
+    {%- endif -%}
+    <span>{{ text }}</span>
+    {%- if has_icon and icon_position == 'right' -%}
+      <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
+    {%- endif -%}
+  </a>
+{%- endif -%}

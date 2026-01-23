@@ -1,9 +1,7 @@
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 
   assign blog = section.settings.blog
   assign posts_to_show = section.settings.posts_to_show

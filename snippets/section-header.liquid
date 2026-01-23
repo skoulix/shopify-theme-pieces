@@ -1,0 +1,83 @@
+{%- comment -%}
+  Section Header Component
+  Renders a consistent section header with label, title, and description.
+
+  Usage:
+  {% render 'section-header',
+    label: section.settings.label,
+    title: section.settings.title,
+    title_fallback: collection.title,
+    description: section.settings.description,
+    alignment: section.settings.header_alignment,
+    heading_tag: 'h2',
+    heading_class: 'section-title',
+    description_class: 'section-description',
+    group_id: section.id,
+    animate: true
+  %}
+
+  Parameters:
+  - label: (string) Optional small label text above title
+  - title: (string) Main heading text
+  - title_fallback: (string) Fallback title if title is blank
+  - description: (string) Optional description text below title
+  - alignment: (string) 'left', 'center', or 'right' - defaults to 'left'
+  - heading_tag: (string) HTML tag for title - 'h1', 'h2', 'h3' - defaults to 'h2'
+  - heading_class: (string) CSS class for heading - defaults to 'section-title'
+  - description_class: (string) CSS class for description - defaults to 'section-description'
+  - description_max_width: (string) Max width for description - defaults to 'max-w-prose'
+  - group_id: (string) Unique ID for animation group (usually section.id)
+  - animate: (boolean) Whether to add data-tween attributes - defaults to true
+{%- endcomment -%}
+
+{%- liquid
+  assign heading_tag = heading_tag | default: 'h2'
+  assign heading_class = heading_class | default: 'section-title'
+  assign description_class = description_class | default: 'section-description'
+  assign description_max_width = description_max_width | default: 'max-w-prose'
+  assign alignment = alignment | default: 'left'
+  assign animate = animate | default: true
+
+  case alignment
+    when 'center'
+      assign text_class = 'text-center'
+      assign margin_class = 'mx-auto'
+    when 'right'
+      assign text_class = 'text-right'
+      assign margin_class = 'ml-auto'
+    else
+      assign text_class = 'text-left'
+      assign margin_class = ''
+  endcase
+
+  assign has_content = false
+  if label != blank or title != blank or title_fallback != blank or description != blank
+    assign has_content = true
+  endif
+-%}
+
+{%- if has_content -%}
+  <div class="{{ text_class }}"{% if animate and group_id %} data-tween-group="section-header-{{ group_id }}"{% endif %}>
+    {%- if label != blank -%}
+      <span class="section-label"{% if animate %} data-tween data-tween-type="fade-up"{% endif %}>
+        {{- label -}}
+      </span>
+    {%- endif -%}
+
+    {%- if title != blank or title_fallback != blank -%}
+      <{{ heading_tag }} class="{{ heading_class }}"{% if animate %} data-tween data-tween-type="split-text"{% endif %}>
+        {%- if title != blank -%}
+          {{- title -}}
+        {%- else -%}
+          {{- title_fallback -}}
+        {%- endif -%}
+      </{{ heading_tag }}>
+    {%- endif -%}
+
+    {%- if description != blank -%}
+      <p class="{{ description_class }} {{ description_max_width }} {{ margin_class }}"{% if animate %} data-tween data-tween-type="fade-up"{% endif %}>
+        {{- description -}}
+      </p>
+    {%- endif -%}
+  </div>
+{%- endif -%}

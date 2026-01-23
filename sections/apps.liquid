@@ -1,9 +1,7 @@
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 -%}
 
 <div class="{{ container_class }}" data-tween-group="apps-{{ section.id }}">

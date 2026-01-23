@@ -1,9 +1,7 @@
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
   assign overlay_opacity = section.settings.overlay_opacity | divided_by: 100.0
 -%}
 
@@ -75,10 +73,16 @@
     {% endif %}
 
     {% if section.settings.button_text != blank and section.settings.button_link != blank %}
-      <a href="{{ section.settings.button_link }}" class="btn{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %} section-cta" data-tween data-tween-type="fade-up">
-        <span>{{ section.settings.button_text }}</span>
-        <i class="ph ph-arrow-right"></i>
-      </a>
+      {% render 'button',
+        text: section.settings.button_text,
+        url: section.settings.button_link,
+        style: section.settings.button_style,
+        color: section.settings.button_color,
+        size: section.settings.button_size,
+        show_arrow: true,
+        class: 'section-cta',
+        animate: true
+      %}
     {% endif %}
   </div>
 

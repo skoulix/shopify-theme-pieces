@@ -3,23 +3,22 @@
 {%- endcomment -%}
 
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 
   assign products_to_show = section.settings.products_to_show
 
+  capture desc_margin_class
+    render 'alignment-classes', alignment: section.settings.header_alignment, output: 'margin'
+  endcapture
+
   case section.settings.header_alignment
     when 'center'
-      assign desc_margin_class = 'mx-auto'
       assign tabs_justify = 'justify-center'
     when 'right'
-      assign desc_margin_class = 'ml-auto'
       assign tabs_justify = 'justify-end'
     else
-      assign desc_margin_class = ''
       assign tabs_justify = 'justify-start'
   endcase
 -%}

@@ -61,12 +61,14 @@
                     {{ block.settings.text }}
                   </p>
                 {% when 'button' %}
-                  <a
-                    href="{{ block.settings.url | default: '#' }}"
-                    class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
-                    {{ block.shopify_attributes }}>
-                    <span>{{ block.settings.text }}</span>
-                  </a>
+                  {% render 'button',
+                    text: block.settings.text,
+                    url: block.settings.url,
+                    style: block.settings.button_style,
+                    color: block.settings.button_color,
+                    size: block.settings.button_size,
+                    shopify_attributes: block.shopify_attributes
+                  %}
               {% endcase %}
             {% endfor %}
           </div>
@@ -115,17 +117,6 @@
     const isMobile = window.matchMedia('(max-width: 767px)').matches;
     const baseUrl = isMobile ? mobileSrc : desktopSrc;
     const lastIndex = indexStart + frames - 1;
-
-    // Debug: log configuration
-    console.log('[ImageSequence] Config:', {
-      baseUrl,
-      frames,
-      digits,
-      indexStart,
-      lastIndex,
-      filetype,
-      firstFrameUrl: baseUrl + String(indexStart).padStart(digits, '0') + '.' + filetype
-    });
 
     // Track last rendered scroll progress for redraw on resize
     let lastProgress = 0;

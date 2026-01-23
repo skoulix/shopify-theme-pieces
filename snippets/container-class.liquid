@@ -1,0 +1,31 @@
+{%- comment -%}
+  Container Class Helper
+  Returns the appropriate container class based on full_width setting.
+
+  Usage:
+  {%- capture container_class -%}{%- render 'container-class', full_width: section.settings.full_width -%}{%- endcapture -%}
+  <div class="{{ container_class }}">...</div>
+
+  Or inline:
+  <div class="{% render 'container-class', full_width: section.settings.full_width %}">...</div>
+
+  Parameters:
+  - full_width: (boolean) Whether to use full width layout
+  - default_class: (string) Class to use when not full width - defaults to 'page-container'
+  - full_class: (string) Class to use when full width - defaults to 'page-full'
+
+  Output:
+  - 'page-container' when full_width is false/nil
+  - 'page-full' when full_width is true
+{%- endcomment -%}
+
+{%- liquid
+  assign default_class = default_class | default: 'page-container'
+  assign full_class = full_class | default: 'page-full'
+
+  if full_width
+    echo full_class
+  else
+    echo default_class
+  endif
+-%}

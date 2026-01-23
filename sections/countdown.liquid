@@ -12,11 +12,15 @@
 {%- liquid
   assign design = section.settings.design
 
-  if section.settings.full_width or design == 'minimal'
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
+  # Minimal design is always full width
+  assign is_full_width = section.settings.full_width
+  if design == 'minimal'
+    assign is_full_width = true
   endif
+
+  capture container_class
+    render 'container-class', full_width: is_full_width
+  endcapture
 
   # Build design class
   assign design_class = 'countdown--' | append: design
@@ -25,14 +29,10 @@
   endif
 
   # Alignment class for hero
-  assign align_class = ''
-  if section.settings.content_alignment == 'center'
-    assign align_class = 'text-center'
-  elsif section.settings.content_alignment == 'right'
-    assign align_class = 'text-right'
-  endif
-
-  -%}
+  capture align_class
+    render 'alignment-classes', alignment: section.settings.content_alignment, output: 'text'
+  endcapture
+-%}
 {%- capture btn_class -%}{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{%- endcapture -%}
 
 {% case design %}
@@ -51,7 +51,8 @@
           <h2 class="section-title" data-tween data-tween-type="split-text">{{ section.settings.title }}</h2>
         {% endif %}
         {% if section.settings.subtitle != blank %}
-          <p class="section-description{% if section.settings.content_alignment == 'center' %} mx-auto{% elsif section.settings.content_alignment == 'right' %} ml-auto{% endif %}" data-tween data-tween-type="fade-up">{{ section.settings.subtitle }}</p>
+          {%- capture desc_margin -%}{%- render 'alignment-classes', alignment: section.settings.content_alignment, output: 'margin' -%}{%- endcapture -%}
+          <p class="section-description {{ desc_margin }}" data-tween data-tween-type="fade-up">{{ section.settings.subtitle }}</p>
         {% endif %}
       </header>
     {% endif %}

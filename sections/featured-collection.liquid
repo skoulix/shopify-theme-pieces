@@ -1,12 +1,18 @@
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 
   assign collection = section.settings.collection
   assign products_to_show = section.settings.products_to_show
+
+  capture header_text_class
+    render 'alignment-classes', alignment: section.settings.header_alignment, output: 'text'
+  endcapture
+
+  capture desc_margin_class
+    render 'alignment-classes', alignment: section.settings.header_alignment, output: 'margin'
+  endcapture
 -%}
 
 <style>
@@ -24,20 +30,6 @@
     }
   }
 </style>
-
-{%- liquid
-  case section.settings.header_alignment
-    when 'center'
-      assign header_text_class = 'text-center'
-      assign desc_margin_class = 'mx-auto'
-    when 'right'
-      assign header_text_class = 'text-right'
-      assign desc_margin_class = 'ml-auto'
-    else
-      assign header_text_class = 'text-left'
-      assign desc_margin_class = ''
-  endcase
--%}
 
 <section
   class="fc-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"

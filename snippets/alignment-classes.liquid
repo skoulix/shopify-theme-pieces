@@ -1,0 +1,64 @@
+{%- comment -%}
+  Alignment Classes Helper
+  Returns CSS classes for text alignment and margin based on alignment setting.
+
+  Usage:
+  {%- capture align_classes -%}{%- render 'alignment-classes', alignment: section.settings.header_alignment, output: 'text' -%}{%- endcapture -%}
+  <div class="{{ align_classes }}">...</div>
+
+  Or for flex items:
+  {%- capture flex_align -%}{%- render 'alignment-classes', alignment: section.settings.content_alignment, output: 'flex' -%}{%- endcapture -%}
+  <div class="{{ flex_align }}">...</div>
+
+  Parameters:
+  - alignment: (string) 'left', 'center', or 'right'
+  - output: (string) What classes to return:
+    - 'text': Returns text-left/center/right
+    - 'margin': Returns margin classes (mx-auto, ml-auto, etc.)
+    - 'flex': Returns flex item alignment (items-start/center/end)
+    - 'all': Returns all classes combined (text + margin)
+    - Default: Returns text alignment class only
+
+  Output examples:
+  - alignment: 'left', output: 'text' => 'text-left'
+  - alignment: 'center', output: 'margin' => 'mx-auto'
+  - alignment: 'right', output: 'flex' => 'items-end'
+  - alignment: 'center', output: 'all' => 'text-center mx-auto'
+{%- endcomment -%}
+
+{%- liquid
+  assign output = output | default: 'text'
+  assign alignment = alignment | default: 'left'
+
+  case alignment
+    when 'center'
+      assign text_class = 'text-center'
+      assign margin_class = 'mx-auto'
+      assign flex_class = 'items-center'
+    when 'right'
+      assign text_class = 'text-right'
+      assign margin_class = 'ml-auto'
+      assign flex_class = 'items-end'
+    else
+      assign text_class = 'text-left'
+      assign margin_class = ''
+      assign flex_class = 'items-start'
+  endcase
+
+  case output
+    when 'text'
+      echo text_class
+    when 'margin'
+      echo margin_class
+    when 'flex'
+      echo flex_class
+    when 'all'
+      echo text_class
+      if margin_class != blank
+        echo ' '
+        echo margin_class
+      endif
+    else
+      echo text_class
+  endcase
+-%}

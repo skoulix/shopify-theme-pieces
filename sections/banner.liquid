@@ -3,11 +3,9 @@
 {%- endcomment -%}
 
 {%- liquid
-  if section.settings.full_width
-    assign container_class = 'page-full'
-  else
-    assign container_class = 'page-container'
-  endif
+  capture container_class
+    render 'container-class', full_width: section.settings.full_width
+  endcapture
 
   # Use global card settings
   assign card_radius = settings.card_radius | default: 8
@@ -48,13 +46,14 @@
 
         {% if section.settings.button_text != blank %}
           <div class="mt-4" data-tween data-tween-type="fade-up">
-            <a
-              href="{{ section.settings.button_link | default: '#' }}"
-              class="btn{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{% if section.settings.button_size == 'small' %} btn--sm{% elsif section.settings.button_size == 'large' %} btn--lg{% endif %}"
-            >
-              <span>{{ section.settings.button_text }}</span>
-              <i class="ph ph-arrow-right"></i>
-            </a>
+            {% render 'button',
+              text: section.settings.button_text,
+              url: section.settings.button_link,
+              style: section.settings.button_style,
+              color: section.settings.button_color,
+              size: section.settings.button_size,
+              show_arrow: true
+            %}
           </div>
         {% endif %}
       </div>
