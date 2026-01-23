@@ -1,54 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "main_about": {
+      "type": "main-about",
+      "settings": {}
+    },
     "text_reveal": {
       "type": "text-reveal",
       "settings": {
-        "label": "Our Story",
+        "label": "Our Mission",
         "text": "We create *beautiful* products\nthat inspire and *delight*\nour customers every day.",
         "subtext": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter.",
         "header_alignment": "left",
-        "button_text": "",
+        "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "show_background_number": false,
-        "background_number": "",
+        "background_number": "01",
         "full_width": false,
-        "color_scheme": "scheme-3",
-        "accent_color": "#818cf8"
-      }
-    },
-    "image_with_text": {
-      "type": "image-with-text",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "2014",
-            "label": "Founded"
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "50K+",
-            "label": "Customers"
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2"
-      ],
-      "settings": {
-        "image_ratio": "4/5",
-        "label": "The Beginning",
-        "title": "Started With a Simple Idea",
-        "text": "<p>What began as a small passion project has grown into something we're truly proud of. We started with one goal: create products that we ourselves would want to use every day.</p>",
-        "button_text": "Shop Now",
-        "button_link": "shopify://collections/all",
-        "layout": "image_left",
-        "full_width": false,
-        "remove_padding": false,
-        "color_scheme": "scheme-1"
+        "color_scheme": "",
+        "accent_color": "#6366f1"
       }
     },
     "timeline": {
@@ -67,7 +49,7 @@
           "settings": {
             "year": "2017",
             "title": "First Milestone",
-            "text": "Reached 10,000 customers and opened our first retail location."
+            "text": "Reached 10,000 customers and opened our first store."
           }
         },
         "milestone_3": {
@@ -75,7 +57,7 @@
           "settings": {
             "year": "2020",
             "title": "Going Global",
-            "text": "Expanded shipping to over 50 countries worldwide."
+            "text": "Expanded to 50+ countries worldwide."
           }
         },
         "milestone_4": {
@@ -97,10 +79,9 @@
         "label": "Our Journey",
         "title": "How We Got Here",
         "header_alignment": "center",
-        "card_radius": 8,
         "full_width": false,
         "color_scheme": "scheme-2",
-        "accent_color": "#818cf8"
+        "accent_color": "#6366f1"
       }
     },
     "team": {
@@ -111,7 +92,7 @@
           "settings": {
             "name": "Alex Thompson",
             "role": "Founder & CEO",
-            "bio": "Passionate about creating exceptional products that stand the test of time.",
+            "bio": "Passionate about creating exceptional products.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -122,7 +103,7 @@
           "settings": {
             "name": "Sarah Chen",
             "role": "Creative Director",
-            "bio": "Bringing creative visions to life with an eye for detail.",
+            "bio": "Bringing creative visions to life.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -133,7 +114,7 @@
           "settings": {
             "name": "Michael Brown",
             "role": "Head of Product",
-            "bio": "Obsessed with user experience and product quality.",
+            "bio": "Obsessed with user experience.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -144,7 +125,7 @@
           "settings": {
             "name": "Emily Davis",
             "role": "Customer Success",
-            "bio": "Dedicated to making sure every customer is happy.",
+            "bio": "Making sure customers are happy.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -163,7 +144,6 @@
         "description": "We're a passionate team dedicated to creating products you'll love.",
         "header_alignment": "center",
         "columns": 4,
-        "card_radius": 12,
         "full_width": false,
         "color_scheme": "scheme-1"
       }
@@ -223,7 +203,7 @@
         "subtitle": "",
         "content_alignment": "center",
         "animation_duration": 1500,
-        "color_scheme": "scheme-3",
+        "color_scheme": "",
         "full_width": false,
         "show_dividers": true
       }
@@ -232,19 +212,21 @@
       "type": "newsletter",
       "settings": {
         "design": "side-by-side",
-        "title": "Join Our Community",
-        "text": "Subscribe to our newsletter for exclusive updates, new arrivals, and special offers.",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
+        "button_style": "solid",
+        "button_color": "primary",
         "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
+    "main_about",
     "text_reveal",
-    "image_with_text",
     "timeline",
     "team",
     "rolling_numbers",

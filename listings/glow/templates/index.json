@@ -1,50 +1,110 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
-        "overlay_opacity": 20,
-        "label": "Clean Beauty",
-        "title": "Your Skin, Elevated",
-        "description": "Science-backed formulas that actually work. No fillers, no false promises.",
-        "content_alignment": "center",
-        "button_text": "Shop Bestsellers",
+        "overlay_opacity": 40,
+        "label": "",
+        "title": "Elevate Your Style",
+        "description": "Discover our curated collection of premium products designed for the modern lifestyle.",
+        "content_alignment": "left",
+        "button_text": "Shop Now",
         "button_link": "shopify://collections/all",
         "button_style": "solid",
-        "button_size": "medium",
+        "button_color": "primary",
+        "button_size": "large",
         "color_scheme": "scheme-1",
-        "full_width": true,
+        "full_width": false,
         "show_scroll_indicator": true
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping",
+            "outline": false
+          }
+        },
+        "sep_1": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrivals",
+            "outline": true
+          }
+        },
+        "sep_2": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        },
+        "text_3": {
+          "type": "text",
+          "settings": {
+            "text": "Limited Edition",
+            "outline": false
+          }
+        },
+        "sep_3": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        }
+      },
+      "block_order": [
+        "text_1",
+        "sep_1",
+        "text_2",
+        "sep_2",
+        "text_3",
+        "sep_3"
+      ],
+      "settings": {
+        "direction": "left",
+        "speed": 30,
+        "scroll_aware": true,
+        "scroll_speed": 2,
+        "pause_on_hover": true,
+        "color_scheme": ""
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
-        "label": "Trending Now",
-        "title": "Bestsellers",
-        "description": "The products everyone's talking about.",
         "collection": "",
-        "products_count": 4,
+        "label": "New Arrivals",
+        "title": "Featured Collection",
+        "description": "",
+        "header_alignment": "left",
+        "products_to_show": 4,
         "columns": 4,
+        "show_vendor": false,
         "show_view_all": true,
+        "view_all_text": "View All",
         "full_width": false,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "text_reveal": {
-      "type": "text-reveal",
-      "settings": {
-        "label": "",
-        "text": "Good skin starts with\n*good* ingredients.",
-        "subtext": "",
-        "header_alignment": "center",
-        "button_text": "",
-        "button_link": "",
-        "show_background_number": false,
-        "background_number": "",
-        "full_width": false,
-        "color_scheme": "scheme-2",
-        "accent_color": "#d4a5a5"
+        "color_scheme": "scheme-2"
       }
     },
     "image_with_text": {
@@ -53,15 +113,15 @@
         "stat_1": {
           "type": "stat",
           "settings": {
-            "number": "100%",
-            "label": "Clean"
+            "number": "10+",
+            "label": "Years"
           }
         },
         "stat_2": {
           "type": "stat",
           "settings": {
-            "number": "Zero",
-            "label": "Parabens"
+            "number": "50K",
+            "label": "Customers"
           }
         }
       },
@@ -71,159 +131,147 @@
       ],
       "settings": {
         "image_ratio": "4/5",
-        "label": "Our Philosophy",
-        "title": "Less Is More",
-        "text": "<p>We formulate with intention. Every ingredient earns its place. No fillers, no fragrance, no questionable additives—just what your skin actually needs.</p>",
-        "button_text": "Our Ingredients",
-        "button_link": "shopify://pages/about",
+        "label": "Our Story",
+        "title": "Crafted With Purpose",
+        "text": "<p>We believe in creating products that stand the test of time. Each piece is thoughtfully designed and meticulously crafted using the finest materials and traditional techniques.</p>",
+        "button_text": "Learn More",
+        "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "layout": "image_left",
-        "full_width": true,
+        "full_width": false,
         "remove_padding": false,
         "color_scheme": "scheme-1"
       }
     },
-    "featured_collection_2": {
-      "type": "featured-collection",
+    "featured_blog_GWjPQG": {
+      "type": "featured-blog",
+      "name": "Featured Blog",
       "settings": {
-        "label": "Build Your Routine",
-        "title": "Shop by Concern",
+        "blog": "",
+        "label": "Our Stories",
+        "title": "Featured Blog",
         "description": "",
-        "collection": "",
-        "products_count": 4,
-        "columns": 4,
+        "header_alignment": "left",
+        "posts_to_show": 4,
+        "columns": 3,
+        "feature_first": true,
+        "show_tags": true,
+        "show_excerpt": true,
+        "show_author": true,
+        "show_read_more": true,
         "show_view_all": true,
+        "view_all_text": "View All",
         "full_width": false,
         "color_scheme": "scheme-2"
       }
     },
-    "features_grid": {
-      "type": "features-grid",
-      "blocks": {
-        "feature_1": {
-          "type": "feature",
-          "settings": {
-            "icon": "flask",
-            "title": "Clinically Tested",
-            "text": "Every formula is tested for efficacy and safety.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_2": {
-          "type": "feature",
-          "settings": {
-            "icon": "leaf",
-            "title": "Clean Ingredients",
-            "text": "No parabens, sulfates, or synthetic fragrances.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_3": {
-          "type": "feature",
-          "settings": {
-            "icon": "heart",
-            "title": "Cruelty-Free",
-            "text": "Never tested on animals. Leaping Bunny certified.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_4": {
-          "type": "feature",
-          "settings": {
-            "icon": "recycle",
-            "title": "Sustainable Packaging",
-            "text": "Recyclable materials, refillable options available.",
-            "link_text": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "feature_1",
-        "feature_2",
-        "feature_3",
-        "feature_4"
-      ],
-      "settings": {
-        "label": "Our Promise",
-        "title": "What We Stand For",
-        "description": "",
-        "header_alignment": "center",
-        "layout": "standard",
-        "columns": 4,
-        "full_width": false,
-        "color_scheme": "scheme-1"
-      }
-    },
-    "testimonials": {
+    "testimonials_UML8MP": {
       "type": "testimonials",
       "blocks": {
-        "testimonial_1": {
+        "testimonial_BF9x6V": {
           "type": "testimonial",
           "settings": {
-            "quote": "My skin has never looked better. I've tried everything, and this actually works.",
+            "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
             "rating": 5,
-            "author": "Jessica L.",
+            "author": "Sarah Johnson",
             "author_title": "Verified Buyer"
           }
         },
-        "testimonial_2": {
+        "testimonial_6aGUB4": {
           "type": "testimonial",
           "settings": {
-            "quote": "Finally a brand that's honest about what's in their products. My sensitive skin loves it.",
+            "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
             "rating": 5,
-            "author": "Amanda K.",
+            "author": "Michael Chen",
+            "author_title": "Loyal Customer"
+          }
+        },
+        "testimonial_H7jk47": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
+            "rating": 5,
+            "author": "Emily Davis",
+            "author_title": "Repeat Customer"
+          }
+        },
+        "testimonial_FKV7Ym": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+            "rating": 5,
+            "author": "David Wilson",
             "author_title": "Verified Buyer"
           }
         },
-        "testimonial_3": {
+        "testimonial_dH4rBy": {
           "type": "testimonial",
           "settings": {
-            "quote": "The glow is real. I get compliments on my skin constantly now.",
+            "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
             "rating": 5,
-            "author": "Rachel M.",
-            "author_title": "Verified Buyer"
+            "author": "Rachel Thompson",
+            "author_title": "First-time Buyer"
+          }
+        },
+        "testimonial_H4HFVR": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+            "rating": 5,
+            "author": "James Martinez",
+            "author_title": "Repeat Customer"
           }
         }
       },
       "block_order": [
-        "testimonial_1",
-        "testimonial_2",
-        "testimonial_3"
+        "testimonial_BF9x6V",
+        "testimonial_6aGUB4",
+        "testimonial_H7jk47",
+        "testimonial_FKV7Ym",
+        "testimonial_dH4rBy",
+        "testimonial_H4HFVR"
       ],
+      "name": "Testimonials",
       "settings": {
-        "label": "Real Results",
+        "label": "Testimonials",
         "title": "What Our Customers Say",
-        "header_alignment": "center",
+        "header_alignment": "left",
         "show_rating": true,
         "full_width": false,
-        "color_scheme": "scheme-2"
+        "slides_mobile": "1",
+        "slides_tablet": "2",
+        "slides_desktop": "2",
+        "show_progress_bar": true,
+        "text_size": "medium",
+        "color_scheme": "scheme-1"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "design": "stacked",
-        "title": "Get 15% Off Your First Order",
-        "text": "Plus skincare tips, new product launches, and exclusive offers.",
+        "design": "side-by-side",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
-        "privacy_text": "We respect your privacy. Read our",
+        "button_style": "solid",
+        "button_color": "primary",
+        "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2"
       }
     }
   },
   "order": [
     "hero",
+    "marquee",
     "featured_collection",
-    "text_reveal",
     "image_with_text",
-    "featured_collection_2",
-    "features_grid",
-    "testimonials",
+    "featured_blog_GWjPQG",
+    "testimonials_UML8MP",
     "newsletter"
   ]
 }

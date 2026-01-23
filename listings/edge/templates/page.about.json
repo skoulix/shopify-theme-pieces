@@ -1,131 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "overlay_opacity": 40,
-        "label": "OUR STORY",
-        "title": "Born in the Mountains",
-        "description": "We're riders first. Everything else comes second.",
-        "content_alignment": "left",
-        "button_text": "",
-        "button_link": "",
-        "button_style": "solid",
-        "button_size": "medium",
-        "color_scheme": "scheme-3",
-        "full_width": true,
-        "show_scroll_indicator": true
-      }
+    "main_about": {
+      "type": "main-about",
+      "settings": {}
     },
     "text_reveal": {
       "type": "text-reveal",
       "settings": {
-        "label": "",
-        "text": "We build gear for\nthe days you *remember*.",
-        "subtext": "Powder days. First descents. Perfect conditions.",
+        "label": "Our Mission",
+        "text": "We create *beautiful* products\nthat inspire and *delight*\nour customers every day.",
+        "subtext": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter.",
         "header_alignment": "left",
-        "button_text": "",
+        "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "show_background_number": false,
-        "background_number": "",
+        "background_number": "01",
         "full_width": false,
-        "color_scheme": "scheme-1",
-        "accent_color": ""
-      }
-    },
-    "image_with_text": {
-      "type": "image-with-text",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "2015",
-            "label": "Founded"
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "100%",
-            "label": "Rider Owned"
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2"
-      ],
-      "settings": {
-        "image_ratio": "16/9",
-        "label": "THE BEGINNING",
-        "title": "Started in a Garage",
-        "text": "<p>It started with a few riders who were tired of big brands that had never stood on a board making decisions about gear. So we built our own. Every board we make is designed by riders, tested by riders, and sold to riders.</p>",
-        "button_text": "Shop All",
-        "button_link": "shopify://collections/all",
-        "layout": "image_left",
-        "full_width": true,
-        "remove_padding": false,
-        "color_scheme": "scheme-2"
-      }
-    },
-    "rolling_numbers": {
-      "type": "rolling-numbers",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "25",
-            "prefix": "",
-            "suffix": "K+",
-            "label": "Boards Sold",
-            "description": ""
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "15",
-            "prefix": "",
-            "suffix": "",
-            "label": "Team Riders",
-            "description": ""
-          }
-        },
-        "stat_3": {
-          "type": "stat",
-          "settings": {
-            "number": "4.9",
-            "prefix": "",
-            "suffix": "★",
-            "label": "Average Rating",
-            "description": ""
-          }
-        },
-        "stat_4": {
-          "type": "stat",
-          "settings": {
-            "number": "2",
-            "prefix": "",
-            "suffix": "yr",
-            "label": "Warranty",
-            "description": ""
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3",
-        "stat_4"
-      ],
-      "settings": {
-        "title": "",
-        "subtitle": "",
-        "content_alignment": "center",
-        "animation_duration": 1200,
-        "color_scheme": "scheme-3",
-        "full_width": false,
-        "show_dividers": true
+        "color_scheme": "",
+        "accent_color": "#6366f1"
       }
     },
     "timeline": {
@@ -134,33 +39,33 @@
         "milestone_1": {
           "type": "milestone",
           "settings": {
-            "year": "2015",
-            "title": "The First Board",
-            "text": "Built our first prototype in a garage in Colorado."
+            "year": "2014",
+            "title": "The Beginning",
+            "text": "Founded with a simple idea and a passion for quality."
           }
         },
         "milestone_2": {
           "type": "milestone",
           "settings": {
             "year": "2017",
-            "title": "First Pro Team",
-            "text": "Signed our first team riders. They still ride for us today."
+            "title": "First Milestone",
+            "text": "Reached 10,000 customers and opened our first store."
           }
         },
         "milestone_3": {
           "type": "milestone",
           "settings": {
             "year": "2020",
-            "title": "Bindings Launch",
-            "text": "Expanded into bindings after two years of R&D."
+            "title": "Going Global",
+            "text": "Expanded to 50+ countries worldwide."
           }
         },
         "milestone_4": {
           "type": "milestone",
           "settings": {
             "year": "2024",
-            "title": "Still Riding",
-            "text": "Now shipping to riders in 30+ countries."
+            "title": "Today & Beyond",
+            "text": "Continuing to innovate and grow our community."
           }
         }
       },
@@ -171,13 +76,12 @@
         "milestone_4"
       ],
       "settings": {
-        "label": "THE JOURNEY",
+        "label": "Our Journey",
         "title": "How We Got Here",
-        "header_alignment": "left",
-        "card_radius": 4,
+        "header_alignment": "center",
         "full_width": false,
-        "color_scheme": "scheme-1",
-        "accent_color": ""
+        "color_scheme": "scheme-2",
+        "accent_color": "#6366f1"
       }
     },
     "team": {
@@ -186,9 +90,9 @@
         "member_1": {
           "type": "member",
           "settings": {
-            "name": "Ryan Cole",
-            "role": "Founder & Head Shaper",
-            "bio": "20+ years on snow. Shapes every board in our lineup.",
+            "name": "Alex Thompson",
+            "role": "Founder & CEO",
+            "bio": "Passionate about creating exceptional products.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -197,9 +101,9 @@
         "member_2": {
           "type": "member",
           "settings": {
-            "name": "Jess Martinez",
-            "role": "Team Manager",
-            "bio": "Former pro rider. Runs our team program.",
+            "name": "Sarah Chen",
+            "role": "Creative Director",
+            "bio": "Bringing creative visions to life.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -208,9 +112,9 @@
         "member_3": {
           "type": "member",
           "settings": {
-            "name": "Tyler Oakes",
+            "name": "Michael Brown",
             "role": "Head of Product",
-            "bio": "Engineer who'd rather be in the backcountry.",
+            "bio": "Obsessed with user experience.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -219,9 +123,9 @@
         "member_4": {
           "type": "member",
           "settings": {
-            "name": "Maya Chen",
-            "role": "Creative Director",
-            "bio": "Designs our graphics. Shreds park on weekends.",
+            "name": "Emily Davis",
+            "role": "Customer Success",
+            "bio": "Making sure customers are happy.",
             "linkedin": "",
             "twitter": "",
             "instagram": ""
@@ -235,37 +139,97 @@
         "member_4"
       ],
       "settings": {
-        "label": "THE CREW",
-        "title": "Meet the Team",
-        "description": "Riders who happen to run a company.",
-        "header_alignment": "left",
+        "label": "Our Team",
+        "title": "Meet the People Behind the Brand",
+        "description": "We're a passionate team dedicated to creating products you'll love.",
+        "header_alignment": "center",
         "columns": 4,
-        "card_radius": 4,
         "full_width": false,
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-1"
+      }
+    },
+    "rolling_numbers": {
+      "type": "rolling-numbers",
+      "blocks": {
+        "stat_1": {
+          "type": "stat",
+          "settings": {
+            "number": "10",
+            "prefix": "",
+            "suffix": "+",
+            "label": "Years in Business",
+            "description": "A decade of excellence"
+          }
+        },
+        "stat_2": {
+          "type": "stat",
+          "settings": {
+            "number": "50",
+            "prefix": "",
+            "suffix": "K+",
+            "label": "Happy Customers",
+            "description": "And counting"
+          }
+        },
+        "stat_3": {
+          "type": "stat",
+          "settings": {
+            "number": "150",
+            "prefix": "",
+            "suffix": "+",
+            "label": "Countries Served",
+            "description": "Global reach"
+          }
+        },
+        "stat_4": {
+          "type": "stat",
+          "settings": {
+            "number": "98",
+            "prefix": "",
+            "suffix": "%",
+            "label": "Satisfaction Rate",
+            "description": "Based on reviews"
+          }
+        }
+      },
+      "block_order": [
+        "stat_1",
+        "stat_2",
+        "stat_3",
+        "stat_4"
+      ],
+      "settings": {
+        "title": "By the Numbers",
+        "subtitle": "",
+        "content_alignment": "center",
+        "animation_duration": 1500,
+        "color_scheme": "",
+        "full_width": false,
+        "show_dividers": true
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
         "design": "side-by-side",
-        "title": "Stay in the Loop",
-        "text": "New gear, team edits, trip reports, and early access to drops.",
-        "button_text": "Join",
-        "privacy_text": "No spam, just stoke. Read our",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
+        "button_text": "Subscribe",
+        "button_style": "solid",
+        "button_color": "primary",
+        "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-3"
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
-    "hero",
+    "main_about",
     "text_reveal",
-    "image_with_text",
-    "rolling_numbers",
     "timeline",
     "team",
+    "rolling_numbers",
     "newsletter"
   ]
 }

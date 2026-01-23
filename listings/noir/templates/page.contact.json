@@ -1,14 +1,25 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "contact_form": {
       "type": "contact-form",
       "settings": {
-        "label": "",
-        "title": "Contact",
+        "label": "Contact",
+        "title": "Get in Touch",
         "description": "Have a question or want to work together? Drop us a message and we'll get back to you as soon as possible.",
-        "enable_description_shuffle": false,
-        "text_alignment": "left",
+        "enable_description_shuffle": true,
+        "header_alignment": "left",
         "full_width": false,
+        "show_social_links": true,
+        "social_heading": "Follow us",
         "color_scheme": "scheme-1"
       }
     },
@@ -54,7 +65,6 @@
         "zoom": 14,
         "show_popup": true,
         "map_height": 450,
-        "border_radius": 16,
         "marker_color": "#000000",
         "grayscale": false,
         "full_width": false,
@@ -115,6 +125,8 @@
         "title": "Want product news and updates?",
         "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
+        "button_style": "solid",
+        "button_color": "primary",
         "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",

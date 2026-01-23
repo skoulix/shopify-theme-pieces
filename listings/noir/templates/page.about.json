@@ -1,54 +1,36 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "main_about": {
+      "type": "main-about",
+      "settings": {}
+    },
     "text_reveal": {
       "type": "text-reveal",
       "settings": {
-        "label": "Our Heritage",
-        "text": "A legacy of *excellence*\ncrafted through *generations*\nof dedication.",
-        "subtext": "Since our founding, we have been committed to the pursuit of perfection in every piece we create.",
-        "header_alignment": "center",
-        "button_text": "",
+        "label": "Our Mission",
+        "text": "We create *beautiful* products\nthat inspire and *delight*\nour customers every day.",
+        "subtext": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter.",
+        "header_alignment": "left",
+        "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "show_background_number": false,
-        "background_number": "",
+        "background_number": "01",
         "full_width": false,
-        "color_scheme": "scheme-1",
-        "accent_color": "#c9a961"
-      }
-    },
-    "image_with_text": {
-      "type": "image-with-text",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "1987",
-            "label": "Established"
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "II",
-            "label": "Generations"
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2"
-      ],
-      "settings": {
-        "image_ratio": "4/5",
-        "label": "Our Story",
-        "title": "A Tradition of Excellence",
-        "text": "<p>For over three decades, our master jewelers have been synonymous with uncompromising quality and timeless elegance. What began as a small atelier has evolved into a globally recognized name in fine jewelry, trusted by collectors worldwide.</p>",
-        "button_text": "Explore Collection",
-        "button_link": "shopify://collections/all",
-        "layout": "image_left",
-        "full_width": true,
-        "remove_padding": false,
-        "color_scheme": "scheme-2"
+        "color_scheme": "",
+        "accent_color": "#6366f1"
       }
     },
     "timeline": {
@@ -57,33 +39,33 @@
         "milestone_1": {
           "type": "milestone",
           "settings": {
-            "year": "1987",
-            "title": "The Founding",
-            "text": "Established by master jewelers with a vision for exceptional craftsmanship."
+            "year": "2014",
+            "title": "The Beginning",
+            "text": "Founded with a simple idea and a passion for quality."
           }
         },
         "milestone_2": {
           "type": "milestone",
           "settings": {
-            "year": "1998",
-            "title": "International Recognition",
-            "text": "Featured in Vogue and recognized as a rising star in fine jewelry."
+            "year": "2017",
+            "title": "First Milestone",
+            "text": "Reached 10,000 customers and opened our first store."
           }
         },
         "milestone_3": {
           "type": "milestone",
           "settings": {
-            "year": "2010",
-            "title": "Global Expansion",
-            "text": "Opened flagship boutiques in Paris, New York, and Tokyo."
+            "year": "2020",
+            "title": "Going Global",
+            "text": "Expanded to 50+ countries worldwide."
           }
         },
         "milestone_4": {
           "type": "milestone",
           "settings": {
-            "year": "Today",
-            "title": "Continuing the Legacy",
-            "text": "Honoring tradition while embracing innovation for future generations."
+            "year": "2024",
+            "title": "Today & Beyond",
+            "text": "Continuing to innovate and grow our community."
           }
         }
       },
@@ -95,73 +77,75 @@
       ],
       "settings": {
         "label": "Our Journey",
-        "title": "Milestones of Distinction",
+        "title": "How We Got Here",
         "header_alignment": "center",
-        "card_radius": 0,
         "full_width": false,
-        "color_scheme": "scheme-1",
-        "accent_color": "#c9a961"
+        "color_scheme": "scheme-2",
+        "accent_color": "#6366f1"
       }
     },
-    "features_grid": {
-      "type": "features-grid",
+    "team": {
+      "type": "team",
       "blocks": {
-        "feature_1": {
-          "type": "feature",
+        "member_1": {
+          "type": "member",
           "settings": {
-            "icon": "diamond",
-            "title": "Finest Materials",
-            "text": "Only the most exceptional materials are selected for our creations.",
-            "link_text": "",
-            "link": ""
+            "name": "Alex Thompson",
+            "role": "Founder & CEO",
+            "bio": "Passionate about creating exceptional products.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
           }
         },
-        "feature_2": {
-          "type": "feature",
+        "member_2": {
+          "type": "member",
           "settings": {
-            "icon": "hand-pointing",
-            "title": "Master Craftsmanship",
-            "text": "Each piece is meticulously crafted by skilled artisans.",
-            "link_text": "",
-            "link": ""
+            "name": "Sarah Chen",
+            "role": "Creative Director",
+            "bio": "Bringing creative visions to life.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
           }
         },
-        "feature_3": {
-          "type": "feature",
+        "member_3": {
+          "type": "member",
           "settings": {
-            "icon": "certificate",
-            "title": "Authenticated",
-            "text": "Every creation comes with a certificate of authenticity.",
-            "link_text": "",
-            "link": ""
+            "name": "Michael Brown",
+            "role": "Head of Product",
+            "bio": "Obsessed with user experience.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
           }
         },
-        "feature_4": {
-          "type": "feature",
+        "member_4": {
+          "type": "member",
           "settings": {
-            "icon": "clock",
-            "title": "Timeless Design",
-            "text": "Designs that transcend trends and last generations.",
-            "link_text": "",
-            "link": ""
+            "name": "Emily Davis",
+            "role": "Customer Success",
+            "bio": "Making sure customers are happy.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
           }
         }
       },
       "block_order": [
-        "feature_1",
-        "feature_2",
-        "feature_3",
-        "feature_4"
+        "member_1",
+        "member_2",
+        "member_3",
+        "member_4"
       ],
       "settings": {
-        "label": "The Difference",
-        "title": "Our Standards",
-        "description": "What sets us apart is our unwavering commitment to excellence.",
+        "label": "Our Team",
+        "title": "Meet the People Behind the Brand",
+        "description": "We're a passionate team dedicated to creating products you'll love.",
         "header_alignment": "center",
-        "layout": "standard",
         "columns": 4,
         "full_width": false,
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-1"
       }
     },
     "rolling_numbers": {
@@ -170,41 +154,41 @@
         "stat_1": {
           "type": "stat",
           "settings": {
-            "number": "35",
+            "number": "10",
             "prefix": "",
             "suffix": "+",
-            "label": "Years of Heritage",
-            "description": ""
+            "label": "Years in Business",
+            "description": "A decade of excellence"
           }
         },
         "stat_2": {
           "type": "stat",
           "settings": {
-            "number": "47",
+            "number": "50",
             "prefix": "",
-            "suffix": "",
-            "label": "Countries",
-            "description": ""
+            "suffix": "K+",
+            "label": "Happy Customers",
+            "description": "And counting"
           }
         },
         "stat_3": {
           "type": "stat",
           "settings": {
-            "number": "100",
+            "number": "150",
             "prefix": "",
-            "suffix": "%",
-            "label": "Handcrafted",
-            "description": ""
+            "suffix": "+",
+            "label": "Countries Served",
+            "description": "Global reach"
           }
         },
         "stat_4": {
           "type": "stat",
           "settings": {
-            "number": "10",
+            "number": "98",
             "prefix": "",
-            "suffix": "K+",
-            "label": "Pieces Created",
-            "description": ""
+            "suffix": "%",
+            "label": "Satisfaction Rate",
+            "description": "Based on reviews"
           }
         }
       },
@@ -215,11 +199,11 @@
         "stat_4"
       ],
       "settings": {
-        "title": "",
+        "title": "By the Numbers",
         "subtitle": "",
         "content_alignment": "center",
-        "animation_duration": 2000,
-        "color_scheme": "scheme-1",
+        "animation_duration": 1500,
+        "color_scheme": "",
         "full_width": false,
         "show_dividers": true
       }
@@ -227,22 +211,24 @@
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "design": "stacked",
-        "title": "Join Our Private Circle",
-        "text": "Receive exclusive invitations, previews of new collections, and bespoke offerings.",
+        "design": "side-by-side",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
-        "privacy_text": "Your privacy is paramount. Read our",
+        "button_style": "solid",
+        "button_color": "primary",
+        "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-3"
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
+    "main_about",
     "text_reveal",
-    "image_with_text",
     "timeline",
-    "features_grid",
+    "team",
     "rolling_numbers",
     "newsletter"
   ]

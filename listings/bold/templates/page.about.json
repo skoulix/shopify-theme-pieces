@@ -1,71 +1,151 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "settings": {
-        "overlay_opacity": 50,
-        "label": "WHO WE ARE",
-        "title": "Born From the Culture",
-        "description": "We started in a bedroom with a screen printer and a lot of ideas. Now we're here.",
-        "content_alignment": "left",
-        "button_text": "",
-        "button_link": "",
-        "button_style": "solid",
-        "button_size": "medium",
-        "color_scheme": "scheme-3",
-        "full_width": true,
-        "show_scroll_indicator": true
-      }
+    "main_about": {
+      "type": "main-about",
+      "settings": {}
     },
     "text_reveal": {
       "type": "text-reveal",
       "settings": {
-        "label": "",
-        "text": "We don't do *trends*.\nWe do *real*.",
-        "subtext": "Every tee tells a story. Make sure it's yours.",
+        "label": "Our Mission",
+        "text": "We create *beautiful* products\nthat inspire and *delight*\nour customers every day.",
+        "subtext": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter.",
         "header_alignment": "left",
-        "button_text": "",
+        "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "show_background_number": false,
-        "background_number": "",
+        "background_number": "01",
         "full_width": false,
-        "color_scheme": "scheme-1",
-        "accent_color": ""
+        "color_scheme": "",
+        "accent_color": "#6366f1"
       }
     },
-    "image_with_text": {
-      "type": "image-with-text",
+    "timeline": {
+      "type": "timeline",
       "blocks": {
-        "stat_1": {
-          "type": "stat",
+        "milestone_1": {
+          "type": "milestone",
           "settings": {
-            "number": "2021",
-            "label": "Started"
+            "year": "2014",
+            "title": "The Beginning",
+            "text": "Founded with a simple idea and a passion for quality."
           }
         },
-        "stat_2": {
-          "type": "stat",
+        "milestone_2": {
+          "type": "milestone",
           "settings": {
-            "number": "50K+",
-            "label": "Tees Sold"
+            "year": "2017",
+            "title": "First Milestone",
+            "text": "Reached 10,000 customers and opened our first store."
+          }
+        },
+        "milestone_3": {
+          "type": "milestone",
+          "settings": {
+            "year": "2020",
+            "title": "Going Global",
+            "text": "Expanded to 50+ countries worldwide."
+          }
+        },
+        "milestone_4": {
+          "type": "milestone",
+          "settings": {
+            "year": "2024",
+            "title": "Today & Beyond",
+            "text": "Continuing to innovate and grow our community."
           }
         }
       },
       "block_order": [
-        "stat_1",
-        "stat_2"
+        "milestone_1",
+        "milestone_2",
+        "milestone_3",
+        "milestone_4"
       ],
       "settings": {
-        "image_ratio": "1/1",
-        "label": "THE STORY",
-        "title": "From Bedroom to Brand",
-        "text": "<p>It started with us being tired of the same boring tees everywhere. So we made our own. Posted them online. People wanted in. Three years later, we're still doing the same thing—just at a bigger scale.</p>",
-        "button_text": "Shop All",
-        "button_link": "shopify://collections/all",
-        "layout": "image_left",
-        "full_width": true,
-        "remove_padding": false,
-        "color_scheme": "scheme-2"
+        "label": "Our Journey",
+        "title": "How We Got Here",
+        "header_alignment": "center",
+        "full_width": false,
+        "color_scheme": "scheme-2",
+        "accent_color": "#6366f1"
+      }
+    },
+    "team": {
+      "type": "team",
+      "blocks": {
+        "member_1": {
+          "type": "member",
+          "settings": {
+            "name": "Alex Thompson",
+            "role": "Founder & CEO",
+            "bio": "Passionate about creating exceptional products.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
+          }
+        },
+        "member_2": {
+          "type": "member",
+          "settings": {
+            "name": "Sarah Chen",
+            "role": "Creative Director",
+            "bio": "Bringing creative visions to life.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
+          }
+        },
+        "member_3": {
+          "type": "member",
+          "settings": {
+            "name": "Michael Brown",
+            "role": "Head of Product",
+            "bio": "Obsessed with user experience.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
+          }
+        },
+        "member_4": {
+          "type": "member",
+          "settings": {
+            "name": "Emily Davis",
+            "role": "Customer Success",
+            "bio": "Making sure customers are happy.",
+            "linkedin": "",
+            "twitter": "",
+            "instagram": ""
+          }
+        }
+      },
+      "block_order": [
+        "member_1",
+        "member_2",
+        "member_3",
+        "member_4"
+      ],
+      "settings": {
+        "label": "Our Team",
+        "title": "Meet the People Behind the Brand",
+        "description": "We're a passionate team dedicated to creating products you'll love.",
+        "header_alignment": "center",
+        "columns": 4,
+        "full_width": false,
+        "color_scheme": "scheme-1"
       }
     },
     "rolling_numbers": {
@@ -74,41 +154,41 @@
         "stat_1": {
           "type": "stat",
           "settings": {
-            "number": "50",
+            "number": "10",
             "prefix": "",
-            "suffix": "K+",
-            "label": "Happy Customers",
-            "description": ""
+            "suffix": "+",
+            "label": "Years in Business",
+            "description": "A decade of excellence"
           }
         },
         "stat_2": {
           "type": "stat",
           "settings": {
-            "number": "200",
+            "number": "50",
             "prefix": "",
-            "suffix": "+",
-            "label": "Original Designs",
-            "description": ""
+            "suffix": "K+",
+            "label": "Happy Customers",
+            "description": "And counting"
           }
         },
         "stat_3": {
           "type": "stat",
           "settings": {
-            "number": "4.9",
+            "number": "150",
             "prefix": "",
-            "suffix": "★",
-            "label": "Average Rating",
-            "description": ""
+            "suffix": "+",
+            "label": "Countries Served",
+            "description": "Global reach"
           }
         },
         "stat_4": {
           "type": "stat",
           "settings": {
-            "number": "24",
+            "number": "98",
             "prefix": "",
-            "suffix": "hr",
-            "label": "Shipping Time",
-            "description": ""
+            "suffix": "%",
+            "label": "Satisfaction Rate",
+            "description": "Based on reviews"
           }
         }
       },
@@ -119,96 +199,37 @@
         "stat_4"
       ],
       "settings": {
-        "title": "",
+        "title": "By the Numbers",
         "subtitle": "",
         "content_alignment": "center",
-        "animation_duration": 1000,
-        "color_scheme": "scheme-3",
+        "animation_duration": 1500,
+        "color_scheme": "",
         "full_width": false,
         "show_dividers": true
-      }
-    },
-    "features_grid": {
-      "type": "features-grid",
-      "blocks": {
-        "feature_1": {
-          "type": "feature",
-          "settings": {
-            "icon": "check",
-            "title": "100% Original",
-            "text": "Every design is created by our in-house team. No templates, no AI, no shortcuts.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_2": {
-          "type": "feature",
-          "settings": {
-            "icon": "check",
-            "title": "Premium Quality",
-            "text": "Heavyweight cotton that doesn't shrink, fade, or fall apart after two washes.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_3": {
-          "type": "feature",
-          "settings": {
-            "icon": "check",
-            "title": "Made Ethically",
-            "text": "Fair wages, good conditions. We know where every tee comes from.",
-            "link_text": "",
-            "link": ""
-          }
-        },
-        "feature_4": {
-          "type": "feature",
-          "settings": {
-            "icon": "check",
-            "title": "Community First",
-            "text": "We listen to our people. Your feedback shapes what we make next.",
-            "link_text": "",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "feature_1",
-        "feature_2",
-        "feature_3",
-        "feature_4"
-      ],
-      "settings": {
-        "label": "OUR VALUES",
-        "title": "What We Stand For",
-        "description": "",
-        "header_alignment": "left",
-        "layout": "standard",
-        "columns": 2,
-        "full_width": false,
-        "color_scheme": "scheme-1"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
         "design": "side-by-side",
-        "title": "Join the Crew",
-        "text": "Get early access to drops, exclusive designs, and members-only deals.",
-        "button_text": "Sign Up",
-        "privacy_text": "No spam ever. Read our",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
+        "button_text": "Subscribe",
+        "button_style": "solid",
+        "button_color": "primary",
+        "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-2"
+        "color_scheme": "scheme-1"
       }
     }
   },
   "order": [
-    "hero",
+    "main_about",
     "text_reveal",
-    "image_with_text",
+    "timeline",
+    "team",
     "rolling_numbers",
-    "features_grid",
     "newsletter"
   ]
 }

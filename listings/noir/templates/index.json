@@ -1,35 +1,108 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
       "type": "hero",
       "settings": {
-        "overlay_opacity": 50,
-        "label": "The Collection",
-        "title": "Timeless Elegance",
-        "description": "Handcrafted jewelry designed to be treasured for generations.",
-        "content_alignment": "center",
-        "button_text": "Explore Collection",
+        "overlay_opacity": 40,
+        "label": "",
+        "title": "Elevate Your Style",
+        "description": "Discover our curated collection of premium products designed for the modern lifestyle.",
+        "content_alignment": "left",
+        "button_text": "Shop Now",
         "button_link": "shopify://collections/all",
-        "button_style": "outline",
+        "button_style": "solid",
+        "button_color": "primary",
         "button_size": "large",
         "color_scheme": "scheme-1",
-        "full_width": true,
+        "full_width": false,
         "show_scroll_indicator": true
+      }
+    },
+    "marquee": {
+      "type": "marquee",
+      "blocks": {
+        "text_1": {
+          "type": "text",
+          "settings": {
+            "text": "Free Shipping",
+            "outline": false
+          }
+        },
+        "sep_1": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        },
+        "text_2": {
+          "type": "text",
+          "settings": {
+            "text": "New Arrivals",
+            "outline": true
+          }
+        },
+        "sep_2": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        },
+        "text_3": {
+          "type": "text",
+          "settings": {
+            "text": "Limited Edition",
+            "outline": false
+          }
+        },
+        "sep_3": {
+          "type": "separator",
+          "settings": {
+            "style": "icon",
+            "icon": "star-four"
+          }
+        }
+      },
+      "block_order": [
+        "text_1",
+        "sep_1",
+        "text_2",
+        "sep_2",
+        "text_3",
+        "sep_3"
+      ],
+      "settings": {
+        "direction": "left",
+        "speed": 30,
+        "scroll_aware": true,
+        "scroll_speed": 2,
+        "pause_on_hover": true,
+        "color_scheme": ""
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
         "collection": "",
-        "label": "Curated Selection",
-        "title": "New Arrivals",
-        "description": "Our latest additions, handpicked for discerning tastes.",
-        "header_alignment": "center",
+        "label": "New Arrivals",
+        "title": "Featured Collection",
+        "description": "",
+        "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
-        "show_vendor": true,
+        "show_vendor": false,
         "show_view_all": true,
-        "view_all_text": "View Collection",
+        "view_all_text": "View All",
         "full_width": false,
         "color_scheme": "scheme-2"
       }
@@ -40,15 +113,15 @@
         "stat_1": {
           "type": "stat",
           "settings": {
-            "number": "1987",
-            "label": "Established"
+            "number": "10+",
+            "label": "Years"
           }
         },
         "stat_2": {
           "type": "stat",
           "settings": {
-            "number": "100%",
-            "label": "Handcrafted"
+            "number": "50K",
+            "label": "Customers"
           }
         }
       },
@@ -58,116 +131,147 @@
       ],
       "settings": {
         "image_ratio": "4/5",
-        "label": "Our Heritage",
-        "title": "A Legacy of Excellence",
-        "text": "<p>For over three decades, our master jewelers have dedicated themselves to the art of creating extraordinary pieces. Each creation is meticulously handcrafted using time-honored techniques passed down through generations.</p>",
-        "button_text": "Our Story",
+        "label": "Our Story",
+        "title": "Crafted With Purpose",
+        "text": "<p>We believe in creating products that stand the test of time. Each piece is thoughtfully designed and meticulously crafted using the finest materials and traditional techniques.</p>",
+        "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "layout": "image_left",
-        "full_width": true,
+        "full_width": false,
         "remove_padding": false,
         "color_scheme": "scheme-1"
       }
     },
-    "text_reveal": {
-      "type": "text-reveal",
+    "featured_blog_GWjPQG": {
+      "type": "featured-blog",
+      "name": "Featured Blog",
       "settings": {
-        "label": "",
-        "text": "Where *tradition* meets\n*modern* sophistication.",
-        "subtext": "",
-        "header_alignment": "center",
-        "button_text": "",
-        "button_link": "",
-        "show_background_number": false,
-        "background_number": "",
-        "full_width": false,
-        "color_scheme": "scheme-3",
-        "accent_color": "#c9a961"
-      }
-    },
-    "featured_collection_2": {
-      "type": "featured-collection",
-      "settings": {
-        "collection": "",
-        "label": "Signature Pieces",
-        "title": "Best Sellers",
-        "description": "Beloved by our most distinguished clientele.",
-        "header_alignment": "center",
-        "products_to_show": 4,
-        "columns": 4,
-        "show_vendor": true,
+        "blog": "",
+        "label": "Our Stories",
+        "title": "Featured Blog",
+        "description": "",
+        "header_alignment": "left",
+        "posts_to_show": 4,
+        "columns": 3,
+        "feature_first": true,
+        "show_tags": true,
+        "show_excerpt": true,
+        "show_author": true,
+        "show_read_more": true,
         "show_view_all": true,
-        "view_all_text": "Shop All",
+        "view_all_text": "View All",
         "full_width": false,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2"
       }
     },
-    "testimonials": {
+    "testimonials_UML8MP": {
       "type": "testimonials",
       "blocks": {
-        "testimonial_1": {
+        "testimonial_BF9x6V": {
           "type": "testimonial",
           "settings": {
-            "quote": "The attention to detail is simply unparalleled. A truly exceptional experience from start to finish.",
+            "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
             "rating": 5,
-            "author": "Victoria Sterling",
-            "author_title": "Art Collector"
+            "author": "Sarah Johnson",
+            "author_title": "Verified Buyer"
           }
         },
-        "testimonial_2": {
+        "testimonial_6aGUB4": {
           "type": "testimonial",
           "settings": {
-            "quote": "Finally, a brand that understands true luxury. The craftsmanship speaks for itself.",
+            "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
             "rating": 5,
-            "author": "Alexander Reid",
-            "author_title": "Interior Designer"
+            "author": "Michael Chen",
+            "author_title": "Loyal Customer"
           }
         },
-        "testimonial_3": {
+        "testimonial_H7jk47": {
           "type": "testimonial",
           "settings": {
-            "quote": "These pieces have become treasured heirlooms in our family. Worth every investment.",
+            "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
             "rating": 5,
-            "author": "Catherine Hayes",
-            "author_title": "Private Client"
+            "author": "Emily Davis",
+            "author_title": "Repeat Customer"
+          }
+        },
+        "testimonial_FKV7Ym": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+            "rating": 5,
+            "author": "David Wilson",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_dH4rBy": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+            "rating": 5,
+            "author": "Rachel Thompson",
+            "author_title": "First-time Buyer"
+          }
+        },
+        "testimonial_H4HFVR": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+            "rating": 5,
+            "author": "James Martinez",
+            "author_title": "Repeat Customer"
           }
         }
       },
       "block_order": [
-        "testimonial_1",
-        "testimonial_2",
-        "testimonial_3"
+        "testimonial_BF9x6V",
+        "testimonial_6aGUB4",
+        "testimonial_H7jk47",
+        "testimonial_FKV7Ym",
+        "testimonial_dH4rBy",
+        "testimonial_H4HFVR"
       ],
+      "name": "Testimonials",
       "settings": {
         "label": "Testimonials",
-        "title": "Words From Our Clientele",
-        "header_alignment": "center",
-        "show_rating": false,
+        "title": "What Our Customers Say",
+        "header_alignment": "left",
+        "show_rating": true,
         "full_width": false,
-        "color_scheme": "scheme-2"
+        "slides_mobile": "1",
+        "slides_tablet": "2",
+        "slides_desktop": "2",
+        "show_progress_bar": true,
+        "text_size": "medium",
+        "color_scheme": "scheme-1"
       }
     },
     "newsletter": {
       "type": "newsletter",
       "settings": {
-        "design": "stacked",
-        "title": "Join Our Private Circle",
-        "text": "Be the first to receive exclusive invitations, previews, and offerings.",
+        "design": "side-by-side",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
-        "privacy_text": "Your privacy is paramount. Read our",
+        "button_style": "solid",
+        "button_color": "primary",
+        "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
-        "color_scheme": "scheme-3"
+        "color_scheme": "scheme-2"
       }
     }
   },
   "order": [
     "hero",
+    "marquee",
     "featured_collection",
     "image_with_text",
-    "text_reveal",
-    "featured_collection_2",
-    "testimonials",
+    "featured_blog_GWjPQG",
+    "testimonials_UML8MP",
     "newsletter"
   ]
 }

@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "hero": {
@@ -11,8 +20,9 @@
         "button_text": "Shop Now",
         "button_link": "shopify://collections/all",
         "button_style": "solid",
+        "button_color": "primary",
         "button_size": "large",
-        "color_scheme": "scheme-3",
+        "color_scheme": "scheme-1",
         "full_width": false,
         "show_scroll_indicator": true
       }
@@ -72,19 +82,21 @@
         "sep_3"
       ],
       "settings": {
-        "speed": 30,
         "direction": "left",
+        "speed": 30,
+        "scroll_aware": true,
+        "scroll_speed": 2,
         "pause_on_hover": true,
-        "color_scheme": "scheme-3"
+        "color_scheme": ""
       }
     },
     "featured_collection": {
       "type": "featured-collection",
       "settings": {
         "collection": "",
-        "label": "New In",
-        "title": "New Arrivals",
-        "description": "Check out our latest products, fresh from the studio.",
+        "label": "New Arrivals",
+        "title": "Featured Collection",
+        "description": "",
         "header_alignment": "left",
         "products_to_show": 4,
         "columns": 4,
@@ -92,7 +104,7 @@
         "show_view_all": true,
         "view_all_text": "View All",
         "full_width": false,
-        "color_scheme": "scheme-1"
+        "color_scheme": "scheme-2"
       }
     },
     "image_with_text": {
@@ -124,141 +136,116 @@
         "text": "<p>We believe in creating products that stand the test of time. Each piece is thoughtfully designed and meticulously crafted using the finest materials and traditional techniques.</p>",
         "button_text": "Learn More",
         "button_link": "",
+        "button_type": "link",
+        "button_style": "solid",
+        "button_color": "primary",
+        "button_size": "default",
         "layout": "image_left",
-        "full_width": true,
+        "full_width": false,
         "remove_padding": false,
         "color_scheme": "scheme-1"
       }
     },
-    "featured_collection_2": {
-      "type": "featured-collection",
+    "featured_blog_GWjPQG": {
+      "type": "featured-blog",
+      "name": "Featured Blog",
       "settings": {
-        "collection": "",
-        "label": "Popular",
-        "title": "Best Sellers",
-        "description": "Our most loved products, chosen by customers like you.",
+        "blog": "",
+        "label": "Our Stories",
+        "title": "Featured Blog",
+        "description": "",
         "header_alignment": "left",
-        "products_to_show": 4,
-        "columns": 4,
-        "show_vendor": false,
+        "posts_to_show": 4,
+        "columns": 3,
+        "feature_first": true,
+        "show_tags": true,
+        "show_excerpt": true,
+        "show_author": true,
+        "show_read_more": true,
         "show_view_all": true,
         "view_all_text": "View All",
         "full_width": false,
         "color_scheme": "scheme-2"
       }
     },
-    "rolling_numbers": {
-      "type": "rolling-numbers",
-      "blocks": {
-        "stat_1": {
-          "type": "stat",
-          "settings": {
-            "number": "10",
-            "prefix": "",
-            "suffix": "+",
-            "label": "Years",
-            "description": "Of excellence"
-          }
-        },
-        "stat_2": {
-          "type": "stat",
-          "settings": {
-            "number": "50",
-            "prefix": "",
-            "suffix": "K+",
-            "label": "Customers",
-            "description": "Worldwide"
-          }
-        },
-        "stat_3": {
-          "type": "stat",
-          "settings": {
-            "number": "98",
-            "prefix": "",
-            "suffix": "%",
-            "label": "Satisfaction",
-            "description": "Happy customers"
-          }
-        },
-        "stat_4": {
-          "type": "stat",
-          "settings": {
-            "number": "150",
-            "prefix": "",
-            "suffix": "+",
-            "label": "Countries",
-            "description": "We ship to"
-          }
-        }
-      },
-      "block_order": [
-        "stat_1",
-        "stat_2",
-        "stat_3",
-        "stat_4"
-      ],
-      "settings": {
-        "title": "By the Numbers",
-        "subtitle": "",
-        "content_alignment": "center",
-        "animation_duration": 1500,
-        "color_scheme": "scheme-3",
-        "full_width": false,
-        "show_dividers": true
-      }
-    },
-    "testimonials": {
+    "testimonials_UML8MP": {
       "type": "testimonials",
       "blocks": {
-        "testimonial_1": {
+        "testimonial_BF9x6V": {
           "type": "testimonial",
           "settings": {
-            "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected.",
+            "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
             "rating": 5,
-            "author": "Sarah J.",
+            "author": "Sarah Johnson",
             "author_title": "Verified Buyer"
           }
         },
-        "testimonial_2": {
+        "testimonial_6aGUB4": {
           "type": "testimonial",
           "settings": {
-            "quote": "Best customer service I've ever experienced. They went above and beyond.",
+            "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
             "rating": 5,
-            "author": "Michael C.",
+            "author": "Michael Chen",
             "author_title": "Loyal Customer"
           }
         },
-        "testimonial_3": {
+        "testimonial_H7jk47": {
           "type": "testimonial",
           "settings": {
-            "quote": "The attention to detail is remarkable. You can tell they really care.",
+            "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
             "rating": 5,
-            "author": "Emily D.",
+            "author": "Emily Davis",
             "author_title": "Repeat Customer"
           }
         },
-        "testimonial_4": {
+        "testimonial_FKV7Ym": {
           "type": "testimonial",
           "settings": {
-            "quote": "Worth every penny. This exceeded all my expectations.",
+            "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
             "rating": 5,
-            "author": "David W.",
+            "author": "David Wilson",
+            "author_title": "Verified Buyer"
+          }
+        },
+        "testimonial_dH4rBy": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+            "rating": 5,
+            "author": "Rachel Thompson",
             "author_title": "First-time Buyer"
+          }
+        },
+        "testimonial_H4HFVR": {
+          "type": "testimonial",
+          "settings": {
+            "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+            "rating": 5,
+            "author": "James Martinez",
+            "author_title": "Repeat Customer"
           }
         }
       },
       "block_order": [
-        "testimonial_1",
-        "testimonial_2",
-        "testimonial_3",
-        "testimonial_4"
+        "testimonial_BF9x6V",
+        "testimonial_6aGUB4",
+        "testimonial_H7jk47",
+        "testimonial_FKV7Ym",
+        "testimonial_dH4rBy",
+        "testimonial_H4HFVR"
       ],
+      "name": "Testimonials",
       "settings": {
         "label": "Testimonials",
         "title": "What Our Customers Say",
         "header_alignment": "left",
         "show_rating": true,
         "full_width": false,
+        "slides_mobile": "1",
+        "slides_tablet": "2",
+        "slides_desktop": "2",
+        "show_progress_bar": true,
+        "text_size": "medium",
         "color_scheme": "scheme-1"
       }
     },
@@ -266,9 +253,11 @@
       "type": "newsletter",
       "settings": {
         "design": "side-by-side",
-        "title": "Stay in the Loop",
-        "text": "Subscribe to our newsletter for exclusive updates, new arrivals, and special offers.",
+        "title": "Want product news and updates?",
+        "text": "Subscribe to our newsletter for exclusive updates and special offers.",
         "button_text": "Subscribe",
+        "button_style": "solid",
+        "button_color": "primary",
         "privacy_text": "We care about your data. Read our",
         "privacy_link": "",
         "privacy_link_text": "privacy policy",
@@ -281,9 +270,8 @@
     "marquee",
     "featured_collection",
     "image_with_text",
-    "featured_collection_2",
-    "rolling_numbers",
-    "testimonials",
+    "featured_blog_GWjPQG",
+    "testimonials_UML8MP",
     "newsletter"
   ]
 }
