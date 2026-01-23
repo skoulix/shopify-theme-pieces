@@ -254,14 +254,15 @@
               </p>
             {% endif %}
 
-            {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+            {% if block.settings.button_text != blank and block.settings.button_link != blank %}
               <div class="slideshow__cta">
-                <a
-                  href="{{ block.settings.button_link }}"
-                  class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
-                >
-                  <span>{{ block.settings.button_label }}</span>
-                </a>
+                {% render 'button',
+                  text: block.settings.button_text,
+                  url: block.settings.button_link,
+                  style: block.settings.button_style,
+                  color: block.settings.button_color,
+                  size: block.settings.button_size
+                %}
               </div>
             {% endif %}
           </div>
@@ -935,8 +936,8 @@
         },
         {
           "type": "text",
-          "id": "button_label",
-          "label": "Button label"
+          "id": "button_text",
+          "label": "Button text"
         },
         {
           "type": "url",

@@ -1122,14 +1122,9 @@
       "default": false
     },
     {
-      "type": "select",
+      "type": "text_alignment",
       "id": "header_alignment",
       "label": "Header alignment",
-      "options": [
-        { "value": "left", "label": "Left" },
-        { "value": "center", "label": "Center" },
-        { "value": "right", "label": "Right" }
-      ],
       "default": "left"
     },
     {
@@ -1188,20 +1183,13 @@
       "label": "Columns on tablet"
     },
     {
-      "type": "select",
+      "type": "range",
       "id": "columns_mobile",
-      "label": "Columns on mobile",
-      "options": [
-        {
-          "value": "1",
-          "label": "1"
-        },
-        {
-          "value": "2",
-          "label": "2"
-        }
-      ],
-      "default": "1"
+      "min": 1,
+      "max": 2,
+      "step": 1,
+      "default": 1,
+      "label": "Columns on mobile"
     },
     {
       "type": "header",

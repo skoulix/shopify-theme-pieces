@@ -83,12 +83,14 @@
             {{ block.settings.text }}
           </p>
         {% when 'button' %}
-          <a
-            href="{{ block.settings.button_url | default: '#' }}"
-            class="btn{%- render 'button-class', style: block.settings.button_style, color: block.settings.button_color -%}{% if block.settings.button_size == 'small' %} btn--sm{% elsif block.settings.button_size == 'large' %} btn--lg{% endif %}"
-            {{ block.shopify_attributes }}>
-            <span>{{ block.settings.button_text }}</span>
-          </a>
+          {% render 'button',
+            text: block.settings.button_text,
+            url: block.settings.button_link,
+            style: block.settings.button_style,
+            color: block.settings.button_color,
+            size: block.settings.button_size,
+            shopify_attributes: block.shopify_attributes
+          %}
       {% endcase %}
     {% endfor %}
   </div>
@@ -463,8 +465,8 @@
           },
           {
             "type": "url",
-            "id": "button_url",
-            "label": "Button URL"
+            "id": "button_link",
+            "label": "Button link"
           },
           {
             "type": "select",

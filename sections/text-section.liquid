@@ -51,7 +51,7 @@
       {% if section.blocks.size > 0 %}
         <div class="text-section-buttons" data-tween data-tween-type="fade-up">
           {% for block in section.blocks %}
-            {% if block.type == 'button' and block.settings.button_label != blank %}
+            {% if block.type == 'button' and block.settings.button_text != blank %}
               {%- liquid
                 assign icon_name = nil
                 if block.settings.button_icon != 'none'
@@ -59,7 +59,7 @@
                 endif
               -%}
               {% render 'button',
-                text: block.settings.button_label,
+                text: block.settings.button_text,
                 url: block.settings.button_link,
                 style: block.settings.button_style,
                 color: block.settings.button_color,
@@ -147,8 +147,8 @@
       "settings": [
         {
           "type": "text",
-          "id": "button_label",
-          "label": "Button label",
+          "id": "button_text",
+          "label": "Button text",
           "default": "Learn more"
         },
         {
