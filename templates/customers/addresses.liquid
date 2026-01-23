@@ -94,9 +94,10 @@
       {{ 'customers.addresses.title' | t }}
     </h1>
     <div data-tween data-tween-type="fade-up">
+      {%- assign btn_add_new = 'customers.addresses.add_new' | t -%}
       <button type="button" class="btn btn--primary" data-toggle-address-form>
         <i class="ph ph-plus mr-2"></i>
-        <span>{{ 'customers.addresses.add_new' | t }}</span>
+        {% render 'button-text', text: btn_add_new %}
       </button>
     </div>
   </header>
@@ -164,12 +165,14 @@
         <label for="address-default" class="text-sm">{{ 'customers.addresses.set_default' | t }}</label>
       </div>
 
+      {%- assign btn_add = 'customers.addresses.add' | t -%}
+      {%- assign btn_cancel = 'customers.addresses.cancel' | t -%}
       <div class="flex gap-3 pt-4">
         <button type="submit" class="btn btn--primary">
-          <span>{{ 'customers.addresses.add' | t }}</span>
+          {% render 'button-text', text: btn_add %}
         </button>
         <button type="button" class="btn btn--secondary" data-toggle-address-form>
-          <span>{{ 'customers.addresses.cancel' | t }}</span>
+          {% render 'button-text', text: btn_cancel %}
         </button>
       </div>
     {% endform %}
@@ -260,12 +263,14 @@
                 <label for="edit-default-{{ address.id }}" class="text-sm">{{ 'customers.addresses.set_default' | t }}</label>
               </div>
 
+              {%- assign btn_update = 'customers.addresses.update' | t -%}
+              {%- assign btn_cancel = 'customers.addresses.cancel' | t -%}
               <div class="flex gap-3 pt-4">
                 <button type="submit" class="btn btn--primary">
-                  <span>{{ 'customers.addresses.update' | t }}</span>
+                  {% render 'button-text', text: btn_update %}
                 </button>
                 <button type="button" class="btn btn--secondary" data-cancel-edit="{{ address.id }}">
-                  <span>{{ 'customers.addresses.cancel' | t }}</span>
+                  {% render 'button-text', text: btn_cancel %}
                 </button>
               </div>
             {% endform %}

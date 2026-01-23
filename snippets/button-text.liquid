@@ -1,0 +1,16 @@
+{%- comment -%}
+  Button Text Helper
+  Renders button text with optional slide text hover effect.
+
+  Usage:
+  {% render 'button-text', text: 'Click me' %}
+
+  Parameters:
+  - text: (string) Button text - required
+{%- endcomment -%}
+
+{%- if settings.button_hover_slide_text -%}
+  <span data-hover="{{ text }}"><span>{{ text }}</span></span>
+{%- else -%}
+  <span>{{ text }}</span>
+{%- endif -%}

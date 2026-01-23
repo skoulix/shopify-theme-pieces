@@ -142,8 +142,9 @@
         </div>
 
         <div>
-          <button type="submit" class="btn btn--primary w-full">
-            <span>{{ 'customers.register.submit' | t }}</span>
+          {%- assign btn_submit = 'customers.register.submit' | t -%}
+          <button type="submit" class="btn btn--primary btn--lg w-full">
+            {% render 'button-text', text: btn_submit %}
           </button>
         </div>
       {% endform %}
@@ -152,8 +153,9 @@
         <span>{{ 'customers.register.have_account' | t }}</span>
       </div>
 
-      <a href="{{ routes.account_login_url }}" class="btn btn--secondary w-full" data-no-swup>
-        <span>{{ 'customers.login.sign_in' | t }}</span>
+      {%- assign btn_sign_in = 'customers.login.sign_in' | t -%}
+      <a href="{{ routes.account_login_url }}" class="btn btn--secondary btn--lg w-full" data-no-swup>
+        {% render 'button-text', text: btn_sign_in %}
       </a>
     </div>
   </div>

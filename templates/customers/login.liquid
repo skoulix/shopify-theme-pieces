@@ -130,8 +130,9 @@
           </div>
 
           <div>
-            <button type="submit" class="btn btn--primary w-full">
-              <span>{{ 'customers.login.sign_in' | t }}</span>
+            {%- assign btn_sign_in = 'customers.login.sign_in' | t -%}
+            <button type="submit" class="btn btn--primary btn--lg w-full">
+              {% render 'button-text', text: btn_sign_in %}
             </button>
           </div>
 
@@ -146,8 +147,9 @@
           <span>{{ 'customers.login.new_customer' | t }}</span>
         </div>
 
-        <a href="{{ routes.account_register_url }}" class="btn btn--secondary w-full" data-no-swup>
-          <span>{{ 'customers.login.create_account' | t }}</span>
+        {%- assign btn_create_account = 'customers.login.create_account' | t -%}
+        <a href="{{ routes.account_register_url }}" class="btn btn--secondary btn--lg w-full" data-no-swup>
+          {% render 'button-text', text: btn_create_account %}
         </a>
       </div>
     </div>
@@ -193,8 +195,9 @@
           </div>
 
           <div>
-            <button type="submit" class="btn btn--primary w-full">
-              <span>{{ 'customers.recover_password.submit' | t }}</span>
+            {%- assign btn_submit = 'customers.recover_password.submit' | t -%}
+            <button type="submit" class="btn btn--primary btn--lg w-full">
+              {% render 'button-text', text: btn_submit %}
             </button>
           </div>
 

@@ -78,6 +78,9 @@
   if show_arrow and icon == blank
     assign icon_name = 'arrow-right'
   endif
+
+  # Check if slide text setting is enabled (independent of hover style)
+  assign use_slide_text = settings.button_hover_slide_text
 -%}
 
 {%- if type != blank -%}
@@ -94,7 +97,11 @@
     {%- if has_icon and icon_position == 'left' -%}
       <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
     {%- endif -%}
-    <span>{{ text }}</span>
+    {%- if use_slide_text -%}
+      <span data-hover="{{ text }}"><span>{{ text }}</span></span>
+    {%- else -%}
+      <span>{{ text }}</span>
+    {%- endif -%}
     {%- if has_icon and icon_position == 'right' -%}
       <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
     {%- endif -%}
@@ -112,7 +119,11 @@
     {%- if has_icon and icon_position == 'left' -%}
       <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
     {%- endif -%}
-    <span>{{ text }}</span>
+    {%- if use_slide_text -%}
+      <span data-hover="{{ text }}"><span>{{ text }}</span></span>
+    {%- else -%}
+      <span>{{ text }}</span>
+    {%- endif -%}
     {%- if has_icon and icon_position == 'right' -%}
       <i class="ph ph-{{ icon_name }}" aria-hidden="true"></i>
     {%- endif -%}

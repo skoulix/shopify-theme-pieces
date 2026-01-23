@@ -165,7 +165,7 @@
     </script>
   </head>
 
-  <body class="antialiased bg-(--color-background) text-(--color-text) btn--hover-{{ settings.button_hover_style | default: 'swipe' }} template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
+  <body class="antialiased bg-(--color-background) text-(--color-text) btn--hover-{{ settings.button_hover_style | default: 'swipe' }}{% if settings.button_hover_slide_text %} btn-text-slide{% endif %} template-{{ template.name }}{% if template.suffix %} template-{{ template.name }}-{{ template.suffix }}{% endif %}">
     <a href="#main" class="skip-link">
       {{ 'accessibility.skip_to_text' | t }}
     </a>

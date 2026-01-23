@@ -92,8 +92,9 @@
         </div>
 
         <div>
-          <button type="submit" class="btn btn--primary w-full">
-            <span>{{ 'customers.activate_account.submit' | t }}</span>
+          {%- assign btn_submit = 'customers.activate_account.submit' | t -%}
+          <button type="submit" class="btn btn--primary btn--lg w-full">
+            {% render 'button-text', text: btn_submit %}
           </button>
         </div>
 

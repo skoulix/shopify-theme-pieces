@@ -221,8 +221,9 @@
           <div class="text-center py-12 border border-dashed border-(--color-border) rounded-lg">
             <i class="ph ph-package text-4xl text-(--color-text-secondary) mb-4"></i>
             <p class="text-(--color-text-secondary) mb-6">{{ 'customers.orders.none' | t }}</p>
+            {%- assign btn_start_shopping = 'customers.account.start_shopping' | t -%}
             <a href="{{ routes.all_products_collection_url }}" class="btn btn--primary">
-              <span>{{ 'customers.account.start_shopping' | t }}</span>
+              {% render 'button-text', text: btn_start_shopping %}
             </a>
           </div>
         {% endif %}
