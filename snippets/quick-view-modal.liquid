@@ -144,11 +144,13 @@
     modal.setAttribute('inert', '');
     unlockScroll();
 
-    // Clear content after transition to prevent flash on next open
+    // Clear product handle immediately so next open always fetches fresh data
+    currentHandle = null;
+
+    // Clear content after transition completes
     setTimeout(() => {
       if (!modal.classList.contains('is-open')) {
         body.innerHTML = skeletonHTML;
-        currentHandle = null;
       }
     }, 300);
 
