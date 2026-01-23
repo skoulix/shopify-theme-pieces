@@ -108,6 +108,8 @@
                 {{ recommendation.price | money }}
               </p>
               {% if recommendation.available %}
+                {%- assign btn_add_to_cart = 'products.product.add_to_cart' | t -%}
+                {%- assign btn_select_options = 'products.product.select_options' | t -%}
                 <div class="mt-2">
                   {% if recommendation.variants.size == 1 %}
                     <button
@@ -115,14 +117,14 @@
                       class="btn btn--secondary btn--sm"
                       data-quick-add="{{ recommendation.variants.first.id }}"
                     >
-                      <span data-add-text>{{ 'products.product.add_to_cart' | t }}</span>
+                      <span data-add-text>{% render 'button-text', text: btn_add_to_cart %}</span>
                       <span data-adding-text class="hidden">{{ 'cart.adding' | t }}</span>
                       <span data-added-text class="hidden">{{ 'cart.added' | t }}</span>
                     </button>
                   {% else %}
                     <a href="{{ recommendation.url }}" class="btn btn--secondary btn--sm">
                       <i class="ph ph-eye"></i>
-                      <span>{{ 'products.product.select_options' | t }}</span>
+                      {% render 'button-text', text: btn_select_options %}
                     </a>
                   {% endif %}
                 </div>

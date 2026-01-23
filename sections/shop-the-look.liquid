@@ -377,17 +377,19 @@
 
                     {%- comment -%} Add to Cart Button {%- endcomment -%}
                     <div class="flex-shrink-0">
+                      {%- assign btn_add = 'products.product.add_to_cart' | t | split: ' ' | first -%}
+                      {%- assign btn_sold_out = 'products.product.sold_out' | t -%}
                       {% if product.available %}
                         <button
                           type="button"
                           class="btn btn--primary btn--sm"
                           data-quick-add-variant="{{ product.selected_or_first_available_variant.id }}"
                         >
-                          <span>{{ 'products.product.add_to_cart' | t | split: ' ' | first }}</span>
+                          {% render 'button-text', text: btn_add %}
                         </button>
                       {% else %}
                         <button type="button" class="btn btn--secondary btn--sm" disabled>
-                          <span>{{ 'products.product.sold_out' | t }}</span>
+                          {% render 'button-text', text: btn_sold_out %}
                         </button>
                       {% endif %}
                     </div>

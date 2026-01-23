@@ -118,7 +118,7 @@
           {%- comment -%} Copy Code Button {%- endcomment -%}
           <button
             type="button"
-            class="btn btn--primary btn--full"
+            class="btn btn--primary btn--lg btn--full"
             data-copy-code="{{ gift_card.code }}"
           >
             <i class="ph ph-copy"></i>
@@ -128,13 +128,13 @@
           {%- assign btn_add_wallet = 'gift_card.add_to_apple_wallet' | t -%}
           {%- assign btn_shop_now = 'general.shop_now' | t -%}
           {% if gift_card.pass_url %}
-            <a href="{{ gift_card.pass_url }}" class="btn btn--secondary btn--full">
+            <a href="{{ gift_card.pass_url }}" class="btn btn--secondary btn--lg btn--full">
               <i class="ph ph-wallet"></i>
               {% render 'button-text', text: btn_add_wallet %}
             </a>
           {% endif %}
 
-          <a href="{{ shop.url }}" class="btn btn--secondary btn--full">
+          <a href="{{ shop.url }}" class="btn btn--secondary btn--lg btn--full">
             <i class="ph ph-storefront"></i>
             {% render 'button-text', text: btn_shop_now %}
           </a>
