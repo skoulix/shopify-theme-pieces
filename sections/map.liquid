@@ -19,21 +19,16 @@
 -%}
 
 <section class="map-section section-padding color-{{ section.settings.color_scheme }}" style="--map-height: {{ section.settings.map_height }}px;">
-  {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
-  {% if section.settings.label != blank or section.settings.title != blank %}
-    <div class="page-container mb-8 {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="map-header-{{ section.id }}">
-      {% if section.settings.label != blank %}
-        <span class="block text-sm font-semibold uppercase tracking-[0.2em] opacity-50 mb-3" data-tween data-tween-type="fade-up">
-          {{ section.settings.label }}
-        </span>
-      {% endif %}
-      {% if section.settings.title != blank %}
-        <h2 class="section-title" data-tween data-tween-type="split-text">
-          {{ section.settings.title }}
-        </h2>
-      {% endif %}
-    </div>
-  {% endif %}
+  {%- comment -%} Header {%- endcomment -%}
+  <div class="page-container section-header-spacing">
+    {% render 'section-header',
+      label: section.settings.label,
+      title: section.settings.title,
+      alignment: section.settings.header_alignment,
+      group_id: section.id,
+      animate: true
+    %}
+  </div>
 
   <div class="{{ container_class }}">
     <div

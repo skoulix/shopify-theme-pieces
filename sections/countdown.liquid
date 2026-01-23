@@ -34,6 +34,12 @@
   endcapture
 -%}
 {%- capture btn_class -%}{%- render 'button-class', style: section.settings.button_style, color: section.settings.button_color -%}{%- endcapture -%}
+{%- capture btn_size -%}
+  {%- case section.settings.button_size -%}
+    {%- when 'small' -%} btn--sm
+    {%- when 'large' -%} btn--lg
+  {%- endcase -%}
+{%- endcapture -%}
 
 {% case design %}
 {% when 'hero' %}
@@ -78,7 +84,7 @@
 
     {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
       <div class="countdown-cta" data-tween data-tween-type="fade-up">
-        <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }}">
+        <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }} {{ btn_size }}">
           <span>{{ section.settings.button_text }}</span>
           <i class="ph ph-arrow-right"></i>
         </a>
@@ -95,7 +101,7 @@
               autocomplete="email"
             >
             <input type="hidden" name="contact[tags]" value="countdown,notify">
-            <button type="submit" class="btn{{ btn_class }}">
+            <button type="submit" class="btn{{ btn_class }} {{ btn_size }}">
               <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
             </button>
           </div>
@@ -165,7 +171,7 @@
 
       {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta" data-tween data-tween-type="fade-up">
-          <a href="{{ section.settings.button_link }}" class="btn btn--sm{{ btn_class }}">
+          <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }} {{ btn_size }}">
             <span>{{ section.settings.button_text }}</span>
             <i class="ph ph-arrow-right"></i>
           </a>
@@ -182,7 +188,7 @@
                 autocomplete="email"
               >
               <input type="hidden" name="contact[tags]" value="countdown,notify">
-              <button type="submit" class="btn{{ btn_class }}">
+              <button type="submit" class="btn{{ btn_class }} {{ btn_size }}">
                 <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
               </button>
             </div>
@@ -237,7 +243,7 @@
 
       {% if section.settings.cta_type == 'link' and section.settings.button_text != blank and section.settings.button_link != blank %}
         <div class="countdown-cta">
-          <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }}">{{ section.settings.button_text }}</a>
+          <a href="{{ section.settings.button_link }}" class="btn{{ btn_class }} {{ btn_size }}">{{ section.settings.button_text }}</a>
         </div>
       {% elsif section.settings.cta_type == 'email_form' %}
         <div class="countdown-form" data-countdown-form>
@@ -251,7 +257,7 @@
                 autocomplete="email"
               >
               <input type="hidden" name="contact[tags]" value="countdown,notify">
-              <button type="submit" class="btn{{ btn_class }}">
+              <button type="submit" class="btn{{ btn_class }} {{ btn_size }}">
                 <span>{{ section.settings.button_text | default: 'Notify Me' }}</span>
               </button>
             </div>
@@ -517,6 +523,17 @@
       "options": [
         { "value": "primary", "label": "Primary (accent)" },
         { "value": "secondary", "label": "Secondary (neutral)" }
+      ]
+    },
+    {
+      "type": "select",
+      "id": "button_size",
+      "label": "Button size",
+      "default": "default",
+      "options": [
+        { "value": "small", "label": "Small" },
+        { "value": "default", "label": "Default" },
+        { "value": "large", "label": "Large" }
       ]
     },
     {
