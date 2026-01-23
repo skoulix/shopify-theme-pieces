@@ -46,13 +46,14 @@
       border-color: var(--btn-bg);
     }
 
-    #newsletter-popup-wrapper .btn--primary::before {
-      background: var(--btn-text);
-    }
-
     #newsletter-popup-wrapper .btn--primary:hover,
     #newsletter-popup-wrapper .btn--primary:hover span {
       color: var(--btn-bg);
+    }
+
+    #newsletter-popup-wrapper .btn--primary::before {
+      background: var(--btn-text);
+      border-radius: inherit;
     }
 
     {% unless settings.popup_show_mobile %}
@@ -73,7 +74,7 @@
 
     {%- comment -%} Popup {%- endcomment -%}
     <div
-      class="fixed top-1/2 left-1/2 z-9999 w-[90vw] overflow-y-auto max-h-[90vh] transition-all duration-300 -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 invisible pointer-events-none [&.is-visible]:scale-100 [&.is-visible]:opacity-100 [&.is-visible]:visible [&.is-visible]:pointer-events-auto {% if layout == 'side_image' %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
+      class="fixed top-1/2 left-1/2 z-9999 w-[90vw] max-h-[90vh] transition-all duration-300 -translate-x-1/2 -translate-y-1/2 scale-95 opacity-0 invisible pointer-events-none [&.is-visible]:scale-100 [&.is-visible]:opacity-100 [&.is-visible]:visible [&.is-visible]:pointer-events-auto {% if layout == 'side_image' %}flex {{ side_size_class }}{% else %}{{ size_class }}{% endif %}"
       style="background-color: var(--popup-bg); color: var(--popup-text); border-radius: {{ settings.card_radius }}px; border: 1px solid color-mix(in srgb, var(--popup-text) 15%, transparent); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);"
       data-newsletter-popup
       role="dialog"
@@ -103,7 +104,7 @@
     {% endif %}
 
     {%- comment -%} Content {%- endcomment -%}
-    <div class="flex-1 p-8 overflow-visible {% if layout == 'side_image' %}sm:p-10{% endif %}">
+    <div class="flex-1 p-8 pb-10 {% if layout == 'side_image' %}sm:p-10 sm:pb-12{% endif %}">
       {%- comment -%} Close button {%- endcomment -%}
       <button
         class="absolute top-3 right-3 w-8 h-8 flex items-center justify-center bg-transparent border-none cursor-pointer opacity-60 hover:opacity-100 transition-opacity z-10 text-(--popup-text)"
@@ -123,7 +124,7 @@
           <p class="text-[15px] opacity-70 mb-6 leading-relaxed" id="newsletter-popup-description">{{ settings.popup_text }}</p>
         {% endif %}
 
-        {% form 'customer', id: 'newsletter-popup-form', class: 'flex flex-col gap-3 overflow-visible' %}
+        {% form 'customer', id: 'newsletter-popup-form', class: 'flex flex-col gap-4 overflow-visible' %}
           <input
             type="email"
             name="contact[email]"
