@@ -82,8 +82,10 @@
         "sep_3"
       ],
       "settings": {
-        "speed": 30,
         "direction": "left",
+        "speed": 30,
+        "scroll_aware": true,
+        "scroll_speed": 2,
         "pause_on_hover": true,
         "color_scheme": ""
       }
@@ -92,8 +94,8 @@
       "type": "featured-collection",
       "settings": {
         "collection": "",
-        "label": "",
-        "title": "",
+        "label": "New Arrivals",
+        "title": "Featured Collection",
         "description": "",
         "header_alignment": "left",
         "products_to_show": 4,
@@ -149,8 +151,8 @@
       "name": "Featured Blog",
       "settings": {
         "blog": "",
-        "label": "",
-        "title": "",
+        "label": "Our Stories",
+        "title": "Featured Blog",
         "description": "",
         "header_alignment": "left",
         "posts_to_show": 4,
@@ -239,6 +241,11 @@
         "header_alignment": "left",
         "show_rating": true,
         "full_width": false,
+        "slides_mobile": "1",
+        "slides_tablet": "2",
+        "slides_desktop": "2",
+        "show_progress_bar": true,
+        "text_size": "medium",
         "color_scheme": "scheme-1"
       }
     },
