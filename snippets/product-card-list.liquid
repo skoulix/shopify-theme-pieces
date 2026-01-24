@@ -53,9 +53,7 @@
       {{ product.featured_image | image_url: width: 400 | image_tag: class: 'w-full h-full object-cover', style: focal_point_style, loading: 'lazy', decoding: 'async', sizes: '100px', widths: '100, 200, 400', alt: product.title
       }}
     {% else %}
-      <div class="w-full h-full flex items-center justify-center bg-(--color-background-secondary)">
-        <i class="ph ph-image text-2xl text-(--color-text-secondary) opacity-30" aria-hidden="true"></i>
-      </div>
+      {{ 'product-1' | placeholder_svg_tag: 'w-full h-full object-cover' }}
     {% endif %}
   </a>
 

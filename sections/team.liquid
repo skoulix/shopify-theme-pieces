@@ -41,11 +41,7 @@
                 alt: block.settings.image.alt | default: block.settings.name | default: section.settings.title
               }}
             {% else %}
-              <div class="team-member-placeholder">
-                <div class="team-member-avatar">
-                  <i class="ph ph-user"></i>
-                </div>
-              </div>
+              {{ 'image' | placeholder_svg_tag: 'w-full h-full object-cover' }}
             {% endif %}
           </div>
 
