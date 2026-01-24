@@ -75,7 +75,7 @@
                     class="mobile-nav__link mobile-nav__link--parent font-heading flex items-center justify-between w-full gap-3 bg-none border-none cursor-pointer text-left{% if is_active %} is-active{% endif %}"
                     data-panel-trigger="panel-{{ forloop.index }}"
                   >
-                    <span class="mobile-nav__link-text inline-block overflow-hidden">{{ link.title }}</span>
+                    <span class="mobile-nav__link-text inline-block overflow-hidden" data-mobile-nav-link-text>{{ link.title }}</span>
                     <i class="ph ph-caret-right mobile-nav__arrow-icon text-xl text-(--color-text-secondary)"></i>
                   </button>
                 {% else %}
@@ -85,7 +85,7 @@
                     data-mobile-nav-close
                     {% if is_active %}aria-current="page"{% endif %}
                   >
-                    <span class="mobile-nav__link-text inline-block overflow-hidden">{{ link.title }}</span>
+                    <span class="mobile-nav__link-text inline-block overflow-hidden" data-mobile-nav-link-text>{{ link.title }}</span>
                     <span class="mobile-nav__link-line"></span>
                   </a>
                 {% endif %}

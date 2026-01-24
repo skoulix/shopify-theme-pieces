@@ -543,7 +543,7 @@ class CartDrawerManager {
           </div>
 
           <div class="cart-drawer__item-actions">
-            <div class="cart-drawer__quantity" data-quantity-wrapper style="display: inline-flex; align-items: center; height: 2.375rem; padding: 0; background-color: var(--color-background); border: var(--input-border-width) solid var(--color-border); border-radius: var(--input-radius); box-shadow: var(--input-shadow);">
+            <div class="cart-drawer__quantity" data-quantity-wrapper style="display: inline-flex; align-items: center; height: 2.5rem; padding: 0; background-color: var(--color-background); border: var(--input-border-width) solid var(--color-border); border-radius: var(--input-radius); box-shadow: var(--input-shadow);">
               <button
                 type="button"
                 class="cart-drawer__quantity-btn"

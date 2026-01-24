@@ -1627,14 +1627,14 @@
         panelHistory.push(panelId);
       }
 
-      // Hide current panel (slide left)
+      // Push current panel back (slide left, fade)
       if (currentPanel) {
         currentPanel.classList.remove('is-active');
-        currentPanel.classList.add('is-hidden');
+        currentPanel.classList.add('is-behind');
       }
 
       // Show target panel (slide in from right)
-      targetPanel.classList.remove('is-hidden');
+      targetPanel.classList.remove('is-behind');
       targetPanel.classList.add('is-active');
     }
 
@@ -1652,14 +1652,14 @@
 
       if (!previousPanel) return;
 
-      // Hide current panel (slide out to right)
+      // Slide current panel out to right
       if (currentPanel) {
         currentPanel.classList.remove('is-active');
-        // Don't add is-hidden, let it slide back off-screen via CSS
+        // Panel returns to default translateX(100%) state
       }
 
-      // Show previous panel (slide back from left)
-      previousPanel.classList.remove('is-hidden');
+      // Bring previous panel back from behind
+      previousPanel.classList.remove('is-behind');
       previousPanel.classList.add('is-active');
     }
 
@@ -1673,7 +1673,7 @@
 
       // Reset all panels
       panelsContainer.querySelectorAll('.mobile-nav__panel').forEach(panel => {
-        panel.classList.remove('is-active', 'is-hidden');
+        panel.classList.remove('is-active', 'is-behind');
       });
 
       // Activate main panel
