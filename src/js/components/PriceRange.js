@@ -1,106 +1,173 @@
 /**
  * PriceRange - Dual range slider for price filtering
- * A custom element that provides a visual slider interface for price range selection
+ * Inspired by range-slider-input library approach:
+ * Uses custom div thumbs instead of native range input thumbs for better cross-browser control
  */
 
 class PriceRange extends HTMLElement {
   constructor() {
     super();
-    this.boundOnInput = this.onInput.bind(this);
+    this.isDragging = false;
+    this.activeThumb = null;
   }
 
   connectedCallback() {
-    this.minSlider = this.querySelector('.price-range-input-min');
-    this.maxSlider = this.querySelector('.price-range-input-max');
-    this.progress = this.querySelector('.price-range-progress');
+    this.track = this.querySelector('.price-range-track');
+    this.range = this.querySelector('.price-range-progress');
+    this.thumbMin = this.querySelector('.price-range-thumb-min');
+    this.thumbMax = this.querySelector('.price-range-thumb-max');
     this.displayMin = this.querySelector('.price-range-display-min');
     this.displayMax = this.querySelector('.price-range-display-max');
     this.hiddenMin = this.querySelector('.price-range-hidden-min');
     this.hiddenMax = this.querySelector('.price-range-hidden-max');
+
     this.currency = this.dataset.currency || '$';
+    this.min = parseFloat(this.dataset.min) || 0;
+    this.max = parseFloat(this.dataset.max) || 100;
+    this.valueMin = parseFloat(this.dataset.valueMin) || this.min;
+    this.valueMax = parseFloat(this.dataset.valueMax) || this.max;
 
-    if (!this.minSlider || !this.maxSlider) return;
+    if (!this.track || !this.thumbMin || !this.thumbMax) return;
 
-    this.minSlider.addEventListener('input', this.boundOnInput);
-    this.maxSlider.addEventListener('input', this.boundOnInput);
+    // Bind event handlers
+    this.onPointerDown = this.onPointerDown.bind(this);
+    this.onPointerMove = this.onPointerMove.bind(this);
+    this.onPointerUp = this.onPointerUp.bind(this);
+    this.onKeyDown = this.onKeyDown.bind(this);
 
-    // Initial update
-    this.updateProgress();
+    // Attach events to thumbs
+    this.thumbMin.addEventListener('pointerdown', this.onPointerDown);
+    this.thumbMax.addEventListener('pointerdown', this.onPointerDown);
+    this.thumbMin.addEventListener('keydown', this.onKeyDown);
+    this.thumbMax.addEventListener('keydown', this.onKeyDown);
+
+    // Initial render
+    this.updateUI();
   }
 
   disconnectedCallback() {
-    if (this.minSlider) {
-      this.minSlider.removeEventListener('input', this.boundOnInput);
+    if (this.thumbMin) {
+      this.thumbMin.removeEventListener('pointerdown', this.onPointerDown);
+      this.thumbMin.removeEventListener('keydown', this.onKeyDown);
     }
-    if (this.maxSlider) {
-      this.maxSlider.removeEventListener('input', this.boundOnInput);
+    if (this.thumbMax) {
+      this.thumbMax.removeEventListener('pointerdown', this.onPointerDown);
+      this.thumbMax.removeEventListener('keydown', this.onKeyDown);
     }
+    document.removeEventListener('pointermove', this.onPointerMove);
+    document.removeEventListener('pointerup', this.onPointerUp);
   }
 
-  onInput(event) {
-    const minVal = parseInt(this.minSlider.value);
-    const maxVal = parseInt(this.maxSlider.value);
+  onPointerDown(e) {
+    e.preventDefault();
+    this.isDragging = true;
+    this.activeThumb = e.target.dataset.thumb;
+    e.target.dataset.active = '';
+    e.target.setPointerCapture(e.pointerId);
 
-    // Prevent sliders from crossing
-    if (event.target.dataset.type === 'min' && minVal >= maxVal) {
-      this.minSlider.value = maxVal - 1;
-    } else if (event.target.dataset.type === 'max' && maxVal <= minVal) {
-      this.maxSlider.value = minVal + 1;
+    document.addEventListener('pointermove', this.onPointerMove);
+    document.addEventListener('pointerup', this.onPointerUp);
+  }
+
+  onPointerMove(e) {
+    if (!this.isDragging || !this.activeThumb) return;
+
+    const rect = this.track.getBoundingClientRect();
+    const percent = Math.max(0, Math.min(1, (e.clientX - rect.left) / rect.width));
+    const value = this.min + percent * (this.max - this.min);
+
+    if (this.activeThumb === 'min') {
+      // Don't let min exceed max
+      this.valueMin = Math.min(value, this.valueMax - 1);
+    } else {
+      // Don't let max go below min
+      this.valueMax = Math.max(value, this.valueMin + 1);
     }
 
-    this.updateProgress();
-    this.updateDisplay();
+    this.updateUI();
+  }
+
+  onPointerUp() {
+    if (!this.isDragging) return;
+
+    this.isDragging = false;
+    const thumb = this.activeThumb === 'min' ? this.thumbMin : this.thumbMax;
+    delete thumb.dataset.active;
+    this.activeThumb = null;
+
+    document.removeEventListener('pointermove', this.onPointerMove);
+    document.removeEventListener('pointerup', this.onPointerUp);
+
+    // Update hidden inputs and trigger form change
     this.updateHiddenInputs();
   }
 
-  updateProgress() {
-    const min = parseInt(this.minSlider.min);
-    const max = parseInt(this.minSlider.max);
-    const minVal = parseInt(this.minSlider.value);
-    const maxVal = parseInt(this.maxSlider.value);
+  onKeyDown(e) {
+    const thumb = e.target.dataset.thumb;
+    const step = (this.max - this.min) / 100; // 1% step
 
-    const leftPercent = ((minVal - min) / (max - min)) * 100;
-    const rightPercent = 100 - ((maxVal - min) / (max - min)) * 100;
+    let value = thumb === 'min' ? this.valueMin : this.valueMax;
 
-    this.progress.style.left = `${leftPercent}%`;
-    this.progress.style.right = `${rightPercent}%`;
+    switch (e.key) {
+      case 'ArrowLeft':
+      case 'ArrowDown':
+        value -= step;
+        break;
+      case 'ArrowRight':
+      case 'ArrowUp':
+        value += step;
+        break;
+      default:
+        return;
+    }
+
+    e.preventDefault();
+
+    if (thumb === 'min') {
+      this.valueMin = Math.max(this.min, Math.min(value, this.valueMax - 1));
+    } else {
+      this.valueMax = Math.min(this.max, Math.max(value, this.valueMin + 1));
+    }
+
+    this.updateUI();
+    this.updateHiddenInputs();
   }
 
-  updateDisplay() {
-    const minVal = parseInt(this.minSlider.value);
-    const maxVal = parseInt(this.maxSlider.value);
+  updateUI() {
+    const percentMin = ((this.valueMin - this.min) / (this.max - this.min)) * 100;
+    const percentMax = ((this.valueMax - this.min) / (this.max - this.min)) * 100;
 
-    // Convert from cents to display value (divide by 100)
-    const minDisplay = (minVal / 100).toFixed(2);
-    const maxDisplay = (maxVal / 100).toFixed(2);
+    // Position thumbs
+    this.thumbMin.style.left = `${percentMin}%`;
+    this.thumbMax.style.left = `${percentMax}%`;
 
-    // Remove trailing zeros for cleaner display
-    const formatPrice = (val) => {
-      const num = parseFloat(val);
-      return num % 1 === 0 ? num.toFixed(0) : num.toFixed(2);
-    };
+    // Update range fill
+    this.range.style.left = `${percentMin}%`;
+    this.range.style.right = `${100 - percentMax}%`;
 
-    this.displayMin.textContent = `${this.currency}${formatPrice(minDisplay)}`;
-    this.displayMax.textContent = `${this.currency}${formatPrice(maxDisplay)}`;
+    // Update display values
+    this.displayMin.textContent = `${this.currency}${this.formatPrice(this.valueMin / 100)}`;
+    this.displayMax.textContent = `${this.currency}${this.formatPrice(this.valueMax / 100)}`;
+  }
+
+  formatPrice(val) {
+    // Always show whole numbers, no decimals
+    return Math.round(val).toString();
   }
 
   updateHiddenInputs() {
-    const minVal = parseInt(this.minSlider.value);
-    const maxVal = parseInt(this.maxSlider.value);
-    const maxRange = parseInt(this.minSlider.max);
-
     // Convert from cents to dollars for form submission
-    const minPrice = (minVal / 100).toFixed(2);
-    const maxPrice = (maxVal / 100).toFixed(2);
+    const minPrice = (this.valueMin / 100).toFixed(2);
+    const maxPrice = (this.valueMax / 100).toFixed(2);
 
     // Only set value if it's different from the range bounds
-    if (minVal > 0) {
+    if (this.valueMin > this.min) {
       this.hiddenMin.value = minPrice;
     } else {
       this.hiddenMin.value = '';
     }
 
-    if (maxVal < maxRange) {
+    if (this.valueMax < this.max) {
       this.hiddenMax.value = maxPrice;
     } else {
       this.hiddenMax.value = '';
