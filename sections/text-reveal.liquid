@@ -21,7 +21,6 @@
 
 <section
   class="text-reveal {{ alignment_class }} section-padding-lg color-{{ section.settings.color_scheme }} relative{% if section.settings.add_top_padding %} pt-[calc(var(--section-vertical-padding)*1.5+var(--header-height,65px))]{% endif %}"
-  style="--text-reveal-accent-color: {{ section.settings.accent_color }};"
   data-text-reveal-section="{{ section.id }}"
 >
   {% if section.settings.show_background_number %}
@@ -336,12 +335,6 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-3"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "default": "#6366f1",
-      "label": "Accent color (highlighted words)"
     }
   ],
   "presets": [

@@ -11,7 +11,6 @@
 <section
   class="timeline-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
   data-timeline-section="{{ section.id }}"
-  style="--timeline-accent-color: {{ section.settings.accent_color }}"
 >
   <div class="{{ container_class }}">
     {%- comment -%} Header - uses global data-tween system for animations {%- endcomment -%}
@@ -181,12 +180,6 @@
       "id": "color_scheme",
       "label": "Color scheme",
       "default": "scheme-2"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "default": "#6366f1",
-      "label": "Accent color"
     }
   ],
   "blocks": [
