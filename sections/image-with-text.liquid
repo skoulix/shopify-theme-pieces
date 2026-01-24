@@ -21,7 +21,7 @@
 </style>
 
 <section
-  class="iwt-section overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="iwt-section overflow-hidden color-{{ section.settings.color_scheme }}{% if section.settings.remove_padding %} lg:py-0 pb-(--section-vertical-padding){% else %} section-padding{% endif %}"
   data-iwt-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
 >
