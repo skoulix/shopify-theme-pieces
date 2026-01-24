@@ -286,8 +286,8 @@ class TweenManager {
       this.initTweenElement(el, tl, position);
 
       // Update current position for next element
-      // For split-text, add more time since it takes longer (lines stagger at 0.1s each)
-      const elementDuration = type === 'split-text' ? 0.5 : baseStagger;
+      // For split-text, add slightly more time since lines stagger
+      const elementDuration = type === 'split-text' ? 0.3 : baseStagger;
       currentPosition = position + elementDuration;
     });
 
