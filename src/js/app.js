@@ -28,6 +28,7 @@ import { cartDrawerManager } from './managers/CartDrawerManager.js';
 import { cartPageManager } from './managers/CartPageManager.js';
 import { productLightbox } from './managers/ProductLightboxManager.js';
 import './managers/FacetsManager.js'; // Self-registering custom element
+import './components/PriceRange.js'; // Self-registering custom element
 
 // Register GSAP plugins
 gsap.registerPlugin(ScrollTrigger, Flip, SplitText);

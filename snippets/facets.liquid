@@ -268,43 +268,49 @@
                     {%- endif -%}
 
                   {% when 'price_range' %}
-                    <div class="flex items-center gap-4">
-                      <div class="flex-1">
-                        <label for="Filter-{{ filter.min_value.param_name }}" class="sr-only">{{ 'general.min_price' | t }}</label>
-                        <div class="relative">
-                          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-(--color-text-secondary)">{{ cart.currency.symbol }}</span>
-                          <input
-                            type="text"
-                            inputmode="decimal"
-                            name="{{ filter.min_value.param_name }}"
-                            id="Filter-{{ filter.min_value.param_name }}"
-                            {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency }}"{% endif %}
-                            placeholder="0"
-                            data-min="0"
-                            data-max="{{ filter.range_max | money_without_currency }}"
-                            class="w-full border border-(--color-border) rounded-(--input-radius) px-3 py-2 pl-7 text-sm focus:border-(--color-text) focus:outline-none transition-colors"
-                          >
-                        </div>
+                    <price-range class="block" data-currency="{{ cart.currency.symbol }}">
+                      {%- comment -%} Display values {%- endcomment -%}
+                      <div class="flex items-center justify-between mb-4 text-sm">
+                        <span class="price-range-display-min">{{ cart.currency.symbol }}{{ filter.min_value.value | default: 0 | money_without_currency }}</span>
+                        <span class="price-range-display-max">{{ cart.currency.symbol }}{{ filter.max_value.value | default: filter.range_max | money_without_currency }}</span>
                       </div>
-                      <span class="text-(--color-text-secondary)">{{ 'general.to' | t }}</span>
-                      <div class="flex-1">
-                        <label for="Filter-{{ filter.max_value.param_name }}" class="sr-only">{{ 'general.max_price' | t }}</label>
-                        <div class="relative">
-                          <span class="absolute left-3 top-1/2 -translate-y-1/2 text-sm text-(--color-text-secondary)">{{ cart.currency.symbol }}</span>
-                          <input
-                            type="text"
-                            inputmode="decimal"
-                            name="{{ filter.max_value.param_name }}"
-                            id="Filter-{{ filter.max_value.param_name }}"
-                            {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency }}"{% endif %}
-                            placeholder="{{ filter.range_max | money_without_currency }}"
-                            data-min="0"
-                            data-max="{{ filter.range_max | money_without_currency }}"
-                            class="w-full border border-(--color-border) rounded-(--input-radius) px-3 py-2 pl-7 text-sm focus:border-(--color-text) focus:outline-none transition-colors"
-                          >
-                        </div>
+
+                      {%- comment -%} Dual range slider {%- endcomment -%}
+                      <div class="price-range-slider relative h-5 mb-4">
+                        <div class="price-range-track absolute left-0 right-0 top-1/2 -translate-y-1/2 h-0.5 bg-(--color-border) rounded-full"></div>
+                        <div class="price-range-progress absolute top-1/2 -translate-y-1/2 h-0.5 bg-(--color-text) rounded-full" style="left: 0%; right: 0%;"></div>
+                        <input
+                          type="range"
+                          class="price-range-input price-range-input-min absolute w-full h-full top-0 appearance-none bg-transparent pointer-events-none"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' | replace: '.', '' }}"
+                          value="{{ filter.min_value.value | default: 0 | money_without_currency | replace: ',', '' | replace: '.', '' }}"
+                          data-type="min"
+                        >
+                        <input
+                          type="range"
+                          class="price-range-input price-range-input-max absolute w-full h-full top-0 appearance-none bg-transparent pointer-events-none"
+                          min="0"
+                          max="{{ filter.range_max | money_without_currency | replace: ',', '' | replace: '.', '' }}"
+                          value="{{ filter.max_value.value | default: filter.range_max | money_without_currency | replace: ',', '' | replace: '.', '' }}"
+                          data-type="max"
+                        >
                       </div>
-                    </div>
+
+                      {%- comment -%} Hidden inputs for form submission {%- endcomment -%}
+                      <input
+                        type="hidden"
+                        name="{{ filter.min_value.param_name }}"
+                        class="price-range-hidden-min"
+                        {% if filter.min_value.value %}value="{{ filter.min_value.value | money_without_currency }}"{% endif %}
+                      >
+                      <input
+                        type="hidden"
+                        name="{{ filter.max_value.param_name }}"
+                        class="price-range-hidden-max"
+                        {% if filter.max_value.value %}value="{{ filter.max_value.value | money_without_currency }}"{% endif %}
+                      >
+                    </price-range>
                 {% endcase %}
               </div>
             </details>

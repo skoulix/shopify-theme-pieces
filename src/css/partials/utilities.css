@@ -93,6 +93,56 @@
     @apply text-(--color-background) bg-(--color-text);
   }
 
+  /* Price Range Slider */
+  .price-range-slider {
+    @apply relative;
+  }
+
+  .price-range-input {
+    @apply m-0;
+    -webkit-appearance: none;
+    appearance: none;
+    background: transparent;
+  }
+
+  .price-range-input::-webkit-slider-runnable-track {
+    @apply h-full w-full;
+    background: transparent;
+  }
+
+  .price-range-input::-moz-range-track {
+    @apply h-full w-full;
+    background: transparent;
+  }
+
+  .price-range-input::-webkit-slider-thumb {
+    @apply w-4 h-4 bg-(--color-text) rounded-full cursor-pointer;
+    -webkit-appearance: none;
+    appearance: none;
+    border: 2px solid var(--color-background);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+  }
+
+  .price-range-input::-moz-range-thumb {
+    @apply w-4 h-4 bg-(--color-text) rounded-full cursor-pointer;
+    border: 2px solid var(--color-background);
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+    pointer-events: auto;
+  }
+
+  .price-range-input:focus {
+    outline: none;
+  }
+
+  .price-range-input:focus::-webkit-slider-thumb {
+    box-shadow: 0 0 0 3px var(--color-primary);
+  }
+
+  .price-range-input:focus::-moz-range-thumb {
+    box-shadow: 0 0 0 3px var(--color-primary);
+  }
+
   .product-card-list-buttons-mobile {
     @apply hidden;
   }
