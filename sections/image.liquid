@@ -86,7 +86,9 @@
               alt: section.settings.image.alt | default: ''
             }}
           {% else %}
-            {{ 'image' | placeholder_svg_tag: 'w-full h-full' }}
+            <div class="w-full h-full bg-neutral-100">
+              {{ 'image' | placeholder_svg_tag: 'w-full h-full' }}
+            </div>
           {% endif %}
         </div>
       {% if section.settings.link != blank %}</a>{% endif %}
