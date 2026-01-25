@@ -7,6 +7,10 @@
     render 'container-class', full_width: section.settings.full_width
   endcapture
 
+  capture header_container_class
+    render 'container-class', full_width: false
+  endcapture
+
   capture header_align_class
     render 'alignment-classes', alignment: section.settings.header_alignment, output: 'text'
   endcapture
@@ -17,9 +21,9 @@
   data-before-after-section="{{ section.id }}"
   style="--before-after-aspect-ratio: {{ section.settings.aspect_ratio }};"
 >
-  <div class="{{ container_class }}">
-    {%- comment -%} Header {%- endcomment -%}
-    {% if section.settings.label != blank or section.settings.title != blank %}
+  {%- comment -%} Header - always contained {%- endcomment -%}
+  {% if section.settings.label != blank or section.settings.title != blank %}
+    <div class="{{ header_container_class }}">
       <div class="before-after-header {{ header_align_class }}" data-tween-group="before-after-header-{{ section.id }}">
         {% render 'section-header',
           label: section.settings.label,
@@ -29,9 +33,11 @@
           nowrap: true
         %}
       </div>
-    {% endif %}
+    </div>
+  {% endif %}
 
-    {%- comment -%} Comparison Slider {%- endcomment -%}
+  {%- comment -%} Comparison Slider {%- endcomment -%}
+  <div class="{{ container_class }}">
     <div
       class="before-after-container bg-(--color-background-secondary)"
       data-before-after-container
@@ -50,7 +56,9 @@
           alt: section.settings.after_label
         }}
       {% else %}
-        {{ 'product-1' | placeholder_svg_tag: 'before-after-image' }}
+        <div class="before-after-image before-after-placeholder bg-neutral-200">
+          {{ 'product-1' | placeholder_svg_tag }}
+        </div>
       {% endif %}
 
       {%- comment -%} Before Image (Overlay) {%- endcomment -%}
@@ -65,7 +73,9 @@
             alt: section.settings.before_label
           }}
         {% else %}
-          {{ 'product-2' | placeholder_svg_tag: 'before-after-image' }}
+          <div class="before-after-image before-after-placeholder bg-neutral-200">
+            {{ 'product-2' | placeholder_svg_tag }}
+          </div>
         {% endif %}
       </div>
 

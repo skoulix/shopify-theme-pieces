@@ -84,17 +84,23 @@
                 </a>
               </h3>
 
-              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
-                <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
-                  {{ article.published_at | date: '%b %d, %Y' }}
-                </time>
-                {% if section.settings.show_author %}
-                  <span class="flex items-center gap-1.5">
-                    <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
-                    {{ article.author }}
-                  </span>
-                {% endif %}
-              </div>
+              {% if section.settings.show_date or section.settings.show_author %}
+                <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
+                  {% if section.settings.show_date %}
+                    <time datetime="{{ article.published_at | date: '%Y-%m-%d' }}">
+                      {{ article.published_at | date: '%b %d, %Y' }}
+                    </time>
+                  {% endif %}
+                  {% if section.settings.show_author %}
+                    <span class="flex items-center gap-1.5">
+                      {% if section.settings.show_date %}
+                        <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+                      {% endif %}
+                      {{ article.author }}
+                    </span>
+                  {% endif %}
+                </div>
+              {% endif %}
 
               {% if section.settings.show_excerpt %}
                 <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}" data-tween data-tween-type="fade-up">
@@ -133,15 +139,21 @@
               <h3 class="blog-card-title{% if is_featured %} blog-card-title--featured{% endif %}" data-tween data-tween-type="fade-up">
                 {{ 'sections.featured_blog.placeholder_title' | t }} {{ forloop.index }}
               </h3>
-              <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
-                <time>{{ 'now' | date: '%b %d, %Y' }}</time>
-                {% if section.settings.show_author %}
-                  <span class="flex items-center gap-1.5">
-                    <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
-                    Author
-                  </span>
-                {% endif %}
-              </div>
+              {% if section.settings.show_date or section.settings.show_author %}
+                <div class="mt-2 flex items-center gap-4 text-xs text-(--color-text-secondary)" data-tween data-tween-type="fade-up">
+                  {% if section.settings.show_date %}
+                    <time>{{ 'now' | date: '%b %d, %Y' }}</time>
+                  {% endif %}
+                  {% if section.settings.show_author %}
+                    <span class="flex items-center gap-1.5">
+                      {% if section.settings.show_date %}
+                        <span class="w-1 h-1 rounded-full bg-current opacity-40"></span>
+                      {% endif %}
+                      Author
+                    </span>
+                  {% endif %}
+                </div>
+              {% endif %}
               {% if section.settings.show_excerpt %}
                 <p class="mt-3 text-sm leading-relaxed text-(--color-text-secondary) line-clamp-2{% if is_featured %} lg:line-clamp-3{% endif %}" data-tween data-tween-type="fade-up">
                   {{ 'sections.featured_blog.placeholder_excerpt' | t }}
@@ -238,6 +250,12 @@
       "id": "show_excerpt",
       "default": true,
       "label": "Show excerpt"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_date",
+      "default": true,
+      "label": "Show date"
     },
     {
       "type": "checkbox",

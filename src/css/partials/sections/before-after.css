@@ -30,6 +30,20 @@
     aspect-ratio: var(--before-after-aspect-ratio, 16/9);
   }
 
+  /* Placeholder wrapper - needs bg color since SVGs are transparent */
+  .before-after-placeholder {
+    @apply flex items-center justify-center;
+  }
+
+  .before-after-placeholder svg {
+    @apply w-full h-full object-cover;
+  }
+
+  /* Before overlay with placeholder needs its own bg */
+  .before-after-before:has(.before-after-placeholder) {
+    @apply bg-neutral-200;
+  }
+
   /* Before overlay */
   .before-after-before {
     @apply absolute inset-0 overflow-hidden;
