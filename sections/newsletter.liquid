@@ -11,7 +11,7 @@
   endcapture
 -%}
 
-<section class="newsletter-section color-{{ section.settings.color_scheme }}">
+<div class="newsletter-section color-{{ section.settings.color_scheme }}">
   {% case section.settings.design %}
     {% when 'side-by-side' %}
       {% render 'newsletter-side-by-side',
@@ -52,11 +52,12 @@
         container_class: container_class
       %}
   {% endcase %}
-</section>
+</div>
 
 {% schema %}
 {
   "name": "Newsletter",
+  "tag": "section",
   "settings": [
     {
       "type": "select",
