@@ -59,6 +59,7 @@
       {% render 'section-header-nav',
         label: section.settings.label,
         title: section.settings.title,
+        description: section.settings.description,
         alignment: section.settings.header_alignment,
         group_id: section.id,
         nav_data_prefix: 'carousel',
@@ -344,6 +345,11 @@
       "id": "title",
       "label": "Title",
       "default": "Related Products"
+    },
+    {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description"
     },
     {
       "type": "header",
