@@ -3,7 +3,7 @@
   Advanced version with scroll direction detection and speed acceleration
 {%- endcomment -%}
 
-<section
+<div
   class="marquee-section overflow-hidden color-{{ section.settings.color_scheme }}"
   data-marquee-section="{{ section.id }}"
   data-marquee-direction="{{ section.settings.direction }}"
@@ -32,7 +32,7 @@
       {% endfor %}
     </div>
   </div>
-</section>
+</div>
 
 <script>
   (function() {

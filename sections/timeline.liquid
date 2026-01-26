@@ -12,7 +12,7 @@
   endcapture
 -%}
 
-<section
+<div
   class="timeline-section-wrapper section-padding color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-timeline-section="{{ section.id }}"
 >
@@ -80,7 +80,7 @@
       {% endfor %}
     </div>
   </div>
-</section>
+</div>
 
 <script>
 (function() {

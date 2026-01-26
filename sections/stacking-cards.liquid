@@ -8,7 +8,7 @@
   endcapture
 -%}
 
-<section
+<div
   class="stacking-cards color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-stacking-cards="{{ section.id }}"
   style="--stacking-bg-position: {{ section.settings.background_image_position }};{% if section.settings.background_image_blur > 0 %} --stacking-bg-blur: {{ section.settings.background_image_blur }}px;{% endif %}"
@@ -100,7 +100,7 @@
       {% endfor %}
     </div>
   </div>
-</section>
+</div>
 
 <script>
 (function() {

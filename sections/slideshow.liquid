@@ -147,7 +147,7 @@
   #slideshow-{{ section.id }} .slideshow__cta { opacity: 0; }
 </style>
 
-<section id="slideshow-{{ section.id }}" class="slideshow-section {{ section.blocks.first.settings.color_scheme | prepend: 'color-' }}{% if section.settings.add_top_padding %} header-offset{% endif %}" data-slideshow data-transition="{{ transition_effect }}">
+<div id="slideshow-{{ section.id }}" class="slideshow-section {{ section.blocks.first.settings.color_scheme | prepend: 'color-' }}{% if section.settings.add_top_padding %} header-offset{% endif %}" data-slideshow data-transition="{{ transition_effect }}">
   {%- comment -%} Screen reader announcements for slide changes {%- endcomment -%}
   <div class="sr-only" aria-live="polite" aria-atomic="true" data-slideshow-status></div>
   <div class="slideshow relative overflow-hidden h-(--slideshow-height) min-h-[400px] bg-(--color-background)" aria-label="{{ 'accessibility.slideshow' | t }}" role="region">
@@ -377,7 +377,7 @@
       <div class="slideshow__progress slideshow__nav absolute bottom-0 left-0 h-[3px] z-10 w-0" data-slideshow-progress></div>
     {% endif %}
   </div>
-</section>
+</div>
 
 <script>
   (function() {

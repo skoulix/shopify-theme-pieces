@@ -65,7 +65,7 @@
   endcase
 -%}
 
-<section
+<div
   class="shoppable-videos section-padding color-{{ section.settings.color_scheme }}"
   data-shoppable-videos="{{ section.id }}"
   style="--shoppable-aspect-ratio: {{ video_aspect_ratio }}; --shoppable-video-gap: {{ gap_value }}; --shoppable-slide-width-mobile: {{ slide_width_mobile }}; --shoppable-slide-width-tablet: {{ slide_width_tablet }}; --shoppable-slide-width-desktop: {{ slide_width_desktop }};"
@@ -169,7 +169,7 @@
     </div>
 
   </div>
-</section>
+</div>
 
 <!-- Video Lightbox -->
 <div class="shoppable-video-lightbox" id="shoppable-video-lightbox-{{ section.id }}" role="dialog" aria-modal="true" aria-label="{{ 'accessibility.close' | t }}">

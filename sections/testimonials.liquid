@@ -12,7 +12,7 @@
   endcapture
 -%}
 
-<section
+<div
   class="testimonials-section-wrapper section-padding color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-testimonials="{{ section.id }}"
   style="--slides-mobile: {{ section.settings.slides_mobile }}; --slides-tablet: {{ section.settings.slides_tablet }}; --slides-desktop: {{ section.settings.slides_desktop }}; --testimonial-text-size: {{ section.settings.text_size }};"
@@ -99,7 +99,7 @@
     </div>
 
   </div>
-</section>
+</div>
 
 <script>
 (function() {

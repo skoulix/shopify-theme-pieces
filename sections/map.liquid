@@ -24,7 +24,7 @@
   assign lng = section.settings.longitude | default: default_lng
 -%}
 
-<section class="map-section section-padding color-{{ section.settings.color_scheme }}" style="--map-height: {{ section.settings.map_height }}px;">
+<div class="map-section section-padding color-{{ section.settings.color_scheme }}" style="--map-height: {{ section.settings.map_height }}px;">
   {%- comment -%} Header {%- endcomment -%}
   <div class="{{ content_container_class }} section-header-spacing">
     {% render 'section-header',
@@ -85,7 +85,7 @@
       </div>
     </div>
   {% endif %}
-</section>
+</div>
 
 <script>
 (function() {

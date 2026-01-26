@@ -18,7 +18,7 @@
   endcase
 -%}
 
-<section
+<div
   class="text-reveal {{ alignment_class }} section-padding-lg color-{{ section.settings.color_scheme }} relative{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-text-reveal-section="{{ section.id }}"
 >
@@ -82,7 +82,7 @@
       {% endif %}
     {% endif %}
   </div>
-</section>
+</div>
 
 <script>
 (function() {
