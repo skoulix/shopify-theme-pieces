@@ -9,7 +9,7 @@
   endcapture
 -%}
 
-<div class="compare-section page-padding color-{{ section.settings.color_scheme }}" data-compare-section data-header-alignment="{{ section.settings.header_alignment }}" id="compare-section-{{ section.id }}">
+<div class="compare-section page-padding color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}" data-compare-section data-header-alignment="{{ section.settings.header_alignment }}" id="compare-section-{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     <div class="section-header-spacing {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="compare-header-{{ section.id }}">
@@ -552,6 +552,13 @@
       "id": "full_width",
       "label": "Full width",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "add_top_padding",
+      "default": false,
+      "label": "Add top padding",
+      "info": "Enable when using as the first section on a page to offset for the header"
     },
     {
       "type": "text_alignment",

@@ -13,7 +13,7 @@
 -%}
 
 <div
-  class="banner section-padding"
+  class="banner section-padding{% if section.settings.add_top_padding %} header-offset{% endif %}"
   style="--banner-card-radius: {{ card_radius }}px;{% if card_shadow != 'none' %} --banner-card-shadow: {{ card_shadow }};{% endif %}"
   data-banner-section="{{ section.id }}"
   {% if section.settings.remember_dismissal %}data-remember-dismissal="true"{% endif %}
@@ -188,6 +188,13 @@
       "id": "full_width",
       "label": "Full width",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "add_top_padding",
+      "default": false,
+      "label": "Add top padding",
+      "info": "Enable when using as the first section on a page to offset for the header"
     },
     {
       "type": "header",

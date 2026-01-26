@@ -45,9 +45,18 @@
     padding-bottom: var(--page-vertical-padding);
   }
 
-  /* Header offset - adds header height to top padding for first sections on a page */
+  /* Header offset - adds header height to existing top padding for first sections on a page */
   .header-offset {
     padding-top: calc(var(--section-vertical-padding) + var(--header-height, 65px));
+
+    /* Variants for different section padding sizes */
+    &.section-padding-sm {
+      padding-top: calc(var(--section-vertical-padding) * 0.6 + var(--header-height, 65px));
+    }
+
+    &.section-padding-lg {
+      padding-top: calc(var(--section-vertical-padding) * 1.5 + var(--header-height, 65px));
+    }
   }
 
   .section {

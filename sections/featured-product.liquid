@@ -32,7 +32,7 @@
 </style>
 
 <div
-  class="fp-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="fp-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-fp-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}">
   {% if product != blank %}
@@ -600,6 +600,13 @@
         "id": "full_width",
         "label": "Full width",
         "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "add_top_padding",
+        "default": false,
+        "label": "Add top padding",
+        "info": "Enable when using as the first section on a page to offset for the header"
       },
       {
         "type": "select",

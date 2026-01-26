@@ -24,7 +24,7 @@
 -%}
 
 <div
-  class="collections-carousel-section section-padding color-{{ section.settings.color_scheme }}"
+  class="collections-carousel-section section-padding color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-collections-carousel="{{ section.id }}"
   style="--slides-mobile: {{ section.settings.slides_mobile }}; --slides-tablet: {{ section.settings.slides_tablet }}; --slides-desktop: {{ section.settings.slides_desktop }};"
 >
@@ -469,6 +469,13 @@
       "id": "full_width",
       "default": false,
       "label": "Full width"
+    },
+    {
+      "type": "checkbox",
+      "id": "add_top_padding",
+      "default": false,
+      "label": "Add top padding",
+      "info": "Enable when using as the first section on a page to offset for the header"
     },
     {
       "type": "text_alignment",
