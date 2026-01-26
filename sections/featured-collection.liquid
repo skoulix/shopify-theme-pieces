@@ -116,10 +116,25 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "default": false,
+      "label": "Full width"
+    },
+    {
+      "type": "select",
       "id": "header_alignment",
+      "label": "Header alignment",
       "default": "left",
-      "label": "Header alignment"
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",
@@ -160,16 +175,6 @@
       "id": "view_all_text",
       "default": "View All",
       "label": "View all text"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "default": false,
-      "label": "Full width"
     },
     {
       "type": "header",

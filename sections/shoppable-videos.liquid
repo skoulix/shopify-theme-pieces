@@ -701,14 +701,25 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
-      "id": "header_alignment",
-      "default": "left",
-      "label": "Header alignment"
-    },
-    {
       "type": "header",
       "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "select",
@@ -768,12 +779,6 @@
         { "value": "16/9", "label": "16:9 (Landscape)" }
       ],
       "default": "9/16"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": false
     },
     {
       "type": "checkbox",

@@ -235,12 +235,6 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
-      "id": "header_alignment",
-      "default": "center",
-      "label": "Header alignment"
-    },
-    {
       "type": "header",
       "content": "Layout"
     },
@@ -249,6 +243,17 @@
       "id": "full_width",
       "default": false,
       "label": "Full width"
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "center",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",

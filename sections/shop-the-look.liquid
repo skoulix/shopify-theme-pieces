@@ -687,12 +687,6 @@
       "label": "Description"
     },
     {
-      "type": "text_alignment",
-      "id": "header_alignment",
-      "default": "left",
-      "label": "Header alignment"
-    },
-    {
       "type": "header",
       "content": "Image"
     },
@@ -707,20 +701,31 @@
       "content": "Layout"
     },
     {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
+    },
+    {
       "type": "select",
       "id": "layout",
-      "label": "Layout",
+      "label": "Image position",
       "options": [
         { "value": "image_left", "label": "Image left" },
         { "value": "image_right", "label": "Image right" }
       ],
       "default": "image_left"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": false
     },
     {
       "type": "header",

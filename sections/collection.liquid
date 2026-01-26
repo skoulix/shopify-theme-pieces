@@ -1123,12 +1123,6 @@
       "default": false
     },
     {
-      "type": "text_alignment",
-      "id": "header_alignment",
-      "label": "Header alignment",
-      "default": "left"
-    },
-    {
       "type": "checkbox",
       "id": "show_product_count",
       "label": "Show product count",
@@ -1151,11 +1145,22 @@
       "type": "header",
       "content": "Layout"
     },
-   {
+    {
       "type": "checkbox",
       "id": "full_width",
       "label": "Full width",
       "default": false
+    },
+    {
+      "type": "select",
+      "id": "header_alignment",
+      "label": "Header alignment",
+      "default": "left",
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "checkbox",

@@ -85,10 +85,25 @@
       "label": "Title"
     },
     {
-      "type": "text_alignment",
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "checkbox",
+      "id": "full_width",
+      "label": "Full width",
+      "default": false
+    },
+    {
+      "type": "select",
       "id": "header_alignment",
+      "label": "Header alignment",
       "default": "center",
-      "label": "Header alignment"
+      "options": [
+        { "value": "left", "label": "Left" },
+        { "value": "center", "label": "Center" },
+        { "value": "right", "label": "Right" }
+      ]
     },
     {
       "type": "header",
@@ -105,16 +120,6 @@
       "id": "icon_color",
       "label": "Icon color",
       "default": "#4f46e5"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "checkbox",
-      "id": "full_width",
-      "label": "Full width",
-      "default": false
     }
   ],
   "blocks": [
