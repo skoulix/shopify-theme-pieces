@@ -459,16 +459,25 @@
     "name": "Cart",
     "settings": [
       {
+        "type": "header",
+        "content": "Layout"
+      },
+      {
         "type": "checkbox",
         "id": "full_width",
         "label": "Full width",
         "default": false
       },
       {
-        "type": "text_alignment",
+        "type": "select",
         "id": "header_alignment",
         "default": "left",
-        "label": "Header alignment"
+        "label": "Header alignment",
+        "options": [
+          { "value": "left", "label": "Left" },
+          { "value": "center", "label": "Center" },
+          { "value": "right", "label": "Right" }
+        ]
       },
       {
         "type": "header",
