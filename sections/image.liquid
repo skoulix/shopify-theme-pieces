@@ -59,7 +59,7 @@
   }
 </style>
 
-<section
+<div
   class="image-section-{{ section.id }}{% unless section.settings.remove_padding %} section-padding{% endunless %} color-{{ section.settings.color_scheme }}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-image-section="{{ section.id }}"
 >
@@ -100,7 +100,7 @@
       {% endif %}
     </div>
   </div>
-</section>
+</div>
 
 {% if section.settings.enable_parallax %}
 <script>

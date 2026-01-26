@@ -20,7 +20,7 @@
   [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); }
 </style>
 
-<section
+<div
   class="iwt-section overflow-hidden color-{{ section.settings.color_scheme }}{% if section.settings.remove_padding %} lg:py-0 pb-(--section-vertical-padding){% else %} section-padding{% endif %}{% if section.settings.add_top_padding %} header-offset{% endif %}"
   data-iwt-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
@@ -96,7 +96,7 @@
       {% endif %}
     </div>
   </div>
-</section>
+</div>
 
 {%- comment -%} Animations handled by global TweenManager via data-tween attributes {%- endcomment -%}
 
