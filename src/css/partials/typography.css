@@ -99,12 +99,12 @@
 
   /* ==========================================================================
      Section Label - Small uppercase eyebrow text
-     Includes default spacing (margin-bottom) for consistent rhythm
+     Spacing: Tight gap to title (label introduces the heading)
      ========================================================================== */
 
   .section-label {
     @apply inline-block text-sm font-semibold tracking-widest text-(--color-text-secondary);
-    margin-bottom: clamp(1rem, 2vw, 1.5rem) !important;
+    margin-bottom: clamp(0.5rem, 1vw, 0.75rem) !important;
   }
 
   /* No spacing variant */
@@ -123,7 +123,8 @@
 
   /* ==========================================================================
      Section Description - Paragraph text below title
-     Includes default spacing (margin-top) for consistent rhythm
+     Spacing: Moderate gap from title (description belongs to heading)
+     Typography principle: heading should be closer to its content than to preceding elements
      ========================================================================== */
 
   .section-description {
@@ -131,7 +132,7 @@
     font-size: calc(clamp(0.875rem, 1.5vw, 1.125rem) * var(--body-font-scale, 1));
     letter-spacing: var(--body-letter-spacing, 0);
     opacity: var(--opacity-muted);
-    margin-top: clamp(1.25rem, 2.5vw, 1.75rem) !important;
+    margin-top: clamp(0.75rem, 1.5vw, 1rem) !important;
   }
 
   /* Centered variant */
