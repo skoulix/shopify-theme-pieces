@@ -35,7 +35,14 @@
 {%- liquid
   assign alignment = alignment | default: 'left'
   assign show_nav = show_nav | default: true
-  assign nav_disabled_prev = nav_disabled_prev | default: true
+  # nav_disabled_prev: use explicit check since false is falsy in Liquid
+  if nav_disabled_prev == false
+    assign nav_disabled_prev = false
+  elsif nav_disabled_prev == true
+    assign nav_disabled_prev = true
+  else
+    assign nav_disabled_prev = true
+  endif
   assign nav_prev_label = nav_prev_label | default: 'accessibility.previous' | t | default: 'Previous'
   assign nav_next_label = nav_next_label | default: 'accessibility.next' | t | default: 'Next'
 
