@@ -31,7 +31,7 @@
       </p>
 
       {% if section.settings.description != blank %}
-        <p class="mt-4 text-base lg:text-lg opacity-70 max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
+        <p class="section-description max-w-2xl {% if section.settings.header_alignment == 'center' %}mx-auto{% elsif section.settings.header_alignment == 'right' %}ml-auto{% endif %}" data-tween data-tween-type="fade-up">
           {{ section.settings.description }}
         </p>
       {% endif %}
