@@ -27,7 +27,7 @@
     }
   }
   [data-fp-section="{{ section.id }}"] .fp-gallery {
-    aspect-ratio: {{ section.settings.image_ratio }};
+    aspect-ratio: {{ section.settings.aspect_ratio }};
   }
 </style>
 
@@ -603,7 +603,7 @@
     },
     {
       "type": "select",
-      "id": "image_ratio",
+      "id": "aspect_ratio",
       "label": "t:shared.settings.aspect_ratio.label",
       "options": [
         {

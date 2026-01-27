@@ -15,7 +15,7 @@
 <style>
   @media (min-width: 1024px) { [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container { direction: rtl; } [data-iwt-section="{{ section.id }}"][data-layout="image_right"] .iwt-container > * { direction: ltr; } }
   .iwt-container { gap: clamp(2rem, 5vw, 4rem); }
-  .iwt-image { aspect-ratio: {{ section.settings.image_ratio }}; }
+  .iwt-image { aspect-ratio: {{ section.settings.aspect_ratio }}; }
   [data-iwt-section="{{ section.id }}"] .iwt-stats { gap: clamp(2rem, 4vw, 4rem); border-top-color: var(--color-border); }
   [data-iwt-section="{{ section.id }}"] .iwt-stat-number { font-size: clamp(2rem, 5vw, 3.5rem); letter-spacing: calc(-0.03em + var(--heading-letter-spacing, 0em)); }
 </style>
@@ -117,7 +117,7 @@
     },
     {
       "type": "select",
-      "id": "image_ratio",
+      "id": "aspect_ratio",
       "options": [
         {
           "value": "1/1",

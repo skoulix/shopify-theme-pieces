@@ -16,7 +16,7 @@
   assign videos_tablet = section.settings.videos_tablet | default: '3'
   assign videos_desktop = section.settings.videos_desktop | default: '4'
   assign video_spacing = section.settings.video_spacing | default: 'medium'
-  assign video_aspect_ratio = section.settings.video_aspect_ratio | default: '9/16'
+  assign video_aspect_ratio = section.settings.aspect_ratio | default: '9/16'
 
   # Global card settings
   assign card_radius = settings.card_radius | default: 8
