@@ -145,7 +145,7 @@
                 {%- comment -%} Check if option has native swatches {%- endcomment -%}
                 {%- assign swatch_count = option.values | map: 'swatch' | compact | size -%}
 
-                  {% if swatch_count > 0 and section.settings.variant_picker_type == 'buttons' %}
+                  {% if swatch_count > 0 and section.settings.swatch_shape != 'none' and section.settings.variant_picker_type == 'buttons' %}
                   {%- comment -%} Native Color Swatches {%- endcomment -%}
                   <div class="flex flex-wrap gap-3">
                     {% for value in option.values %}
@@ -176,11 +176,11 @@
                         {% if option_disabled %}
                         disabled{% endif %}>
                       <label
-                        class="fp-swatch-label inline-block cursor-pointer rounded-full transition-all duration-200{% if option_disabled %} opacity-50 cursor-not-allowed{% endif %}"
+                        class="fp-swatch-label inline-block cursor-pointer {% if section.settings.swatch_shape == 'circle' %}rounded-full{% else %}rounded-sm{% endif %} transition-all duration-200{% if option_disabled %} opacity-50 cursor-not-allowed{% endif %}"
                         for="fp-{{ section.id }}-{{ option.name | handleize }}-{{ forloop.index }}"
                         title="{{ value }}">
                         <span
-                          class="block w-10 h-10 rounded-full border border-(--color-border) bg-cover bg-center transition-transform duration-200"
+                          class="block w-10 h-10 {% if section.settings.swatch_shape == 'circle' %}rounded-full{% else %}rounded-sm{% endif %} border border-(--color-border) bg-cover bg-center transition-transform duration-200"
                           {% if swatch_value %}
                           style="background: {{ swatch_value }};"
                           {% endif %}></span>
@@ -660,6 +660,27 @@
           }
         ],
         "default": "buttons"
+      },
+      {
+        "type": "select",
+        "id": "swatch_shape",
+        "label": "Color swatch style",
+        "info": "Options with color swatches will display as visual swatches instead of the picker type above.",
+        "options": [
+          {
+            "value": "circle",
+            "label": "Circle"
+          },
+          {
+            "value": "square",
+            "label": "Square"
+          },
+          {
+            "value": "none",
+            "label": "None (use picker type)"
+          }
+        ],
+        "default": "circle"
       },
       {
         "type": "checkbox",
