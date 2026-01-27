@@ -5,7 +5,7 @@
 {%- endcomment -%}
 
 {%- assign container_class = container_class | default: 'page-container' -%}
-<div class="newsletter-stacked section-padding bg-(--color-background) text-(--color-text)" data-tween-group="newsletter-stacked">
+<div class="newsletter-stacked bg-(--color-background) text-(--color-text)" data-tween-group="newsletter-stacked">
   <div class="{{ container_class }} text-center">
     {% if title != blank %}
       <h3 class="newsletter-title max-w-2xl mx-auto" data-tween data-tween-type="split-text">

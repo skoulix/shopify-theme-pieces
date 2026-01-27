@@ -5,7 +5,7 @@
 {%- endcomment -%}
 
 {%- assign container_class = container_class | default: 'page-container' -%}
-<div class="newsletter-side-by-side section-padding bg-(--color-background) text-(--color-text)" data-tween-group="newsletter-side-by-side">
+<div class="newsletter-side-by-side bg-(--color-background) text-(--color-text)" data-tween-group="newsletter-side-by-side">
   <div class="{{ container_class }} grid grid-cols-1 gap-10 lg:grid-cols-12 lg:gap-8 lg:items-center">
     <div class="lg:col-span-7">
       {% if title != blank %}

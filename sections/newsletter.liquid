@@ -11,7 +11,7 @@
   endcapture
 -%}
 
-<div class="newsletter-section color-{{ section.settings.color_scheme }}">
+<div class="newsletter-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}">
   {% case section.settings.design %}
     {% when 'side-by-side' %}
       {% render 'newsletter-side-by-side',
@@ -144,6 +144,23 @@
       "id": "full_width",
       "default": false,
       "label": "Full width"
+    },
+    {
+      "type": "header",
+      "content": "Padding"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Vertical padding",
+      "default": "default",
+      "info": "Default padding is set in global theme settings",
+      "options": [
+        { "value": "none", "label": "None" },
+        { "value": "small", "label": "Small" },
+        { "value": "default", "label": "Default" },
+        { "value": "large", "label": "Large" }
+      ]
     },
     {
       "type": "header",

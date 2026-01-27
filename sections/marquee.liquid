@@ -4,7 +4,7 @@
 {%- endcomment -%}
 
 <div
-  class="marquee-section overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="marquee-section overflow-hidden section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-marquee-section="{{ section.id }}"
   data-marquee-direction="{{ section.settings.direction }}"
   data-marquee-speed="{{ section.settings.speed }}"
@@ -333,6 +333,23 @@
         "id": "pause_on_hover",
         "default": true,
         "label": "Pause on hover"
+      },
+      {
+        "type": "header",
+        "content": "Padding"
+      },
+      {
+        "type": "select",
+        "id": "padding",
+        "label": "Vertical padding",
+        "default": "small",
+        "info": "Default padding is set in global theme settings",
+        "options": [
+          { "value": "none", "label": "None" },
+          { "value": "small", "label": "Small" },
+          { "value": "default", "label": "Default" },
+          { "value": "large", "label": "Large" }
+        ]
       },
       {
         "type": "header",

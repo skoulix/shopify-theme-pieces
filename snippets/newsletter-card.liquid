@@ -5,7 +5,7 @@
 {%- endcomment -%}
 
 {%- assign container_class = container_class | default: 'page-container' -%}
-<div class="newsletter-card section-padding bg-(--color-background)" data-tween-group="newsletter-card">
+<div class="newsletter-card bg-(--color-background)" data-tween-group="newsletter-card">
   <div class="{{ container_class }}">
     <div class="relative isolate overflow-hidden px-6 py-16 sm:px-16 xl:py-24 rounded-(--card-radius) border-solid border-(--color-border) bg-(--color-background-secondary) text-(--color-text)" style="box-shadow: var(--card-shadow); border-width: var(--card-border-width);" data-tween data-tween-type="scale">
       {% if title != blank %}
