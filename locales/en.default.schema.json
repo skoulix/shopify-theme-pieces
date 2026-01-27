@@ -4,7 +4,20 @@
       "content": "Content",
       "layout": "Layout",
       "colors": "Colors",
-      "padding": "Padding"
+      "padding": "Padding",
+      "animation": "Animation",
+      "image": "Image",
+      "images": "Images",
+      "button": "Button",
+      "products": "Products",
+      "media": "Media",
+      "video": "Video",
+      "overlay": "Overlay",
+      "autoplay": "Autoplay",
+      "labels": "Labels",
+      "social_links": "Social links",
+      "logo_styling": "Logo styling",
+      "countdown_timer": "Countdown timer"
     },
     "settings": {
       "full_width": {
@@ -28,6 +41,87 @@
         "options__3": {
           "label": "Large"
         }
+      },
+      "button_style": {
+        "label": "Button style",
+        "options__0": {
+          "label": "Solid"
+        },
+        "options__1": {
+          "label": "Outline"
+        }
+      },
+      "button_color": {
+        "label": "Button color",
+        "options__0": {
+          "label": "Primary"
+        },
+        "options__1": {
+          "label": "Secondary"
+        }
+      },
+      "button_size": {
+        "label": "Button size",
+        "options__0": {
+          "label": "Small"
+        },
+        "options__1": {
+          "label": "Default"
+        },
+        "options__2": {
+          "label": "Large"
+        }
+      },
+      "header_alignment": {
+        "label": "Header alignment"
+      },
+      "content_alignment": {
+        "label": "Content alignment"
+      },
+      "button_text": {
+        "label": "Button text"
+      },
+      "button_link": {
+        "label": "Button link"
+      },
+      "title": {
+        "label": "Title"
+      },
+      "description": {
+        "label": "Description"
+      },
+      "image": {
+        "label": "Image"
+      },
+      "heading": {
+        "label": "Heading"
+      },
+      "link": {
+        "label": "Link"
+      },
+      "video": {
+        "label": "Video"
+      },
+      "columns": {
+        "label": "Columns"
+      },
+      "overlay_opacity": {
+        "label": "Overlay opacity"
+      },
+      "overlay_color": {
+        "label": "Overlay color"
+      },
+      "products_to_show": {
+        "label": "Products to show"
+      },
+      "show_progress_bar": {
+        "label": "Show progress bar"
+      },
+      "show_vendor": {
+        "label": "Show vendor"
+      },
+      "show_view_all": {
+        "label": "Show view all"
       }
     }
   },
@@ -60,9 +154,6 @@
             "text": {
               "label": "Text",
               "default": "Free shipping on orders over $50"
-            },
-            "link": {
-              "label": "Link"
             },
             "icon": {
               "label": "Icon",
@@ -102,9 +193,6 @@
               "options__11": {
                 "label": "Calendar"
               }
-            },
-            "header__countdown_timer": {
-              "content": "Countdown timer"
             },
             "show_countdown": {
               "label": "Show countdown"
@@ -166,21 +254,12 @@
         },
         "show_prev_next": {
           "label": "Show Prev Next"
-        },
-        "show_progress_bar": {
-          "label": "Show progress bar"
         }
       }
     },
     "background_zoom": {
       "name": "Background zoom",
       "settings": {
-        "header__image": {
-          "content": "Image"
-        },
-        "image": {
-          "label": "Image"
-        },
         "header__title_before_zoom": {
           "content": "Title Before Zoom"
         },
@@ -257,41 +336,7 @@
           "name": "Button",
           "settings": {
             "button_text": {
-              "label": "Button text",
               "default": "Learn More"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             }
           }
         }
@@ -326,48 +371,11 @@
       "name": "Banner",
       "settings": {
         "heading": {
-          "label": "Heading",
           "default": "Important Announcement"
         },
         "text": {
           "label": "Text",
           "default": "<p>This is an important message for your customers.</p>"
-        },
-        "button_text": {
-          "label": "Button text"
-        },
-        "button_link": {
-          "label": "Button link"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "header__behavior": {
           "content": "Behavior"
@@ -395,15 +403,10 @@
           "default": "Compare"
         },
         "title": {
-          "label": "Title",
           "default": "See the Difference"
         },
         "description": {
-          "label": "Description",
           "default": "Drag the slider to compare before and after."
-        },
-        "header__images": {
-          "content": "Images"
         },
         "image_before": {
           "label": "Image Before"
@@ -426,9 +429,6 @@
           },
           "label": "Aspect ratio"
         },
-        "header__labels": {
-          "content": "Labels"
-        },
         "show_labels": {
           "label": "Show Labels"
         },
@@ -439,9 +439,6 @@
         "after_label": {
           "label": "After Label",
           "default": "After"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "presets": {
@@ -486,9 +483,6 @@
     "cart": {
       "name": "Cart",
       "settings": {
-        "header_alignment": {
-          "label": "Header alignment"
-        },
         "header__trust_badges": {
           "content": "Trust Badges"
         },
@@ -539,9 +533,6 @@
         "enable_description_shuffle": {
           "label": "Enable Description Shuffle",
           "info": "Shuffles the description sentence order on each page load"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "enable_bento_pattern": {
           "label": "Enable Bento Pattern",
@@ -602,14 +593,7 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Shop by Collection"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "slides_mobile": {
           "label": "Slides per view (mobile)",
@@ -646,18 +630,6 @@
           "options__3": {
             "label": "5"
           }
-        },
-        "show_progress_bar": {
-          "label": "Show progress bar"
-        },
-        "header__products": {
-          "content": "Products"
-        },
-        "products_to_show": {
-          "label": "Products to show"
-        },
-        "show_vendor": {
-          "label": "Show vendor"
         }
       },
       "blocks": {
@@ -688,11 +660,9 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Collections"
         },
         "description": {
-          "label": "Description",
           "info": "Displayed below the title"
         },
         "enable_description_shuffle": {
@@ -704,9 +674,6 @@
         },
         "full_width": {
           "info": "Extends the section to the full width of the page"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "enable_bento_pattern": {
           "label": "Enable Bento Pattern",
@@ -746,14 +713,7 @@
           "default": "Compare"
         },
         "title": {
-          "label": "Title",
           "default": "Compare Products"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "presets": {
@@ -773,20 +733,10 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Pairs well with"
-        },
-        "description": {
-          "label": "Description"
         },
         "alignment": {
           "label": "Alignment"
-        },
-        "products_to_show": {
-          "label": "Products to show"
-        },
-        "columns": {
-          "label": "Columns"
         },
         "show_add_all": {
           "label": "Show add all button",
@@ -807,55 +757,14 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Contact"
         },
         "description": {
-          "label": "Description",
           "default": "Have a question or want to work together? Drop us a message and we'll get back to you as soon as possible."
         },
         "enable_description_shuffle": {
           "label": "Enable Description Shuffle",
           "info": "Shuffles the description sentence order on each page load"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "header__button": {
-          "content": "Button"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
-        },
-        "header__social_links": {
-          "content": "Social links"
         },
         "show_social_links": {
           "label": "Show Social Links",
@@ -880,11 +789,9 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Coming Soon"
         },
         "description": {
-          "label": "Description",
           "info": "Displayed below the title",
           "default": "Something exciting is on the way. Stay tuned!"
         },
@@ -912,15 +819,9 @@
         "full_width": {
           "info": "Extends the section to the full width of the page"
         },
-        "content_alignment": {
-          "label": "Content alignment"
-        },
         "show_dividers": {
           "label": "Show dividers",
           "info": "Shows separator lines between time units"
-        },
-        "header__labels": {
-          "content": "Labels"
         },
         "days_label": {
           "label": "Days Label",
@@ -956,47 +857,15 @@
           "info": "Choose between a button link or an email signup form"
         },
         "button_text": {
-          "label": "Button text",
           "default": "Notify Me"
         },
         "button_link": {
-          "label": "Button link",
           "info": "URL for the call-to-action button"
         },
         "form_placeholder": {
           "label": "Form Placeholder",
           "info": "Placeholder text for the email input",
           "default": "Enter your email"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         }
       },
       "presets": {
@@ -1038,15 +907,10 @@
           "default": "Support"
         },
         "title": {
-          "label": "Title",
           "default": "Frequently Asked Questions"
         },
         "description": {
-          "label": "Description",
           "default": "Find answers to common questions about our products and services."
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "blocks": {
@@ -1097,23 +961,13 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "info": "Leave blank to use the blog title"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "header__posts": {
           "content": "Posts"
         },
         "posts_to_show": {
           "label": "Posts To Show"
-        },
-        "columns": {
-          "label": "Columns"
         },
         "feature_first": {
           "label": "Feature First",
@@ -1133,9 +987,6 @@
         },
         "show_read_more": {
           "label": "Show Read More"
-        },
-        "show_view_all": {
-          "label": "Show View All"
         },
         "view_all_text": {
           "label": "View All Text",
@@ -1159,29 +1010,7 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "info": "Leave blank to use the collection title"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "header__products": {
-          "content": "Products"
-        },
-        "products_to_show": {
-          "label": "Products to show"
-        },
-        "columns": {
-          "label": "Columns"
-        },
-        "show_vendor": {
-          "label": "Show vendor"
-        },
-        "show_view_all": {
-          "label": "Show View All"
         },
         "view_all_text": {
           "label": "View All Text",
@@ -1227,9 +1056,6 @@
         },
         "show_thumbnails": {
           "label": "Show Thumbnails"
-        },
-        "show_vendor": {
-          "label": "Show vendor"
         },
         "show_description": {
           "label": "Show Description"
@@ -1278,15 +1104,10 @@
           "default": "Why Choose Us"
         },
         "title": {
-          "label": "Title",
           "default": "Features That Set Us Apart"
         },
         "description": {
-          "label": "Description",
           "default": "Everything you need to create an amazing shopping experience."
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "layout": {
           "options__0": {
@@ -1296,9 +1117,6 @@
             "label": "Bento"
           },
           "label": "Layout"
-        },
-        "columns": {
-          "label": "Columns"
         }
       },
       "blocks": {
@@ -1403,7 +1221,6 @@
               "info": "Overrides the selected icon above"
             },
             "title": {
-              "label": "Title",
               "default": "Feature Title"
             },
             "text": {
@@ -1413,9 +1230,6 @@
             "link_text": {
               "label": "Link text",
               "default": "Learn More"
-            },
-            "link": {
-              "label": "Link"
             }
           }
         }
@@ -1451,51 +1265,10 @@
           "default": "Discover"
         },
         "title": {
-          "label": "Title",
           "default": "Outstanding products with exceptional brands"
         },
-        "description": {
-          "label": "Description"
-        },
-        "header__button": {
-          "content": "Button"
-        },
         "button_text": {
-          "label": "Button text",
           "default": "View More"
-        },
-        "button_link": {
-          "label": "Button link"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "section_height": {
           "label": "Section height",
@@ -1503,9 +1276,6 @@
         },
         "section_height_mobile": {
           "label": "Section Height Mobile"
-        },
-        "header__images": {
-          "content": "Images"
         },
         "image_opacity": {
           "label": "Image Opacity",
@@ -1521,7 +1291,6 @@
           "name": "Image",
           "settings": {
             "image": {
-              "label": "Image",
               "info": "Displayed on the right side of the login form"
             }
           }
@@ -1564,7 +1333,6 @@
               "info": "Logo displayed in the footer brand column"
             },
             "description": {
-              "label": "Description",
               "default": "Your brand tagline or brief description goes here."
             },
             "show_social": {
@@ -1588,7 +1356,6 @@
           "name": "Menu Column",
           "settings": {
             "heading": {
-              "label": "Heading",
               "default": "Quick links"
             },
             "menu": {
@@ -1601,11 +1368,9 @@
           "name": "Newsletter",
           "settings": {
             "heading": {
-              "label": "Heading",
               "default": "Subscribe to our newsletter"
             },
             "description": {
-              "label": "Description",
               "default": "Get the latest updates and offers."
             }
           }
@@ -1851,9 +1616,6 @@
               "label": "Text",
               "default": "Free shipping on orders over $50"
             },
-            "link": {
-              "label": "Link"
-            },
             "icon": {
               "label": "Icon",
               "options__0": {
@@ -1893,9 +1655,6 @@
                 "label": "Calendar"
               }
             },
-            "header__countdown_timer": {
-              "content": "Countdown timer"
-            },
             "show_countdown": {
               "label": "Show countdown"
             },
@@ -1922,47 +1681,8 @@
           "label": "Subtitle",
           "default": "2024"
         },
-        "button_text": {
-          "label": "Button text"
-        },
-        "button_link": {
-          "label": "Button link"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
-        },
         "show_scroll_indicator": {
           "label": "Show Scroll Indicator"
-        },
-        "header__animation": {
-          "content": "Animation"
         },
         "animation_style": {
           "label": "Animation Style",
@@ -2023,11 +1743,7 @@
         "background_image_blur": {
           "label": "Background image blur"
         },
-        "overlay_color": {
-          "label": "Overlay color"
-        },
         "overlay_opacity": {
-          "label": "Overlay opacity",
           "info": "Opacity of the overlay on the background image"
         },
         "header__cards": {
@@ -2053,12 +1769,7 @@
       },
       "blocks": {
         "image": {
-          "name": "Image",
-          "settings": {
-            "image": {
-              "label": "Image"
-            }
-          }
+          "name": "Image"
         }
       },
       "presets": {
@@ -2071,69 +1782,20 @@
     "hero": {
       "name": "Hero",
       "settings": {
-        "header__media": {
-          "content": "Media"
-        },
-        "image": {
-          "label": "Image"
-        },
         "video": {
-          "label": "Video",
           "info": "Upload a video file"
-        },
-        "overlay_opacity": {
-          "label": "Overlay opacity"
         },
         "label": {
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Elevate Your Style"
         },
         "description": {
-          "label": "Description",
           "default": "Discover our curated collection of premium products designed for the modern lifestyle."
         },
-        "content_alignment": {
-          "label": "Content alignment"
-        },
         "button_text": {
-          "label": "Button text",
           "default": "Shop Now"
-        },
-        "button_link": {
-          "label": "Button link"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "color_scheme": {
           "info": "Applied to the section when no background image is set"
@@ -2170,7 +1832,6 @@
           "name": "Heading",
           "settings": {
             "heading": {
-              "label": "Heading",
               "default": "Highlight text as you scroll down the page"
             },
             "heading_tag": {
@@ -2209,9 +1870,6 @@
                 "label": "2xl"
               }
             },
-            "header__animation": {
-              "content": "Animation"
-            },
             "scroll_start": {
               "label": "Scroll Start",
               "info": "Scroll position where the highlight animation begins",
@@ -2245,41 +1903,7 @@
           "name": "Button",
           "settings": {
             "button_text": {
-              "label": "Button text",
               "default": "Learn More"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             }
           }
         }
@@ -2307,11 +1931,9 @@
           "default": "Gallery"
         },
         "title": {
-          "label": "Title",
           "default": "Explore Our Collection"
         },
         "description": {
-          "label": "Description",
           "default": "Scroll to discover our carefully curated selection of products and experiences."
         }
       },
@@ -2319,23 +1941,16 @@
         "image": {
           "name": "Image",
           "settings": {
-            "image": {
-              "label": "Image"
-            },
             "label": {
               "label": "Label",
               "default": "Category"
             },
             "title": {
-              "label": "Title",
               "default": "Image Title"
             },
             "text": {
               "label": "Text",
               "default": "A brief description of this image or collection."
-            },
-            "link": {
-              "label": "Link"
             }
           }
         }
@@ -2375,14 +1990,7 @@
           "default": "Discover"
         },
         "title": {
-          "label": "Title",
           "default": "Product Features"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header__images": {
-          "content": "Images"
         },
         "desktop_image": {
           "label": "Desktop image",
@@ -2391,9 +1999,6 @@
         "mobile_image": {
           "label": "Mobile image",
           "info": "Optional: Different image for mobile devices"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "blocks": {
@@ -2416,11 +2021,9 @@
               "label": "Position Y Mobile"
             },
             "title": {
-              "label": "Title",
               "default": "Feature Title"
             },
             "description": {
-              "label": "Description",
               "default": "Describe this feature or specification in detail."
             },
             "link_text": {
@@ -2555,12 +2158,6 @@
         },
         "header__overlay_and_content": {
           "content": "Overlay And Content"
-        },
-        "overlay_opacity": {
-          "label": "Overlay opacity"
-        },
-        "content_alignment": {
-          "label": "Content alignment"
         }
       },
       "blocks": {
@@ -2600,36 +2197,6 @@
             },
             "url": {
               "label": "URL"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             }
           }
         }
@@ -2659,12 +2226,6 @@
     "image_with_text": {
       "name": "Image with text",
       "settings": {
-        "header__image": {
-          "content": "Image"
-        },
-        "image": {
-          "label": "Image"
-        },
         "image_ratio": {
           "options__0": {
             "label": "Square (1:1)"
@@ -2685,7 +2246,6 @@
           "default": "Our Story"
         },
         "title": {
-          "label": "Title",
           "default": "Crafted With Purpose"
         },
         "text": {
@@ -2693,11 +2253,7 @@
           "default": "<p>We believe in creating products that stand the test of time. Each piece is thoughtfully designed and meticulously crafted using the finest materials and traditional techniques.</p>"
         },
         "button_text": {
-          "label": "Button text",
           "default": "Learn More"
-        },
-        "button_link": {
-          "label": "Button link"
         },
         "button_type": {
           "label": "Button type",
@@ -2709,35 +2265,7 @@
           }
         },
         "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          },
           "info": "Controls the visual style of the button"
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "layout": {
           "options__0": {
@@ -2786,17 +2314,8 @@
     "image": {
       "name": "Image",
       "settings": {
-        "header__image": {
-          "content": "Image"
-        },
-        "image": {
-          "label": "Image"
-        },
         "caption": {
           "label": "Caption"
-        },
-        "link": {
-          "label": "Link"
         },
         "image_width": {
           "label": "Image Width"
@@ -2833,9 +2352,6 @@
         },
         "border_radius": {
           "label": "Border radius"
-        },
-        "header__animation": {
-          "content": "Animation"
         },
         "reveal_effect": {
           "label": "Reveal Effect",
@@ -2884,9 +2400,6 @@
         },
         "label_alignment": {
           "label": "Label Alignment"
-        },
-        "header__animation": {
-          "content": "Animation"
         },
         "direction": {
           "options__0": {
@@ -2937,9 +2450,6 @@
             "logo": {
               "label": "Logo",
               "info": "Upload a logo image"
-            },
-            "link": {
-              "label": "Link"
             }
           }
         }
@@ -2982,9 +2492,6 @@
         },
         "gap": {
           "label": "Gap"
-        },
-        "header__animation": {
-          "content": "Animation"
         },
         "loop_delay": {
           "label": "Loop Delay",
@@ -3037,7 +2544,6 @@
           "default": "Visit Us"
         },
         "title": {
-          "label": "Title",
           "default": "Our Location"
         },
         "header__location": {
@@ -3082,9 +2588,6 @@
         "grayscale": {
           "label": "Grayscale",
           "info": "Displays the map in grayscale"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "blocks": {
@@ -3092,7 +2595,6 @@
           "name": "Address",
           "settings": {
             "title": {
-              "label": "Title",
               "default": "Address"
             },
             "address": {
@@ -3105,7 +2607,6 @@
           "name": "Hours",
           "settings": {
             "title": {
-              "label": "Title",
               "default": "Hours"
             },
             "hours": {
@@ -3118,7 +2619,6 @@
           "name": "Contact",
           "settings": {
             "title": {
-              "label": "Title",
               "default": "Contact"
             },
             "phone": {
@@ -3132,9 +2632,6 @@
         "custom": {
           "name": "Custom",
           "settings": {
-            "title": {
-              "label": "Title"
-            },
             "content": {
               "label": "Content"
             }
@@ -3179,9 +2676,6 @@
         "outline": {
           "label": "Outline"
         },
-        "header__animation": {
-          "content": "Animation"
-        },
         "speed": {
           "label": "Speed",
           "info": "Lower values = faster animation"
@@ -3225,9 +2719,6 @@
     "marquee": {
       "name": "Marquee",
       "settings": {
-        "header__animation": {
-          "content": "Animation"
-        },
         "direction": {
           "options__0": {
             "label": "Left"
@@ -3336,7 +2827,6 @@
           }
         },
         "title": {
-          "label": "Title",
           "default": "Want product news and updates?"
         },
         "text": {
@@ -3345,26 +2835,7 @@
           "default": "Subscribe to our newsletter for exclusive updates and special offers."
         },
         "button_text": {
-          "label": "Button text",
           "default": "Subscribe"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
         },
         "header__privacy_notice": {
           "content": "Privacy notice"
@@ -3396,18 +2867,12 @@
       }
     },
     "page": {
-      "name": "Page",
-      "settings": {
-        "header_alignment": {
-          "label": "Header alignment"
-        }
-      }
+      "name": "Page"
     },
     "password": {
       "name": "Password",
       "settings": {
         "heading": {
-          "label": "Heading",
           "default": "Opening Soon"
         },
         "subheading": {
@@ -3415,7 +2880,6 @@
           "default": "We're working on something special. Enter the password to get early access."
         },
         "image": {
-          "label": "Image",
           "info": "Displayed on the right side of the login form"
         },
         "header__newsletter": {
@@ -3450,62 +2914,17 @@
         "slide": {
           "name": "Slide",
           "settings": {
-            "header__image": {
-              "content": "Image"
-            },
-            "image": {
-              "label": "Image"
-            },
             "label": {
               "label": "Label"
             },
             "title": {
-              "label": "Title",
               "default": "Discover Our Story"
             },
             "description": {
-              "label": "Description",
               "default": "Scroll to reveal beautiful imagery and learn more about what makes us unique."
             },
-            "header__button": {
-              "content": "Button"
-            },
             "button_text": {
-              "label": "Button text",
               "default": "Learn More"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             },
             "background_color": {
               "label": "Background color",
@@ -3576,9 +2995,6 @@
         "enable_lightbox": {
           "label": "Enable lightbox",
           "info": "Allow customers to zoom into product images"
-        },
-        "header__video": {
-          "content": "Video"
         },
         "video_loop": {
           "label": "Loop video"
@@ -3739,7 +3155,6 @@
           "name": "Collapsible tab",
           "settings": {
             "heading": {
-              "label": "Heading",
               "default": "Shipping & Returns"
             },
             "content": {
@@ -3783,11 +3198,7 @@
               "content": "Add complementary products using the Shopify Search & Discovery app."
             },
             "title": {
-              "label": "Title",
               "info": "Leave blank to hide the heading"
-            },
-            "products_to_show": {
-              "label": "Products to show"
             },
             "show_add_all": {
               "label": "Show add all button",
@@ -3882,17 +3293,7 @@
           "default": "Recently browsed"
         },
         "title": {
-          "label": "Title",
           "default": "Recently Viewed"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "products_to_show": {
-          "label": "Products to show"
         },
         "slides_mobile": {
           "label": "Slides per view (mobile)"
@@ -3902,9 +3303,6 @@
         },
         "slides_desktop": {
           "label": "Slides per view (desktop)"
-        },
-        "show_progress_bar": {
-          "label": "Show progress bar"
         }
       },
       "presets": {
@@ -3925,17 +3323,7 @@
           "default": "You may also like"
         },
         "title": {
-          "label": "Title",
           "default": "Related Products"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "products_to_show": {
-          "label": "Products to show"
         },
         "slides_mobile": {
           "label": "Slides per view (mobile)"
@@ -3945,9 +3333,6 @@
         },
         "slides_desktop": {
           "label": "Slides per view (desktop)"
-        },
-        "show_progress_bar": {
-          "label": "Show progress bar"
         }
       },
       "presets": {
@@ -3964,24 +3349,11 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "By the Numbers"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "content_alignment": {
-          "label": "Content alignment"
         },
         "show_dividers": {
           "label": "Show dividers",
           "info": "Shows separator lines between number blocks"
-        },
-        "header__animation": {
-          "content": "Animation"
         },
         "animation_duration": {
           "label": "Animation duration",
@@ -4010,7 +3382,6 @@
               "default": "Happy Customers"
             },
             "description": {
-              "label": "Description",
               "info": "Short description displayed below"
             }
           }
@@ -4060,72 +3431,20 @@
         "show_numbers": {
           "label": "Show numbers"
         },
-        "content_alignment": {
-          "label": "Content alignment"
-        },
         "show_progress": {
           "label": "Show progress"
-        },
-        "header__overlay": {
-          "content": "Overlay"
-        },
-        "overlay_color": {
-          "label": "Overlay color"
-        },
-        "overlay_opacity": {
-          "label": "Overlay opacity"
         }
       },
       "blocks": {
         "panel": {
           "name": "Panel",
           "settings": {
-            "image": {
-              "label": "Image"
-            },
             "title": {
-              "label": "Title",
               "default": "Panel Title"
             },
             "text": {
               "label": "Text",
               "default": "Add compelling copy that tells your brand story."
-            },
-            "button_text": {
-              "label": "Button text"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             }
           }
         }
@@ -4167,9 +3486,6 @@
           "label": "Popular searches",
           "info": "Comma-separated list of search terms",
           "default": "New arrivals, Sale, Best sellers"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       }
     },
@@ -4181,21 +3497,10 @@
           "default": "Style Guide"
         },
         "title": {
-          "label": "Title",
           "default": "Shop The Look"
         },
-        "description": {
-          "label": "Description"
-        },
-        "header__image": {
-          "content": "Image"
-        },
         "image": {
-          "label": "Image",
           "info": "Main image for the shop the look section"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "layout": {
           "label": "Layout",
@@ -4208,9 +3513,6 @@
         },
         "header__product_display": {
           "content": "Product display"
-        },
-        "show_vendor": {
-          "label": "Show vendor"
         },
         "show_add_all": {
           "label": "Show add all button"
@@ -4273,14 +3575,7 @@
           "default": "Shop the look"
         },
         "title": {
-          "label": "Title",
           "default": "Shoppable Videos"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "videos_desktop": {
           "label": "Videos Desktop"
@@ -4330,9 +3625,6 @@
         "show_product_info": {
           "label": "Show Product Info"
         },
-        "header__autoplay": {
-          "content": "Autoplay"
-        },
         "autoplay": {
           "label": "Autoplay"
         },
@@ -4371,12 +3663,6 @@
         "section_height": {
           "label": "Section height"
         },
-        "overlay_color": {
-          "label": "Overlay color"
-        },
-        "overlay_opacity": {
-          "label": "Overlay opacity"
-        },
         "header__transition": {
           "content": "Transition"
         },
@@ -4397,9 +3683,6 @@
           "options__4": {
             "label": "Swipe"
           }
-        },
-        "header__autoplay": {
-          "content": "Autoplay"
         },
         "autoplay": {
           "label": "Autoplay"
@@ -4443,61 +3726,14 @@
         "slide": {
           "name": "Slide",
           "settings": {
-            "header__media": {
-              "content": "Media"
-            },
-            "image": {
-              "label": "Image"
-            },
             "video": {
-              "label": "Video",
               "info": "Upload a video file"
             },
             "label": {
               "label": "Label"
             },
             "title": {
-              "label": "Title",
               "default": "Slide heading"
-            },
-            "description": {
-              "label": "Description"
-            },
-            "button_text": {
-              "label": "Button text"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             },
             "text_position": {
               "label": "Text Position",
@@ -4566,15 +3802,10 @@
           "default": "Features"
         },
         "title": {
-          "label": "Title",
           "default": "Why Choose Us"
         },
         "description": {
-          "label": "Description",
           "default": "Discover what makes our products stand out from the rest."
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "header__background": {
           "content": "Background"
@@ -4626,11 +3857,7 @@
         "card": {
           "name": "Card",
           "settings": {
-            "image": {
-              "label": "Image"
-            },
             "title": {
-              "label": "Title",
               "default": "Feature Title"
             },
             "text": {
@@ -4640,9 +3867,6 @@
             "link_text": {
               "label": "Link text",
               "default": "Learn More"
-            },
-            "link": {
-              "label": "Link"
             }
           }
         }
@@ -4678,27 +3902,16 @@
           "default": "Our Team"
         },
         "title": {
-          "label": "Title",
           "default": "Meet the People Behind the Brand"
         },
         "description": {
-          "label": "Description",
           "default": "We're a passionate team dedicated to creating products you'll love."
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
-        "columns": {
-          "label": "Columns"
         }
       },
       "blocks": {
         "member": {
           "name": "Member",
           "settings": {
-            "image": {
-              "label": "Image"
-            },
             "name": {
               "label": "Name",
               "default": "Team Member"
@@ -4710,9 +3923,6 @@
             "bio": {
               "label": "Bio",
               "default": "A short bio about this team member."
-            },
-            "header__social_links": {
-              "content": "Social links"
             },
             "linkedin": {
               "label": "LinkedIn"
@@ -4765,14 +3975,10 @@
           "default": "Testimonials"
         },
         "title": {
-          "label": "Title",
           "default": "What Our Customers Say"
         },
         "show_rating": {
           "label": "Show rating"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         },
         "slides_mobile": {
           "label": "Slides per view (mobile)"
@@ -4782,9 +3988,6 @@
         },
         "slides_desktop": {
           "label": "Slides per view (desktop)"
-        },
-        "show_progress_bar": {
-          "label": "Show progress bar"
         },
         "header__text": {
           "content": "Text"
@@ -4885,11 +4088,7 @@
           "default": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter."
         },
         "button_text": {
-          "label": "Button text",
           "default": "Learn More"
-        },
-        "button_link": {
-          "label": "Button link"
         },
         "button_type": {
           "label": "Button type",
@@ -4901,35 +4100,7 @@
           }
         },
         "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          },
           "info": "Controls the visual style of the button"
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "header__background_number": {
           "content": "Background number"
@@ -4940,9 +4111,6 @@
         "background_number": {
           "label": "Background number",
           "default": "01"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "presets": {
@@ -4959,15 +4127,10 @@
           "label": "Label"
         },
         "title": {
-          "label": "Title",
           "default": "Your headline here"
         },
         "description": {
-          "label": "Description",
           "default": "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam iaculis purus quis lorem convallis, vitae consequat diam consequat. Quisque consequat sem lorem, ac volutpat tortor cursus in."
-        },
-        "content_alignment": {
-          "label": "Content alignment"
         },
         "content_width": {
           "label": "Content width"
@@ -4978,41 +4141,7 @@
           "name": "Button",
           "settings": {
             "button_text": {
-              "label": "Button text",
               "default": "Learn more"
-            },
-            "button_link": {
-              "label": "Button link"
-            },
-            "button_style": {
-              "label": "Button style",
-              "options__0": {
-                "label": "Solid"
-              },
-              "options__1": {
-                "label": "Outline"
-              }
-            },
-            "button_color": {
-              "label": "Button color",
-              "options__0": {
-                "label": "Primary"
-              },
-              "options__1": {
-                "label": "Secondary"
-              }
-            },
-            "button_size": {
-              "label": "Button size",
-              "options__0": {
-                "label": "Small"
-              },
-              "options__1": {
-                "label": "Default"
-              },
-              "options__2": {
-                "label": "Large"
-              }
             },
             "button_icon": {
               "label": "Button icon",
@@ -5090,11 +4219,7 @@
           "default": "Our Journey"
         },
         "title": {
-          "label": "Title",
           "default": "How We Got Here"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "blocks": {
@@ -5106,15 +4231,11 @@
               "default": "2020"
             },
             "title": {
-              "label": "Title",
               "default": "Milestone Title"
             },
             "text": {
               "label": "Text",
               "default": "Describe this milestone and what it meant for your brand's journey."
-            },
-            "image": {
-              "label": "Image"
             }
           }
         }
@@ -5149,12 +4270,6 @@
     "trust_badges": {
       "name": "Trust badges",
       "settings": {
-        "title": {
-          "label": "Title"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
-        },
         "icon_color": {
           "label": "Icon color"
         }
@@ -5231,11 +4346,9 @@
               "info": "Overrides the selected icon above"
             },
             "title": {
-              "label": "Title",
               "default": "Free Shipping"
             },
             "description": {
-              "label": "Description",
               "default": "On orders over $50"
             }
           }
@@ -5271,11 +4384,7 @@
     "video": {
       "name": "Video",
       "settings": {
-        "header__video": {
-          "content": "Video"
-        },
         "video": {
-          "label": "Video",
           "info": "Upload a video file"
         },
         "loop": {
@@ -5305,59 +4414,8 @@
         "border_radius": {
           "label": "Border radius"
         },
-        "header__overlay": {
-          "content": "Overlay"
-        },
-        "overlay_color": {
-          "label": "Overlay color"
-        },
-        "overlay_opacity": {
-          "label": "Overlay opacity"
-        },
         "label": {
           "label": "Label"
-        },
-        "title": {
-          "label": "Title"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "button_text": {
-          "label": "Button text"
-        },
-        "button_link": {
-          "label": "Button link"
-        },
-        "button_style": {
-          "label": "Button style",
-          "options__0": {
-            "label": "Solid"
-          },
-          "options__1": {
-            "label": "Outline"
-          }
-        },
-        "button_color": {
-          "label": "Button color",
-          "options__0": {
-            "label": "Primary"
-          },
-          "options__1": {
-            "label": "Secondary"
-          }
-        },
-        "button_size": {
-          "label": "Button size",
-          "options__0": {
-            "label": "Small"
-          },
-          "options__1": {
-            "label": "Default"
-          },
-          "options__2": {
-            "label": "Large"
-          }
         },
         "content_position": {
           "options__0": {
@@ -5370,9 +4428,6 @@
             "label": "Bottom"
           },
           "label": "Content position"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "presets": {
@@ -5390,14 +4445,7 @@
           "default": "Saved"
         },
         "title": {
-          "label": "Title",
           "default": "Wishlist"
-        },
-        "description": {
-          "label": "Description"
-        },
-        "header_alignment": {
-          "label": "Header alignment"
         }
       },
       "presets": {
