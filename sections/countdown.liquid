@@ -45,7 +45,7 @@
 {% when 'hero' %}
 {%- comment -%} HERO DESIGN {%- endcomment -%}
 <div
-  class="countdown-section {{ design_class }} {{ align_class }} section-padding color-{{ section.settings.color_scheme }}"
+  class="countdown-section {{ design_class }} {{ align_class }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-countdown="{{ section.id }}"
   data-target-date="{{ section.settings.target_date }}"
   data-design="hero"
@@ -465,6 +465,19 @@
       "default": true,
       "label": "Show dividers between items",
       "info": "Hero and Compact designs only"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

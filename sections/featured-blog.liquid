@@ -20,7 +20,7 @@
 </style>
 
 <div
-  class="fb-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="fb-{{ section.id }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-featured-blog="{{ section.id }}"
 >
   {%- comment -%} Header - always contained {%- endcomment -%}
@@ -227,6 +227,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

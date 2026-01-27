@@ -13,7 +13,7 @@
 -%}
 
 <div
-  class="team-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
+  class="team-section-wrapper section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-team-section="{{ section.id }}"
   style="--team-columns: {{ section.settings.columns }}"
 >
@@ -158,6 +158,19 @@
       "step": 1,
       "default": 4,
       "label": "Columns (desktop)"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

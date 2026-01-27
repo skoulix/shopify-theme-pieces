@@ -13,7 +13,7 @@
 -%}
 
 <div
-  class="banner section-padding"
+  class="banner section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}"
   style="--banner-card-radius: {{ card_radius }}px;{% if card_shadow != 'none' %} --banner-card-shadow: {{ card_shadow }};{% endif %}"
   data-banner-section="{{ section.id }}"
   {% if section.settings.remember_dismissal %}data-remember-dismissal="true"{% endif %}
@@ -190,6 +190,19 @@
       "default": false
     },
     {
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

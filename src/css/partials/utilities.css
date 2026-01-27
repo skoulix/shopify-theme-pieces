@@ -30,14 +30,21 @@
     @apply py-(--section-vertical-padding);
   }
 
-  .section-padding-sm {
+  .section-padding-sm,
+  .section-padding-small {
     padding-top: calc(var(--section-vertical-padding) * 0.6);
     padding-bottom: calc(var(--section-vertical-padding) * 0.6);
   }
 
-  .section-padding-lg {
+  .section-padding-lg,
+  .section-padding-large {
     padding-top: calc(var(--section-vertical-padding) * 1.5);
     padding-bottom: calc(var(--section-vertical-padding) * 1.5);
+  }
+
+  .section-padding-none {
+    padding-top: 0;
+    padding-bottom: 0;
   }
 
   .page-padding {
@@ -54,16 +61,22 @@
     padding-top: calc(var(--section-vertical-padding) + var(--header-height, 65px));
 
     /* Variants for different section padding sizes */
-    &.section-padding-sm {
+    &.section-padding-sm,
+    &.section-padding-small {
       padding-top: calc(var(--section-vertical-padding) * 0.6 + var(--header-height, 65px));
     }
 
-    &.section-padding-lg {
+    &.section-padding-lg,
+    &.section-padding-large {
       padding-top: calc(var(--section-vertical-padding) * 1.5 + var(--header-height, 65px));
     }
 
+    &.section-padding-none {
+      padding-top: var(--header-height, 65px);
+    }
+
     /* Sections without explicit padding get just the header offset */
-    &:not(.section-padding):not(.section-padding-sm):not(.section-padding-lg) {
+    &:not(.section-padding):not(.section-padding-sm):not(.section-padding-small):not(.section-padding-lg):not(.section-padding-large):not(.section-padding-none) {
       padding-top: var(--header-height, 65px);
     }
   }

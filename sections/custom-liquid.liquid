@@ -10,7 +10,7 @@
   endcapture
 -%}
 
-<div class="custom-liquid-section section-padding">
+<div class="custom-liquid-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}">
   <div class="{{ container_class }}">
     {{ section.settings.liquid }}
   </div>
@@ -37,6 +37,19 @@
         "id": "full_width",
         "label": "Full width",
         "default": false
+      },
+      {
+        "type": "select",
+        "id": "padding",
+        "label": "Section padding",
+        "info": "Default padding is set in global theme settings",
+        "default": "default",
+        "options": [
+          { "value": "default", "label": "Default" },
+          { "value": "small", "label": "Small" },
+          { "value": "large", "label": "Large" },
+          { "value": "none", "label": "None" }
+        ]
       }
     ],
     "presets": [

@@ -21,7 +21,7 @@
 </style>
 
 <div
-  class="iwt-section overflow-hidden color-{{ section.settings.color_scheme }}{% if section.settings.remove_padding %} lg:py-0 pb-(--section-vertical-padding){% else %} section-padding{% endif %}"
+  class="iwt-section overflow-hidden color-{{ section.settings.color_scheme }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}"
   data-iwt-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}"
 >
@@ -223,12 +223,17 @@
       "label": "Full width"
     },
     {
-    },
-    {
-      "type": "checkbox",
-      "id": "remove_padding",
-      "default": false,
-      "label": "Remove vertical padding"
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

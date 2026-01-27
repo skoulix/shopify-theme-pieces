@@ -45,7 +45,7 @@
 -%}
 
 <div
-  class="hotspots-section section-padding color-{{ section.settings.color_scheme }}"
+  class="hotspots-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   style="--hotspots-align: {{ section.settings.header_alignment }}; --hotspots-description-ml: {{ description_ml }}; --hotspots-description-mr: {{ description_mr }}; --hotspots-border: {{ image_border }}; --hotspots-shadow: {{ image_shadow }}; --hotspots-popover-shadow: {{ popover_shadow }}; --hotspots-popover-border: {{ popover_border }};"
   data-hotspots-section="{{ section.id }}"
 >
@@ -460,6 +460,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

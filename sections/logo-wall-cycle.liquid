@@ -34,7 +34,7 @@
 
 <div
   id="logo-wall-cycle-{{ section.id }}"
-  class="logo-wall-cycle section-padding color-{{ section.settings.color_scheme }}"
+  class="logo-wall-cycle section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-logo-wall-cycle-init
   data-logo-wall-shuffle="{{ section.settings.shuffle }}"
   data-logo-wall-loop-delay="{{ section.settings.loop_delay }}"
@@ -385,6 +385,19 @@
       ],
       "default": "center",
       "label": "Label alignment"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "range",

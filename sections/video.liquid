@@ -19,7 +19,7 @@
 -%}
 
 <div
-  class="video-section{% unless section.settings.remove_padding %} section-padding{% endunless %} color-{{ section.settings.color_scheme }}"
+  class="video-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-video-section="{{ section.id }}"
   style="--video-aspect-ratio: {{ section.settings.aspect_ratio }}; --video-border-radius: {{ section.settings.border_radius }}px;"
 >
@@ -259,10 +259,17 @@
       "default": "center"
     },
     {
-      "type": "checkbox",
-      "id": "remove_padding",
-      "default": true,
-      "label": "Remove vertical padding"
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

@@ -31,7 +31,7 @@
 </style>
 
 <div
-  class="complementary-section-{{ section.id }} color-{{ section.settings.color_scheme }} section-padding"
+  class="complementary-section-{{ section.id }} color-{{ section.settings.color_scheme }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}"
   data-complementary-section
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -354,6 +354,19 @@
       "label": "Show 'Add all to cart' button",
       "default": true,
       "info": "Only shown when all products have a single variant"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

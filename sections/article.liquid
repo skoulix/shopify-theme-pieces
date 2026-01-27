@@ -15,7 +15,7 @@
   /* article-image animation handled by TweenManager */
 </style>
 
-<article class="article-wrapper section-padding" data-article-wrapper{% unless section.settings.show_progress_bar %} data-hide-progress{% endunless %}>
+<article class="article-wrapper section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}" data-article-wrapper{% unless section.settings.show_progress_bar %} data-hide-progress{% endunless %}>
   <header class="section-header-spacing" data-tween-group="article-header-{{ section.id }}">
     <div class="{{ container_class }}">
       {% if section.settings.show_breadcrumbs %}
@@ -248,6 +248,19 @@
       "id": "full_width",
       "default": false,
       "label": "Full width"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

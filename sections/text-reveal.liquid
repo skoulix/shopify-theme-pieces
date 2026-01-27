@@ -19,7 +19,7 @@
 -%}
 
 <div
-  class="text-reveal {{ alignment_class }} section-padding-lg color-{{ section.settings.color_scheme }} relative"
+  class="text-reveal {{ alignment_class }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }} relative"
   data-text-reveal-section="{{ section.id }}"
 >
   {% if section.settings.show_background_number %}
@@ -317,6 +317,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "large",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

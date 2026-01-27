@@ -43,7 +43,7 @@
 </style>
 
 <div
-  class="related-products-{{ section.id }} color-{{ section.settings.color_scheme }} section-padding overflow-hidden"
+  class="related-products-{{ section.id }} color-{{ section.settings.color_scheme }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} overflow-hidden"
   data-related-products
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
@@ -414,6 +414,19 @@
       "id": "show_progress_bar",
       "default": true,
       "label": "Show progress bar"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

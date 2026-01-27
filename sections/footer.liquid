@@ -22,7 +22,7 @@
 
 <div class="footer-wrapper" data-footer-wrapper>
 <footer
-  class="footer-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="footer-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} overflow-hidden color-{{ section.settings.color_scheme }}"
   data-footer-section
 >
   <div class="{{ container_class }} footer-content-{{ section.id }}" data-footer-content>
@@ -241,6 +241,19 @@
       "default": true,
       "label": "Enable reveal effect",
       "info": "Footer stays fixed at the bottom and is revealed as you scroll past the content"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

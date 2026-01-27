@@ -20,7 +20,7 @@
   }
 {%- endstyle -%}
 
-<div id="{{ section_id }}" class="trust-badges section-padding-sm color-{{ section.settings.color_scheme }}">
+<div id="{{ section_id }}" class="trust-badges section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}">
   <div class="{{ container_class }}">
     {%- if section.settings.title != blank -%}
       <div class="text-{{ section.settings.header_alignment }} mb-8{% if section.settings.full_width and section.settings.header_alignment != 'center' %} px-[var(--page-padding)]{% endif %}">
@@ -99,6 +99,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "center"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "small",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

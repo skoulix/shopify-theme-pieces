@@ -60,7 +60,7 @@
 </style>
 
 <div
-  class="image-section-{{ section.id }}{% unless section.settings.remove_padding %} section-padding{% endunless %} color-{{ section.settings.color_scheme }}"
+  class="image-section-{{ section.id }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-image-section="{{ section.id }}"
 >
   <div class="{{ container_class }}">
@@ -228,12 +228,17 @@
       "label": "Full width"
     },
     {
-    },
-    {
-      "type": "checkbox",
-      "id": "remove_padding",
-      "default": false,
-      "label": "Remove section padding"
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

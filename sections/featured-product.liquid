@@ -32,7 +32,7 @@
 </style>
 
 <div
-  class="fp-section section-padding overflow-hidden color-{{ section.settings.color_scheme }}"
+  class="fp-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} overflow-hidden color-{{ section.settings.color_scheme }}"
   data-fp-section="{{ section.id }}"
   data-layout="{{ section.settings.layout }}">
   {% if product != blank %}
@@ -672,6 +672,19 @@
         "id": "show_view_details",
         "label": "Show view details link",
         "default": true
+      },
+      {
+        "type": "select",
+        "id": "padding",
+        "label": "Section padding",
+        "info": "Default padding is set in global theme settings",
+        "default": "default",
+        "options": [
+          { "value": "default", "label": "Default" },
+          { "value": "small", "label": "Small" },
+          { "value": "large", "label": "Large" },
+          { "value": "none", "label": "None" }
+        ]
       },
       {
         "type": "color_scheme",

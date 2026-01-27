@@ -118,7 +118,7 @@
   }
 </style>
 
-<div class="cart-wrapper min-h-screen section-padding" data-cart-wrapper>
+<div class="cart-wrapper min-h-screen section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}" data-cart-wrapper>
   <header
     class="section-header-spacing {{ container_class }} {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}"
     data-tween-group="cart-header"
@@ -474,6 +474,19 @@
         "id": "header_alignment",
         "default": "left",
         "label": "Header alignment"
+      },
+      {
+        "type": "select",
+        "id": "padding",
+        "label": "Section padding",
+        "info": "Default padding is set in global theme settings",
+        "default": "default",
+        "options": [
+          { "value": "default", "label": "Default" },
+          { "value": "small", "label": "Small" },
+          { "value": "large", "label": "Large" },
+          { "value": "none", "label": "None" }
+        ]
       },
       {
         "type": "header",

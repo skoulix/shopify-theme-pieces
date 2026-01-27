@@ -30,7 +30,7 @@
   .page-section .page-title.text-right .tween-split-line:nth-child(3) { margin-right: clamp(3rem, 18vw, 14rem); }
 </style>
 
-<div class="page-section bg-(--color-background) section-padding{% unless has_content %} pb-0!{% endunless %}">
+<div class="page-section bg-(--color-background) section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}{% unless has_content %} pb-0!{% endunless %}">
   <header class="section-header-spacing {{ container_class }} {{ header_align_class }}" data-tween-group="page-header" data-tween-start="top bottom">
     <h1 class="page-title {{ header_align_class }}" data-tween data-tween-type="split-text">
       {{ page.title }}
@@ -66,6 +66,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     }
   ],
   "disabled_on": {

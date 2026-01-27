@@ -84,7 +84,7 @@
 
 <div
   id="pinned-reveal-{{ section.id }}"
-  class="pinned-reveal section-padding md:py-0 color-{{ section.settings.color_scheme }} relative transition-colors duration-500"
+  class="pinned-reveal section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} md:py-0 color-{{ section.settings.color_scheme }} relative transition-colors duration-500"
   data-section-id="{{ section.id }}"
 >
   <div class="page-container">
@@ -398,6 +398,19 @@
   "tag": "section",
   "class": "pinned-reveal-section no-header-offset",
   "settings": [
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
+    },
     {
       "type": "header",
       "content": "Colors"

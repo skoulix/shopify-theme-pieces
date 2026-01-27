@@ -48,7 +48,7 @@
 -%}
 
 <div
-  class="logo-marquee section-padding-sm color-{{ section.settings.color_scheme }}"
+  class="logo-marquee section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   style="--logo-marquee-align: {{ section.settings.label_alignment }}; --logo-marquee-header-padding: {{ header_padding }}; --logo-marquee-max-width: {{ wrapper_max_width }}; --logo-marquee-margin: {{ wrapper_margin }}; --logo-marquee-padding: {{ wrapper_padding }}; --logo-marquee-mask-offset: {{ mask_offset }}; --logo-marquee-height: {{ section.settings.logo_height }}px; --logo-marquee-max-logo-width: {{ section.settings.logo_max_width }}px; --logo-marquee-opacity: {{ opacity }}; --logo-marquee-filter: {{ filter_value | default: 'none' }}; --logo-marquee-filter-hover: {{ filter_hover_value }};"
   data-logo-marquee="{{ section.id }}"
   data-marquee-direction="{{ section.settings.direction }}"
@@ -451,6 +451,17 @@
       "label": "Full width"
     },
     {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "small",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

@@ -24,7 +24,7 @@
 -%}
 
 <div
-  class="text-section section-padding color-{{ section.settings.color_scheme }}"
+  class="text-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   style="--text-section-align: {{ section.settings.content_alignment }}; --text-section-max-width: {{ section.settings.content_width }}rem; --text-section-ml: {{ ml }}; --text-section-mr: {{ mr }}; --text-section-desc-ml: {{ ml }}; --text-section-desc-mr: {{ mr }}; --text-section-justify: {{ justify }};"
   data-text-section="{{ section.id }}"
 >
@@ -130,6 +130,19 @@
       "max": 80,
       "step": 2,
       "unit": "rem"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

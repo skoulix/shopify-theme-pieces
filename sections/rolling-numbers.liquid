@@ -47,7 +47,7 @@
   }
 </style>
 
-<div class="section-padding color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
+<div class="section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}" data-rolling-numbers="{{ section.id }}">
   <div class="{{ container_class }}">
     <div class="section-header-spacing">
       {% render 'section-header',
@@ -216,6 +216,19 @@
       "default": true,
       "label": "Show dividers between items",
       "info": "Vertical lines between stats on desktop"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

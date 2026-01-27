@@ -218,7 +218,7 @@
 </style>
 
 <div
-  class="shop-the-look-{{ section.id }} section-padding color-{{ section.settings.color_scheme }}"
+  class="shop-the-look-{{ section.id }} section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-shop-the-look-section="{{ section.id }}"
 >
   {%- comment -%} Header - always contained {%- endcomment -%}
@@ -721,6 +721,19 @@
         { "value": "image_right", "label": "Image right" }
       ],
       "default": "image_left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

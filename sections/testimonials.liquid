@@ -13,7 +13,7 @@
 -%}
 
 <div
-  class="testimonials-section-wrapper section-padding color-{{ section.settings.color_scheme }}"
+  class="testimonials-section-wrapper section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}"
   data-testimonials="{{ section.id }}"
   style="--slides-mobile: {{ section.settings.slides_mobile }}; --slides-tablet: {{ section.settings.slides_tablet }}; --slides-desktop: {{ section.settings.slides_desktop }}; --testimonial-text-size: {{ section.settings.text_size }};"
 >
@@ -347,6 +347,19 @@
       "id": "show_progress_bar",
       "default": true,
       "label": "Show progress bar"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",

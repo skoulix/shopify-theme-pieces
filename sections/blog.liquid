@@ -10,7 +10,7 @@
   .blog-wrapper .page-title .tween-split-line:nth-child(3) { margin-left: clamp(3rem, 16vw, 12rem); }
 </style>
 
-<div class="blog-wrapper section-padding" data-blog-wrapper>
+<div class="blog-wrapper section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %}" data-blog-wrapper>
   <div class="section-header-spacing" data-tween-group="blog-header-{{ section.id }}">
     <div class="{{ container_class }}">
       <h1 class="page-title" data-tween data-tween-type="split-text">
@@ -246,6 +246,19 @@
       "id": "show_article_count",
       "default": true,
       "label": "Show article count"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     }
   ],
   "disabled_on": {

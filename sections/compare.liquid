@@ -9,7 +9,7 @@
   endcapture
 -%}
 
-<div class="compare-section section-padding color-{{ section.settings.color_scheme }}" data-compare-section data-header-alignment="{{ section.settings.header_alignment }}" id="compare-section-{{ section.id }}">
+<div class="compare-section section-padding{% unless section.settings.padding == 'default' %}-{{ section.settings.padding }}{% endunless %} color-{{ section.settings.color_scheme }}" data-compare-section data-header-alignment="{{ section.settings.header_alignment }}" id="compare-section-{{ section.id }}">
   <div class="{{ container_class }}">
     {%- comment -%} Header {%- endcomment -%}
     <div class="section-header-spacing {% if section.settings.header_alignment == 'center' %}text-center{% elsif section.settings.header_alignment == 'right' %}text-right{% endif %}" data-tween-group="compare-header-{{ section.id }}">
@@ -560,6 +560,19 @@
       "id": "header_alignment",
       "label": "Header alignment",
       "default": "left"
+    },
+    {
+      "type": "select",
+      "id": "padding",
+      "label": "Section padding",
+      "info": "Default padding is set in global theme settings",
+      "default": "default",
+      "options": [
+        { "value": "default", "label": "Default" },
+        { "value": "small", "label": "Small" },
+        { "value": "large", "label": "Large" },
+        { "value": "none", "label": "None" }
+      ]
     },
     {
       "type": "header",
