@@ -53,25 +53,21 @@
               {%- comment -%} Countdown Timer {%- endcomment -%}
               {% if block.settings.show_countdown and block.settings.countdown_date != blank %}
                 <div class="announcement-bar__countdown" data-countdown="{{ block.settings.countdown_date | date: '%Y-%m-%dT%H:%M:%S' }}">
-                  <div class="announcement-bar__countdown-unit" data-countdown-days>
-                    <span class="announcement-bar__countdown-value text-counter">00</span>
-                    <span class="announcement-bar__countdown-label text-label-sm">Days</span>
-                  </div>
-                  <span>:</span>
-                  <div class="announcement-bar__countdown-unit" data-countdown-hours>
-                    <span class="announcement-bar__countdown-value text-counter">00</span>
-                    <span class="announcement-bar__countdown-label text-label-sm">Hrs</span>
-                  </div>
-                  <span>:</span>
-                  <div class="announcement-bar__countdown-unit" data-countdown-mins>
-                    <span class="announcement-bar__countdown-value text-counter">00</span>
-                    <span class="announcement-bar__countdown-label text-label-sm">Min</span>
-                  </div>
-                  <span>:</span>
-                  <div class="announcement-bar__countdown-unit" data-countdown-secs>
-                    <span class="announcement-bar__countdown-value text-counter">00</span>
-                    <span class="announcement-bar__countdown-label text-label-sm">Sec</span>
-                  </div>
+                  <span class="announcement-bar__countdown-unit" data-countdown-days>
+                    <span class="announcement-bar__countdown-value" data-countdown-value>00</span><span class="announcement-bar__countdown-label">D</span>
+                  </span>
+                  <span class="announcement-bar__countdown-sep">:</span>
+                  <span class="announcement-bar__countdown-unit" data-countdown-hours>
+                    <span class="announcement-bar__countdown-value" data-countdown-value>00</span><span class="announcement-bar__countdown-label">H</span>
+                  </span>
+                  <span class="announcement-bar__countdown-sep">:</span>
+                  <span class="announcement-bar__countdown-unit" data-countdown-mins>
+                    <span class="announcement-bar__countdown-value" data-countdown-value>00</span><span class="announcement-bar__countdown-label">M</span>
+                  </span>
+                  <span class="announcement-bar__countdown-sep">:</span>
+                  <span class="announcement-bar__countdown-unit" data-countdown-secs>
+                    <span class="announcement-bar__countdown-value" data-countdown-value>00</span><span class="announcement-bar__countdown-label">S</span>
+                  </span>
                 </div>
               {% endif %}
             </div>

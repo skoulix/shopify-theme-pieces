@@ -242,26 +242,37 @@
     opacity: 1;
   }
 
+  /* Countdown — compact inline layout */
   .header-announcement__countdown {
     display: inline-flex;
     align-items: center;
-    gap: 0.5rem;
-    margin-left: 0.75rem;
+    gap: 0.25rem;
+    margin-left: 0.5rem;
     font-variant-numeric: tabular-nums;
+    font-weight: 600;
+    font-size: inherit;
   }
 
   .header-announcement__countdown-unit {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    min-width: 2rem;
+    display: inline-flex;
+    align-items: baseline;
   }
 
   .header-announcement__countdown-value {
+    min-width: 2ch;
+    text-align: right;
+    display: inline-block;
   }
 
   .header-announcement__countdown-label {
-    opacity: 0.7;
+    opacity: 0.6;
+    font-size: 0.85em;
+    font-weight: 500;
+  }
+
+  .header-announcement__countdown-sep {
+    opacity: 0.4;
+    margin: 0 0.1rem;
   }
 </style>
 
@@ -300,25 +311,21 @@
 
               {% if block.settings.show_countdown and block.settings.countdown_date != blank %}
                 <div class="header-announcement__countdown" data-countdown="{{ block.settings.countdown_date | date: '%Y-%m-%dT%H:%M:%S' }}">
-                  <div class="header-announcement__countdown-unit" data-countdown-days>
-                    <span class="header-announcement__countdown-value text-counter">00</span>
-                    <span class="header-announcement__countdown-label text-label-sm">Days</span>
-                  </div>
-                  <span>:</span>
-                  <div class="header-announcement__countdown-unit" data-countdown-hours>
-                    <span class="header-announcement__countdown-value text-counter">00</span>
-                    <span class="header-announcement__countdown-label text-label-sm">Hrs</span>
-                  </div>
-                  <span>:</span>
-                  <div class="header-announcement__countdown-unit" data-countdown-mins>
-                    <span class="header-announcement__countdown-value text-counter">00</span>
-                    <span class="header-announcement__countdown-label text-label-sm">Min</span>
-                  </div>
-                  <span>:</span>
-                  <div class="header-announcement__countdown-unit" data-countdown-secs>
-                    <span class="header-announcement__countdown-value text-counter">00</span>
-                    <span class="header-announcement__countdown-label text-label-sm">Sec</span>
-                  </div>
+                  <span class="header-announcement__countdown-unit" data-countdown-days>
+                    <span class="header-announcement__countdown-value" data-countdown-value>00</span><span class="header-announcement__countdown-label">D</span>
+                  </span>
+                  <span class="header-announcement__countdown-sep">:</span>
+                  <span class="header-announcement__countdown-unit" data-countdown-hours>
+                    <span class="header-announcement__countdown-value" data-countdown-value>00</span><span class="header-announcement__countdown-label">H</span>
+                  </span>
+                  <span class="header-announcement__countdown-sep">:</span>
+                  <span class="header-announcement__countdown-unit" data-countdown-mins>
+                    <span class="header-announcement__countdown-value" data-countdown-value>00</span><span class="header-announcement__countdown-label">M</span>
+                  </span>
+                  <span class="header-announcement__countdown-sep">:</span>
+                  <span class="header-announcement__countdown-unit" data-countdown-secs>
+                    <span class="header-announcement__countdown-value" data-countdown-value>00</span><span class="header-announcement__countdown-label">S</span>
+                  </span>
                 </div>
               {% endif %}
             </div>
