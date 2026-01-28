@@ -657,6 +657,15 @@
       "feature_title": "Τίτλος χαρακτηριστικού",
       "view_all": "Προβολή όλων",
       "free_shipping_announcement": "Δωρεάν αποστολή για παραγγελίες άνω των 50$"
+    },
+    "categories": {
+      "products": "Προϊόντα",
+      "collection": "Συλλογή",
+      "text": "Κείμενο",
+      "image_media": "Εικόνα & πολυμέσα",
+      "promotional": "Προωθητικό",
+      "blog": "Ιστολόγιο",
+      "forms": "Φόρμες"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Ζουμ φόντου",
-          "category": "Εικόνα & πολυμέσα",
           "settings": {
             "title_before": "Εικόνα σε φόντο",
             "title_before_accent": "(Ζουμ)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Πανό",
-          "category": "Προωθητικό"
+          "name": "Πανό"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Πριν & μετά",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Πριν & μετά"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Καρουσέλ συλλογών",
-          "category": "Συλλογή"
+          "name": "Καρουσέλ συλλογών"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Σύγκριση προϊόντων",
-          "category": "Προϊόντα"
+          "name": "Σύγκριση προϊόντων"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Συμπληρωματικά προϊόντα",
-          "category": "Προϊόντα"
+          "name": "Συμπληρωματικά προϊόντα"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Φόρμα επικοινωνίας",
-          "category": "Φόρμες"
+          "name": "Φόρμα επικοινωνίας"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Αντίστροφη μέτρηση",
-          "category": "Προωθητικό",
           "settings": {
             "design": "hero",
             "title": "Έρχεται σύντομα",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Προσαρμοσμένο Liquid",
-          "category": "Κείμενο"
+          "name": "Προσαρμοσμένο Liquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "Συχνές ερωτήσεις",
-          "category": "Κείμενο",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Προβεβλημένο ιστολόγιο",
-          "category": "Ιστολόγιο"
+          "name": "Προβεβλημένο ιστολόγιο"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Προβεβλημένη συλλογή",
-          "category": "Προϊόντα"
+          "name": "Προβεβλημένη συλλογή"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Προβεβλημένο προϊόν",
-          "category": "Προϊόντα"
+          "name": "Προβεβλημένο προϊόν"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Πλέγμα χαρακτηριστικών",
-          "category": "Κείμενο",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Αιωρούμενες εικόνες",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Αιωρούμενες εικόνες"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Τροχιά ήρωα",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Τροχιά ήρωα"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Κεντρικό",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Κεντρικό"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "Κείμενο επισήμανσης",
-          "category": "Κείμενο",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "Οριζόντια κύλιση",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "Σημεία ενδιαφέροντος",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "Ακολουθία εικόνων",
-          "category": "Εικόνα & πολυμέσα",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "Εικόνα με κείμενο",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "Εικόνα",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Εικόνα"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Κυλιόμενα λογότυπα",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Κυλιόμενα λογότυπα"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Κυκλική εναλλαγή λογοτύπων",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Κυκλική εναλλαγή λογοτύπων"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "Χάρτης",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "Κυκλικό marquee",
-          "category": "Προωθητικό",
           "settings": {
             "text": "Κυκλικό κείμενο Marquee"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "Marquee",
-          "category": "Προωθητικό",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "Ενημερωτικό δελτίο",
-          "category": "Φόρμες",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "Αποκάλυψη καρφιτσωμένης εικόνας",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Πρόσφατα προβληθέντα",
-          "category": "Προϊόντα"
+          "name": "Πρόσφατα προβληθέντα"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Σχετικά προϊόντα",
-          "category": "Προϊόντα"
+          "name": "Σχετικά προϊόντα"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Κυλιόμενοι αριθμοί",
-          "category": "Κείμενο",
           "settings": {
             "title": "Σε αριθμούς",
             "text": "Ο αντίκτυπός μας σε αριθμούς που μιλούν από μόνοι τους."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "Πάνελ κύλισης",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Αγοράστε το look",
-          "category": "Προϊόντα"
+          "name": "Αγοράστε το look"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Βίντεο με δυνατότητα αγοράς",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Βίντεο με δυνατότητα αγοράς"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "Παρουσίαση διαφανειών",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "Στοιβαζόμενες κάρτες",
-          "category": "Εικόνα & πολυμέσα",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "Ομάδα",
-          "category": "Κείμενο",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "Μαρτυρίες",
-          "category": "Κείμενο",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Αποκάλυψη κειμένου",
-          "category": "Κείμενο"
+          "name": "Αποκάλυψη κειμένου"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "Ενότητα κειμένου",
-          "category": "Κείμενο",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "Χρονολόγιο",
-          "category": "Κείμενο",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "Σήματα εμπιστοσύνης",
-          "category": "Προωθητικό",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "Βίντεο",
-          "category": "Εικόνα & πολυμέσα"
+          "name": "Βίντεο"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Λίστα επιθυμιών",
-          "category": "Προϊόντα"
+          "name": "Λίστα επιθυμιών"
         }
       }
     }

@@ -657,6 +657,15 @@
       "feature_title": "特徴タイトル",
       "view_all": "すべて見る",
       "free_shipping_announcement": "50ドル以上のご注文で送料無料"
+    },
+    "categories": {
+      "products": "商品",
+      "collection": "コレクション",
+      "text": "テキスト",
+      "image_media": "画像＆メディア",
+      "promotional": "プロモーション",
+      "blog": "ブログ",
+      "forms": "フォーム"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "背景ズーム",
-          "category": "画像＆メディア",
           "settings": {
             "title_before": "画像から背景へ",
             "title_before_accent": "（ズーム）",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "バナー",
-          "category": "プロモーション"
+          "name": "バナー"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "ビフォー＆アフター",
-          "category": "画像＆メディア"
+          "name": "ビフォー＆アフター"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "コレクションカルーセル",
-          "category": "コレクション"
+          "name": "コレクションカルーセル"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "商品比較",
-          "category": "商品"
+          "name": "商品比較"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "補完商品",
-          "category": "商品"
+          "name": "補完商品"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "お問い合わせフォーム",
-          "category": "フォーム"
+          "name": "お問い合わせフォーム"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "カウントダウン",
-          "category": "プロモーション",
           "settings": {
             "design": "hero",
             "title": "近日公開",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "カスタムLiquid",
-          "category": "テキスト"
+          "name": "カスタムLiquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "よくある質問",
-          "category": "テキスト",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "注目のブログ",
-          "category": "ブログ"
+          "name": "注目のブログ"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "注目のコレクション",
-          "category": "商品"
+          "name": "注目のコレクション"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "注目の商品",
-          "category": "商品"
+          "name": "注目の商品"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "特徴グリッド",
-          "category": "テキスト",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "フローティング画像",
-          "category": "画像＆メディア"
+          "name": "フローティング画像"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "ヒーローオービット",
-          "category": "画像＆メディア"
+          "name": "ヒーローオービット"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "ヒーロー",
-          "category": "画像＆メディア"
+          "name": "ヒーロー"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "ハイライトテキスト",
-          "category": "テキスト",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "水平スクロール",
-          "category": "画像＆メディア",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "ホットスポット",
-          "category": "画像＆メディア",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "画像シーケンス",
-          "category": "画像＆メディア",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "テキスト付き画像",
-          "category": "画像＆メディア",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "画像",
-          "category": "画像＆メディア"
+          "name": "画像"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "ロゴマーキー",
-          "category": "画像＆メディア"
+          "name": "ロゴマーキー"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "ロゴウォールサイクル",
-          "category": "画像＆メディア"
+          "name": "ロゴウォールサイクル"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "マップ",
-          "category": "画像＆メディア",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "放射状マーキー",
-          "category": "プロモーション",
           "settings": {
             "text": "放射状テキストマーキー"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "マーキー",
-          "category": "プロモーション",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "ニュースレター",
-          "category": "フォーム",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "固定画像リビール",
-          "category": "画像＆メディア",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "最近見た商品",
-          "category": "商品"
+          "name": "最近見た商品"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "関連商品",
-          "category": "商品"
+          "name": "関連商品"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "ローリングナンバー",
-          "category": "テキスト",
           "settings": {
             "title": "数字で見る実績",
             "text": "私たちの実績を数字でご覧ください。"
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "スクロールパネル",
-          "category": "画像＆メディア",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "ルックを購入",
-          "category": "商品"
+          "name": "ルックを購入"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "ショッパブル動画",
-          "category": "画像＆メディア"
+          "name": "ショッパブル動画"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "スライドショー",
-          "category": "画像＆メディア",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "スタッキングカード",
-          "category": "画像＆メディア",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "チーム",
-          "category": "テキスト",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "お客様の声",
-          "category": "テキスト",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "テキストリビール",
-          "category": "テキスト"
+          "name": "テキストリビール"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "テキストセクション",
-          "category": "テキスト",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "タイムライン",
-          "category": "テキスト",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "信頼バッジ",
-          "category": "プロモーション",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "動画",
-          "category": "画像＆メディア"
+          "name": "動画"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "ウィッシュリスト",
-          "category": "商品"
+          "name": "ウィッシュリスト"
         }
       }
     }

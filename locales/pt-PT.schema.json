@@ -657,6 +657,15 @@
       "feature_title": "Título da Funcionalidade",
       "view_all": "Ver Tudo",
       "free_shipping_announcement": "Envio grátis em encomendas acima de 50 €"
+    },
+    "categories": {
+      "products": "Produtos",
+      "collection": "Coleção",
+      "text": "Texto",
+      "image_media": "Imagem e multimédia",
+      "promotional": "Promocional",
+      "blog": "Blogue",
+      "forms": "Formulários"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Zoom de fundo",
-          "category": "Imagem e multimédia",
           "settings": {
             "title_before": "Imagem para Fundo",
             "title_before_accent": "(Zoom)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Faixa",
-          "category": "Promocional"
+          "name": "Faixa"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Antes e depois",
-          "category": "Imagem e multimédia"
+          "name": "Antes e depois"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Carrossel de coleções",
-          "category": "Coleção"
+          "name": "Carrossel de coleções"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Comparação de produtos",
-          "category": "Produtos"
+          "name": "Comparação de produtos"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Produtos complementares",
-          "category": "Produtos"
+          "name": "Produtos complementares"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Formulário de contacto",
-          "category": "Formulários"
+          "name": "Formulário de contacto"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Contagem decrescente",
-          "category": "Promocional",
           "settings": {
             "design": "hero",
             "title": "Em Breve",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Liquid Personalizado",
-          "category": "Texto"
+          "name": "Liquid Personalizado"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "FAQ",
-          "category": "Texto",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Blogue em destaque",
-          "category": "Blogue"
+          "name": "Blogue em destaque"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Coleção em destaque",
-          "category": "Produtos"
+          "name": "Coleção em destaque"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Produto em destaque",
-          "category": "Produtos"
+          "name": "Produto em destaque"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Grelha de funcionalidades",
-          "category": "Texto",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Imagens flutuantes",
-          "category": "Imagem e multimédia"
+          "name": "Imagens flutuantes"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Herói órbita",
-          "category": "Imagem e multimédia"
+          "name": "Herói órbita"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Herói",
-          "category": "Imagem e multimédia"
+          "name": "Herói"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "Texto destacado",
-          "category": "Texto",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "Deslocamento horizontal",
-          "category": "Imagem e multimédia",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "Pontos de destaque",
-          "category": "Imagem e multimédia",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "Sequência de imagens",
-          "category": "Imagem e multimédia",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "Imagem com texto",
-          "category": "Imagem e multimédia",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "Imagem",
-          "category": "Imagem e multimédia"
+          "name": "Imagem"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Marquise de logótipos",
-          "category": "Imagem e multimédia"
+          "name": "Marquise de logótipos"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Ciclo de parede de logótipos",
-          "category": "Imagem e multimédia"
+          "name": "Ciclo de parede de logótipos"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "Mapa",
-          "category": "Imagem e multimédia",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "Marquise radial",
-          "category": "Promocional",
           "settings": {
             "text": "Marquise de Texto Radial"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "Marquise",
-          "category": "Promocional",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "Newsletter",
-          "category": "Formulários",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "Revelação de imagem fixada",
-          "category": "Imagem e multimédia",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Vistos recentemente",
-          "category": "Produtos"
+          "name": "Vistos recentemente"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Produtos relacionados",
-          "category": "Produtos"
+          "name": "Produtos relacionados"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Números animados",
-          "category": "Texto",
           "settings": {
             "title": "Em Números",
             "text": "O nosso impacto em números que falam por si."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "Painéis de deslocamento",
-          "category": "Imagem e multimédia",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Compre o visual",
-          "category": "Produtos"
+          "name": "Compre o visual"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Vídeos com compras",
-          "category": "Imagem e multimédia"
+          "name": "Vídeos com compras"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "Apresentação de slides",
-          "category": "Imagem e multimédia",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "Cartões empilhados",
-          "category": "Imagem e multimédia",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "Equipa",
-          "category": "Texto",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "Testemunhos",
-          "category": "Texto",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Revelação de texto",
-          "category": "Texto"
+          "name": "Revelação de texto"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "Secção de texto",
-          "category": "Texto",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "Cronologia",
-          "category": "Texto",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "Selos de confiança",
-          "category": "Promocional",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "Vídeo",
-          "category": "Imagem e multimédia"
+          "name": "Vídeo"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Lista de desejos",
-          "category": "Produtos"
+          "name": "Lista de desejos"
         }
       }
     }

@@ -657,6 +657,15 @@
       "feature_title": "Kenmerktitel",
       "view_all": "Alles bekijken",
       "free_shipping_announcement": "Gratis verzending bij bestellingen boven €50"
+    },
+    "categories": {
+      "products": "Producten",
+      "collection": "Collectie",
+      "text": "Tekst",
+      "image_media": "Afbeelding & media",
+      "promotional": "Promotie",
+      "blog": "Blog",
+      "forms": "Formulieren"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Achtergrond zoomen",
-          "category": "Afbeelding & media",
           "settings": {
             "title_before": "Afbeelding naar achtergrond",
             "title_before_accent": "(Zoom)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Banner",
-          "category": "Promotie"
+          "name": "Banner"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Voor & na",
-          "category": "Afbeelding & media"
+          "name": "Voor & na"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Collectiecarrousel",
-          "category": "Collectie"
+          "name": "Collectiecarrousel"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Productvergelijking",
-          "category": "Producten"
+          "name": "Productvergelijking"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Aanvullende producten",
-          "category": "Producten"
+          "name": "Aanvullende producten"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Contactformulier",
-          "category": "Formulieren"
+          "name": "Contactformulier"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Aftelling",
-          "category": "Promotie",
           "settings": {
             "design": "hero",
             "title": "Binnenkort beschikbaar",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Aangepaste Liquid",
-          "category": "Tekst"
+          "name": "Aangepaste Liquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "Veelgestelde vragen",
-          "category": "Tekst",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Uitgelichte blog",
-          "category": "Blog"
+          "name": "Uitgelichte blog"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Uitgelichte collectie",
-          "category": "Producten"
+          "name": "Uitgelichte collectie"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Uitgelicht product",
-          "category": "Producten"
+          "name": "Uitgelicht product"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Kenmerkenraster",
-          "category": "Tekst",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Zwevende afbeeldingen",
-          "category": "Afbeelding & media"
+          "name": "Zwevende afbeeldingen"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Hero-baan",
-          "category": "Afbeelding & media"
+          "name": "Hero-baan"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Hero",
-          "category": "Afbeelding & media"
+          "name": "Hero"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "Markeertekst",
-          "category": "Tekst",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "Horizontaal scrollen",
-          "category": "Afbeelding & media",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "Hotspots",
-          "category": "Afbeelding & media",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "Afbeeldingsreeks",
-          "category": "Afbeelding & media",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "Afbeelding met tekst",
-          "category": "Afbeelding & media",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "Afbeelding",
-          "category": "Afbeelding & media"
+          "name": "Afbeelding"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Logo-marquee",
-          "category": "Afbeelding & media"
+          "name": "Logo-marquee"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Logomuur-cyclus",
-          "category": "Afbeelding & media"
+          "name": "Logomuur-cyclus"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "Kaart",
-          "category": "Afbeelding & media",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "Radiale marquee",
-          "category": "Promotie",
           "settings": {
             "text": "Radiale tekstmarquee"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "Marquee",
-          "category": "Promotie",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "Nieuwsbrief",
-          "category": "Formulieren",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "Vastgepinde afbeeldingsonthulling",
-          "category": "Afbeelding & media",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Recent bekeken",
-          "category": "Producten"
+          "name": "Recent bekeken"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Gerelateerde producten",
-          "category": "Producten"
+          "name": "Gerelateerde producten"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Rollende cijfers",
-          "category": "Tekst",
           "settings": {
             "title": "In cijfers",
             "text": "Onze impact in cijfers die voor zichzelf spreken."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "Scrollpanelen",
-          "category": "Afbeelding & media",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Shop de look",
-          "category": "Producten"
+          "name": "Shop de look"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Shopbare video's",
-          "category": "Afbeelding & media"
+          "name": "Shopbare video's"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "Diavoorstelling",
-          "category": "Afbeelding & media",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "Stapelkaarten",
-          "category": "Afbeelding & media",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "Team",
-          "category": "Tekst",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "Getuigenissen",
-          "category": "Tekst",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Tekstonthulling",
-          "category": "Tekst"
+          "name": "Tekstonthulling"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "Tekstsectie",
-          "category": "Tekst",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "Tijdlijn",
-          "category": "Tekst",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "Vertrouwensbadges",
-          "category": "Promotie",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "Video",
-          "category": "Afbeelding & media"
+          "name": "Video"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Verlanglijst",
-          "category": "Producten"
+          "name": "Verlanglijst"
         }
       }
     }

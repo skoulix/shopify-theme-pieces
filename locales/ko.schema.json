@@ -657,6 +657,15 @@
       "feature_title": "기능 제목",
       "view_all": "모두 보기",
       "free_shipping_announcement": "$50 이상 주문 시 무료 배송"
+    },
+    "categories": {
+      "products": "제품",
+      "collection": "컬렉션",
+      "text": "텍스트",
+      "image_media": "이미지 및 미디어",
+      "promotional": "프로모션",
+      "blog": "블로그",
+      "forms": "양식"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "배경 줌",
-          "category": "이미지 및 미디어",
           "settings": {
             "title_before": "이미지에서 배경으로",
             "title_before_accent": "(줌)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "배너",
-          "category": "프로모션"
+          "name": "배너"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "비포 전후",
-          "category": "이미지 및 미디어"
+          "name": "비포 전후"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "커렉션 캐러셀",
-          "category": "커렉션"
+          "name": "커렉션 캐러셀"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "상품 비교",
-          "category": "상품"
+          "name": "상품 비교"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "보완 상품",
-          "category": "상품"
+          "name": "보완 상품"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "문의 양식",
-          "category": "양식"
+          "name": "문의 양식"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "카운트다운",
-          "category": "프로모션",
           "settings": {
             "design": "hero",
             "title": "출시 예정",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "사용자 정의 Liquid",
-          "category": "텍스트"
+          "name": "사용자 정의 Liquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "자주 묻는 질문",
-          "category": "텍스트",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "추천 블로그",
-          "category": "블로그"
+          "name": "추천 블로그"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "추천 컬렉션",
-          "category": "상품"
+          "name": "추천 컬렉션"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "추천 제품",
-          "category": "상품"
+          "name": "추천 제품"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "특징 그리드",
-          "category": "텍스트",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "플로팅 이미지",
-          "category": "이미지 및 미디어"
+          "name": "플로팅 이미지"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "히어로 오빗",
-          "category": "이미지 및 미디어"
+          "name": "히어로 오빗"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "히어로",
-          "category": "이미지 및 미디어"
+          "name": "히어로"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "하이라이트 텍스트",
-          "category": "텍스트",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "가로 스크롤",
-          "category": "이미지 및 미디어",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "핫스팟",
-          "category": "이미지 및 미디어",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "이미지 시퀀스",
-          "category": "이미지 및 미디어",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "이미지와 텍스트",
-          "category": "이미지 및 미디어",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "이미지",
-          "category": "이미지 및 미디어"
+          "name": "이미지"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "로고 마퀴",
-          "category": "이미지 및 미디어"
+          "name": "로고 마퀴"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "로고 월 사이클",
-          "category": "이미지 및 미디어"
+          "name": "로고 월 사이클"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "지도",
-          "category": "이미지 및 미디어",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "방사형 마키",
-          "category": "프로모션",
           "settings": {
             "text": "방사형 텍스트 마키"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "마키",
-          "category": "프로모션",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "뉴스레터",
-          "category": "양식",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "고정 이미지 공개",
-          "category": "이미지 및 미디어",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "최근 본 제품",
-          "category": "상품"
+          "name": "최근 본 제품"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "관련 제품",
-          "category": "상품"
+          "name": "관련 제품"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "롤링 숫자",
-          "category": "텍스트",
           "settings": {
             "title": "숫자로 보는 성과",
             "text": "스스로를 말해주는 숫자로 보는 우리의 영향력."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "스크롤 패널",
-          "category": "이미지 및 미디어",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "룩 쇼핑",
-          "category": "상품"
+          "name": "룩 쇼핑"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "쇼핑 가능한 동영상",
-          "category": "이미지 및 미디어"
+          "name": "쇼핑 가능한 동영상"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "슬라이드쇼",
-          "category": "이미지 및 미디어",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "스태킹 카드",
-          "category": "이미지 및 미디어",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "팀",
-          "category": "텍스트",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "고객 후기",
-          "category": "텍스트",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "텍스트 공개",
-          "category": "텍스트"
+          "name": "텍스트 공개"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "텍스트 섹션",
-          "category": "텍스트",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "타임라인",
-          "category": "텍스트",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "신뢰 배지",
-          "category": "프로모션",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "동영상",
-          "category": "이미지 및 미디어"
+          "name": "동영상"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "위시리스트",
-          "category": "상품"
+          "name": "위시리스트"
         }
       }
     }

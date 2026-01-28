@@ -657,6 +657,15 @@
       "feature_title": "Feature Title",
       "view_all": "View All",
       "free_shipping_announcement": "Free shipping on orders over $50"
+    },
+    "categories": {
+      "products": "Products",
+      "collection": "Collection",
+      "text": "Text",
+      "image_media": "Image & media",
+      "promotional": "Promotional",
+      "blog": "Blog",
+      "forms": "Forms"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Background zoom",
-          "category": "Image & media",
           "settings": {
             "title_before": "Image to Background",
             "title_before_accent": "(Zoom)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Banner",
-          "category": "Promotional"
+          "name": "Banner"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Before & after",
-          "category": "Image & media"
+          "name": "Before & after"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Collections carousel",
-          "category": "Collection"
+          "name": "Collections carousel"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Product comparison",
-          "category": "Products"
+          "name": "Product comparison"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Complementary products",
-          "category": "Products"
+          "name": "Complementary products"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Contact form",
-          "category": "Forms"
+          "name": "Contact form"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Countdown",
-          "category": "Promotional",
           "settings": {
             "design": "hero",
             "title": "Coming Soon",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Custom Liquid",
-          "category": "Text"
+          "name": "Custom Liquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "FAQ",
-          "category": "Text",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Featured blog",
-          "category": "Blog"
+          "name": "Featured blog"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Featured collection",
-          "category": "Products"
+          "name": "Featured collection"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Featured product",
-          "category": "Products"
+          "name": "Featured product"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Features grid",
-          "category": "Text",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Floating images",
-          "category": "Image & media"
+          "name": "Floating images"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Hero orbit",
-          "category": "Image & media"
+          "name": "Hero orbit"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Hero",
-          "category": "Image & media"
+          "name": "Hero"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "Highlight text",
-          "category": "Text",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "Horizontal scroll",
-          "category": "Image & media",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "Hotspots",
-          "category": "Image & media",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "Image sequence",
-          "category": "Image & media",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "Image with text",
-          "category": "Image & media",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "Image",
-          "category": "Image & media"
+          "name": "Image"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Logo marquee",
-          "category": "Image & media"
+          "name": "Logo marquee"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Logo wall cycle",
-          "category": "Image & media"
+          "name": "Logo wall cycle"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "Map",
-          "category": "Image & media",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "Marquee radial",
-          "category": "Promotional",
           "settings": {
             "text": "Radial Text Marquee"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "Marquee",
-          "category": "Promotional",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "Newsletter",
-          "category": "Forms",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "Pinned image reveal",
-          "category": "Image & media",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Recently viewed",
-          "category": "Products"
+          "name": "Recently viewed"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Related products",
-          "category": "Products"
+          "name": "Related products"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Rolling numbers",
-          "category": "Text",
           "settings": {
             "title": "By the Numbers",
             "text": "Our impact in numbers that speak for themselves."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "Scroll panels",
-          "category": "Image & media",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Shop the look",
-          "category": "Products"
+          "name": "Shop the look"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Shoppable videos",
-          "category": "Image & media"
+          "name": "Shoppable videos"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "Slideshow",
-          "category": "Image & media",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "Stacking cards",
-          "category": "Image & media",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "Team",
-          "category": "Text",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "Testimonials",
-          "category": "Text",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Text reveal",
-          "category": "Text"
+          "name": "Text reveal"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "Text section",
-          "category": "Text",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "Timeline",
-          "category": "Text",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "Trust badges",
-          "category": "Promotional",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "Video",
-          "category": "Image & media"
+          "name": "Video"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Wishlist",
-          "category": "Products"
+          "name": "Wishlist"
         }
       }
     }

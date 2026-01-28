@@ -657,6 +657,15 @@
       "feature_title": "Nazev funkce",
       "view_all": "Zobrazit vse",
       "free_shipping_announcement": "Doprava zdarma pri objednavce nad 50 $"
+    },
+    "categories": {
+      "products": "Produkty",
+      "collection": "Kolekce",
+      "text": "Text",
+      "image_media": "Obrazek a media",
+      "promotional": "Propagační",
+      "blog": "Blog",
+      "forms": "Formuláře"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Priblizeni pozadi",
-          "category": "Obrazek a media",
           "settings": {
             "title_before": "Obrazek do pozadi",
             "title_before_accent": "(Priblizeni)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Banner",
-          "category": "Propagacni"
+          "name": "Banner"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Pred a po",
-          "category": "Obrazek a media"
+          "name": "Pred a po"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Karusel kolekci",
-          "category": "Kolekce"
+          "name": "Karusel kolekci"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Porovnani produktu",
-          "category": "Produkty"
+          "name": "Porovnani produktu"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Doplnkove produkty",
-          "category": "Produkty"
+          "name": "Doplnkove produkty"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Kontaktni formular",
-          "category": "Formuláře"
+          "name": "Kontaktni formular"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Odpocitavani",
-          "category": "Propagacni",
           "settings": {
             "design": "hero",
             "title": "Juz brzy",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Vlastni Liquid",
-          "category": "Text"
+          "name": "Vlastni Liquid"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "Casto kladene dotazy",
-          "category": "Text",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Doporuceny blog",
-          "category": "Blog"
+          "name": "Doporuceny blog"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Doporucena kolekce",
-          "category": "Produkty"
+          "name": "Doporucena kolekce"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Doporuceny produkt",
-          "category": "Produkty"
+          "name": "Doporuceny produkt"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Mrizka funkci",
-          "category": "Text",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Plovouci obrazky",
-          "category": "Obrazek a media"
+          "name": "Plovouci obrazky"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Hero s orbitou",
-          "category": "Obrazek a media"
+          "name": "Hero s orbitou"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Hero",
-          "category": "Obrazek a media"
+          "name": "Hero"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "Zvyrazneny text",
-          "category": "Text",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "Horizontalni rolovani",
-          "category": "Obrazek a media",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "Aktivni body",
-          "category": "Obrazek a media",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "Obrazkova sekvence",
-          "category": "Obrazek a media",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "Obrazek s textem",
-          "category": "Obrazek a media",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "Obrazek",
-          "category": "Obrazek a media"
+          "name": "Obrazek"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Behounek s logy",
-          "category": "Obrazek a media"
+          "name": "Behounek s logy"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Stena s logy",
-          "category": "Obrazek a media"
+          "name": "Stena s logy"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "Mapa",
-          "category": "Obrazek a media",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "Radialni behounek",
-          "category": "Propagacni",
           "settings": {
             "text": "Radialni textovy behounek"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "Behounek",
-          "category": "Propagacni",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "Newsletter",
-          "category": "Formuláře",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "Odhaleni pripnuteho obrazku",
-          "category": "Obrazek a media",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Nedavno zobrazene",
-          "category": "Produkty"
+          "name": "Nedavno zobrazene"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Související produkty",
-          "category": "Produkty"
+          "name": "Související produkty"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Animovana cisla",
-          "category": "Text",
           "settings": {
             "title": "V cislech",
             "text": "Nas dopad v cislech, ktera mluvi za sebe."
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "Rolovaci panely",
-          "category": "Obrazek a media",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Nakupte celkovy vzhled",
-          "category": "Produkty"
+          "name": "Nakupte celkovy vzhled"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Nakupni videa",
-          "category": "Obrazek a media"
+          "name": "Nakupni videa"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "Prezentace",
-          "category": "Obrazek a media",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "Vrstvene karty",
-          "category": "Obrazek a media",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "Tym",
-          "category": "Text",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "Reference",
-          "category": "Text",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Odhaleni textu",
-          "category": "Text"
+          "name": "Odhaleni textu"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "Textova sekce",
-          "category": "Text",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "Casova osa",
-          "category": "Text",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "Odznaky duvery",
-          "category": "Propagacni",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "Video",
-          "category": "Obrazek a media"
+          "name": "Video"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Seznam prani",
-          "category": "Produkty"
+          "name": "Seznam prani"
         }
       }
     }

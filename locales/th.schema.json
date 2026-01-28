@@ -657,6 +657,15 @@
       "feature_title": "หัวข้อฟีเจอร์",
       "view_all": "ดูทั้งหมด",
       "free_shipping_announcement": "จัดส่งฟรีสำหรับคำสั่งซื้อมากกว่า $50"
+    },
+    "categories": {
+      "products": "สินค้า",
+      "collection": "คอลเลกชัน",
+      "text": "ข้อความ",
+      "image_media": "รูปภาพและสื่อ",
+      "promotional": "โปรโมชัน",
+      "blog": "บล็อก",
+      "forms": "แบบฟอร์ม"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "ซูมพื้นหลัง",
-          "category": "รูปภาพและสื่อ",
           "settings": {
             "title_before": "รูปภาพเป็นพื้นหลัง",
             "title_before_accent": "(ซูม)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "แบนเนอร์",
-          "category": "โปรโมชัน"
+          "name": "แบนเนอร์"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "ก่อนและหลัง",
-          "category": "รูปภาพและสื่อ"
+          "name": "ก่อนและหลัง"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "คารูเซลคอลเลกชัน",
-          "category": "คอลเลกชัน"
+          "name": "คารูเซลคอลเลกชัน"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "การเปรียบเทียบสินค้า",
-          "category": "สินค้า"
+          "name": "การเปรียบเทียบสินค้า"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "สินค้าเสริม",
-          "category": "สินค้า"
+          "name": "สินค้าเสริม"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "แบบฟอร์มติดต่อ",
-          "category": "แบบฟอร์ม"
+          "name": "แบบฟอร์มติดต่อ"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "นับถอยหลัง",
-          "category": "โปรโมชัน",
           "settings": {
             "design": "hero",
             "title": "เร็ว ๆ นี้",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Liquid แบบกำหนดเอง",
-          "category": "ข้อความ"
+          "name": "Liquid แบบกำหนดเอง"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "คำถามที่พบบ่อย",
-          "category": "ข้อความ",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "บล็อกแนะนำ",
-          "category": "บล็อก"
+          "name": "บล็อกแนะนำ"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "คอลเลกชันแนะนำ",
-          "category": "สินค้า"
+          "name": "คอลเลกชันแนะนำ"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "สินค้าแนะนำ",
-          "category": "สินค้า"
+          "name": "สินค้าแนะนำ"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "ตารางคุณสมบัติ",
-          "category": "ข้อความ",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "ภาพลอย",
-          "category": "รูปภาพและสื่อ"
+          "name": "ภาพลอย"
         }
       }
     },
@@ -1702,8 +1696,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "ฮีโร่ออร์บิท",
-          "category": "รูปภาพและสื่อ"
+          "name": "ฮีโร่ออร์บิท"
         }
       }
     },
@@ -1725,8 +1718,7 @@
       },
       "presets": {
         "hero": {
-          "name": "ฮีโร่",
-          "category": "รูปภาพและสื่อ"
+          "name": "ฮีโร่"
         }
       }
     },
@@ -1803,7 +1795,6 @@
       "presets": {
         "highlight_text": {
           "name": "ข้อความไฮไลต์",
-          "category": "ข้อความ",
           "blocks": {
             "heading": {
               "0": {
@@ -1846,7 +1837,6 @@
       "presets": {
         "horizontal_scroll": {
           "name": "เลื่อนแนวนอน",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "image": {
               "0": {
@@ -1925,7 +1915,6 @@
       "presets": {
         "hotspots": {
           "name": "จุดสนใจ",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "hotspot": {
               "0": {
@@ -2043,7 +2032,6 @@
       "presets": {
         "image_sequence": {
           "name": "ลำดับภาพ",
-          "category": "รูปภาพและสื่อ",
           "settings": {
             "filetype": "webp"
           },
@@ -2090,7 +2078,6 @@
       "presets": {
         "image_with_text": {
           "name": "ภาพพร้อมข้อความ",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "stat": {
               "0": {
@@ -2145,8 +2132,7 @@
       },
       "presets": {
         "image": {
-          "name": "รูปภาพ",
-          "category": "รูปภาพและสื่อ"
+          "name": "รูปภาพ"
         }
       }
     },
@@ -2168,8 +2154,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "มาร์คีโลโก้",
-          "category": "รูปภาพและสื่อ"
+          "name": "มาร์คีโลโก้"
         }
       }
     },
@@ -2203,8 +2188,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "วงจรผนังโลโก้",
-          "category": "รูปภาพและสื่อ"
+          "name": "วงจรผนังโลโก้"
         }
       }
     },
@@ -2304,7 +2288,6 @@
       "presets": {
         "map": {
           "name": "แผนที่",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "address": {
               "0": {
@@ -2358,7 +2341,6 @@
       "presets": {
         "marquee_radial": {
           "name": "มาร์คีแบบวงกลม",
-          "category": "โปรโมชัน",
           "settings": {
             "text": "ข้อความมาร์คีแบบวงกลม"
           }
@@ -2392,7 +2374,6 @@
       "presets": {
         "marquee": {
           "name": "มาร์คี",
-          "category": "โปรโมชัน",
           "blocks": {
             "text": {
               "0": {
@@ -2462,7 +2443,6 @@
       "presets": {
         "newsletter": {
           "name": "จดหมายข่าว",
-          "category": "แบบฟอร์ม",
           "settings": {
             "design": "side-by-side"
           }
@@ -2528,7 +2508,6 @@
       "presets": {
         "pinned_image_reveal": {
           "name": "การเผยภาพแบบปักหมุด",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "slide": {
               "0": {
@@ -2791,8 +2770,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "ดูล่าสุด",
-          "category": "สินค้า"
+          "name": "ดูล่าสุด"
         }
       }
     },
@@ -2811,8 +2789,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "สินค้าที่เกี่ยวข้อง",
-          "category": "สินค้า"
+          "name": "สินค้าที่เกี่ยวข้อง"
         }
       }
     },
@@ -2856,7 +2833,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "ตัวเลขเลื่อน",
-          "category": "ข้อความ",
           "settings": {
             "title": "ตัวเลขที่น่าสนใจ",
             "text": "ผลกระทบของเราในตัวเลขที่บอกเล่าด้วยตัวเอง"
@@ -2917,7 +2893,6 @@
       "presets": {
         "scroll_panels": {
           "name": "แผงเลื่อน",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "panel": {
               "0": {
@@ -2996,8 +2971,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "ช้อปตามลุค",
-          "category": "สินค้า"
+          "name": "ช้อปตามลุค"
         }
       }
     },
@@ -3041,8 +3015,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "วิดีโอช้อปปิ้ง",
-          "category": "รูปภาพและสื่อ"
+          "name": "วิดีโอช้อปปิ้ง"
         }
       }
     },
@@ -3130,7 +3103,6 @@
       "presets": {
         "slideshow": {
           "name": "สไลด์โชว์",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "slide": {
               "0": {
@@ -3181,7 +3153,6 @@
       "presets": {
         "stacking_cards": {
           "name": "การ์ดซ้อน",
-          "category": "รูปภาพและสื่อ",
           "blocks": {
             "card": {
               "0": {
@@ -3245,7 +3216,6 @@
       "presets": {
         "team": {
           "name": "ทีม",
-          "category": "ข้อความ",
           "blocks": {
             "member": {
               "0": {
@@ -3320,7 +3290,6 @@
       "presets": {
         "testimonials": {
           "name": "คำรับรอง",
-          "category": "ข้อความ",
           "blocks": {
             "testimonial": {
               "0": {
@@ -3384,8 +3353,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "การเผยข้อความ",
-          "category": "ข้อความ"
+          "name": "การเผยข้อความ"
         }
       }
     },
@@ -3450,7 +3418,6 @@
       "presets": {
         "text_section": {
           "name": "ส่วนข้อความ",
-          "category": "ข้อความ",
           "blocks": {
             "button": {
               "0": {
@@ -3497,7 +3464,6 @@
       "presets": {
         "timeline": {
           "name": "ไทม์ไลน์",
-          "category": "ข้อความ",
           "blocks": {
             "milestone": {
               "0": {
@@ -3539,7 +3505,6 @@
       "presets": {
         "trust_badges": {
           "name": "ป้ายความน่าเชื่อถือ",
-          "category": "โปรโมชัน",
           "blocks": {
             "badge": {
               "0": {
@@ -3575,8 +3540,7 @@
       },
       "presets": {
         "video": {
-          "name": "วิดีโอ",
-          "category": "รูปภาพและสื่อ"
+          "name": "วิดีโอ"
         }
       }
     },
@@ -3592,8 +3556,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "รายการโปรด",
-          "category": "สินค้า"
+          "name": "รายการโปรด"
         }
       }
     }

@@ -657,6 +657,15 @@
       "feature_title": "Judul Fitur",
       "view_all": "Lihat Semua",
       "free_shipping_announcement": "Gratis ongkir untuk pesanan di atas Rp500.000"
+    },
+    "categories": {
+      "products": "Produk",
+      "collection": "Koleksi",
+      "text": "Teks",
+      "image_media": "Gambar & media",
+      "promotional": "Promosi",
+      "blog": "Blog",
+      "forms": "Formulir"
     }
   },
   "sections": {
@@ -791,7 +800,6 @@
       "presets": {
         "background_zoom": {
           "name": "Zoom latar belakang",
-          "category": "Gambar & media",
           "settings": {
             "title_before": "Gambar ke latar belakang",
             "title_before_accent": "(Zoom)",
@@ -836,8 +844,7 @@
       },
       "presets": {
         "banner": {
-          "name": "Spanduk",
-          "category": "Promosi"
+          "name": "Spanduk"
         }
       }
     },
@@ -873,8 +880,7 @@
       },
       "presets": {
         "before_after": {
-          "name": "Sebelum & sesudah",
-          "category": "Gambar & media"
+          "name": "Sebelum & sesudah"
         }
       }
     },
@@ -984,8 +990,7 @@
       },
       "presets": {
         "collections_carousel": {
-          "name": "Carousel koleksi",
-          "category": "Koleksi"
+          "name": "Carousel koleksi"
         }
       }
     },
@@ -1023,8 +1028,7 @@
       },
       "presets": {
         "product_comparison": {
-          "name": "Perbandingan produk",
-          "category": "Produk"
+          "name": "Perbandingan produk"
         }
       }
     },
@@ -1043,8 +1047,7 @@
       },
       "presets": {
         "complementary_products": {
-          "name": "Produk pelengkap",
-          "category": "Produk"
+          "name": "Produk pelengkap"
         }
       }
     },
@@ -1068,8 +1071,7 @@
       },
       "presets": {
         "contact_form": {
-          "name": "Formulir kontak",
-          "category": "Formulir"
+          "name": "Formulir kontak"
         }
       }
     },
@@ -1143,7 +1145,6 @@
       "presets": {
         "countdown": {
           "name": "Hitung mundur",
-          "category": "Promosi",
           "settings": {
             "design": "hero",
             "title": "Segera Hadir",
@@ -1166,8 +1167,7 @@
       },
       "presets": {
         "custom_liquid": {
-          "name": "Liquid kustom",
-          "category": "Teks"
+          "name": "Liquid kustom"
         }
       }
     },
@@ -1202,7 +1202,6 @@
       "presets": {
         "faq": {
           "name": "FAQ",
-          "category": "Teks",
           "blocks": {
             "faq_item": {
               "0": {
@@ -1243,8 +1242,7 @@
       },
       "presets": {
         "featured_blog": {
-          "name": "Blog unggulan",
-          "category": "Blog"
+          "name": "Blog unggulan"
         }
       }
     },
@@ -1257,8 +1255,7 @@
       },
       "presets": {
         "featured_collection": {
-          "name": "Koleksi unggulan",
-          "category": "Produk"
+          "name": "Koleksi unggulan"
         }
       }
     },
@@ -1283,8 +1280,7 @@
       },
       "presets": {
         "featured_product": {
-          "name": "Produk unggulan",
-          "category": "Produk"
+          "name": "Produk unggulan"
         }
       }
     },
@@ -1322,7 +1318,6 @@
       "presets": {
         "features_grid": {
           "name": "Grid fitur",
-          "category": "Teks",
           "blocks": {
             "feature": {
               "0": {
@@ -1370,8 +1365,7 @@
       },
       "presets": {
         "floating_images": {
-          "name": "Gambar mengambang",
-          "category": "Gambar & media"
+          "name": "Gambar mengambang"
         }
       }
     },
@@ -1684,8 +1678,7 @@
       },
       "presets": {
         "hero": {
-          "name": "Hero",
-          "category": "Gambar & media"
+          "name": "Hero"
         }
       }
     },
@@ -1722,8 +1715,7 @@
       },
       "presets": {
         "hero_orbit": {
-          "name": "Hero orbit",
-          "category": "Gambar & media"
+          "name": "Hero orbit"
         }
       }
     },
@@ -1754,8 +1746,7 @@
       },
       "presets": {
         "highlight_text": {
-          "name": "Teks sorotan",
-          "category": "Teks"
+          "name": "Teks sorotan"
         }
       }
     },
@@ -1785,8 +1776,7 @@
       },
       "presets": {
         "horizontal_scroll": {
-          "name": "Gulir horizontal",
-          "category": "Gambar & media"
+          "name": "Gulir horizontal"
         }
       }
     },
@@ -1810,8 +1800,7 @@
       },
       "presets": {
         "hotspots": {
-          "name": "Hotspot",
-          "category": "Interaktif"
+          "name": "Hotspot"
         }
       }
     },
@@ -1830,8 +1819,7 @@
       },
       "presets": {
         "image": {
-          "name": "Gambar",
-          "category": "Gambar & media"
+          "name": "Gambar"
         }
       }
     },
@@ -1852,8 +1840,7 @@
       },
       "presets": {
         "image_sequence": {
-          "name": "Urutan gambar",
-          "category": "Gambar & media"
+          "name": "Urutan gambar"
         }
       }
     },
@@ -1875,8 +1862,7 @@
       },
       "presets": {
         "image_with_text": {
-          "name": "Gambar dengan teks",
-          "category": "Gambar & media"
+          "name": "Gambar dengan teks"
         }
       }
     },
@@ -1894,8 +1880,7 @@
       },
       "presets": {
         "logo_marquee": {
-          "name": "Marquee logo",
-          "category": "Gambar & media"
+          "name": "Marquee logo"
         }
       }
     },
@@ -1917,8 +1902,7 @@
       },
       "presets": {
         "logo_wall_cycle": {
-          "name": "Siklus dinding logo",
-          "category": "Gambar & media"
+          "name": "Siklus dinding logo"
         }
       }
     },
@@ -1973,8 +1957,7 @@
       },
       "presets": {
         "map": {
-          "name": "Peta",
-          "category": "Gambar & media"
+          "name": "Peta"
         }
       }
     },
@@ -1991,8 +1974,7 @@
       },
       "presets": {
         "marquee": {
-          "name": "Marquee",
-          "category": "Teks"
+          "name": "Marquee"
         }
       }
     },
@@ -2005,8 +1987,7 @@
       },
       "presets": {
         "marquee_radial": {
-          "name": "Marquee radial",
-          "category": "Teks"
+          "name": "Marquee radial"
         }
       }
     },
@@ -2035,8 +2016,7 @@
       },
       "presets": {
         "newsletter": {
-          "name": "Buletin",
-          "category": "Formulir"
+          "name": "Buletin"
         }
       }
     },
@@ -2071,8 +2051,7 @@
       },
       "presets": {
         "pinned_image_reveal": {
-          "name": "Tampilan gambar tersemat",
-          "category": "Gambar & media"
+          "name": "Tampilan gambar tersemat"
         }
       }
     },
@@ -2299,8 +2278,7 @@
       },
       "presets": {
         "recently_viewed": {
-          "name": "Baru dilihat",
-          "category": "Produk"
+          "name": "Baru dilihat"
         }
       }
     },
@@ -2313,8 +2291,7 @@
       },
       "presets": {
         "related_products": {
-          "name": "Produk terkait",
-          "category": "Produk"
+          "name": "Produk terkait"
         }
       }
     },
@@ -2350,7 +2327,6 @@
       "presets": {
         "rolling_numbers": {
           "name": "Angka bergulir",
-          "category": "Teks",
           "blocks": {
             "stat": {
               "0": {
@@ -2390,8 +2366,7 @@
       },
       "presets": {
         "scroll_panels": {
-          "name": "Panel gulir",
-          "category": "Gambar & media"
+          "name": "Panel gulir"
         }
       }
     },
@@ -2423,8 +2398,7 @@
       },
       "presets": {
         "shop_the_look": {
-          "name": "Belanja tampilannya",
-          "category": "Interaktif"
+          "name": "Belanja tampilannya"
         }
       }
     },
@@ -2448,8 +2422,7 @@
       },
       "presets": {
         "shoppable_videos": {
-          "name": "Video yang dapat dibelanjakan",
-          "category": "Interaktif"
+          "name": "Video yang dapat dibelanjakan"
         }
       }
     },
@@ -2496,8 +2469,7 @@
       },
       "presets": {
         "slideshow": {
-          "name": "Tayangan slide",
-          "category": "Gambar & media"
+          "name": "Tayangan slide"
         }
       }
     },
@@ -2529,8 +2501,7 @@
       },
       "presets": {
         "stacking_cards": {
-          "name": "Kartu bertumpuk",
-          "category": "Gambar & media"
+          "name": "Kartu bertumpuk"
         }
       }
     },
@@ -2567,8 +2538,7 @@
       },
       "presets": {
         "team": {
-          "name": "Tim",
-          "category": "Teks"
+          "name": "Tim"
         }
       }
     },
@@ -2609,8 +2579,7 @@
       },
       "presets": {
         "testimonials": {
-          "name": "Testimoni",
-          "category": "Teks"
+          "name": "Testimoni"
         }
       }
     },
@@ -2632,8 +2601,7 @@
       },
       "presets": {
         "text_reveal": {
-          "name": "Pengungkapan teks",
-          "category": "Teks"
+          "name": "Pengungkapan teks"
         }
       }
     },
@@ -2652,8 +2620,7 @@
       },
       "presets": {
         "text_section": {
-          "name": "Bagian teks",
-          "category": "Teks"
+          "name": "Bagian teks"
         }
       }
     },
@@ -2689,8 +2656,7 @@
       },
       "presets": {
         "timeline": {
-          "name": "Garis waktu",
-          "category": "Teks"
+          "name": "Garis waktu"
         }
       }
     },
@@ -2713,8 +2679,7 @@
       },
       "presets": {
         "trust_badges": {
-          "name": "Lencana kepercayaan",
-          "category": "Teks"
+          "name": "Lencana kepercayaan"
         }
       }
     },
@@ -2754,8 +2719,7 @@
       },
       "presets": {
         "video": {
-          "name": "Video",
-          "category": "Gambar & media"
+          "name": "Video"
         }
       }
     },
@@ -2771,8 +2735,7 @@
       },
       "presets": {
         "wishlist": {
-          "name": "Daftar keinginan",
-          "category": "Produk"
+          "name": "Daftar keinginan"
         }
       }
     }
