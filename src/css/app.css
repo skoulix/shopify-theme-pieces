@@ -18,8 +18,58 @@
 @import './partials/collections.css';
 @import './partials/glightbox.css';
 
-/* Section and snippet CSS are now built as standalone files and loaded conditionally */
-/* See src/css/standalone/ for individual section/snippet CSS files */
+/* Section partials */
+@import './partials/sections/announcement-bar.css';
+@import './partials/sections/background-zoom.css';
+@import './partials/sections/banner.css';
+@import './partials/sections/before-after.css';
+@import './partials/sections/collections-carousel.css';
+@import './partials/sections/compare.css';
+@import './partials/sections/countdown.css';
+@import './partials/sections/faq.css';
+@import './partials/sections/featured-product.css';
+@import './partials/sections/features-grid.css';
+@import './partials/sections/floating-images.css';
+@import './partials/sections/hero.css';
+@import './partials/sections/hero-orbit.css';
+@import './partials/sections/highlight-text.css';
+@import './partials/sections/horizontal-scroll.css';
+@import './partials/sections/hotspots.css';
+@import './partials/sections/image-sequence.css';
+@import './partials/sections/logo-marquee.css';
+@import './partials/sections/logo-wall-cycle.css';
+@import './partials/sections/map.css';
+@import './partials/sections/marquee.css';
+@import './partials/sections/marquee-radial.css';
+@import './partials/sections/rolling-numbers.css';
+@import './partials/sections/shoppable-videos.css';
+@import './partials/sections/stacking-cards.css';
+@import './partials/sections/team.css';
+@import './partials/sections/testimonials.css';
+@import './partials/sections/text-reveal.css';
+@import './partials/sections/text-section.css';
+@import './partials/sections/timeline.css';
+@import './partials/sections/trust-badges.css';
+@import './partials/sections/video.css';
+@import './partials/sections/wishlist.css';
+
+/* Snippet partials */
+@import './partials/snippets/accessibility.css';
+@import './partials/snippets/back-in-stock-form.css';
+@import './partials/snippets/cart-drawer.css';
+@import './partials/snippets/delivery-estimator.css';
+@import './partials/snippets/error-handling.css';
+@import './partials/snippets/footer-classic.css';
+@import './partials/snippets/footer-modern.css';
+@import './partials/snippets/free-shipping-progress.css';
+@import './partials/snippets/mega-menu.css';
+@import './partials/snippets/modal-dialog.css';
+@import './partials/snippets/predictive-search.css';
+@import './partials/snippets/search-drawer.css';
+@import './partials/snippets/skeleton.css';
+@import './partials/snippets/social-proof.css';
+@import './partials/snippets/sticky-product-bar.css';
+@import './partials/snippets/wishlist-drawer.css';
 
 @plugin "@tailwindcss/typography";
 

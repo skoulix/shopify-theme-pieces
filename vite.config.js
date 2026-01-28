@@ -1,18 +1,5 @@
 import { defineConfig } from 'vite';
 import { resolve } from 'path';
-import { readdirSync, existsSync } from 'fs';
-
-// Get standalone section/snippet CSS files (these use @reference to work independently)
-const standaloneDir = resolve(__dirname, 'src/css/standalone');
-const standaloneCssFiles = existsSync(standaloneDir)
-  ? readdirSync(standaloneDir)
-      .filter(file => file.endsWith('.css'))
-      .reduce((acc, file) => {
-        const name = file.replace('.css', '');
-        acc[name] = resolve(standaloneDir, file);
-        return acc;
-      }, {})
-  : {};
 
 export default defineConfig(() => ({
   root: 'src',
@@ -24,7 +11,6 @@ export default defineConfig(() => ({
     rollupOptions: {
       input: {
         app: resolve(__dirname, 'src/js/app.js'),
-        ...standaloneCssFiles,
       },
       output: {
         entryFileNames: 'pieces-[name].js',
