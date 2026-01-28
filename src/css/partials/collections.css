@@ -136,7 +136,7 @@
     object-fit: cover;
     will-change: transform;
     transform: scale(1);
-    transition: scale var(--transition-slow), opacity var(--transition-slow);
+    transition: transform var(--transition-slow), opacity var(--transition-slow);
   }
 
   .collections-metro-item:hover .collections-metro-item-image {
