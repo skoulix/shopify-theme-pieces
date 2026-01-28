@@ -14,6 +14,7 @@
     "skip_to_product_info": "Ürün bilgisine atla",
     "close": "Kapat",
     "close_modal": "Pencereyi kapat",
+    "modal": "İletişim kutusu",
     "close_cart": "Sepet çekmecesini kapat",
     "unit_price_separator": "başına",
     "vendor": "Satıcı:",
@@ -29,6 +30,7 @@
     "previous_slide": "Sola kaydır",
     "go_to_slide": "{{ index }}. slayda git",
     "current_slide": "{{ index }}. slayt, mevcut slayt",
+    "slide_x_of_y": "Slayt {{ current }} / {{ total }}",
     "loading": "Yükleniyor...",
     "total_reviews": "toplam değerlendirme",
     "star_reviews_info": "{{ rating_max }} üzerinden {{ rating_value }} yıldız",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Önceki referans",
     "next_testimonial": "Sonraki referans",
     "go_to_testimonial": "{{ index }}. referansa git",
+    "testimonial_x_of_y": "Referans {{ current }} / {{ total }}",
+    "testimonials": "Referanslar",
     "previous_products": "Önceki ürünler",
     "next_products": "Sonraki ürünler",
     "previous_video": "Önceki video",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Karşılaştırmadan kaldırıldı",
     "cart_updated": "Sepet güncellendi",
     "items_in_cart": "Sepette {{ count }} ürün",
-    "no_image": "Görsel mevcut değil",
-    "modal": "İletişim kutusu",
-    "slide_x_of_y": "Slayt {{ current }} / {{ total }}",
-    "testimonials": "Referanslar",
-    "testimonial_x_of_y": "Referans {{ current }} / {{ total }}"
+    "no_image": "Görsel mevcut değil"
   },
   "errors": {
     "network": "Ağ hatası. Lütfen bağlantınızı kontrol edip tekrar deneyin.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Ana Sayfa",
+      "collections": "Koleksiyonlar",
+      "search": "Ara",
+      "cart": "Sepet"
+    },
     "newsletter": {
       "label": "Güncel Kalın",
       "submit": "Abone ol",
@@ -151,13 +157,7 @@
     "min_price": "Min fiyat",
     "max_price": "Maks fiyat",
     "to": "-",
-    "shop_now": "Şimdi Alışveriş Yap",
-    "breadcrumbs": {
-      "home": "Ana Sayfa",
-      "collections": "Koleksiyonlar",
-      "search": "Ara",
-      "cart": "Sepet"
-    }
+    "shop_now": "Şimdi Alışveriş Yap"
   },
   "404": {
     "title": "Sayfa bulunamadı",
@@ -271,16 +271,38 @@
       "quick_view": "Hızlı Görünüm",
       "quick_add": "Hızlı Ekle",
       "select_options": "Seçenekleri Seç",
+      "options": "Seçenekler",
       "view_product": "Ürünü Görüntüle",
+      "view_full_details": "Tüm detayları görüntüle",
       "share": "Paylaş",
       "zoom": "Görseli büyüt",
       "media": {
         "reset_3d_model": "3D model görünümünü sıfırla",
         "view_in_ar": "Alanınızda görüntüleyin",
         "load_image": "Görseli yükle {{ index }}"
-      },
-      "view_full_details": "Tüm detayları görüntüle",
-      "options": "Seçenekler"
+      }
+    },
+    "inventory": {
+      "low_stock": "Düşük stok",
+      "only_x_left": "Sadece {{ count }} kaldı",
+      "almost_gone": "Neredeyse tükendi!",
+      "selling_fast": "Hızlı satılıyor",
+      "stock_level": "Stok seviyesi",
+      "remaining": "kaldı",
+      "x_items_left": "{{ count }} adet kaldı",
+      "hurry_almost_gone": "Acele edin, neredeyse tükendi!",
+      "order_soon": "Hemen sipariş verin - hızlı satılıyor!",
+      "low_stock_warning": "Düşük stok - hemen sipariş verin"
+    },
+    "delivery": {
+      "estimated_delivery": "Tahmini teslimat",
+      "order_within": "Aynı gün kargo için {{ hours }} saat içinde sipariş verin",
+      "ships_today": "Bugün kargoya verilir",
+      "ships_tomorrow": "Yarın kargoya verilir"
+    },
+    "social_proof": {
+      "people_viewing": "kişi bunu görüntülüyor",
+      "sold_recently": "son 24 saatte satıldı"
     },
     "size_chart": {
       "title": "Beden Rehberi",
@@ -334,20 +356,20 @@
       "type": "Tür",
       "sku": "Stok Kodu",
       "availability": "Stok durumu",
-      "empty_title": "Karşılaştırılacak ürün yok",
-      "empty_text": "Ürün kartlarındaki karşılaştırma simgesine tıklayarak ürünleri karşılaştırmaya ekleyin.",
-      "browse_products": "Ürünlere Göz At",
-      "continue_shopping": "Alışverişe Devam Et",
-      "open_drawer": "Karşılaştırma çekmecesini aç",
-      "price": "Fiyat",
-      "items_count": "ürün",
       "weight": "Ağırlık",
       "material": "Malzeme",
       "fabric": "Kumaş",
       "care": "Bakım talimatları",
       "subtitle": "Alt başlık",
       "rating": "Değerlendirme",
-      "loading": "Karşılaştırma verileri yükleniyor..."
+      "loading": "Karşılaştırma verileri yükleniyor...",
+      "empty_title": "Karşılaştırılacak ürün yok",
+      "empty_text": "Ürün kartlarındaki karşılaştırma simgesine tıklayarak ürünleri karşılaştırmaya ekleyin.",
+      "browse_products": "Ürünlere Göz At",
+      "continue_shopping": "Alışverişe Devam Et",
+      "open_drawer": "Karşılaştırma çekmecesini aç",
+      "price": "Fiyat",
+      "items_count": "ürün"
     },
     "wishlist": {
       "title": "İstek Listesi",
@@ -363,28 +385,6 @@
       "clear_all": "Tümünü Temizle",
       "products": "kaydedilen ürün",
       "items_count": "ürün"
-    },
-    "inventory": {
-      "low_stock": "Düşük stok",
-      "only_x_left": "Sadece {{ count }} kaldı",
-      "almost_gone": "Neredeyse tükendi!",
-      "selling_fast": "Hızlı satılıyor",
-      "stock_level": "Stok seviyesi",
-      "remaining": "kaldı",
-      "x_items_left": "{{ count }} adet kaldı",
-      "hurry_almost_gone": "Acele edin, neredeyse tükendi!",
-      "order_soon": "Hemen sipariş verin - hızlı satılıyor!",
-      "low_stock_warning": "Düşük stok - hemen sipariş verin"
-    },
-    "delivery": {
-      "estimated_delivery": "Tahmini teslimat",
-      "order_within": "Aynı gün kargo için {{ hours }} saat içinde sipariş verin",
-      "ships_today": "Bugün kargoya verilir",
-      "ships_tomorrow": "Yarın kargoya verilir"
-    },
-    "social_proof": {
-      "people_viewing": "kişi bunu görüntülüyor",
-      "sold_recently": "son 24 saatte satıldı"
     }
   },
   "customers": {

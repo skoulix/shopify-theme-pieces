@@ -14,6 +14,7 @@
     "skip_to_product_info": "Saltar a la información del producto",
     "close": "Cerrar",
     "close_modal": "Cerrar modal",
+    "modal": "Diálogo",
     "close_cart": "Cerrar carrito",
     "unit_price_separator": "por",
     "vendor": "Proveedor:",
@@ -29,6 +30,7 @@
     "previous_slide": "Diapositiva anterior",
     "go_to_slide": "Ir a la diapositiva {{ index }}",
     "current_slide": "Diapositiva {{ index }}, diapositiva actual",
+    "slide_x_of_y": "Diapositiva {{ current }} de {{ total }}",
     "loading": "Cargando...",
     "total_reviews": "total de reseñas",
     "star_reviews_info": "{{ rating_value }} de {{ rating_max }} estrellas",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Testimonio anterior",
     "next_testimonial": "Siguiente testimonio",
     "go_to_testimonial": "Ir al testimonio {{ index }}",
+    "testimonial_x_of_y": "Testimonio {{ current }} de {{ total }}",
+    "testimonials": "Testimonios",
     "previous_products": "Productos anteriores",
     "next_products": "Productos siguientes",
     "previous_video": "Video anterior",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Eliminado del comparador",
     "cart_updated": "Carrito actualizado",
     "items_in_cart": "{{ count }} artículos en el carrito",
-    "no_image": "No hay imagen disponible",
-    "modal": "Diálogo",
-    "slide_x_of_y": "Diapositiva {{ current }} de {{ total }}",
-    "testimonials": "Testimonios",
-    "testimonial_x_of_y": "Testimonio {{ current }} de {{ total }}"
+    "no_image": "No hay imagen disponible"
   },
   "errors": {
     "network": "Error de red. Por favor, verifica tu conexión e intenta de nuevo.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Inicio",
+      "collections": "Colecciones",
+      "search": "Buscar",
+      "cart": "Carrito"
+    },
     "newsletter": {
       "label": "Mantente actualizado",
       "submit": "Suscribirse",
@@ -151,13 +157,7 @@
     "min_price": "Precio mínimo",
     "max_price": "Precio máximo",
     "to": "a",
-    "shop_now": "Comprar ahora",
-    "breadcrumbs": {
-      "home": "Inicio",
-      "collections": "Colecciones",
-      "search": "Buscar",
-      "cart": "Carrito"
-    }
+    "shop_now": "Comprar ahora"
   },
   "404": {
     "title": "Página no encontrada",
@@ -271,6 +271,7 @@
       "quick_view": "Vista rápida",
       "quick_add": "Agregar rápido",
       "select_options": "Seleccionar opciones",
+      "options": "Opciones",
       "view_product": "Ver producto",
       "view_full_details": "Ver todos los detalles",
       "share": "Compartir",
@@ -279,8 +280,29 @@
         "reset_3d_model": "Restablecer vista del modelo 3D",
         "view_in_ar": "Ver en tu espacio",
         "load_image": "Cargar imagen {{ index }}"
-      },
-      "options": "Opciones"
+      }
+    },
+    "inventory": {
+      "low_stock": "Bajo stock",
+      "only_x_left": "Solo quedan {{ count }}",
+      "almost_gone": "¡Casi agotado!",
+      "selling_fast": "Se vende rápido",
+      "stock_level": "Nivel de stock",
+      "remaining": "restantes",
+      "x_items_left": "{{ count }} artículos restantes",
+      "hurry_almost_gone": "¡Date prisa, casi agotado!",
+      "order_soon": "Ordena pronto - ¡se vende rápido!",
+      "low_stock_warning": "Stock bajo - ordena pronto"
+    },
+    "delivery": {
+      "estimated_delivery": "Entrega estimada",
+      "order_within": "Pide en las próximas {{ hours }}h para envío el mismo día",
+      "ships_today": "Se envía hoy",
+      "ships_tomorrow": "Se envía mañana"
+    },
+    "social_proof": {
+      "people_viewing": "personas están viendo esto",
+      "sold_recently": "vendidos en las últimas 24 horas"
     },
     "size_chart": {
       "title": "Guía de tallas",
@@ -334,20 +356,20 @@
       "type": "Tipo",
       "sku": "SKU",
       "availability": "Disponibilidad",
-      "empty_title": "No hay productos para comparar",
-      "empty_text": "Agregue productos para comparar haciendo clic en el icono de comparación en las tarjetas de productos.",
-      "browse_products": "Explorar productos",
-      "continue_shopping": "Continuar comprando",
-      "open_drawer": "Abrir comparador",
-      "price": "Precio",
-      "items_count": "artículos",
       "weight": "Peso",
       "material": "Material",
       "fabric": "Tela",
       "care": "Instrucciones de cuidado",
       "subtitle": "Subtítulo",
       "rating": "Calificación",
-      "loading": "Cargando datos de comparación..."
+      "loading": "Cargando datos de comparación...",
+      "empty_title": "No hay productos para comparar",
+      "empty_text": "Agregue productos para comparar haciendo clic en el icono de comparación en las tarjetas de productos.",
+      "browse_products": "Explorar productos",
+      "continue_shopping": "Continuar comprando",
+      "open_drawer": "Abrir comparador",
+      "price": "Precio",
+      "items_count": "artículos"
     },
     "wishlist": {
       "title": "Lista de deseos",
@@ -363,28 +385,6 @@
       "clear_all": "Borrar todo",
       "products": "artículos guardados",
       "items_count": "artículos"
-    },
-    "inventory": {
-      "low_stock": "Bajo stock",
-      "only_x_left": "Solo quedan {{ count }}",
-      "almost_gone": "¡Casi agotado!",
-      "selling_fast": "Se vende rápido",
-      "stock_level": "Nivel de stock",
-      "remaining": "restantes",
-      "x_items_left": "{{ count }} artículos restantes",
-      "hurry_almost_gone": "¡Date prisa, casi agotado!",
-      "order_soon": "Ordena pronto - ¡se vende rápido!",
-      "low_stock_warning": "Stock bajo - ordena pronto"
-    },
-    "delivery": {
-      "estimated_delivery": "Entrega estimada",
-      "order_within": "Pide en las próximas {{ hours }}h para envío el mismo día",
-      "ships_today": "Se envía hoy",
-      "ships_tomorrow": "Se envía mañana"
-    },
-    "social_proof": {
-      "people_viewing": "personas están viendo esto",
-      "sold_recently": "vendidos en las últimas 24 horas"
     }
   },
   "customers": {

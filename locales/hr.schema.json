@@ -1492,225 +1492,206 @@
     "header": {
       "name": "Zaglavlje",
       "settings": {
-        "sticky_header": {
-          "label": "Ljepljivo zaglavlje",
+        "header_layout": {
+          "label": "Header Layout",
           "options__0": {
-            "label": "Nema"
+            "label": "Logo Left"
           },
           "options__1": {
-            "label": "Prilikom pomicanja gore"
+            "label": "Logo Center"
           },
-          "options__2": {
-            "label": "Uvijek"
-          }
+          "info": "Controls the position of the logo and navigation"
         },
-        "header__logo": {
-          "content": "Logotip"
+        "nav_position": {
+          "label": "Nav Position",
+          "info": "Position of the main navigation links"
         },
-        "logo_position": {
-          "label": "Pozicija logotipa",
-          "options__0": {
-            "label": "Lijevo"
-          },
-          "options__1": {
-            "label": "Sredina"
-          }
-        },
-        "header__navigation": {
-          "content": "Navigacija"
-        },
-        "menu": {
-          "label": "Izbornik"
-        },
-        "menu_style": {
-          "label": "Stil izbornika",
-          "options__0": {
-            "label": "Padajuci izbornik"
-          },
-          "options__1": {
-            "label": "Mega izbornik"
-          }
-        },
-        "header__actions": {
-          "content": "Radnje"
+        "header__header_icons": {
+          "content": "Header Icons"
         },
         "show_search": {
           "label": "Prikazi pretragu"
         },
-        "show_account": {
-          "label": "Prikazi racun"
+        "search_type": {
+          "label": "Search Type",
+          "options__0": {
+            "label": "Drawer"
+          },
+          "options__1": {
+            "label": "Page"
+          },
+          "info": "Choose between a drawer or full-page search"
         },
         "show_wishlist": {
           "label": "Prikazi listu zelja"
         },
-        "show_compare": {
-          "label": "Prikazi usporedbu"
+        "show_cart": {
+          "label": "Show Cart"
         },
-        "header__mobile": {
-          "content": "Mobilno"
+        "header__localization": {
+          "content": "Localization"
         },
-        "mobile_logo_position": {
-          "label": "Pozicija logotipa za mobilne uredaje",
+        "enable_country_selector": {
+          "label": "Enable Country Selector",
+          "info": "Shows the country/region selector in the header"
+        },
+        "enable_language_selector": {
+          "label": "Enable Language Selector",
+          "info": "Shows the language selector in the header"
+        },
+        "header__mobile_menu": {
+          "content": "Mobile Menu"
+        },
+        "mobile_menu_style": {
+          "label": "Mobile Menu Style",
           "options__0": {
-            "label": "Lijevo"
+            "label": "Accordion"
           },
-          "options__1": {
-            "label": "Sredina"
-          }
-        }
-      }
-    },
-    "hero": {
-      "name": "Heroj",
-      "settings": {
-        "header__media": {
-          "content": "Mediji"
+          "info": "Style of the mobile navigation menu"
         },
-        "header__video": {
-          "content": "Video"
+        "header__sticky_behavior": {
+          "content": "Sticky Behavior"
         },
-        "video_url": {
-          "label": "URL videa",
-          "info": "Koristite YouTube ili Vimeo URL"
+        "sticky_header": {
+          "label": "Ljepljivo zaglavlje",
+          "info": "Header stays fixed at the top when scrolling"
         },
-        "video_file": {
-          "label": "Video datoteka"
+        "hide_on_scroll": {
+          "label": "Hide On Scroll",
+          "info": "Header hides when scrolling down and shows when scrolling up"
         },
-        "autoplay_video": {
-          "label": "Automatska reprodukcija videa"
+        "header__transparent_header": {
+          "content": "Transparent Header"
         },
-        "loop_video": {
-          "label": "Ponavljanje videa"
+        "transparent_home": {
+          "label": "Transparent Home",
+          "info": "Header background is transparent on the home page"
         },
-        "mute_video": {
-          "label": "Utisaj video"
+        "transparent_text_color": {
+          "label": "Transparent Text Color",
+          "info": "Text color when the header is transparent"
         },
-        "header__content_settings": {
-          "content": "Postavke sadrzaja"
+        "header__announcement_bar": {
+          "content": "Announcement Bar"
         },
-        "content_position": {
-          "label": "Pozicija sadrzaja"
+        "show_announcement_bar": {
+          "label": "Show Announcement Bar"
         },
-        "content_width": {
-          "label": "Sirina sadrzaja"
+        "announcement_height": {
+          "label": "Announcement Height"
         },
-        "hero_height": {
-          "label": "Visina heroja",
-          "options__0": {
-            "label": "Automatski"
-          },
-          "options__1": {
-            "label": "Mala"
-          },
-          "options__2": {
-            "label": "Srednja"
-          },
-          "options__3": {
-            "label": "Velika"
-          },
-          "options__4": {
-            "label": "Puni zaslon"
-          }
+        "announcement_rotation": {
+          "label": "Announcement Rotation",
+          "info": "Time in seconds between announcement message rotations"
         },
-        "mobile_hero_height": {
-          "label": "Visina heroja za mobilne uredaje",
-          "options__0": {
-            "label": "Automatski"
-          },
-          "options__1": {
-            "label": "Mala"
-          },
-          "options__2": {
-            "label": "Srednja"
-          },
-          "options__3": {
-            "label": "Velika"
-          },
-          "options__4": {
-            "label": "Puni zaslon"
-          }
+        "announcement_arrows": {
+          "label": "Announcement Arrows"
+        },
+        "announcement_dismissible": {
+          "label": "Announcement Dismissible"
         }
       },
       "blocks": {
-        "label": {
-          "name": "Oznaka",
+        "mega_menu": {
+          "name": "Mega Menu",
           "settings": {
-            "text": {
-              "default": "Nova kolekcija"
+            "menu_item": {
+              "label": "Menu Item",
+              "info": "Enter the exact menu item title to apply the mega menu to"
+            },
+            "animation": {
+              "label": "Animation",
+              "options__0": {
+                "label": "Fade Slide"
+              }
+            },
+            "header__featured_content": {
+              "content": "Featured Content"
+            },
+            "show_featured": {
+              "label": "Show Featured"
+            },
+            "featured_heading": {
+              "label": "Featured Heading",
+              "default": "Featured"
+            },
+            "featured_collection": {
+              "label": "Featured Collection"
+            },
+            "featured_limit": {
+              "label": "Featured Limit"
+            },
+            "header__promotional_image": {
+              "content": "Promotional Image"
+            },
+            "promo_image": {
+              "label": "Promo Image"
+            },
+            "promo_heading": {
+              "label": "Promo Heading"
+            },
+            "promo_text": {
+              "label": "Promo Text"
+            },
+            "promo_link": {
+              "label": "Promo Link"
             }
           }
         },
-        "heading": {
-          "name": "Zaglavlje",
-          "settings": {
-            "heading": {
-              "default": "Otkrijte nasu novu kolekciju"
-            }
-          }
-        },
-        "text": {
-          "name": "Tekst",
-          "settings": {
-            "text": {
-              "default": "Stvorite iskustvo koje ce vasi kupci obozavati."
-            }
-          }
-        },
-        "buttons": {
-          "name": "Gumbi",
-          "settings": {
-            "button_1_text": {
-              "label": "Tekst gumba 1",
-              "default": "Kupujte sada"
-            },
-            "button_1_link": {
-              "label": "Poveznica gumba 1"
-            },
-            "button_2_text": {
-              "label": "Tekst gumba 2",
-              "default": "Saznajte vise"
-            },
-            "button_2_link": {
-              "label": "Poveznica gumba 2"
-            }
-          }
-        }
-      },
-      "presets": {
-        "hero": {
-          "name": "Heroj"
+        "announcement": {
+          "name": "Announcement"
         }
       }
     },
     "hero_orbit": {
       "name": "Orbitalni heroj",
       "settings": {
-        "label": {
-          "default": "Novi dolasci"
+        "title_line_1": {
+          "label": "Title Line 1",
+          "default": "Celestial"
         },
-        "title": {
-          "default": "Otkrijte nasu novu kolekciju"
+        "title_line_2": {
+          "label": "Title Line 2",
+          "default": "Visions"
         },
-        "button_text": {
-          "default": "Kupujte sada"
+        "subtitle": {
+          "label": "Subtitle",
+          "default": "2024"
         },
-        "header__orbital": {
-          "content": "Orbitalni elementi"
+        "animation_style": {
+          "label": "Animation Style",
+          "options__0": {
+            "label": "Orbit"
+          },
+          "options__1": {
+            "label": "Cascade"
+          },
+          "options__2": {
+            "label": "Spiral"
+          },
+          "info": "Controls how the orbital images animate"
         },
-        "orbit_speed": {
-          "label": "Brzina orbite",
-          "info": "Trajanje jedne pune rotacije u sekundama"
+        "enable_rotation": {
+          "label": "Enable Rotation"
         },
-        "pause_on_hover": {
-          "info": "Pauzira orbitalnu animaciju pri prijelazu misem"
+        "enable_flip": {
+          "label": "Enable Flip"
         },
-        "text": {
-          "default": "Istrazite proizvode koji se vrte oko vaseg sadrzaja."
-        }
-      },
-      "blocks": {
-        "product": {
-          "name": "Proizvod"
+        "overlay_opacity": {
+          "info": "Opacity of the overlay on the background image"
+        },
+        "header__cards": {
+          "content": "Cards"
+        },
+        "card_background": {
+          "label": "Card Background"
+        },
+        "image_fit": {
+          "info": "How the orbital images fit within their frames"
+        },
+        "card_tilt": {
+          "label": "Card Tilt",
+          "info": "Adds a 3D tilt effect on hover"
         }
       },
       "presets": {
@@ -1719,34 +1700,109 @@
         }
       }
     },
-    "highlight_text": {
-      "name": "Istaknuti tekst",
+    "hero": {
+      "name": "Heroj",
       "settings": {
         "title": {
-          "default": "Ovo je nasa prica i pricamo je s <strong>ponosom</strong>."
+          "default": "Elevate Your Style"
         },
-        "highlight_style": {
-          "label": "Stil isticanja",
-          "options__0": {
-            "label": "Podcrtavanje"
-          },
-          "options__1": {
-            "label": "Marker"
-          },
-          "options__2": {
-            "label": "Krug"
-          },
-          "options__3": {
-            "label": "Precrtavanje"
+        "button_text": {
+          "default": "Shop Now"
+        },
+        "color_scheme": {
+          "info": "Applied to the section when no background image is set"
+        },
+        "text": {
+          "default": "Discover our curated collection of premium products designed for the modern lifestyle."
+        }
+      },
+      "presets": {
+        "hero": {
+          "name": "Heroj"
+        }
+      }
+    },
+    "highlight_text": {
+      "name": "Istaknuti tekst",
+      "blocks": {
+        "heading": {
+          "settings": {
+            "heading": {
+              "default": "Highlight text as you scroll down the page"
+            },
+            "heading_tag": {
+              "label": "Heading Tag",
+              "options__0": {
+                "label": "H2"
+              },
+              "options__1": {
+                "label": "H3"
+              },
+              "options__2": {
+                "label": "H4"
+              },
+              "options__3": {
+                "label": "H5"
+              },
+              "options__4": {
+                "label": "H6"
+              }
+            },
+            "heading_size": {
+              "label": "Heading Size",
+              "options__0": {
+                "label": "Sm"
+              },
+              "options__1": {
+                "label": "Md"
+              },
+              "options__2": {
+                "label": "Lg"
+              },
+              "options__3": {
+                "label": "Xl"
+              },
+              "options__4": {
+                "label": "2xl"
+              }
+            },
+            "scroll_start": {
+              "info": "Scroll position where the highlight animation begins",
+              "default": "top 90%"
+            },
+            "scroll_end": {
+              "info": "Scroll position where the highlight animation ends",
+              "default": "center 40%"
+            },
+            "fade_opacity": {
+              "label": "Fade Opacity",
+              "info": "Opacity of unhighlighted text"
+            },
+            "stagger": {
+              "label": "Stagger",
+              "info": "Delay between highlighting each word"
+            }
           }
         },
-        "highlight_color": {
-          "label": "Boja isticanja"
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Add supporting text below your heading."
+            }
+          }
         }
       },
       "presets": {
         "highlight_text": {
-          "name": "Istaknuti tekst"
+          "name": "Istaknuti tekst",
+          "blocks": {
+            "heading": {
+              "0": {
+                "heading": "Highlight text as you scroll down the page",
+                "heading_size": "xl"
+              }
+            }
+          }
         }
       }
     },
@@ -1759,24 +1815,48 @@
         "title": {
           "default": "Vodoravna galerija"
         },
-        "scroll_speed": {
-          "info": "Kontrolira koliko brzo odjeljak se pomice (1 = sporo, 5 = brzo)"
-        },
-        "image_height": {
-          "label": "Visina slike"
-        },
         "text": {
           "default": "Pomicite se vodoravno kroz nasu galeriju."
         }
       },
       "blocks": {
         "image": {
-          "name": "Slika"
+          "settings": {
+            "label": {
+              "default": "Category"
+            },
+            "title": {
+              "default": "Image Title"
+            },
+            "text": {
+              "default": "A brief description of this image or collection."
+            }
+          }
         }
       },
       "presets": {
         "horizontal_scroll": {
-          "name": "Vodoravno pomicanje"
+          "name": "Vodoravno pomicanje",
+          "blocks": {
+            "image": {
+              "0": {
+                "title": "Curated Selection",
+                "text": "Discover our handpicked favorites"
+              },
+              "1": {
+                "title": "New Arrivals",
+                "text": "The latest additions to our collection"
+              },
+              "2": {
+                "title": "Best Sellers",
+                "text": "Our most loved products"
+              },
+              "3": {
+                "title": "Limited Edition",
+                "text": "Exclusive items you won't find elsewhere"
+              }
+            }
+          }
         }
       }
     },
@@ -1789,58 +1869,184 @@
         "title": {
           "default": "Interaktivna slika"
         },
-        "text": {
-          "default": "Kliknite na zariste tocke za prikaz detalja proizvoda."
+        "desktop_image": {
+          "label": "Desktop image",
+          "info": "Recommended: 1920x1080px or similar aspect ratio"
+        },
+        "mobile_image": {
+          "label": "Mobile image",
+          "info": "Optional: Different image for mobile devices"
         }
       },
       "blocks": {
         "hotspot": {
-          "name": "Zariste tocka"
-        }
-      },
-      "presets": {
-        "hotspots": {
-          "name": "Zariste tocke"
-        }
-      }
-    },
-    "image": {
-      "name": "Slika",
-      "settings": {
-        "image_width": {
-          "label": "Sirina slike",
-          "options__0": {
-            "label": "Puna sirina"
-          },
-          "options__1": {
-            "label": "Sadrzaj"
+          "name": "Zariste tocka",
+          "settings": {
+            "header__position": {
+              "content": "Position"
+            },
+            "link_url": {
+              "label": "Link URL"
+            },
+            "header__dot_appearance": {
+              "content": "Dot Appearance"
+            },
+            "header__popover_appearance": {
+              "content": "Popover Appearance"
+            },
+            "popover_position": {
+              "label": "Popover Position"
+            },
+            "title_color": {
+              "label": "Title Color"
+            },
+            "description_color": {
+              "label": "Description Color"
+            },
+            "link_color": {
+              "label": "Link Color"
+            },
+            "text": {
+              "default": "Describe this feature or specification in detail."
+            }
           }
         }
       },
       "presets": {
-        "image": {
-          "name": "Slika"
+        "hotspots": {
+          "name": "Zariste tocke",
+          "blocks": {
+            "hotspot": {
+              "0": {
+                "title": "Premium Materials",
+                "text": "Crafted with high-quality materials for durability and comfort."
+              },
+              "1": {
+                "title": "Advanced Technology",
+                "text": "Features cutting-edge technology for optimal performance."
+              },
+              "2": {
+                "title": "Ergonomic Design",
+                "text": "Designed with comfort and usability in mind."
+              }
+            }
+          }
         }
       }
     },
     "image_sequence": {
       "name": "Sekvenca slika",
       "settings": {
-        "header__sequence": {
-          "content": "Sekvenca"
+        "header__image_sequence": {
+          "content": "Image Sequence"
         },
-        "frame_count": {
-          "label": "Broj kadrova",
-          "info": "Ukupan broj slika u sekvenci"
+        "desktop_source": {
+          "label": "Desktop Source",
+          "info": "URL pattern for desktop frame images (use {frame} as placeholder)"
         },
-        "image_prefix": {
-          "label": "Prefiks slike",
-          "info": "Zajednicki prefiks za datoteke slika (npr. 'frame-' za frame-001.jpg)"
+        "mobile_source": {
+          "label": "Mobile Source",
+          "info": "URL pattern for mobile frame images (use {frame} as placeholder)"
+        },
+        "static_image": {
+          "label": "Static Image",
+          "info": "Fallback image shown before the sequence loads"
+        },
+        "frames": {
+          "label": "Frames",
+          "info": "Total number of frames in the sequence"
+        },
+        "digits": {
+          "label": "Digits",
+          "info": "Number of digits for zero-padding frame numbers"
+        },
+        "index_start": {
+          "label": "Index Start",
+          "info": "Starting frame number (usually 0 or 1)"
+        },
+        "filetype": {
+          "label": "Filetype",
+          "options__0": {
+            "label": "Webp"
+          },
+          "options__1": {
+            "label": "Jpg"
+          },
+          "options__2": {
+            "label": "Png"
+          },
+          "options__3": {
+            "label": "Avif"
+          }
+        },
+        "header__scroll_behavior": {
+          "content": "Scroll Behavior"
+        },
+        "scroll_height": {
+          "label": "Scroll Height",
+          "info": "Scroll distance to play through all frames (in vh)"
+        },
+        "scroll_start": {
+          "info": "Scroll position where the animation begins",
+          "default": "top top"
+        },
+        "scroll_end": {
+          "info": "Scroll position where the animation ends",
+          "default": "bottom top"
+        },
+        "header__overlay_and_content": {
+          "content": "Overlay And Content"
+        }
+      },
+      "blocks": {
+        "label": {
+          "name": "Label",
+          "settings": {
+            "text": {
+              "default": "SCROLL TO EXPLORE"
+            }
+          }
+        },
+        "heading": {
+          "settings": {
+            "text": {
+              "default": "Image Sequence"
+            }
+          }
+        },
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Scroll through this section to see the animation unfold frame by frame."
+            }
+          }
+        },
+        "button": {
+          "settings": {
+            "url": {
+              "label": "URL"
+            }
+          }
         }
       },
       "presets": {
         "image_sequence": {
-          "name": "Sekvenca slika"
+          "name": "Sekvenca slika",
+          "settings": {
+            "filetype": "webp"
+          },
+          "blocks": {
+            "label": {
+              "0": {
+                "text": "SCROLL TO EXPLORE"
+              }
+            },
+            "heading": {
+              "1": {
+                "text": "Image Sequence"
+              }
+            }
+          }
         }
       }
     },
@@ -1853,29 +2059,97 @@
         "title": {
           "default": "Slika s tekstom"
         },
-        "image_position": {
-          "label": "Pozicija slike"
-        },
         "text": {
           "default": "<p>Uparite tekst sa slikom kako biste fokusirali odabrani proizvod, kolekciju ili objavu na blogu.</p>"
         }
       },
+      "blocks": {
+        "stat": {
+          "settings": {
+            "number": {
+              "default": "100+"
+            },
+            "label": {
+              "default": "Products"
+            }
+          }
+        }
+      },
       "presets": {
         "image_with_text": {
-          "name": "Slika s tekstom"
+          "name": "Slika s tekstom",
+          "blocks": {
+            "stat": {
+              "0": {
+                "number": "10+",
+                "label": "Years"
+              },
+              "1": {
+                "number": "50K",
+                "label": "Customers"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "name": "Slika",
+      "settings": {
+        "caption": {
+          "label": "Caption"
+        },
+        "image_width": {
+          "label": "Sirina slike"
+        },
+        "image_alignment": {
+          "label": "Image Alignment"
+        },
+        "reveal_effect": {
+          "label": "Reveal Effect",
+          "options__1": {
+            "label": "Fade Up"
+          },
+          "options__2": {
+            "label": "Scale"
+          },
+          "options__3": {
+            "label": "Clip Right"
+          },
+          "options__4": {
+            "label": "Clip Left"
+          },
+          "options__5": {
+            "label": "Clip Up"
+          },
+          "options__6": {
+            "label": "Clip Down"
+          }
+        },
+        "parallax_intensity": {
+          "label": "Parallax Intensity"
+        }
+      },
+      "presets": {
+        "image": {
+          "name": "Slika"
         }
       }
     },
     "logo_marquee": {
       "name": "Pokretni logotipi",
       "settings": {
-        "title": {
-          "default": "Nasi partneri"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Logotip"
+        "label": {
+          "default": "As Featured In"
+        },
+        "logo_max_width": {
+          "label": "Logo Max Width"
+        },
+        "logo_opacity": {
+          "label": "Logo Opacity"
+        },
+        "grayscale": {
+          "info": "Displays logos in grayscale"
         }
       },
       "presets": {
@@ -1887,17 +2161,29 @@
     "logo_wall_cycle": {
       "name": "Ciklicka zidina logotipa",
       "settings": {
-        "title": {
-          "default": "Vjeruju nam"
+        "label": {
+          "default": "Trusted By"
         },
-        "cycle_speed": {
-          "label": "Brzina ciklusa",
-          "info": "Vrijeme u sekundama izmedu ciklusa logotipa"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Logotip"
+        "visible_desktop": {
+          "label": "Visible Desktop",
+          "info": "Number of logos visible at once on desktop"
+        },
+        "visible_tablet": {
+          "label": "Visible Tablet"
+        },
+        "visible_mobile": {
+          "label": "Visible Mobile"
+        },
+        "gap": {
+          "label": "Gap"
+        },
+        "loop_delay": {
+          "label": "Loop Delay",
+          "info": "Time in seconds between logo transitions"
+        },
+        "shuffle": {
+          "label": "Shuffle",
+          "info": "Randomizes the order of logos"
         }
       },
       "presets": {
@@ -1906,75 +2192,123 @@
         }
       }
     },
-    "main_about": {
-      "name": "Stranica \"O nama\""
-    },
     "map": {
       "name": "Karta",
       "settings": {
+        "label": {
+          "default": "Visit Us"
+        },
         "title": {
           "default": "Nasa lokacija"
         },
-        "map_address": {
-          "label": "Adresa karte"
+        "header__location": {
+          "content": "Location"
         },
-        "header__map_settings": {
-          "content": "Postavke karte"
+        "location_name": {
+          "label": "Location Name",
+          "info": "Displayed as the marker title",
+          "default": "Our Store"
         },
-        "map_zoom": {
-          "label": "Zumiranje karte"
+        "address": {
+          "info": "Full address displayed below the map",
+          "default": "123 Main Street\nNew York, NY 10001"
         },
-        "map_style": {
-          "label": "Stil karte",
-          "options__0": {
-            "label": "Standardni"
-          },
-          "options__1": {
-            "label": "Srebrni"
-          },
-          "options__2": {
-            "label": "Tamni"
-          },
-          "options__3": {
-            "label": "Retro"
+        "latitude": {
+          "label": "Latitude",
+          "info": "Latitude coordinate for the map center",
+          "default": "40.7128"
+        },
+        "longitude": {
+          "label": "Longitude",
+          "info": "Longitude coordinate for the map center",
+          "default": "-74.0060"
+        },
+        "zoom": {
+          "label": "Zoom",
+          "info": "Map zoom level"
+        },
+        "show_popup": {
+          "label": "Show Popup"
+        },
+        "header__styling": {
+          "content": "Styling"
+        },
+        "map_height": {
+          "label": "Map height"
+        },
+        "marker_color": {
+          "label": "Marker color"
+        },
+        "grayscale": {
+          "info": "Displays the map in grayscale"
+        }
+      },
+      "blocks": {
+        "address": {
+          "name": "Address",
+          "settings": {
+            "title": {
+              "default": "Address"
+            },
+            "address": {
+              "default": "123 Main Street\nNew York, NY 10001"
+            }
           }
         },
-        "header__store_info": {
-          "content": "Informacije o trgovini"
+        "hours": {
+          "name": "Hours",
+          "settings": {
+            "title": {
+              "default": "Hours"
+            },
+            "hours": {
+              "label": "Hours",
+              "default": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+            }
+          }
         },
-        "store_name": {
-          "label": "Naziv trgovine"
+        "contact": {
+          "name": "Contact",
+          "settings": {
+            "title": {
+              "default": "Contact"
+            },
+            "phone": {
+              "label": "Phone"
+            },
+            "email": {
+              "label": "Email"
+            }
+          }
         },
-        "store_hours": {
-          "label": "Radno vrijeme trgovine"
-        },
-        "store_phone": {
-          "label": "Telefon trgovine"
-        },
-        "text": {
-          "default": "Dodite i posjetite nas. Jedva cekamo vas vidjeti!"
+        "custom": {
+          "name": "Custom"
         }
       },
       "presets": {
         "map": {
-          "name": "Karta"
-        }
-      }
-    },
-    "marquee": {
-      "name": "Pokretni tekst",
-      "settings": {
-        "text": {
-          "default": "Dobrodosli u nasu trgovinu - Besplatna dostava za narudzbe iznad 400 kn - Novi dolasci svaki tjedan -"
-        },
-        "separator": {
-          "label": "Razdjelnik",
-          "info": "Tekst ili simbol izmedu ponavljanja"
-        }
-      },
-      "presets": {
-        "marquee": {
-          "name": "Pokretni tekst"
+          "name": "Karta",
+          "blocks": {
+            "address": {
+              "0": {
+                "title": "Address",
+                "address": "123 Main Street\nNew York, NY 10001"
+              }
+            },
+            "hours": {
+              "1": {
+                "title": "Hours",
+                "hours": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+              }
+            },
+            "contact": {
+              "2": {
+                "title": "Contact",
+                "phone": "(555) 123-4567",
+                "email": "hello@example.com"
+              }
+            }
+          }
         }
       }
     },
@@ -1983,40 +2317,135 @@
       "settings": {
         "text": {
           "default": "DOBRODOSLI - U NASU - TRGOVINU -"
+        },
+        "radius": {
+          "label": "Radius",
+          "info": "Radius of the circular path"
+        },
+        "header__spacer": {
+          "content": "Spacer"
+        },
+        "spacer": {
+          "label": "Spacer",
+          "info": "Adds a spacer between text items",
+          "default": "-"
+        },
+        "spacer_color": {
+          "label": "Spacer Color"
+        },
+        "spacer_padding": {
+          "label": "Spacer Padding",
+          "info": "Space between text and spacer characters"
         }
       },
       "presets": {
         "marquee_radial": {
-          "name": "Radijalni pokretni tekst"
+          "name": "Radijalni pokretni tekst",
+          "settings": {
+            "text": "Radial Text Marquee"
+          }
+        }
+      }
+    },
+    "marquee": {
+      "name": "Pokretni tekst",
+      "blocks": {
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Free Shipping"
+            }
+          }
+        },
+        "separator": {
+          "name": "Separator",
+          "settings": {
+            "style": {
+              "options__0": {
+                "label": "Dot"
+              },
+              "options__1": {
+                "label": "Icon"
+              }
+            }
+          }
+        }
+      },
+      "presets": {
+        "marquee": {
+          "name": "Pokretni tekst",
+          "blocks": {
+            "text": {
+              "0": {
+                "text": "Free Shipping"
+              },
+              "2": {
+                "text": "New Arrivals"
+              },
+              "4": {
+                "text": "Limited Edition"
+              }
+            },
+            "separator": {
+              "1": {
+                "style": "dot"
+              },
+              "3": {
+                "style": "icon"
+              },
+              "5": {
+                "style": "dot"
+              }
+            }
+          }
         }
       }
     },
     "newsletter": {
       "name": "Bilten",
       "settings": {
-        "label": {
-          "default": "Pretplatite se"
+        "design": {
+          "options__0": {
+            "label": "Side by side"
+          },
+          "options__1": {
+            "label": "Stacked"
+          },
+          "options__2": {
+            "label": "Card"
+          }
         },
         "title": {
           "default": "Pretplatite se na nas bilten"
         },
-        "header__form": {
-          "content": "Obrazac"
-        },
-        "placeholder": {
-          "label": "Placeholder",
-          "default": "Unesite vasu e-postu"
+        "text": {
+          "default": "Primajte najnovije vijesti, azuriranja i ekskluzivne ponude izravno u vasu pristiglu postu."
         },
         "button_text": {
           "default": "Pretplatite se"
         },
-        "text": {
-          "default": "Primajte najnovije vijesti, azuriranja i ekskluzivne ponude izravno u vasu pristiglu postu."
+        "header__privacy_notice": {
+          "content": "Privacy notice"
+        },
+        "privacy_text": {
+          "label": "Privacy text",
+          "info": "Displayed below the subscribe form",
+          "default": "We care about your data. Read our"
+        },
+        "privacy_link": {
+          "label": "Privacy link"
+        },
+        "privacy_link_text": {
+          "label": "Privacy link text",
+          "default": "privacy policy"
         }
       },
       "presets": {
         "newsletter": {
-          "name": "Bilten"
+          "name": "Bilten",
+          "settings": {
+            "design": "side-by-side"
+          }
         }
       }
     },
@@ -2024,80 +2453,129 @@
       "name": "Stranica"
     },
     "password": {
-      "name": "Lozinka"
+      "name": "Lozinka",
+      "settings": {
+        "heading": {
+          "default": "Opening Soon"
+        },
+        "subheading": {
+          "label": "Subheading",
+          "default": "We're working on something special. Enter the password to get early access."
+        },
+        "header__newsletter": {
+          "content": "Newsletter"
+        },
+        "show_newsletter": {
+          "label": "Show newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Newsletter heading",
+          "default": "Be the first to know"
+        },
+        "newsletter_text": {
+          "label": "Newsletter text",
+          "default": "Sign up for updates and get notified when we launch."
+        },
+        "header__social": {
+          "content": "Social"
+        },
+        "show_social": {
+          "info": "Configure social links in theme settings"
+        }
+      }
     },
     "pickup_availability": {
       "name": "Dostupnost preuzimanja"
     },
     "pinned_image_reveal": {
       "name": "Prikaceno otkrivanje slike",
-      "settings": {
-        "header__pinned": {
-          "content": "Prikacena slika"
-        }
-      },
       "blocks": {
-        "content": {
-          "name": "Sadrzaj",
+        "slide": {
           "settings": {
-            "heading": {
-              "default": "Sadrzaj odjeljka"
+            "title": {
+              "default": "Discover Our Story"
+            },
+            "background_color": {
+              "label": "Background color",
+              "info": "Transition between panels"
             },
             "text": {
-              "default": "Dodajte opis za ovaj odjeljak."
+              "default": "Scroll to reveal beautiful imagery and learn more about what makes us unique."
             }
           }
         }
       },
       "presets": {
         "pinned_image_reveal": {
-          "name": "Prikaceno otkrivanje slike"
+          "name": "Prikaceno otkrivanje slike",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Green Cityscape",
+                "button_text": "Learn More",
+                "text": "Vibrant streets with vertical gardens and solar buildings. This oasis thrives on renewable energy, smart transport, and green spaces for biodiversity."
+              },
+              "1": {
+                "title": "Blue Urban Oasis",
+                "button_text": "Learn More",
+                "text": "Avenues with azure facades and eco-structures. This hub uses clean energy, smart transit, and parks for urban wildlife."
+              },
+              "2": {
+                "title": "Fluid Architecture",
+                "button_text": "Learn More",
+                "text": "Desert refuge with fluid architecture and glowing interiors. This sanctuary harnesses solar power, sustainable design, and natural harmony."
+              }
+            }
+          }
         }
       }
     },
     "product": {
       "name": "Proizvod",
       "settings": {
-        "header__gallery": {
-          "content": "Galerija"
-        },
-        "enable_lightbox": {
-          "label": "Omoguci lightbox"
-        },
-        "thumbnail_position": {
-          "label": "Pozicija minijatura",
-          "options__0": {
-            "label": "Ispod"
+        "image_fit": {
+          "options__3": {
+            "label": "Portrait"
           },
-          "options__1": {
-            "label": "Lijevo"
-          },
-          "options__2": {
-            "label": "Desno"
+          "options__4": {
+            "label": "Landscape"
           }
         },
-        "header__video": {
-          "content": "Video"
+        "thumbnail_position": {
+          "label": "Pozicija minijatura"
         },
-        "enable_video": {
-          "label": "Omoguci video"
+        "enable_lightbox": {
+          "label": "Omoguci lightbox",
+          "info": "Allow customers to zoom into product images"
         },
-        "loop_video": {
-          "label": "Ponavljanje videa"
+        "video_loop": {
+          "label": "Loop video"
         },
-        "autoplay_video": {
-          "label": "Automatska reprodukcija kad je vidljiv"
+        "video_autoplay": {
+          "label": "Autoplay video",
+          "info": "Video will autoplay muted"
         },
-        "header__sticky_bar": {
-          "content": "Ljepljiva traka"
+        "header__sticky_add_to_cart": {
+          "content": "Sticky add to cart"
         },
-        "enable_sticky_bar": {
-          "label": "Omoguci ljepljivu traku"
+        "show_sticky_bar": {
+          "label": "Show sticky add to cart",
+          "info": "Shows a sticky bar at the bottom with add to cart"
         }
       },
       "blocks": {
         "breadcrumbs": {
-          "name": "Navigacijska staza"
+          "name": "Navigacijska staza",
+          "settings": {
+            "separator": {
+              "label": "Separator",
+              "default": "/"
+            },
+            "show_home_icon": {
+              "label": "Show home icon",
+              "info": "Replaces the Home text with an icon"
+            }
+          }
         },
         "vendor": {
           "name": "Dobavljac"
@@ -2105,8 +2583,9 @@
         "title": {
           "name": "Naslov",
           "settings": {
-            "split_words_into_lines": {
-              "label": "Razdvoji rijeci u retke"
+            "split_words": {
+              "label": "Split words",
+              "info": "Splits the title into individual animated words"
             }
           }
         },
@@ -2116,20 +2595,32 @@
         "inventory_countdown": {
           "name": "Odbrojavanje zaliha",
           "settings": {
-            "low_inventory_threshold": {
-              "label": "Prag niskih zaliha",
-              "info": "Prikazuje upozorenje kada zalihe padnu ispod ove vrijednosti"
+            "threshold": {
+              "label": "Threshold",
+              "info": "Show when inventory is at or below this number"
+            },
+            "style": {
+              "options__2": {
+                "label": "Badge"
+              }
+            },
+            "show_exact_count": {
+              "label": "Show exact count",
+              "info": "Show the exact inventory count instead of just the indicator"
+            },
+            "show_icon": {
+              "label": "Show icon"
             }
           }
         },
         "description": {
           "name": "Opis",
           "settings": {
-            "truncate_description": {
-              "label": "Skrati opis"
+            "truncate_length": {
+              "label": "Truncate length"
             },
-            "max_lines": {
-              "label": "Maksimalno redaka"
+            "enable_shuffle": {
+              "label": "Enable shuffle"
             }
           }
         },
@@ -2137,34 +2628,30 @@
           "name": "Odabir varijante",
           "settings": {
             "picker_type": {
-              "label": "Vrsta odabira",
-              "options__0": {
-                "label": "Gumbi"
-              },
-              "options__1": {
-                "label": "Padajuci izbornik"
-              }
-            },
-            "show_variant_labels": {
-              "label": "Prikazi oznake varijanti"
-            },
-            "enable_color_swatches": {
-              "label": "Omoguci uzorke boja"
+              "label": "Vrsta odabira"
             }
           }
         },
         "quantity_selector": {
-          "name": "Odabir kolicine"
+          "name": "Odabir kolicine",
+          "settings": {
+            "label": {
+              "default": "Quantity"
+            }
+          }
         },
         "buy_buttons": {
           "name": "Gumbi za kupnju",
           "settings": {
-            "show_dynamic_checkout": {
-              "label": "Prikazi dinamicku naplatu"
+            "add_to_cart_text": {
+              "label": "Add to cart text"
             },
-            "show_gift_card_recipient": {
-              "label": "Prikazi primatelja poklon kartice",
-              "info": "Prikazuje obrazac za primatelja za proizvode s poklon karticama"
+            "sold_out_text": {
+              "label": "Sold out text"
+            },
+            "show_dynamic_checkout": {
+              "label": "Prikazi dinamicku naplatu",
+              "info": "Shows additional payment buttons like Shop Pay, Apple Pay, etc."
             }
           }
         },
@@ -2172,41 +2659,17 @@
           "name": "Dostupnost preuzimanja"
         },
         "delivery_estimator": {
-          "name": "Procjena dostave",
-          "settings": {
-            "shipping_days_min": {
-              "label": "Minimalno dana za dostavu"
-            },
-            "shipping_days_max": {
-              "label": "Maksimalno dana za dostavu"
-            }
-          }
+          "name": "Procjena dostave"
         },
         "social_proof": {
-          "name": "Drustveni dokaz",
-          "settings": {
-            "show_viewers": {
-              "label": "Prikazi gledatelje"
-            },
-            "viewers_min": {
-              "label": "Minimalno gledatelja"
-            },
-            "viewers_max": {
-              "label": "Maksimalno gledatelja"
-            },
-            "show_purchases": {
-              "label": "Prikazi kupnje"
-            },
-            "purchases_min": {
-              "label": "Minimalno kupnji"
-            },
-            "purchases_max": {
-              "label": "Maksimalno kupnji"
-            }
-          }
+          "name": "Drustveni dokaz"
         },
         "text": {
-          "name": "Tekst"
+          "settings": {
+            "text": {
+              "default": "<p>Add custom text like shipping info or care instructions.</p>"
+            }
+          }
         },
         "collapsible_tab": {
           "name": "Sklopiva kartica",
@@ -2215,54 +2678,77 @@
               "default": "Sklopiva kartica"
             },
             "content": {
-              "label": "Sadrzaj"
-            },
-            "page": {
-              "label": "Stranica",
-              "info": "Sadrzaj stranice ce zamijeniti tekst iznad"
-            },
-            "open_by_default": {
-              "label": "Otvoreno po zadanom"
+              "default": "<p>Add content for this collapsible tab.</p>"
             }
           }
         },
         "size_chart": {
           "name": "Tablica velicina",
           "settings": {
-            "link_text": {
-              "default": "Tablica velicina"
+            "drawer_heading": {
+              "label": "Drawer heading"
             },
             "page": {
               "label": "Stranica",
               "info": "Odaberite stranicu s tablicom velicina za prikaz"
+            },
+            "content": {
+              "info": "Used if no page is selected"
+            },
+            "show_always": {
+              "label": "Show always",
+              "info": "Show size chart for all products, not just those with a Size option"
             }
           }
         },
         "back_in_stock": {
-          "name": "Ponovno na zalihi",
+          "name": "Ponovno na zalihi"
+        },
+        "complementary_products": {
+          "name": "Komplementarni proizvodi",
           "settings": {
-            "heading": {
-              "default": "Obavijesti me kada bude dostupno"
+            "paragraph__description": {
+              "content": "Add complementary products using the Shopify Search & Discovery app."
             },
-            "text": {
-              "default": "Registrirajte se za primanje obavijesti kada ovaj proizvod bude ponovno na zalihi."
+            "title": {
+              "info": "Leave blank to hide the heading"
             }
           }
         },
-        "complementary_products": {
-          "name": "Komplementarni proizvodi"
-        },
         "wishlist_button": {
-          "name": "Gumb liste zelja"
+          "name": "Gumb liste zelja",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist to be enabled in theme settings."
+            }
+          }
         },
         "compare_button": {
-          "name": "Gumb usporedbe"
+          "name": "Gumb usporedbe",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires compare to be enabled in theme settings."
+            }
+          }
         },
-        "wishlist_compare": {
-          "name": "Lista zelja i usporedba"
+        "wc_buttons": {
+          "name": "Wishlist & Compare buttons",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist and/or compare to be enabled in theme settings."
+            },
+            "display_style": {
+              "label": "Display style"
+            }
+          }
         },
         "social_actions": {
-          "name": "Drustvene radnje"
+          "name": "Drustvene radnje",
+          "settings": {
+            "paragraph__description": {
+              "content": "Shows share buttons for the current product."
+            }
+          }
         }
       }
     },
@@ -2272,6 +2758,12 @@
     "recently_viewed": {
       "name": "Nedavno pregledano",
       "settings": {
+        "paragraph__description": {
+          "content": "Products shown here are based on the visitor's browsing history stored in their browser."
+        },
+        "label": {
+          "default": "Recently browsed"
+        },
         "title": {
           "default": "Nedavno pregledano"
         }
@@ -2285,6 +2777,12 @@
     "related_products": {
       "name": "Povezani proizvodi",
       "settings": {
+        "paragraph__description": {
+          "content": "Products are automatically selected based on Shopify's product recommendation algorithm."
+        },
+        "label": {
+          "default": "You may also like"
+        },
         "title": {
           "default": "Moglo bi vam se svidjeti"
         }
@@ -2298,28 +2796,36 @@
     "rolling_numbers": {
       "name": "Rotirajuci brojevi",
       "settings": {
-        "label": {
-          "default": "Nas utjecaj"
-        },
         "title": {
           "default": "Brojevi govore sami za sebe"
         },
-        "text": {
-          "default": "Ponosni smo na nasa postignuca i nastavljamo rasti."
+        "show_dividers": {
+          "info": "Shows separator lines between number blocks"
+        },
+        "animation_duration": {
+          "info": "Duration of the rolling animation in milliseconds"
         }
       },
       "blocks": {
         "stat": {
-          "name": "Statistika",
           "settings": {
+            "number": {
+              "info": "The target number to animate to",
+              "default": "100"
+            },
             "prefix": {
-              "label": "Prefiks"
+              "label": "Prefiks",
+              "info": "Text displayed before the number (e.g., $)"
             },
             "suffix": {
-              "label": "Sufiks"
+              "label": "Sufiks",
+              "info": "Text displayed after the number (e.g., +, %, K)"
             },
             "label": {
               "default": "Zadovoljnih kupaca"
+            },
+            "text": {
+              "info": "Short description displayed below"
             }
           }
         }
@@ -2327,22 +2833,31 @@
       "presets": {
         "rolling_numbers": {
           "name": "Rotirajuci brojevi",
+          "settings": {
+            "title": "By the Numbers",
+            "text": "Our impact in numbers that speak for themselves."
+          },
           "blocks": {
             "stat": {
               "0": {
-                "number": "10000",
                 "suffix": "+",
-                "label": "Zadovoljnih kupaca"
+                "label": "Zadovoljnih kupaca",
+                "text": "Worldwide satisfaction"
               },
               "1": {
-                "number": "500",
                 "suffix": "+",
-                "label": "Proizvoda"
+                "label": "Proizvoda",
+                "text": "Based on reviews"
               },
               "2": {
-                "number": "50",
                 "suffix": "+",
-                "label": "Drzava"
+                "label": "Drzava",
+                "text": "Global shipping"
+              },
+              "3": {
+                "suffix": "/7",
+                "label": "Support",
+                "text": "Always here to help"
               }
             }
           }
@@ -2351,12 +2866,23 @@
     },
     "scroll_panels": {
       "name": "Ploce za pomicanje",
+      "settings": {
+        "header__display": {
+          "content": "Display"
+        },
+        "show_numbers": {
+          "label": "Show numbers"
+        },
+        "show_progress": {
+          "label": "Show progress"
+        }
+      },
       "blocks": {
         "panel": {
           "name": "Ploca",
           "settings": {
-            "heading": {
-              "default": "Naslov ploce"
+            "title": {
+              "default": "Panel Title"
             },
             "text": {
               "default": "Opis ploce koji objasnjava ovu znacajku ili korak."
@@ -2366,15 +2892,40 @@
       },
       "presets": {
         "scroll_panels": {
-          "name": "Ploce za pomicanje"
+          "name": "Ploce za pomicanje",
+          "blocks": {
+            "panel": {
+              "0": {
+                "title": "Discover Our Story",
+                "text": "Every great brand has a story. This is where yours begins.",
+                "button_text": "Learn More"
+              },
+              "1": {
+                "title": "Crafted With Care",
+                "text": "We believe in quality over quantity. Each product is made to last.",
+                "button_text": "Our Process"
+              },
+              "2": {
+                "title": "Join the Movement",
+                "text": "Be part of something bigger. Shop consciously, live intentionally.",
+                "button_text": "Shop Now"
+              }
+            }
+          }
         }
       }
     },
     "search": {
       "name": "Pretraga",
       "settings": {
-        "show_product_count": {
-          "label": "Prikazi broj proizvoda"
+        "show_popular_searches": {
+          "label": "Show popular searches",
+          "info": "Show suggested searches when the search field is empty"
+        },
+        "popular_searches": {
+          "label": "Popular searches",
+          "info": "Comma-separated list of search terms",
+          "default": "New arrivals, Sale, Best sellers"
         }
       }
     },
@@ -2387,13 +2938,35 @@
         "title": {
           "default": "Upotpunite izgled"
         },
-        "text": {
-          "default": "Kliknite na tocke za kupnju proizvoda."
+        "image": {
+          "info": "Main image for the shop the look section"
+        },
+        "header__product_display": {
+          "content": "Product display"
+        },
+        "add_all_title": {
+          "label": "Add All Title",
+          "default": "Complete the Look"
+        },
+        "add_all_button": {
+          "label": "Add All Button",
+          "default": "Add All"
+        },
+        "header__hotspot_style": {
+          "content": "Hotspot Style"
+        },
+        "dot_text_color": {
+          "label": "Dot Text Color"
         }
       },
       "blocks": {
-        "product_dot": {
-          "name": "Tocka proizvoda"
+        "product": {
+          "name": "Product",
+          "settings": {
+            "header__hotspot_position": {
+              "content": "Hotspot Position"
+            }
+          }
         }
       },
       "presets": {
@@ -2411,13 +2984,33 @@
         "title": {
           "default": "Kupujte iz videa"
         },
-        "text": {
-          "default": "Gledajte i kupujte izravno iz nasih videozapisa."
+        "videos_desktop": {
+          "label": "Videos Desktop"
+        },
+        "videos_tablet": {
+          "label": "Videos Tablet"
+        },
+        "videos_mobile": {
+          "label": "Videos Mobile"
+        },
+        "video_spacing": {
+          "label": "Video Spacing"
+        },
+        "show_product_info": {
+          "label": "Show Product Info"
+        },
+        "autoplay_speed": {
+          "info": "Time in seconds between video rotations"
         }
       },
       "blocks": {
         "video": {
-          "name": "Video"
+          "name": "Video",
+          "settings": {
+            "video_hosted": {
+              "label": "Video Hosted"
+            }
+          }
         }
       },
       "presets": {
@@ -2429,47 +3022,99 @@
     "slideshow": {
       "name": "Prezentacija",
       "settings": {
-        "header__slideshow": {
-          "content": "Prezentacija"
+        "header__transition": {
+          "content": "Transition"
         },
-        "autoplay_speed": {
-          "info": "Vrijeme u sekundama izmedu slajdova"
-        },
-        "show_pagination": {
-          "label": "Prikazi stranicenje"
-        },
-        "transition": {
-          "label": "Prijelaz",
-          "options__0": {
-            "label": "Blijedenje"
-          },
+        "transition_effect": {
+          "label": "Transition effect",
           "options__1": {
-            "label": "Klizanje"
+            "label": "Zoom in"
+          },
+          "options__2": {
+            "label": "Zoom out"
+          },
+          "options__4": {
+            "label": "Swipe"
           }
+        },
+        "progress_type": {
+          "label": "Progress type",
+          "options__1": {
+            "label": "Dots"
+          },
+          "info": "Only visible when autoplay is enabled"
+        },
+        "header__navigation": {
+          "content": "Navigation"
+        },
+        "show_dots": {
+          "label": "Show dots"
+        },
+        "header__effects": {
+          "content": "Effects"
+        },
+        "parallax": {
+          "label": "Parallax"
         }
       },
       "blocks": {
         "slide": {
-          "name": "Slajd",
           "settings": {
-            "label": {
-              "default": "Nova kolekcija"
+            "title": {
+              "default": "Slide heading"
             },
-            "heading": {
-              "default": "Naslov slajda"
+            "text_position": {
+              "label": "Text Position",
+              "options__0": {
+                "label": "Top Left"
+              },
+              "options__1": {
+                "label": "Top Center"
+              },
+              "options__2": {
+                "label": "Top Right"
+              },
+              "options__3": {
+                "label": "Middle Left"
+              },
+              "options__4": {
+                "label": "Middle Center"
+              },
+              "options__5": {
+                "label": "Middle Right"
+              },
+              "options__6": {
+                "label": "Bottom Left"
+              },
+              "options__7": {
+                "label": "Bottom Center"
+              },
+              "options__8": {
+                "label": "Bottom Right"
+              }
             },
-            "button_text": {
-              "default": "Kupujte sada"
-            },
-            "text": {
-              "default": "Stvorite iskustvo koje ce vasi kupci obozavati."
+            "full_width_content": {
+              "label": "Full Width Content",
+              "info": "Extends content to the full width of the slide"
             }
           }
         }
       },
       "presets": {
         "slideshow": {
-          "name": "Prezentacija"
+          "name": "Prezentacija",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Welcome to our store",
+                "text": "Discover our latest collection of premium products"
+              },
+              "1": {
+                "title": "New arrivals",
+                "text": "Check out what's new this season"
+              }
+            }
+          }
         }
       }
     },
@@ -2482,6 +3127,15 @@
         "title": {
           "default": "Otkrijte vise pomicanjem"
         },
+        "header__background": {
+          "content": "Background"
+        },
+        "background_overlay_color": {
+          "label": "Background overlay color"
+        },
+        "background_overlay_opacity": {
+          "label": "Background overlay opacity"
+        },
         "text": {
           "default": "Svaka kartica se slaze na prethodnu prilikom pomicanja."
         }
@@ -2490,9 +3144,6 @@
         "card": {
           "name": "Kartica",
           "settings": {
-            "heading": {
-              "default": "Naslov kartice"
-            },
             "text": {
               "default": "Opis kartice koji objasnjava ovu znacajku ili prednost."
             }
@@ -2501,7 +3152,23 @@
       },
       "presets": {
         "stacking_cards": {
-          "name": "Slagane kartice"
+          "name": "Slagane kartice",
+          "blocks": {
+            "card": {
+              "0": {
+                "title": "Premium Quality",
+                "text": "We source only the finest materials and work with skilled artisans to create products that last."
+              },
+              "1": {
+                "title": "Sustainable Practices",
+                "text": "Every step of our process is designed with the environment in mind, from sourcing to shipping."
+              },
+              "2": {
+                "title": "Customer First",
+                "text": "Your satisfaction is our priority. We offer hassle-free returns and dedicated support."
+              }
+            }
+          }
         }
       }
     },
@@ -2531,14 +3198,48 @@
               "default": "Pozicija"
             },
             "bio": {
-              "label": "Biografija"
+              "label": "Biografija",
+              "default": "A short bio about this team member."
+            },
+            "linkedin": {
+              "label": "LinkedIn"
+            },
+            "twitter": {
+              "label": "X (Twitter)"
+            },
+            "instagram": {
+              "label": "Instagram"
             }
           }
         }
       },
       "presets": {
         "team": {
-          "name": "Tim"
+          "name": "Tim",
+          "blocks": {
+            "member": {
+              "0": {
+                "name": "Alex Thompson",
+                "role": "Founder & CEO",
+                "bio": "Passionate about creating exceptional products."
+              },
+              "1": {
+                "name": "Sarah Chen",
+                "role": "Creative Director",
+                "bio": "Bringing creative visions to life."
+              },
+              "2": {
+                "name": "Michael Brown",
+                "role": "Head of Product",
+                "bio": "Obsessed with user experience."
+              },
+              "3": {
+                "name": "Emily Davis",
+                "role": "Customer Success",
+                "bio": "Making sure customers are happy."
+              }
+            }
+          }
         }
       }
     },
@@ -2551,8 +3252,14 @@
         "title": {
           "default": "Sto kazu nasi kupci"
         },
-        "text": {
-          "default": "Pogledajte sto zadovoljni kupci kazu o nama."
+        "show_rating": {
+          "label": "Show rating"
+        },
+        "header__text": {
+          "content": "Text"
+        },
+        "text_size": {
+          "label": "Text size"
         }
       },
       "blocks": {
@@ -2563,40 +3270,85 @@
               "label": "Citat",
               "default": "Ovo je najbolji proizvod koji sam ikada kupio. Toplo preporucujem!"
             },
+            "rating": {
+              "label": "Ocjena"
+            },
+            "avatar": {
+              "label": "Avatar"
+            },
             "author": {
               "label": "Autor",
               "default": "Ime kupca"
             },
-            "role": {
-              "label": "Uloga",
-              "default": "Zadovoljni kupac"
-            },
-            "rating": {
-              "label": "Ocjena"
+            "author_title": {
+              "label": "Author title",
+              "default": "Verified Buyer"
             }
           }
         }
       },
       "presets": {
         "testimonials": {
-          "name": "Svjedocanstva"
+          "name": "Svjedocanstva",
+          "blocks": {
+            "testimonial": {
+              "0": {
+                "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
+                "author": "Sarah Johnson",
+                "author_title": "Verified Buyer"
+              },
+              "1": {
+                "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
+                "author": "Michael Chen",
+                "author_title": "Loyal Customer"
+              },
+              "2": {
+                "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
+                "author": "Emily Davis",
+                "author_title": "Repeat Customer"
+              },
+              "3": {
+                "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+                "author": "David Wilson",
+                "author_title": "Verified Buyer"
+              },
+              "4": {
+                "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+                "author": "Rachel Thompson",
+                "author_title": "First-time Buyer"
+              },
+              "5": {
+                "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+                "author": "James Martinez",
+                "author_title": "Repeat Customer"
+              }
+            }
+          }
         }
       }
     },
     "text_reveal": {
       "name": "Otkrivanje teksta",
       "settings": {
-        "title": {
-          "default": "Tekst koji se otkriva pomicanjem"
+        "label": {
+          "default": "Our Mission"
         },
-        "reveal_type": {
-          "label": "Vrsta otkrivanja",
-          "options__0": {
-            "label": "Po rijecima"
-          },
-          "options__1": {
-            "label": "Po znakovima"
-          }
+        "text": {
+          "default": "Crafted with *care*,\ndesigned to *inspire*."
+        },
+        "subtext": {
+          "label": "Subtext",
+          "default": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter."
+        },
+        "header__background_number": {
+          "content": "Background number"
+        },
+        "show_background_number": {
+          "label": "Show background number"
+        },
+        "background_number": {
+          "label": "Background number",
+          "default": "01"
         }
       },
       "presets": {
@@ -2608,19 +3360,77 @@
     "text_section": {
       "name": "Tekstualni odjeljak",
       "settings": {
-        "label": {
-          "default": "O nama"
-        },
         "title": {
           "default": "Nasa prica"
+        },
+        "content_width": {
+          "label": "Content width"
         },
         "text": {
           "default": "<p>Podijelite pricu svog brenda s kupcima. Recite nesto o osnivanju tvrtke i sto vas cini drugacijima.</p>"
         }
       },
+      "blocks": {
+        "button": {
+          "settings": {
+            "button_text": {
+              "default": "Learn more"
+            },
+            "button_icon": {
+              "label": "Button icon",
+              "options__1": {
+                "label": "Arrow right"
+              },
+              "options__2": {
+                "label": "Arrow up right"
+              },
+              "options__3": {
+                "label": "Caret right"
+              },
+              "options__4": {
+                "label": "Plus"
+              },
+              "options__5": {
+                "label": "Shopping bag"
+              },
+              "options__6": {
+                "label": "Heart"
+              },
+              "options__7": {
+                "label": "Play"
+              },
+              "options__8": {
+                "label": "Envelope"
+              },
+              "options__9": {
+                "label": "Phone"
+              },
+              "options__10": {
+                "label": "Chat"
+              }
+            },
+            "icon_position": {
+              "label": "Icon position"
+            }
+          }
+        }
+      },
       "presets": {
         "text_section": {
-          "name": "Tekstualni odjeljak"
+          "name": "Tekstualni odjeljak",
+          "blocks": {
+            "button": {
+              "0": {
+                "button_text": "Shop now",
+                "button_style": "solid",
+                "button_icon": "arrow-right"
+              },
+              "1": {
+                "button_text": "Learn more",
+                "button_style": "outline"
+              }
+            }
+          }
         }
       }
     },
@@ -2632,21 +3442,18 @@
         },
         "title": {
           "default": "Nasa povijest"
-        },
-        "text": {
-          "default": "Pratite povijest naseg brenda kroz godine."
         }
       },
       "blocks": {
         "milestone": {
           "name": "Prekretnica",
           "settings": {
-            "date": {
-              "label": "Datum",
+            "year": {
+              "label": "Year",
               "default": "2020"
             },
-            "heading": {
-              "default": "Naslov prekretnice"
+            "title": {
+              "default": "Milestone Title"
             },
             "text": {
               "default": "Opisite ovaj vazan trenutak u povijesti vaseg brenda."
@@ -2656,21 +3463,39 @@
       },
       "presets": {
         "timeline": {
-          "name": "Vremenska crta"
+          "name": "Vremenska crta",
+          "blocks": {
+            "milestone": {
+              "0": {
+                "title": "The Beginning",
+                "text": "Started with a simple idea and a passion for quality products."
+              },
+              "1": {
+                "title": "First Collection",
+                "text": "Launched our inaugural product line to overwhelming response."
+              },
+              "2": {
+                "title": "Going Global",
+                "text": "Expanded to international markets and grew our community."
+              },
+              "3": {
+                "title": "Today",
+                "text": "Continuing to innovate and create products you love."
+              }
+            }
+          }
         }
       }
     },
     "trust_badges": {
       "name": "Znacke povjerenja",
-      "settings": {
-        "title": {
-          "default": "Zasto kupovati kod nas"
-        }
-      },
       "blocks": {
         "badge": {
           "name": "Znacka",
           "settings": {
+            "title": {
+              "default": "Free Shipping"
+            },
             "text": {
               "default": "Tekst znacke"
             }
@@ -2679,42 +3504,38 @@
       },
       "presets": {
         "trust_badges": {
-          "name": "Znacke povjerenja"
+          "name": "Znacke povjerenja",
+          "blocks": {
+            "badge": {
+              "0": {
+                "title": "Free Shipping",
+                "text": "On orders over $50"
+              },
+              "1": {
+                "title": "Secure Checkout",
+                "text": "SSL encrypted payment"
+              },
+              "2": {
+                "title": "Easy Returns",
+                "text": "30-day return policy"
+              },
+              "3": {
+                "title": "24/7 Support",
+                "text": "Dedicated support team"
+              }
+            }
+          }
         }
       }
     },
     "video": {
       "name": "Video",
       "settings": {
-        "label": {
-          "default": "Pogledajte"
-        },
-        "title": {
-          "default": "Video odjeljak"
-        },
-        "video_url": {
-          "label": "URL videa",
-          "info": "Podrzava YouTube i Vimeo URL"
-        },
-        "video_file": {
-          "label": "Video datoteka",
-          "info": "Ucitajte video datoteku. Ima prednost pred URL-om"
-        },
-        "cover_image": {
-          "label": "Naslovna slika",
-          "info": "Prikazuje se prije reprodukcije videa"
-        },
-        "autoplay": {
-          "info": "Automatska reprodukcija kada je odjeljak vidljiv"
-        },
         "loop": {
           "label": "Ponavljanje"
         },
-        "muted": {
-          "label": "Utisano"
-        },
-        "text": {
-          "default": "Pogledajte nasu pricu na videu."
+        "content_position": {
+          "label": "Content position"
         }
       },
       "presets": {

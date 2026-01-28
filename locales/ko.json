@@ -14,6 +14,7 @@
     "skip_to_product_info": "제품 정보로 건너뛰기",
     "close": "닫기",
     "close_modal": "모달 닫기",
+    "modal": "대화상자",
     "close_cart": "장바구니 닫기",
     "unit_price_separator": "당",
     "vendor": "판매자:",
@@ -29,6 +30,7 @@
     "previous_slide": "이전 슬라이드",
     "go_to_slide": "슬라이드 {{ index }}(으)로 이동",
     "current_slide": "슬라이드 {{ index }}, 현재 슬라이드",
+    "slide_x_of_y": "슬라이드 {{ current }} / {{ total }}",
     "loading": "로딩 중...",
     "total_reviews": "총 리뷰",
     "star_reviews_info": "{{ rating_max }}점 만점에 {{ rating_value }}점",
@@ -42,6 +44,8 @@
     "previous_testimonial": "이전 후기",
     "next_testimonial": "다음 후기",
     "go_to_testimonial": "후기 {{ index }}(으)로 이동",
+    "testimonial_x_of_y": "고객 후기 {{ current }} / {{ total }}",
+    "testimonials": "고객 후기",
     "previous_products": "이전 제품",
     "next_products": "다음 제품",
     "previous_video": "이전 동영상",
@@ -98,11 +102,7 @@
     "removed_from_compare": "비교에서 제거됨",
     "cart_updated": "장바구니 업데이트됨",
     "items_in_cart": "장바구니에 {{ count }}개",
-    "no_image": "이미지 없음",
-    "modal": "대화상자",
-    "slide_x_of_y": "슬라이드 {{ current }} / {{ total }}",
-    "testimonials": "고객 후기",
-    "testimonial_x_of_y": "고객 후기 {{ current }} / {{ total }}"
+    "no_image": "이미지 없음"
   },
   "errors": {
     "network": "네트워크 오류. 연결을 확인하고 다시 시도해 주세요.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "홈",
+      "collections": "컬렉션",
+      "search": "검색",
+      "cart": "장바구니"
+    },
     "newsletter": {
       "label": "최신 소식 받기",
       "submit": "구독",
@@ -151,13 +157,7 @@
     "min_price": "최소 가격",
     "max_price": "최대 가격",
     "to": "~",
-    "shop_now": "지금 쇼핑하기",
-    "breadcrumbs": {
-      "home": "홈",
-      "collections": "컬렉션",
-      "search": "검색",
-      "cart": "장바구니"
-    }
+    "shop_now": "지금 쇼핑하기"
   },
   "404": {
     "title": "페이지를 찾을 수 없습니다",
@@ -271,16 +271,38 @@
       "quick_view": "빠른 보기",
       "quick_add": "빠른 추가",
       "select_options": "옵션 선택",
+      "options": "옵션",
       "view_product": "제품 보기",
+      "view_full_details": "전체 세부정보 보기",
       "share": "공유",
       "zoom": "이미지 확대",
       "media": {
         "reset_3d_model": "3D 모델 보기 초기화",
         "view_in_ar": "내 공간에서 보기",
         "load_image": "이미지 {{ index }} 로드"
-      },
-      "view_full_details": "전체 세부정보 보기",
-      "options": "옵션"
+      }
+    },
+    "inventory": {
+      "low_stock": "재고 부족",
+      "only_x_left": "{{ count }}개만 남음",
+      "almost_gone": "거의 품절!",
+      "selling_fast": "빠르게 판매 중",
+      "stock_level": "재고 수준",
+      "remaining": "남음",
+      "x_items_left": "{{ count }}개 남음",
+      "hurry_almost_gone": "서두르세요, 거의 품절입니다!",
+      "order_soon": "빨리 주문하세요 - 빠르게 판매 중!",
+      "low_stock_warning": "재고 부족 - 빨리 주문하세요"
+    },
+    "delivery": {
+      "estimated_delivery": "예상 배송일",
+      "order_within": "{{ hours }}시간 내 주문 시 당일 발송",
+      "ships_today": "오늘 발송",
+      "ships_tomorrow": "내일 발송"
+    },
+    "social_proof": {
+      "people_viewing": "명이 보고 있습니다",
+      "sold_recently": "지난 24시간 동안 판매됨"
     },
     "size_chart": {
       "title": "사이즈 가이드",
@@ -334,20 +356,20 @@
       "type": "유형",
       "sku": "SKU",
       "availability": "재고 현황",
-      "empty_title": "비교할 제품이 없습니다",
-      "empty_text": "제품 카드의 비교 아이콘을 클릭하여 제품을 추가하세요.",
-      "browse_products": "제품 둘러보기",
-      "continue_shopping": "쇼핑 계속하기",
-      "open_drawer": "비교 창 열기",
-      "price": "가격",
-      "items_count": "개",
       "weight": "무게",
       "material": "소재",
       "fabric": "원단",
       "care": "관리 방법",
       "subtitle": "부제",
       "rating": "평점",
-      "loading": "비교 데이터 로드 중..."
+      "loading": "비교 데이터 로드 중...",
+      "empty_title": "비교할 제품이 없습니다",
+      "empty_text": "제품 카드의 비교 아이콘을 클릭하여 제품을 추가하세요.",
+      "browse_products": "제품 둘러보기",
+      "continue_shopping": "쇼핑 계속하기",
+      "open_drawer": "비교 창 열기",
+      "price": "가격",
+      "items_count": "개"
     },
     "wishlist": {
       "title": "위시리스트",
@@ -363,28 +385,6 @@
       "clear_all": "모두 지우기",
       "products": "저장된 항목",
       "items_count": "개"
-    },
-    "inventory": {
-      "low_stock": "재고 부족",
-      "only_x_left": "{{ count }}개만 남음",
-      "almost_gone": "거의 품절!",
-      "selling_fast": "빠르게 판매 중",
-      "stock_level": "재고 수준",
-      "remaining": "남음",
-      "x_items_left": "{{ count }}개 남음",
-      "hurry_almost_gone": "서두르세요, 거의 품절입니다!",
-      "order_soon": "빨리 주문하세요 - 빠르게 판매 중!",
-      "low_stock_warning": "재고 부족 - 빨리 주문하세요"
-    },
-    "delivery": {
-      "estimated_delivery": "예상 배송일",
-      "order_within": "{{ hours }}시간 내 주문 시 당일 발송",
-      "ships_today": "오늘 발송",
-      "ships_tomorrow": "내일 발송"
-    },
-    "social_proof": {
-      "people_viewing": "명이 보고 있습니다",
-      "sold_recently": "지난 24시간 동안 판매됨"
     }
   },
   "customers": {

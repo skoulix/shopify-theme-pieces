@@ -1492,225 +1492,206 @@
     "header": {
       "name": "Hlavicka",
       "settings": {
-        "sticky_header": {
-          "label": "Prilepena hlavicka",
+        "header_layout": {
+          "label": "Header Layout",
           "options__0": {
-            "label": "Ziadna"
+            "label": "Logo Left"
           },
           "options__1": {
-            "label": "Pri rolovani nahor"
+            "label": "Logo Center"
           },
-          "options__2": {
-            "label": "Vzdy"
-          }
+          "info": "Controls the position of the logo and navigation"
         },
-        "header__logo": {
-          "content": "Logo"
+        "nav_position": {
+          "label": "Nav Position",
+          "info": "Position of the main navigation links"
         },
-        "logo_position": {
-          "label": "Pozicia loga",
-          "options__0": {
-            "label": "Vlavo"
-          },
-          "options__1": {
-            "label": "Stred"
-          }
-        },
-        "header__navigation": {
-          "content": "Navigacia"
-        },
-        "menu": {
-          "label": "Menu"
-        },
-        "menu_style": {
-          "label": "Styl menu",
-          "options__0": {
-            "label": "Rozbalovaci zoznam"
-          },
-          "options__1": {
-            "label": "Mega menu"
-          }
-        },
-        "header__actions": {
-          "content": "Akcie"
+        "header__header_icons": {
+          "content": "Header Icons"
         },
         "show_search": {
           "label": "Zobrazit vyhladavanie"
         },
-        "show_account": {
-          "label": "Zobrazit ucet"
+        "search_type": {
+          "label": "Search Type",
+          "options__0": {
+            "label": "Drawer"
+          },
+          "options__1": {
+            "label": "Page"
+          },
+          "info": "Choose between a drawer or full-page search"
         },
         "show_wishlist": {
           "label": "Zobrazit zoznam priani"
         },
-        "show_compare": {
-          "label": "Zobrazit porovnanie"
+        "show_cart": {
+          "label": "Show Cart"
         },
-        "header__mobile": {
-          "content": "Mobilne zariadenie"
+        "header__localization": {
+          "content": "Localization"
         },
-        "mobile_logo_position": {
-          "label": "Pozicia loga na mobile",
+        "enable_country_selector": {
+          "label": "Enable Country Selector",
+          "info": "Shows the country/region selector in the header"
+        },
+        "enable_language_selector": {
+          "label": "Enable Language Selector",
+          "info": "Shows the language selector in the header"
+        },
+        "header__mobile_menu": {
+          "content": "Mobile Menu"
+        },
+        "mobile_menu_style": {
+          "label": "Mobile Menu Style",
           "options__0": {
-            "label": "Vlavo"
+            "label": "Accordion"
           },
-          "options__1": {
-            "label": "Stred"
-          }
-        }
-      }
-    },
-    "hero": {
-      "name": "Hrdina",
-      "settings": {
-        "header__media": {
-          "content": "Media"
+          "info": "Style of the mobile navigation menu"
         },
-        "header__video": {
-          "content": "Video"
+        "header__sticky_behavior": {
+          "content": "Sticky Behavior"
         },
-        "video_url": {
-          "label": "URL videa",
-          "info": "Pouzite YouTube alebo Vimeo URL"
+        "sticky_header": {
+          "label": "Prilepena hlavicka",
+          "info": "Header stays fixed at the top when scrolling"
         },
-        "video_file": {
-          "label": "Video subor"
+        "hide_on_scroll": {
+          "label": "Hide On Scroll",
+          "info": "Header hides when scrolling down and shows when scrolling up"
         },
-        "autoplay_video": {
-          "label": "Automaticky prehrat video"
+        "header__transparent_header": {
+          "content": "Transparent Header"
         },
-        "loop_video": {
-          "label": "Opakovat video"
+        "transparent_home": {
+          "label": "Transparent Home",
+          "info": "Header background is transparent on the home page"
         },
-        "mute_video": {
-          "label": "Stlmit video"
+        "transparent_text_color": {
+          "label": "Transparent Text Color",
+          "info": "Text color when the header is transparent"
         },
-        "header__content_settings": {
-          "content": "Nastavenia obsahu"
+        "header__announcement_bar": {
+          "content": "Announcement Bar"
         },
-        "content_position": {
-          "label": "Pozicia obsahu"
+        "show_announcement_bar": {
+          "label": "Show Announcement Bar"
         },
-        "content_width": {
-          "label": "Sirka obsahu"
+        "announcement_height": {
+          "label": "Announcement Height"
         },
-        "hero_height": {
-          "label": "Vyska hrdinu",
-          "options__0": {
-            "label": "Automaticky"
-          },
-          "options__1": {
-            "label": "Mala"
-          },
-          "options__2": {
-            "label": "Stredna"
-          },
-          "options__3": {
-            "label": "Velka"
-          },
-          "options__4": {
-            "label": "Cela obrazovka"
-          }
+        "announcement_rotation": {
+          "label": "Announcement Rotation",
+          "info": "Time in seconds between announcement message rotations"
         },
-        "mobile_hero_height": {
-          "label": "Vyska hrdinu na mobile",
-          "options__0": {
-            "label": "Automaticky"
-          },
-          "options__1": {
-            "label": "Mala"
-          },
-          "options__2": {
-            "label": "Stredna"
-          },
-          "options__3": {
-            "label": "Velka"
-          },
-          "options__4": {
-            "label": "Cela obrazovka"
-          }
+        "announcement_arrows": {
+          "label": "Announcement Arrows"
+        },
+        "announcement_dismissible": {
+          "label": "Announcement Dismissible"
         }
       },
       "blocks": {
-        "label": {
-          "name": "Stitok",
+        "mega_menu": {
+          "name": "Mega Menu",
           "settings": {
-            "text": {
-              "default": "Nova kolekcia"
+            "menu_item": {
+              "label": "Menu Item",
+              "info": "Enter the exact menu item title to apply the mega menu to"
+            },
+            "animation": {
+              "label": "Animation",
+              "options__0": {
+                "label": "Fade Slide"
+              }
+            },
+            "header__featured_content": {
+              "content": "Featured Content"
+            },
+            "show_featured": {
+              "label": "Show Featured"
+            },
+            "featured_heading": {
+              "label": "Featured Heading",
+              "default": "Featured"
+            },
+            "featured_collection": {
+              "label": "Featured Collection"
+            },
+            "featured_limit": {
+              "label": "Featured Limit"
+            },
+            "header__promotional_image": {
+              "content": "Promotional Image"
+            },
+            "promo_image": {
+              "label": "Promo Image"
+            },
+            "promo_heading": {
+              "label": "Promo Heading"
+            },
+            "promo_text": {
+              "label": "Promo Text"
+            },
+            "promo_link": {
+              "label": "Promo Link"
             }
           }
         },
-        "heading": {
-          "name": "Nadpis",
-          "settings": {
-            "heading": {
-              "default": "Objavte nasu novu kolekciu"
-            }
-          }
-        },
-        "text": {
-          "name": "Text",
-          "settings": {
-            "text": {
-              "default": "Vytvorte zazitok, ktory vasi zakaznici budu milovat."
-            }
-          }
-        },
-        "buttons": {
-          "name": "Tlacidla",
-          "settings": {
-            "button_1_text": {
-              "label": "Text tlacidla 1",
-              "default": "Nakupovat teraz"
-            },
-            "button_1_link": {
-              "label": "Odkaz tlacidla 1"
-            },
-            "button_2_text": {
-              "label": "Text tlacidla 2",
-              "default": "Zistit viac"
-            },
-            "button_2_link": {
-              "label": "Odkaz tlacidla 2"
-            }
-          }
-        }
-      },
-      "presets": {
-        "hero": {
-          "name": "Hrdina"
+        "announcement": {
+          "name": "Announcement"
         }
       }
     },
     "hero_orbit": {
       "name": "Orbitalny hrdina",
       "settings": {
-        "label": {
-          "default": "Nove prichody"
+        "title_line_1": {
+          "label": "Title Line 1",
+          "default": "Celestial"
         },
-        "title": {
-          "default": "Objavte nasu novu kolekciu"
+        "title_line_2": {
+          "label": "Title Line 2",
+          "default": "Visions"
         },
-        "button_text": {
-          "default": "Nakupovat teraz"
+        "subtitle": {
+          "label": "Subtitle",
+          "default": "2024"
         },
-        "header__orbital": {
-          "content": "Orbitalne prvky"
+        "animation_style": {
+          "label": "Animation Style",
+          "options__0": {
+            "label": "Orbit"
+          },
+          "options__1": {
+            "label": "Cascade"
+          },
+          "options__2": {
+            "label": "Spiral"
+          },
+          "info": "Controls how the orbital images animate"
         },
-        "orbit_speed": {
-          "label": "Rychlost orbity",
-          "info": "Trvanie jedneho uplneho otocenia v sekundach"
+        "enable_rotation": {
+          "label": "Enable Rotation"
         },
-        "pause_on_hover": {
-          "info": "Pozastavi orbitalnu animaciu pri nabehnuti mysi"
+        "enable_flip": {
+          "label": "Enable Flip"
         },
-        "text": {
-          "default": "Prehladajte produkty obiehajuce okolo vasho obsahu."
-        }
-      },
-      "blocks": {
-        "product": {
-          "name": "Produkt"
+        "overlay_opacity": {
+          "info": "Opacity of the overlay on the background image"
+        },
+        "header__cards": {
+          "content": "Cards"
+        },
+        "card_background": {
+          "label": "Card Background"
+        },
+        "image_fit": {
+          "info": "How the orbital images fit within their frames"
+        },
+        "card_tilt": {
+          "label": "Card Tilt",
+          "info": "Adds a 3D tilt effect on hover"
         }
       },
       "presets": {
@@ -1719,34 +1700,109 @@
         }
       }
     },
-    "highlight_text": {
-      "name": "Zvyrazneny text",
+    "hero": {
+      "name": "Hrdina",
       "settings": {
         "title": {
-          "default": "Toto je nas pribeh a rozprávame ho s <strong>hrdostou</strong>."
+          "default": "Elevate Your Style"
         },
-        "highlight_style": {
-          "label": "Styl zvyraznenia",
-          "options__0": {
-            "label": "Podciarknutie"
-          },
-          "options__1": {
-            "label": "Zvyraznovac"
-          },
-          "options__2": {
-            "label": "Kruh"
-          },
-          "options__3": {
-            "label": "Preskrtnutie"
+        "button_text": {
+          "default": "Shop Now"
+        },
+        "color_scheme": {
+          "info": "Applied to the section when no background image is set"
+        },
+        "text": {
+          "default": "Discover our curated collection of premium products designed for the modern lifestyle."
+        }
+      },
+      "presets": {
+        "hero": {
+          "name": "Hrdina"
+        }
+      }
+    },
+    "highlight_text": {
+      "name": "Zvyrazneny text",
+      "blocks": {
+        "heading": {
+          "settings": {
+            "heading": {
+              "default": "Highlight text as you scroll down the page"
+            },
+            "heading_tag": {
+              "label": "Heading Tag",
+              "options__0": {
+                "label": "H2"
+              },
+              "options__1": {
+                "label": "H3"
+              },
+              "options__2": {
+                "label": "H4"
+              },
+              "options__3": {
+                "label": "H5"
+              },
+              "options__4": {
+                "label": "H6"
+              }
+            },
+            "heading_size": {
+              "label": "Heading Size",
+              "options__0": {
+                "label": "Sm"
+              },
+              "options__1": {
+                "label": "Md"
+              },
+              "options__2": {
+                "label": "Lg"
+              },
+              "options__3": {
+                "label": "Xl"
+              },
+              "options__4": {
+                "label": "2xl"
+              }
+            },
+            "scroll_start": {
+              "info": "Scroll position where the highlight animation begins",
+              "default": "top 90%"
+            },
+            "scroll_end": {
+              "info": "Scroll position where the highlight animation ends",
+              "default": "center 40%"
+            },
+            "fade_opacity": {
+              "label": "Fade Opacity",
+              "info": "Opacity of unhighlighted text"
+            },
+            "stagger": {
+              "label": "Stagger",
+              "info": "Delay between highlighting each word"
+            }
           }
         },
-        "highlight_color": {
-          "label": "Farba zvyraznenia"
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Add supporting text below your heading."
+            }
+          }
         }
       },
       "presets": {
         "highlight_text": {
-          "name": "Zvyrazneny text"
+          "name": "Zvyrazneny text",
+          "blocks": {
+            "heading": {
+              "0": {
+                "heading": "Highlight text as you scroll down the page",
+                "heading_size": "xl"
+              }
+            }
+          }
         }
       }
     },
@@ -1759,24 +1815,48 @@
         "title": {
           "default": "Horizontalna galeria"
         },
-        "scroll_speed": {
-          "info": "Ovlada ako rychlo sekcia roluje (1 = pomaly, 5 = rychlo)"
-        },
-        "image_height": {
-          "label": "Vyska obrazku"
-        },
         "text": {
           "default": "Rolujte horizontalne cez nasu galeriu."
         }
       },
       "blocks": {
         "image": {
-          "name": "Obrazok"
+          "settings": {
+            "label": {
+              "default": "Category"
+            },
+            "title": {
+              "default": "Image Title"
+            },
+            "text": {
+              "default": "A brief description of this image or collection."
+            }
+          }
         }
       },
       "presets": {
         "horizontal_scroll": {
-          "name": "Horizontalne rolovanie"
+          "name": "Horizontalne rolovanie",
+          "blocks": {
+            "image": {
+              "0": {
+                "title": "Curated Selection",
+                "text": "Discover our handpicked favorites"
+              },
+              "1": {
+                "title": "New Arrivals",
+                "text": "The latest additions to our collection"
+              },
+              "2": {
+                "title": "Best Sellers",
+                "text": "Our most loved products"
+              },
+              "3": {
+                "title": "Limited Edition",
+                "text": "Exclusive items you won't find elsewhere"
+              }
+            }
+          }
         }
       }
     },
@@ -1789,58 +1869,184 @@
         "title": {
           "default": "Interaktivny obrazok"
         },
-        "text": {
-          "default": "Kliknite na horuce body pre zobrazenie detailov produktu."
+        "desktop_image": {
+          "label": "Desktop image",
+          "info": "Recommended: 1920x1080px or similar aspect ratio"
+        },
+        "mobile_image": {
+          "label": "Mobile image",
+          "info": "Optional: Different image for mobile devices"
         }
       },
       "blocks": {
         "hotspot": {
-          "name": "Horuci bod"
-        }
-      },
-      "presets": {
-        "hotspots": {
-          "name": "Horuce body"
-        }
-      }
-    },
-    "image": {
-      "name": "Obrazok",
-      "settings": {
-        "image_width": {
-          "label": "Sirka obrazku",
-          "options__0": {
-            "label": "Plna sirka"
-          },
-          "options__1": {
-            "label": "Obsah"
+          "name": "Horuci bod",
+          "settings": {
+            "header__position": {
+              "content": "Position"
+            },
+            "link_url": {
+              "label": "Link URL"
+            },
+            "header__dot_appearance": {
+              "content": "Dot Appearance"
+            },
+            "header__popover_appearance": {
+              "content": "Popover Appearance"
+            },
+            "popover_position": {
+              "label": "Popover Position"
+            },
+            "title_color": {
+              "label": "Title Color"
+            },
+            "description_color": {
+              "label": "Description Color"
+            },
+            "link_color": {
+              "label": "Link Color"
+            },
+            "text": {
+              "default": "Describe this feature or specification in detail."
+            }
           }
         }
       },
       "presets": {
-        "image": {
-          "name": "Obrazok"
+        "hotspots": {
+          "name": "Horuce body",
+          "blocks": {
+            "hotspot": {
+              "0": {
+                "title": "Premium Materials",
+                "text": "Crafted with high-quality materials for durability and comfort."
+              },
+              "1": {
+                "title": "Advanced Technology",
+                "text": "Features cutting-edge technology for optimal performance."
+              },
+              "2": {
+                "title": "Ergonomic Design",
+                "text": "Designed with comfort and usability in mind."
+              }
+            }
+          }
         }
       }
     },
     "image_sequence": {
       "name": "Sekvencia obrazkov",
       "settings": {
-        "header__sequence": {
-          "content": "Sekvencia"
+        "header__image_sequence": {
+          "content": "Image Sequence"
         },
-        "frame_count": {
-          "label": "Pocet snimok",
-          "info": "Celkovy pocet obrazkov v sekvencii"
+        "desktop_source": {
+          "label": "Desktop Source",
+          "info": "URL pattern for desktop frame images (use {frame} as placeholder)"
         },
-        "image_prefix": {
-          "label": "Predpona obrazku",
-          "info": "Spolocna predpona pre subory obrazkov (napr. «frame-» pre frame-001.jpg)"
+        "mobile_source": {
+          "label": "Mobile Source",
+          "info": "URL pattern for mobile frame images (use {frame} as placeholder)"
+        },
+        "static_image": {
+          "label": "Static Image",
+          "info": "Fallback image shown before the sequence loads"
+        },
+        "frames": {
+          "label": "Frames",
+          "info": "Total number of frames in the sequence"
+        },
+        "digits": {
+          "label": "Digits",
+          "info": "Number of digits for zero-padding frame numbers"
+        },
+        "index_start": {
+          "label": "Index Start",
+          "info": "Starting frame number (usually 0 or 1)"
+        },
+        "filetype": {
+          "label": "Filetype",
+          "options__0": {
+            "label": "Webp"
+          },
+          "options__1": {
+            "label": "Jpg"
+          },
+          "options__2": {
+            "label": "Png"
+          },
+          "options__3": {
+            "label": "Avif"
+          }
+        },
+        "header__scroll_behavior": {
+          "content": "Scroll Behavior"
+        },
+        "scroll_height": {
+          "label": "Scroll Height",
+          "info": "Scroll distance to play through all frames (in vh)"
+        },
+        "scroll_start": {
+          "info": "Scroll position where the animation begins",
+          "default": "top top"
+        },
+        "scroll_end": {
+          "info": "Scroll position where the animation ends",
+          "default": "bottom top"
+        },
+        "header__overlay_and_content": {
+          "content": "Overlay And Content"
+        }
+      },
+      "blocks": {
+        "label": {
+          "name": "Label",
+          "settings": {
+            "text": {
+              "default": "SCROLL TO EXPLORE"
+            }
+          }
+        },
+        "heading": {
+          "settings": {
+            "text": {
+              "default": "Image Sequence"
+            }
+          }
+        },
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Scroll through this section to see the animation unfold frame by frame."
+            }
+          }
+        },
+        "button": {
+          "settings": {
+            "url": {
+              "label": "URL"
+            }
+          }
         }
       },
       "presets": {
         "image_sequence": {
-          "name": "Sekvencia obrazkov"
+          "name": "Sekvencia obrazkov",
+          "settings": {
+            "filetype": "webp"
+          },
+          "blocks": {
+            "label": {
+              "0": {
+                "text": "SCROLL TO EXPLORE"
+              }
+            },
+            "heading": {
+              "1": {
+                "text": "Image Sequence"
+              }
+            }
+          }
         }
       }
     },
@@ -1853,29 +2059,97 @@
         "title": {
           "default": "Obrazok s textom"
         },
-        "image_position": {
-          "label": "Pozicia obrazku"
-        },
         "text": {
           "default": "<p>Spojte text s obrazkom pre zameranie sa na vybrany produkt, kolekciu alebo blogovy prispevok.</p>"
         }
       },
+      "blocks": {
+        "stat": {
+          "settings": {
+            "number": {
+              "default": "100+"
+            },
+            "label": {
+              "default": "Products"
+            }
+          }
+        }
+      },
       "presets": {
         "image_with_text": {
-          "name": "Obrazok s textom"
+          "name": "Obrazok s textom",
+          "blocks": {
+            "stat": {
+              "0": {
+                "number": "10+",
+                "label": "Years"
+              },
+              "1": {
+                "number": "50K",
+                "label": "Customers"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "name": "Obrazok",
+      "settings": {
+        "caption": {
+          "label": "Caption"
+        },
+        "image_width": {
+          "label": "Sirka obrazku"
+        },
+        "image_alignment": {
+          "label": "Image Alignment"
+        },
+        "reveal_effect": {
+          "label": "Reveal Effect",
+          "options__1": {
+            "label": "Fade Up"
+          },
+          "options__2": {
+            "label": "Scale"
+          },
+          "options__3": {
+            "label": "Clip Right"
+          },
+          "options__4": {
+            "label": "Clip Left"
+          },
+          "options__5": {
+            "label": "Clip Up"
+          },
+          "options__6": {
+            "label": "Clip Down"
+          }
+        },
+        "parallax_intensity": {
+          "label": "Parallax Intensity"
+        }
+      },
+      "presets": {
+        "image": {
+          "name": "Obrazok"
         }
       }
     },
     "logo_marquee": {
       "name": "Behovy pas log",
       "settings": {
-        "title": {
-          "default": "Nasi partneri"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Logo"
+        "label": {
+          "default": "As Featured In"
+        },
+        "logo_max_width": {
+          "label": "Logo Max Width"
+        },
+        "logo_opacity": {
+          "label": "Logo Opacity"
+        },
+        "grayscale": {
+          "info": "Displays logos in grayscale"
         }
       },
       "presets": {
@@ -1887,17 +2161,29 @@
     "logo_wall_cycle": {
       "name": "Cyklicka stena log",
       "settings": {
-        "title": {
-          "default": "Doveruju nam"
+        "label": {
+          "default": "Trusted By"
         },
-        "cycle_speed": {
-          "label": "Rychlost cyklu",
-          "info": "Cas v sekundach medzi cyklami log"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Logo"
+        "visible_desktop": {
+          "label": "Visible Desktop",
+          "info": "Number of logos visible at once on desktop"
+        },
+        "visible_tablet": {
+          "label": "Visible Tablet"
+        },
+        "visible_mobile": {
+          "label": "Visible Mobile"
+        },
+        "gap": {
+          "label": "Gap"
+        },
+        "loop_delay": {
+          "label": "Loop Delay",
+          "info": "Time in seconds between logo transitions"
+        },
+        "shuffle": {
+          "label": "Shuffle",
+          "info": "Randomizes the order of logos"
         }
       },
       "presets": {
@@ -1906,75 +2192,123 @@
         }
       }
     },
-    "main_about": {
-      "name": "Stranka «O nas»"
-    },
     "map": {
       "name": "Mapa",
       "settings": {
+        "label": {
+          "default": "Visit Us"
+        },
         "title": {
           "default": "Nasa poloha"
         },
-        "map_address": {
-          "label": "Adresa na mape"
+        "header__location": {
+          "content": "Location"
         },
-        "header__map_settings": {
-          "content": "Nastavenia mapy"
+        "location_name": {
+          "label": "Location Name",
+          "info": "Displayed as the marker title",
+          "default": "Our Store"
         },
-        "map_zoom": {
-          "label": "Priblizenie mapy"
+        "address": {
+          "info": "Full address displayed below the map",
+          "default": "123 Main Street\nNew York, NY 10001"
         },
-        "map_style": {
-          "label": "Styl mapy",
-          "options__0": {
-            "label": "Standardny"
-          },
-          "options__1": {
-            "label": "Strieborny"
-          },
-          "options__2": {
-            "label": "Tmavy"
-          },
-          "options__3": {
-            "label": "Retro"
+        "latitude": {
+          "label": "Latitude",
+          "info": "Latitude coordinate for the map center",
+          "default": "40.7128"
+        },
+        "longitude": {
+          "label": "Longitude",
+          "info": "Longitude coordinate for the map center",
+          "default": "-74.0060"
+        },
+        "zoom": {
+          "label": "Zoom",
+          "info": "Map zoom level"
+        },
+        "show_popup": {
+          "label": "Show Popup"
+        },
+        "header__styling": {
+          "content": "Styling"
+        },
+        "map_height": {
+          "label": "Map height"
+        },
+        "marker_color": {
+          "label": "Marker color"
+        },
+        "grayscale": {
+          "info": "Displays the map in grayscale"
+        }
+      },
+      "blocks": {
+        "address": {
+          "name": "Address",
+          "settings": {
+            "title": {
+              "default": "Address"
+            },
+            "address": {
+              "default": "123 Main Street\nNew York, NY 10001"
+            }
           }
         },
-        "header__store_info": {
-          "content": "Informacie o obchode"
+        "hours": {
+          "name": "Hours",
+          "settings": {
+            "title": {
+              "default": "Hours"
+            },
+            "hours": {
+              "label": "Hours",
+              "default": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+            }
+          }
         },
-        "store_name": {
-          "label": "Nazov obchodu"
+        "contact": {
+          "name": "Contact",
+          "settings": {
+            "title": {
+              "default": "Contact"
+            },
+            "phone": {
+              "label": "Phone"
+            },
+            "email": {
+              "label": "Email"
+            }
+          }
         },
-        "store_hours": {
-          "label": "Otvaracia doba"
-        },
-        "store_phone": {
-          "label": "Telefon obchodu"
-        },
-        "text": {
-          "default": "Zastavte sa a navstivte nas. Tesime sa na vas!"
+        "custom": {
+          "name": "Custom"
         }
       },
       "presets": {
         "map": {
-          "name": "Mapa"
-        }
-      }
-    },
-    "marquee": {
-      "name": "Behovy pas",
-      "settings": {
-        "text": {
-          "default": "Vitajte v nasom obchode - Doprava zdarma pre objednavky nad 50 EUR - Nove prichody kazdy tyzden -"
-        },
-        "separator": {
-          "label": "Oddelovac",
-          "info": "Text alebo symbol medzi opakovaniami"
-        }
-      },
-      "presets": {
-        "marquee": {
-          "name": "Behovy pas"
+          "name": "Mapa",
+          "blocks": {
+            "address": {
+              "0": {
+                "title": "Address",
+                "address": "123 Main Street\nNew York, NY 10001"
+              }
+            },
+            "hours": {
+              "1": {
+                "title": "Hours",
+                "hours": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+              }
+            },
+            "contact": {
+              "2": {
+                "title": "Contact",
+                "phone": "(555) 123-4567",
+                "email": "hello@example.com"
+              }
+            }
+          }
         }
       }
     },
@@ -1983,40 +2317,135 @@
       "settings": {
         "text": {
           "default": "VITAJTE - V NASOM - OBCHODE -"
+        },
+        "radius": {
+          "label": "Radius",
+          "info": "Radius of the circular path"
+        },
+        "header__spacer": {
+          "content": "Spacer"
+        },
+        "spacer": {
+          "label": "Spacer",
+          "info": "Adds a spacer between text items",
+          "default": "-"
+        },
+        "spacer_color": {
+          "label": "Spacer Color"
+        },
+        "spacer_padding": {
+          "label": "Spacer Padding",
+          "info": "Space between text and spacer characters"
         }
       },
       "presets": {
         "marquee_radial": {
-          "name": "Radialny behovy pas"
+          "name": "Radialny behovy pas",
+          "settings": {
+            "text": "Radial Text Marquee"
+          }
+        }
+      }
+    },
+    "marquee": {
+      "name": "Behovy pas",
+      "blocks": {
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Free Shipping"
+            }
+          }
+        },
+        "separator": {
+          "name": "Separator",
+          "settings": {
+            "style": {
+              "options__0": {
+                "label": "Dot"
+              },
+              "options__1": {
+                "label": "Icon"
+              }
+            }
+          }
+        }
+      },
+      "presets": {
+        "marquee": {
+          "name": "Behovy pas",
+          "blocks": {
+            "text": {
+              "0": {
+                "text": "Free Shipping"
+              },
+              "2": {
+                "text": "New Arrivals"
+              },
+              "4": {
+                "text": "Limited Edition"
+              }
+            },
+            "separator": {
+              "1": {
+                "style": "dot"
+              },
+              "3": {
+                "style": "icon"
+              },
+              "5": {
+                "style": "dot"
+              }
+            }
+          }
         }
       }
     },
     "newsletter": {
       "name": "Newsletter",
       "settings": {
-        "label": {
-          "default": "Prihlaste sa"
+        "design": {
+          "options__0": {
+            "label": "Side by side"
+          },
+          "options__1": {
+            "label": "Stacked"
+          },
+          "options__2": {
+            "label": "Card"
+          }
         },
         "title": {
           "default": "Prihlaste sa k nášmu newsletteru"
         },
-        "header__form": {
-          "content": "Formular"
-        },
-        "placeholder": {
-          "label": "Zastupny text",
-          "default": "Zadajte svoj e-mail"
+        "text": {
+          "default": "Ziskajte najnovsie novinky, aktualizacie a exkluzivne ponuky priamo do svojej e-mailovej schranky."
         },
         "button_text": {
           "default": "Prihlasit sa"
         },
-        "text": {
-          "default": "Ziskajte najnovsie novinky, aktualizacie a exkluzivne ponuky priamo do svojej e-mailovej schranky."
+        "header__privacy_notice": {
+          "content": "Privacy notice"
+        },
+        "privacy_text": {
+          "label": "Privacy text",
+          "info": "Displayed below the subscribe form",
+          "default": "We care about your data. Read our"
+        },
+        "privacy_link": {
+          "label": "Privacy link"
+        },
+        "privacy_link_text": {
+          "label": "Privacy link text",
+          "default": "privacy policy"
         }
       },
       "presets": {
         "newsletter": {
-          "name": "Newsletter"
+          "name": "Newsletter",
+          "settings": {
+            "design": "side-by-side"
+          }
         }
       }
     },
@@ -2024,80 +2453,129 @@
       "name": "Stranka"
     },
     "password": {
-      "name": "Heslo"
+      "name": "Heslo",
+      "settings": {
+        "heading": {
+          "default": "Opening Soon"
+        },
+        "subheading": {
+          "label": "Subheading",
+          "default": "We're working on something special. Enter the password to get early access."
+        },
+        "header__newsletter": {
+          "content": "Newsletter"
+        },
+        "show_newsletter": {
+          "label": "Show newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Newsletter heading",
+          "default": "Be the first to know"
+        },
+        "newsletter_text": {
+          "label": "Newsletter text",
+          "default": "Sign up for updates and get notified when we launch."
+        },
+        "header__social": {
+          "content": "Social"
+        },
+        "show_social": {
+          "info": "Configure social links in theme settings"
+        }
+      }
     },
     "pickup_availability": {
       "name": "Dostupnost vyzdvihnutia"
     },
     "pinned_image_reveal": {
       "name": "Pripnuty obrazok s odhalenim",
-      "settings": {
-        "header__pinned": {
-          "content": "Pripnuty obrazok"
-        }
-      },
       "blocks": {
-        "content": {
-          "name": "Obsah",
+        "slide": {
           "settings": {
-            "heading": {
-              "default": "Obsah sekcie"
+            "title": {
+              "default": "Discover Our Story"
+            },
+            "background_color": {
+              "label": "Background color",
+              "info": "Transition between panels"
             },
             "text": {
-              "default": "Pridajte popis pre tuto sekciu."
+              "default": "Scroll to reveal beautiful imagery and learn more about what makes us unique."
             }
           }
         }
       },
       "presets": {
         "pinned_image_reveal": {
-          "name": "Pripnuty obrazok s odhalenim"
+          "name": "Pripnuty obrazok s odhalenim",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Green Cityscape",
+                "button_text": "Learn More",
+                "text": "Vibrant streets with vertical gardens and solar buildings. This oasis thrives on renewable energy, smart transport, and green spaces for biodiversity."
+              },
+              "1": {
+                "title": "Blue Urban Oasis",
+                "button_text": "Learn More",
+                "text": "Avenues with azure facades and eco-structures. This hub uses clean energy, smart transit, and parks for urban wildlife."
+              },
+              "2": {
+                "title": "Fluid Architecture",
+                "button_text": "Learn More",
+                "text": "Desert refuge with fluid architecture and glowing interiors. This sanctuary harnesses solar power, sustainable design, and natural harmony."
+              }
+            }
+          }
         }
       }
     },
     "product": {
       "name": "Produkt",
       "settings": {
-        "header__gallery": {
-          "content": "Galeria"
-        },
-        "enable_lightbox": {
-          "label": "Povolit efekt lightbox"
-        },
-        "thumbnail_position": {
-          "label": "Pozicia miniatur",
-          "options__0": {
-            "label": "Dole"
+        "image_fit": {
+          "options__3": {
+            "label": "Portrait"
           },
-          "options__1": {
-            "label": "Vlavo"
-          },
-          "options__2": {
-            "label": "Vpravo"
+          "options__4": {
+            "label": "Landscape"
           }
         },
-        "header__video": {
-          "content": "Video"
+        "thumbnail_position": {
+          "label": "Pozicia miniatur"
         },
-        "enable_video": {
-          "label": "Povolit video"
+        "enable_lightbox": {
+          "label": "Povolit efekt lightbox",
+          "info": "Allow customers to zoom into product images"
         },
-        "loop_video": {
-          "label": "Opakovat video"
+        "video_loop": {
+          "label": "Loop video"
         },
-        "autoplay_video": {
-          "label": "Automaticky prehrat, ked je viditelne"
+        "video_autoplay": {
+          "label": "Autoplay video",
+          "info": "Video will autoplay muted"
         },
-        "header__sticky_bar": {
-          "content": "Prilepena lista"
+        "header__sticky_add_to_cart": {
+          "content": "Sticky add to cart"
         },
-        "enable_sticky_bar": {
-          "label": "Povolit prilepenu listu"
+        "show_sticky_bar": {
+          "label": "Show sticky add to cart",
+          "info": "Shows a sticky bar at the bottom with add to cart"
         }
       },
       "blocks": {
         "breadcrumbs": {
-          "name": "Navigacna cesta"
+          "name": "Navigacna cesta",
+          "settings": {
+            "separator": {
+              "label": "Separator",
+              "default": "/"
+            },
+            "show_home_icon": {
+              "label": "Show home icon",
+              "info": "Replaces the Home text with an icon"
+            }
+          }
         },
         "vendor": {
           "name": "Dodavatel"
@@ -2105,8 +2583,9 @@
         "title": {
           "name": "Nazov",
           "settings": {
-            "split_words_into_lines": {
-              "label": "Rozdelit slova na riadky"
+            "split_words": {
+              "label": "Split words",
+              "info": "Splits the title into individual animated words"
             }
           }
         },
@@ -2116,20 +2595,32 @@
         "inventory_countdown": {
           "name": "Odpocitavanie skladu",
           "settings": {
-            "low_inventory_threshold": {
-              "label": "Hranica nizkeho skladu",
-              "info": "Zobrazi varovanie, ked sklad klesne pod tuto hodnotu"
+            "threshold": {
+              "label": "Threshold",
+              "info": "Show when inventory is at or below this number"
+            },
+            "style": {
+              "options__2": {
+                "label": "Badge"
+              }
+            },
+            "show_exact_count": {
+              "label": "Show exact count",
+              "info": "Show the exact inventory count instead of just the indicator"
+            },
+            "show_icon": {
+              "label": "Show icon"
             }
           }
         },
         "description": {
           "name": "Popis",
           "settings": {
-            "truncate_description": {
-              "label": "Skratit popis"
+            "truncate_length": {
+              "label": "Truncate length"
             },
-            "max_lines": {
-              "label": "Maximalny pocet riadkov"
+            "enable_shuffle": {
+              "label": "Enable shuffle"
             }
           }
         },
@@ -2137,34 +2628,30 @@
           "name": "Vyberatel variantov",
           "settings": {
             "picker_type": {
-              "label": "Typ vyberatela",
-              "options__0": {
-                "label": "Tlacidla"
-              },
-              "options__1": {
-                "label": "Rozbalovaci zoznam"
-              }
-            },
-            "show_variant_labels": {
-              "label": "Zobrazit stitky variantov"
-            },
-            "enable_color_swatches": {
-              "label": "Povolit farebne vzorky"
+              "label": "Typ vyberatela"
             }
           }
         },
         "quantity_selector": {
-          "name": "Vyberatel mnozstva"
+          "name": "Vyberatel mnozstva",
+          "settings": {
+            "label": {
+              "default": "Quantity"
+            }
+          }
         },
         "buy_buttons": {
           "name": "Kupne tlacidla",
           "settings": {
-            "show_dynamic_checkout": {
-              "label": "Zobrazit dynamicku pokladnu"
+            "add_to_cart_text": {
+              "label": "Add to cart text"
             },
-            "show_gift_card_recipient": {
-              "label": "Zobrazit prijemcu darcekoveho poukazu",
-              "info": "Zobrazi formular prijemcu pre produkty darcekoveho poukazu"
+            "sold_out_text": {
+              "label": "Sold out text"
+            },
+            "show_dynamic_checkout": {
+              "label": "Zobrazit dynamicku pokladnu",
+              "info": "Shows additional payment buttons like Shop Pay, Apple Pay, etc."
             }
           }
         },
@@ -2172,41 +2659,17 @@
           "name": "Dostupnost vyzdvihnutia"
         },
         "delivery_estimator": {
-          "name": "Odhad dorucenia",
-          "settings": {
-            "shipping_days_min": {
-              "label": "Minimum dni dorucenia"
-            },
-            "shipping_days_max": {
-              "label": "Maximum dni dorucenia"
-            }
-          }
+          "name": "Odhad dorucenia"
         },
         "social_proof": {
-          "name": "Socialny dokaz",
-          "settings": {
-            "show_viewers": {
-              "label": "Zobrazit divakov"
-            },
-            "viewers_min": {
-              "label": "Minimum divakov"
-            },
-            "viewers_max": {
-              "label": "Maximum divakov"
-            },
-            "show_purchases": {
-              "label": "Zobrazit nakupy"
-            },
-            "purchases_min": {
-              "label": "Minimum nakupov"
-            },
-            "purchases_max": {
-              "label": "Maximum nakupov"
-            }
-          }
+          "name": "Socialny dokaz"
         },
         "text": {
-          "name": "Text"
+          "settings": {
+            "text": {
+              "default": "<p>Add custom text like shipping info or care instructions.</p>"
+            }
+          }
         },
         "collapsible_tab": {
           "name": "Zbalitelna zalozka",
@@ -2215,54 +2678,77 @@
               "default": "Zbalitelna zalozka"
             },
             "content": {
-              "label": "Obsah"
-            },
-            "page": {
-              "label": "Stranka",
-              "info": "Obsah stranky nahradi text vyssie"
-            },
-            "open_by_default": {
-              "label": "Predvolene otvorene"
+              "default": "<p>Add content for this collapsible tab.</p>"
             }
           }
         },
         "size_chart": {
           "name": "Tabulka velkosti",
           "settings": {
-            "link_text": {
-              "default": "Tabulka velkosti"
+            "drawer_heading": {
+              "label": "Drawer heading"
             },
             "page": {
               "label": "Stranka",
               "info": "Vyberte stranku s tabulkou velkosti na zobrazenie"
+            },
+            "content": {
+              "info": "Used if no page is selected"
+            },
+            "show_always": {
+              "label": "Show always",
+              "info": "Show size chart for all products, not just those with a Size option"
             }
           }
         },
         "back_in_stock": {
-          "name": "Opat skladom",
+          "name": "Opat skladom"
+        },
+        "complementary_products": {
+          "name": "Doplnkove produkty",
           "settings": {
-            "heading": {
-              "default": "Upozornite ma, ked bude k dispozicii"
+            "paragraph__description": {
+              "content": "Add complementary products using the Shopify Search & Discovery app."
             },
-            "text": {
-              "default": "Zaregistrujte sa pre prijmanie upozorneni, ked bude tento produkt opat skladom."
+            "title": {
+              "info": "Leave blank to hide the heading"
             }
           }
         },
-        "complementary_products": {
-          "name": "Doplnkove produkty"
-        },
         "wishlist_button": {
-          "name": "Tlacidlo zoznamu priani"
+          "name": "Tlacidlo zoznamu priani",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist to be enabled in theme settings."
+            }
+          }
         },
         "compare_button": {
-          "name": "Tlacidlo porovnania"
+          "name": "Tlacidlo porovnania",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires compare to be enabled in theme settings."
+            }
+          }
         },
-        "wishlist_compare": {
-          "name": "Priania a porovnanie"
+        "wc_buttons": {
+          "name": "Wishlist & Compare buttons",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist and/or compare to be enabled in theme settings."
+            },
+            "display_style": {
+              "label": "Display style"
+            }
+          }
         },
         "social_actions": {
-          "name": "Socialne akcie"
+          "name": "Socialne akcie",
+          "settings": {
+            "paragraph__description": {
+              "content": "Shows share buttons for the current product."
+            }
+          }
         }
       }
     },
@@ -2272,6 +2758,12 @@
     "recently_viewed": {
       "name": "Nedavno prezrete",
       "settings": {
+        "paragraph__description": {
+          "content": "Products shown here are based on the visitor's browsing history stored in their browser."
+        },
+        "label": {
+          "default": "Recently browsed"
+        },
         "title": {
           "default": "Nedavno prezrete"
         }
@@ -2285,6 +2777,12 @@
     "related_products": {
       "name": "Suvisiace produkty",
       "settings": {
+        "paragraph__description": {
+          "content": "Products are automatically selected based on Shopify's product recommendation algorithm."
+        },
+        "label": {
+          "default": "You may also like"
+        },
         "title": {
           "default": "Mohlo by sa vam tiez pacit"
         }
@@ -2298,28 +2796,36 @@
     "rolling_numbers": {
       "name": "Rotujuce cisla",
       "settings": {
-        "label": {
-          "default": "Nas dopad"
-        },
         "title": {
           "default": "Cisla hovoria samy za seba"
         },
-        "text": {
-          "default": "Sme hrdi na nase uspechy a naďalej rastieme."
+        "show_dividers": {
+          "info": "Shows separator lines between number blocks"
+        },
+        "animation_duration": {
+          "info": "Duration of the rolling animation in milliseconds"
         }
       },
       "blocks": {
         "stat": {
-          "name": "Statistika",
           "settings": {
+            "number": {
+              "info": "The target number to animate to",
+              "default": "100"
+            },
             "prefix": {
-              "label": "Predpona"
+              "label": "Predpona",
+              "info": "Text displayed before the number (e.g., $)"
             },
             "suffix": {
-              "label": "Pripona"
+              "label": "Pripona",
+              "info": "Text displayed after the number (e.g., +, %, K)"
             },
             "label": {
               "default": "Spokojni zakaznici"
+            },
+            "text": {
+              "info": "Short description displayed below"
             }
           }
         }
@@ -2327,22 +2833,31 @@
       "presets": {
         "rolling_numbers": {
           "name": "Rotujuce cisla",
+          "settings": {
+            "title": "By the Numbers",
+            "text": "Our impact in numbers that speak for themselves."
+          },
           "blocks": {
             "stat": {
               "0": {
-                "number": "10000",
                 "suffix": "+",
-                "label": "Spokojni zakaznici"
+                "label": "Spokojni zakaznici",
+                "text": "Worldwide satisfaction"
               },
               "1": {
-                "number": "500",
                 "suffix": "+",
-                "label": "Produkty"
+                "label": "Produkty",
+                "text": "Based on reviews"
               },
               "2": {
-                "number": "50",
                 "suffix": "+",
-                "label": "Krajiny"
+                "label": "Krajiny",
+                "text": "Global shipping"
+              },
+              "3": {
+                "suffix": "/7",
+                "label": "Support",
+                "text": "Always here to help"
               }
             }
           }
@@ -2351,12 +2866,23 @@
     },
     "scroll_panels": {
       "name": "Rolovacie panely",
+      "settings": {
+        "header__display": {
+          "content": "Display"
+        },
+        "show_numbers": {
+          "label": "Show numbers"
+        },
+        "show_progress": {
+          "label": "Show progress"
+        }
+      },
       "blocks": {
         "panel": {
           "name": "Panel",
           "settings": {
-            "heading": {
-              "default": "Nazov panelu"
+            "title": {
+              "default": "Panel Title"
             },
             "text": {
               "default": "Popis panelu vysvetlujuci tuto funkciu alebo krok."
@@ -2366,15 +2892,40 @@
       },
       "presets": {
         "scroll_panels": {
-          "name": "Rolovacie panely"
+          "name": "Rolovacie panely",
+          "blocks": {
+            "panel": {
+              "0": {
+                "title": "Discover Our Story",
+                "text": "Every great brand has a story. This is where yours begins.",
+                "button_text": "Learn More"
+              },
+              "1": {
+                "title": "Crafted With Care",
+                "text": "We believe in quality over quantity. Each product is made to last.",
+                "button_text": "Our Process"
+              },
+              "2": {
+                "title": "Join the Movement",
+                "text": "Be part of something bigger. Shop consciously, live intentionally.",
+                "button_text": "Shop Now"
+              }
+            }
+          }
         }
       }
     },
     "search": {
       "name": "Vyhladavanie",
       "settings": {
-        "show_product_count": {
-          "label": "Zobrazit pocet produktov"
+        "show_popular_searches": {
+          "label": "Show popular searches",
+          "info": "Show suggested searches when the search field is empty"
+        },
+        "popular_searches": {
+          "label": "Popular searches",
+          "info": "Comma-separated list of search terms",
+          "default": "New arrivals, Sale, Best sellers"
         }
       }
     },
@@ -2387,13 +2938,35 @@
         "title": {
           "default": "Dokoncite vzhľad"
         },
-        "text": {
-          "default": "Kliknite na body pre nakup produktov."
+        "image": {
+          "info": "Main image for the shop the look section"
+        },
+        "header__product_display": {
+          "content": "Product display"
+        },
+        "add_all_title": {
+          "label": "Add All Title",
+          "default": "Complete the Look"
+        },
+        "add_all_button": {
+          "label": "Add All Button",
+          "default": "Add All"
+        },
+        "header__hotspot_style": {
+          "content": "Hotspot Style"
+        },
+        "dot_text_color": {
+          "label": "Dot Text Color"
         }
       },
       "blocks": {
-        "product_dot": {
-          "name": "Bod produktu"
+        "product": {
+          "name": "Product",
+          "settings": {
+            "header__hotspot_position": {
+              "content": "Hotspot Position"
+            }
+          }
         }
       },
       "presets": {
@@ -2411,13 +2984,33 @@
         "title": {
           "default": "Nakupujte z videa"
         },
-        "text": {
-          "default": "Sledujte a nakupujte priamo z nasich videi."
+        "videos_desktop": {
+          "label": "Videos Desktop"
+        },
+        "videos_tablet": {
+          "label": "Videos Tablet"
+        },
+        "videos_mobile": {
+          "label": "Videos Mobile"
+        },
+        "video_spacing": {
+          "label": "Video Spacing"
+        },
+        "show_product_info": {
+          "label": "Show Product Info"
+        },
+        "autoplay_speed": {
+          "info": "Time in seconds between video rotations"
         }
       },
       "blocks": {
         "video": {
-          "name": "Video"
+          "name": "Video",
+          "settings": {
+            "video_hosted": {
+              "label": "Video Hosted"
+            }
+          }
         }
       },
       "presets": {
@@ -2429,47 +3022,99 @@
     "slideshow": {
       "name": "Prezentacia",
       "settings": {
-        "header__slideshow": {
-          "content": "Prezentacia"
+        "header__transition": {
+          "content": "Transition"
         },
-        "autoplay_speed": {
-          "info": "Cas v sekundach medzi snimkami"
-        },
-        "show_pagination": {
-          "label": "Zobrazit strankovanie"
-        },
-        "transition": {
-          "label": "Prechod",
-          "options__0": {
-            "label": "Vyblednutie"
-          },
+        "transition_effect": {
+          "label": "Transition effect",
           "options__1": {
-            "label": "Posun"
+            "label": "Zoom in"
+          },
+          "options__2": {
+            "label": "Zoom out"
+          },
+          "options__4": {
+            "label": "Swipe"
           }
+        },
+        "progress_type": {
+          "label": "Progress type",
+          "options__1": {
+            "label": "Dots"
+          },
+          "info": "Only visible when autoplay is enabled"
+        },
+        "header__navigation": {
+          "content": "Navigation"
+        },
+        "show_dots": {
+          "label": "Show dots"
+        },
+        "header__effects": {
+          "content": "Effects"
+        },
+        "parallax": {
+          "label": "Parallax"
         }
       },
       "blocks": {
         "slide": {
-          "name": "Snimka",
           "settings": {
-            "label": {
-              "default": "Nova kolekcia"
+            "title": {
+              "default": "Slide heading"
             },
-            "heading": {
-              "default": "Nazov snimky"
+            "text_position": {
+              "label": "Text Position",
+              "options__0": {
+                "label": "Top Left"
+              },
+              "options__1": {
+                "label": "Top Center"
+              },
+              "options__2": {
+                "label": "Top Right"
+              },
+              "options__3": {
+                "label": "Middle Left"
+              },
+              "options__4": {
+                "label": "Middle Center"
+              },
+              "options__5": {
+                "label": "Middle Right"
+              },
+              "options__6": {
+                "label": "Bottom Left"
+              },
+              "options__7": {
+                "label": "Bottom Center"
+              },
+              "options__8": {
+                "label": "Bottom Right"
+              }
             },
-            "button_text": {
-              "default": "Nakupovat teraz"
-            },
-            "text": {
-              "default": "Vytvorte zazitok, ktory vasi zakaznici budu milovat."
+            "full_width_content": {
+              "label": "Full Width Content",
+              "info": "Extends content to the full width of the slide"
             }
           }
         }
       },
       "presets": {
         "slideshow": {
-          "name": "Prezentacia"
+          "name": "Prezentacia",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Welcome to our store",
+                "text": "Discover our latest collection of premium products"
+              },
+              "1": {
+                "title": "New arrivals",
+                "text": "Check out what's new this season"
+              }
+            }
+          }
         }
       }
     },
@@ -2482,6 +3127,15 @@
         "title": {
           "default": "Objavte viac rolovanim"
         },
+        "header__background": {
+          "content": "Background"
+        },
+        "background_overlay_color": {
+          "label": "Background overlay color"
+        },
+        "background_overlay_opacity": {
+          "label": "Background overlay opacity"
+        },
         "text": {
           "default": "Kazda karta sa stavia na predchadzajucu pri rolovani."
         }
@@ -2490,9 +3144,6 @@
         "card": {
           "name": "Karta",
           "settings": {
-            "heading": {
-              "default": "Nazov karty"
-            },
             "text": {
               "default": "Popis karty vysvetlujuci tuto funkciu alebo vyhodu."
             }
@@ -2501,7 +3152,23 @@
       },
       "presets": {
         "stacking_cards": {
-          "name": "Vrstvene karty"
+          "name": "Vrstvene karty",
+          "blocks": {
+            "card": {
+              "0": {
+                "title": "Premium Quality",
+                "text": "We source only the finest materials and work with skilled artisans to create products that last."
+              },
+              "1": {
+                "title": "Sustainable Practices",
+                "text": "Every step of our process is designed with the environment in mind, from sourcing to shipping."
+              },
+              "2": {
+                "title": "Customer First",
+                "text": "Your satisfaction is our priority. We offer hassle-free returns and dedicated support."
+              }
+            }
+          }
         }
       }
     },
@@ -2531,14 +3198,48 @@
               "default": "Pozicia"
             },
             "bio": {
-              "label": "Biografia"
+              "label": "Biografia",
+              "default": "A short bio about this team member."
+            },
+            "linkedin": {
+              "label": "LinkedIn"
+            },
+            "twitter": {
+              "label": "X (Twitter)"
+            },
+            "instagram": {
+              "label": "Instagram"
             }
           }
         }
       },
       "presets": {
         "team": {
-          "name": "Tim"
+          "name": "Tim",
+          "blocks": {
+            "member": {
+              "0": {
+                "name": "Alex Thompson",
+                "role": "Founder & CEO",
+                "bio": "Passionate about creating exceptional products."
+              },
+              "1": {
+                "name": "Sarah Chen",
+                "role": "Creative Director",
+                "bio": "Bringing creative visions to life."
+              },
+              "2": {
+                "name": "Michael Brown",
+                "role": "Head of Product",
+                "bio": "Obsessed with user experience."
+              },
+              "3": {
+                "name": "Emily Davis",
+                "role": "Customer Success",
+                "bio": "Making sure customers are happy."
+              }
+            }
+          }
         }
       }
     },
@@ -2551,8 +3252,14 @@
         "title": {
           "default": "Co hovoria nasi zakaznici"
         },
-        "text": {
-          "default": "Pozrite sa, co hovoria spokojni zakaznici o nas."
+        "show_rating": {
+          "label": "Show rating"
+        },
+        "header__text": {
+          "content": "Text"
+        },
+        "text_size": {
+          "label": "Text size"
         }
       },
       "blocks": {
@@ -2563,40 +3270,85 @@
               "label": "Citat",
               "default": "Toto je najlepsi produkt, aky som kedy kupil. Velmi odporucam!"
             },
+            "rating": {
+              "label": "Hodnotenie"
+            },
+            "avatar": {
+              "label": "Avatar"
+            },
             "author": {
               "label": "Autor",
               "default": "Meno zakaznika"
             },
-            "role": {
-              "label": "Pozicia",
-              "default": "Spokojny zakaznik"
-            },
-            "rating": {
-              "label": "Hodnotenie"
+            "author_title": {
+              "label": "Author title",
+              "default": "Verified Buyer"
             }
           }
         }
       },
       "presets": {
         "testimonials": {
-          "name": "Referencie"
+          "name": "Referencie",
+          "blocks": {
+            "testimonial": {
+              "0": {
+                "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
+                "author": "Sarah Johnson",
+                "author_title": "Verified Buyer"
+              },
+              "1": {
+                "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
+                "author": "Michael Chen",
+                "author_title": "Loyal Customer"
+              },
+              "2": {
+                "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
+                "author": "Emily Davis",
+                "author_title": "Repeat Customer"
+              },
+              "3": {
+                "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+                "author": "David Wilson",
+                "author_title": "Verified Buyer"
+              },
+              "4": {
+                "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+                "author": "Rachel Thompson",
+                "author_title": "First-time Buyer"
+              },
+              "5": {
+                "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+                "author": "James Martinez",
+                "author_title": "Repeat Customer"
+              }
+            }
+          }
         }
       }
     },
     "text_reveal": {
       "name": "Odhalenie textu",
       "settings": {
-        "title": {
-          "default": "Text, ktory sa odhaluje pri rolovani"
+        "label": {
+          "default": "Our Mission"
         },
-        "reveal_type": {
-          "label": "Typ odhalenia",
-          "options__0": {
-            "label": "Po slovach"
-          },
-          "options__1": {
-            "label": "Po znakoch"
-          }
+        "text": {
+          "default": "Crafted with *care*,\ndesigned to *inspire*."
+        },
+        "subtext": {
+          "label": "Subtext",
+          "default": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter."
+        },
+        "header__background_number": {
+          "content": "Background number"
+        },
+        "show_background_number": {
+          "label": "Show background number"
+        },
+        "background_number": {
+          "label": "Background number",
+          "default": "01"
         }
       },
       "presets": {
@@ -2608,19 +3360,77 @@
     "text_section": {
       "name": "Textova sekcia",
       "settings": {
-        "label": {
-          "default": "O nas"
-        },
         "title": {
           "default": "Nas pribeh"
+        },
+        "content_width": {
+          "label": "Content width"
         },
         "text": {
           "default": "<p>Podeľte sa o pribeh vasej znacky so zakaznikmi. Povedzte o zalozeni spolocnosti a co vas odlisuje.</p>"
         }
       },
+      "blocks": {
+        "button": {
+          "settings": {
+            "button_text": {
+              "default": "Learn more"
+            },
+            "button_icon": {
+              "label": "Button icon",
+              "options__1": {
+                "label": "Arrow right"
+              },
+              "options__2": {
+                "label": "Arrow up right"
+              },
+              "options__3": {
+                "label": "Caret right"
+              },
+              "options__4": {
+                "label": "Plus"
+              },
+              "options__5": {
+                "label": "Shopping bag"
+              },
+              "options__6": {
+                "label": "Heart"
+              },
+              "options__7": {
+                "label": "Play"
+              },
+              "options__8": {
+                "label": "Envelope"
+              },
+              "options__9": {
+                "label": "Phone"
+              },
+              "options__10": {
+                "label": "Chat"
+              }
+            },
+            "icon_position": {
+              "label": "Icon position"
+            }
+          }
+        }
+      },
       "presets": {
         "text_section": {
-          "name": "Textova sekcia"
+          "name": "Textova sekcia",
+          "blocks": {
+            "button": {
+              "0": {
+                "button_text": "Shop now",
+                "button_style": "solid",
+                "button_icon": "arrow-right"
+              },
+              "1": {
+                "button_text": "Learn more",
+                "button_style": "outline"
+              }
+            }
+          }
         }
       }
     },
@@ -2632,21 +3442,18 @@
         },
         "title": {
           "default": "Nas pribeh"
-        },
-        "text": {
-          "default": "Sledujte historiu nasej znacky cez roky."
         }
       },
       "blocks": {
         "milestone": {
           "name": "Miľnik",
           "settings": {
-            "date": {
-              "label": "Datum",
+            "year": {
+              "label": "Year",
               "default": "2020"
             },
-            "heading": {
-              "default": "Nazov miľnika"
+            "title": {
+              "default": "Milestone Title"
             },
             "text": {
               "default": "Popiste tento dolezity moment v historii vasej znacky."
@@ -2656,21 +3463,39 @@
       },
       "presets": {
         "timeline": {
-          "name": "Casova os"
+          "name": "Casova os",
+          "blocks": {
+            "milestone": {
+              "0": {
+                "title": "The Beginning",
+                "text": "Started with a simple idea and a passion for quality products."
+              },
+              "1": {
+                "title": "First Collection",
+                "text": "Launched our inaugural product line to overwhelming response."
+              },
+              "2": {
+                "title": "Going Global",
+                "text": "Expanded to international markets and grew our community."
+              },
+              "3": {
+                "title": "Today",
+                "text": "Continuing to innovate and create products you love."
+              }
+            }
+          }
         }
       }
     },
     "trust_badges": {
       "name": "Znaky dovery",
-      "settings": {
-        "title": {
-          "default": "Preco nakupovat u nas"
-        }
-      },
       "blocks": {
         "badge": {
           "name": "Znak",
           "settings": {
+            "title": {
+              "default": "Free Shipping"
+            },
             "text": {
               "default": "Text znaku"
             }
@@ -2679,42 +3504,38 @@
       },
       "presets": {
         "trust_badges": {
-          "name": "Znaky dovery"
+          "name": "Znaky dovery",
+          "blocks": {
+            "badge": {
+              "0": {
+                "title": "Free Shipping",
+                "text": "On orders over $50"
+              },
+              "1": {
+                "title": "Secure Checkout",
+                "text": "SSL encrypted payment"
+              },
+              "2": {
+                "title": "Easy Returns",
+                "text": "30-day return policy"
+              },
+              "3": {
+                "title": "24/7 Support",
+                "text": "Dedicated support team"
+              }
+            }
+          }
         }
       }
     },
     "video": {
       "name": "Video",
       "settings": {
-        "label": {
-          "default": "Sledujte"
-        },
-        "title": {
-          "default": "Video sekcia"
-        },
-        "video_url": {
-          "label": "URL videa",
-          "info": "Podporuje YouTube a Vimeo URL"
-        },
-        "video_file": {
-          "label": "Video subor",
-          "info": "Nahrajte video subor. Ma prednost pred URL"
-        },
-        "cover_image": {
-          "label": "Titulny obrazok",
-          "info": "Zobrazeny pred prehranim videa"
-        },
-        "autoplay": {
-          "info": "Automaticky sa prehra, ked je sekcia viditelna"
-        },
         "loop": {
           "label": "Opakovat"
         },
-        "muted": {
-          "label": "Stlmene"
-        },
-        "text": {
-          "default": "Pozrite si nas pribeh vo formate videa."
+        "content_position": {
+          "label": "Content position"
         }
       },
       "presets": {
@@ -2738,53 +3559,6 @@
           "name": "Zoznam priani"
         }
       }
-    }
-  },
-  "settings_schema": {
-    "logo": {
-      "name": "Logo"
-    },
-    "colors": {
-      "name": "Farby"
-    },
-    "color_scheme_1": {
-      "label": "Schema 1"
-    },
-    "color_scheme_2": {
-      "label": "Schema 2"
-    },
-    "color_scheme_3": {
-      "label": "Schema 3"
-    },
-    "typography": {
-      "name": "Typografia"
-    },
-    "layout": {
-      "name": "Rozlozenie"
-    },
-    "buttons": {
-      "name": "Tlacidla"
-    },
-    "inputs": {
-      "name": "Vstupne polia"
-    },
-    "cards": {
-      "name": "Karty"
-    },
-    "product_card": {
-      "name": "Produktova karta"
-    },
-    "social_media": {
-      "name": "Socialne media"
-    },
-    "seo": {
-      "name": "SEO a schema"
-    },
-    "cart": {
-      "name": "Kosik"
-    },
-    "newsletter_popup": {
-      "name": "Vyskakovacie okno newslettera"
     }
   }
 }

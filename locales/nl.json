@@ -14,6 +14,7 @@
     "skip_to_product_info": "Ga naar productinformatie",
     "close": "Sluiten",
     "close_modal": "Modal sluiten",
+    "modal": "Dialoog",
     "close_cart": "Winkelwagen sluiten",
     "unit_price_separator": "per",
     "vendor": "Leverancier:",
@@ -29,6 +30,7 @@
     "previous_slide": "Vorige dia",
     "go_to_slide": "Ga naar dia {{ index }}",
     "current_slide": "Dia {{ index }}, huidige dia",
+    "slide_x_of_y": "Dia {{ current }} van {{ total }}",
     "loading": "Laden...",
     "total_reviews": "totaal aantal beoordelingen",
     "star_reviews_info": "{{ rating_value }} van {{ rating_max }} sterren",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Vorige getuigenis",
     "next_testimonial": "Volgende getuigenis",
     "go_to_testimonial": "Ga naar getuigenis {{ index }}",
+    "testimonial_x_of_y": "Getuigenis {{ current }} van {{ total }}",
+    "testimonials": "Getuigenissen",
     "previous_products": "Vorige producten",
     "next_products": "Volgende producten",
     "previous_video": "Vorige video",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Verwijderd uit vergelijking",
     "cart_updated": "Winkelwagen bijgewerkt",
     "items_in_cart": "{{ count }} artikelen in winkelwagen",
-    "no_image": "Geen afbeelding beschikbaar",
-    "modal": "Dialoog",
-    "slide_x_of_y": "Dia {{ current }} van {{ total }}",
-    "testimonials": "Getuigenissen",
-    "testimonial_x_of_y": "Getuigenis {{ current }} van {{ total }}"
+    "no_image": "Geen afbeelding beschikbaar"
   },
   "errors": {
     "network": "Netwerkfout. Controleer je verbinding en probeer het opnieuw.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Home",
+      "collections": "Collecties",
+      "search": "Zoeken",
+      "cart": "Winkelwagen"
+    },
     "newsletter": {
       "label": "Blijf op de hoogte",
       "submit": "Abonneren",
@@ -151,13 +157,7 @@
     "min_price": "Minimumprijs",
     "max_price": "Maximumprijs",
     "to": "tot",
-    "shop_now": "Nu winkelen",
-    "breadcrumbs": {
-      "home": "Home",
-      "collections": "Collecties",
-      "search": "Zoeken",
-      "cart": "Winkelwagen"
-    }
+    "shop_now": "Nu winkelen"
   },
   "404": {
     "title": "Pagina niet gevonden",
@@ -271,6 +271,7 @@
       "quick_view": "Snelle weergave",
       "quick_add": "Snel toevoegen",
       "select_options": "Opties selecteren",
+      "options": "Opties",
       "view_product": "Product bekijken",
       "view_full_details": "Bekijk alle details",
       "share": "Delen",
@@ -279,8 +280,29 @@
         "reset_3d_model": "3D-modelweergave resetten",
         "view_in_ar": "In je ruimte bekijken",
         "load_image": "Afbeelding {{ index }} laden"
-      },
-      "options": "Opties"
+      }
+    },
+    "inventory": {
+      "low_stock": "Lage voorraad",
+      "only_x_left": "Nog maar {{ count }} over",
+      "almost_gone": "Bijna uitverkocht!",
+      "selling_fast": "Verkoopt snel",
+      "stock_level": "Voorraadniveau",
+      "remaining": "resterend",
+      "x_items_left": "{{ count }} stuks over",
+      "hurry_almost_gone": "Wees snel, bijna uitverkocht!",
+      "order_soon": "Bestel snel - verkoopt snel!",
+      "low_stock_warning": "Lage voorraad - bestel snel"
+    },
+    "delivery": {
+      "estimated_delivery": "Verwachte levering",
+      "order_within": "Bestel binnen {{ hours }}u voor verzending vandaag",
+      "ships_today": "Vandaag verzonden",
+      "ships_tomorrow": "Morgen verzonden"
+    },
+    "social_proof": {
+      "people_viewing": "mensen bekijken dit",
+      "sold_recently": "verkocht in de laatste 24 uur"
     },
     "size_chart": {
       "title": "Maatgids",
@@ -334,20 +356,20 @@
       "type": "Type",
       "sku": "Artikelnummer",
       "availability": "Beschikbaarheid",
-      "empty_title": "Geen producten om te vergelijken",
-      "empty_text": "Voeg producten toe om te vergelijken door op het vergelijkingspictogram op productkaarten te klikken.",
-      "browse_products": "Producten bekijken",
-      "continue_shopping": "Verder winkelen",
-      "open_drawer": "Vergelijking openen",
-      "price": "Prijs",
-      "items_count": "artikelen",
       "weight": "Gewicht",
       "material": "Materiaal",
       "fabric": "Stof",
       "care": "Verzorgingsinstructies",
       "subtitle": "Ondertitel",
       "rating": "Beoordeling",
-      "loading": "Vergelijkingsgegevens laden..."
+      "loading": "Vergelijkingsgegevens laden...",
+      "empty_title": "Geen producten om te vergelijken",
+      "empty_text": "Voeg producten toe om te vergelijken door op het vergelijkingspictogram op productkaarten te klikken.",
+      "browse_products": "Producten bekijken",
+      "continue_shopping": "Verder winkelen",
+      "open_drawer": "Vergelijking openen",
+      "price": "Prijs",
+      "items_count": "artikelen"
     },
     "wishlist": {
       "title": "Verlanglijstje",
@@ -363,28 +385,6 @@
       "clear_all": "Alles wissen",
       "products": "opgeslagen artikelen",
       "items_count": "artikelen"
-    },
-    "inventory": {
-      "low_stock": "Lage voorraad",
-      "only_x_left": "Nog maar {{ count }} over",
-      "almost_gone": "Bijna uitverkocht!",
-      "selling_fast": "Verkoopt snel",
-      "stock_level": "Voorraadniveau",
-      "remaining": "resterend",
-      "x_items_left": "{{ count }} stuks over",
-      "hurry_almost_gone": "Wees snel, bijna uitverkocht!",
-      "order_soon": "Bestel snel - verkoopt snel!",
-      "low_stock_warning": "Lage voorraad - bestel snel"
-    },
-    "delivery": {
-      "estimated_delivery": "Verwachte levering",
-      "order_within": "Bestel binnen {{ hours }}u voor verzending vandaag",
-      "ships_today": "Vandaag verzonden",
-      "ships_tomorrow": "Morgen verzonden"
-    },
-    "social_proof": {
-      "people_viewing": "mensen bekijken dit",
-      "sold_recently": "verkocht in de laatste 24 uur"
     }
   },
   "customers": {

@@ -14,6 +14,7 @@
     "skip_to_product_info": "跳转到产品信息",
     "close": "关闭",
     "close_modal": "关闭弹窗",
+    "modal": "对话框",
     "close_cart": "关闭购物车",
     "unit_price_separator": "每",
     "vendor": "供应商：",
@@ -29,6 +30,7 @@
     "previous_slide": "上一张",
     "go_to_slide": "转到第 {{ index }} 张幻灯片",
     "current_slide": "第 {{ index }} 张幻灯片，当前幻灯片",
+    "slide_x_of_y": "幻灯片 {{ current }} / {{ total }}",
     "loading": "加载中...",
     "total_reviews": "条评论",
     "star_reviews_info": "{{ rating_max }} 分中的 {{ rating_value }} 分",
@@ -42,6 +44,8 @@
     "previous_testimonial": "上一条评价",
     "next_testimonial": "下一条评价",
     "go_to_testimonial": "转到第 {{ index }} 条评价",
+    "testimonial_x_of_y": "评价 {{ current }} / {{ total }}",
+    "testimonials": "客户评价",
     "previous_products": "上一组产品",
     "next_products": "下一组产品",
     "previous_video": "上一个视频",
@@ -98,11 +102,7 @@
     "removed_from_compare": "已从比较移除",
     "cart_updated": "购物车已更新",
     "items_in_cart": "购物车中有 {{ count }} 件商品",
-    "no_image": "暂无图片",
-    "modal": "对话框",
-    "slide_x_of_y": "幻灯片 {{ current }} / {{ total }}",
-    "testimonials": "客户评价",
-    "testimonial_x_of_y": "评价 {{ current }} / {{ total }}"
+    "no_image": "暂无图片"
   },
   "errors": {
     "network": "网络错误。请检查您的连接并重试。",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "首页",
+      "collections": "系列",
+      "search": "搜索",
+      "cart": "购物车"
+    },
     "newsletter": {
       "label": "获取最新资讯",
       "submit": "订阅",
@@ -151,13 +157,7 @@
     "min_price": "最低价格",
     "max_price": "最高价格",
     "to": "至",
-    "shop_now": "立即选购",
-    "breadcrumbs": {
-      "home": "首页",
-      "collections": "系列",
-      "search": "搜索",
-      "cart": "购物车"
-    }
+    "shop_now": "立即选购"
   },
   "404": {
     "title": "页面未找到",
@@ -271,16 +271,38 @@
       "quick_view": "快速查看",
       "quick_add": "快速添加",
       "select_options": "选择选项",
+      "options": "选项",
       "view_product": "查看产品",
+      "view_full_details": "查看完整详情",
       "share": "分享",
       "zoom": "放大图片",
       "media": {
         "reset_3d_model": "重置3D模型视图",
         "view_in_ar": "在您的空间中查看",
         "load_image": "加载图片 {{ index }}"
-      },
-      "view_full_details": "查看完整详情",
-      "options": "选项"
+      }
+    },
+    "inventory": {
+      "low_stock": "库存紧张",
+      "only_x_left": "仅剩 {{ count }} 件",
+      "almost_gone": "即将售罄！",
+      "selling_fast": "热销中",
+      "stock_level": "库存水平",
+      "remaining": "剩余",
+      "x_items_left": "剩余 {{ count }} 件",
+      "hurry_almost_gone": "抓紧时间，即将售罄！",
+      "order_soon": "尽快下单 - 热销中！",
+      "low_stock_warning": "库存紧张 - 尽快下单"
+    },
+    "delivery": {
+      "estimated_delivery": "预计送达",
+      "order_within": "{{ hours }}小时内下单当日发货",
+      "ships_today": "今日发货",
+      "ships_tomorrow": "明日发货"
+    },
+    "social_proof": {
+      "people_viewing": "人正在浏览",
+      "sold_recently": "过去24小时售出"
     },
     "size_chart": {
       "title": "尺码指南",
@@ -334,20 +356,20 @@
       "type": "类型",
       "sku": "货号",
       "availability": "库存状态",
-      "empty_title": "没有要比较的产品",
-      "empty_text": "点击产品卡片上的比较图标来添加产品。",
-      "browse_products": "浏览产品",
-      "continue_shopping": "继续购物",
-      "open_drawer": "打开比较面板",
-      "price": "价格",
-      "items_count": "件",
       "weight": "重量",
       "material": "材质",
       "fabric": "面料",
       "care": "护理说明",
       "subtitle": "副标题",
       "rating": "评分",
-      "loading": "正在加载比较数据..."
+      "loading": "正在加载比较数据...",
+      "empty_title": "没有要比较的产品",
+      "empty_text": "点击产品卡片上的比较图标来添加产品。",
+      "browse_products": "浏览产品",
+      "continue_shopping": "继续购物",
+      "open_drawer": "打开比较面板",
+      "price": "价格",
+      "items_count": "件"
     },
     "wishlist": {
       "title": "心愿单",
@@ -363,28 +385,6 @@
       "clear_all": "清除全部",
       "products": "已保存的商品",
       "items_count": "件"
-    },
-    "inventory": {
-      "low_stock": "库存紧张",
-      "only_x_left": "仅剩 {{ count }} 件",
-      "almost_gone": "即将售罄！",
-      "selling_fast": "热销中",
-      "stock_level": "库存水平",
-      "remaining": "剩余",
-      "x_items_left": "剩余 {{ count }} 件",
-      "hurry_almost_gone": "抓紧时间，即将售罄！",
-      "order_soon": "尽快下单 - 热销中！",
-      "low_stock_warning": "库存紧张 - 尽快下单"
-    },
-    "delivery": {
-      "estimated_delivery": "预计送达",
-      "order_within": "{{ hours }}小时内下单当日发货",
-      "ships_today": "今日发货",
-      "ships_tomorrow": "明日发货"
-    },
-    "social_proof": {
-      "people_viewing": "人正在浏览",
-      "sold_recently": "过去24小时售出"
     }
   },
   "customers": {

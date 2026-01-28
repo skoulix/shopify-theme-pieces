@@ -1492,225 +1492,206 @@
     "header": {
       "name": "Шапка",
       "settings": {
-        "sticky_header": {
-          "label": "Фиксированная шапка",
+        "header_layout": {
+          "label": "Header Layout",
           "options__0": {
-            "label": "Нет"
+            "label": "Logo Left"
           },
           "options__1": {
-            "label": "При прокрутке вверх"
+            "label": "Logo Center"
           },
-          "options__2": {
-            "label": "Всегда"
-          }
+          "info": "Controls the position of the logo and navigation"
         },
-        "header__logo": {
-          "content": "Логотип"
+        "nav_position": {
+          "label": "Nav Position",
+          "info": "Position of the main navigation links"
         },
-        "logo_position": {
-          "label": "Позиция логотипа",
-          "options__0": {
-            "label": "Слева"
-          },
-          "options__1": {
-            "label": "По центру"
-          }
-        },
-        "header__navigation": {
-          "content": "Навигация"
-        },
-        "menu": {
-          "label": "Меню"
-        },
-        "menu_style": {
-          "label": "Стиль меню",
-          "options__0": {
-            "label": "Выпадающее меню"
-          },
-          "options__1": {
-            "label": "Мегаменю"
-          }
-        },
-        "header__actions": {
-          "content": "Действия"
+        "header__header_icons": {
+          "content": "Header Icons"
         },
         "show_search": {
           "label": "Показывать поиск"
         },
-        "show_account": {
-          "label": "Показывать аккаунт"
+        "search_type": {
+          "label": "Search Type",
+          "options__0": {
+            "label": "Drawer"
+          },
+          "options__1": {
+            "label": "Page"
+          },
+          "info": "Choose between a drawer or full-page search"
         },
         "show_wishlist": {
           "label": "Показывать список желаний"
         },
-        "show_compare": {
-          "label": "Показывать сравнение"
+        "show_cart": {
+          "label": "Show Cart"
         },
-        "header__mobile": {
-          "content": "Мобильный"
+        "header__localization": {
+          "content": "Localization"
         },
-        "mobile_logo_position": {
-          "label": "Позиция логотипа на мобильном",
+        "enable_country_selector": {
+          "label": "Enable Country Selector",
+          "info": "Shows the country/region selector in the header"
+        },
+        "enable_language_selector": {
+          "label": "Enable Language Selector",
+          "info": "Shows the language selector in the header"
+        },
+        "header__mobile_menu": {
+          "content": "Mobile Menu"
+        },
+        "mobile_menu_style": {
+          "label": "Mobile Menu Style",
           "options__0": {
-            "label": "Слева"
+            "label": "Accordion"
           },
-          "options__1": {
-            "label": "По центру"
-          }
-        }
-      }
-    },
-    "hero": {
-      "name": "Герой",
-      "settings": {
-        "header__media": {
-          "content": "Медиа"
+          "info": "Style of the mobile navigation menu"
         },
-        "header__video": {
-          "content": "Видео"
+        "header__sticky_behavior": {
+          "content": "Sticky Behavior"
         },
-        "video_url": {
-          "label": "URL видео",
-          "info": "Используйте URL YouTube или Vimeo"
+        "sticky_header": {
+          "label": "Фиксированная шапка",
+          "info": "Header stays fixed at the top when scrolling"
         },
-        "video_file": {
-          "label": "Видеофайл"
+        "hide_on_scroll": {
+          "label": "Hide On Scroll",
+          "info": "Header hides when scrolling down and shows when scrolling up"
         },
-        "autoplay_video": {
-          "label": "Автовоспроизведение видео"
+        "header__transparent_header": {
+          "content": "Transparent Header"
         },
-        "loop_video": {
-          "label": "Зацикливание видео"
+        "transparent_home": {
+          "label": "Transparent Home",
+          "info": "Header background is transparent on the home page"
         },
-        "mute_video": {
-          "label": "Без звука"
+        "transparent_text_color": {
+          "label": "Transparent Text Color",
+          "info": "Text color when the header is transparent"
         },
-        "header__content_settings": {
-          "content": "Настройки содержимого"
+        "header__announcement_bar": {
+          "content": "Announcement Bar"
         },
-        "content_position": {
-          "label": "Позиция содержимого"
+        "show_announcement_bar": {
+          "label": "Show Announcement Bar"
         },
-        "content_width": {
-          "label": "Ширина содержимого"
+        "announcement_height": {
+          "label": "Announcement Height"
         },
-        "hero_height": {
-          "label": "Высота героя",
-          "options__0": {
-            "label": "Авто"
-          },
-          "options__1": {
-            "label": "Маленькая"
-          },
-          "options__2": {
-            "label": "Средняя"
-          },
-          "options__3": {
-            "label": "Большая"
-          },
-          "options__4": {
-            "label": "Полный экран"
-          }
+        "announcement_rotation": {
+          "label": "Announcement Rotation",
+          "info": "Time in seconds between announcement message rotations"
         },
-        "mobile_hero_height": {
-          "label": "Высота героя на мобильном",
-          "options__0": {
-            "label": "Авто"
-          },
-          "options__1": {
-            "label": "Маленькая"
-          },
-          "options__2": {
-            "label": "Средняя"
-          },
-          "options__3": {
-            "label": "Большая"
-          },
-          "options__4": {
-            "label": "Полный экран"
-          }
+        "announcement_arrows": {
+          "label": "Announcement Arrows"
+        },
+        "announcement_dismissible": {
+          "label": "Announcement Dismissible"
         }
       },
       "blocks": {
-        "label": {
-          "name": "Метка",
+        "mega_menu": {
+          "name": "Mega Menu",
           "settings": {
-            "text": {
-              "default": "Новая коллекция"
+            "menu_item": {
+              "label": "Menu Item",
+              "info": "Enter the exact menu item title to apply the mega menu to"
+            },
+            "animation": {
+              "label": "Animation",
+              "options__0": {
+                "label": "Fade Slide"
+              }
+            },
+            "header__featured_content": {
+              "content": "Featured Content"
+            },
+            "show_featured": {
+              "label": "Show Featured"
+            },
+            "featured_heading": {
+              "label": "Featured Heading",
+              "default": "Featured"
+            },
+            "featured_collection": {
+              "label": "Featured Collection"
+            },
+            "featured_limit": {
+              "label": "Featured Limit"
+            },
+            "header__promotional_image": {
+              "content": "Promotional Image"
+            },
+            "promo_image": {
+              "label": "Promo Image"
+            },
+            "promo_heading": {
+              "label": "Promo Heading"
+            },
+            "promo_text": {
+              "label": "Promo Text"
+            },
+            "promo_link": {
+              "label": "Promo Link"
             }
           }
         },
-        "heading": {
-          "name": "Заголовок",
-          "settings": {
-            "heading": {
-              "default": "Откройте нашу новую коллекцию"
-            }
-          }
-        },
-        "text": {
-          "name": "Текст",
-          "settings": {
-            "text": {
-              "default": "Создайте впечатления, которые понравятся вашим клиентам."
-            }
-          }
-        },
-        "buttons": {
-          "name": "Кнопки",
-          "settings": {
-            "button_1_text": {
-              "label": "Текст кнопки 1",
-              "default": "Купить сейчас"
-            },
-            "button_1_link": {
-              "label": "Ссылка кнопки 1"
-            },
-            "button_2_text": {
-              "label": "Текст кнопки 2",
-              "default": "Узнать больше"
-            },
-            "button_2_link": {
-              "label": "Ссылка кнопки 2"
-            }
-          }
-        }
-      },
-      "presets": {
-        "hero": {
-          "name": "Герой"
+        "announcement": {
+          "name": "Announcement"
         }
       }
     },
     "hero_orbit": {
       "name": "Орбитальный герой",
       "settings": {
-        "label": {
-          "default": "Новинки"
+        "title_line_1": {
+          "label": "Title Line 1",
+          "default": "Celestial"
         },
-        "title": {
-          "default": "Откройте нашу новую коллекцию"
+        "title_line_2": {
+          "label": "Title Line 2",
+          "default": "Visions"
         },
-        "button_text": {
-          "default": "Купить сейчас"
+        "subtitle": {
+          "label": "Subtitle",
+          "default": "2024"
         },
-        "header__orbital": {
-          "content": "Орбитальные элементы"
+        "animation_style": {
+          "label": "Animation Style",
+          "options__0": {
+            "label": "Orbit"
+          },
+          "options__1": {
+            "label": "Cascade"
+          },
+          "options__2": {
+            "label": "Spiral"
+          },
+          "info": "Controls how the orbital images animate"
         },
-        "orbit_speed": {
-          "label": "Скорость орбиты",
-          "info": "Длительность одного полного оборота в секундах"
+        "enable_rotation": {
+          "label": "Enable Rotation"
         },
-        "pause_on_hover": {
-          "info": "Ставит орбитальную анимацию на паузу при наведении"
+        "enable_flip": {
+          "label": "Enable Flip"
         },
-        "text": {
-          "default": "Изучайте товары, вращающиеся вокруг вашего контента."
-        }
-      },
-      "blocks": {
-        "product": {
-          "name": "Товар"
+        "overlay_opacity": {
+          "info": "Opacity of the overlay on the background image"
+        },
+        "header__cards": {
+          "content": "Cards"
+        },
+        "card_background": {
+          "label": "Card Background"
+        },
+        "image_fit": {
+          "info": "How the orbital images fit within their frames"
+        },
+        "card_tilt": {
+          "label": "Card Tilt",
+          "info": "Adds a 3D tilt effect on hover"
         }
       },
       "presets": {
@@ -1719,34 +1700,109 @@
         }
       }
     },
-    "highlight_text": {
-      "name": "Выделенный текст",
+    "hero": {
+      "name": "Герой",
       "settings": {
         "title": {
-          "default": "Это наша история, и мы рассказываем её с <strong>гордостью</strong>."
+          "default": "Elevate Your Style"
         },
-        "highlight_style": {
-          "label": "Стиль выделения",
-          "options__0": {
-            "label": "Подчёркивание"
-          },
-          "options__1": {
-            "label": "Маркер"
-          },
-          "options__2": {
-            "label": "Круг"
-          },
-          "options__3": {
-            "label": "Зачёркивание"
+        "button_text": {
+          "default": "Shop Now"
+        },
+        "color_scheme": {
+          "info": "Applied to the section when no background image is set"
+        },
+        "text": {
+          "default": "Discover our curated collection of premium products designed for the modern lifestyle."
+        }
+      },
+      "presets": {
+        "hero": {
+          "name": "Герой"
+        }
+      }
+    },
+    "highlight_text": {
+      "name": "Выделенный текст",
+      "blocks": {
+        "heading": {
+          "settings": {
+            "heading": {
+              "default": "Highlight text as you scroll down the page"
+            },
+            "heading_tag": {
+              "label": "Heading Tag",
+              "options__0": {
+                "label": "H2"
+              },
+              "options__1": {
+                "label": "H3"
+              },
+              "options__2": {
+                "label": "H4"
+              },
+              "options__3": {
+                "label": "H5"
+              },
+              "options__4": {
+                "label": "H6"
+              }
+            },
+            "heading_size": {
+              "label": "Heading Size",
+              "options__0": {
+                "label": "Sm"
+              },
+              "options__1": {
+                "label": "Md"
+              },
+              "options__2": {
+                "label": "Lg"
+              },
+              "options__3": {
+                "label": "Xl"
+              },
+              "options__4": {
+                "label": "2xl"
+              }
+            },
+            "scroll_start": {
+              "info": "Scroll position where the highlight animation begins",
+              "default": "top 90%"
+            },
+            "scroll_end": {
+              "info": "Scroll position where the highlight animation ends",
+              "default": "center 40%"
+            },
+            "fade_opacity": {
+              "label": "Fade Opacity",
+              "info": "Opacity of unhighlighted text"
+            },
+            "stagger": {
+              "label": "Stagger",
+              "info": "Delay between highlighting each word"
+            }
           }
         },
-        "highlight_color": {
-          "label": "Цвет выделения"
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Add supporting text below your heading."
+            }
+          }
         }
       },
       "presets": {
         "highlight_text": {
-          "name": "Выделенный текст"
+          "name": "Выделенный текст",
+          "blocks": {
+            "heading": {
+              "0": {
+                "heading": "Highlight text as you scroll down the page",
+                "heading_size": "xl"
+              }
+            }
+          }
         }
       }
     },
@@ -1759,24 +1815,48 @@
         "title": {
           "default": "Горизонтальная галерея"
         },
-        "scroll_speed": {
-          "info": "Контролирует скорость прокрутки секции (1 = медленно, 5 = быстро)"
-        },
-        "image_height": {
-          "label": "Высота изображения"
-        },
         "text": {
           "default": "Прокручивайте горизонтально через нашу галерею."
         }
       },
       "blocks": {
         "image": {
-          "name": "Изображение"
+          "settings": {
+            "label": {
+              "default": "Category"
+            },
+            "title": {
+              "default": "Image Title"
+            },
+            "text": {
+              "default": "A brief description of this image or collection."
+            }
+          }
         }
       },
       "presets": {
         "horizontal_scroll": {
-          "name": "Горизонтальная прокрутка"
+          "name": "Горизонтальная прокрутка",
+          "blocks": {
+            "image": {
+              "0": {
+                "title": "Curated Selection",
+                "text": "Discover our handpicked favorites"
+              },
+              "1": {
+                "title": "New Arrivals",
+                "text": "The latest additions to our collection"
+              },
+              "2": {
+                "title": "Best Sellers",
+                "text": "Our most loved products"
+              },
+              "3": {
+                "title": "Limited Edition",
+                "text": "Exclusive items you won't find elsewhere"
+              }
+            }
+          }
         }
       }
     },
@@ -1789,58 +1869,184 @@
         "title": {
           "default": "Интерактивное изображение"
         },
-        "text": {
-          "default": "Нажмите на активные точки, чтобы увидеть детали товара."
+        "desktop_image": {
+          "label": "Desktop image",
+          "info": "Recommended: 1920x1080px or similar aspect ratio"
+        },
+        "mobile_image": {
+          "label": "Mobile image",
+          "info": "Optional: Different image for mobile devices"
         }
       },
       "blocks": {
         "hotspot": {
-          "name": "Активная точка"
-        }
-      },
-      "presets": {
-        "hotspots": {
-          "name": "Активные точки"
-        }
-      }
-    },
-    "image": {
-      "name": "Изображение",
-      "settings": {
-        "image_width": {
-          "label": "Ширина изображения",
-          "options__0": {
-            "label": "Полная ширина"
-          },
-          "options__1": {
-            "label": "По содержимому"
+          "name": "Активная точка",
+          "settings": {
+            "header__position": {
+              "content": "Position"
+            },
+            "link_url": {
+              "label": "Link URL"
+            },
+            "header__dot_appearance": {
+              "content": "Dot Appearance"
+            },
+            "header__popover_appearance": {
+              "content": "Popover Appearance"
+            },
+            "popover_position": {
+              "label": "Popover Position"
+            },
+            "title_color": {
+              "label": "Title Color"
+            },
+            "description_color": {
+              "label": "Description Color"
+            },
+            "link_color": {
+              "label": "Link Color"
+            },
+            "text": {
+              "default": "Describe this feature or specification in detail."
+            }
           }
         }
       },
       "presets": {
-        "image": {
-          "name": "Изображение"
+        "hotspots": {
+          "name": "Активные точки",
+          "blocks": {
+            "hotspot": {
+              "0": {
+                "title": "Premium Materials",
+                "text": "Crafted with high-quality materials for durability and comfort."
+              },
+              "1": {
+                "title": "Advanced Technology",
+                "text": "Features cutting-edge technology for optimal performance."
+              },
+              "2": {
+                "title": "Ergonomic Design",
+                "text": "Designed with comfort and usability in mind."
+              }
+            }
+          }
         }
       }
     },
     "image_sequence": {
       "name": "Последовательность изображений",
       "settings": {
-        "header__sequence": {
-          "content": "Последовательность"
+        "header__image_sequence": {
+          "content": "Image Sequence"
         },
-        "frame_count": {
-          "label": "Количество кадров",
-          "info": "Общее количество изображений в последовательности"
+        "desktop_source": {
+          "label": "Desktop Source",
+          "info": "URL pattern for desktop frame images (use {frame} as placeholder)"
         },
-        "image_prefix": {
-          "label": "Префикс изображения",
-          "info": "Общий префикс для файлов изображений (например, 'frame-' для frame-001.jpg)"
+        "mobile_source": {
+          "label": "Mobile Source",
+          "info": "URL pattern for mobile frame images (use {frame} as placeholder)"
+        },
+        "static_image": {
+          "label": "Static Image",
+          "info": "Fallback image shown before the sequence loads"
+        },
+        "frames": {
+          "label": "Frames",
+          "info": "Total number of frames in the sequence"
+        },
+        "digits": {
+          "label": "Digits",
+          "info": "Number of digits for zero-padding frame numbers"
+        },
+        "index_start": {
+          "label": "Index Start",
+          "info": "Starting frame number (usually 0 or 1)"
+        },
+        "filetype": {
+          "label": "Filetype",
+          "options__0": {
+            "label": "Webp"
+          },
+          "options__1": {
+            "label": "Jpg"
+          },
+          "options__2": {
+            "label": "Png"
+          },
+          "options__3": {
+            "label": "Avif"
+          }
+        },
+        "header__scroll_behavior": {
+          "content": "Scroll Behavior"
+        },
+        "scroll_height": {
+          "label": "Scroll Height",
+          "info": "Scroll distance to play through all frames (in vh)"
+        },
+        "scroll_start": {
+          "info": "Scroll position where the animation begins",
+          "default": "top top"
+        },
+        "scroll_end": {
+          "info": "Scroll position where the animation ends",
+          "default": "bottom top"
+        },
+        "header__overlay_and_content": {
+          "content": "Overlay And Content"
+        }
+      },
+      "blocks": {
+        "label": {
+          "name": "Label",
+          "settings": {
+            "text": {
+              "default": "SCROLL TO EXPLORE"
+            }
+          }
+        },
+        "heading": {
+          "settings": {
+            "text": {
+              "default": "Image Sequence"
+            }
+          }
+        },
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Scroll through this section to see the animation unfold frame by frame."
+            }
+          }
+        },
+        "button": {
+          "settings": {
+            "url": {
+              "label": "URL"
+            }
+          }
         }
       },
       "presets": {
         "image_sequence": {
-          "name": "Последовательность изображений"
+          "name": "Последовательность изображений",
+          "settings": {
+            "filetype": "webp"
+          },
+          "blocks": {
+            "label": {
+              "0": {
+                "text": "SCROLL TO EXPLORE"
+              }
+            },
+            "heading": {
+              "1": {
+                "text": "Image Sequence"
+              }
+            }
+          }
         }
       }
     },
@@ -1853,29 +2059,97 @@
         "title": {
           "default": "Изображение с текстом"
         },
-        "image_position": {
-          "label": "Позиция изображения"
-        },
         "text": {
           "default": "<p>Сочетайте текст с изображением, чтобы сфокусировать внимание на выбранном товаре, коллекции или записи блога.</p>"
         }
       },
+      "blocks": {
+        "stat": {
+          "settings": {
+            "number": {
+              "default": "100+"
+            },
+            "label": {
+              "default": "Products"
+            }
+          }
+        }
+      },
       "presets": {
         "image_with_text": {
-          "name": "Изображение с текстом"
+          "name": "Изображение с текстом",
+          "blocks": {
+            "stat": {
+              "0": {
+                "number": "10+",
+                "label": "Years"
+              },
+              "1": {
+                "number": "50K",
+                "label": "Customers"
+              }
+            }
+          }
+        }
+      }
+    },
+    "image": {
+      "name": "Изображение",
+      "settings": {
+        "caption": {
+          "label": "Caption"
+        },
+        "image_width": {
+          "label": "Ширина изображения"
+        },
+        "image_alignment": {
+          "label": "Image Alignment"
+        },
+        "reveal_effect": {
+          "label": "Reveal Effect",
+          "options__1": {
+            "label": "Fade Up"
+          },
+          "options__2": {
+            "label": "Scale"
+          },
+          "options__3": {
+            "label": "Clip Right"
+          },
+          "options__4": {
+            "label": "Clip Left"
+          },
+          "options__5": {
+            "label": "Clip Up"
+          },
+          "options__6": {
+            "label": "Clip Down"
+          }
+        },
+        "parallax_intensity": {
+          "label": "Parallax Intensity"
+        }
+      },
+      "presets": {
+        "image": {
+          "name": "Изображение"
         }
       }
     },
     "logo_marquee": {
       "name": "Лого-бегущая строка",
       "settings": {
-        "title": {
-          "default": "Наши партнёры"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Логотип"
+        "label": {
+          "default": "As Featured In"
+        },
+        "logo_max_width": {
+          "label": "Logo Max Width"
+        },
+        "logo_opacity": {
+          "label": "Logo Opacity"
+        },
+        "grayscale": {
+          "info": "Displays logos in grayscale"
         }
       },
       "presets": {
@@ -1887,17 +2161,29 @@
     "logo_wall_cycle": {
       "name": "Циклическая стена логотипов",
       "settings": {
-        "title": {
-          "default": "Нам доверяют"
+        "label": {
+          "default": "Trusted By"
         },
-        "cycle_speed": {
-          "label": "Скорость цикла",
-          "info": "Время в секундах между сменой логотипов"
-        }
-      },
-      "blocks": {
-        "logo": {
-          "name": "Логотип"
+        "visible_desktop": {
+          "label": "Visible Desktop",
+          "info": "Number of logos visible at once on desktop"
+        },
+        "visible_tablet": {
+          "label": "Visible Tablet"
+        },
+        "visible_mobile": {
+          "label": "Visible Mobile"
+        },
+        "gap": {
+          "label": "Gap"
+        },
+        "loop_delay": {
+          "label": "Loop Delay",
+          "info": "Time in seconds between logo transitions"
+        },
+        "shuffle": {
+          "label": "Shuffle",
+          "info": "Randomizes the order of logos"
         }
       },
       "presets": {
@@ -1906,75 +2192,123 @@
         }
       }
     },
-    "main_about": {
-      "name": "Страница «О нас»"
-    },
     "map": {
       "name": "Карта",
       "settings": {
+        "label": {
+          "default": "Visit Us"
+        },
         "title": {
           "default": "Наше местоположение"
         },
-        "map_address": {
-          "label": "Адрес на карте"
+        "header__location": {
+          "content": "Location"
         },
-        "header__map_settings": {
-          "content": "Настройки карты"
+        "location_name": {
+          "label": "Location Name",
+          "info": "Displayed as the marker title",
+          "default": "Our Store"
         },
-        "map_zoom": {
-          "label": "Масштаб карты"
+        "address": {
+          "info": "Full address displayed below the map",
+          "default": "123 Main Street\nNew York, NY 10001"
         },
-        "map_style": {
-          "label": "Стиль карты",
-          "options__0": {
-            "label": "Стандартный"
-          },
-          "options__1": {
-            "label": "Серебряный"
-          },
-          "options__2": {
-            "label": "Тёмный"
-          },
-          "options__3": {
-            "label": "Ретро"
+        "latitude": {
+          "label": "Latitude",
+          "info": "Latitude coordinate for the map center",
+          "default": "40.7128"
+        },
+        "longitude": {
+          "label": "Longitude",
+          "info": "Longitude coordinate for the map center",
+          "default": "-74.0060"
+        },
+        "zoom": {
+          "label": "Zoom",
+          "info": "Map zoom level"
+        },
+        "show_popup": {
+          "label": "Show Popup"
+        },
+        "header__styling": {
+          "content": "Styling"
+        },
+        "map_height": {
+          "label": "Map height"
+        },
+        "marker_color": {
+          "label": "Marker color"
+        },
+        "grayscale": {
+          "info": "Displays the map in grayscale"
+        }
+      },
+      "blocks": {
+        "address": {
+          "name": "Address",
+          "settings": {
+            "title": {
+              "default": "Address"
+            },
+            "address": {
+              "default": "123 Main Street\nNew York, NY 10001"
+            }
           }
         },
-        "header__store_info": {
-          "content": "Информация о магазине"
+        "hours": {
+          "name": "Hours",
+          "settings": {
+            "title": {
+              "default": "Hours"
+            },
+            "hours": {
+              "label": "Hours",
+              "default": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+            }
+          }
         },
-        "store_name": {
-          "label": "Название магазина"
+        "contact": {
+          "name": "Contact",
+          "settings": {
+            "title": {
+              "default": "Contact"
+            },
+            "phone": {
+              "label": "Phone"
+            },
+            "email": {
+              "label": "Email"
+            }
+          }
         },
-        "store_hours": {
-          "label": "Часы работы магазина"
-        },
-        "store_phone": {
-          "label": "Телефон магазина"
-        },
-        "text": {
-          "default": "Приходите и посетите нас. Мы ждём вас!"
+        "custom": {
+          "name": "Custom"
         }
       },
       "presets": {
         "map": {
-          "name": "Карта"
-        }
-      }
-    },
-    "marquee": {
-      "name": "Бегущая строка",
-      "settings": {
-        "text": {
-          "default": "Добро пожаловать в наш магазин • Бесплатная доставка при заказе от 5000 руб. • Новинки каждую неделю •"
-        },
-        "separator": {
-          "label": "Разделитель",
-          "info": "Текст или символ между повторениями"
-        }
-      },
-      "presets": {
-        "marquee": {
-          "name": "Бегущая строка"
+          "name": "Карта",
+          "blocks": {
+            "address": {
+              "0": {
+                "title": "Address",
+                "address": "123 Main Street\nNew York, NY 10001"
+              }
+            },
+            "hours": {
+              "1": {
+                "title": "Hours",
+                "hours": "Mon - Fri: 9am - 6pm\nSat: 10am - 4pm\nSun: Closed"
+              }
+            },
+            "contact": {
+              "2": {
+                "title": "Contact",
+                "phone": "(555) 123-4567",
+                "email": "hello@example.com"
+              }
+            }
+          }
         }
       }
     },
@@ -1983,40 +2317,135 @@
       "settings": {
         "text": {
           "default": "ДОБРО ПОЖАЛОВАТЬ • В НАШ • МАГАЗИН •"
+        },
+        "radius": {
+          "label": "Radius",
+          "info": "Radius of the circular path"
+        },
+        "header__spacer": {
+          "content": "Spacer"
+        },
+        "spacer": {
+          "label": "Spacer",
+          "info": "Adds a spacer between text items",
+          "default": "-"
+        },
+        "spacer_color": {
+          "label": "Spacer Color"
+        },
+        "spacer_padding": {
+          "label": "Spacer Padding",
+          "info": "Space between text and spacer characters"
         }
       },
       "presets": {
         "marquee_radial": {
-          "name": "Радиальная бегущая строка"
+          "name": "Радиальная бегущая строка",
+          "settings": {
+            "text": "Radial Text Marquee"
+          }
+        }
+      }
+    },
+    "marquee": {
+      "name": "Бегущая строка",
+      "blocks": {
+        "text": {
+          "settings": {
+            "text": {
+              "default": "Free Shipping"
+            }
+          }
+        },
+        "separator": {
+          "name": "Separator",
+          "settings": {
+            "style": {
+              "options__0": {
+                "label": "Dot"
+              },
+              "options__1": {
+                "label": "Icon"
+              }
+            }
+          }
+        }
+      },
+      "presets": {
+        "marquee": {
+          "name": "Бегущая строка",
+          "blocks": {
+            "text": {
+              "0": {
+                "text": "Free Shipping"
+              },
+              "2": {
+                "text": "New Arrivals"
+              },
+              "4": {
+                "text": "Limited Edition"
+              }
+            },
+            "separator": {
+              "1": {
+                "style": "dot"
+              },
+              "3": {
+                "style": "icon"
+              },
+              "5": {
+                "style": "dot"
+              }
+            }
+          }
         }
       }
     },
     "newsletter": {
       "name": "Рассылка",
       "settings": {
-        "label": {
-          "default": "Подписаться"
+        "design": {
+          "options__0": {
+            "label": "Side by side"
+          },
+          "options__1": {
+            "label": "Stacked"
+          },
+          "options__2": {
+            "label": "Card"
+          }
         },
         "title": {
           "default": "Подпишитесь на нашу рассылку"
         },
-        "header__form": {
-          "content": "Форма"
-        },
-        "placeholder": {
-          "label": "Плейсхолдер",
-          "default": "Введите ваш email"
+        "text": {
+          "default": "Получайте последние новости, обновления и эксклюзивные предложения прямо на вашу почту."
         },
         "button_text": {
           "default": "Подписаться"
         },
-        "text": {
-          "default": "Получайте последние новости, обновления и эксклюзивные предложения прямо на вашу почту."
+        "header__privacy_notice": {
+          "content": "Privacy notice"
+        },
+        "privacy_text": {
+          "label": "Privacy text",
+          "info": "Displayed below the subscribe form",
+          "default": "We care about your data. Read our"
+        },
+        "privacy_link": {
+          "label": "Privacy link"
+        },
+        "privacy_link_text": {
+          "label": "Privacy link text",
+          "default": "privacy policy"
         }
       },
       "presets": {
         "newsletter": {
-          "name": "Рассылка"
+          "name": "Рассылка",
+          "settings": {
+            "design": "side-by-side"
+          }
         }
       }
     },
@@ -2024,80 +2453,129 @@
       "name": "Страница"
     },
     "password": {
-      "name": "Пароль"
+      "name": "Пароль",
+      "settings": {
+        "heading": {
+          "default": "Opening Soon"
+        },
+        "subheading": {
+          "label": "Subheading",
+          "default": "We're working on something special. Enter the password to get early access."
+        },
+        "header__newsletter": {
+          "content": "Newsletter"
+        },
+        "show_newsletter": {
+          "label": "Show newsletter"
+        },
+        "newsletter_heading": {
+          "label": "Newsletter heading",
+          "default": "Be the first to know"
+        },
+        "newsletter_text": {
+          "label": "Newsletter text",
+          "default": "Sign up for updates and get notified when we launch."
+        },
+        "header__social": {
+          "content": "Social"
+        },
+        "show_social": {
+          "info": "Configure social links in theme settings"
+        }
+      }
     },
     "pickup_availability": {
       "name": "Наличие для самовывоза"
     },
     "pinned_image_reveal": {
       "name": "Закреплённое раскрытие изображения",
-      "settings": {
-        "header__pinned": {
-          "content": "Закреплённое изображение"
-        }
-      },
       "blocks": {
-        "content": {
-          "name": "Содержимое",
+        "slide": {
           "settings": {
-            "heading": {
-              "default": "Содержимое раздела"
+            "title": {
+              "default": "Discover Our Story"
+            },
+            "background_color": {
+              "label": "Background color",
+              "info": "Transition between panels"
             },
             "text": {
-              "default": "Добавьте описание для этого раздела."
+              "default": "Scroll to reveal beautiful imagery and learn more about what makes us unique."
             }
           }
         }
       },
       "presets": {
         "pinned_image_reveal": {
-          "name": "Закреплённое раскрытие изображения"
+          "name": "Закреплённое раскрытие изображения",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Green Cityscape",
+                "button_text": "Learn More",
+                "text": "Vibrant streets with vertical gardens and solar buildings. This oasis thrives on renewable energy, smart transport, and green spaces for biodiversity."
+              },
+              "1": {
+                "title": "Blue Urban Oasis",
+                "button_text": "Learn More",
+                "text": "Avenues with azure facades and eco-structures. This hub uses clean energy, smart transit, and parks for urban wildlife."
+              },
+              "2": {
+                "title": "Fluid Architecture",
+                "button_text": "Learn More",
+                "text": "Desert refuge with fluid architecture and glowing interiors. This sanctuary harnesses solar power, sustainable design, and natural harmony."
+              }
+            }
+          }
         }
       }
     },
     "product": {
       "name": "Товар",
       "settings": {
-        "header__gallery": {
-          "content": "Галерея"
-        },
-        "enable_lightbox": {
-          "label": "Включить лайтбокс"
-        },
-        "thumbnail_position": {
-          "label": "Позиция миниатюр",
-          "options__0": {
-            "label": "Снизу"
+        "image_fit": {
+          "options__3": {
+            "label": "Portrait"
           },
-          "options__1": {
-            "label": "Слева"
-          },
-          "options__2": {
-            "label": "Справа"
+          "options__4": {
+            "label": "Landscape"
           }
         },
-        "header__video": {
-          "content": "Видео"
+        "thumbnail_position": {
+          "label": "Позиция миниатюр"
         },
-        "enable_video": {
-          "label": "Включить видео"
+        "enable_lightbox": {
+          "label": "Включить лайтбокс",
+          "info": "Allow customers to zoom into product images"
         },
-        "loop_video": {
-          "label": "Зацикливание видео"
+        "video_loop": {
+          "label": "Loop video"
         },
-        "autoplay_video": {
-          "label": "Автовоспроизведение при видимости"
+        "video_autoplay": {
+          "label": "Autoplay video",
+          "info": "Video will autoplay muted"
         },
-        "header__sticky_bar": {
-          "content": "Фиксированная панель"
+        "header__sticky_add_to_cart": {
+          "content": "Sticky add to cart"
         },
-        "enable_sticky_bar": {
-          "label": "Включить фиксированную панель"
+        "show_sticky_bar": {
+          "label": "Show sticky add to cart",
+          "info": "Shows a sticky bar at the bottom with add to cart"
         }
       },
       "blocks": {
         "breadcrumbs": {
-          "name": "Хлебные крошки"
+          "name": "Хлебные крошки",
+          "settings": {
+            "separator": {
+              "label": "Separator",
+              "default": "/"
+            },
+            "show_home_icon": {
+              "label": "Show home icon",
+              "info": "Replaces the Home text with an icon"
+            }
+          }
         },
         "vendor": {
           "name": "Производитель"
@@ -2105,8 +2583,9 @@
         "title": {
           "name": "Заголовок",
           "settings": {
-            "split_words_into_lines": {
-              "label": "Разбить слова на строки"
+            "split_words": {
+              "label": "Split words",
+              "info": "Splits the title into individual animated words"
             }
           }
         },
@@ -2116,20 +2595,32 @@
         "inventory_countdown": {
           "name": "Счётчик остатков",
           "settings": {
-            "low_inventory_threshold": {
-              "label": "Порог низкого запаса",
-              "info": "Показывает предупреждение, когда запас падает ниже этого значения"
+            "threshold": {
+              "label": "Threshold",
+              "info": "Show when inventory is at or below this number"
+            },
+            "style": {
+              "options__2": {
+                "label": "Badge"
+              }
+            },
+            "show_exact_count": {
+              "label": "Show exact count",
+              "info": "Show the exact inventory count instead of just the indicator"
+            },
+            "show_icon": {
+              "label": "Show icon"
             }
           }
         },
         "description": {
           "name": "Описание",
           "settings": {
-            "truncate_description": {
-              "label": "Сокращать описание"
+            "truncate_length": {
+              "label": "Truncate length"
             },
-            "max_lines": {
-              "label": "Максимум строк"
+            "enable_shuffle": {
+              "label": "Enable shuffle"
             }
           }
         },
@@ -2137,34 +2628,30 @@
           "name": "Выбор варианта",
           "settings": {
             "picker_type": {
-              "label": "Тип выбора",
-              "options__0": {
-                "label": "Кнопки"
-              },
-              "options__1": {
-                "label": "Выпадающий список"
-              }
-            },
-            "show_variant_labels": {
-              "label": "Показывать метки вариантов"
-            },
-            "enable_color_swatches": {
-              "label": "Включить цветовые образцы"
+              "label": "Тип выбора"
             }
           }
         },
         "quantity_selector": {
-          "name": "Выбор количества"
+          "name": "Выбор количества",
+          "settings": {
+            "label": {
+              "default": "Quantity"
+            }
+          }
         },
         "buy_buttons": {
           "name": "Кнопки покупки",
           "settings": {
-            "show_dynamic_checkout": {
-              "label": "Показывать динамическое оформление"
+            "add_to_cart_text": {
+              "label": "Add to cart text"
             },
-            "show_gift_card_recipient": {
-              "label": "Показывать получателя подарочной карты",
-              "info": "Показывает форму получателя для товаров с подарочными картами"
+            "sold_out_text": {
+              "label": "Sold out text"
+            },
+            "show_dynamic_checkout": {
+              "label": "Показывать динамическое оформление",
+              "info": "Shows additional payment buttons like Shop Pay, Apple Pay, etc."
             }
           }
         },
@@ -2172,41 +2659,17 @@
           "name": "Наличие для самовывоза"
         },
         "delivery_estimator": {
-          "name": "Калькулятор доставки",
-          "settings": {
-            "shipping_days_min": {
-              "label": "Минимум дней доставки"
-            },
-            "shipping_days_max": {
-              "label": "Максимум дней доставки"
-            }
-          }
+          "name": "Калькулятор доставки"
         },
         "social_proof": {
-          "name": "Социальное доказательство",
-          "settings": {
-            "show_viewers": {
-              "label": "Показывать зрителей"
-            },
-            "viewers_min": {
-              "label": "Минимум зрителей"
-            },
-            "viewers_max": {
-              "label": "Максимум зрителей"
-            },
-            "show_purchases": {
-              "label": "Показывать покупки"
-            },
-            "purchases_min": {
-              "label": "Минимум покупок"
-            },
-            "purchases_max": {
-              "label": "Максимум покупок"
-            }
-          }
+          "name": "Социальное доказательство"
         },
         "text": {
-          "name": "Текст"
+          "settings": {
+            "text": {
+              "default": "<p>Add custom text like shipping info or care instructions.</p>"
+            }
+          }
         },
         "collapsible_tab": {
           "name": "Сворачиваемая вкладка",
@@ -2215,54 +2678,77 @@
               "default": "Сворачиваемая вкладка"
             },
             "content": {
-              "label": "Содержимое"
-            },
-            "page": {
-              "label": "Страница",
-              "info": "Содержимое страницы заменит текст выше"
-            },
-            "open_by_default": {
-              "label": "Открыто по умолчанию"
+              "default": "<p>Add content for this collapsible tab.</p>"
             }
           }
         },
         "size_chart": {
           "name": "Таблица размеров",
           "settings": {
-            "link_text": {
-              "default": "Таблица размеров"
+            "drawer_heading": {
+              "label": "Drawer heading"
             },
             "page": {
               "label": "Страница",
               "info": "Выберите страницу с таблицей размеров для отображения"
+            },
+            "content": {
+              "info": "Used if no page is selected"
+            },
+            "show_always": {
+              "label": "Show always",
+              "info": "Show size chart for all products, not just those with a Size option"
             }
           }
         },
         "back_in_stock": {
-          "name": "Снова в наличии",
+          "name": "Снова в наличии"
+        },
+        "complementary_products": {
+          "name": "Сопутствующие товары",
           "settings": {
-            "heading": {
-              "default": "Сообщить о поступлении"
+            "paragraph__description": {
+              "content": "Add complementary products using the Shopify Search & Discovery app."
             },
-            "text": {
-              "default": "Зарегистрируйтесь, чтобы получить уведомление, когда этот товар снова появится в наличии."
+            "title": {
+              "info": "Leave blank to hide the heading"
             }
           }
         },
-        "complementary_products": {
-          "name": "Сопутствующие товары"
-        },
         "wishlist_button": {
-          "name": "Кнопка списка желаний"
+          "name": "Кнопка списка желаний",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist to be enabled in theme settings."
+            }
+          }
         },
         "compare_button": {
-          "name": "Кнопка сравнения"
+          "name": "Кнопка сравнения",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires compare to be enabled in theme settings."
+            }
+          }
         },
-        "wishlist_compare": {
-          "name": "Желания и сравнение"
+        "wc_buttons": {
+          "name": "Wishlist & Compare buttons",
+          "settings": {
+            "paragraph__description": {
+              "content": "Requires wishlist and/or compare to be enabled in theme settings."
+            },
+            "display_style": {
+              "label": "Display style"
+            }
+          }
         },
         "social_actions": {
-          "name": "Социальные действия"
+          "name": "Социальные действия",
+          "settings": {
+            "paragraph__description": {
+              "content": "Shows share buttons for the current product."
+            }
+          }
         }
       }
     },
@@ -2272,6 +2758,12 @@
     "recently_viewed": {
       "name": "Недавно просмотренные",
       "settings": {
+        "paragraph__description": {
+          "content": "Products shown here are based on the visitor's browsing history stored in their browser."
+        },
+        "label": {
+          "default": "Recently browsed"
+        },
         "title": {
           "default": "Недавно просмотренные"
         }
@@ -2285,6 +2777,12 @@
     "related_products": {
       "name": "Похожие товары",
       "settings": {
+        "paragraph__description": {
+          "content": "Products are automatically selected based on Shopify's product recommendation algorithm."
+        },
+        "label": {
+          "default": "You may also like"
+        },
         "title": {
           "default": "Вам также может понравиться"
         }
@@ -2298,28 +2796,36 @@
     "rolling_numbers": {
       "name": "Анимированные числа",
       "settings": {
-        "label": {
-          "default": "Наше влияние"
-        },
         "title": {
           "default": "Числа говорят сами за себя"
         },
-        "text": {
-          "default": "Мы гордимся нашими достижениями и продолжаем расти."
+        "show_dividers": {
+          "info": "Shows separator lines between number blocks"
+        },
+        "animation_duration": {
+          "info": "Duration of the rolling animation in milliseconds"
         }
       },
       "blocks": {
         "stat": {
-          "name": "Статистика",
           "settings": {
+            "number": {
+              "info": "The target number to animate to",
+              "default": "100"
+            },
             "prefix": {
-              "label": "Префикс"
+              "label": "Префикс",
+              "info": "Text displayed before the number (e.g., $)"
             },
             "suffix": {
-              "label": "Суффикс"
+              "label": "Суффикс",
+              "info": "Text displayed after the number (e.g., +, %, K)"
             },
             "label": {
               "default": "Довольных клиентов"
+            },
+            "text": {
+              "info": "Short description displayed below"
             }
           }
         }
@@ -2327,22 +2833,31 @@
       "presets": {
         "rolling_numbers": {
           "name": "Анимированные числа",
+          "settings": {
+            "title": "By the Numbers",
+            "text": "Our impact in numbers that speak for themselves."
+          },
           "blocks": {
             "stat": {
               "0": {
-                "number": "10000",
                 "suffix": "+",
-                "label": "Довольных клиентов"
+                "label": "Довольных клиентов",
+                "text": "Worldwide satisfaction"
               },
               "1": {
-                "number": "500",
                 "suffix": "+",
-                "label": "Товаров"
+                "label": "Товаров",
+                "text": "Based on reviews"
               },
               "2": {
-                "number": "50",
                 "suffix": "+",
-                "label": "Стран"
+                "label": "Стран",
+                "text": "Global shipping"
+              },
+              "3": {
+                "suffix": "/7",
+                "label": "Support",
+                "text": "Always here to help"
               }
             }
           }
@@ -2351,12 +2866,23 @@
     },
     "scroll_panels": {
       "name": "Прокручиваемые панели",
+      "settings": {
+        "header__display": {
+          "content": "Display"
+        },
+        "show_numbers": {
+          "label": "Show numbers"
+        },
+        "show_progress": {
+          "label": "Show progress"
+        }
+      },
       "blocks": {
         "panel": {
           "name": "Панель",
           "settings": {
-            "heading": {
-              "default": "Заголовок панели"
+            "title": {
+              "default": "Panel Title"
             },
             "text": {
               "default": "Описание панели, объясняющее эту функцию или шаг."
@@ -2366,15 +2892,40 @@
       },
       "presets": {
         "scroll_panels": {
-          "name": "Прокручиваемые панели"
+          "name": "Прокручиваемые панели",
+          "blocks": {
+            "panel": {
+              "0": {
+                "title": "Discover Our Story",
+                "text": "Every great brand has a story. This is where yours begins.",
+                "button_text": "Learn More"
+              },
+              "1": {
+                "title": "Crafted With Care",
+                "text": "We believe in quality over quantity. Each product is made to last.",
+                "button_text": "Our Process"
+              },
+              "2": {
+                "title": "Join the Movement",
+                "text": "Be part of something bigger. Shop consciously, live intentionally.",
+                "button_text": "Shop Now"
+              }
+            }
+          }
         }
       }
     },
     "search": {
       "name": "Поиск",
       "settings": {
-        "show_product_count": {
-          "label": "Показывать количество товаров"
+        "show_popular_searches": {
+          "label": "Show popular searches",
+          "info": "Show suggested searches when the search field is empty"
+        },
+        "popular_searches": {
+          "label": "Popular searches",
+          "info": "Comma-separated list of search terms",
+          "default": "New arrivals, Sale, Best sellers"
         }
       }
     },
@@ -2387,13 +2938,35 @@
         "title": {
           "default": "Завершите образ"
         },
-        "text": {
-          "default": "Нажмите на точки, чтобы купить товары."
+        "image": {
+          "info": "Main image for the shop the look section"
+        },
+        "header__product_display": {
+          "content": "Product display"
+        },
+        "add_all_title": {
+          "label": "Add All Title",
+          "default": "Complete the Look"
+        },
+        "add_all_button": {
+          "label": "Add All Button",
+          "default": "Add All"
+        },
+        "header__hotspot_style": {
+          "content": "Hotspot Style"
+        },
+        "dot_text_color": {
+          "label": "Dot Text Color"
         }
       },
       "blocks": {
-        "product_dot": {
-          "name": "Точка товара"
+        "product": {
+          "name": "Product",
+          "settings": {
+            "header__hotspot_position": {
+              "content": "Hotspot Position"
+            }
+          }
         }
       },
       "presets": {
@@ -2411,13 +2984,33 @@
         "title": {
           "default": "Покупайте из видео"
         },
-        "text": {
-          "default": "Смотрите и покупайте прямо из наших видео."
+        "videos_desktop": {
+          "label": "Videos Desktop"
+        },
+        "videos_tablet": {
+          "label": "Videos Tablet"
+        },
+        "videos_mobile": {
+          "label": "Videos Mobile"
+        },
+        "video_spacing": {
+          "label": "Video Spacing"
+        },
+        "show_product_info": {
+          "label": "Show Product Info"
+        },
+        "autoplay_speed": {
+          "info": "Time in seconds between video rotations"
         }
       },
       "blocks": {
         "video": {
-          "name": "Видео"
+          "name": "Видео",
+          "settings": {
+            "video_hosted": {
+              "label": "Video Hosted"
+            }
+          }
         }
       },
       "presets": {
@@ -2429,47 +3022,99 @@
     "slideshow": {
       "name": "Слайд-шоу",
       "settings": {
-        "header__slideshow": {
-          "content": "Слайд-шоу"
+        "header__transition": {
+          "content": "Transition"
         },
-        "autoplay_speed": {
-          "info": "Время в секундах между слайдами"
-        },
-        "show_pagination": {
-          "label": "Показывать пагинацию"
-        },
-        "transition": {
-          "label": "Переход",
-          "options__0": {
-            "label": "Затухание"
-          },
+        "transition_effect": {
+          "label": "Transition effect",
           "options__1": {
-            "label": "Скольжение"
+            "label": "Zoom in"
+          },
+          "options__2": {
+            "label": "Zoom out"
+          },
+          "options__4": {
+            "label": "Swipe"
           }
+        },
+        "progress_type": {
+          "label": "Progress type",
+          "options__1": {
+            "label": "Dots"
+          },
+          "info": "Only visible when autoplay is enabled"
+        },
+        "header__navigation": {
+          "content": "Navigation"
+        },
+        "show_dots": {
+          "label": "Show dots"
+        },
+        "header__effects": {
+          "content": "Effects"
+        },
+        "parallax": {
+          "label": "Parallax"
         }
       },
       "blocks": {
         "slide": {
-          "name": "Слайд",
           "settings": {
-            "label": {
-              "default": "Новая коллекция"
+            "title": {
+              "default": "Slide heading"
             },
-            "heading": {
-              "default": "Заголовок слайда"
+            "text_position": {
+              "label": "Text Position",
+              "options__0": {
+                "label": "Top Left"
+              },
+              "options__1": {
+                "label": "Top Center"
+              },
+              "options__2": {
+                "label": "Top Right"
+              },
+              "options__3": {
+                "label": "Middle Left"
+              },
+              "options__4": {
+                "label": "Middle Center"
+              },
+              "options__5": {
+                "label": "Middle Right"
+              },
+              "options__6": {
+                "label": "Bottom Left"
+              },
+              "options__7": {
+                "label": "Bottom Center"
+              },
+              "options__8": {
+                "label": "Bottom Right"
+              }
             },
-            "button_text": {
-              "default": "Купить сейчас"
-            },
-            "text": {
-              "default": "Создайте впечатления, которые понравятся вашим клиентам."
+            "full_width_content": {
+              "label": "Full Width Content",
+              "info": "Extends content to the full width of the slide"
             }
           }
         }
       },
       "presets": {
         "slideshow": {
-          "name": "Слайд-шоу"
+          "name": "Слайд-шоу",
+          "blocks": {
+            "slide": {
+              "0": {
+                "title": "Welcome to our store",
+                "text": "Discover our latest collection of premium products"
+              },
+              "1": {
+                "title": "New arrivals",
+                "text": "Check out what's new this season"
+              }
+            }
+          }
         }
       }
     },
@@ -2482,6 +3127,15 @@
         "title": {
           "default": "Откройте больше при прокрутке"
         },
+        "header__background": {
+          "content": "Background"
+        },
+        "background_overlay_color": {
+          "label": "Background overlay color"
+        },
+        "background_overlay_opacity": {
+          "label": "Background overlay opacity"
+        },
         "text": {
           "default": "Каждая карточка накладывается на предыдущую при прокрутке."
         }
@@ -2490,9 +3144,6 @@
         "card": {
           "name": "Карточка",
           "settings": {
-            "heading": {
-              "default": "Заголовок карточки"
-            },
             "text": {
               "default": "Описание карточки, объясняющее эту функцию или преимущество."
             }
@@ -2501,7 +3152,23 @@
       },
       "presets": {
         "stacking_cards": {
-          "name": "Накладывающиеся карточки"
+          "name": "Накладывающиеся карточки",
+          "blocks": {
+            "card": {
+              "0": {
+                "title": "Premium Quality",
+                "text": "We source only the finest materials and work with skilled artisans to create products that last."
+              },
+              "1": {
+                "title": "Sustainable Practices",
+                "text": "Every step of our process is designed with the environment in mind, from sourcing to shipping."
+              },
+              "2": {
+                "title": "Customer First",
+                "text": "Your satisfaction is our priority. We offer hassle-free returns and dedicated support."
+              }
+            }
+          }
         }
       }
     },
@@ -2531,14 +3198,48 @@
               "default": "Должность"
             },
             "bio": {
-              "label": "Биография"
+              "label": "Биография",
+              "default": "A short bio about this team member."
+            },
+            "linkedin": {
+              "label": "LinkedIn"
+            },
+            "twitter": {
+              "label": "X (Twitter)"
+            },
+            "instagram": {
+              "label": "Instagram"
             }
           }
         }
       },
       "presets": {
         "team": {
-          "name": "Команда"
+          "name": "Команда",
+          "blocks": {
+            "member": {
+              "0": {
+                "name": "Alex Thompson",
+                "role": "Founder & CEO",
+                "bio": "Passionate about creating exceptional products."
+              },
+              "1": {
+                "name": "Sarah Chen",
+                "role": "Creative Director",
+                "bio": "Bringing creative visions to life."
+              },
+              "2": {
+                "name": "Michael Brown",
+                "role": "Head of Product",
+                "bio": "Obsessed with user experience."
+              },
+              "3": {
+                "name": "Emily Davis",
+                "role": "Customer Success",
+                "bio": "Making sure customers are happy."
+              }
+            }
+          }
         }
       }
     },
@@ -2551,8 +3252,14 @@
         "title": {
           "default": "Что говорят наши клиенты"
         },
-        "text": {
-          "default": "Узнайте, что говорят о нас довольные клиенты."
+        "show_rating": {
+          "label": "Show rating"
+        },
+        "header__text": {
+          "content": "Text"
+        },
+        "text_size": {
+          "label": "Text size"
         }
       },
       "blocks": {
@@ -2563,40 +3270,85 @@
               "label": "Цитата",
               "default": "Это лучший товар, который я когда-либо покупал. Настоятельно рекомендую!"
             },
+            "rating": {
+              "label": "Оценка"
+            },
+            "avatar": {
+              "label": "Avatar"
+            },
             "author": {
               "label": "Автор",
               "default": "Имя клиента"
             },
-            "role": {
-              "label": "Роль",
-              "default": "Довольный клиент"
-            },
-            "rating": {
-              "label": "Оценка"
+            "author_title": {
+              "label": "Author title",
+              "default": "Verified Buyer"
             }
           }
         }
       },
       "presets": {
         "testimonials": {
-          "name": "Отзывы"
+          "name": "Отзывы",
+          "blocks": {
+            "testimonial": {
+              "0": {
+                "quote": "Absolutely love my purchase! The quality is incredible and it arrived faster than expected. Will definitely be ordering again.",
+                "author": "Sarah Johnson",
+                "author_title": "Verified Buyer"
+              },
+              "1": {
+                "quote": "Best customer service I've ever experienced. They went above and beyond to help me with my order.",
+                "author": "Michael Chen",
+                "author_title": "Loyal Customer"
+              },
+              "2": {
+                "quote": "I've recommended this to all my friends. The attention to detail is remarkable and the craftsmanship is outstanding.",
+                "author": "Emily Davis",
+                "author_title": "Repeat Customer"
+              },
+              "3": {
+                "quote": "This exceeded all my expectations. The quality speaks for itself and shipping was incredibly fast.",
+                "author": "David Wilson",
+                "author_title": "Verified Buyer"
+              },
+              "4": {
+                "quote": "Finally found a brand that actually delivers on its promises. Worth every penny and then some.",
+                "author": "Rachel Thompson",
+                "author_title": "First-time Buyer"
+              },
+              "5": {
+                "quote": "Outstanding quality and the packaging was beautiful. Felt like opening a gift. Can't wait to order more.",
+                "author": "James Martinez",
+                "author_title": "Repeat Customer"
+              }
+            }
+          }
         }
       }
     },
     "text_reveal": {
       "name": "Раскрытие текста",
       "settings": {
-        "title": {
-          "default": "Текст, который раскрывается при прокрутке"
+        "label": {
+          "default": "Our Mission"
         },
-        "reveal_type": {
-          "label": "Тип раскрытия",
-          "options__0": {
-            "label": "По словам"
-          },
-          "options__1": {
-            "label": "По символам"
-          }
+        "text": {
+          "default": "Crafted with *care*,\ndesigned to *inspire*."
+        },
+        "subtext": {
+          "label": "Subtext",
+          "default": "Every product we create is the result of countless hours of research, design, and craftsmanship. We believe that the details matter."
+        },
+        "header__background_number": {
+          "content": "Background number"
+        },
+        "show_background_number": {
+          "label": "Show background number"
+        },
+        "background_number": {
+          "label": "Background number",
+          "default": "01"
         }
       },
       "presets": {
@@ -2608,19 +3360,77 @@
     "text_section": {
       "name": "Текстовая секция",
       "settings": {
-        "label": {
-          "default": "О нас"
-        },
         "title": {
           "default": "Наша история"
+        },
+        "content_width": {
+          "label": "Content width"
         },
         "text": {
           "default": "<p>Поделитесь историей вашего бренда с клиентами. Расскажите об основании компании и о том, что делает вас особенными.</p>"
         }
       },
+      "blocks": {
+        "button": {
+          "settings": {
+            "button_text": {
+              "default": "Learn more"
+            },
+            "button_icon": {
+              "label": "Button icon",
+              "options__1": {
+                "label": "Arrow right"
+              },
+              "options__2": {
+                "label": "Arrow up right"
+              },
+              "options__3": {
+                "label": "Caret right"
+              },
+              "options__4": {
+                "label": "Plus"
+              },
+              "options__5": {
+                "label": "Shopping bag"
+              },
+              "options__6": {
+                "label": "Heart"
+              },
+              "options__7": {
+                "label": "Play"
+              },
+              "options__8": {
+                "label": "Envelope"
+              },
+              "options__9": {
+                "label": "Phone"
+              },
+              "options__10": {
+                "label": "Chat"
+              }
+            },
+            "icon_position": {
+              "label": "Icon position"
+            }
+          }
+        }
+      },
       "presets": {
         "text_section": {
-          "name": "Текстовая секция"
+          "name": "Текстовая секция",
+          "blocks": {
+            "button": {
+              "0": {
+                "button_text": "Shop now",
+                "button_style": "solid",
+                "button_icon": "arrow-right"
+              },
+              "1": {
+                "button_text": "Learn more",
+                "button_style": "outline"
+              }
+            }
+          }
         }
       }
     },
@@ -2632,21 +3442,18 @@
         },
         "title": {
           "default": "Наша история"
-        },
-        "text": {
-          "default": "Проследите историю нашего бренда на протяжении лет."
         }
       },
       "blocks": {
         "milestone": {
           "name": "Веха",
           "settings": {
-            "date": {
-              "label": "Дата",
+            "year": {
+              "label": "Year",
               "default": "2020"
             },
-            "heading": {
-              "default": "Заголовок вехи"
+            "title": {
+              "default": "Milestone Title"
             },
             "text": {
               "default": "Опишите этот важный момент в истории вашего бренда."
@@ -2656,21 +3463,39 @@
       },
       "presets": {
         "timeline": {
-          "name": "Хронология"
+          "name": "Хронология",
+          "blocks": {
+            "milestone": {
+              "0": {
+                "title": "The Beginning",
+                "text": "Started with a simple idea and a passion for quality products."
+              },
+              "1": {
+                "title": "First Collection",
+                "text": "Launched our inaugural product line to overwhelming response."
+              },
+              "2": {
+                "title": "Going Global",
+                "text": "Expanded to international markets and grew our community."
+              },
+              "3": {
+                "title": "Today",
+                "text": "Continuing to innovate and create products you love."
+              }
+            }
+          }
         }
       }
     },
     "trust_badges": {
       "name": "Знаки доверия",
-      "settings": {
-        "title": {
-          "default": "Почему покупают у нас"
-        }
-      },
       "blocks": {
         "badge": {
           "name": "Знак",
           "settings": {
+            "title": {
+              "default": "Free Shipping"
+            },
             "text": {
               "default": "Текст знака"
             }
@@ -2679,42 +3504,38 @@
       },
       "presets": {
         "trust_badges": {
-          "name": "Знаки доверия"
+          "name": "Знаки доверия",
+          "blocks": {
+            "badge": {
+              "0": {
+                "title": "Free Shipping",
+                "text": "On orders over $50"
+              },
+              "1": {
+                "title": "Secure Checkout",
+                "text": "SSL encrypted payment"
+              },
+              "2": {
+                "title": "Easy Returns",
+                "text": "30-day return policy"
+              },
+              "3": {
+                "title": "24/7 Support",
+                "text": "Dedicated support team"
+              }
+            }
+          }
         }
       }
     },
     "video": {
       "name": "Видео",
       "settings": {
-        "label": {
-          "default": "Смотрите"
-        },
-        "title": {
-          "default": "Видео секция"
-        },
-        "video_url": {
-          "label": "URL видео",
-          "info": "Поддерживаются URL YouTube и Vimeo"
-        },
-        "video_file": {
-          "label": "Видеофайл",
-          "info": "Загрузите видеофайл. Имеет приоритет над URL"
-        },
-        "cover_image": {
-          "label": "Обложка",
-          "info": "Отображается до воспроизведения видео"
-        },
-        "autoplay": {
-          "info": "Автовоспроизведение, когда секция видна"
-        },
         "loop": {
           "label": "Зацикливание"
         },
-        "muted": {
-          "label": "Без звука"
-        },
-        "text": {
-          "default": "Посмотрите нашу историю на видео."
+        "content_position": {
+          "label": "Content position"
         }
       },
       "presets": {
@@ -2738,53 +3559,6 @@
           "name": "Список желаний"
         }
       }
-    }
-  },
-  "settings_schema": {
-    "logo": {
-      "name": "Логотип"
-    },
-    "colors": {
-      "name": "Цвета"
-    },
-    "color_scheme_1": {
-      "label": "Схема 1"
-    },
-    "color_scheme_2": {
-      "label": "Схема 2"
-    },
-    "color_scheme_3": {
-      "label": "Схема 3"
-    },
-    "typography": {
-      "name": "Типографика"
-    },
-    "layout": {
-      "name": "Макет"
-    },
-    "buttons": {
-      "name": "Кнопки"
-    },
-    "inputs": {
-      "name": "Поля ввода"
-    },
-    "cards": {
-      "name": "Карточки"
-    },
-    "product_card": {
-      "name": "Карточка товара"
-    },
-    "social_media": {
-      "name": "Социальные сети"
-    },
-    "seo": {
-      "name": "SEO и схема"
-    },
-    "cart": {
-      "name": "Корзина"
-    },
-    "newsletter_popup": {
-      "name": "Всплывающее окно рассылки"
     }
   }
 }

@@ -14,6 +14,7 @@
     "skip_to_product_info": "商品情報にスキップ",
     "close": "閉じる",
     "close_modal": "モーダルを閉じる",
+    "modal": "ダイアログ",
     "close_cart": "カートを閉じる",
     "unit_price_separator": "あたり",
     "vendor": "販売元:",
@@ -29,6 +30,7 @@
     "previous_slide": "前のスライド",
     "go_to_slide": "スライド{{ index }}へ",
     "current_slide": "スライド{{ index }}、現在のスライド",
+    "slide_x_of_y": "スライド {{ current }} / {{ total }}",
     "loading": "読み込み中...",
     "total_reviews": "件のレビュー",
     "star_reviews_info": "{{ rating_max }}つ星中{{ rating_value }}",
@@ -42,6 +44,8 @@
     "previous_testimonial": "前のお客様の声",
     "next_testimonial": "次のお客様の声",
     "go_to_testimonial": "お客様の声{{ index }}へ",
+    "testimonial_x_of_y": "お客様の声 {{ current }} / {{ total }}",
+    "testimonials": "お客様の声",
     "previous_products": "前の商品",
     "next_products": "次の商品",
     "previous_video": "前の動画",
@@ -98,11 +102,7 @@
     "removed_from_compare": "比較から削除しました",
     "cart_updated": "カートを更新しました",
     "items_in_cart": "カートに{{ count }}点",
-    "no_image": "画像がありません",
-    "modal": "ダイアログ",
-    "slide_x_of_y": "スライド {{ current }} / {{ total }}",
-    "testimonials": "お客様の声",
-    "testimonial_x_of_y": "お客様の声 {{ current }} / {{ total }}"
+    "no_image": "画像がありません"
   },
   "errors": {
     "network": "ネットワークエラー。接続を確認してもう一度お試しください。",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "ホーム",
+      "collections": "コレクション",
+      "search": "検索",
+      "cart": "カート"
+    },
     "newsletter": {
       "label": "最新情報を受け取る",
       "submit": "登録する",
@@ -151,13 +157,7 @@
     "min_price": "最低価格",
     "max_price": "最高価格",
     "to": "〜",
-    "shop_now": "今すぐ購入",
-    "breadcrumbs": {
-      "home": "ホーム",
-      "collections": "コレクション",
-      "search": "検索",
-      "cart": "カート"
-    }
+    "shop_now": "今すぐ購入"
   },
   "404": {
     "title": "ページが見つかりません",
@@ -271,16 +271,38 @@
       "quick_view": "クイックビュー",
       "quick_add": "クイック追加",
       "select_options": "オプションを選択",
+      "options": "オプション",
       "view_product": "商品を見る",
+      "view_full_details": "詳細を見る",
       "share": "シェア",
       "zoom": "画像を拡大",
       "media": {
         "reset_3d_model": "3Dモデル表示をリセット",
         "view_in_ar": "ARで見る",
         "load_image": "画像{{ index }}を読み込む"
-      },
-      "view_full_details": "詳細を見る",
-      "options": "オプション"
+      }
+    },
+    "inventory": {
+      "low_stock": "在庫残りわずか",
+      "only_x_left": "残り{{ count }}点",
+      "almost_gone": "まもなく完売！",
+      "selling_fast": "売れてます",
+      "stock_level": "在庫レベル",
+      "remaining": "残り",
+      "x_items_left": "残り{{ count }}点",
+      "hurry_almost_gone": "お急ぎください、まもなく完売！",
+      "order_soon": "お早めにご注文ください！",
+      "low_stock_warning": "在庫残りわずか - お早めに"
+    },
+    "delivery": {
+      "estimated_delivery": "お届け予定日",
+      "order_within": "{{ hours }}時間以内のご注文で当日発送",
+      "ships_today": "本日発送",
+      "ships_tomorrow": "明日発送"
+    },
+    "social_proof": {
+      "people_viewing": "人が閲覧中",
+      "sold_recently": "過去24時間に売れました"
     },
     "size_chart": {
       "title": "サイズガイド",
@@ -334,20 +356,20 @@
       "type": "タイプ",
       "sku": "SKU",
       "availability": "在庫状況",
-      "empty_title": "比較する商品がありません",
-      "empty_text": "商品カードの比較アイコンをクリックして、商品を追加してください。",
-      "browse_products": "商品を見る",
-      "continue_shopping": "買い物を続ける",
-      "open_drawer": "比較を開く",
-      "price": "価格",
-      "items_count": "点",
       "weight": "重量",
       "material": "素材",
       "fabric": "生地",
       "care": "お手入れ方法",
       "subtitle": "サブタイトル",
       "rating": "評価",
-      "loading": "比較データを読み込み中..."
+      "loading": "比較データを読み込み中...",
+      "empty_title": "比較する商品がありません",
+      "empty_text": "商品カードの比較アイコンをクリックして、商品を追加してください。",
+      "browse_products": "商品を見る",
+      "continue_shopping": "買い物を続ける",
+      "open_drawer": "比較を開く",
+      "price": "価格",
+      "items_count": "点"
     },
     "wishlist": {
       "title": "お気に入り",
@@ -363,28 +385,6 @@
       "clear_all": "すべてクリア",
       "products": "保存した商品",
       "items_count": "件"
-    },
-    "inventory": {
-      "low_stock": "在庫残りわずか",
-      "only_x_left": "残り{{ count }}点",
-      "almost_gone": "まもなく完売！",
-      "selling_fast": "売れてます",
-      "stock_level": "在庫レベル",
-      "remaining": "残り",
-      "x_items_left": "残り{{ count }}点",
-      "hurry_almost_gone": "お急ぎください、まもなく完売！",
-      "order_soon": "お早めにご注文ください！",
-      "low_stock_warning": "在庫残りわずか - お早めに"
-    },
-    "delivery": {
-      "estimated_delivery": "お届け予定日",
-      "order_within": "{{ hours }}時間以内のご注文で当日発送",
-      "ships_today": "本日発送",
-      "ships_tomorrow": "明日発送"
-    },
-    "social_proof": {
-      "people_viewing": "人が閲覧中",
-      "sold_recently": "過去24時間に売れました"
     }
   },
   "customers": {

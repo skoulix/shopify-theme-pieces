@@ -14,6 +14,7 @@
     "skip_to_product_info": "Zu den Produktinformationen springen",
     "close": "Schließen",
     "close_modal": "Modal schließen",
+    "modal": "Dialog",
     "close_cart": "Warenkorb schließen",
     "unit_price_separator": "pro",
     "vendor": "Anbieter:",
@@ -29,6 +30,7 @@
     "previous_slide": "Vorherige Folie",
     "go_to_slide": "Zu Folie {{ index }} gehen",
     "current_slide": "Folie {{ index }}, aktuelle Folie",
+    "slide_x_of_y": "Folie {{ current }} von {{ total }}",
     "loading": "Wird geladen...",
     "total_reviews": "Bewertungen insgesamt",
     "star_reviews_info": "{{ rating_value }} von {{ rating_max }} Sternen",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Vorheriges Testimonial",
     "next_testimonial": "Nächstes Testimonial",
     "go_to_testimonial": "Zu Testimonial {{ index }} gehen",
+    "testimonial_x_of_y": "Testimonial {{ current }} von {{ total }}",
+    "testimonials": "Testimonials",
     "previous_products": "Vorherige Produkte",
     "next_products": "Nächste Produkte",
     "previous_video": "Vorheriges Video",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Vom Vergleich entfernt",
     "cart_updated": "Warenkorb aktualisiert",
     "items_in_cart": "{{ count }} Artikel im Warenkorb",
-    "no_image": "Kein Bild verfügbar",
-    "modal": "Dialog",
-    "slide_x_of_y": "Folie {{ current }} von {{ total }}",
-    "testimonials": "Testimonials",
-    "testimonial_x_of_y": "Testimonial {{ current }} von {{ total }}"
+    "no_image": "Kein Bild verfügbar"
   },
   "errors": {
     "network": "Netzwerkfehler. Bitte überprüfen Sie Ihre Verbindung und versuchen Sie es erneut.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Startseite",
+      "collections": "Kollektionen",
+      "search": "Suche",
+      "cart": "Warenkorb"
+    },
     "newsletter": {
       "label": "Bleiben Sie informiert",
       "submit": "Abonnieren",
@@ -151,13 +157,7 @@
     "min_price": "Mindestpreis",
     "max_price": "Höchstpreis",
     "to": "bis",
-    "shop_now": "Jetzt shoppen",
-    "breadcrumbs": {
-      "home": "Startseite",
-      "collections": "Kollektionen",
-      "search": "Suche",
-      "cart": "Warenkorb"
-    }
+    "shop_now": "Jetzt shoppen"
   },
   "404": {
     "title": "Seite nicht gefunden",
@@ -271,6 +271,7 @@
       "quick_view": "Schnellansicht",
       "quick_add": "Schnell hinzufügen",
       "select_options": "Optionen wählen",
+      "options": "Optionen",
       "view_product": "Produkt anzeigen",
       "view_full_details": "Alle Details anzeigen",
       "share": "Teilen",
@@ -279,8 +280,29 @@
         "reset_3d_model": "3D-Modellansicht zurücksetzen",
         "view_in_ar": "In Ihrem Raum ansehen",
         "load_image": "Bild {{ index }} laden"
-      },
-      "options": "Optionen"
+      }
+    },
+    "inventory": {
+      "low_stock": "Niedriger Lagerbestand",
+      "only_x_left": "Nur noch {{ count }} verfügbar",
+      "almost_gone": "Fast ausverkauft!",
+      "selling_fast": "Verkauft sich schnell",
+      "stock_level": "Lagerbestand",
+      "remaining": "verbleibend",
+      "x_items_left": "{{ count }} Artikel übrig",
+      "hurry_almost_gone": "Beeilen Sie sich, fast ausverkauft!",
+      "order_soon": "Bald bestellen - verkauft sich schnell!",
+      "low_stock_warning": "Niedriger Bestand - bald bestellen"
+    },
+    "delivery": {
+      "estimated_delivery": "Voraussichtliche Lieferung",
+      "order_within": "Bestellen Sie innerhalb von {{ hours }}h für Versand am selben Tag",
+      "ships_today": "Versand heute",
+      "ships_tomorrow": "Versand morgen"
+    },
+    "social_proof": {
+      "people_viewing": "Personen sehen sich das an",
+      "sold_recently": "in den letzten 24 Stunden verkauft"
     },
     "size_chart": {
       "title": "Größenratgeber",
@@ -334,20 +356,20 @@
       "type": "Typ",
       "sku": "Artikelnummer",
       "availability": "Verfügbarkeit",
-      "empty_title": "Keine Produkte zum Vergleichen",
-      "empty_text": "Fügen Sie Produkte zum Vergleichen hinzu, indem Sie auf das Vergleichssymbol auf Produktkarten klicken.",
-      "browse_products": "Produkte durchstöbern",
-      "continue_shopping": "Weiter einkaufen",
-      "open_drawer": "Vergleichsleiste öffnen",
-      "price": "Preis",
-      "items_count": "Artikel",
       "weight": "Gewicht",
       "material": "Material",
       "fabric": "Stoff",
       "care": "Pflegehinweise",
       "subtitle": "Untertitel",
       "rating": "Bewertung",
-      "loading": "Lade Vergleichsdaten..."
+      "loading": "Lade Vergleichsdaten...",
+      "empty_title": "Keine Produkte zum Vergleichen",
+      "empty_text": "Fügen Sie Produkte zum Vergleichen hinzu, indem Sie auf das Vergleichssymbol auf Produktkarten klicken.",
+      "browse_products": "Produkte durchstöbern",
+      "continue_shopping": "Weiter einkaufen",
+      "open_drawer": "Vergleichsleiste öffnen",
+      "price": "Preis",
+      "items_count": "Artikel"
     },
     "wishlist": {
       "title": "Wunschliste",
@@ -363,28 +385,6 @@
       "clear_all": "Alle löschen",
       "products": "gespeicherte Artikel",
       "items_count": "Artikel"
-    },
-    "inventory": {
-      "low_stock": "Niedriger Lagerbestand",
-      "only_x_left": "Nur noch {{ count }} verfügbar",
-      "almost_gone": "Fast ausverkauft!",
-      "selling_fast": "Verkauft sich schnell",
-      "stock_level": "Lagerbestand",
-      "remaining": "verbleibend",
-      "x_items_left": "{{ count }} Artikel übrig",
-      "hurry_almost_gone": "Beeilen Sie sich, fast ausverkauft!",
-      "order_soon": "Bald bestellen - verkauft sich schnell!",
-      "low_stock_warning": "Niedriger Bestand - bald bestellen"
-    },
-    "delivery": {
-      "estimated_delivery": "Voraussichtliche Lieferung",
-      "order_within": "Bestellen Sie innerhalb von {{ hours }}h für Versand am selben Tag",
-      "ships_today": "Versand heute",
-      "ships_tomorrow": "Versand morgen"
-    },
-    "social_proof": {
-      "people_viewing": "Personen sehen sich das an",
-      "sold_recently": "in den letzten 24 Stunden verkauft"
     }
   },
   "customers": {

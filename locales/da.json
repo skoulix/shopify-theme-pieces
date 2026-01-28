@@ -14,6 +14,7 @@
     "skip_to_product_info": "Spring til produktinformation",
     "close": "Luk",
     "close_modal": "Luk vindue",
+    "modal": "Dialog",
     "close_cart": "Luk indkøbskurv",
     "unit_price_separator": "pr.",
     "vendor": "Forhandler:",
@@ -29,6 +30,7 @@
     "previous_slide": "Forrige slide",
     "go_to_slide": "Gå til slide {{ index }}",
     "current_slide": "Slide {{ index }}, nuværende slide",
+    "slide_x_of_y": "Dias {{ current }} af {{ total }}",
     "loading": "Indlæser...",
     "total_reviews": "anmeldelser i alt",
     "star_reviews_info": "{{ rating_value }} ud af {{ rating_max }} stjerner",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Forrige udtalelse",
     "next_testimonial": "Næste udtalelse",
     "go_to_testimonial": "Gå til udtalelse {{ index }}",
+    "testimonial_x_of_y": "Anbefaling {{ current }} af {{ total }}",
+    "testimonials": "Anbefalinger",
     "previous_products": "Forrige produkter",
     "next_products": "Næste produkter",
     "previous_video": "Forrige video",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Fjernet fra sammenligning",
     "cart_updated": "Kurv opdateret",
     "items_in_cart": "{{ count }} varer i kurven",
-    "no_image": "Intet billede tilgængeligt",
-    "modal": "Dialog",
-    "slide_x_of_y": "Dias {{ current }} af {{ total }}",
-    "testimonials": "Anbefalinger",
-    "testimonial_x_of_y": "Anbefaling {{ current }} af {{ total }}"
+    "no_image": "Intet billede tilgængeligt"
   },
   "errors": {
     "network": "Netværksfejl. Tjek din forbindelse og prøv igen.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Hjem",
+      "collections": "Kollektioner",
+      "search": "Søg",
+      "cart": "Kurv"
+    },
     "newsletter": {
       "label": "Hold dig opdateret",
       "submit": "Abonner",
@@ -151,13 +157,7 @@
     "min_price": "Min. pris",
     "max_price": "Maks. pris",
     "to": "til",
-    "shop_now": "Shop nu",
-    "breadcrumbs": {
-      "home": "Hjem",
-      "collections": "Kollektioner",
-      "search": "Søg",
-      "cart": "Kurv"
-    }
+    "shop_now": "Shop nu"
   },
   "404": {
     "title": "Siden blev ikke fundet",
@@ -271,6 +271,7 @@
       "quick_view": "Hurtig visning",
       "quick_add": "Hurtig tilføjelse",
       "select_options": "Vælg muligheder",
+      "options": "Indstillinger",
       "view_product": "Se produkt",
       "view_full_details": "Se alle detaljer",
       "share": "Del",
@@ -279,8 +280,29 @@
         "reset_3d_model": "Nulstil 3D-modelvisning",
         "view_in_ar": "Se i dit rum",
         "load_image": "Indlæs billede {{ index }}"
-      },
-      "options": "Indstillinger"
+      }
+    },
+    "inventory": {
+      "low_stock": "Lav lagerbeholdning",
+      "only_x_left": "Kun {{ count }} tilbage",
+      "almost_gone": "Næsten udsolgt!",
+      "selling_fast": "Sælger hurtigt",
+      "stock_level": "Lagerniveau",
+      "remaining": "tilbage",
+      "x_items_left": "{{ count }} varer tilbage",
+      "hurry_almost_gone": "Skynd dig, næsten udsolgt!",
+      "order_soon": "Bestil snart - sælger hurtigt!",
+      "low_stock_warning": "Lav lagerbeholdning - bestil snart"
+    },
+    "delivery": {
+      "estimated_delivery": "Forventet levering",
+      "order_within": "Bestil inden for {{ hours }}t for afsendelse samme dag",
+      "ships_today": "Sendes i dag",
+      "ships_tomorrow": "Sendes i morgen"
+    },
+    "social_proof": {
+      "people_viewing": "personer ser på dette",
+      "sold_recently": "solgt i de sidste 24 timer"
     },
     "size_chart": {
       "title": "Størrelsesguide",
@@ -334,20 +356,20 @@
       "type": "Type",
       "sku": "Varenummer",
       "availability": "Tilgængelighed",
-      "empty_title": "Ingen produkter at sammenligne",
-      "empty_text": "Tilføj produkter til sammenligning ved at klikke på sammenligningsikonet på produktkortene.",
-      "browse_products": "Gennemse produkter",
-      "continue_shopping": "Fortsæt med at handle",
-      "open_drawer": "Åbn sammenligningspanel",
-      "price": "Pris",
-      "items_count": "varer",
       "weight": "Vægt",
       "material": "Materiale",
       "fabric": "Stof",
       "care": "Plejeinstruktioner",
       "subtitle": "Undertitel",
       "rating": "Bedømmelse",
-      "loading": "Indlæser sammenligningsdata..."
+      "loading": "Indlæser sammenligningsdata...",
+      "empty_title": "Ingen produkter at sammenligne",
+      "empty_text": "Tilføj produkter til sammenligning ved at klikke på sammenligningsikonet på produktkortene.",
+      "browse_products": "Gennemse produkter",
+      "continue_shopping": "Fortsæt med at handle",
+      "open_drawer": "Åbn sammenligningspanel",
+      "price": "Pris",
+      "items_count": "varer"
     },
     "wishlist": {
       "title": "Ønskeliste",
@@ -363,28 +385,6 @@
       "clear_all": "Ryd alle",
       "products": "gemte varer",
       "items_count": "varer"
-    },
-    "inventory": {
-      "low_stock": "Lav lagerbeholdning",
-      "only_x_left": "Kun {{ count }} tilbage",
-      "almost_gone": "Næsten udsolgt!",
-      "selling_fast": "Sælger hurtigt",
-      "stock_level": "Lagerniveau",
-      "remaining": "tilbage",
-      "x_items_left": "{{ count }} varer tilbage",
-      "hurry_almost_gone": "Skynd dig, næsten udsolgt!",
-      "order_soon": "Bestil snart - sælger hurtigt!",
-      "low_stock_warning": "Lav lagerbeholdning - bestil snart"
-    },
-    "delivery": {
-      "estimated_delivery": "Forventet levering",
-      "order_within": "Bestil inden for {{ hours }}t for afsendelse samme dag",
-      "ships_today": "Sendes i dag",
-      "ships_tomorrow": "Sendes i morgen"
-    },
-    "social_proof": {
-      "people_viewing": "personer ser på dette",
-      "sold_recently": "solgt i de sidste 24 timer"
     }
   },
   "customers": {

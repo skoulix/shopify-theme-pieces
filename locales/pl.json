@@ -14,6 +14,7 @@
     "skip_to_product_info": "Przejdź do informacji o produkcie",
     "close": "Zamknij",
     "close_modal": "Zamknij okno",
+    "modal": "Okno dialogowe",
     "close_cart": "Zamknij koszyk",
     "unit_price_separator": "za",
     "vendor": "Sprzedawca:",
@@ -29,6 +30,7 @@
     "previous_slide": "Poprzedni slajd",
     "go_to_slide": "Przejdź do slajdu {{ index }}",
     "current_slide": "Slajd {{ index }}, bieżący slajd",
+    "slide_x_of_y": "Slajd {{ current }} z {{ total }}",
     "loading": "Ładowanie...",
     "total_reviews": "opinii łącznie",
     "star_reviews_info": "{{ rating_value }} z {{ rating_max }} gwiazdek",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Poprzednia opinia",
     "next_testimonial": "Następna opinia",
     "go_to_testimonial": "Przejdź do opinii {{ index }}",
+    "testimonial_x_of_y": "Opinia {{ current }} z {{ total }}",
+    "testimonials": "Opinie",
     "previous_products": "Poprzednie produkty",
     "next_products": "Następne produkty",
     "previous_video": "Poprzedni film",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Usunięto z porównania",
     "cart_updated": "Koszyk zaktualizowany",
     "items_in_cart": "{{ count }} produktów w koszyku",
-    "no_image": "Brak zdjęcia",
-    "modal": "Okno dialogowe",
-    "slide_x_of_y": "Slajd {{ current }} z {{ total }}",
-    "testimonials": "Opinie",
-    "testimonial_x_of_y": "Opinia {{ current }} z {{ total }}"
+    "no_image": "Brak zdjęcia"
   },
   "errors": {
     "network": "Błąd sieci. Sprawdź połączenie i spróbuj ponownie.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Strona główna",
+      "collections": "Kolekcje",
+      "search": "Szukaj",
+      "cart": "Koszyk"
+    },
     "newsletter": {
       "label": "Bądź na bieżąco",
       "submit": "Subskrybuj",
@@ -151,13 +157,7 @@
     "min_price": "Cena min.",
     "max_price": "Cena maks.",
     "to": "do",
-    "shop_now": "Kup teraz",
-    "breadcrumbs": {
-      "home": "Strona główna",
-      "collections": "Kolekcje",
-      "search": "Szukaj",
-      "cart": "Koszyk"
-    }
+    "shop_now": "Kup teraz"
   },
   "404": {
     "title": "Nie znaleziono strony",
@@ -271,16 +271,38 @@
       "quick_view": "Szybki podgląd",
       "quick_add": "Szybkie dodanie",
       "select_options": "Wybierz opcje",
+      "options": "Opcje",
       "view_product": "Zobacz produkt",
+      "view_full_details": "Zobacz pełne szczegóły",
       "share": "Udostępnij",
       "zoom": "Powiększ zdjęcie",
       "media": {
         "reset_3d_model": "Resetuj widok modelu 3D",
         "view_in_ar": "Zobacz w swojej przestrzeni",
         "load_image": "Załaduj zdjęcie {{ index }}"
-      },
-      "view_full_details": "Zobacz pełne szczegóły",
-      "options": "Opcje"
+      }
+    },
+    "inventory": {
+      "low_stock": "Niski stan magazynowy",
+      "only_x_left": "Zostało tylko {{ count }}",
+      "almost_gone": "Prawie wyprzedane!",
+      "selling_fast": "Szybko się sprzedaje",
+      "stock_level": "Poziom zapasów",
+      "remaining": "pozostało",
+      "x_items_left": "Pozostało {{ count }} sztuk",
+      "hurry_almost_gone": "Pospiesz się, prawie wyprzedane!",
+      "order_soon": "Zamów szybko - szybko się sprzedaje!",
+      "low_stock_warning": "Niski stan - zamów szybko"
+    },
+    "delivery": {
+      "estimated_delivery": "Szacowana dostawa",
+      "order_within": "Zamów w ciągu {{ hours }}h dla wysyłki tego samego dnia",
+      "ships_today": "Wysyłka dzisiaj",
+      "ships_tomorrow": "Wysyłka jutro"
+    },
+    "social_proof": {
+      "people_viewing": "osób ogląda ten produkt",
+      "sold_recently": "sprzedanych w ciągu ostatnich 24 godzin"
     },
     "size_chart": {
       "title": "Przewodnik rozmiarów",
@@ -334,20 +356,20 @@
       "type": "Typ",
       "sku": "SKU",
       "availability": "Dostępność",
-      "empty_title": "Brak produktów do porównania",
-      "empty_text": "Dodaj produkty do porównania, klikając ikonę porównania na kartach produktów.",
-      "browse_products": "Przeglądaj produkty",
-      "continue_shopping": "Kontynuuj zakupy",
-      "open_drawer": "Otwórz panel porównania",
-      "price": "Cena",
-      "items_count": "produktów",
       "weight": "Waga",
       "material": "Materiał",
       "fabric": "Tkanina",
       "care": "Instrukcje pielęgnacji",
       "subtitle": "Podtytuł",
       "rating": "Ocena",
-      "loading": "Ładowanie danych porównawczych..."
+      "loading": "Ładowanie danych porównawczych...",
+      "empty_title": "Brak produktów do porównania",
+      "empty_text": "Dodaj produkty do porównania, klikając ikonę porównania na kartach produktów.",
+      "browse_products": "Przeglądaj produkty",
+      "continue_shopping": "Kontynuuj zakupy",
+      "open_drawer": "Otwórz panel porównania",
+      "price": "Cena",
+      "items_count": "produktów"
     },
     "wishlist": {
       "title": "Lista życzeń",
@@ -363,28 +385,6 @@
       "clear_all": "Wyczyść wszystko",
       "products": "zapisane produkty",
       "items_count": "produktów"
-    },
-    "inventory": {
-      "low_stock": "Niski stan magazynowy",
-      "only_x_left": "Zostało tylko {{ count }}",
-      "almost_gone": "Prawie wyprzedane!",
-      "selling_fast": "Szybko się sprzedaje",
-      "stock_level": "Poziom zapasów",
-      "remaining": "pozostało",
-      "x_items_left": "Pozostało {{ count }} sztuk",
-      "hurry_almost_gone": "Pospiesz się, prawie wyprzedane!",
-      "order_soon": "Zamów szybko - szybko się sprzedaje!",
-      "low_stock_warning": "Niski stan - zamów szybko"
-    },
-    "delivery": {
-      "estimated_delivery": "Szacowana dostawa",
-      "order_within": "Zamów w ciągu {{ hours }}h dla wysyłki tego samego dnia",
-      "ships_today": "Wysyłka dzisiaj",
-      "ships_tomorrow": "Wysyłka jutro"
-    },
-    "social_proof": {
-      "people_viewing": "osób ogląda ten produkt",
-      "sold_recently": "sprzedanych w ciągu ostatnich 24 godzin"
     }
   },
   "customers": {

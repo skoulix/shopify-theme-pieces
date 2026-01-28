@@ -14,6 +14,7 @@
     "skip_to_product_info": "Passer aux informations du produit",
     "close": "Fermer",
     "close_modal": "Fermer la fenêtre",
+    "modal": "Dialogue",
     "close_cart": "Fermer le panier",
     "unit_price_separator": "par",
     "vendor": "Vendeur :",
@@ -29,6 +30,7 @@
     "previous_slide": "Diapositive précédente",
     "go_to_slide": "Aller à la diapositive {{ index }}",
     "current_slide": "Diapositive {{ index }}, diapositive actuelle",
+    "slide_x_of_y": "Diapositive {{ current }} sur {{ total }}",
     "loading": "Chargement...",
     "total_reviews": "nombre total d'avis",
     "star_reviews_info": "{{ rating_value }} sur {{ rating_max }} étoiles",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Témoignage précédent",
     "next_testimonial": "Témoignage suivant",
     "go_to_testimonial": "Aller au témoignage {{ index }}",
+    "testimonial_x_of_y": "Témoignage {{ current }} sur {{ total }}",
+    "testimonials": "Témoignages",
     "previous_products": "Produits précédents",
     "next_products": "Produits suivants",
     "previous_video": "Vidéo précédente",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Retiré du comparateur",
     "cart_updated": "Panier mis à jour",
     "items_in_cart": "{{ count }} articles dans le panier",
-    "no_image": "Aucune image disponible",
-    "modal": "Dialogue",
-    "slide_x_of_y": "Diapositive {{ current }} sur {{ total }}",
-    "testimonials": "Témoignages",
-    "testimonial_x_of_y": "Témoignage {{ current }} sur {{ total }}"
+    "no_image": "Aucune image disponible"
   },
   "errors": {
     "network": "Erreur réseau. Veuillez vérifier votre connexion et réessayer.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Accueil",
+      "collections": "Collections",
+      "search": "Rechercher",
+      "cart": "Panier"
+    },
     "newsletter": {
       "label": "Restez informé",
       "submit": "S'abonner",
@@ -151,13 +157,7 @@
     "min_price": "Prix minimum",
     "max_price": "Prix maximum",
     "to": "à",
-    "shop_now": "Acheter maintenant",
-    "breadcrumbs": {
-      "home": "Accueil",
-      "collections": "Collections",
-      "search": "Rechercher",
-      "cart": "Panier"
-    }
+    "shop_now": "Acheter maintenant"
   },
   "404": {
     "title": "Page non trouvée",
@@ -271,6 +271,7 @@
       "quick_view": "Aperçu rapide",
       "quick_add": "Ajout rapide",
       "select_options": "Choisir les options",
+      "options": "Options",
       "view_product": "Voir le produit",
       "view_full_details": "Voir tous les détails",
       "share": "Partager",
@@ -279,8 +280,29 @@
         "reset_3d_model": "Réinitialiser la vue du modèle 3D",
         "view_in_ar": "Voir dans votre espace",
         "load_image": "Charger l'image {{ index }}"
-      },
-      "options": "Options"
+      }
+    },
+    "inventory": {
+      "low_stock": "Stock faible",
+      "only_x_left": "Plus que {{ count }} en stock",
+      "almost_gone": "Presque épuisé !",
+      "selling_fast": "Se vend rapidement",
+      "stock_level": "Niveau de stock",
+      "remaining": "restants",
+      "x_items_left": "{{ count }} articles restants",
+      "hurry_almost_gone": "Dépêchez-vous, presque épuisé !",
+      "order_soon": "Commandez vite - se vend rapidement !",
+      "low_stock_warning": "Stock faible - commandez vite"
+    },
+    "delivery": {
+      "estimated_delivery": "Livraison estimée",
+      "order_within": "Commandez dans les {{ hours }}h pour expédition le jour même",
+      "ships_today": "Expédié aujourd'hui",
+      "ships_tomorrow": "Expédié demain"
+    },
+    "social_proof": {
+      "people_viewing": "personnes regardent ceci",
+      "sold_recently": "vendus dans les dernières 24 heures"
     },
     "size_chart": {
       "title": "Guide des tailles",
@@ -334,20 +356,20 @@
       "type": "Type",
       "sku": "Réf.",
       "availability": "Disponibilité",
-      "empty_title": "Aucun produit à comparer",
-      "empty_text": "Ajoutez des produits à comparer en cliquant sur l'icône de comparaison sur les cartes produits.",
-      "browse_products": "Parcourir les produits",
-      "continue_shopping": "Continuer les achats",
-      "open_drawer": "Ouvrir le comparateur",
-      "price": "Prix",
-      "items_count": "articles",
       "weight": "Poids",
       "material": "Matériau",
       "fabric": "Tissu",
       "care": "Instructions d'entretien",
       "subtitle": "Sous-titre",
       "rating": "Note",
-      "loading": "Chargement des données de comparaison..."
+      "loading": "Chargement des données de comparaison...",
+      "empty_title": "Aucun produit à comparer",
+      "empty_text": "Ajoutez des produits à comparer en cliquant sur l'icône de comparaison sur les cartes produits.",
+      "browse_products": "Parcourir les produits",
+      "continue_shopping": "Continuer les achats",
+      "open_drawer": "Ouvrir le comparateur",
+      "price": "Prix",
+      "items_count": "articles"
     },
     "wishlist": {
       "title": "Liste de souhaits",
@@ -363,28 +385,6 @@
       "clear_all": "Tout effacer",
       "products": "articles enregistrés",
       "items_count": "articles"
-    },
-    "inventory": {
-      "low_stock": "Stock faible",
-      "only_x_left": "Plus que {{ count }} en stock",
-      "almost_gone": "Presque épuisé !",
-      "selling_fast": "Se vend rapidement",
-      "stock_level": "Niveau de stock",
-      "remaining": "restants",
-      "x_items_left": "{{ count }} articles restants",
-      "hurry_almost_gone": "Dépêchez-vous, presque épuisé !",
-      "order_soon": "Commandez vite - se vend rapidement !",
-      "low_stock_warning": "Stock faible - commandez vite"
-    },
-    "delivery": {
-      "estimated_delivery": "Livraison estimée",
-      "order_within": "Commandez dans les {{ hours }}h pour expédition le jour même",
-      "ships_today": "Expédié aujourd'hui",
-      "ships_tomorrow": "Expédié demain"
-    },
-    "social_proof": {
-      "people_viewing": "personnes regardent ceci",
-      "sold_recently": "vendus dans les dernières 24 heures"
     }
   },
   "customers": {

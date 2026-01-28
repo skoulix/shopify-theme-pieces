@@ -14,6 +14,7 @@
     "skip_to_product_info": "跳至產品資訊",
     "close": "關閉",
     "close_modal": "關閉視窗",
+    "modal": "對話框",
     "close_cart": "關閉購物車",
     "unit_price_separator": "每",
     "vendor": "供應商：",
@@ -29,6 +30,7 @@
     "previous_slide": "上一張",
     "go_to_slide": "前往第 {{ index }} 張投影片",
     "current_slide": "第 {{ index }} 張投影片，目前投影片",
+    "slide_x_of_y": "幻燈片 {{ current }} / {{ total }}",
     "loading": "載入中...",
     "total_reviews": "則評論",
     "star_reviews_info": "{{ rating_max }} 分中的 {{ rating_value }} 分",
@@ -42,6 +44,8 @@
     "previous_testimonial": "上一則推薦",
     "next_testimonial": "下一則推薦",
     "go_to_testimonial": "前往第 {{ index }} 則推薦",
+    "testimonial_x_of_y": "評價 {{ current }} / {{ total }}",
+    "testimonials": "客戶評價",
     "previous_products": "上一組產品",
     "next_products": "下一組產品",
     "previous_video": "上一部影片",
@@ -98,11 +102,7 @@
     "removed_from_compare": "已從比較移除",
     "cart_updated": "購物車已更新",
     "items_in_cart": "購物車中有 {{ count }} 件商品",
-    "no_image": "暫無圖片",
-    "modal": "對話框",
-    "slide_x_of_y": "幻燈片 {{ current }} / {{ total }}",
-    "testimonials": "客戶評價",
-    "testimonial_x_of_y": "評價 {{ current }} / {{ total }}"
+    "no_image": "暫無圖片"
   },
   "errors": {
     "network": "網路錯誤。請檢查您的連線並重試。",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "首頁",
+      "collections": "系列",
+      "search": "搜尋",
+      "cart": "購物車"
+    },
     "newsletter": {
       "label": "取得最新資訊",
       "submit": "訂閱",
@@ -151,13 +157,7 @@
     "min_price": "最低價格",
     "max_price": "最高價格",
     "to": "至",
-    "shop_now": "立即選購",
-    "breadcrumbs": {
-      "home": "首頁",
-      "collections": "系列",
-      "search": "搜尋",
-      "cart": "購物車"
-    }
+    "shop_now": "立即選購"
   },
   "404": {
     "title": "找不到頁面",
@@ -271,16 +271,38 @@
       "quick_view": "快速檢視",
       "quick_add": "快速新增",
       "select_options": "選擇選項",
+      "options": "選項",
       "view_product": "檢視產品",
+      "view_full_details": "檢視完整詳情",
       "share": "分享",
       "zoom": "放大圖片",
       "media": {
         "reset_3d_model": "重設 3D 模型檢視",
         "view_in_ar": "在您的空間中檢視",
         "load_image": "載入圖片 {{ index }}"
-      },
-      "view_full_details": "檢視完整詳情",
-      "options": "選項"
+      }
+    },
+    "inventory": {
+      "low_stock": "庫存不足",
+      "only_x_left": "僅剩 {{ count }} 件",
+      "almost_gone": "即將售罄！",
+      "selling_fast": "熱銷中",
+      "stock_level": "庫存水平",
+      "remaining": "剩餘",
+      "x_items_left": "剩餘 {{ count }} 件",
+      "hurry_almost_gone": "把握機會，即將售罄！",
+      "order_soon": "盡快下單 - 熱銷中！",
+      "low_stock_warning": "庫存不足 - 盡快下單"
+    },
+    "delivery": {
+      "estimated_delivery": "預計送達",
+      "order_within": "{{ hours }}小時內下單當日發貨",
+      "ships_today": "今日發貨",
+      "ships_tomorrow": "明日發貨"
+    },
+    "social_proof": {
+      "people_viewing": "人正在瀏覽",
+      "sold_recently": "過去24小時售出"
     },
     "size_chart": {
       "title": "尺寸指南",
@@ -334,20 +356,20 @@
       "type": "類型",
       "sku": "貨號",
       "availability": "庫存狀態",
-      "empty_title": "沒有要比較的產品",
-      "empty_text": "點擊產品卡片上的比較圖示來新增產品。",
-      "browse_products": "瀏覽產品",
-      "continue_shopping": "繼續購物",
-      "open_drawer": "開啟比較面板",
-      "price": "價格",
-      "items_count": "件",
       "weight": "重量",
       "material": "材質",
       "fabric": "布料",
       "care": "保養說明",
       "subtitle": "副標題",
       "rating": "評分",
-      "loading": "正在載入比較資料..."
+      "loading": "正在載入比較資料...",
+      "empty_title": "沒有要比較的產品",
+      "empty_text": "點擊產品卡片上的比較圖示來新增產品。",
+      "browse_products": "瀏覽產品",
+      "continue_shopping": "繼續購物",
+      "open_drawer": "開啟比較面板",
+      "price": "價格",
+      "items_count": "件"
     },
     "wishlist": {
       "title": "願望清單",
@@ -363,28 +385,6 @@
       "clear_all": "清除全部",
       "products": "已儲存的商品",
       "items_count": "件"
-    },
-    "inventory": {
-      "low_stock": "庫存不足",
-      "only_x_left": "僅剩 {{ count }} 件",
-      "almost_gone": "即將售罄！",
-      "selling_fast": "熱銷中",
-      "stock_level": "庫存水平",
-      "remaining": "剩餘",
-      "x_items_left": "剩餘 {{ count }} 件",
-      "hurry_almost_gone": "把握機會，即將售罄！",
-      "order_soon": "盡快下單 - 熱銷中！",
-      "low_stock_warning": "庫存不足 - 盡快下單"
-    },
-    "delivery": {
-      "estimated_delivery": "預計送達",
-      "order_within": "{{ hours }}小時內下單當日發貨",
-      "ships_today": "今日發貨",
-      "ships_tomorrow": "明日發貨"
-    },
-    "social_proof": {
-      "people_viewing": "人正在瀏覽",
-      "sold_recently": "過去24小時售出"
     }
   },
   "customers": {

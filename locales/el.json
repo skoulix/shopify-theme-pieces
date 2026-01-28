@@ -14,6 +14,7 @@
     "skip_to_product_info": "Μετάβαση στις πληροφορίες προϊόντος",
     "close": "Κλείσιμο",
     "close_modal": "Κλείσιμο παραθύρου",
+    "modal": "Παράθυρο διαλόγου",
     "close_cart": "Κλείσιμο καλαθιού",
     "unit_price_separator": "ανά",
     "vendor": "Πωλητής:",
@@ -29,6 +30,7 @@
     "previous_slide": "Προηγούμενη διαφάνεια",
     "go_to_slide": "Μετάβαση στη διαφάνεια {{ index }}",
     "current_slide": "Διαφάνεια {{ index }}, τρέχουσα διαφάνεια",
+    "slide_x_of_y": "Διαφάνεια {{ current }} από {{ total }}",
     "loading": "Φόρτωση...",
     "total_reviews": "συνολικές αξιολογήσεις",
     "star_reviews_info": "{{ rating_value }} από {{ rating_max }} αστέρια",
@@ -42,6 +44,8 @@
     "previous_testimonial": "Προηγούμενη μαρτυρία",
     "next_testimonial": "Επόμενη μαρτυρία",
     "go_to_testimonial": "Μετάβαση στη μαρτυρία {{ index }}",
+    "testimonial_x_of_y": "Μαρτυρία {{ current }} από {{ total }}",
+    "testimonials": "Μαρτυρίες",
     "previous_products": "Προηγούμενα προϊόντα",
     "next_products": "Επόμενα προϊόντα",
     "previous_video": "Προηγούμενο βίντεο",
@@ -98,11 +102,7 @@
     "removed_from_compare": "Αφαιρέθηκε από τη σύγκριση",
     "cart_updated": "Το καλάθι ενημερώθηκε",
     "items_in_cart": "{{ count }} προϊόντα στο καλάθι",
-    "no_image": "Δεν υπάρχει διαθέσιμη εικόνα",
-    "modal": "Παράθυρο διαλόγου",
-    "slide_x_of_y": "Διαφάνεια {{ current }} από {{ total }}",
-    "testimonials": "Μαρτυρίες",
-    "testimonial_x_of_y": "Μαρτυρία {{ current }} από {{ total }}"
+    "no_image": "Δεν υπάρχει διαθέσιμη εικόνα"
   },
   "errors": {
     "network": "Σφάλμα δικτύου. Ελέγξτε τη σύνδεσή σας και δοκιμάστε ξανά.",
@@ -125,6 +125,12 @@
     "tiktok": "TikTok"
   },
   "general": {
+    "breadcrumbs": {
+      "home": "Αρχική",
+      "collections": "Συλλογές",
+      "search": "Αναζήτηση",
+      "cart": "Καλάθι"
+    },
     "newsletter": {
       "label": "Μείνετε Ενημερωμένοι",
       "submit": "Εγγραφή",
@@ -151,13 +157,7 @@
     "min_price": "Ελάχιστη τιμή",
     "max_price": "Μέγιστη τιμή",
     "to": "έως",
-    "shop_now": "Αγοράστε Τώρα",
-    "breadcrumbs": {
-      "home": "Αρχική",
-      "collections": "Συλλογές",
-      "search": "Αναζήτηση",
-      "cart": "Καλάθι"
-    }
+    "shop_now": "Αγοράστε Τώρα"
   },
   "404": {
     "title": "Η σελίδα δεν βρέθηκε",
@@ -271,16 +271,38 @@
       "quick_view": "Γρήγορη Προβολή",
       "quick_add": "Γρήγορη Προσθήκη",
       "select_options": "Επιλογή Επιλογών",
+      "options": "Επιλογές",
       "view_product": "Προβολή Προϊόντος",
+      "view_full_details": "Προβολή πλήρων λεπτομερειών",
       "share": "Κοινοποίηση",
       "zoom": "Μεγέθυνση εικόνας",
       "media": {
         "reset_3d_model": "Επαναφορά προβολής 3D μοντέλου",
         "view_in_ar": "Προβολή στον χώρο σας",
         "load_image": "Φόρτωση εικόνας {{ index }}"
-      },
-      "view_full_details": "Προβολή πλήρων λεπτομερειών",
-      "options": "Επιλογές"
+      }
+    },
+    "inventory": {
+      "low_stock": "Χαμηλό απόθεμα",
+      "only_x_left": "Μόνο {{ count }} απομένουν",
+      "almost_gone": "Σχεδόν εξαντλήθηκε!",
+      "selling_fast": "Πωλείται γρήγορα",
+      "stock_level": "Επίπεδο αποθέματος",
+      "remaining": "απομένουν",
+      "x_items_left": "{{ count }} τεμάχια απομένουν",
+      "hurry_almost_gone": "Βιαστείτε, σχεδόν εξαντλήθηκε!",
+      "order_soon": "Παραγγείλετε σύντομα - πωλείται γρήγορα!",
+      "low_stock_warning": "Χαμηλό απόθεμα - παραγγείλετε σύντομα"
+    },
+    "delivery": {
+      "estimated_delivery": "Εκτιμώμενη παράδοση",
+      "order_within": "Παραγγείλετε εντός {{ hours }} ωρών για αποστολή την ίδια μέρα",
+      "ships_today": "Αποστέλλεται σήμερα",
+      "ships_tomorrow": "Αποστέλλεται αύριο"
+    },
+    "social_proof": {
+      "people_viewing": "άτομα βλέπουν αυτό",
+      "sold_recently": "πωλήθηκαν τις τελευταίες 24 ώρες"
     },
     "size_chart": {
       "title": "Οδηγός Μεγεθών",
@@ -334,20 +356,20 @@
       "type": "Τύπος",
       "sku": "Κωδικός",
       "availability": "Διαθεσιμότητα",
-      "empty_title": "Δεν υπάρχουν προϊόντα προς σύγκριση",
-      "empty_text": "Προσθέστε προϊόντα για σύγκριση κάνοντας κλικ στο εικονίδιο σύγκρισης στις κάρτες προϊόντων.",
-      "browse_products": "Περιήγηση Προϊόντων",
-      "continue_shopping": "Συνέχεια Αγορών",
-      "open_drawer": "Άνοιγμα συρταριού σύγκρισης",
-      "price": "Τιμή",
-      "items_count": "προϊόντα",
       "weight": "Βάρος",
       "material": "Υλικό",
       "fabric": "Ύφασμα",
       "care": "Οδηγίες φροντίδας",
       "subtitle": "Υπότιτλος",
       "rating": "Αξιολόγηση",
-      "loading": "Φόρτωση δεδομένων σύγκρισης..."
+      "loading": "Φόρτωση δεδομένων σύγκρισης...",
+      "empty_title": "Δεν υπάρχουν προϊόντα προς σύγκριση",
+      "empty_text": "Προσθέστε προϊόντα για σύγκριση κάνοντας κλικ στο εικονίδιο σύγκρισης στις κάρτες προϊόντων.",
+      "browse_products": "Περιήγηση Προϊόντων",
+      "continue_shopping": "Συνέχεια Αγορών",
+      "open_drawer": "Άνοιγμα συρταριού σύγκρισης",
+      "price": "Τιμή",
+      "items_count": "προϊόντα"
     },
     "wishlist": {
       "title": "Λίστα Επιθυμιών",
@@ -363,28 +385,6 @@
       "clear_all": "Εκκαθάριση Όλων",
       "products": "αποθηκευμένα",
       "items_count": "προϊόντα"
-    },
-    "inventory": {
-      "low_stock": "Χαμηλό απόθεμα",
-      "only_x_left": "Μόνο {{ count }} απομένουν",
-      "almost_gone": "Σχεδόν εξαντλήθηκε!",
-      "selling_fast": "Πωλείται γρήγορα",
-      "stock_level": "Επίπεδο αποθέματος",
-      "remaining": "απομένουν",
-      "x_items_left": "{{ count }} τεμάχια απομένουν",
-      "hurry_almost_gone": "Βιαστείτε, σχεδόν εξαντλήθηκε!",
-      "order_soon": "Παραγγείλετε σύντομα - πωλείται γρήγορα!",
-      "low_stock_warning": "Χαμηλό απόθεμα - παραγγείλετε σύντομα"
-    },
-    "delivery": {
-      "estimated_delivery": "Εκτιμώμενη παράδοση",
-      "order_within": "Παραγγείλετε εντός {{ hours }} ωρών για αποστολή την ίδια μέρα",
-      "ships_today": "Αποστέλλεται σήμερα",
-      "ships_tomorrow": "Αποστέλλεται αύριο"
-    },
-    "social_proof": {
-      "people_viewing": "άτομα βλέπουν αυτό",
-      "sold_recently": "πωλήθηκαν τις τελευταίες 24 ώρες"
     }
   },
   "customers": {
