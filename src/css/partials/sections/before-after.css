@@ -10,7 +10,8 @@
 
   /* Container */
   .before-after-container {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
     border-radius: var(--card-radius);
     cursor: ew-resize;
     touch-action: pan-y pinch-zoom;
@@ -26,39 +27,58 @@
 
   /* Images */
   .before-after-image {
-    @apply block w-full h-auto object-cover pointer-events-none select-none;
+    display: block;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    pointer-events: none;
+    user-select: none;
     aspect-ratio: var(--before-after-aspect-ratio, 16/9);
   }
 
   /* Placeholder wrapper - needs bg color since SVGs are transparent */
   .before-after-placeholder {
-    @apply flex items-center justify-center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
   }
 
   .before-after-placeholder svg {
-    @apply w-full h-full object-cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Before overlay with placeholder needs its own bg */
   .before-after-before:has(.before-after-placeholder) {
-    @apply bg-neutral-200;
+    background-color: #e5e5e5;
   }
 
   /* Before overlay */
   .before-after-before {
-    @apply absolute inset-0 overflow-hidden;
+    position: absolute;
+    inset: 0;
+    overflow: hidden;
     width: 50%;
   }
 
   .before-after-before img,
   .before-after-before svg {
-    @apply absolute top-0 left-0 h-full max-w-none object-cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    max-width: none;
+    object-fit: cover;
     object-position: left center;
   }
 
   /* Handle / Slider */
   .before-after-handle {
-    @apply absolute top-0 bottom-0 z-10;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 10;
     left: 50%;
     width: 4px;
     background: #ffffff;
@@ -68,7 +88,12 @@
   }
 
   .before-after-handle-btn {
-    @apply absolute flex items-center justify-center rounded-full border-none;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    border: none;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
@@ -100,7 +125,11 @@
 
   /* Labels */
   .before-after-labels {
-    @apply absolute flex justify-between pointer-events-none z-5;
+    position: absolute;
+    display: flex;
+    justify-content: space-between;
+    pointer-events: none;
+    z-index: 5;
     bottom: 1.5rem;
     left: 1.5rem;
     right: 1.5rem;

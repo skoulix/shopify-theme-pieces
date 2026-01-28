@@ -6,33 +6,42 @@
 @layer components {
   /* Section container */
   .marquee-radial {
-    @apply relative w-full overflow-hidden;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
     padding-top: var(--marquee-radial-padding-top, 40px);
     padding-bottom: var(--marquee-radial-padding-bottom, 40px);
   }
 
   /* Wrapper for the marquee */
   .marquee-radial__wrapper {
-    @apply relative w-full;
+    position: relative;
+    width: 100%;
   }
 
   /* Text element - hidden but used for font measurement */
   .marquee-radial__text {
-    @apply text-center whitespace-nowrap select-none font-heading font-bold uppercase leading-tight;
+    text-align: center;
+    white-space: nowrap;
+    user-select: none;
+    font-family: var(--font-heading);
+    font-weight: 700;
+    text-transform: uppercase;
+    line-height: 1.25;
     letter-spacing: -0.04em;
     font-size: clamp(2.5em, 10vw, 10em);
   }
 
   /* Outline text style */
   .marquee-radial__text--outline {
-    @apply text-transparent;
+    color: transparent;
     -webkit-text-stroke: 1px currentColor;
     text-stroke: 1px currentColor;
   }
 
   /* Ensure SVG is properly positioned */
   .marquee-radial__wrapper svg {
-    @apply pointer-events-none;
+    pointer-events: none;
   }
 
   /* Mobile responsive - reduced padding */

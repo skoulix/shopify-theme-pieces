@@ -6,7 +6,7 @@
 @layer components {
   /* Container - uses CSS variable for height */
   .floating-images {
-    @apply relative;
+    position: relative;
     height: var(--floating-images-height-mobile, 200vh);
   }
 

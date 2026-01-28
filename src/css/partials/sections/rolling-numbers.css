@@ -8,7 +8,8 @@
 @layer components {
   /* Grid base - column count set dynamically inline */
   .rolling-numbers-grid {
-    @apply grid gap-12;
+    display: grid;
+    gap: 3rem;
     grid-template-columns: 1fr;
   }
 
@@ -27,19 +28,21 @@
 
   /* Item animation states */
   .rolling-numbers-item {
-    @apply opacity-0;
+    opacity: 0;
     transform: translateY(30px);
   }
 
   .rolling-numbers-item.is-visible {
-    @apply opacity-100;
+    opacity: 1;
     transform: translateY(0);
     transition: opacity 0.8s ease, transform 0.8s ease;
   }
 
   /* Value container - alignment set dynamically inline */
   .rolling-numbers-value {
-    @apply flex items-baseline font-heading;
+    display: flex;
+    align-items: baseline;
+    font-family: var(--font-heading);
     gap: 0.1em;
     font-size: calc(clamp(2.5rem, 8vw, 4.5rem) * var(--heading-font-scale, 1));
     font-weight: var(--font-heading-weight, 700);
@@ -56,19 +59,21 @@
 
   /* Label */
   .rolling-numbers-label {
-    @apply mt-4 opacity-60;
+    margin-top: 1rem;
+    opacity: 0.6;
   }
 
   /* Description - margin alignment set dynamically inline */
   .rolling-numbers-description {
-    @apply mt-2 opacity-80;
+    margin-top: 0.5rem;
+    opacity: 0.8;
     font-size: clamp(0.875rem, 1.5vw, 1rem);
     max-width: 280px;
   }
 
   /* Header - alignment set dynamically inline */
   .rolling-numbers-header {
-    @apply mb-16;
+    margin-bottom: 4rem;
   }
 
   .rolling-numbers-header .section-description {
@@ -78,13 +83,13 @@
 
   /* Divider style - enabled via modifier class */
   .rolling-numbers-grid--dividers .rolling-numbers-item:not(:last-child) {
-    @apply relative;
+    position: relative;
   }
 
   @media (min-width: 1024px) {
     .rolling-numbers-grid--dividers .rolling-numbers-item:not(:last-child)::after {
-      @apply absolute;
       content: '';
+      position: absolute;
       right: -2rem;
       top: 50%;
       transform: translateY(-50%);
@@ -97,7 +102,7 @@
   /* Reduced motion fallback */
   @media (prefers-reduced-motion: reduce) {
     .rolling-numbers-item {
-      @apply opacity-100;
+      opacity: 1;
       transform: none;
     }
   }

@@ -19,21 +19,26 @@
 
   /* Slides */
   .announcement-bar__slide {
-    @apply absolute inset-0 flex items-center justify-center;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.5s ease, visibility 0.5s ease;
   }
 
   .announcement-bar__slide.is-active {
-    @apply relative;
+    position: relative;
     opacity: 1;
     visibility: visible;
   }
 
   /* Countdown — compact inline layout */
   .announcement-bar__countdown {
-    @apply inline-flex items-center;
+    display: inline-flex;
+    align-items: center;
     gap: 0.25rem;
     margin-left: 0.5rem;
     font-variant-numeric: tabular-nums;
@@ -42,7 +47,8 @@
   }
 
   .announcement-bar__countdown-unit {
-    @apply inline-flex items-baseline;
+    display: inline-flex;
+    align-items: baseline;
   }
 
   .announcement-bar__countdown-value {
@@ -52,24 +58,29 @@
   }
 
   .announcement-bar__countdown-label {
-    @apply opacity-60;
+    opacity: 0.6;
     font-size: 0.85em;
     font-weight: 500;
   }
 
   .announcement-bar__countdown-sep {
-    @apply opacity-40;
+    opacity: 0.4;
     margin: 0 0.1rem;
   }
 
   /* Dismissed state */
   .announcement-bar.is-dismissed {
-    @apply hidden;
+    display: none;
   }
 
   /* Arrow buttons */
   .announcement-bar__arrow {
-    @apply absolute bg-transparent border-none p-2 cursor-pointer z-1;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
+    z-index: 1;
     top: 50%;
     transform: translateY(-50%);
     color: var(--color-text);
@@ -91,7 +102,11 @@
 
   /* Close button */
   .announcement-bar__close {
-    @apply absolute bg-transparent border-none p-2 cursor-pointer;
+    position: absolute;
+    background-color: transparent;
+    border: none;
+    padding: 0.5rem;
+    cursor: pointer;
     right: 0.5rem;
     top: 50%;
     transform: translateY(-50%);

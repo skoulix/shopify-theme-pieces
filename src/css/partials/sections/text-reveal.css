@@ -6,16 +6,16 @@
 @layer components {
   /* Container */
   .text-reveal {
-    @apply overflow-hidden;
+    overflow: hidden;
   }
 
   /* Alignment modifiers */
   .text-reveal--center {
-    @apply text-center;
+    text-align: center;
   }
 
   .text-reveal--right {
-    @apply text-right;
+    text-align: right;
   }
 
   /* Heading */
@@ -40,13 +40,15 @@
 
   /* Word wrapper for reveal animation */
   .text-reveal-word {
-    @apply inline-block overflow-hidden align-top;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: top;
     padding-bottom: 0.25em;
     margin-bottom: -0.25em;
   }
 
   .text-reveal-word span {
-    @apply inline-block;
+    display: inline-block;
     transform: translateY(120%);
     transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
   }
@@ -66,11 +68,12 @@
   }
 
   .text-reveal--center .text-reveal-subtext {
-    @apply mx-auto;
+    margin-left: auto;
+    margin-right: auto;
   }
 
   .text-reveal--right .text-reveal-subtext {
-    @apply ml-auto;
+    margin-left: auto;
   }
 
   /* Staggered line offset - left alignment only */
@@ -90,7 +93,12 @@
 
   /* Large background number */
   .text-reveal-bg-number {
-    @apply absolute top-1/2 right-0 -translate-y-1/2 pointer-events-none z-0;
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    pointer-events: none;
+    z-index: 0;
     font-size: calc(clamp(18rem, 35vw, 45rem) * var(--heading-font-scale, 1));
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.05em + var(--heading-letter-spacing, 0em));

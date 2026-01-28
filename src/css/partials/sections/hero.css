@@ -5,7 +5,10 @@
 @layer components {
   /* Hero container */
   .hero-section {
-    @apply relative flex items-end overflow-hidden;
+    position: relative;
+    display: flex;
+    align-items: flex-end;
+    overflow: hidden;
     height: 100dvh;
     max-height: 100dvh;
     min-height: 600px;
@@ -20,18 +23,24 @@
 
   /* Hero media background */
   .hero-media {
-    @apply absolute inset-0 z-0;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
 
   .hero-media img,
   .hero-media video {
-    @apply w-full h-full object-cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Gradient overlay via ::after pseudo-element (opacity set via inline style) */
   .hero-media::after {
     content: '';
-    @apply absolute inset-0 z-1;
+    position: absolute;
+    inset: 0;
+    z-index: 1;
     background: linear-gradient(
       to top,
       rgba(0, 0, 0, var(--hero-overlay-opacity, 0.4)) 0%,
@@ -42,7 +51,12 @@
 
   /* Hero content container */
   .hero-content {
-    @apply relative z-10 w-full pt-32 flex flex-col;
+    position: relative;
+    z-index: 10;
+    width: 100%;
+    padding-top: 8rem;
+    display: flex;
+    flex-direction: column;
     padding-bottom: clamp(3rem, 10vh, 8rem);
   }
 
@@ -73,15 +87,27 @@
 
   /* Hero scroll indicator */
   .hero-scroll-indicator {
-    @apply absolute bottom-8 flex flex-col items-center gap-2 z-10;
+    position: absolute;
+    bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    z-index: 10;
   }
 
   .hero-scroll-indicator span {
-    @apply text-[0.8125rem] uppercase tracking-[0.2em] [writing-mode:vertical-rl];
+    font-size: 0.8125rem;
+    text-transform: uppercase;
+    letter-spacing: 0.2em;
+    writing-mode: vertical-rl;
   }
 
   .hero-scroll-line {
-    @apply w-px h-[60px] bg-current origin-top;
+    width: 1px;
+    height: 60px;
+    background-color: currentColor;
+    transform-origin: top;
   }
 
   /* Secondary button styling for hero overlays */

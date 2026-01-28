@@ -14,18 +14,22 @@
 
   /* Question (summary) */
   .faq-question {
-    @apply flex items-center justify-between gap-4 cursor-pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    cursor: pointer;
     padding: 1.5rem 0;
     list-style: none;
     transition: opacity 0.3s ease;
   }
 
   .faq-question::-webkit-details-marker {
-    @apply hidden;
+    display: none;
   }
 
   .faq-question:hover {
-    @apply opacity-70;
+    opacity: 0.7;
   }
 
   .faq-question-text {
@@ -36,7 +40,11 @@
 
   /* Icon */
   .faq-icon {
-    @apply shrink-0 flex items-center justify-center rounded-full;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
     width: 2rem;
     height: 2rem;
     border: 1px solid var(--color-border);
@@ -59,7 +67,7 @@
 
   /* Smooth slide animation using grid */
   .faq-answer {
-    @apply grid;
+    display: grid;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
@@ -74,7 +82,7 @@
   }
 
   .faq-answer-inner {
-    @apply overflow-hidden;
+    overflow: hidden;
   }
 
   .faq-answer-text {
