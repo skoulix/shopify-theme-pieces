@@ -25,10 +25,8 @@
   # Check if we can show inventory info
   assign can_show = false
   assign inventory_quantity = 0
-  assign is_tracked = false
 
   if variant.inventory_management == 'shopify' and variant.inventory_policy == 'deny'
-    assign is_tracked = true
     if variant.inventory_quantity > 0 and variant.inventory_quantity <= threshold
       assign can_show = true
       assign inventory_quantity = variant.inventory_quantity
