@@ -6,7 +6,7 @@
 @layer components {
   /* Container */
   .logo-marquee {
-    @apply overflow-hidden;
+    overflow: hidden;
   }
 
   /* Header */
@@ -18,7 +18,8 @@
 
   /* Track wrapper */
   .logo-marquee-track-wrapper {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
     max-width: var(--logo-marquee-max-width, none);
     margin: var(--logo-marquee-margin, 0);
     padding: var(--logo-marquee-padding, 0);
@@ -27,66 +28,86 @@
   /* Gradient masks */
   .logo-marquee-track-wrapper::before,
   .logo-marquee-track-wrapper::after {
-    @apply absolute top-0 bottom-0 z-2 pointer-events-none;
     content: '';
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    z-index: 2;
+    pointer-events: none;
     width: clamp(50px, 10vw, 150px);
   }
 
   .logo-marquee-track-wrapper::before {
-    @apply left-0;
     left: var(--logo-marquee-mask-offset, 0);
     background: linear-gradient(to right, var(--color-background), transparent);
   }
 
   .logo-marquee-track-wrapper::after {
-    @apply right-0;
     right: var(--logo-marquee-mask-offset, 0);
     background: linear-gradient(to left, var(--color-background), transparent);
   }
 
   /* Track - GSAP handles animation */
   .logo-marquee-track {
-    @apply flex will-change-transform;
+    display: flex;
+    will-change: transform;
     width: max-content;
   }
 
   /* Items */
   .logo-marquee-item {
-    @apply shrink-0 flex items-center justify-center;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     padding: 0 clamp(1.5rem, 4vw, 3rem);
     height: var(--logo-marquee-height, 50px);
   }
 
   .logo-marquee-item img {
-    @apply max-h-full w-auto object-contain transition-all duration-300 ease-out;
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
+    transition: all 0.3s ease-out;
     max-width: var(--logo-marquee-max-logo-width, 120px);
     opacity: var(--logo-marquee-opacity, 0.6);
     filter: var(--logo-marquee-filter, none);
   }
 
   .logo-marquee-item:hover img {
-    @apply opacity-100 scale-105;
+    opacity: 1;
+    transform: scale(1.05);
     filter: var(--logo-marquee-filter-hover, none);
   }
 
   .logo-marquee-item svg {
-    @apply max-h-full w-auto fill-current transition-opacity duration-300 ease-out;
+    max-height: 100%;
+    width: auto;
+    fill: currentColor;
+    transition: opacity 0.3s ease-out;
     max-width: var(--logo-marquee-max-logo-width, 120px);
     opacity: var(--logo-marquee-opacity, 0.6);
   }
 
   .logo-marquee-item:hover svg {
-    @apply opacity-100;
+    opacity: 1;
   }
 
   /* Placeholder */
   .logo-marquee-placeholder {
-    @apply flex items-center justify-center h-full rounded-lg opacity-50;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+    border-radius: 0.5rem;
+    opacity: 0.5;
     width: var(--logo-marquee-max-logo-width, 120px);
     background: var(--color-border);
   }
 
   .logo-marquee-placeholder i {
-    @apply text-2xl opacity-30;
+    font-size: 1.5rem;
+    line-height: 2rem;
+    opacity: 0.3;
   }
 }

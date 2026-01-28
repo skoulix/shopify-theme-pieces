@@ -29,7 +29,7 @@ export default defineConfig(() => ({
             '@swup/head-plugin',
             '@swup/js-plugin',
             '@swup/preload-plugin',
-            '@swup/scripts-plugin'
+            '@swup/scripts-plugin',
           ],
         },
       },

@@ -4,46 +4,73 @@
 
 @layer components {
   .input {
-    @apply block h-11 px-4 bg-transparent text-sm leading-none
-           border border-(--color-border) rounded-(--input-radius) text-(--color-text);
+    display: block;
+    height: 2.75rem;
+    padding-left: 1rem;
+    padding-right: 1rem;
+    background-color: transparent;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    line-height: 1;
+    border: 1px solid var(--color-border);
+    border-radius: var(--input-radius);
+    color: var(--color-text);
     transition: border-color var(--transition-fast);
   }
 
   .input::placeholder {
-    @apply text-(--color-text-secondary);
+    color: var(--color-text-secondary);
   }
 
   .input:hover {
-    @apply border-(--color-text-secondary);
+    border-color: var(--color-text-secondary);
   }
 
   .input:focus {
-    @apply outline-none border-(--color-text);
+    outline: none;
+    border-color: var(--color-text);
   }
 
   .input:focus-visible {
-    @apply outline-2 outline-offset-2 outline-(--color-primary);
+    outline-width: 2px;
+    outline-offset: 2px;
+    outline-color: var(--color-primary);
+    outline-style: solid;
   }
 
   /* Sizes */
   .input--xs {
-    @apply h-8 px-3 text-xs;
+    height: 2rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-size: 0.75rem;
+    line-height: 1rem;
   }
 
   .input--sm {
-    @apply h-10 px-3.5 text-sm;
+    height: 2.5rem;
+    padding-left: 0.875rem;
+    padding-right: 0.875rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
   }
 
   .input--lg {
-    @apply h-14 px-5 text-base;
+    height: 3.5rem;
+    padding-left: 1.25rem;
+    padding-right: 1.25rem;
+    font-size: 1rem;
+    line-height: 1.5rem;
   }
 
   .input--full {
-    @apply w-full;
+    width: 100%;
   }
 
   select.input {
-    @apply cursor-pointer appearance-none pr-10;
+    cursor: pointer;
+    appearance: none;
+    padding-right: 2.5rem;
   }
 
   /* Option elements need explicit color - browsers don't inherit from select */
@@ -54,27 +81,30 @@
 
   /* States */
   .input:disabled, .input[disabled], .input.is-disabled {
-    @apply cursor-not-allowed opacity-50;
+    cursor: not-allowed;
+    opacity: 0.5;
   }
 
   .input.is-error, .input:invalid:not(:placeholder-shown) {
-    @apply border-(--color-error);
+    border-color: var(--color-error);
   }
 
   .input.is-success {
-    @apply border-(--color-success);
+    border-color: var(--color-success);
   }
 
   .input.is-warning {
-    @apply border-(--color-warning);
+    border-color: var(--color-warning);
   }
 
   /* Input Group */
   .input-group {
-    @apply flex gap-2;
+    display: flex;
+    gap: 0.5rem;
   }
 
   .input-group .input {
-    @apply flex-1 min-w-0;
+    flex: 1 1 0%;
+    min-width: 0;
   }
 }

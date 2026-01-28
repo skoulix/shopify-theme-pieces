@@ -3,7 +3,10 @@
    ========================================================================== */
 
 @layer components {
-  /* Base section */
+  /* ==========================================================================
+     Base Styles (Mobile First)
+     ========================================================================== */
+
   .countdown-section {
     background-color: var(--color-background);
     color: var(--color-text);
@@ -13,42 +16,35 @@
     display: none;
   }
 
-  /* Wrapper for constraining content width */
   .countdown-wrapper {
     max-width: 1000px;
   }
 
-  /* Center wrapper when text-center */
+  .countdown-form-message.success {
+    color: #22c55e;
+  }
+
+  .countdown-form-message.error {
+    color: #ef4444;
+  }
+
+  /* ==========================================================================
+     HERO DESIGN - Large dramatic countdown
+     ========================================================================== */
+
   .countdown--hero.text-center .countdown-wrapper {
     margin-left: auto;
     margin-right: auto;
   }
 
-  /* Right align wrapper when text-right */
   .countdown--hero.text-right .countdown-wrapper {
     margin-left: auto;
   }
 
-  /* ============================================
-     HERO DESIGN - Large dramatic countdown
-     ============================================ */
   .countdown--hero .countdown-grid {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 1.5rem;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--hero .countdown-grid {
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 2rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .countdown--hero .countdown-grid {
-      gap: 4rem;
-    }
   }
 
   .countdown--hero .countdown-item {
@@ -94,29 +90,20 @@
     margin-top: 3rem;
   }
 
-  .countdown--hero.text-center .countdown-cta {
-    display: flex;
-    justify-content: center;
-  }
-
-  .countdown--hero.text-right .countdown-cta {
-    display: flex;
-    justify-content: flex-end;
-  }
-
-  /* Hero form */
-  .countdown--hero .countdown-form {
-    margin-top: 3rem;
-  }
-
+  .countdown--hero.text-center .countdown-cta,
   .countdown--hero.text-center .countdown-form {
     display: flex;
     justify-content: center;
   }
 
+  .countdown--hero.text-right .countdown-cta,
   .countdown--hero.text-right .countdown-form {
     display: flex;
     justify-content: flex-end;
+  }
+
+  .countdown--hero .countdown-form {
+    margin-top: 3rem;
   }
 
   .countdown--hero .countdown-form-inner {
@@ -125,13 +112,6 @@
     gap: 0.75rem;
     width: 100%;
     max-width: 400px;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--hero .countdown-form-inner {
-      flex-direction: row;
-      gap: 0.5rem;
-    }
   }
 
   .countdown--hero .countdown-form input[type="email"] {
@@ -172,14 +152,6 @@
     text-align: center;
   }
 
-  .countdown-form-message.success {
-    color: #22c55e;
-  }
-
-  .countdown-form-message.error {
-    color: #ef4444;
-  }
-
   /* Hero dividers */
   .countdown--hero.show-dividers .countdown-item {
     position: relative;
@@ -197,35 +169,16 @@
     opacity: 0.3;
   }
 
-  @media (min-width: 640px) {
-    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
-      display: block;
-      right: -1rem;
-    }
-  }
-
-  @media (min-width: 1024px) {
-    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
-      right: -2rem;
-    }
-  }
-
   /* Show divider after 1st and 3rd on mobile (2-col grid) */
   .countdown--hero.show-dividers .countdown-item:nth-child(1)::after,
   .countdown--hero.show-dividers .countdown-item:nth-child(3)::after {
     display: block;
   }
 
-  @media (min-width: 640px) {
-    .countdown--hero.show-dividers .countdown-item:nth-child(1)::after,
-    .countdown--hero.show-dividers .countdown-item:nth-child(3)::after {
-      display: block;
-    }
-  }
-
-  /* ============================================
+  /* ==========================================================================
      COMPACT DESIGN - Medium-sized countdown
-     ============================================ */
+     ========================================================================== */
+
   .countdown--compact {
     padding: clamp(2rem, 4vw, 3rem) 0;
   }
@@ -237,65 +190,23 @@
     gap: 1.5rem;
   }
 
-  @media (min-width: 768px) {
-    .countdown--compact .countdown-inner {
-      flex-direction: row;
-      align-items: center;
-      gap: 3rem;
-    }
-  }
-
-  /* Left alignment - default horizontal layout */
   .countdown--compact.text-left .countdown-inner {
     justify-content: flex-start;
   }
 
-  /* Center alignment - stack vertically */
   .countdown--compact.text-center .countdown-inner {
     flex-direction: column;
     justify-content: center;
   }
 
-  @media (min-width: 768px) {
-    .countdown--compact.text-center .countdown-inner {
-      flex-direction: column;
-      gap: 1.5rem;
-    }
-  }
-
-  /* Right alignment - horizontal layout, aligned right */
   .countdown--compact.text-right .countdown-inner {
     justify-content: flex-end;
   }
 
-  .countdown--compact .countdown-header {
-    text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    .countdown--compact .countdown-header {
-      text-align: left;
-    }
-  }
-
-  .countdown--compact.text-center .countdown-header {
-    text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    .countdown--compact.text-center .countdown-header {
-      text-align: center;
-    }
-  }
-
+  .countdown--compact .countdown-header,
+  .countdown--compact.text-center .countdown-header,
   .countdown--compact.text-right .countdown-header {
     text-align: center;
-  }
-
-  @media (min-width: 768px) {
-    .countdown--compact.text-right .countdown-header {
-      text-align: right;
-    }
   }
 
   .countdown--compact .countdown-title {
@@ -317,12 +228,6 @@
     align-items: center;
     gap: 0.5rem;
     flex-shrink: 0;
-  }
-
-  @media (min-width: 640px) {
-    .countdown--compact .countdown-grid {
-      gap: 0.75rem;
-    }
   }
 
   .countdown--compact .countdown-item {
@@ -371,7 +276,6 @@
     padding-top: 0.1em;
   }
 
-  /* Compact form */
   .countdown--compact .countdown-form {
     flex-shrink: 0;
   }
@@ -415,9 +319,10 @@
     font-size: 0.8125rem;
   }
 
-  /* ============================================
+  /* ==========================================================================
      MINIMAL DESIGN - Inline for headers/announcements
-     ============================================ */
+     ========================================================================== */
+
   .countdown--minimal {
     padding: 0.75rem 0;
   }
@@ -484,7 +389,6 @@
     opacity: 1;
   }
 
-  /* Minimal form */
   .countdown--minimal .countdown-form-inner {
     display: flex;
     gap: 0.5rem;
@@ -512,7 +416,70 @@
     font-size: 0.8125rem;
   }
 
-  /* Reduced motion fallback - keep as @media since it's a user preference query */
+  /* ==========================================================================
+     Responsive Overrides - Grouped by breakpoint
+     ========================================================================== */
+
+  /* SM: 640px */
+  @media (min-width: 640px) {
+    .countdown--hero .countdown-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 2rem;
+    }
+
+    .countdown--hero .countdown-form-inner {
+      flex-direction: row;
+      gap: 0.5rem;
+    }
+
+    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
+      display: block;
+      right: -1rem;
+    }
+
+    .countdown--compact .countdown-grid {
+      gap: 0.75rem;
+    }
+  }
+
+  /* MD: 768px */
+  @media (min-width: 768px) {
+    .countdown--compact .countdown-inner {
+      flex-direction: row;
+      align-items: center;
+      gap: 3rem;
+    }
+
+    .countdown--compact.text-center .countdown-inner {
+      flex-direction: column;
+      gap: 1.5rem;
+    }
+
+    .countdown--compact .countdown-header {
+      text-align: left;
+    }
+
+    .countdown--compact.text-center .countdown-header {
+      text-align: center;
+    }
+
+    .countdown--compact.text-right .countdown-header {
+      text-align: right;
+    }
+  }
+
+  /* LG: 1024px */
+  @media (min-width: 1024px) {
+    .countdown--hero .countdown-grid {
+      gap: 4rem;
+    }
+
+    .countdown--hero.show-dividers .countdown-item:not(:last-child)::after {
+      right: -2rem;
+    }
+  }
+
+  /* Accessibility */
   @media (prefers-reduced-motion: reduce) {
     .countdown-item {
       opacity: 1;

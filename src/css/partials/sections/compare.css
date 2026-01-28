@@ -19,18 +19,20 @@
   }
 
   .compare-empty__icon {
-    @apply opacity-30 mb-6;
+    opacity: 0.3;
+    margin-bottom: 1.5rem;
     font-size: 4rem;
   }
 
   .compare-empty__title {
-    @apply mb-2;
+    margin-bottom: 0.5rem;
     font-size: 1.25rem;
     font-weight: 600;
   }
 
   .compare-empty__text {
-    @apply opacity-70 mb-6;
+    opacity: 0.7;
+    margin-bottom: 1.5rem;
     max-width: 24rem;
   }
 
@@ -41,11 +43,13 @@
 
   /* Table container */
   .compare-table {
-    @apply w-full overflow-x-auto mb-8;
+    width: 100%;
+    overflow-x: auto;
+    margin-bottom: 2rem;
   }
 
   .compare-table__inner {
-    @apply grid;
+    display: grid;
     min-width: 600px;
   }
 
@@ -55,7 +59,9 @@
 
   /* Header cell with sticky positioning and backdrop blur */
   .compare-table__header-cell {
-    @apply sticky left-0 z-[12];
+    position: sticky;
+    left: 0;
+    z-index: 12;
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
     color: var(--color-text);
@@ -81,14 +87,18 @@
 
   /* Table cells */
   .compare-table__cell {
-    @apply text-center;
+    text-align: center;
     padding: 1rem;
     border-bottom: 1px solid var(--color-border);
   }
 
   /* Product image */
   .compare-table__product-image {
-    @apply relative mx-auto mb-4 overflow-visible;
+    position: relative;
+    margin-left: auto;
+    margin-right: auto;
+    margin-bottom: 1rem;
+    overflow: visible;
     width: 100%;
     max-width: 200px;
     aspect-ratio: 3/4;
@@ -97,13 +107,21 @@
   }
 
   .compare-table__product-image img {
-    @apply w-full h-full object-cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     border-radius: var(--card-radius);
   }
 
   /* Remove icon */
   .compare-table__remove-icon {
-    @apply absolute flex items-center justify-center rounded-full cursor-pointer z-1;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    cursor: pointer;
+    z-index: 1;
     top: -0.5rem;
     right: -0.5rem;
     width: 1.75rem;
@@ -117,7 +135,7 @@
   }
 
   .compare-table__remove-icon:hover {
-    @apply opacity-100;
+    opacity: 1;
     transform: scale(1.1);
     background: var(--color-sale);
     color: #fff;
@@ -130,28 +148,30 @@
 
   /* Product title */
   .compare-table__product-title {
-    @apply mb-2;
+    margin-bottom: 0.5rem;
     font-size: 1rem;
     font-weight: 600;
   }
 
   .compare-table__product-title a {
-    @apply no-underline;
+    text-decoration: none;
     color: inherit;
   }
 
   .compare-table__product-title a:hover {
-    @apply underline;
+    text-decoration: underline;
   }
 
   /* Product price */
   .compare-table__product-price {
-    @apply mb-4;
+    margin-bottom: 1rem;
     font-size: 1rem;
   }
 
   .compare-table__product-price .compare-price {
-    @apply line-through opacity-60 mr-2;
+    text-decoration: line-through;
+    opacity: 0.6;
+    margin-right: 0.5rem;
   }
 
   .compare-table__product-price .sale-price {
@@ -205,6 +225,9 @@
 
   /* Actions */
   .compare-actions {
-    @apply flex justify-center gap-4 mt-8;
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 2rem;
   }
 }

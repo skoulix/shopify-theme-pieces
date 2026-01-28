@@ -6,7 +6,9 @@
 @layer components {
   /* Hero Orbit container */
   .hero-orbit {
-    @apply relative w-full overflow-hidden;
+    position: relative;
+    width: 100%;
+    overflow: hidden;
     height: 100vh;
     min-height: 600px;
     background-color: var(--color-background);
@@ -15,25 +17,38 @@
 
   /* Background image */
   .hero-orbit-bg {
-    @apply absolute inset-0 z-0;
+    position: absolute;
+    inset: 0;
+    z-index: 0;
   }
 
   .hero-orbit-bg img {
-    @apply w-full h-full object-cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Scene container with 3D perspective */
   .hero-orbit-scene {
-    @apply absolute inset-0 flex items-center justify-center;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     perspective: 1000px;
   }
 
   .hero-orbit-container {
-    @apply relative w-full h-full;
+    position: relative;
+    width: 100%;
+    height: 100%;
   }
 
   .hero-orbit-group {
-    @apply absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translateX(-50%) translateY(-50%);
     width: 1px;
     height: 1px;
     transform-style: preserve-3d;
@@ -41,27 +56,29 @@
 
   /* Orbit cards */
   .hero-orbit-card {
-    @apply absolute left-1/2 top-1/2 opacity-0;
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    opacity: 0;
     transform: translate(-50%, -50%) scale(0);
     will-change: transform, opacity;
     transform-style: preserve-3d;
   }
 
   .hero-orbit-card-inner {
-    @apply rounded-lg shadow-lg overflow-hidden;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    overflow: hidden;
     width: clamp(80px, 15vw, 120px);
     aspect-ratio: 2 / 3;
     background: var(--hero-orbit-card-bg, #fff);
   }
 
-  @media (min-width: 768px) {
-    .hero-orbit-card-inner {
-      width: clamp(100px, 12vw, 140px);
-    }
-  }
-
   .hero-orbit-card-img {
-    @apply block w-full h-full object-center;
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-position: center;
     object-fit: var(--hero-orbit-image-fit, cover);
   }
 
@@ -76,24 +93,39 @@
 
   /* Overlay */
   .hero-orbit-overlay {
-    @apply absolute inset-0 pointer-events-none z-5;
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 5;
     background: var(--hero-orbit-overlay-color, #000);
     opacity: var(--hero-orbit-overlay-opacity, 0.4);
   }
 
   /* Content container */
   .hero-orbit-content {
-    @apply absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none z-10;
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    pointer-events: none;
+    z-index: 10;
     padding: var(--page-padding);
   }
 
   .hero-orbit-headings {
-    @apply flex flex-col items-center gap-2;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
   }
 
   /* Title styling */
   .hero-orbit-title {
-    @apply m-0 opacity-0;
+    margin: 0;
+    opacity: 0;
     font-size: calc(clamp(3rem, 15vw, 8rem) * var(--heading-font-scale, 1));
     font-weight: var(--font-heading-weight, 700);
     letter-spacing: calc(-0.04em + var(--heading-letter-spacing, 0em));
@@ -104,7 +136,7 @@
 
   /* Subtitle styling */
   .hero-orbit-subtitle {
-    @apply opacity-0;
+    opacity: 0;
     font-size: clamp(0.875rem, 2vw, 1.25rem);
     filter: blur(5px);
     will-change: opacity, filter;
@@ -112,7 +144,10 @@
 
   /* CTA button container */
   .hero-orbit-cta {
-    @apply mt-8 opacity-0 translate-y-5 pointer-events-auto;
+    margin-top: 2rem;
+    opacity: 0;
+    transform: translateY(1.25rem);
+    pointer-events: auto;
     will-change: opacity, transform;
   }
 
@@ -150,11 +185,22 @@
 
   /* Scroll indicator */
   .hero-orbit-scroll {
-    @apply absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 opacity-0 pointer-events-auto z-10;
+    position: absolute;
+    bottom: 2rem;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.5rem;
+    opacity: 0;
+    pointer-events: auto;
+    z-index: 10;
   }
 
   .hero-orbit-scroll i {
-    @apply text-xl;
+    font-size: 1.25rem;
+    line-height: 1.75rem;
     animation: hero-orbit-bounce 2s ease-in-out infinite;
   }
 
@@ -165,7 +211,14 @@
 
   /* Loading state */
   .hero-orbit.is-loading .hero-orbit-card {
-    @apply opacity-0;
+    opacity: 0;
     transform: translate(-50%, -50%) scale(0);
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .hero-orbit-card-inner {
+      width: clamp(100px, 12vw, 140px);
+    }
   }
 }

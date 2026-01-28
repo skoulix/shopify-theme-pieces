@@ -5,26 +5,31 @@
 @layer components {
   /* Section wrapper */
   .collections-carousel-section {
-    @apply overflow-hidden;
+    overflow: hidden;
   }
 
   /* Header row with nav */
   .collections-carousel-header-row {
-    @apply flex items-end justify-between gap-6 mb-[clamp(2rem,5vh,4rem)];
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+    margin-bottom: clamp(2rem, 5vh, 4rem);
   }
 
   .collections-carousel-header-content {
-    @apply flex-1 min-w-0;
+    flex: 1 1 0%;
+    min-width: 0;
   }
 
   /* Panels container */
   .collections-carousel-panels {
-    @apply relative;
+    position: relative;
   }
 
   /* Individual panel */
   .collections-carousel-panel {
-    @apply w-full;
+    width: 100%;
   }
 
   /* ==========================================================================
@@ -32,22 +37,34 @@
      ========================================================================== */
 
   .collections-carousel-tabs {
-    @apply flex flex-wrap gap-2 mb-8;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 2rem;
   }
 
   .collections-carousel-tab {
-    @apply px-5 py-2.5 text-sm font-medium cursor-pointer;
-    @apply bg-transparent text-(--color-text) border border-(--color-border);
-    @apply transition-all duration-300;
+    padding: 0.625rem 1.25rem;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    font-weight: 500;
+    cursor: pointer;
+    background-color: transparent;
+    color: var(--color-text);
+    border: 1px solid var(--color-border);
+    transition-property: all;
+    transition-duration: 300ms;
     border-radius: var(--button-radius);
   }
 
   .collections-carousel-tab:hover {
-    @apply bg-(--color-background-secondary);
+    background-color: var(--color-background-secondary);
   }
 
   .collections-carousel-tab.is-active {
-    @apply bg-(--color-text) text-(--color-background) border-(--color-text);
+    background-color: var(--color-text);
+    color: var(--color-background);
+    border-color: var(--color-text);
   }
 
   /* ==========================================================================
@@ -55,34 +72,46 @@
      ========================================================================== */
 
   .collections-carousel-slider {
-    @apply relative;
+    position: relative;
   }
 
   .collections-carousel-track {
-    @apply flex gap-4 md:gap-6 overflow-x-auto;
+    display: flex;
+    gap: 1rem;
+    overflow-x: auto;
     scroll-snap-type: x mandatory;
     scroll-behavior: smooth;
     -webkit-overflow-scrolling: touch;
-    scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none; /* IE/Edge */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
   }
 
   .collections-carousel-track::-webkit-scrollbar {
-    display: none; /* Chrome/Safari */
+    display: none;
   }
 
   /* Individual slide */
   .collections-carousel-slide {
-    @apply flex shrink-0;
+    display: flex;
+    flex-shrink: 0;
     scroll-snap-align: start;
-    /* Calculate width based on slides per view setting */
-    --gap: 1rem; /* gap-4 = 1rem */
+    --gap: 1rem;
     width: calc((100% - (var(--gap) * (var(--slides-mobile) - 1))) / var(--slides-mobile));
   }
 
+  /* Product card inside slide should fill the slide */
+  .collections-carousel-slide .product-card {
+    width: 100%;
+  }
+
+  /* Responsive */
   @media (min-width: 768px) {
+    .collections-carousel-track {
+      gap: 1.5rem;
+    }
+
     .collections-carousel-slide {
-      --gap: 1.5rem; /* md:gap-6 = 1.5rem */
+      --gap: 1.5rem;
       width: calc((100% - (var(--gap) * (var(--slides-tablet) - 1))) / var(--slides-tablet));
     }
   }
@@ -92,10 +121,4 @@
       width: calc((100% - (var(--gap) * (var(--slides-desktop) - 1))) / var(--slides-desktop));
     }
   }
-
-  /* Product card inside slide should fill the slide */
-  .collections-carousel-slide .product-card {
-    @apply w-full;
-  }
-
 }

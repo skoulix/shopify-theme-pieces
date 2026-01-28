@@ -10,46 +10,59 @@
 
   /* Grid */
   .team-grid {
-    @apply grid grid-cols-2 md:grid-cols-3;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: clamp(1rem, 2vw, 2rem);
   }
 
   /* Team member card */
   .team-member {
-    @apply relative overflow-hidden cursor-pointer aspect-3/4;
+    position: relative;
+    overflow: hidden;
+    cursor: pointer;
+    aspect-ratio: 3/4;
     border-radius: var(--card-radius);
     border: var(--card-border-width) solid rgba(255, 255, 255, 0.2);
     box-shadow: var(--card-shadow);
   }
 
   .team-member-image {
-    @apply absolute inset-0;
+    position: absolute;
+    inset: 0;
   }
 
   .team-member-image img {
-    @apply w-full h-full object-cover;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
     transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .team-member:hover .team-member-image img {
-    @apply scale-110;
+    transform: scale(1.1);
   }
 
   /* Overlay */
   .team-member-overlay {
-    @apply absolute inset-0;
+    position: absolute;
+    inset: 0;
     background: linear-gradient(to top, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0.4) 40%, rgba(0, 0, 0, 0) 100%);
     opacity: 0.6;
     transition: opacity 0.4s ease;
   }
 
   .team-member:hover .team-member-overlay {
-    @apply opacity-100;
+    opacity: 1;
   }
 
   /* Content */
   .team-member-content {
-    @apply absolute bottom-0 left-0 right-0 text-white z-2;
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    color: white;
+    z-index: 2;
     padding: clamp(1rem, 3vw, 2rem);
   }
 
@@ -63,55 +76,73 @@
   }
 
   .team-member:hover .team-member-name {
-    @apply translate-y-0;
+    transform: translateY(0);
   }
 
   /* Role */
   .team-member-role {
-    @apply opacity-0 mt-0;
+    opacity: 0;
+    margin-top: 0;
     transform: translateY(10px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.1s;
   }
 
   .team-member:hover .team-member-role {
-    @apply opacity-70 translate-y-0;
+    opacity: 0.7;
+    transform: translateY(0);
   }
 
   /* Bio wrapper - animated height */
   .team-member-bio-wrapper {
-    @apply grid mt-0;
+    display: grid;
+    margin-top: 0;
     grid-template-rows: 0fr;
     transition: grid-template-rows 0.5s cubic-bezier(0.4, 0, 0.2, 1), margin-top 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
   .team-member:hover .team-member-bio-wrapper {
-    @apply mt-5;
+    margin-top: 1.25rem;
     grid-template-rows: 1fr;
   }
 
   /* Bio text */
   .team-member-bio {
-    @apply text-sm leading-relaxed opacity-0 overflow-hidden min-h-0;
+    font-size: 0.875rem;
+    line-height: 1.25rem;
+    line-height: 1.625;
+    opacity: 0;
+    overflow: hidden;
+    min-height: 0;
     transition: opacity 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.15s;
   }
 
   .team-member:hover .team-member-bio {
-    @apply opacity-80;
+    opacity: 0.8;
   }
 
   /* Social links */
   .team-member-social {
-    @apply flex gap-3 mt-4 opacity-0;
+    display: flex;
+    gap: 0.75rem;
+    margin-top: 1rem;
+    opacity: 0;
     transform: translateY(10px);
     transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1) 0.2s;
   }
 
   .team-member:hover .team-member-social {
-    @apply opacity-100 translate-y-0;
+    opacity: 1;
+    transform: translateY(0);
   }
 
   .team-member-social-link {
-    @apply w-9 h-9 rounded-full flex items-center justify-center text-white;
+    width: 2.25rem;
+    height: 2.25rem;
+    border-radius: 9999px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
     background: rgba(255, 255, 255, 0.1);
     transition: all 0.3s ease;
   }
@@ -123,7 +154,11 @@
 
   /* Placeholder avatar */
   .team-member-placeholder {
-    @apply w-full h-full flex items-center justify-center;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: linear-gradient(
       145deg,
       var(--color-border, #e5e5e5) 0%,
@@ -132,7 +167,11 @@
   }
 
   .team-member-avatar {
-    @apply relative flex items-center justify-center rounded-full;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
     width: 45%;
     max-width: 140px;
     aspect-ratio: 1;
@@ -145,8 +184,9 @@
   }
 
   .team-member-avatar::before {
-    @apply absolute rounded-full;
     content: '';
+    position: absolute;
+    border-radius: 9999px;
     inset: 4px;
     border: 2px solid rgba(255, 255, 255, 0.15);
   }
@@ -154,5 +194,15 @@
   .team-member-avatar i {
     font-size: clamp(2.5rem, 8vw, 4rem);
     color: rgba(255, 255, 255, 0.9);
+  }
+
+  /* ==========================================================================
+     Responsive
+     ========================================================================== */
+
+  @media (min-width: 768px) {
+    .team-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
   }
 }

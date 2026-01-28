@@ -5,18 +5,19 @@
 @layer components {
   /* Section */
   .shoppable-videos {
-    @apply overflow-hidden;
+    overflow: hidden;
     background-color: var(--color-background);
     color: var(--color-text);
   }
 
   /* Slider container */
   .shoppable-videos-slider {
-    @apply relative overflow-hidden;
+    position: relative;
+    overflow: hidden;
   }
 
   .shoppable-videos-track {
-    @apply flex;
+    display: flex;
     gap: var(--shoppable-video-gap, 1rem);
     will-change: transform;
   }
@@ -27,12 +28,15 @@
 
   /* Video slide - responsive widths via CSS custom properties */
   .shoppable-video-slide {
-    @apply shrink-0 w-[var(--shoppable-slide-width-mobile,75%)] md:w-[var(--shoppable-slide-width-tablet,calc(32%-0.67rem))] lg:w-[var(--shoppable-slide-width-desktop,calc(24%-0.75rem))];
+    flex-shrink: 0;
+    width: var(--shoppable-slide-width-mobile, 75%);
   }
 
   /* Video card */
   .shoppable-video-card {
-    @apply relative overflow-hidden block;
+    position: relative;
+    overflow: hidden;
+    display: block;
     isolation: isolate;
     aspect-ratio: var(--shoppable-aspect-ratio, 9/16);
     width: 100%;
@@ -48,12 +52,12 @@
 
   /* Play overlay */
   .shoppable-video-card.cursor-pointer .play-overlay {
-    @apply opacity-0;
+    opacity: 0;
     transition: opacity 0.3s ease;
   }
 
   .shoppable-video-card.cursor-pointer:hover .play-overlay {
-    @apply opacity-100;
+    opacity: 1;
   }
 
   .shoppable-video-card.cursor-default {
@@ -62,82 +66,67 @@
 
   /* Lightbox */
   .shoppable-video-lightbox {
-    @apply fixed inset-0 hidden items-center justify-center;
+    position: fixed;
+    inset: 0;
+    display: none;
+    align-items: center;
+    justify-content: center;
     background: rgba(0, 0, 0, 0.95);
     z-index: 9999;
   }
 
   .shoppable-video-lightbox.active {
-    @apply flex;
+    display: flex;
   }
 
   .shoppable-lightbox-content {
-    @apply flex gap-4 flex-col w-[calc(100%-1rem)] m-2;
+    display: flex;
+    gap: 1rem;
+    flex-direction: column;
+    width: calc(100% - 1rem);
+    margin: 0.5rem;
     max-width: 1400px;
     max-height: calc(100vh - 1rem);
   }
 
-  /* xl+: side-by-side layout */
-  @media (min-width: 1280px) {
-    .shoppable-lightbox-content {
-      @apply flex-row items-stretch gap-8 w-[90%] m-0;
-      max-height: 85vh;
-    }
-  }
-
   .shoppable-lightbox-video {
-    @apply flex-1 relative flex items-center justify-center w-full min-h-0;
+    flex: 1 1 0%;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    min-height: 0;
   }
 
   .shoppable-lightbox-video video {
-    @apply w-full h-auto max-w-full transition-opacity duration-300;
+    width: 100%;
+    height: auto;
+    max-width: 100%;
+    transition-property: opacity;
+    transition-duration: 300ms;
     max-height: 60vh;
     object-fit: contain;
     border-radius: var(--card-radius) var(--card-radius) 0 0;
   }
 
-  /* md/lg: video can be taller since product card is below */
-  @media (min-width: 768px) and (max-width: 1279px) {
-    .shoppable-lightbox-video video {
-      max-height: 55vh;
-    }
-  }
-
-  /* xl+: video with full radius since product card is beside it */
-  @media (min-width: 1280px) {
-    .shoppable-lightbox-video video {
-      max-height: 75vh;
-      border-radius: var(--card-radius);
-    }
-  }
-
   .shoppable-lightbox-product {
-    @apply shrink-0 overflow-y-auto w-full p-4;
+    flex-shrink: 0;
+    overflow-y: auto;
+    width: 100%;
+    padding: 1rem;
     background: white;
     border-radius: 0 0 var(--card-radius) var(--card-radius);
     max-height: 35vh;
   }
 
-  /* md/lg: product card full width below video */
-  @media (min-width: 768px) and (max-width: 1279px) {
-    .shoppable-lightbox-product {
-      @apply p-5;
-      max-height: none;
-      border-radius: var(--card-radius);
-    }
-  }
-
-  /* xl+: product card as sidebar */
-  @media (min-width: 1280px) {
-    .shoppable-lightbox-product {
-      @apply w-80 p-6 flex flex-col;
-      max-height: none;
-      border-radius: var(--card-radius);
-    }
-  }
-
   .shoppable-lightbox-close {
-    @apply absolute flex items-center justify-center rounded-full cursor-pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    cursor: pointer;
     top: 20px;
     right: 20px;
     width: 48px;
@@ -156,7 +145,12 @@
 
   /* Lightbox navigation */
   .shoppable-lightbox-nav {
-    @apply absolute flex items-center justify-center rounded-full cursor-pointer;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    cursor: pointer;
     z-index: 10000;
     width: 40px;
     height: 40px;
@@ -164,18 +158,8 @@
     border: 1px solid rgba(255, 255, 255, 0.3);
     transition: all 0.3s ease;
     color: white;
-    /* Mobile: positioned at top */
     top: 20px;
     transform: none;
-  }
-
-  @media (min-width: 768px) {
-    .shoppable-lightbox-nav {
-      width: 48px;
-      height: 48px;
-      top: 50%;
-      transform: translateY(-50%);
-    }
   }
 
   .shoppable-lightbox-nav:hover {
@@ -187,29 +171,81 @@
     left: 20px;
   }
 
-  @media (min-width: 768px) {
-    .shoppable-lightbox-nav.lightbox-prev {
-      left: 2rem;
-    }
-  }
-
   .shoppable-lightbox-nav.lightbox-next {
     left: 70px;
   }
 
-  @media (min-width: 768px) {
-    .shoppable-lightbox-nav.lightbox-next {
-      left: auto;
-      right: 2rem;
-    }
-  }
-
   .shoppable-lightbox-nav:disabled {
-    @apply opacity-30 cursor-not-allowed;
+    opacity: 0.3;
+    cursor: not-allowed;
   }
 
   .shoppable-lightbox-nav:disabled:hover {
     background: rgba(255, 255, 255, 0.1);
     color: white;
+  }
+
+  /* Responsive */
+  @media (min-width: 768px) {
+    .shoppable-video-slide {
+      width: var(--shoppable-slide-width-tablet, calc(32% - 0.67rem));
+    }
+
+    .shoppable-lightbox-nav {
+      width: 48px;
+      height: 48px;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .shoppable-lightbox-nav.lightbox-prev {
+      left: 2rem;
+    }
+
+    .shoppable-lightbox-nav.lightbox-next {
+      left: auto;
+      right: 2rem;
+    }
+
+    .shoppable-lightbox-video video {
+      max-height: 55vh;
+    }
+
+    .shoppable-lightbox-product {
+      padding: 1.25rem;
+      max-height: none;
+      border-radius: var(--card-radius);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .shoppable-video-slide {
+      width: var(--shoppable-slide-width-desktop, calc(24% - 0.75rem));
+    }
+  }
+
+  @media (min-width: 1280px) {
+    .shoppable-lightbox-content {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 2rem;
+      width: 90%;
+      margin: 0;
+      max-height: 85vh;
+    }
+
+    .shoppable-lightbox-video video {
+      max-height: 75vh;
+      border-radius: var(--card-radius);
+    }
+
+    .shoppable-lightbox-product {
+      width: 20rem;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      max-height: none;
+      border-radius: var(--card-radius);
+    }
   }
 }

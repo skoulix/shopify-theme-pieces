@@ -6,7 +6,12 @@
 @layer components {
   /* Main container */
   .background-zoom {
-    @apply relative flex flex-col justify-center items-center overflow-clip;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: clip;
     min-height: 100svh;
     padding-top: calc(50dvh - 15em);
     padding-left: 1em;
@@ -15,11 +20,15 @@
 
   /* Headings */
   .background-zoom__title {
-    @apply text-center mb-8;
+    text-align: center;
+    margin-bottom: 2rem;
   }
 
   .background-zoom__heading {
-    @apply text-center font-heading font-normal leading-[0.95] tracking-tight;
+    text-align: center;
+    font-family: var(--font-heading);
+    font-weight: 400;
+    line-height: 0.95;
     max-width: 7em;
     margin-top: 0;
     margin-bottom: -0.375em;
@@ -37,7 +46,7 @@
 
   /* Start element - defines initial size/shape */
   .background-zoom__start {
-    @apply relative;
+    position: relative;
     aspect-ratio: 1;
     border-radius: 16em;
     width: 16em;
@@ -45,7 +54,12 @@
 
   /* Content element - this is what Flip animates */
   .background-zoom__content {
-    @apply absolute top-0 left-0 w-full h-full overflow-hidden;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
     border-radius: inherit;
     will-change: width, height, transform;
     background-color: var(--background-zoom-content-bg, var(--color-background-secondary));
@@ -53,12 +67,19 @@
 
   /* Image inside content */
   .background-zoom__img {
-    @apply absolute w-full h-full object-cover;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 
   /* Overlay text on image */
   .background-zoom__overlay-text {
-    @apply absolute w-full text-center font-black leading-none;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: 900;
+    line-height: 1;
     top: 1.25em;
     font-size: 1.25em;
     letter-spacing: -0.02em;
@@ -67,7 +88,9 @@
 
   /* Dark overlay - fades in after zoom */
   .background-zoom__dark {
-    @apply absolute inset-0 opacity-0;
+    position: absolute;
+    inset: 0;
+    opacity: 0;
     background-color: var(--background-zoom-dark-color, rgba(0, 0, 0, 0.9));
   }
 
@@ -79,20 +102,33 @@
 
   /* Text content area after zoom */
   .background-zoom__text {
-    @apply relative flex flex-col items-center w-full gap-8;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    gap: 2rem;
     padding-bottom: calc(50dvh - 12em);
   }
 
   /* After section - the section that follows */
   .background-zoom-after {
-    @apply relative flex justify-center items-center w-full;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
     min-height: 100dvh;
     padding-left: 1em;
     padding-right: 1em;
   }
 
   .background-zoom-after__text {
-    @apply absolute w-full text-center font-black leading-none;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-weight: 900;
+    line-height: 1;
     bottom: 1.25em;
     font-size: 1.25em;
     letter-spacing: -0.02em;
