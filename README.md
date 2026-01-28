@@ -2,6 +2,101 @@
 
 A high-performance Shopify theme with SPA-like page transitions, smooth scrolling, and advanced animations. Built for brands that demand exceptional user experiences.
 
+---
+
+## Highlights
+
+- **65 Sections** — Hero, product, collection, interactive, animation showcase, and more
+- **5 Theme Presets** — Default, Glow, Bold, Noir, Edge
+- **31 Languages** — Full internationalization out of the box
+- **SPA Page Transitions** — Fade, slide, and curtain transitions via Swup
+- **GSAP Animations** — Scroll-triggered reveals, split text, clip paths, and counters
+- **Smooth Scrolling** — Lenis-powered with GSAP ScrollTrigger sync
+- **3 Cart Types** — Drawer, page, or notification
+- **SEO Optimized** — JSON-LD structured data for products, collections, articles, FAQs, and local business
+- **Accessible** — ARIA labels, keyboard navigation, screen reader support, focus management
+- **Tailwind CSS v4** — Utility-first styling with CSS-based configuration
+
+---
+
+## Language Support
+
+Pieces ships with **31 languages**, covering major markets across Europe, Asia-Pacific, and the Americas. All user-facing text uses Shopify's translation system (`{{ 'key' | t }}`), and translation files are located in the `/locales/` directory.
+
+| # | Flag | Language | Locale |
+|---|------|----------|--------|
+| 1 | 🇬🇧 | English (Default) | `en.default` |
+| 2 | 🇧🇬 | Bulgarian | `bg` |
+| 3 | 🇭🇷 | Croatian | `hr` |
+| 4 | 🇨🇿 | Czech | `cs` |
+| 5 | 🇩🇰 | Danish | `da` |
+| 6 | 🇳🇱 | Dutch | `nl` |
+| 7 | 🇫🇮 | Finnish | `fi` |
+| 8 | 🇫🇷 | French | `fr` |
+| 9 | 🇩🇪 | German | `de` |
+| 10 | 🇬🇷 | Greek | `el` |
+| 11 | 🇭🇺 | Hungarian | `hu` |
+| 12 | 🇮🇩 | Indonesian | `id` |
+| 13 | 🇮🇹 | Italian | `it` |
+| 14 | 🇯🇵 | Japanese | `ja` |
+| 15 | 🇰🇷 | Korean | `ko` |
+| 16 | 🇱🇹 | Lithuanian | `lt` |
+| 17 | 🇳🇴 | Norwegian Bokmål | `nb` |
+| 18 | 🇵🇱 | Polish | `pl` |
+| 19 | 🇧🇷 | Portuguese (Brazil) | `pt-BR` |
+| 20 | 🇵🇹 | Portuguese (Portugal) | `pt-PT` |
+| 21 | 🇷🇴 | Romanian | `ro` |
+| 22 | 🇷🇺 | Russian | `ru` |
+| 23 | 🇸🇰 | Slovak | `sk` |
+| 24 | 🇸🇮 | Slovenian | `sl` |
+| 25 | 🇪🇸 | Spanish | `es` |
+| 26 | 🇸🇪 | Swedish | `sv` |
+| 27 | 🇹🇭 | Thai | `th` |
+| 28 | 🇹🇷 | Turkish | `tr` |
+| 29 | 🇻🇳 | Vietnamese | `vi` |
+| 30 | 🇨🇳 | Chinese (Simplified) | `zh-CN` |
+| 31 | 🇹🇼 | Chinese (Traditional) | `zh-TW` |
+
+---
+
+## Theme Presets
+
+Five curated design presets available in the theme editor, each targeting specific market niches:
+
+### Default
+**Best for:** General retail, home goods, lifestyle brands, DTC startups
+- Clean, modern aesthetic with indigo primary color
+- Space Grotesk headings with Inter body for modern readability
+- Sharp corners, minimal shadows
+
+### Glow
+**Best for:** Skincare, cosmetics, wellness products, clean beauty, spa brands
+- Soft, warm cream tones with terracotta accent
+- Cormorant elegant headings, Questrial body
+- Pill-shaped buttons (100px radius), rounded cards, soft shadows
+
+### Bold
+**Best for:** Streetwear, graphic tees, sneakers, skate/surf brands, statement apparel
+- High contrast black/white with vibrant orange accent
+- Bebas Neue display headings with IBM Plex Mono body text
+- Hard offset shadows, thick 3px borders, expanded letter spacing
+
+### Noir
+**Best for:** Fine jewelry, luxury watches, high-end accessories, premium leather goods
+- Dark, elegant theme with gold accents
+- Bodoni Moda serif headings, Jost body for refined luxury
+- Subtle gradient backgrounds, refined 1px borders
+
+### Edge
+**Best for:** Gaming peripherals, PC components, consumer electronics, tech accessories
+- Dark futuristic theme with cyan accent
+- Rajdhani geometric headings, IBM Plex Mono body
+- Sharp angular design, expanded letter spacing
+
+Each preset configures color schemes, typography (including letter spacing), border radius, and shadow styles for buttons, inputs, and cards.
+
+---
+
 ## Core Technologies
 
 | Library                                      | Version | Purpose                           |
@@ -13,6 +108,96 @@ A high-performance Shopify theme with SPA-like page transitions, smooth scrollin
 | [Phosphor Icons](https://phosphoricons.com/) | 2.1.2   | Icon system                       |
 | [Tailwind CSS](https://tailwindcss.com/)     | 4.1     | Utility-first styling (v4)        |
 | [Vite](https://vitejs.dev/)                  | 7.3     | Build tooling                     |
+
+---
+
+## Sections (65 Total)
+
+### Hero & Landing
+
+- `hero` - Full-viewport hero with image/video
+- `hero-orbit` - Animated orbiting elements
+- `banner` - Smaller promotional banner
+- `slideshow` - Image/video slideshow carousel
+- `background-zoom` - Parallax zoom effect on scroll
+
+### Products & Collections
+
+- `product` - Product page with variants, gallery
+- `collection` - Collection with filtering
+- `collections` - Collection list/grid
+- `collections-carousel` - Swipeable collection cards
+- `featured-collection` - Featured product grid
+- `featured-product` - Single product showcase with variant picker
+- `related-products` - Related products carousel
+- `recently-viewed` - Recently viewed products
+- `complementary-products` - Frequently bought together
+- `quick-view-product` - Quick view modal content
+- `wishlist` - Saved products page
+- `compare` - Product comparison table
+- `compare-product-data` - Product data for comparison (utility)
+- `pickup-availability` - Store pickup information (utility)
+
+### Interactive
+
+- `hotspots` - Clickable image hotspots
+- `shop-the-look` - Shoppable image overlays
+- `before-after` - Image comparison slider
+- `shoppable-videos` - Video with product tags
+- `pinned-image-reveal` - Scrollytelling layout
+- `scroll-panels` - Scroll-driven panel animations
+- `image-sequence` - Frame-by-frame scroll animation
+
+### Content
+
+- `image-with-text` - Split image + text
+- `image` - Single image section
+- `text-reveal` - Animated text on scroll
+- `text-section` - Rich text content
+- `highlight-text` - Text with highlighted keywords
+- `video` - Video player section
+- `testimonials` - Customer testimonials
+- `faq` - Accordion FAQ
+- `team` - Team member grid
+- `timeline` - Vertical timeline
+- `features-grid` - Feature cards grid
+- `trust-badges` - Trust/payment badges
+- `floating-images` - Decorative floating images
+- `custom-liquid` - Custom Liquid code section
+- `featured-blog` - Featured blog posts grid
+- `main-about` - About page spacer/layout
+
+### Animation Showcase
+
+- `stacking-cards` - Scroll-stacking cards
+- `rolling-numbers` - Animated counters
+- `horizontal-scroll` - Horizontal gallery
+- `marquee` - Scrolling text ticker
+- `marquee-radial` - Circular rotating marquee
+- `logo-marquee` - Infinite logo carousel
+- `logo-wall-cycle` - Animated logo grid with cycling
+
+### Conversion
+
+- `newsletter` - Email signup forms
+- `contact-form` - Contact form
+- `countdown` - Launch countdown
+- `map` - Store locator map
+
+### Structure
+
+- `header` - Navigation header
+- `footer` - Site footer
+- `announcement-bar` - Top announcement bar
+- `page` - Generic page template
+- `article` - Blog article template
+- `blog` - Blog listing
+- `cart` - Cart page
+- `cart-drawer` - Slide-out cart drawer
+- `search` - Search results
+- `password` - Password page
+- `404` - Not found page
+- `apps` - Third-party app embeds
 
 ---
 
@@ -181,96 +366,6 @@ Toast notifications automatically:
 - Auto-dismiss after duration (4-5 seconds)
 - Include close button
 - Announce to screen readers via aria-live
-
----
-
-## Sections (65 Total)
-
-### Hero & Landing
-
-- `hero` - Full-viewport hero with image/video
-- `hero-orbit` - Animated orbiting elements
-- `banner` - Smaller promotional banner
-- `slideshow` - Image/video slideshow carousel
-- `background-zoom` - Parallax zoom effect on scroll
-
-### Products & Collections
-
-- `product` - Product page with variants, gallery
-- `collection` - Collection with filtering
-- `collections` - Collection list/grid
-- `collections-carousel` - Swipeable collection cards
-- `featured-collection` - Featured product grid
-- `featured-product` - Single product showcase with variant picker
-- `related-products` - Related products carousel
-- `recently-viewed` - Recently viewed products
-- `complementary-products` - Frequently bought together
-- `quick-view-product` - Quick view modal content
-- `wishlist` - Saved products page
-- `compare` - Product comparison table
-- `compare-product-data` - Product data for comparison (utility)
-- `pickup-availability` - Store pickup information (utility)
-
-### Interactive
-
-- `hotspots` - Clickable image hotspots
-- `shop-the-look` - Shoppable image overlays
-- `before-after` - Image comparison slider
-- `shoppable-videos` - Video with product tags
-- `pinned-image-reveal` - Scrollytelling layout
-- `scroll-panels` - Scroll-driven panel animations
-- `image-sequence` - Frame-by-frame scroll animation
-
-### Content
-
-- `image-with-text` - Split image + text
-- `image` - Single image section
-- `text-reveal` - Animated text on scroll
-- `text-section` - Rich text content
-- `highlight-text` - Text with highlighted keywords
-- `video` - Video player section
-- `testimonials` - Customer testimonials
-- `faq` - Accordion FAQ
-- `team` - Team member grid
-- `timeline` - Vertical timeline
-- `features-grid` - Feature cards grid
-- `trust-badges` - Trust/payment badges
-- `floating-images` - Decorative floating images
-- `custom-liquid` - Custom Liquid code section
-- `featured-blog` - Featured blog posts grid
-- `main-about` - About page spacer/layout
-
-### Animation Showcase
-
-- `stacking-cards` - Scroll-stacking cards
-- `rolling-numbers` - Animated counters
-- `horizontal-scroll` - Horizontal gallery
-- `marquee` - Scrolling text ticker
-- `marquee-radial` - Circular rotating marquee
-- `logo-marquee` - Infinite logo carousel
-- `logo-wall-cycle` - Animated logo grid with cycling
-
-### Conversion
-
-- `newsletter` - Email signup forms
-- `contact-form` - Contact form
-- `countdown` - Launch countdown
-- `map` - Store locator map
-
-### Structure
-
-- `header` - Navigation header
-- `footer` - Site footer
-- `announcement-bar` - Top announcement bar
-- `page` - Generic page template
-- `article` - Blog article template
-- `blog` - Blog listing
-- `cart` - Cart page
-- `cart-drawer` - Slide-out cart drawer
-- `search` - Search results
-- `password` - Password page
-- `404` - Not found page
-- `apps` - Third-party app embeds
 
 ---
 
@@ -652,6 +747,143 @@ window.refreshCartDrawer();
 
 ---
 
+## SEO & Structured Data
+
+Comprehensive SEO optimization with schema.org structured data for enhanced search visibility.
+
+### Meta Tags
+
+Open Graph and Twitter Card meta tags are automatically generated in `snippets/meta-tags.liquid`:
+
+| Meta Type | Description |
+| --------- | ----------- |
+| **Open Graph** | `og:title`, `og:description`, `og:url`, `og:type`, `og:image` |
+| **Twitter Cards** | `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` |
+| **Product-specific** | `og:price:amount`, `og:price:currency` on product pages |
+
+Social sharing images follow a fallback chain: page image → share image setting → logo.
+
+### Structured Data (JSON-LD)
+
+Rich snippets via `snippets/structured-data.liquid` rendered on every page:
+
+| Schema Type | Pages | Description |
+| ----------- | ----- | ----------- |
+| **Organization** | All | Shop name, logo, social profiles, contact point |
+| **WebSite** | All | Site name with SearchAction for sitelinks search box |
+| **BreadcrumbList** | All (except home) | Navigation path hierarchy |
+| **Product** | Product pages | Name, description, images, SKU, GTIN, brand, offers, ratings |
+| **CollectionPage** | Collection pages | Collection title, description, image, item count |
+| **Article** | Blog articles | Headline, author, dates, publisher, featured image |
+| **LocalBusiness** | All (if enabled) | Physical store info for local SEO |
+| **FAQPage** | FAQ sections | Question/answer pairs for rich results |
+
+### Product Schema Features
+
+Product structured data includes:
+- Up to 5 product images
+- SKU and GTIN/barcode (if available)
+- Brand from vendor
+- AggregateOffer with price range
+- Stock availability status
+- Aggregate ratings from Shopify product reviews metafields
+
+### Local Business Schema
+
+Enable in theme settings for physical retail locations:
+
+```liquid
+{% comment %} Theme Settings {% endcomment %}
+Enable local business schema: checkbox
+Business phone: text
+Business email: text
+Street address: text
+City: text
+State/Province: text
+ZIP/Postal code: text
+Country: text
+Opening hours: text (e.g., "Mo-Fr 09:00-17:00")
+Price range: select ($, $$, $$$, $$$$)
+```
+
+### FAQ Schema
+
+Automatically generated for FAQ sections via `snippets/structured-data-faq.liquid`:
+
+```liquid
+{% render 'structured-data-faq', faqs: section.blocks %}
+```
+
+### Visual Breadcrumbs
+
+Rendered via `snippets/breadcrumbs.liquid` with customizable options:
+
+```liquid
+{% render 'breadcrumbs' %}
+{% render 'breadcrumbs', separator: '/', show_home_icon: true, alignment: 'center' %}
+```
+
+Supports: Products (with collection context), Collections, Blog articles, Pages, Search, Cart.
+
+### Canonical URLs
+
+Shopify's built-in `{{ canonical_url }}` is used throughout for proper URL canonicalization.
+
+---
+
+## Accessibility
+
+- Semantic HTML structure
+- ARIA labels on interactive elements
+- Skip-to-content link
+- Focus management in modals
+- Keyboard navigation support
+- Color contrast compliance
+- Screen reader optimizations
+
+---
+
+## Theme Settings
+
+Configurable via Shopify theme customizer:
+
+| Section | Options |
+| ------- | ------- |
+| **Logo** | Logo image, desktop/mobile width, favicon |
+| **Colors** | Background, secondary background, text, secondary text, primary accent, primary contrast, border, sale |
+| **Typography** | Body font, heading font, font size scaling, heading/body letter spacing, uppercase headings/buttons |
+| **Layout** | Page width, vertical padding, section padding, smooth scrolling, page transitions (slide/fade/curtain), animations, animation trigger timing |
+| **Buttons** | Corner radius, border width, shadow style |
+| **Inputs** | Corner radius, border width, shadow style |
+| **Cards** | Corner radius, border width, shadow style |
+| **Product Card** | Image aspect ratio, secondary image on hover, show vendor, quick view, compare, wishlist, sale/sold out badges |
+| **Social Media** | Instagram, Facebook, X (Twitter), TikTok, YouTube, Pinterest links |
+| **SEO & Schema** | Local business schema with address, phone, email, hours, price range |
+| **Cart** | Cart type (drawer/page/notification), free shipping progress bar, delivery estimator, social proof indicators |
+| **Newsletter Popup** | Enable/disable, trigger type (delay/scroll/exit intent), frequency, content, discount code reveal, colors, layout |
+
+---
+
+## Performance
+
+### Optimizations
+
+- **Lazy Loading** - Native `loading="lazy"` on images
+- **Responsive Images** - Srcset with multiple sizes
+- **Deferred Scripts** - Non-blocking script loading
+- **Font Preloading** - Critical fonts preloaded
+- **ScrollTrigger Cleanup** - Proper cleanup between pages
+- **Swup Cache** - Intelligent page caching
+
+### Animation Performance
+
+- Hardware-accelerated transforms
+- Will-change hints where appropriate
+- Respects `prefers-reduced-motion`
+- Font loading synchronization
+
+---
+
 ## Development
 
 ### Prerequisites
@@ -780,9 +1012,8 @@ Then use: `shopify theme dev --environment=development`
 ```
 pieces/
 ├── assets/                  # Compiled JS/CSS, fonts, images
-├── blocks/                  # Theme blocks
 ├── config/                  # Theme settings schema
-├── frontend/
+├── src/
 │   ├── css/
 │   │   ├── app.css         # CSS entry point
 │   │   └── partials/       # CSS modules
@@ -790,13 +1021,20 @@ pieces/
 │   │       ├── base.css
 │   │       ├── buttons.css
 │   │       ├── cart.css
+│   │       ├── collection.css
+│   │       ├── collections.css
 │   │       ├── forms.css
 │   │       ├── glightbox.css
 │   │       ├── navigation.css
+│   │       ├── product.css
 │   │       ├── typography.css
-│   │       └── utilities.css
+│   │       ├── utilities.css
+│   │       ├── sections/   # Section-specific styles
+│   │       └── snippets/   # Snippet-specific styles
 │   └── js/
 │       ├── app.js          # JS entry point
+│       ├── components/     # Reusable components
+│       │   └── PriceRange.js
 │       ├── managers/       # Feature modules
 │       │   ├── CartDrawerManager.js
 │       │   ├── CartPageManager.js
@@ -811,208 +1049,20 @@ pieces/
 │       │   └── WishlistManager.js
 │       └── utils/          # Utility functions
 │           ├── constants.js
+│           ├── debounce.js
 │           ├── dom.js
+│           ├── formatMoney.js
 │           ├── storage.js
 │           └── toast.js
 ├── layout/                  # Theme layouts
-├── locales/                 # Translation files (17 languages)
+├── locales/                 # Translation files (31 languages)
 ├── scripts/                 # Build/utility scripts
-├── sections/                # Liquid sections (57)
+├── sections/                # Liquid sections (65)
 ├── snippets/                # Reusable partials
 ├── templates/               # Page templates
 ├── vite.config.js           # Vite build configuration
 └── package.json
 ```
-
----
-
-## Performance
-
-### Optimizations
-
-- **Lazy Loading** - Native `loading="lazy"` on images
-- **Responsive Images** - Srcset with multiple sizes
-- **Deferred Scripts** - Non-blocking script loading
-- **Font Preloading** - Critical fonts preloaded
-- **ScrollTrigger Cleanup** - Proper cleanup between pages
-- **Swup Cache** - Intelligent page caching
-
-### Animation Performance
-
-- Hardware-accelerated transforms
-- Will-change hints where appropriate
-- Respects `prefers-reduced-motion`
-- Font loading synchronization
-
----
-
-## SEO & Structured Data
-
-Comprehensive SEO optimization with schema.org structured data for enhanced search visibility.
-
-### Meta Tags
-
-Open Graph and Twitter Card meta tags are automatically generated in `snippets/meta-tags.liquid`:
-
-| Meta Type | Description |
-| --------- | ----------- |
-| **Open Graph** | `og:title`, `og:description`, `og:url`, `og:type`, `og:image` |
-| **Twitter Cards** | `twitter:card`, `twitter:title`, `twitter:description`, `twitter:image` |
-| **Product-specific** | `og:price:amount`, `og:price:currency` on product pages |
-
-Social sharing images follow a fallback chain: page image → share image setting → logo.
-
-### Structured Data (JSON-LD)
-
-Rich snippets via `snippets/structured-data.liquid` rendered on every page:
-
-| Schema Type | Pages | Description |
-| ----------- | ----- | ----------- |
-| **Organization** | All | Shop name, logo, social profiles, contact point |
-| **WebSite** | All | Site name with SearchAction for sitelinks search box |
-| **BreadcrumbList** | All (except home) | Navigation path hierarchy |
-| **Product** | Product pages | Name, description, images, SKU, GTIN, brand, offers, ratings |
-| **CollectionPage** | Collection pages | Collection title, description, image, item count |
-| **Article** | Blog articles | Headline, author, dates, publisher, featured image |
-| **LocalBusiness** | All (if enabled) | Physical store info for local SEO |
-| **FAQPage** | FAQ sections | Question/answer pairs for rich results |
-
-### Product Schema Features
-
-Product structured data includes:
-- Up to 5 product images
-- SKU and GTIN/barcode (if available)
-- Brand from vendor
-- AggregateOffer with price range
-- Stock availability status
-- Aggregate ratings from Shopify product reviews metafields
-
-### Local Business Schema
-
-Enable in theme settings for physical retail locations:
-
-```liquid
-{% comment %} Theme Settings {% endcomment %}
-Enable local business schema: checkbox
-Business phone: text
-Business email: text
-Street address: text
-City: text
-State/Province: text
-ZIP/Postal code: text
-Country: text
-Opening hours: text (e.g., "Mo-Fr 09:00-17:00")
-Price range: select ($, $$, $$$, $$$$)
-```
-
-### FAQ Schema
-
-Automatically generated for FAQ sections via `snippets/structured-data-faq.liquid`:
-
-```liquid
-{% render 'structured-data-faq', faqs: section.blocks %}
-```
-
-### Visual Breadcrumbs
-
-Rendered via `snippets/breadcrumbs.liquid` with customizable options:
-
-```liquid
-{% render 'breadcrumbs' %}
-{% render 'breadcrumbs', separator: '/', show_home_icon: true, alignment: 'center' %}
-```
-
-Supports: Products (with collection context), Collections, Blog articles, Pages, Search, Cart.
-
-### Canonical URLs
-
-Shopify's built-in `{{ canonical_url }}` is used throughout for proper URL canonicalization.
-
----
-
-## Accessibility
-
-- Semantic HTML structure
-- ARIA labels on interactive elements
-- Skip-to-content link
-- Focus management in modals
-- Keyboard navigation support
-- Color contrast compliance
-- Screen reader optimizations
-
----
-
-## Internationalization
-
-All user-facing text uses Shopify's translation system:
-
-```liquid
-{{ 'products.product.add_to_cart' | t }}
-```
-
-Translation files located in `/locales/`.
-
----
-
-## Theme Settings
-
-Configurable via Shopify theme customizer:
-
-| Section | Options |
-| ------- | ------- |
-| **Logo** | Logo image, desktop/mobile width, favicon |
-| **Colors** | Background, secondary background, text, secondary text, primary accent, primary contrast, border, sale |
-| **Typography** | Body font, heading font, font size scaling, heading/body letter spacing, uppercase headings/buttons |
-| **Layout** | Page width, vertical padding, section padding, smooth scrolling, page transitions (slide/fade/curtain), animations, animation trigger timing |
-| **Buttons** | Corner radius, border width, shadow style |
-| **Inputs** | Corner radius, border width, shadow style |
-| **Cards** | Corner radius, border width, shadow style |
-| **Product Card** | Image aspect ratio, secondary image on hover, show vendor, quick view, compare, wishlist, sale/sold out badges |
-| **Social Media** | Instagram, Facebook, X (Twitter), TikTok, YouTube, Pinterest links |
-| **SEO & Schema** | Local business schema with address, phone, email, hours, price range |
-| **Cart** | Cart type (drawer/page/notification), free shipping progress bar, delivery estimator, social proof indicators |
-| **Newsletter Popup** | Enable/disable, trigger type (delay/scroll/exit intent), frequency, content, discount code reveal, colors, layout |
-
-### Theme Presets
-
-Five curated design presets available in the theme editor, each targeting specific market niches:
-
-#### Default
-**Best for:** General retail, home goods, lifestyle brands, DTC startups
-- Clean, modern aesthetic with indigo primary color
-- Space Grotesk headings with Inter body for modern readability
-- Sharp corners, minimal shadows
-- Works well for brands still defining their visual identity
-
-#### Glow
-**Best for:** Skincare, cosmetics, wellness products, clean beauty, spa brands
-- Soft, warm cream tones with terracotta accent
-- Cormorant elegant headings, Questrial body
-- Pill-shaped buttons (100px radius), rounded cards
-- Soft shadows for an approachable, organic feel
-
-#### Bold
-**Best for:** Streetwear, graphic tees, sneakers, skate/surf brands, statement apparel
-- High contrast black/white with vibrant orange accent
-- Bebas Neue display headings with IBM Plex Mono body text
-- Hard offset shadows, thick 3px borders
-- Expanded letter spacing for impactful headlines
-
-#### Noir
-**Best for:** Fine jewelry, luxury watches, high-end accessories, premium leather goods
-- Dark, elegant theme with gold accents
-- Bodoni Moda serif headings, Jost body for refined luxury
-- Subtle gradient backgrounds, refined 1px borders
-- Generous vertical padding for a luxurious feel
-
-#### Edge
-**Best for:** Gaming peripherals, PC components, consumer electronics, tech accessories
-- Dark futuristic theme with cyan accent
-- Rajdhani geometric headings, IBM Plex Mono body
-- Sharp angular design, expanded letter spacing
-- Optimized for product specs and technical details
-
-Each preset configures color schemes, typography (including letter spacing), border radius, and shadow styles for buttons, inputs, and cards.
 
 ---
 
